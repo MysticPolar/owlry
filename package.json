@@ -6,8 +6,10 @@
   "description": "Owlry — a gamified reading app. Small, warm, tactile.",
   "scripts": {
     "dev": "vite",
+    "dev:host": "vite --host",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
+    "preview:host": "vite preview --host",
     "typecheck": "tsc -b",
     "test": "tsx scripts/owl-smoke.ts && tsx scripts/store-smoke.ts"
   },
