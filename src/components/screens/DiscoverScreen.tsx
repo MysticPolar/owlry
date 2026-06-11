@@ -1,0 +1,227 @@
+import { Fragment, useEffect, useRef, useState } from 'react';
+import { useStore } from '../../store/useStore';
+import { BOOKS } from '../../content/books';
+import type { BookId } from '../../content/types';
+import type { OwlMessage } from '../../lib/owlBrain';
+import { isGuide } from '../../lib/format';
+import { Icon } from '../Icon';
+import { Cover } from '../Cover';
+
+/* render structured owl-message nodes as real, clickable React */
+function renderNodes(nodes: OwlMessage, openSheet: (id: BookId) => void) {
+  return nodes.map((n, i) => {
+    if (n.t === 'text') return <Fragment key={i}>{n.v}</Fragment>;
+    if (n.t === 'em')
+      return (
+        <span key={i} className="it">
+          {n.v}
+        </span>
+      );
+    return (
+      <span key={i} className="bk" onClick={() => openSheet(n.id)}>
+        {n.v}
+      </span>
+    );
+  });
+}
+
+/* ---------- tray: the latest pick ---------- */
+function Tray() {
+  const lastBatch = useStore((s) => s.owl.lastBatch);
+  const saved = useStore((s) => (lastBatch ? s.savedIds.includes(lastBatch.main) : false));
+  const toggleSave = useStore((s) => s.toggleSave);
+  const openSheet = useStore((s) => s.openSheet);
+  const openLetter = useStore((s) => s.openLetter);
+  const openReader = useStore((s) => s.openReader);
+
+  if (!lastBatch) {
+    return (
+      <div className="tray" id="tray">
+        <div className="tray-card tray-empty">the owl's picks will perch here</div>
+      </div>
+    );
+  }
+
+  const id = lastBatch.main;
+  const b = BOOKS[id];
+  return (
+    <div className="tray" id="tray">
+      <div className="tray-card">
+        <button
+          className={`save ${saved ? 'on' : ''}`}
+          aria-label="Save to library"
+          aria-pressed={saved}
+          onClick={() => toggleSave(id)}
+        >
+          <Icon name="ti-heart" />
+        </button>
+        <Cover id={id} cls="cover-xs" />
+        <div className="tray-info">
+          <div className="tray-ttl d">{b.t}</div>
+          <div className="tray-auth">
+            {b.a} · {b.n} pages
+          </div>
+          <div className="tray-intro">{b.i ?? b.q}</div>
+          <div className="tray-btns">
+            <button className="btn xs ghost" onClick={() => openSheet(id)}>
+              ABOUT
+            </button>
+            {isGuide(id) ? (
+              <button className="btn xs" onClick={() => openLetter(id)}>
+                PREVIEW <Icon name="ti-mail" />
+              </button>
+            ) : (
+              <button className="btn xs" onClick={() => openReader(id)}>
+                OPEN <Icon name="ti-arrow-right" />
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ---------- strip: every rec collected this session ---------- */
+function Strip() {
+  const collected = useStore((s) => s.owl.collected);
+  const openSheet = useStore((s) => s.openSheet);
+  if (!collected.length) return <div className="strip" id="stripRow" />;
+  return (
+    <div className="strip" id="stripRow">
+      <span className="strip-label">SHELF · {collected.length}</span>
+      <div className="strip-row">
+        {collected.map((id) => (
+          <button
+            key={id}
+            className="spinelet"
+            style={{ background: BOOKS[id].c }}
+            aria-label={BOOKS[id].t}
+            title={BOOKS[id].t}
+            onClick={() => openSheet(id)}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ---------- chat ---------- */
+function Chat() {
+  const messages = useStore((s) => s.owl.messages);
+  const active = useStore((s) => s.activeTab === 'discover');
+  const openSheet = useStore((s) => s.openSheet);
+  const openLetter = useStore((s) => s.openLetter);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const c = ref.current;
+    if (c) c.scrollTop = c.scrollHeight;
+  }, [messages, active]);
+
+  return (
+    <div className="chat" id="chat" aria-live="polite" ref={ref}>
+      {messages.map((m) => {
+        if (m.kind === 'typing') {
+          return (
+            <div key={m.id} className="msg owl">
+              <span className="tdots">
+                <span />
+                <span />
+                <span />
+              </span>
+            </div>
+          );
+        }
+        if (m.kind === 'letter') {
+          return (
+            <button key={m.id} className="lettercard" onClick={() => openLetter(m.book)}>
+              <span className="stamp">
+                <Icon name="ti-feather" />
+              </span>
+              <span>
+                <span className="lc-t d">a reading letter has arrived</span>
+                <br />
+                <span className="lc-s">{BOOKS[m.book].t} — tap to open</span>
+              </span>
+            </button>
+          );
+        }
+        return (
+          <div key={m.id} className={`msg ${m.who}`}>
+            {renderNodes(m.nodes, openSheet)}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+/* ---------- chips + composer ---------- */
+function Chips() {
+  const chips = useStore((s) => s.owl.chips);
+  const send = useStore((s) => s.sendToOwl);
+  return (
+    <div className="chips cz" id="chiprow">
+      {chips.map((c, i) => (
+        <button key={i} className="chip" onClick={() => send(c)}>
+          {c.toUpperCase()}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function Composer() {
+  const send = useStore((s) => s.sendToOwl);
+  const busy = useStore((s) => s.owl.busy);
+  const [val, setVal] = useState('');
+  const submit = () => {
+    const t = val.trim();
+    if (!t || busy) return;
+    send(t);
+    setVal('');
+  };
+  return (
+    <div className="composer">
+      <div className="search cz">
+        <Icon name="ti-feather" />
+        <input
+          id="qIn"
+          type="text"
+          placeholder="tell the owl what’s going on…"
+          aria-label="Message the owl"
+          value={val}
+          onChange={(e) => setVal(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') submit();
+          }}
+        />
+      </div>
+      <button className="iconbtn" id="sendBtn" aria-label="Send" onClick={submit}>
+        <Icon name="ti-send" />
+      </button>
+    </div>
+  );
+}
+
+export function DiscoverScreen() {
+  const active = useStore((s) => s.activeTab === 'discover');
+  return (
+    <section className={`screen ${active ? 'on' : ''}`} id="screen-discover">
+      <div className="pad-h" style={{ paddingBottom: 2 }}>
+        <div className="hl sm d">
+          <span className="u" />
+          <span className="t">
+            discover<span className="gdot">.</span>
+          </span>
+        </div>
+      </div>
+      <Tray />
+      <Strip />
+      <Chat />
+      <Chips />
+      <Composer />
+    </section>
+  );
+}

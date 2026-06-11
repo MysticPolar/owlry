@@ -1,0 +1,22 @@
+/* ============================================================
+   owlry — design tokens (ported verbatim from the mockup)
+   ============================================================ */
+:root {
+  --cream: #FAF4E6;
+  --paper: #EDE3CC;
+  --paper2: #D9CFB8;
+  --ink: #1A1A1A;
+  --green: #156D44;
+  --yellow: #FFC017;
+  --gold: #E5A50A;
+  --mut: #6B6B6B;
+  --fade: #A09683;
+
+  /* device safe-area insets (notches, home indicators) — used in fullscreen/Capacitor mode */
+  --sat: env(safe-area-inset-top, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+
+  /* app viewport height. Framed (desktop) preview keeps the mockup's 800px;
+     fullscreen mode (phones / installed PWA / native shell) overrides to 100dvh. */
+  --app-h: 800px;
+}
