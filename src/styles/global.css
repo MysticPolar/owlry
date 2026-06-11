@@ -391,29 +391,34 @@ button:focus-visible { outline: 3px solid var(--green); outline-offset: 2px; }
 }
 
 /* ============================================================
-   fullscreen app mode — real phones, installed PWA, Capacitor.
-   The desktop "phone on a desk" frame collapses to a full-bleed
-   app that fills the viewport and respects device safe areas.
+   Mobile-first layout. The app fills the device by default — this
+   is the real target, a mobile web app. The desktop "phone on a
+   desk" frame is restored only on wide screens. Children are forced
+   to full width with explicit width + align-items:stretch (the base
+   align-items:center otherwise shrink-wraps the app to its content);
+   overflow-x is clipped at the root so nothing can blow out a
+   phone's layout viewport.
    ============================================================ */
-@media (max-width: 480px) {
-  body { padding: 0; background: var(--cream); min-height: 100dvh; }
-  .page { gap: 0; width: 100%; }
-  .caption { display: none; }
-  .phone { width: 100%; max-width: 100%; border-radius: 0; padding: 0; box-shadow: none; background: var(--cream); }
-  .app { height: 100dvh; border-radius: 0; }
-  .status { padding-top: calc(14px + var(--sat)); }
-  .nav { padding-bottom: calc(16px + var(--sab)); }
-  .reader, .letter { padding-top: calc(44px + var(--sat)); }
-}
+html, body { width: 100%; max-width: 100%; overflow-x: hidden; }
+body { padding: 0; background: var(--cream); min-height: 100dvh; align-items: stretch; justify-content: flex-start; }
+.page { gap: 0; width: 100%; align-items: stretch; }
+.caption { display: none; }
+.phone { width: 100%; max-width: none; border-radius: 0; padding: 0; box-shadow: none; background: var(--cream); }
+.app { width: 100%; height: 100dvh; border-radius: 0; padding-top: var(--sat); }
+.status { display: none; }
+.nav { padding-bottom: calc(16px + var(--sab)); }
+.reader, .letter { padding-top: calc(44px + var(--sat)); }
+.sheet { bottom: calc(8px + var(--sab)); }
 
-/* When launched as an installed/standalone app, always go full-bleed. */
-@media (display-mode: standalone) {
-  body { padding: 0; background: var(--cream); }
-  .page { gap: 0; width: 100%; }
-  .caption { display: none; }
-  .phone { width: 100%; max-width: 100%; border-radius: 0; padding: 0; box-shadow: none; background: var(--cream); }
-  .app { height: 100dvh; border-radius: 0; }
-  .status { padding-top: calc(14px + var(--sat)); }
-  .nav { padding-bottom: calc(16px + var(--sab)); }
-  .reader, .letter { padding-top: calc(44px + var(--sat)); }
+/* wide screens: restore the framed "phone on a desk" preview */
+@media (min-width: 760px) {
+  body { padding: 34px 16px; background: #EAE2CF; min-height: 100vh; align-items: center; justify-content: center; }
+  .page { gap: 18px; width: auto; align-items: center; }
+  .caption { display: block; }
+  .phone { width: 380px; max-width: 100%; border-radius: 34px; padding: 8px; box-shadow: 9px 9px 0 var(--green); background: #1A1A1A; }
+  .app { width: 100%; height: 800px; border-radius: 27px; padding-top: 0; }
+  .status { display: flex; }
+  .nav { padding-bottom: 16px; }
+  .reader, .letter { padding-top: 44px; }
+  .sheet { bottom: 8px; }
 }
