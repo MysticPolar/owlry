@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { useStore } from '../../store/useStore';
+import { useKeyboardInset } from '../../hooks/useKeyboardInset';
 import { BOOKS } from '../../content/books';
 import type { BookId } from '../../content/types';
 import type { OwlMessage } from '../../lib/owlBrain';
@@ -18,7 +19,19 @@ function renderNodes(nodes: OwlMessage, openSheet: (id: BookId) => void) {
         </span>
       );
     return (
-      <span key={i} className="bk" onClick={() => openSheet(n.id)}>
+      <span
+        key={i}
+        className="bk"
+        role="button"
+        tabIndex={0}
+        onClick={() => openSheet(n.id)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openSheet(n.id);
+          }
+        }}
+      >
         {n.v}
       </span>
     );
@@ -112,24 +125,33 @@ function Chat() {
   const active = useStore((s) => s.activeTab === 'discover');
   const openSheet = useStore((s) => s.openSheet);
   const openLetter = useStore((s) => s.openLetter);
+  const kb = useKeyboardInset();
   const ref = useRef<HTMLDivElement>(null);
+  const prevCount = useRef(0);
 
+  // glide to new messages; jump instantly on tab entry / keyboard open
   useEffect(() => {
+    if (!active) return;
     const c = ref.current;
-    if (c) c.scrollTop = c.scrollHeight;
-  }, [messages, active]);
+    if (!c) return;
+    const grew = messages.length > prevCount.current;
+    prevCount.current = messages.length;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    c.scrollTo({ top: c.scrollHeight, behavior: grew && !reduce ? 'smooth' : 'auto' });
+  }, [messages, active, kb]);
 
   return (
-    <div className="chat" id="chat" aria-live="polite" ref={ref}>
+    <div className="chat" id="chat" role="log" aria-live="polite" ref={ref}>
       {messages.map((m) => {
         if (m.kind === 'typing') {
           return (
             <div key={m.id} className="msg owl">
-              <span className="tdots">
+              <span className="tdots" aria-hidden="true">
                 <span />
                 <span />
                 <span />
               </span>
+              <span className="sr-only">the owl is typing…</span>
             </div>
           );
         }
@@ -176,21 +198,28 @@ function Composer() {
   const send = useStore((s) => s.sendToOwl);
   const busy = useStore((s) => s.owl.busy);
   const [val, setVal] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
   const submit = () => {
     const t = val.trim();
     if (!t || busy) return;
     send(t);
     setVal('');
+    // keep the conversation going: don't let the send tap dismiss the keyboard
+    inputRef.current?.focus({ preventScroll: true });
   };
   return (
     <div className="composer">
       <div className="search cz">
         <Icon name="ti-feather" />
         <input
+          ref={inputRef}
           id="qIn"
           type="text"
           placeholder="tell the owl what’s going on…"
           aria-label="Message the owl"
+          autoCapitalize="none"
+          autoComplete="off"
+          enterKeyHint="send"
           value={val}
           onChange={(e) => setVal(e.target.value)}
           onKeyDown={(e) => {

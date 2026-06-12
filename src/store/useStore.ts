@@ -277,22 +277,23 @@ export const useStore = create<Store>()(
         },
       }));
 
+      // compute the reply up front so the typing delay can scale with its length
+      const st0 = get();
+      const session = {
+        ...st0.owl.session,
+        wxKey: WX[st0.wxIndex].k,
+        usedGuides: [...st0.owl.session.usedGuides],
+      };
+      const reply = respond(text, session);
+      const replyLen = reply.msgs.reduce((n, m) => n + m.reduce((x, nd) => x + nd.v.length, 0), 0);
+      const think = Math.min(1500, 650 + replyLen * 3);
+
       setTimeout(() => {
         const st = get();
-        const session = {
-          ...st.owl.session,
-          wxKey: WX[st.wxIndex].k,
-          usedGuides: [...st.owl.session.usedGuides],
-        };
-        const reply = respond(text, session);
-
         let messages = st.owl.messages.filter((m) => m.id !== typingId);
         reply.msgs.forEach((nodes) => {
           messages = [...messages, { kind: 'msg', id: nextId(), who: 'owl', nodes }];
         });
-        if (reply.letter) {
-          messages = [...messages, { kind: 'letter', id: nextId(), book: reply.letter }];
-        }
 
         let collected = st.owl.collected;
         let lastBatch = st.owl.lastBatch;
@@ -304,10 +305,27 @@ export const useStore = create<Store>()(
           });
         }
 
-        set({
-          owl: { ...st.owl, busy: false, messages, chips: reply.chips, collected, lastBatch, session },
-        });
-      }, 850);
+        if (reply.letter) {
+          // the reply lands first; the letter arrives a beat later, as its own moment
+          const letterBook = reply.letter;
+          set({ owl: { ...st.owl, messages, collected, lastBatch, session } });
+          setTimeout(() => {
+            const st2 = get();
+            set({
+              owl: {
+                ...st2.owl,
+                busy: false,
+                chips: reply.chips,
+                messages: [...st2.owl.messages, { kind: 'letter', id: nextId(), book: letterBook }],
+              },
+            });
+          }, 450);
+        } else {
+          set({
+            owl: { ...st.owl, busy: false, messages, chips: reply.chips, collected, lastBatch, session },
+          });
+        }
+      }, think);
     },
   })),
 );

@@ -54,5 +54,32 @@ check(
   `pages=${g().pagesRead.hail} xp=${g().xp}`,
 );
 
+/* ── owl conversation sequencing (typing → reply → letter → chips) ── */
+g().initChat();
+check('greeting + starter chips', g().owl.messages.length === 1 && g().owl.chips.length === 4);
+
+g().sendToOwl("can't sleep");
+check(
+  'send → busy, typing indicator up, chips cleared',
+  g().owl.busy && g().owl.messages.some((m) => m.kind === 'typing') && g().owl.chips.length === 0,
+);
+
+await new Promise((r) => setTimeout(r, 2300)); // think (≤1500) + letter beat (450)
+const items = g().owl.messages;
+check(
+  'reply landed: me msg + owl reply + letter card (wws)',
+  items.some((m) => m.kind === 'msg' && m.who === 'me') &&
+    items.filter((m) => m.kind === 'msg' && m.who === 'owl').length >= 2 &&
+    items.some((m) => m.kind === 'letter' && m.book === 'wws'),
+);
+check(
+  'typing cleared, busy false, after-chips offered',
+  !g().owl.busy && !items.some((m) => m.kind === 'typing') && g().owl.chips.includes('go deeper'),
+);
+check('tray batch perched on wws', g().owl.lastBatch?.main === 'wws');
+const letterIdx = items.findIndex((m) => m.kind === 'letter');
+const lastOwlIdx = items.map((m) => m.kind === 'msg' && m.who === 'owl').lastIndexOf(true);
+check('letter arrives after the reply (its own beat)', lastOwlIdx > 0 && letterIdx > lastOwlIdx);
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

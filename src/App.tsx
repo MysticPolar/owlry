@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useStore } from './store/useStore';
+import { useKeyboardInset } from './hooks/useKeyboardInset';
 import { WX } from './content/weather';
 import { StatusBar, BottomNav, Toast, BurstLayer, Backdrop } from './components/chrome';
 import { TodayScreen } from './components/screens/TodayScreen';
@@ -14,6 +15,7 @@ export default function App() {
   const wxIndex = useStore((s) => s.wxIndex);
   const hydrated = useStore((s) => s.hydrated);
   const bootstrap = useStore((s) => s.bootstrap);
+  const kb = useKeyboardInset();
 
   useEffect(() => {
     void bootstrap();
@@ -22,7 +24,13 @@ export default function App() {
   return (
     <div className="page">
       <div className="phone">
-        <div className="app b" id="app" data-wx={WX[wxIndex].k}>
+        <div
+          className="app b"
+          id="app"
+          data-wx={WX[wxIndex].k}
+          data-kb={kb > 0 ? 'open' : 'closed'}
+          style={kb > 0 ? { paddingBottom: kb } : undefined}
+        >
           {hydrated && (
             <>
               <StatusBar />
