@@ -3,10 +3,10 @@ import { BOOKS } from '../../content/books';
 import { isGuide } from '../../lib/format';
 import { Icon } from '../Icon';
 import { Cover } from '../Cover';
+import { ClampText } from '../ClampText';
 
 export function Sheet() {
   const sheetId = useStore((s) => s.sheetId);
-  const closeSheet = useStore((s) => s.closeSheet);
   const openLetter = useStore((s) => s.openLetter);
   const openReader = useStore((s) => s.openReader);
   const toggleSave = useStore((s) => s.toggleSave);
@@ -28,8 +28,13 @@ export function Sheet() {
     >
       {b && id && (
         <>
-          <button className="save" aria-label="Close details" onClick={closeSheet}>
-            <Icon name="ti-x" />
+          <button
+            className={`save ${saved ? 'on' : ''}`}
+            aria-label="Save to library"
+            aria-pressed={saved}
+            onClick={() => toggleSave(id)}
+          >
+            <Icon name="ti-heart" />
           </button>
           <div className="sh-flex">
             <Cover id={id} cls="cover-md" />
@@ -45,7 +50,9 @@ export function Sheet() {
               </div>
             </div>
           </div>
-          <p className="bk-intro">{b.i ?? b.q}</p>
+          <ClampText lines={5} className="bk-intro">
+            {b.i ?? b.q}
+          </ClampText>
           <div className="btnrow">
             {guide && (
               <button className="btn" onClick={() => isGuide(id) && openLetter(id)}>
@@ -55,21 +62,12 @@ export function Sheet() {
             <button className={`btn ${guide ? 'ghost' : ''}`} onClick={() => openReader(id)}>
               {resuming ? 'RESUME' : 'OPEN'} <Icon name="ti-arrow-right" />
             </button>
-            <button className="btn ghost" aria-pressed={saved} onClick={() => toggleSave(id)}>
-              {saved ? (
-                <>
-                  SAVED <Icon name="ti-check" />
-                </>
-              ) : (
-                <>
-                  SAVE <Icon name="ti-heart" />
-                </>
-              )}
-            </button>
           </div>
           <div className="sh-sec">THE AUTHOR</div>
           <div className="auth-name d">{b.a}</div>
-          <p className="bk-bio">{b.w ?? ''}</p>
+          <ClampText lines={3} className="bk-bio">
+            {b.w ?? ''}
+          </ClampText>
           <button className="link-row" onClick={() => showToast('ti-external-link', 'opens outside owlry')}>
             <Icon name="ti-microphone-2" />
             interviews

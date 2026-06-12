@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useStore } from '../../store/useStore';
 import { BOOKS } from '../../content/books';
 import { GUIDES } from '../../content/guides';
+import { isGuide } from '../../lib/format';
 import { Icon } from '../Icon';
 import { Cover } from '../Cover';
 
@@ -11,6 +12,7 @@ export function Letter() {
   const toggleSave = useStore((s) => s.toggleSave);
   const openReader = useStore((s) => s.openReader);
   const openSheet = useStore((s) => s.openSheet);
+  const openLetter = useStore((s) => s.openLetter);
   const saved = useStore((s) => (s.letterId ? s.savedIds.includes(s.letterId) : false));
 
   const id = letterId;
@@ -42,9 +44,24 @@ export function Letter() {
 
       <div className="l-body" id="ltBody" ref={bodyRef}>
         {g && b && id && (
-          <>
+          <div className="l-swap" key={id}>
             <div className="l-kick">OWL POST · READING LETTER</div>
-            <div className="l-ttl d">{b.t}</div>
+            <div className="l-ttl d">
+              <span
+                className="l-ttl-link"
+                role="button"
+                tabIndex={0}
+                onClick={() => openSheet(id)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    openSheet(id);
+                  }
+                }}
+              >
+                {b.t}
+              </span>
+            </div>
             <div className="l-auth">
               {b.a} · {b.n} pages
             </div>
@@ -93,16 +110,22 @@ export function Letter() {
             <div className="l-sec">FURTHER READING</div>
             {g.fr.map((f, i) => {
               const fb = BOOKS[f.id];
+              const frGuide = isGuide(f.id);
               return (
-                <button className="fr-row" key={i} onClick={() => openSheet(f.id)}>
+                <button
+                  className="fr-row"
+                  key={i}
+                  onClick={() => (isGuide(f.id) ? openLetter(f.id) : openSheet(f.id))}
+                >
                   <Cover id={f.id} cls="cover-xs" />
-                  <span>
+                  <span className="fr-txt">
                     <span className="rtitle d">{fb.t}</span>
                     <span className="rauth" style={{ display: 'block' }}>
                       {fb.a}
                     </span>
                     <span className="fr-why">{f.why}</span>
                   </span>
+                  <Icon name={frGuide ? 'ti-mail' : 'ti-info-circle'} className="fr-mark" />
                 </button>
               );
             })}
@@ -124,7 +147,7 @@ export function Letter() {
               </button>
             </div>
             <div className="l-sign it">— sorted with care, the owl post office</div>
-          </>
+          </div>
         )}
       </div>
     </div>

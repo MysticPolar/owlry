@@ -38,27 +38,46 @@ function renderNodes(nodes: OwlMessage, openSheet: (id: BookId) => void) {
   });
 }
 
-/* ---------- tray: the latest pick ---------- */
-function Tray() {
-  const lastBatch = useStore((s) => s.owl.lastBatch);
-  const saved = useStore((s) => (lastBatch ? s.savedIds.includes(lastBatch.main) : false));
+/* ---------- shelf: every rec collected this session ---------- */
+function Shelf({ onPick, activeId }: { onPick: (id: BookId) => void; activeId: BookId | null }) {
+  const collected = useStore((s) => s.owl.collected);
+  if (!collected.length) {
+    return (
+      <div className="tray" id="tray">
+        <div className="strip-hint">the owl's picks will perch here</div>
+      </div>
+    );
+  }
+  return (
+    <div className="strip" id="stripRow">
+      <span className="strip-label">SHELF · {collected.length}</span>
+      <div className="strip-row">
+        {collected.map((id) => (
+          <button
+            key={id}
+            className={`spinelet ${activeId === id ? 'sel' : ''}`}
+            style={{ background: BOOKS[id].c }}
+            aria-label={BOOKS[id].t}
+            aria-pressed={activeId === id}
+            title={BOOKS[id].t}
+            onClick={() => onPick(id)}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ---------- book card popover (anchored under the shelf) ---------- */
+function Popover({ id, onClose }: { id: BookId; onClose: () => void }) {
+  const b = BOOKS[id];
+  const saved = useStore((s) => s.savedIds.includes(id));
   const toggleSave = useStore((s) => s.toggleSave);
   const openSheet = useStore((s) => s.openSheet);
   const openLetter = useStore((s) => s.openLetter);
   const openReader = useStore((s) => s.openReader);
-
-  if (!lastBatch) {
-    return (
-      <div className="tray" id="tray">
-        <div className="tray-card tray-empty">the owl's picks will perch here</div>
-      </div>
-    );
-  }
-
-  const id = lastBatch.main;
-  const b = BOOKS[id];
   return (
-    <div className="tray" id="tray">
+    <div className="spine-pop" role="dialog" aria-label={b.t}>
       <div className="tray-card">
         <button
           className={`save ${saved ? 'on' : ''}`}
@@ -76,44 +95,38 @@ function Tray() {
           </div>
           <div className="tray-intro">{b.i ?? b.q}</div>
           <div className="tray-btns">
-            <button className="btn xs ghost" onClick={() => openSheet(id)}>
+            <button
+              className="btn xs ghost"
+              onClick={() => {
+                onClose();
+                openSheet(id);
+              }}
+            >
               ABOUT
             </button>
             {isGuide(id) ? (
-              <button className="btn xs" onClick={() => openLetter(id)}>
+              <button
+                className="btn xs"
+                onClick={() => {
+                  onClose();
+                  openLetter(id);
+                }}
+              >
                 PREVIEW <Icon name="ti-mail" />
               </button>
             ) : (
-              <button className="btn xs" onClick={() => openReader(id)}>
+              <button
+                className="btn xs"
+                onClick={() => {
+                  onClose();
+                  openReader(id);
+                }}
+              >
                 OPEN <Icon name="ti-arrow-right" />
               </button>
             )}
           </div>
         </div>
-      </div>
-    </div>
-  );
-}
-
-/* ---------- strip: every rec collected this session ---------- */
-function Strip() {
-  const collected = useStore((s) => s.owl.collected);
-  const openSheet = useStore((s) => s.openSheet);
-  if (!collected.length) return <div className="strip" id="stripRow" />;
-  return (
-    <div className="strip" id="stripRow">
-      <span className="strip-label">SHELF · {collected.length}</span>
-      <div className="strip-row">
-        {collected.map((id) => (
-          <button
-            key={id}
-            className="spinelet"
-            style={{ background: BOOKS[id].c }}
-            aria-label={BOOKS[id].t}
-            title={BOOKS[id].t}
-            onClick={() => openSheet(id)}
-          />
-        ))}
       </div>
     </div>
   );
@@ -204,7 +217,6 @@ function Composer() {
     if (!t || busy) return;
     send(t);
     setVal('');
-    // keep the conversation going: don't let the send tap dismiss the keyboard
     inputRef.current?.focus({ preventScroll: true });
   };
   return (
@@ -236,6 +248,13 @@ function Composer() {
 
 export function DiscoverScreen() {
   const active = useStore((s) => s.activeTab === 'discover');
+  const [popoverId, setPopoverId] = useState<BookId | null>(null);
+
+  // close the popover when leaving discover
+  useEffect(() => {
+    if (!active) setPopoverId(null);
+  }, [active]);
+
   return (
     <section className={`screen ${active ? 'on' : ''}`} id="screen-discover">
       <div className="pad-h" style={{ paddingBottom: 2 }}>
@@ -246,8 +265,13 @@ export function DiscoverScreen() {
           </span>
         </div>
       </div>
-      <Tray />
-      <Strip />
+
+      <div className={`spine-zone ${popoverId ? 'lift' : ''}`}>
+        <Shelf onPick={(id) => setPopoverId((p) => (p === id ? null : id))} activeId={popoverId} />
+        {popoverId && <Popover id={popoverId} onClose={() => setPopoverId(null)} />}
+      </div>
+      {popoverId && <div className="spine-dim" onClick={() => setPopoverId(null)} aria-hidden="true" />}
+
       <Chat />
       <Chips />
       <Composer />

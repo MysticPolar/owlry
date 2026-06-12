@@ -327,14 +327,15 @@ button:focus-visible { outline: 3px solid var(--green); outline-offset: 2px; }
 .sheet { max-height: 86%; overflow-y: auto; scrollbar-width: none; }
 .sheet::-webkit-scrollbar { display: none; }
 .tray-intro { margin-top: 6px; font-size: 11.5px; line-height: 1.45; color: var(--mut); font-weight: 500; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-.bk-intro { margin: 12px 0 0; font-size: 13px; line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; }
+.bk-intro { margin: 12px 0 0; font-size: 13px; line-height: 1.55; }
 .rate { display: flex; align-items: center; gap: 5px; margin-top: 8px; font-size: 12.5px; font-weight: 800; }
 .rate .ti { font-size: 14px; color: var(--gold); }
 .rate small { font-size: 10px; font-weight: 700; color: var(--fade); letter-spacing: .8px; }
 .sh-sec { display: flex; align-items: center; gap: 8px; font-size: 10px; font-weight: 800; letter-spacing: 1.6px; color: var(--green); margin: 16px 0 8px; padding-top: 12px; border-top: 2px dashed var(--paper2); }
 .soon { background: var(--yellow); border: 1.5px solid var(--ink); border-radius: 999px; padding: 2px 8px; font-size: 8.5px; font-weight: 800; letter-spacing: 1px; color: var(--ink); }
 .auth-name { font-size: 15px; letter-spacing: -.3px; }
-.bk-bio { margin: 5px 0 10px; font-size: 12.5px; line-height: 1.5; color: var(--mut); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.bk-bio { margin: 5px 0 10px; font-size: 12.5px; line-height: 1.5; color: var(--mut); }
+.more-btn { background: none; border: 0; padding: 0; margin-top: 5px; font: 800 10px 'Inter Tight', sans-serif; letter-spacing: .8px; color: var(--green); text-transform: uppercase; cursor: pointer; }
 .link-row { display: flex; align-items: center; gap: 9px; width: 100%; background: var(--cream); border: 2px solid var(--ink); border-radius: 10px; box-shadow: 2px 2px 0 var(--ink); padding: 9px 12px; font-size: 11.5px; font-weight: 800; letter-spacing: .4px; margin-bottom: 8px; text-align: left; cursor: pointer; }
 .link-row .ti { font-size: 14px; }
 .link-row .ext { margin-left: auto; color: var(--mut); }
@@ -353,9 +354,11 @@ button:focus-visible { outline: 3px solid var(--green); outline-offset: 2px; }
 .nv.on .lab { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; }
 
 /* ---------- sheet, reader, toast, burst ---------- */
-.backdrop { position: absolute; inset: 0; z-index: 6; background: rgba(26, 26, 26, .45); opacity: 0; pointer-events: none; transition: opacity .25s; }
+/* z-index 9 keeps the backdrop above the reader/letter (8) so dim-tap-to-close
+   works even when a sheet opens from inside the letter; the sheet sits at 10. */
+.backdrop { position: absolute; inset: 0; z-index: 9; background: rgba(26, 26, 26, .45); opacity: 0; pointer-events: none; transition: opacity .25s; }
 .backdrop.on { opacity: 1; pointer-events: auto; }
-.sheet { position: absolute; left: 8px; right: 8px; bottom: 8px; z-index: 9; background: #fff; border: 2px solid var(--ink); border-radius: 18px; box-shadow: 6px 6px 0 var(--ink); padding: 16px; transform: translateY(130%); transition: transform .3s cubic-bezier(.2, .9, .25, 1); }
+.sheet { position: absolute; left: 8px; right: 8px; bottom: 8px; z-index: 10; background: #fff; border: 2px solid var(--ink); border-radius: 18px; box-shadow: 6px 6px 0 var(--ink); padding: 16px; transform: translateY(130%); transition: transform .3s cubic-bezier(.2, .9, .25, 1); }
 .sheet.on { transform: none; }
 .sh-flex { display: flex; gap: 14px; padding-right: 6px; }
 .sh-info { flex: 1; min-width: 0; }
@@ -448,3 +451,22 @@ body { position: fixed; inset: 0; padding: 0; background: var(--cream); min-heig
   .reader, .letter { padding-top: 44px; }
   .sheet { bottom: 8px; }
 }
+
+/* ============================================================
+   discover: shelf-first chat — book card popover anchored under
+   the shelf, with everything behind it dimmed.
+   ============================================================ */
+.strip-hint { display: flex; align-items: center; justify-content: center; min-height: 64px; padding: 10px 14px; background: transparent; border: 2px dashed var(--paper2); border-radius: 12px; color: var(--fade); font-size: 12px; font-weight: 700; letter-spacing: .4px; }
+.spinelet.sel { outline: 2px solid var(--ink); outline-offset: 2px; }
+.spine-zone { position: relative; }
+.spine-zone.lift { z-index: 8; }
+.spine-dim { position: absolute; inset: 0; z-index: 7; background: rgba(26, 26, 26, .45); animation: fadeIn .2s ease; }
+@keyframes fadeIn { from { opacity: 0; } }
+.spine-pop { position: absolute; top: calc(100% + 8px); left: 14px; right: 14px; z-index: 2; animation: popIn .24s cubic-bezier(.2, .9, .25, 1); }
+@keyframes popIn { from { opacity: 0; transform: translateY(-6px); } }
+
+/* reading letter: tappable highlighted title + further-reading markers + swap */
+.l-ttl-link { background: linear-gradient(transparent 64%, var(--yellow) 0); -webkit-box-decoration-break: clone; box-decoration-break: clone; padding: 0 2px; cursor: pointer; }
+.fr-txt { flex: 1; min-width: 0; }
+.fr-mark { flex: 0 0 auto; align-self: center; font-size: 17px; color: var(--mut); }
+.l-swap { animation: swapIn .26s ease; }
