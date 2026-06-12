@@ -390,13 +390,17 @@ button:focus-visible { outline: 3px solid var(--green); outline-offset: 2px; }
 .msg, .lettercard { animation: msgIn .24s ease backwards; }
 @keyframes msgIn { from { opacity: 0; transform: translateY(8px); } }
 
-/* While the on-screen keyboard is up (set via visualViewport in App), give
-   the conversation the whole screen: drop the nav and the discover header,
-   so the chat + chips + composer sit directly above the keyboard. */
-.app[data-kb="open"] .nav { display: none; }
-.app[data-kb="open"] #screen-discover .pad-h,
-.app[data-kb="open"] #screen-discover .tray,
-.app[data-kb="open"] #screen-discover .strip { display: none; }
+/* While the composer is focused on a phone, give the conversation the whole
+   screen: drop the nav and the discover header/tray/strip so the chat, chips,
+   and composer sit directly above the keyboard. Keyed off :focus (reliable on
+   modern mobile browsers) rather than a measured keyboard inset, since iOS
+   resizes the viewport itself and reports no inset. */
+@media (max-width: 759px) {
+  .app:has(#qIn:focus) .nav { display: none; }
+  .app:has(#qIn:focus) #screen-discover .pad-h,
+  .app:has(#qIn:focus) #screen-discover .tray,
+  .app:has(#qIn:focus) #screen-discover .strip { display: none; }
+}
 
 /* ---------- mobile feel ---------- */
 /* no gray tap-flash, no double-tap zoom delay, and no pull-to-refresh
