@@ -208,6 +208,7 @@ export function ProfileScreen() {
   const lv = useStore((s) => s.lv);
   const coins = useStore((s) => s.coins);
   const streak = useStore((s) => s.streak);
+  const openSettings = useStore((s) => s.openSettings);
 
   const [profileTab, setProfileTab] = useState<ProfileTab>('stats');
   const [radarKey, setRadarKey] = useState(0);
@@ -226,13 +227,16 @@ export function ProfileScreen() {
 
   return (
     <section className={`screen ${active ? 'on' : ''}`} id="screen-profile" ref={sectionRef}>
-      <div className="pad-h">
+      <div className="pad-h prof-head">
         <div className="hl sm d">
           <span className="u" />
           <span className="t">
             profile<span className="gdot">.</span>
           </span>
         </div>
+        <button className="iconbtn lite set-gear" aria-label="Settings" onClick={openSettings}>
+          <Icon name="ti-settings" />
+        </button>
       </div>
 
       <div className="pcard">

@@ -18,7 +18,7 @@ import type { BookId, GuideId } from '../content/types';
 
 import { repository } from './persistence';
 import { SEED } from './seed';
-import type { PersistedState, Tab, LibTab, OwlState, ReaderState, ToastState } from './types';
+import type { PersistedState, Prefs, Tab, LibTab, OwlState, ReaderState, ToastState } from './types';
 
 export interface Store extends PersistedState {
   /* ephemeral UI / session */
@@ -34,6 +34,7 @@ export interface Store extends PersistedState {
   owl: OwlState;
   openedLetters: GuideId[];
   hydrated: boolean;
+  settingsOpen: boolean;
 
   /* actions */
   bootstrap: () => Promise<void>;
@@ -55,6 +56,10 @@ export interface Store extends PersistedState {
   closeSheet: () => void;
   openLetter: (id: GuideId) => void;
   closeLetter: () => void;
+  openSettings: () => void;
+  closeSettings: () => void;
+  setPref: <K extends keyof Prefs>(key: K, value: Prefs[K]) => void;
+  resetProgress: () => void;
   initChat: () => void;
   sendToOwl: (text: string) => void;
 }
@@ -79,6 +84,7 @@ function extractPersisted(s: Store): PersistedState {
     readingIds: s.readingIds,
     finishedIds: s.finishedIds,
     pagesRead: s.pagesRead,
+    prefs: s.prefs,
   };
 }
 
@@ -106,6 +112,7 @@ export const useStore = create<Store>()(
     },
     openedLetters: [],
     hydrated: false,
+    settingsOpen: false,
 
     bootstrap: async () => {
       const loaded = await repository.load();
@@ -236,6 +243,15 @@ export const useStore = create<Store>()(
       }
     },
     closeLetter: () => set({ letterId: null }),
+
+    openSettings: () => set({ settingsOpen: true }),
+    closeSettings: () => set({ settingsOpen: false }),
+    setPref: (key, value) => set((s) => ({ prefs: { ...s.prefs, [key]: value } })),
+    resetProgress: () =>
+      set((s) => ({
+        ...SEED,
+        prefs: s.prefs, // keep the user's settings; only the loop resets
+      })),
 
     initChat: () => {
       if (get().owl.started) return;

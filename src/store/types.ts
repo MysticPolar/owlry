@@ -10,6 +10,16 @@ import type { OwlMessage, OwlBatch, OwlSession } from '../lib/owlBrain';
 export type Tab = 'today' | 'discover' | 'library' | 'profile';
 export type LibTab = 'reading' | 'saved' | 'finished';
 
+export type ReaderScale = 'sm' | 'md' | 'lg';
+
+/** User preferences (set on the settings page), persisted with the loop. */
+export interface Prefs {
+  readerScale: ReaderScale;
+  reduceMotion: boolean;
+  dailyReminder: boolean;
+  sounds: boolean;
+}
+
 /** The durable loop persisted to IndexedDB (and, later, a backend). */
 export interface PersistedState {
   xp: number;
@@ -24,6 +34,7 @@ export interface PersistedState {
   readingIds: BookId[];
   finishedIds: BookId[];
   pagesRead: Record<string, number>;
+  prefs: Prefs;
 }
 
 export type ChatItem =
