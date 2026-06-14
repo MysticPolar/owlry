@@ -1,4 +1,4 @@
-import { DIMS } from '../../content/profile';
+import { DIMS, type RadarDim } from '../../content/profile';
 
 const RCX = 176;
 const RCY = 132;
@@ -14,14 +14,15 @@ const ringPts = (f: number) =>
 
 const ANCH: ('middle' | 'start' | 'end')[] = ['middle', 'start', 'start', 'middle', 'end', 'end'];
 
-const ARIA = `Radar chart of reading balance: ${DIMS.map(([n, v]) => `${n} ${v}`).join(', ')}`;
-
 /**
  * The "reading balance" radar (mockup buildRadar). `replayKey` remounts
- * the data group so the CSS pop animation (.radar.go #rg) re-runs.
+ * the data group so the CSS pop animation (.radar.go #rg) re-runs. `dims` is
+ * the six life dimensions in canonical order; defaults to the seeded view and
+ * is overridden with live server data when signed in.
  */
-export function RadarChart({ replayKey }: { replayKey: number }) {
-  const dataPoints = DIMS.map(([, v], i) => rpt(i, v / 100).map((n) => n.toFixed(1)).join(',')).join(' ');
+export function RadarChart({ replayKey, dims = DIMS }: { replayKey: number; dims?: RadarDim[] }) {
+  const ARIA = `Radar chart of reading balance: ${dims.map(([n, v]) => `${n} ${v}`).join(', ')}`;
+  const dataPoints = dims.map(([, v], i) => rpt(i, v / 100).map((n) => n.toFixed(1)).join(',')).join(' ');
 
   return (
     <svg className="radar-svg" id="radarSvg" viewBox="0 0 352 264" role="img" aria-label={ARIA}>
@@ -29,7 +30,7 @@ export function RadarChart({ replayKey }: { replayKey: number }) {
       {[0.75, 0.5, 0.25].map((f) => (
         <polygon key={f} points={ringPts(f)} fill="none" stroke="var(--paper2)" strokeWidth={1.5} />
       ))}
-      {DIMS.map((_, i) => {
+      {dims.map((_, i) => {
         const [x, y] = rpt(i, 1);
         return (
           <line
@@ -51,7 +52,7 @@ export function RadarChart({ replayKey }: { replayKey: number }) {
           strokeWidth={2.5}
           strokeLinejoin="round"
         />
-        {DIMS.map(([, v], i) => {
+        {dims.map(([, v], i) => {
           const [x, y] = rpt(i, v / 100);
           return (
             <rect
@@ -69,7 +70,7 @@ export function RadarChart({ replayKey }: { replayKey: number }) {
           );
         })}
       </g>
-      {DIMS.map(([name, v], i) => {
+      {dims.map(([name, v], i) => {
         const a = (Math.PI / 180) * (i * 60 - 90);
         const lx = RCX + RLR * Math.cos(a);
         const ly = RCY + RLR * Math.sin(a);

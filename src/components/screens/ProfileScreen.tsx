@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useStore } from '../../store/useStore';
 import { BOOKS } from '../../content/books';
 import {
+  DIMS,
   RADAR_NOTE,
   REPORT,
   WEEK7,
@@ -13,15 +14,61 @@ import {
   CDAYS,
   RECS,
   QUOTES,
+  type RadarDim,
+  type ReportStat,
+  type SavedQuote,
 } from '../../content/profile';
+import type { RadarPoint, StatsSnapshot } from '../../lib/economy/types';
 import { Icon } from '../Icon';
 import { Cover } from '../Cover';
 import { RadarChart } from '../profile/RadarChart';
 
 type ProfileTab = 'stats' | 'cal' | 'quotes';
 
+/* radar axes in the canonical order the chart lays out (top, then clockwise) */
+const RADAR_ORDER = ['health', 'wealth', 'relationship', 'career', 'mindset', 'fiction'] as const;
+
+function toRadarDims(radar: RadarPoint[]): RadarDim[] {
+  const by = new Map(radar.map((r) => [r.dimension, r.value]));
+  return RADAR_ORDER.map((name) => [name, by.get(name) ?? 0] as RadarDim);
+}
+
+function radarNote(dims: RadarDim[]): string {
+  const max = dims.reduce((a, b) => (b[1] > a[1] ? b : a));
+  const min = dims.reduce((a, b) => (b[1] < a[1] ? b : a));
+  if (max[1] === 0) return 'your shelves are waiting — ask the owl for a letter.';
+  return `${max[0]} is leading — ${min[0]} could use a chapter.`;
+}
+
+function toReport(s: StatsSnapshot): ReportStat[] {
+  const time =
+    s.reading_minutes >= 60 ? `${Math.round(s.reading_minutes / 60)}h` : `${s.reading_minutes}m`;
+  return [
+    { n: String(s.books_read), l: 'BOOKS READ' },
+    { n: s.pages_turned.toLocaleString(), l: 'PAGES TURNED' },
+    { n: time, l: 'TIME READING' },
+    { n: String(s.highlights), l: 'HIGHLIGHTS' },
+  ];
+}
+
+function fmtDate(iso: string): string {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return '';
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).toLowerCase();
+}
+
 /* ---------- stats tab ---------- */
-function StatsTab({ radarKey }: { radarKey: number }) {
+function StatsTab({
+  radarKey,
+  dims,
+  report,
+  note,
+}: {
+  radarKey: number;
+  dims: RadarDim[];
+  report: ReportStat[];
+  note: string;
+}) {
   return (
     <div className="tpanel on swap" id="tab-stats" role="tabpanel">
       <div className="pcard radar go" id="radarCard">
@@ -29,11 +76,11 @@ function StatsTab({ radarKey }: { radarKey: number }) {
           <div className="d">reading balance</div>
           <span>six shelves of you</span>
         </div>
-        <RadarChart replayKey={radarKey} />
-        <p className="radar-note it">{RADAR_NOTE}</p>
+        <RadarChart replayKey={radarKey} dims={dims} />
+        <p className="radar-note it">{note}</p>
         <div className="pdiv" />
         <div className="rep-grid">
-          {REPORT.map((r) => (
+          {report.map((r) => (
             <div key={r.l} className="rcell">
               <div className="snum d">{r.n}</div>
               <div className="slab">{r.l}</div>
@@ -140,8 +187,7 @@ function CalendarTab() {
 }
 
 /* ---------- quotes tab ---------- */
-function QuoteCard({ index }: { index: number }) {
-  const q = QUOTES[index];
+function QuoteCard({ q }: { q: SavedQuote }) {
   const bk = BOOKS[q.book];
   const showToast = useStore((s) => s.showToast);
   const [done, setDone] = useState(false);
@@ -156,6 +202,8 @@ function QuoteCard({ index }: { index: number }) {
     setDone(false);
     requestAnimationFrame(() => setDone(true));
   };
+
+  if (!bk) return null;
 
   return (
     <article className="qcard">
@@ -178,19 +226,27 @@ function QuoteCard({ index }: { index: number }) {
   );
 }
 
-function QuotesTab() {
+function QuotesTab({ quotes }: { quotes: SavedQuote[] }) {
   return (
     <div className="tpanel on swap" id="tab-quotes" role="tabpanel">
       <div className="sec">
         <div className="sec-head">
           <div className="sec-title d">tucked away</div>
-          <span style={{ fontSize: 11, color: 'var(--fade)', fontWeight: 700 }}>{QUOTES.length} quotes kept</span>
+          <span style={{ fontSize: 11, color: 'var(--fade)', fontWeight: 700 }}>
+            {quotes.length} quotes kept
+          </span>
         </div>
-        <div className="qlist" id="qList" style={{ paddingTop: 0 }}>
-          {QUOTES.map((_, i) => (
-            <QuoteCard key={i} index={i} />
-          ))}
-        </div>
+        {quotes.length === 0 ? (
+          <p className="l-p" style={{ color: 'var(--fade)', padding: '8px 2px' }}>
+            nothing tucked away yet — keep a line you love from any reading letter.
+          </p>
+        ) : (
+          <div className="qlist" id="qList" style={{ paddingTop: 0 }}>
+            {quotes.map((q, i) => (
+              <QuoteCard key={i} q={q} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -209,10 +265,19 @@ export function ProfileScreen() {
   const coins = useStore((s) => s.coins);
   const streak = useStore((s) => s.streak);
   const openSettings = useStore((s) => s.openSettings);
+  const serverProfile = useStore((s) => s.serverProfile);
 
   const [profileTab, setProfileTab] = useState<ProfileTab>('stats');
   const [radarKey, setRadarKey] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
+
+  // live server analytics when signed in; the seeded demo views otherwise
+  const dims = serverProfile ? toRadarDims(serverProfile.radar) : DIMS;
+  const report = serverProfile ? toReport(serverProfile.stats) : REPORT;
+  const note = serverProfile ? radarNote(dims) : RADAR_NOTE;
+  const quotes: SavedQuote[] = serverProfile
+    ? serverProfile.quotes.map((q) => ({ x: q.text, book: q.book, d: fmtDate(q.kept_at) }))
+    : QUOTES;
 
   // replay the radar pop whenever the profile tab is entered (mockup replayRadar)
   useEffect(() => {
@@ -284,9 +349,9 @@ export function ProfileScreen() {
         })}
       </div>
 
-      {profileTab === 'stats' && <StatsTab radarKey={radarKey} />}
+      {profileTab === 'stats' && <StatsTab radarKey={radarKey} dims={dims} report={report} note={note} />}
       {profileTab === 'cal' && <CalendarTab />}
-      {profileTab === 'quotes' && <QuotesTab />}
+      {profileTab === 'quotes' && <QuotesTab quotes={quotes} />}
     </section>
   );
 }
