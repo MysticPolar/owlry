@@ -3,6 +3,13 @@
    ink, coins, streak, saved/reading/finished, reading progress)
    and the Owl Post conversation. Persists the durable slice to a
    ProgressRepository (IndexedDB in v1).
+
+   Backend: when Supabase is configured AND a session exists
+   (`backendReady`), the economy becomes server-authoritative — each
+   action optimistically updates the UI, then calls a guarded RPC and
+   reconciles with the returned snapshot. With no backend the app runs
+   exactly as before (local IndexedDB), which is what the smoke tests
+   exercise.
    ============================================================ */
 import { create } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
@@ -16,9 +23,37 @@ import { respond, newSession } from '../lib/owlBrain';
 import type { OwlMessage } from '../lib/owlBrain';
 import type { BookId, GuideId } from '../content/types';
 
+import { isBackendConfigured } from '../lib/supabase';
+import {
+  ensureSession,
+  linkEmail,
+  signInWithEmail,
+  signOut as authSignOut,
+  onAuthChange,
+  type Account,
+} from '../lib/auth';
+import { performAction, getSnapshot } from '../lib/economy/api';
+import type {
+  EconomyAction,
+  Snapshot,
+  RadarPoint,
+  CalendarDay,
+  StatsSnapshot,
+  QuoteRow,
+} from '../lib/economy/types';
+
 import { repository } from './persistence';
 import { SEED } from './seed';
 import type { PersistedState, Tab, LibTab, OwlState, ReaderState, ToastState } from './types';
+
+export interface ServerProfile {
+  radar: RadarPoint[];
+  calendar: CalendarDay[];
+  stats: StatsSnapshot;
+  quotes: QuoteRow[];
+}
+
+export type AuthNotice = { kind: 'ok' | 'error'; text: string } | null;
 
 export interface Store extends PersistedState {
   /* ephemeral UI / session */
@@ -34,6 +69,14 @@ export interface Store extends PersistedState {
   owl: OwlState;
   openedLetters: GuideId[];
   hydrated: boolean;
+
+  /* backend / account */
+  backendReady: boolean;
+  account: Account | null;
+  serverProfile: ServerProfile | null;
+  settingsOpen: boolean;
+  authBusy: boolean;
+  authNotice: AuthNotice;
 
   /* actions */
   bootstrap: () => Promise<void>;
@@ -57,6 +100,16 @@ export interface Store extends PersistedState {
   closeLetter: () => void;
   initChat: () => void;
   sendToOwl: (text: string) => void;
+
+  /* backend actions */
+  applyServerSnapshot: (snap: Snapshot) => void;
+  syncFromServer: () => Promise<void>;
+  dailyCheckin: () => void;
+  openSettings: () => void;
+  closeSettings: () => void;
+  accountLinkEmail: (email: string) => Promise<void>;
+  accountSignIn: (email: string) => Promise<void>;
+  accountSignOut: () => Promise<void>;
 }
 
 let chatId = 0;
@@ -64,6 +117,7 @@ const nextId = () => ++chatId;
 
 let toastTimer: ReturnType<typeof setTimeout> | undefined;
 let saveTimer: ReturnType<typeof setTimeout> | undefined;
+let authSubscribed = false;
 
 function extractPersisted(s: Store): PersistedState {
   return {
@@ -80,6 +134,28 @@ function extractPersisted(s: Store): PersistedState {
     finishedIds: s.finishedIds,
     pagesRead: s.pagesRead,
   };
+}
+
+/* Fire a guarded economy RPC and reconcile with the authoritative snapshot.
+   Fire-and-forget: the optimistic local update already happened. */
+function serverSync(action: EconomyAction, bookId?: BookId | null, meta: Record<string, unknown> = {}): void {
+  performAction(action, bookId ?? null, meta)
+    .then((res) => {
+      if (res && (res as Snapshot).profile) {
+        useStore.getState().applyServerSnapshot(res as Snapshot);
+      }
+      if (res && res.ok === false && res.reason) {
+        const nudges: Record<string, string> = {
+          insufficient_ink: 'not enough ink — read a few pages to refill',
+          insufficient_coins: 'not enough coins for that yet',
+        };
+        const m = nudges[res.reason];
+        if (m) useStore.getState().showToast('ti-alert-triangle', m);
+      }
+    })
+    .catch(() => {
+      /* offline / transient: keep the optimistic local state */
+    });
 }
 
 export const useStore = create<Store>()(
@@ -107,11 +183,38 @@ export const useStore = create<Store>()(
     openedLetters: [],
     hydrated: false,
 
+    backendReady: false,
+    account: null,
+    serverProfile: null,
+    settingsOpen: false,
+    authBusy: false,
+    authNotice: null,
+
     bootstrap: async () => {
       const loaded = await repository.load();
       if (loaded) set({ ...loaded, hydrated: true });
       else set({ hydrated: true });
       get().initChat();
+
+      if (!isBackendConfigured()) return;
+      try {
+        const account = await ensureSession();
+        if (!account) return; // anon sign-in unavailable → stay local
+        set({ account });
+        await get().syncFromServer();
+        set({ backendReady: true });
+        get().dailyCheckin();
+
+        if (!authSubscribed) {
+          authSubscribed = true;
+          onAuthChange((acc) => {
+            set({ account: acc, backendReady: !!acc });
+            if (acc) void get().syncFromServer();
+          });
+        }
+      } catch (e) {
+        console.warn('[owlry] backend bootstrap failed; running local-only', e);
+      }
     },
 
     setTab: (t) => set({ activeTab: t }),
@@ -127,14 +230,16 @@ export const useStore = create<Store>()(
 
     toggleSave: (id) => {
       const { savedIds } = get();
-      if (savedIds.includes(id)) {
+      const wasSaved = savedIds.includes(id);
+      if (wasSaved) {
         set({ savedIds: savedIds.filter((x) => x !== id) });
         get().showToast('ti-heart-broken', 'removed from library');
       } else {
         set({ savedIds: [...savedIds, id] });
         get().showToast('ti-heart', 'saved to library · +5 XP');
-        get().addXP(5);
       }
+      if (get().backendReady) serverSync(wasSaved ? 'unsave' : 'save', id);
+      else if (!wasSaved) get().addXP(5);
     },
 
     addXP: (n) => {
@@ -185,6 +290,7 @@ export const useStore = create<Store>()(
       const n = BOOKS[id].n;
       const p = Math.min(Math.max(page ?? (pagesRead[id] ?? 0) + 1, 1), n);
       set({ finishedIds, readingIds, pagesRead, reader: { open: true, id, p } });
+      if (get().backendReady) serverSync('open', id, { page: p });
     },
 
     closeReader: () => set((s) => ({ reader: { ...s.reader, open: false } })),
@@ -201,8 +307,11 @@ export const useStore = create<Store>()(
       const p = s.reader.p + 1;
       const pagesRead = { ...s.pagesRead, [id]: Math.max(s.pagesRead[id] ?? 0, p - 1) };
       set({ reader: { ...s.reader, p }, pagesRead });
-      get().addXP(2);
-      get().addInk(2);
+      if (get().backendReady) serverSync('turn_page', id, { page: p });
+      else {
+        get().addXP(2);
+        get().addInk(2);
+      }
     },
 
     prevPage: () => {
@@ -220,7 +329,8 @@ export const useStore = create<Store>()(
       const finishedIds = s.finishedIds.includes(id) ? s.finishedIds : [id, ...s.finishedIds];
       set({ pagesRead, readingIds, finishedIds, reader: { open: false, id: null, p: 1 } });
       get().showToast('ti-trophy', 'finished! +40 XP');
-      get().addXP(40);
+      if (get().backendReady) serverSync('finish', id, { pages: BOOKS[id].n });
+      else get().addXP(40);
     },
 
     openSheet: (id) => set({ sheetId: id }),
@@ -232,7 +342,8 @@ export const useStore = create<Store>()(
       if (!openedLetters.includes(id)) {
         set({ openedLetters: [...openedLetters, id] });
         get().showToast('ti-mail-opened', 'a letter, opened · +5 XP');
-        get().addXP(5);
+        if (get().backendReady) serverSync('preview', id);
+        else get().addXP(5);
       }
     },
     closeLetter: () => set({ letterId: null }),
@@ -276,6 +387,9 @@ export const useStore = create<Store>()(
           ],
         },
       }));
+
+      // chat keeps running the simulated owl; we only meter its economy (spends ink, earns XP)
+      if (get().backendReady) serverSync('chat', null, { len: text.length });
 
       // compute the reply up front so the typing delay can scale with its length
       const st0 = get();
@@ -326,6 +440,95 @@ export const useStore = create<Store>()(
           });
         }
       }, think);
+    },
+
+    /* ---------- backend ---------- */
+    applyServerSnapshot: (snap) => {
+      if (!snap || !snap.profile) return;
+      const p = snap.profile;
+      set({
+        xp: p.xp_into_level,
+        xpMax: Math.max(1, p.xp_for_next),
+        lv: p.level,
+        ink: p.ink,
+        inkMax: p.ink_max,
+        coins: p.coins,
+        streak: p.streak,
+        savedIds: snap.library.saved,
+        readingIds: snap.library.reading,
+        finishedIds: snap.library.finished,
+        pagesRead: snap.library.pagesRead,
+        serverProfile: {
+          radar: snap.radar,
+          calendar: snap.calendar,
+          stats: snap.stats,
+          quotes: snap.quotes,
+        },
+      });
+    },
+
+    syncFromServer: async () => {
+      try {
+        const snap = await getSnapshot();
+        if (snap && snap.ok) get().applyServerSnapshot(snap);
+      } catch (e) {
+        console.warn('[owlry] snapshot sync failed', e);
+      }
+    },
+
+    dailyCheckin: () => {
+      if (!get().backendReady) return;
+      const today = new Date().toISOString().slice(0, 10);
+      try {
+        if (localStorage.getItem('owlry/checkin') === today) return;
+        localStorage.setItem('owlry/checkin', today);
+      } catch {
+        /* storage unavailable — just check in */
+      }
+      serverSync('checkin');
+    },
+
+    openSettings: () => set({ settingsOpen: true, authNotice: null }),
+    closeSettings: () => set({ settingsOpen: false }),
+
+    accountLinkEmail: async (email) => {
+      set({ authBusy: true, authNotice: null });
+      try {
+        const { error } = await linkEmail(email);
+        if (error) set({ authNotice: { kind: 'error', text: error.message } });
+        else
+          set({
+            authNotice: {
+              kind: 'ok',
+              text: 'check your inbox to confirm — your progress moves with you.',
+            },
+          });
+      } catch (e) {
+        set({ authNotice: { kind: 'error', text: (e as Error).message ?? 'something went wrong' } });
+      } finally {
+        set({ authBusy: false });
+      }
+    },
+
+    accountSignIn: async (email) => {
+      set({ authBusy: true, authNotice: null });
+      try {
+        const { error } = await signInWithEmail(email);
+        if (error) set({ authNotice: { kind: 'error', text: error.message } });
+        else set({ authNotice: { kind: 'ok', text: 'magic link sent — open it on this device.' } });
+      } catch (e) {
+        set({ authNotice: { kind: 'error', text: (e as Error).message ?? 'something went wrong' } });
+      } finally {
+        set({ authBusy: false });
+      }
+    },
+
+    accountSignOut: async () => {
+      set({ authBusy: true, authNotice: null });
+      await authSignOut();
+      const account = await ensureSession(); // fall back to a fresh guest so the app keeps working
+      set({ account, backendReady: !!account, authBusy: false });
+      if (account) await get().syncFromServer();
     },
   })),
 );

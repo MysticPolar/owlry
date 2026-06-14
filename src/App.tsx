@@ -10,6 +10,7 @@ import { ProfileScreen } from './components/screens/ProfileScreen';
 import { Sheet } from './components/overlays/Sheet';
 import { Reader } from './components/overlays/Reader';
 import { Letter } from './components/overlays/Letter';
+import { Settings } from './components/overlays/Settings';
 
 export default function App() {
   const wxIndex = useStore((s) => s.wxIndex);
@@ -45,6 +46,7 @@ export default function App() {
               <Sheet />
               <Reader />
               <Letter />
+              <Settings />
               <Toast />
               <BurstLayer />
             </>

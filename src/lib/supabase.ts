@@ -1,7 +1,10 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
-const url = import.meta.env.VITE_SUPABASE_URL as string | undefined;
-const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
+/* import.meta.env is a Vite feature; guard it so this module is import-safe in
+   plain Node (the tsx smoke tests load it transitively via the store). */
+const env = (import.meta as unknown as { env?: Record<string, string | undefined> }).env ?? {};
+const url = env.VITE_SUPABASE_URL;
+const anonKey = env.VITE_SUPABASE_ANON_KEY;
 
 /**
  * The Supabase client, or `null` when env vars aren't set — in which case the
