@@ -388,8 +388,9 @@ export const useStore = create<Store>()(
         },
       }));
 
-      // chat keeps running the simulated owl; we only meter its economy (spends ink, earns XP)
-      if (get().backendReady) serverSync('chat', null, { len: text.length });
+      // chat keeps running the simulated owl; we only meter its economy (spends ink,
+      // earns XP) and record the question so the profile calendar can show it.
+      if (get().backendReady) serverSync('chat', null, { q: text.slice(0, 280) });
 
       // compute the reply up front so the typing delay can scale with its length
       const st0 = get();

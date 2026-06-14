@@ -42,9 +42,10 @@ export interface RadarPoint {
 }
 
 export interface CalendarDay {
-  day: string; // YYYY-MM-DD
+  day: string; // YYYY-MM-DD (UTC)
   owl_posts: number;
   previewed_book: BookId | null;
+  asked: string | null;
 }
 
 export interface StatsSnapshot {

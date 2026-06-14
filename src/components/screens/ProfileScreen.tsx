@@ -18,7 +18,8 @@ import {
   type ReportStat,
   type SavedQuote,
 } from '../../content/profile';
-import type { RadarPoint, StatsSnapshot } from '../../lib/economy/types';
+import type { RadarPoint, StatsSnapshot, CalendarDay } from '../../lib/economy/types';
+import type { BookId } from '../../content/types';
 import { Icon } from '../Icon';
 import { Cover } from '../Cover';
 import { RadarChart } from '../profile/RadarChart';
@@ -55,6 +56,46 @@ function fmtDate(iso: string): string {
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return '';
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).toLowerCase();
+}
+
+/* ---------- calendar model (server snapshot ↔ static fallback) ---------- */
+interface CalRecord {
+  q: string | null;
+  book: BookId | null;
+}
+interface CalModel {
+  month: string;
+  today: number; // day-of-month (UTC, to match the server's day grouping)
+  days: number;
+  recs: Record<number, CalRecord>;
+}
+
+const STATIC_CAL: CalModel = {
+  month: CMONTH,
+  today: CTODAY,
+  days: CDAYS,
+  recs: Object.fromEntries(
+    Object.entries(RECS).map(([d, r]) => [Number(d), { q: r.q, book: r.book }]),
+  ),
+};
+
+function toCalModel(calendar: CalendarDay[]): CalModel {
+  const now = new Date();
+  const y = now.getUTCFullYear();
+  const m = now.getUTCMonth();
+  const recs: Record<number, CalRecord> = {};
+  for (const c of calendar) {
+    const d = new Date(`${c.day}T00:00:00Z`);
+    if (d.getUTCFullYear() === y && d.getUTCMonth() === m) {
+      recs[d.getUTCDate()] = { q: c.asked, book: c.previewed_book };
+    }
+  }
+  return {
+    month: now.toLocaleDateString('en-US', { month: 'long' }).toLowerCase(),
+    today: now.getUTCDate(),
+    days: new Date(Date.UTC(y, m + 1, 0)).getUTCDate(),
+    recs,
+  };
 }
 
 /* ---------- stats tab ---------- */
@@ -116,16 +157,20 @@ function StatsTab({
 }
 
 /* ---------- calendar tab ---------- */
-function CalendarTab() {
-  const [selDay, setSelDay] = useState(CTODAY);
-  const rec = RECS[selDay];
-  const bk = BOOKS[rec.book];
+function CalendarTab({ cal }: { cal: CalModel }) {
+  const recDays = Object.keys(cal.recs).map(Number);
+  const initialSel = recDays.filter((d) => d <= cal.today).sort((a, b) => b - a)[0] ?? cal.today;
+  const [selDay, setSelDay] = useState(initialSel);
+  const rec = cal.recs[selDay] ?? null;
+  const bk = rec?.book ? (BOOKS[rec.book] ?? null) : null;
+  const mon3 = cal.month.slice(0, 3).toUpperCase();
+
   return (
     <div className="tpanel on swap" id="tab-cal" role="tabpanel">
       <div className="pcard">
         <div className="chart-head">
-          <div className="d">{CMONTH}</div>
-          <span id="calCount">{Object.keys(RECS).length} owl posts</span>
+          <div className="d">{cal.month}</div>
+          <span id="calCount">{recDays.length} owl posts</span>
         </div>
         <div className="cal-week" aria-hidden="true">
           {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((d, i) => (
@@ -133,11 +178,11 @@ function CalendarTab() {
           ))}
         </div>
         <div className="cal-grid" id="calGrid">
-          {Array.from({ length: CDAYS }, (_, idx) => {
+          {Array.from({ length: cal.days }, (_, idx) => {
             const d = idx + 1;
-            const dayRec = RECS[d];
-            const isToday = d === CTODAY;
-            const off = d > CTODAY;
+            const dayRec = cal.recs[d];
+            const isToday = d === cal.today;
+            const off = d > cal.today;
             const sel = d === selDay;
             const clickable = !!dayRec && !off;
             const cls = ['cd', isToday && 'today', off && 'off', dayRec && 'rec', sel && 'sel']
@@ -149,7 +194,9 @@ function CalendarTab() {
                 className={cls}
                 disabled={!clickable}
                 aria-label={
-                  dayRec ? `june ${d} — asked the owl, previewed ${BOOKS[dayRec.book].t}` : `june ${d}`
+                  dayRec
+                    ? `${cal.month} ${d} — visited the owl${dayRec.book ? `, previewed ${BOOKS[dayRec.book]?.t ?? dayRec.book}` : ''}`
+                    : `${cal.month} ${d}`
                 }
                 aria-pressed={dayRec ? sel : undefined}
                 onClick={clickable ? () => setSelDay(d) : undefined}
@@ -163,25 +210,46 @@ function CalendarTab() {
           <i aria-hidden="true" />a day you asked the owl &amp; previewed a pick
         </div>
       </div>
-      <div className="pcard" id="recCard" aria-live="polite" key={selDay}>
-        <div className="rec-kick">
-          <div className="stamp">
-            <Icon name="ti-mail" />
+
+      {rec ? (
+        <div className="pcard" id="recCard" aria-live="polite" key={selDay}>
+          <div className="rec-kick">
+            <div className="stamp">
+              <Icon name="ti-mail" />
+            </div>
+            <span className="k">
+              OWL POST · {mon3} {selDay}
+            </span>
           </div>
-          <span className="k">OWL POST · JUN {selDay}</span>
+          {rec.q && (
+            <>
+              <div className="rec-lab">YOU ASKED</div>
+              <div className="ask">{rec.q}</div>
+            </>
+          )}
+          {bk ? (
+            <>
+              <div className="rec-lab">YOU PREVIEWED</div>
+              <div className="prev-row">
+                <Cover id={rec.book as BookId} cls="cover-xs" />
+                <div>
+                  <div className="prev-ttl d">{bk.t}</div>
+                  <div className="prev-auth">{bk.a}</div>
+                  <div className="prev-note">first pages, by owl</div>
+                </div>
+              </div>
+            </>
+          ) : (
+            !rec.q && <div className="ask">you stopped by the owl post desk.</div>
+          )}
         </div>
-        <div className="rec-lab">YOU ASKED</div>
-        <div className="ask">{rec.q}</div>
-        <div className="rec-lab">YOU PREVIEWED</div>
-        <div className="prev-row">
-          <Cover id={rec.book} cls="cover-xs" />
-          <div>
-            <div className="prev-ttl d">{bk.t}</div>
-            <div className="prev-auth">{bk.a}</div>
-            <div className="prev-note">first pages, by owl</div>
-          </div>
+      ) : (
+        <div className="pcard">
+          <p className="l-p" style={{ color: 'var(--fade)', margin: 0 }}>
+            no owl posts yet this {cal.month}. ask the owl and your days will fill in here.
+          </p>
         </div>
-      </div>
+      )}
     </div>
   );
 }
@@ -278,6 +346,7 @@ export function ProfileScreen() {
   const quotes: SavedQuote[] = serverProfile
     ? serverProfile.quotes.map((q) => ({ x: q.text, book: q.book, d: fmtDate(q.kept_at) }))
     : QUOTES;
+  const cal = serverProfile ? toCalModel(serverProfile.calendar) : STATIC_CAL;
 
   // replay the radar pop whenever the profile tab is entered (mockup replayRadar)
   useEffect(() => {
@@ -350,7 +419,7 @@ export function ProfileScreen() {
       </div>
 
       {profileTab === 'stats' && <StatsTab radarKey={radarKey} dims={dims} report={report} note={note} />}
-      {profileTab === 'cal' && <CalendarTab />}
+      {profileTab === 'cal' && <CalendarTab cal={cal} />}
       {profileTab === 'quotes' && <QuotesTab quotes={quotes} />}
     </section>
   );
