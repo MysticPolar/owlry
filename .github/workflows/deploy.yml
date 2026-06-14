@@ -5,7 +5,7 @@ name: Deploy preview to GitHub Pages
 
 on:
   push:
-    branches: [claude/practical-mayer-dflxq5, main]
+    branches: [claude/cool-bell-kvw63j, main]
   workflow_dispatch:
 
 permissions:
@@ -34,6 +34,11 @@ jobs:
         env:
           # project pages are served from /<repo>/
           BASE_PATH: /owlry/
+          # Supabase backend. The anon/publishable key is a PUBLIC key (it ships in
+          # the browser bundle regardless; RLS protects the data). Override via repo
+          # Variables (Settings → Secrets and variables → Actions → Variables) to rotate.
+          VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL || 'https://twxzbpfchoctxyjeivvr.supabase.co' }}
+          VITE_SUPABASE_ANON_KEY: ${{ vars.VITE_SUPABASE_ANON_KEY || 'sb_publishable_FwA85u6vpFXzBf4fHhBm8A_F7A-ocHb' }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
