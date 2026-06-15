@@ -26,8 +26,8 @@ import type { BookId, GuideId } from '../content/types';
 import { isBackendConfigured } from '../lib/supabase';
 import {
   ensureSession,
-  linkEmail,
-  signInWithEmail,
+  signUpWithPassword,
+  signInWithPassword,
   signOut as authSignOut,
   onAuthChange,
   type Account,
@@ -73,6 +73,7 @@ export interface Store extends PersistedState {
   /* backend / account */
   backendReady: boolean;
   account: Account | null;
+  username: string | null;
   serverProfile: ServerProfile | null;
   settingsOpen: boolean;
   authBusy: boolean;
@@ -107,9 +108,19 @@ export interface Store extends PersistedState {
   dailyCheckin: () => void;
   openSettings: () => void;
   closeSettings: () => void;
-  accountLinkEmail: (email: string) => Promise<void>;
-  accountSignIn: (email: string) => Promise<void>;
+  accountSignUp: (email: string, password: string) => Promise<void>;
+  accountSignIn: (email: string, password: string) => Promise<void>;
   accountSignOut: () => Promise<void>;
+}
+
+/** Friendly-ify the most common Supabase auth error messages. */
+function authMessage(raw: string): string {
+  const m = raw.toLowerCase();
+  if (m.includes('invalid login')) return 'wrong email or password.';
+  if (m.includes('already registered') || m.includes('already been registered'))
+    return 'that email already has an account — try logging in.';
+  if (m.includes('email not confirmed')) return 'confirm your email first (check your inbox).';
+  return raw;
 }
 
 let chatId = 0;
@@ -185,6 +196,7 @@ export const useStore = create<Store>()(
 
     backendReady: false,
     account: null,
+    username: null,
     serverProfile: null,
     settingsOpen: false,
     authBusy: false,
@@ -455,6 +467,7 @@ export const useStore = create<Store>()(
         inkMax: p.ink_max,
         coins: p.coins,
         streak: p.streak,
+        username: p.username ?? null,
         savedIds: snap.library.saved,
         readingIds: snap.library.reading,
         finishedIds: snap.library.finished,
@@ -492,18 +505,22 @@ export const useStore = create<Store>()(
     openSettings: () => set({ settingsOpen: true, authNotice: null }),
     closeSettings: () => set({ settingsOpen: false }),
 
-    accountLinkEmail: async (email) => {
+    accountSignUp: async (email, password) => {
       set({ authBusy: true, authNotice: null });
       try {
-        const { error } = await linkEmail(email);
-        if (error) set({ authNotice: { kind: 'error', text: error.message } });
-        else
-          set({
-            authNotice: {
-              kind: 'ok',
-              text: 'check your inbox to confirm — your progress moves with you.',
-            },
-          });
+        const { data, error } = await signUpWithPassword(email, password);
+        if (error) {
+          set({ authNotice: { kind: 'error', text: authMessage(error.message) } });
+          return;
+        }
+        if (data.session) {
+          const account = await ensureSession();
+          set({ account, backendReady: !!account });
+          if (account) await get().syncFromServer();
+          set({ authNotice: { kind: 'ok', text: 'account created — you’re in.' } });
+        } else {
+          set({ authNotice: { kind: 'ok', text: 'check your inbox to confirm your email, then log in.' } });
+        }
       } catch (e) {
         set({ authNotice: { kind: 'error', text: (e as Error).message ?? 'something went wrong' } });
       } finally {
@@ -511,12 +528,18 @@ export const useStore = create<Store>()(
       }
     },
 
-    accountSignIn: async (email) => {
+    accountSignIn: async (email, password) => {
       set({ authBusy: true, authNotice: null });
       try {
-        const { error } = await signInWithEmail(email);
-        if (error) set({ authNotice: { kind: 'error', text: error.message } });
-        else set({ authNotice: { kind: 'ok', text: 'magic link sent — open it on this device.' } });
+        const { error } = await signInWithPassword(email, password);
+        if (error) {
+          set({ authNotice: { kind: 'error', text: authMessage(error.message) } });
+          return;
+        }
+        const account = await ensureSession();
+        set({ account, backendReady: !!account });
+        if (account) await get().syncFromServer();
+        set({ authNotice: { kind: 'ok', text: 'logged in.' } });
       } catch (e) {
         set({ authNotice: { kind: 'error', text: (e as Error).message ?? 'something went wrong' } });
       } finally {

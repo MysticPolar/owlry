@@ -334,6 +334,18 @@ export function ProfileScreen() {
   const streak = useStore((s) => s.streak);
   const openSettings = useStore((s) => s.openSettings);
   const serverProfile = useStore((s) => s.serverProfile);
+  const username = useStore((s) => s.username);
+  const account = useStore((s) => s.account);
+
+  // demo persona when there's no backend; the real account name once signed in
+  const displayName = username
+    ? username
+    : account
+      ? account.isGuest
+        ? 'Reader'
+        : (account.email?.split('@')[0] ?? 'Reader')
+      : 'Mira';
+  const avatarChar = displayName.charAt(0).toUpperCase();
 
   const [profileTab, setProfileTab] = useState<ProfileTab>('stats');
   const [radarKey, setRadarKey] = useState(0);
@@ -375,9 +387,9 @@ export function ProfileScreen() {
 
       <div className="pcard">
         <div className="prof">
-          <div className="avatar lg d">M</div>
+          <div className="avatar lg d">{avatarChar}</div>
           <div>
-            <div className="pname d">Mira</div>
+            <div className="pname d">{displayName}</div>
             <div className="psub">
               LV {lv} BIBLIOPHILE · {coins} COINS
             </div>

@@ -47,18 +47,16 @@ export async function ensureSession(): Promise<Account | null> {
   return toAccount(user);
 }
 
-/** Link an email to the current (anonymous) user — converts it in place; data
- *  is kept. Sends a confirmation link to the address. */
-export async function linkEmail(email: string) {
+/** Create a new account with email + password (then sign in if confirmations are off). */
+export async function signUpWithPassword(email: string, password: string) {
   if (!supabase) throw new Error('backend not configured');
-  return supabase.auth.updateUser({ email });
+  return supabase.auth.signUp({ email, password });
 }
 
-/** Email a magic-link / OTP to sign into an EXISTING account (a different
- *  identity than the current guest — used on a new device). */
-export async function signInWithEmail(email: string) {
+/** Sign into an existing account with email + password. */
+export async function signInWithPassword(email: string, password: string) {
   if (!supabase) throw new Error('backend not configured');
-  return supabase.auth.signInWithOtp({ email });
+  return supabase.auth.signInWithPassword({ email, password });
 }
 
 export async function signOut() {

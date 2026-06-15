@@ -5,26 +5,67 @@ import { Icon } from '../Icon';
 
 const isEmail = (s: string) => /^\S+@\S+\.\S+$/.test(s.trim());
 
+const inputStyle: React.CSSProperties = {
+  width: '100%',
+  boxSizing: 'border-box',
+  border: '2px solid var(--ink)',
+  borderRadius: 8,
+  background: '#fff',
+  padding: '11px 13px',
+  font: "600 13.5px 'Inter Tight', sans-serif",
+  color: 'var(--ink)',
+  boxShadow: '3px 3px 0 var(--ink)',
+  marginBottom: 10,
+};
+
 /**
- * Account settings — the "separate settings page" for managing the account.
- * No locking screen: the app already runs on a silent guest session, and this
- * page lets the reader attach an email (keeping their progress) or sign into an
- * existing account. Reuses the full-screen `.letter` overlay shell.
+ * Account settings — the "separate settings page". The profile card is
+ * clickable and opens a log in / sign up page (email + password). The app keeps
+ * running on a silent guest session until someone signs in, so there's no
+ * locking screen.
  */
 export function Settings() {
   const open = useStore((s) => s.settingsOpen);
   const close = useStore((s) => s.closeSettings);
   const account = useStore((s) => s.account);
+  const username = useStore((s) => s.username);
   const busy = useStore((s) => s.authBusy);
   const notice = useStore((s) => s.authNotice);
-  const linkEmail = useStore((s) => s.accountLinkEmail);
+  const signUp = useStore((s) => s.accountSignUp);
   const signIn = useStore((s) => s.accountSignIn);
   const signOut = useStore((s) => s.accountSignOut);
 
+  const [view, setView] = useState<'home' | 'auth'>('home');
+  const [mode, setMode] = useState<'login' | 'signup'>('login');
   const [email, setEmail] = useState('');
-  const valid = isEmail(email);
+  const [password, setPassword] = useState('');
+
   const configured = isBackendConfigured();
   const guest = !account || account.isGuest;
+  const name = username || account?.email || 'Guest reader';
+  const avatarChar = (username?.[0] || account?.email?.[0] || 'G').toUpperCase();
+  const valid = isEmail(email) && password.length >= 6;
+
+  const goAuth = () => {
+    useStore.setState({ authNotice: null });
+    setView('auth');
+  };
+  const goHome = () => {
+    useStore.setState({ authNotice: null });
+    setView('home');
+  };
+
+  const submit = async () => {
+    if (!valid || busy) return;
+    if (mode === 'login') await signIn(email, password);
+    else await signUp(email, password);
+    const st = useStore.getState();
+    if (st.account && !st.account.isGuest && st.authNotice?.kind === 'ok') {
+      setEmail('');
+      setPassword('');
+      setView('home');
+    }
+  };
 
   return (
     <div
@@ -35,88 +76,136 @@ export function Settings() {
       aria-label="Account settings"
     >
       <div className="l-top">
-        <button className="iconbtn lite" aria-label="Close settings" onClick={close}>
+        <button
+          className="iconbtn lite"
+          aria-label={view === 'auth' ? 'Back' : 'Close settings'}
+          onClick={view === 'auth' ? goHome : close}
+        >
           <Icon name="ti-arrow-left" />
         </button>
-        <div className="d">ACCOUNT</div>
+        <div className="d">{view === 'auth' ? (mode === 'login' ? 'LOG IN' : 'SIGN UP') : 'ACCOUNT'}</div>
         <span style={{ flex: '0 0 32px' }} aria-hidden="true" />
       </div>
 
       <div className="l-body">
-        <div className="pcard">
-          <div className="prof">
-            <div className="avatar lg d">
-              <Icon name={guest ? 'ti-user' : 'ti-user-check'} />
-            </div>
-            <div>
-              <div className="pname d">{guest ? 'Guest reader' : account?.email}</div>
-              <div className="psub">
-                {guest ? 'PROGRESS SAVED ON THIS DEVICE' : 'EMAIL ACCOUNT · SYNCED'}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {!configured ? (
+        {view === 'home' ? (
           <>
-            <div className="l-sec">SYNC IS OFF</div>
-            <p className="l-p">
-              This build isn’t connected to the backend, so your reading lives on this device only.
-              Set the Supabase keys to turn on accounts and cross-device sync.
-            </p>
-          </>
-        ) : guest ? (
-          <>
-            <div className="l-sec">SAVE YOUR PROGRESS</div>
-            <p className="l-p">
-              Add your email to keep your shelves, streak, and ink across devices. We’ll send a
-              confirmation link — everything you’ve read so far moves with you.
-            </p>
-            <input
-              type="email"
-              inputMode="email"
-              autoComplete="email"
-              placeholder="you@email.com"
-              aria-label="Email address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+            {/* clickable profile → log in / sign up page */}
+            <button
+              type="button"
+              className="pcard"
+              onClick={goAuth}
               style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 12,
                 width: '100%',
-                boxSizing: 'border-box',
-                border: '2px solid var(--ink)',
-                borderRadius: 8,
-                background: '#fff',
-                padding: '11px 13px',
-                font: "600 13.5px 'Inter Tight', sans-serif",
-                color: 'var(--ink)',
-                boxShadow: '3px 3px 0 var(--ink)',
+                textAlign: 'left',
+                cursor: 'pointer',
               }}
-            />
-            <div className="l-btnrow">
-              <button className="btn" disabled={busy || !valid} onClick={() => linkEmail(email)}>
-                {busy ? 'SENDING…' : 'SAVE PROGRESS'} <Icon name="ti-mail" />
-              </button>
-              <button className="btn ghost" disabled={busy || !valid} onClick={() => signIn(email)}>
-                I HAVE AN ACCOUNT <Icon name="ti-login-2" />
-              </button>
-            </div>
-            <p className="l-p" style={{ color: 'var(--fade)', fontSize: 12 }}>
-              “Save progress” links this guest to your email. “I have an account” emails a sign-in
-              link instead (use it on a fresh device).
-            </p>
+              aria-label={guest ? 'Log in or sign up' : 'Manage account'}
+            >
+              <div className="avatar lg d">{avatarChar}</div>
+              <div style={{ flex: 1 }}>
+                <div className="pname d">{name}</div>
+                <div className="psub">
+                  {guest ? 'TAP TO LOG IN OR SIGN UP' : 'EMAIL ACCOUNT · SYNCED'}
+                </div>
+              </div>
+              <Icon name="ti-chevron-right" style={{ color: 'var(--fade)' }} />
+            </button>
+
+            {!configured && (
+              <>
+                <div className="l-sec">SYNC IS OFF</div>
+                <p className="l-p">
+                  This build isn’t connected to the backend, so your reading lives on this device
+                  only.
+                </p>
+              </>
+            )}
+
+            {!guest && (
+              <div className="l-btnrow">
+                <button className="btn ghost" disabled={busy} onClick={() => void signOut()}>
+                  {busy ? 'SIGNING OUT…' : 'SIGN OUT'} <Icon name="ti-logout-2" />
+                </button>
+              </div>
+            )}
+
+            <div className="l-sign it">— the owl post office keeps your letters safe</div>
           </>
         ) : (
           <>
-            <div className="l-sec">SIGNED IN</div>
-            <p className="l-p">
-              You’re signed in as <strong>{account?.email}</strong>. Your reading syncs
-              automatically — open Owlry anywhere and pick up where you left off.
-            </p>
-            <div className="l-btnrow">
-              <button className="btn ghost" disabled={busy} onClick={() => void signOut()}>
-                {busy ? 'SIGNING OUT…' : 'SIGN OUT'} <Icon name="ti-logout-2" />
+            {/* log in / sign up toggle */}
+            <div className="seg" role="tablist" aria-label="Log in or sign up" style={{ marginTop: 4 }}>
+              <button
+                className={`chip grow ${mode === 'login' ? 'on' : ''}`}
+                role="tab"
+                aria-selected={mode === 'login'}
+                onClick={() => {
+                  useStore.setState({ authNotice: null });
+                  setMode('login');
+                }}
+              >
+                log in
+              </button>
+              <button
+                className={`chip grow ${mode === 'signup' ? 'on' : ''}`}
+                role="tab"
+                aria-selected={mode === 'signup'}
+                onClick={() => {
+                  useStore.setState({ authNotice: null });
+                  setMode('signup');
+                }}
+              >
+                sign up
               </button>
             </div>
+
+            <div className="l-sec">{mode === 'login' ? 'WELCOME BACK' : 'CREATE AN ACCOUNT'}</div>
+            <p className="l-p">
+              {mode === 'login'
+                ? 'Log in to pick up your shelves, streak, and ink on any device.'
+                : 'Sign up to save your reading across devices. Your email is your account.'}
+            </p>
+
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                void submit();
+              }}
+            >
+              <input
+                type="email"
+                inputMode="email"
+                autoComplete="email"
+                placeholder="you@email.com"
+                aria-label="Email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                style={inputStyle}
+              />
+              <input
+                type="password"
+                autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
+                placeholder="password"
+                aria-label="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                style={inputStyle}
+              />
+              <div className="l-btnrow">
+                <button className="btn" type="submit" disabled={busy || !valid}>
+                  {busy ? 'PLEASE WAIT…' : mode === 'login' ? 'LOG IN' : 'SIGN UP'}{' '}
+                  <Icon name={mode === 'login' ? 'ti-login-2' : 'ti-user-plus'} />
+                </button>
+              </div>
+            </form>
+
+            <p className="l-p" style={{ color: 'var(--fade)', fontSize: 12 }}>
+              {mode === 'signup' ? 'Password needs at least 6 characters.' : ' '}
+            </p>
           </>
         )}
 
@@ -130,8 +219,6 @@ export function Settings() {
             {notice.text}
           </p>
         )}
-
-        <div className="l-sign it">— the owl post office keeps your letters safe</div>
       </div>
     </div>
   );
