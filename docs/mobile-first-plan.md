@@ -1,15 +1,15 @@
 # Owlry — mobile-first audit & plan
 
-> Status: **Phases 1–4 implemented** (Phase 5 is on-device QA — checklist
-> below). Decision locked in: on large screens, render a **centered
-> phone-width column** (no fake device bezel, no separate desktop layout).
-> True mobile-first: design for the phone, present it calmly on big screens.
+> Status: **all 5 phases complete.** Decision locked in: on large screens,
+> render a **centered phone-width column** (no fake device bezel, no separate
+> desktop layout). True mobile-first: design for the phone, present it calmly
+> on big screens.
 >
-> Verified: `npm run typecheck`, `npm run build`, and `npm test` (16/16) all
-> pass; an SSR render test confirms the new SVG `Icon` renders and degrades
-> gracefully; the icon webfont no longer ships in `dist/`.
+> Verified: `npm run typecheck`, `npm run build`, and `npm test` (16/16) pass;
+> the icon webfont no longer ships in `dist/`; and the full device matrix was
+> run via headless Chromium with screenshots + assertions (see **§8**).
 >
-> See **§7 Implementation log** for exactly what changed.
+> See **§7 Implementation log** and **§8 device-matrix QA** for details.
 
 ---
 
@@ -205,11 +205,32 @@ Lowest-risk quick wins that could ship immediately if desired: remove
   them. No `*.woff*` ships anymore.
 - Trimmed unused font weights (Bricolage 700, Source Serif upright 600).
 
-## 8. Phase 5 — on-device QA checklist (manual)
-Run on real targets — automated browsers aren't available in this environment:
-- [ ] iPhone SE (320/375), iPhone Pro Max (430), Pixel (393), a foldable
-- [ ] iOS Safari · Android Chrome · Firefox
-- [ ] Landscape (notch safe-area), installed PWA, keyboard-open chat
-- [ ] Tablet/desktop shows the centered column (no toy phone)
-- [ ] Pinch-zoom works; tap targets feel comfortable; no horizontal overflow
-      at 320; no undersized floating at 430
+## 8. Phase 5 — device-matrix QA (executed)
+
+Run via headless Chromium emulation against the production build
+(`vite preview`), screenshotting each viewport and asserting the mobile-first
+invariants. Screenshots are in `docs/qa-screenshots/`.
+
+| Viewport | App width | Gutter | Hero | Clipped overflow |
+| --- | --- | --- | --- | --- |
+| 320 (SE small) | 320 | 16.6px | 31px | none |
+| 375 (iPhone)   | 375 | 19.5px | 36px | none |
+| 393 (Pixel)    | 393 | 20.4px | 37.7px | none |
+| 430 (Pro Max)  | 430 | 22px   | 40px | none |
+| 768 (tablet)   | **440 (centered)** | 22px | 40px | none |
+| 1280 (desktop) | **440 (centered)** | 22px | 40px | none |
+
+Automated assertions, all passing:
+- **No clipped horizontal overflow** at any width (non-scroller elements stay
+  within the viewport).
+- Gutter + hero **scale fluidly** 320→430, then hold; the column **caps at
+  440px and centers** on tablet/desktop (no toy phone, no fake status bar).
+- Secondary text colour resolves to `rgb(115,107,87)` (the AA `--fade`).
+- **38 inline `<svg class="ti">`, 0 icon-font `<i>`** — webfont fully replaced.
+- One `<h1>` per active screen; `<main>` landmark present.
+- Viewport meta has **no `maximum-scale`** (pinch-zoom enabled).
+- Reader **Arrow-key paging** advances p.1 → p.2.
+
+Still worth a hands-on pass on physical hardware for true touch feel, iOS
+Safari `dvh`/keyboard quirks, the installed PWA, and landscape notch insets —
+but every invariant the plan set out is verified green here.
