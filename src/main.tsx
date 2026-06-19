@@ -2,7 +2,6 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { registerSW } from 'virtual:pwa-register';
 
-import '@tabler/icons-webfont/dist/tabler-icons.min.css';
 import './styles/tokens.css';
 import './styles/global.css';
 import App from './App';

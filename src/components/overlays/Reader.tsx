@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { useStore } from '../../store/useStore';
 import { BOOKS } from '../../content/books';
 import { getSpread } from '../../content/reader-text';
@@ -17,6 +18,25 @@ export function Reader() {
   const last = b ? p >= n : false;
   const spread = id ? getSpread(id, p) : [];
   const chapter = Math.ceil(p / 24);
+
+  const startX = useRef<number | null>(null);
+  const startY = useRef<number | null>(null);
+
+  // keyboard paging while the reader is open (parity with the tap/swipe zones)
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        prevPage();
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        nextPage();
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [open, prevPage, nextPage]);
 
   return (
     <div className={`reader ${open ? 'on' : ''}`} id="reader" role="dialog" aria-modal="true" aria-label="Reader">
@@ -43,7 +63,22 @@ export function Reader() {
         className="r-body swap"
         id="rBody"
         key={p}
-        onClick={(e) => {
+        onPointerDown={(e) => {
+          startX.current = e.clientX;
+          startY.current = e.clientY;
+        }}
+        onPointerUp={(e) => {
+          if (startX.current === null) return;
+          const dx = e.clientX - startX.current;
+          const dy = e.clientY - (startY.current ?? e.clientY);
+          startX.current = null;
+          // a clear horizontal swipe turns the page; otherwise fall back to
+          // the left/right edge tap-zones
+          if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+            if (dx < 0) nextPage();
+            else prevPage();
+            return;
+          }
           const r = e.currentTarget.getBoundingClientRect();
           const x = e.clientX - r.left;
           if (x < r.width * 0.3) prevPage();

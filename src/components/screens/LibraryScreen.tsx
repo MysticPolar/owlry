@@ -119,12 +119,12 @@ export function LibraryScreen() {
   return (
     <section className={`screen ${active ? 'on' : ''}`} id="screen-library">
       <div className="pad-h">
-        <div className="hl sm d">
+        <h1 className="hl sm d">
           <span className="u" />
           <span className="t">
             library<span className="gdot">.</span>
           </span>
-        </div>
+        </h1>
       </div>
       <div className="seg" id="segRow">
         {segs.map(([k, l]) => (

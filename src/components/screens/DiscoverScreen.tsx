@@ -258,12 +258,12 @@ export function DiscoverScreen() {
   return (
     <section className={`screen ${active ? 'on' : ''}`} id="screen-discover">
       <div className="pad-h" style={{ paddingBottom: 2 }}>
-        <div className="hl sm d">
+        <h1 className="hl sm d">
           <span className="u" />
           <span className="t">
             discover<span className="gdot">.</span>
           </span>
-        </div>
+        </h1>
       </div>
 
       <div className={`spine-zone ${popoverId ? 'lift' : ''}`}>

@@ -156,7 +156,7 @@ function Shelf() {
   return (
     <div className="sec">
       <div className="sec-head">
-        <div className="sec-title d">pick up where you left off</div>
+        <h2 className="sec-title d">pick up where you left off</h2>
         <button className="all" onClick={() => setTab('library')}>
           ALL &rarr;
         </button>
@@ -191,12 +191,12 @@ export function TodayScreen() {
       <Masthead />
       <StatsRow />
       <div className="headline">
-        <div className="hl d">
+        <h1 className="hl d">
           <span className="u" />
           <span className="t">
             today's pick<span className="gdot">.</span>
           </span>
-        </div>
+        </h1>
       </div>
       <PickCard />
       <Dots />

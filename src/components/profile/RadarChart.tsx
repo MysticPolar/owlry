@@ -92,7 +92,7 @@ export function RadarChart({ replayKey }: { replayKey: number }) {
               y={+ny.toFixed(1)}
               textAnchor={ANCH[i]}
               fill="var(--fade)"
-              style={{ font: '800 8.5px "Inter Tight",sans-serif', letterSpacing: '1px', textTransform: 'uppercase' }}
+              style={{ font: '800 10px "Inter Tight",sans-serif', letterSpacing: '1px', textTransform: 'uppercase' }}
             >
               {name.toUpperCase()}
             </text>

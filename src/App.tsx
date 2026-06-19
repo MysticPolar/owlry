@@ -45,12 +45,12 @@ export default function App() {
           {hydrated && (
             <>
               <StatusBar />
-              <div className="screens">
+              <main className="screens">
                 <TodayScreen />
                 <DiscoverScreen />
                 <LibraryScreen />
                 <ProfileScreen />
-              </div>
+              </main>
               <BottomNav />
               <Backdrop />
               <Sheet />
@@ -63,7 +63,6 @@ export default function App() {
           )}
         </div>
       </div>
-      <p className="caption">tap the weather glyph · swipe today's pick · ask the owl · switch the profile tabs</p>
     </div>
   );
 }

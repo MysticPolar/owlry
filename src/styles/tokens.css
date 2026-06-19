@@ -1,5 +1,7 @@
 /* ============================================================
-   owlry — design tokens (ported verbatim from the mockup)
+   owlry — design tokens
+   Palette ported from the mockup; fluid type/space scale and a
+   contrast-safe secondary ink added for the mobile-first pass.
    ============================================================ */
 :root {
   --cream: #FAF4E6;
@@ -10,13 +12,34 @@
   --yellow: #FFC017;
   --gold: #E5A50A;
   --mut: #6B6B6B;
-  --fade: #A09683;
+  /* --fade was #A09683 (~2.7:1 on cream — failed WCAG AA). Darkened to
+     ~4.8:1 so the many small secondary labels are legible. Use --hair for
+     the old light tone on purely decorative hairlines. */
+  --fade: #736B57;
+  --hair: #A09683;
 
-  /* device safe-area insets (notches, home indicators) — used in fullscreen/Capacitor mode */
+  /* device safe-area insets (notches, home indicators) */
   --sat: env(safe-area-inset-top, 0px);
   --sab: env(safe-area-inset-bottom, 0px);
+  --sal: env(safe-area-inset-left, 0px);
+  --sar: env(safe-area-inset-right, 0px);
 
-  /* app viewport height. Framed (desktop) preview keeps the mockup's 800px;
-     fullscreen mode (phones / installed PWA / native shell) overrides to 100dvh. */
-  --app-h: 800px;
+  /* ---- fluid scale ----
+     vw-based clamps that grow from a 320px phone up to ~440px, then hold.
+     On desktop the app is capped at --app-max, so vw saturates at the max —
+     type and spacing settle at their ceiling rather than ballooning. */
+  --gutter: max(clamp(16px, 5.2vw, 22px), var(--sal), var(--sar));
+
+  --fs-meta: clamp(11px, 3vw, 12px);    /* labels, captions, meta      */
+  --fs-body: clamp(13px, 3.5vw, 14px);  /* chat, list copy             */
+  --fs-lead: clamp(14px, 3.8vw, 15px);  /* card titles, intros         */
+  --fs-read: clamp(15px, 4.2vw, 16px);  /* reader / letter prose       */
+  --fs-hero: clamp(31px, 9.6vw, 40px);  /* today's pick headline       */
+  --fs-hero-sm: clamp(23px, 7vw, 28px); /* secondary screen headlines  */
+
+  /* content column cap for tablet / desktop (centered phone-width column) */
+  --app-max: 440px;
+
+  /* app viewport height (mobile fills the device; desktop caps + centers) */
+  --app-h: 100dvh;
 }

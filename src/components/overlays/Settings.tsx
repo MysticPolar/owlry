@@ -47,12 +47,12 @@ export function Settings() {
       </div>
 
       <div className="set-body">
-        <div className="hl sm d" style={{ marginTop: 4 }}>
+        <h1 className="hl sm d" style={{ marginTop: 4 }}>
           <span className="u" />
           <span className="t">
             settings<span className="gdot">.</span>
           </span>
-        </div>
+        </h1>
 
         {/* reading */}
         <div className="sh-sec">READING</div>

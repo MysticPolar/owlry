@@ -1,9 +1,15 @@
 # Owlry — mobile-first audit & plan
 
-> Status: **plan only** (no code changes yet).
-> Decisions locked in: on large screens, render a **centered phone-width
-> column** (no fake device bezel, no separate desktop layout). True
-> mobile-first: design for the phone, present it calmly on big screens.
+> Status: **Phases 1–4 implemented** (Phase 5 is on-device QA — checklist
+> below). Decision locked in: on large screens, render a **centered
+> phone-width column** (no fake device bezel, no separate desktop layout).
+> True mobile-first: design for the phone, present it calmly on big screens.
+>
+> Verified: `npm run typecheck`, `npm run build`, and `npm test` (16/16) all
+> pass; an SSR render test confirms the new SVG `Icon` renders and degrades
+> gracefully; the icon webfont no longer ships in `dist/`.
+>
+> See **§7 Implementation log** for exactly what changed.
 
 ---
 
@@ -159,3 +165,51 @@ Lowest-risk quick wins that could ship immediately if desired: remove
 - No separate wide/desktop layout — large screens get the centered phone-width
   column only.
 - No content, copy, or game-loop changes; this is layout / a11y / perf only.
+
+---
+
+## 7. Implementation log (Phases 1–4 — shipped)
+
+**Phase 1 — removed the "PC toy", unblocked a11y**
+- `index.html`: dropped `maximum-scale=1.0` (pinch-zoom restored).
+- `global.css`: the `≥760px` block no longer draws a phone bezel/fake status
+  bar — it renders a centered, capped (`--app-max: 440px`), full-height column
+  with a soft shadow on a calm backdrop.
+- Safe-area left/right folded into `--gutter` (landscape notch safe).
+- Real `16px` rem base on `html`.
+
+**Phase 2 — fluid layout & type**
+- `tokens.css`: added a `clamp()`-based scale — `--gutter` and
+  `--fs-meta/body/lead/read/hero/hero-sm` — that grows 320 → ~440px then holds.
+- All screen-level horizontal gutters switched from fixed `22/26/18/24px` to
+  `var(--gutter)`; headlines and reading/chat text use the fluid tokens.
+- Discover grid is now `repeat(auto-fill, minmax(96px, 1fr))` (was fixed 3 cols).
+- Search/composer input bumped to `16px` to stop iOS focus-zoom.
+
+**Phase 3 — accessibility**
+- Contrast: `--fade` darkened `#A09683 → #736B57` (~2.7:1 → ~4.8:1 on cream);
+  light tone kept as `--hair` for decoration. Smallest meta labels floored at
+  ~10px (radar/labels/calendar), reading surfaces at 15–16px.
+- Tap targets: transparent `::before` extends small controls (icon buttons,
+  save, copy, weather toggle, dots, spinelets, toggles, segmented) toward ~44px
+  without changing their visual size.
+- Semantics: added `<main>`; each screen title is now an `<h1>`, prominent
+  section titles `<h2>`; a heading reset keeps the visual design intact.
+- Reader: added horizontal **swipe** + **Arrow-key** paging (the footer
+  prev/next buttons remain the visible affordance); edge tap-zones retained.
+
+**Phase 4 — performance**
+- Replaced the full Tabler icon **webfont** with **43 tree-shaken SVG icons**
+  (`@tabler/icons-react`) via a name-keyed registry; the `<Icon>` API is
+  unchanged, glyphs size in `em` / `currentColor` so existing CSS still drives
+  them. No `*.woff*` ships anymore.
+- Trimmed unused font weights (Bricolage 700, Source Serif upright 600).
+
+## 8. Phase 5 — on-device QA checklist (manual)
+Run on real targets — automated browsers aren't available in this environment:
+- [ ] iPhone SE (320/375), iPhone Pro Max (430), Pixel (393), a foldable
+- [ ] iOS Safari · Android Chrome · Firefox
+- [ ] Landscape (notch safe-area), installed PWA, keyboard-open chat
+- [ ] Tablet/desktop shows the centered column (no toy phone)
+- [ ] Pinch-zoom works; tap targets feel comfortable; no horizontal overflow
+      at 320; no undersized floating at 430
