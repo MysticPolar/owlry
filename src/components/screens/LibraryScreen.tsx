@@ -8,7 +8,7 @@ import { Cover } from '../Cover';
 function ReadingList() {
   const readingIds = useStore((s) => s.readingIds);
   const pagesRead = useStore((s) => s.pagesRead);
-  const openReader = useStore((s) => s.openReader);
+  const openBook = useStore((s) => s.openBook);
   return (
     <div className="list">
       {readingIds.map((id) => {
@@ -27,7 +27,7 @@ function ReadingList() {
                 <span className="mini-pct">{p}%</span>
               </div>
             </div>
-            <button className="iconbtn" aria-label={`Resume ${b.t}`} onClick={() => openReader(id)}>
+            <button className="iconbtn" aria-label={`Resume ${b.t}`} onClick={() => openBook(id)}>
               <Icon name="ti-player-play" />
             </button>
           </div>
@@ -70,7 +70,7 @@ function SavedGrid() {
 
 function FinishedList() {
   const finishedIds = useStore((s) => s.finishedIds);
-  const openReader = useStore((s) => s.openReader);
+  const openBook = useStore((s) => s.openBook);
   return (
     <div className="list">
       {finishedIds.map((id) => {
@@ -91,7 +91,7 @@ function FinishedList() {
             <button
               className="iconbtn lite"
               aria-label={`Read ${b.t} again`}
-              onClick={() => openReader(id, 1)}
+              onClick={() => openBook(id)}
             >
               <Icon name="ti-refresh" />
             </button>

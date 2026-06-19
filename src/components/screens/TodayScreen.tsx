@@ -87,7 +87,7 @@ function PickCard() {
   const saved = useStore((s) => s.savedIds.includes(PICKS[s.pickIndex]));
   const resuming = useStore((s) => !!s.pagesRead[PICKS[s.pickIndex]]);
   const toggleSave = useStore((s) => s.toggleSave);
-  const openReader = useStore((s) => s.openReader);
+  const openBook = useStore((s) => s.openBook);
 
   const id = PICKS[pickIndex];
   const b = BOOKS[id];
@@ -121,7 +121,7 @@ function PickCard() {
           <div className="ttl d">{b.t}</div>
           <div className="auth">{b.a}</div>
           <div className="quote it">&ldquo;{b.q}&rdquo;</div>
-          <button className="btn" onClick={() => openReader(id)}>
+          <button className="btn" onClick={() => openBook(id)}>
             {resuming ? 'RESUME' : 'OPEN'} <Icon name="ti-arrow-right" />
           </button>
         </div>
@@ -151,7 +151,7 @@ function Dots() {
 function Shelf() {
   const readingIds = useStore((s) => s.readingIds);
   const pagesRead = useStore((s) => s.pagesRead);
-  const openReader = useStore((s) => s.openReader);
+  const openBook = useStore((s) => s.openBook);
   const setTab = useStore((s) => s.setTab);
   return (
     <div className="sec">
@@ -166,7 +166,7 @@ function Shelf() {
           const b = BOOKS[id];
           const p = pct(pagesRead[id] ?? 0, b.n);
           return (
-            <button key={id} className="sh-item" onClick={() => openReader(id)}>
+            <button key={id} className="sh-item" onClick={() => openBook(id)}>
               <Cover id={id} cls="cover-sm" />
               <div className="sh-title d">{b.t}</div>
               <div className="mini-track">

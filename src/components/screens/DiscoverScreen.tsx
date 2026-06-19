@@ -75,7 +75,7 @@ function Popover({ id, onClose }: { id: BookId; onClose: () => void }) {
   const toggleSave = useStore((s) => s.toggleSave);
   const openSheet = useStore((s) => s.openSheet);
   const openLetter = useStore((s) => s.openLetter);
-  const openReader = useStore((s) => s.openReader);
+  const openBook = useStore((s) => s.openBook);
   return (
     <div className="spine-pop" role="dialog" aria-label={b.t}>
       <div className="tray-card">
@@ -119,7 +119,7 @@ function Popover({ id, onClose }: { id: BookId; onClose: () => void }) {
                 className="btn xs"
                 onClick={() => {
                   onClose();
-                  openReader(id);
+                  openBook(id);
                 }}
               >
                 OPEN <Icon name="ti-arrow-right" />

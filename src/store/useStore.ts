@@ -33,6 +33,9 @@ import {
   type Account,
 } from '../lib/auth';
 import { performAction, getSnapshot } from '../lib/economy/api';
+import { resolvePublicDomain } from '../lib/ebook/resolve';
+import { loadUpload } from '../lib/ebook/storage';
+import type { ReadingSource } from '../lib/ebook/types';
 import type {
   EconomyAction,
   Snapshot,
@@ -54,6 +57,19 @@ export interface ServerProfile {
 }
 
 export type AuthNotice = { kind: 'ok' | 'error'; text: string } | null;
+
+/** The real in-app reader (public-domain EPUB or an uploaded file). */
+export type EbookStatus = 'resolving' | 'reading' | 'empty' | 'error';
+export interface EbookState {
+  open: boolean;
+  bookId: BookId | null;
+  status: EbookStatus;
+  source: ReadingSource | null;
+  percent: number;
+  secondsRead: number;
+  error: string | null;
+  uploadOpen: boolean;
+}
 
 export interface Store extends PersistedState {
   /* ephemeral UI / session */
@@ -78,6 +94,9 @@ export interface Store extends PersistedState {
   settingsOpen: boolean;
   authBusy: boolean;
   authNotice: AuthNotice;
+
+  /* in-app reader (real books) */
+  ebook: EbookState;
 
   /* actions */
   bootstrap: () => Promise<void>;
@@ -111,7 +130,20 @@ export interface Store extends PersistedState {
   accountSignUp: (email: string, password: string) => Promise<void>;
   accountSignIn: (email: string, password: string) => Promise<void>;
   accountSignOut: () => Promise<void>;
+
+  /* in-app reader actions */
+  openBook: (id: BookId) => Promise<void>;
+  closeBook: () => void;
+  openUpload: () => void;
+  closeUpload: () => void;
+  setUploadedSource: (id: BookId, source: ReadingSource) => void;
+  reportProgress: (percent: number, secondsRead: number) => void;
 }
+
+/* per-book reading milestones, for throttling progress→XP awards (cosmetic) */
+const progressMark = new Map<BookId, number>();
+const secondsMark = new Map<BookId, number>();
+const finishedMark = new Set<BookId>();
 
 /** Friendly-ify the most common Supabase auth error messages. */
 function authMessage(raw: string): string {
@@ -201,6 +233,16 @@ export const useStore = create<Store>()(
     settingsOpen: false,
     authBusy: false,
     authNotice: null,
+    ebook: {
+      open: false,
+      bookId: null,
+      status: 'resolving',
+      source: null,
+      percent: 0,
+      secondsRead: 0,
+      error: null,
+      uploadOpen: false,
+    },
 
     bootstrap: async () => {
       const loaded = await repository.load();
@@ -553,6 +595,94 @@ export const useStore = create<Store>()(
       const account = await ensureSession(); // fall back to a fresh guest so the app keeps working
       set({ account, backendReady: !!account, authBusy: false });
       if (account) await get().syncFromServer();
+    },
+
+    /* ---------- in-app reader (real books) ---------- */
+    openBook: async (id) => {
+      const b = BOOKS[id];
+      const readingIds = get().readingIds.includes(id) ? get().readingIds : [id, ...get().readingIds];
+      progressMark.delete(id);
+      secondsMark.delete(id);
+      finishedMark.delete(id);
+      set({
+        readingIds,
+        ebook: {
+          open: true,
+          bookId: id,
+          status: 'resolving',
+          source: null,
+          percent: 0,
+          secondsRead: 0,
+          error: null,
+          uploadOpen: false,
+        },
+      });
+      // opening a book is an economy event (existing 'open' action; XP server-side)
+      if (get().backendReady) serverSync('open', id);
+
+      // 1) a copy already uploaded on this device wins — instant + offline
+      try {
+        const up = await loadUpload(id);
+        if (get().ebook.bookId !== id) return; // user moved on
+        if (up) {
+          set({ ebook: { ...get().ebook, status: 'reading', source: up.source } });
+          return;
+        }
+      } catch {
+        /* ignore storage errors */
+      }
+
+      // 2) resolve a public-domain EPUB by title + author
+      const source = await resolvePublicDomain(b.t, b.a);
+      if (get().ebook.bookId !== id) return;
+      set({
+        ebook: source
+          ? { ...get().ebook, status: 'reading', source }
+          : { ...get().ebook, status: 'empty' },
+      });
+    },
+
+    closeBook: () => set({ ebook: { ...get().ebook, open: false, uploadOpen: false } }),
+    openUpload: () => set({ ebook: { ...get().ebook, uploadOpen: true } }),
+    closeUpload: () => set({ ebook: { ...get().ebook, uploadOpen: false } }),
+
+    setUploadedSource: (id, source) => {
+      const e = get().ebook;
+      if (e.bookId !== id) return;
+      set({ ebook: { ...e, source, status: 'reading', uploadOpen: false, error: null } });
+    },
+
+    reportProgress: (percent, secondsRead) => {
+      const e = get().ebook;
+      const id = e.bookId;
+      if (!id) return;
+      set({ ebook: { ...e, percent, secondsRead } });
+
+      // cosmetic XP: one "page turn" per 5% advanced, gated by ≥8s of active reading.
+      // We can only detect that the position advanced, so rewards stay low-value.
+      const lastPct = progressMark.get(id) ?? 0;
+      const lastSec = secondsMark.get(id) ?? 0;
+      if (percent >= lastPct + 5 && secondsRead >= lastSec + 8) {
+        progressMark.set(id, Math.floor(percent / 5) * 5);
+        secondsMark.set(id, secondsRead);
+        if (get().backendReady)
+          serverSync('turn_page', id, { percent: Math.round(percent), seconds: Math.round(secondsRead) });
+        else {
+          get().addXP(2);
+          get().addInk(2);
+        }
+      }
+
+      // finishing near the end (fire once)
+      if (percent >= 97 && !finishedMark.has(id)) {
+        finishedMark.add(id);
+        const finishedIds = get().finishedIds.includes(id) ? get().finishedIds : [id, ...get().finishedIds];
+        const stillReading = get().readingIds.filter((x) => x !== id);
+        set({ finishedIds, readingIds: stillReading });
+        get().showToast('ti-trophy', 'finished!');
+        if (get().backendReady) serverSync('finish', id, { pages: BOOKS[id].n });
+        else get().addXP(40);
+      }
     },
   })),
 );

@@ -10,7 +10,7 @@ export function Letter() {
   const letterId = useStore((s) => s.letterId);
   const closeLetter = useStore((s) => s.closeLetter);
   const toggleSave = useStore((s) => s.toggleSave);
-  const openReader = useStore((s) => s.openReader);
+  const openBook = useStore((s) => s.openBook);
   const openSheet = useStore((s) => s.openSheet);
   const openLetter = useStore((s) => s.openLetter);
   const saved = useStore((s) => (s.letterId ? s.savedIds.includes(s.letterId) : false));
@@ -131,7 +131,7 @@ export function Letter() {
             })}
 
             <div className="l-btnrow">
-              <button className="btn" onClick={() => openReader(id)}>
+              <button className="btn" onClick={() => openBook(id)}>
                 OPEN <Icon name="ti-arrow-right" />
               </button>
               <button className="btn ghost" aria-pressed={saved} onClick={() => toggleSave(id)}>

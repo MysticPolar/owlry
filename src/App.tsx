@@ -11,6 +11,8 @@ import { Sheet } from './components/overlays/Sheet';
 import { Reader } from './components/overlays/Reader';
 import { Letter } from './components/overlays/Letter';
 import { Settings } from './components/overlays/Settings';
+import { EbookReader } from './components/overlays/EbookReader';
+import { UploadModal } from './components/overlays/UploadModal';
 
 export default function App() {
   const wxIndex = useStore((s) => s.wxIndex);
@@ -45,6 +47,8 @@ export default function App() {
               <Backdrop />
               <Sheet />
               <Reader />
+              <EbookReader />
+              <UploadModal />
               <Letter />
               <Settings />
               <Toast />
