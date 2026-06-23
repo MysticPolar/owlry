@@ -10,11 +10,6 @@ const SCALES: [ReaderScale, string][] = [
   ['lg', 'L'],
 ];
 
-const ENGINES: [OwlEngine, string][] = [
-  ['live', 'LIVE'],
-  ['mockup', 'CLASSIC'],
-];
-
 function Toggle({ on, onToggle, label }: { on: boolean; onToggle: () => void; label: string }) {
   return (
     <button
@@ -42,12 +37,12 @@ export function Settings() {
   const [confirmReset, setConfirmReset] = useState(false);
 
   const comingSoon = (label: string) => showToast('ti-clock', `${label} — coming soon`);
-  const engine: OwlEngine = prefs.owlEngine ?? 'live';
-  const pickEngine = (e: OwlEngine) => {
-    if (e === engine) return;
-    setPref('owlEngine', e);
+  const liveOn = (prefs.owlEngine ?? 'live') === 'live';
+  const toggleEngine = () => {
+    const next: OwlEngine = liveOn ? 'mockup' : 'live';
+    setPref('owlEngine', next);
     restartChat();
-    showToast('ti-feather', e === 'live' ? 'the live owl is at the desk' : 'classic owl — the original mockup');
+    showToast('ti-feather', next === 'live' ? 'the live owl is at the desk' : 'classic owl — the original mockup');
   };
 
   return (
@@ -101,26 +96,14 @@ export function Settings() {
         <div className="sh-sec">THE OWL</div>
         <div className="set-row">
           <div className="set-info">
-            <div className="set-lab d">owl at the desk</div>
+            <div className="set-lab d">live owl</div>
             <div className="set-sub">
               {isBackendConfigured()
-                ? 'live reads your real sky & the whole world of books; classic is the original mockup'
-                : 'classic mockup (live owl needs a backend configured)'}
+                ? 'reads your real sky & the whole world of books; off is the classic mockup'
+                : 'needs a backend configured — classic mockup until then'}
             </div>
           </div>
-          <div className="seg-inline">
-            {ENGINES.map(([k, l]) => (
-              <button
-                key={k}
-                className={`segchip ${engine === k ? 'on' : ''}`}
-                aria-pressed={engine === k}
-                aria-label={`Owl ${l}`}
-                onClick={() => pickEngine(k)}
-              >
-                {l}
-              </button>
-            ))}
-          </div>
+          <Toggle on={liveOn} onToggle={toggleEngine} label="Live owl" />
         </div>
 
         {/* reminders */}
