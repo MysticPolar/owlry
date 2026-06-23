@@ -5,7 +5,7 @@ chat log don't care which one is answering.
 
 | | **Live owl** | **Classic owl (the mockup)** |
 |---|---|---|
-| Brain | Claude Haiku 4.5, in the `owl-chat` edge function | `respond()` in `src/lib/owlBrain.ts` — pure, offline, regex intent matching |
+| Brain | Claude Sonnet 4.6, in the `owl-chat` edge function | `respond()` in `src/lib/owlBrain.ts` — pure, offline, regex intent matching |
 | Books | open-world — any real, well-loved book; chosen by the model | the fixed 23-book catalog (`content/books.ts`) |
 | Letters | the framing is spoken in voice; rich letter overlay is catalog-only | the 7 hand-written `GUIDES` letters, fully rendered |
 | Greeting | the visitor's **real** local weather + time (geolocation → Open-Meteo) | the faked weather cycle (tap the glyph) |
@@ -51,7 +51,8 @@ VITE_SUPABASE_ANON_KEY=YOUR-ANON-PUBLIC-KEY
 ```
 
 Model and limits live in `supabase/functions/owl-chat/owl-system.ts`
-(`OWL_MODEL = claude-haiku-4-5`, `OWL_MAX_TOKENS = 400`) alongside the
+(`OWL_MODEL = claude-sonnet-4-6`, `OWL_MAX_TOKENS = 400`, thinking off +
+effort low for speed) alongside the
 `OWL_SYSTEM` prompt and the structured-output schema. The function returns
 
 ```json

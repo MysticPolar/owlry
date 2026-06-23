@@ -63,9 +63,14 @@ Deno.serve(async (req: Request): Promise<Response> => {
     const res = await client.messages.create({
       model: OWL_MODEL,
       max_tokens: OWL_MAX_TOKENS,
+      // Sonnet 4.6 defaults to effort:"high"; an owl reply is one or two
+      // sentences, so keep it fast — thinking off, effort low (Anthropic's
+      // recommended config for chat workloads). Bump effort to "medium" if you
+      // want the owl to deliberate more over which book to sort.
+      thinking: { type: 'disabled' },
       system: [{ type: 'text', text: OWL_SYSTEM, cache_control: { type: 'ephemeral' } }],
       messages: recent.map((t) => ({ role: t.role, content: t.text })),
-      output_config: { format: { type: 'json_schema', schema: OWL_SCHEMA } },
+      output_config: { effort: 'low', format: { type: 'json_schema', schema: OWL_SCHEMA } },
       // deno-lint-ignore no-explicit-any
     } as any);
 

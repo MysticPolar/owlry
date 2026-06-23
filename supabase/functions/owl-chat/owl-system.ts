@@ -6,7 +6,7 @@
 // logic is the LLM's job, not the client's.
 // ============================================================
 
-export const OWL_MODEL = 'claude-haiku-4-5';
+export const OWL_MODEL = 'claude-sonnet-4-6';
 export const OWL_MAX_TOKENS = 400;
 
 export const OWL_SYSTEM = `WHO YOU ARE
