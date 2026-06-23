@@ -99,7 +99,20 @@ Deno.serve(async (req: Request): Promise<Response> => {
     return jsonResponse(reply);
   } catch (err) {
     console.error('owl-chat error', err);
-    // a 502 lets the client distinguish "owl had a hiccup" from "not configured"
-    return jsonResponse({ ...FALLBACK, error: 'owl-chat upstream error' }, 502);
+    // surface the upstream cause (status/type/message) so failures are
+    // diagnosable from the client — no secrets are present in these fields.
+    const e = err as { status?: number; message?: string; error?: { type?: string; message?: string } };
+    return jsonResponse(
+      {
+        ...FALLBACK,
+        error: 'owl-chat upstream error',
+        detail: {
+          status: e?.status ?? null,
+          type: e?.error?.type ?? null,
+          message: e?.error?.message ?? e?.message ?? String(err),
+        },
+      },
+      502,
+    );
   }
 });
