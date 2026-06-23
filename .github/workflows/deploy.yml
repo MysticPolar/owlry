@@ -34,6 +34,11 @@ jobs:
         env:
           # project pages are served from /<repo>/
           BASE_PATH: /owlry/
+          # backend wiring — set these as repo Variables to light up the live owl
+          # (both are public-safe: the anon key is protected by RLS). Empty = the
+          # app runs local-only with the offline mockup brain, exactly as before.
+          VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ vars.VITE_SUPABASE_ANON_KEY }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
