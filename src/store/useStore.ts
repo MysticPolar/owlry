@@ -15,10 +15,17 @@ import { SAL, FLAVOR, START_CHIPS, dayPart } from '../content/owl';
 import { respond, newSession } from '../lib/owlBrain';
 import type { OwlMessage } from '../lib/owlBrain';
 import type { BookId, GuideId } from '../content/types';
+import { isBackendConfigured } from '../lib/supabase';
+import { getLocalWeather } from '../lib/weather';
+import { callLiveOwl, buildReplyTurns, greetTurns } from '../lib/owl/liveOwl';
 
 import { repository } from './persistence';
 import { SEED } from './seed';
 import type { PersistedState, Prefs, Tab, LibTab, OwlState, ReaderState, ToastState } from './types';
+
+/** The live owl answers when a backend is configured and the user hasn't pinned the mockup. */
+const liveOwlEnabled = (prefs: Prefs): boolean =>
+  isBackendConfigured() && prefs.owlEngine !== 'mockup' && import.meta.env.VITE_OWL_LIVE !== 'off';
 
 export interface Store extends PersistedState {
   /* ephemeral UI / session */
@@ -61,6 +68,7 @@ export interface Store extends PersistedState {
   setPref: <K extends keyof Prefs>(key: K, value: Prefs[K]) => void;
   resetProgress: () => void;
   initChat: () => void;
+  restartChat: () => void;
   sendToOwl: (text: string) => void;
 }
 
@@ -255,23 +263,80 @@ export const useStore = create<Store>()(
 
     initChat: () => {
       if (get().owl.started) return;
-      const wxKey = WX[get().wxIndex].k;
       const dp = dayPart();
-      const greeting: OwlMessage = [
+
+      // simulated greeting — the mockup, instant, weather from the fake cycle
+      const simulatedGreeting = (wxKey: ReturnType<typeof newSession>['wxKey']): OwlMessage => [
         {
           t: 'text',
           v: `${SAL[dp]} ${FLAVOR[wxKey]}. i'm the owl at the post desk — tell me what's going on, and i'll sort you a reading letter.`,
         },
       ];
+
+      if (liveOwlEnabled(get().prefs)) {
+        const typingId = nextId();
+        set((s) => ({ owl: { ...s.owl, started: true, messages: [{ kind: 'typing', id: typingId }], chips: [] } }));
+        void (async () => {
+          const weather = await getLocalWeather().catch(() => null);
+          if (weather) {
+            const idx = WX.findIndex((w) => w.k === weather.wxKey);
+            if (idx >= 0) set({ wxIndex: idx }); // seed the theme from the real sky
+          }
+          try {
+            const { msgs, chips } = await callLiveOwl(greetTurns(dp, weather));
+            set((s) => {
+              let messages = s.owl.messages.filter((m) => m.id !== typingId);
+              msgs.forEach((nodes) => {
+                messages = [...messages, { kind: 'msg', id: nextId(), who: 'owl', nodes }];
+              });
+              return {
+                owl: {
+                  ...s.owl,
+                  messages,
+                  chips: chips.length ? chips : START_CHIPS[dp],
+                  session: { ...s.owl.session, wxKey: weather ? weather.wxKey : s.owl.session.wxKey },
+                },
+              };
+            });
+          } catch {
+            // backend missing / offline → the mockup greeting, so the desk always opens
+            const wxKey = WX[get().wxIndex].k;
+            set((s) => {
+              let messages = s.owl.messages.filter((m) => m.id !== typingId);
+              messages = [...messages, { kind: 'msg', id: nextId(), who: 'owl', nodes: simulatedGreeting(wxKey) }];
+              return { owl: { ...s.owl, messages, chips: START_CHIPS[dp], session: { ...s.owl.session, wxKey } } };
+            });
+          }
+        })();
+        return;
+      }
+
+      const wxKey = WX[get().wxIndex].k;
       set((s) => ({
         owl: {
           ...s.owl,
           started: true,
-          messages: [{ kind: 'msg', id: nextId(), who: 'owl', nodes: greeting }],
+          messages: [{ kind: 'msg', id: nextId(), who: 'owl', nodes: simulatedGreeting(wxKey) }],
           chips: START_CHIPS[dp],
           session: { ...s.owl.session, wxKey },
         },
       }));
+    },
+
+    restartChat: () => {
+      set((s) => ({
+        owl: {
+          ...s.owl,
+          started: false,
+          messages: [],
+          chips: [],
+          collected: [],
+          lastBatch: null,
+          busy: false,
+          session: newSession(WX[get().wxIndex].k),
+        },
+      }));
+      get().initChat();
     },
 
     sendToOwl: (raw) => {
@@ -293,7 +358,50 @@ export const useStore = create<Store>()(
         },
       }));
 
-      // compute the reply up front so the typing delay can scale with its length
+      // ── live owl: real LLM via the edge function, with a simulated fallback ──
+      if (liveOwlEnabled(s.prefs)) {
+        void (async () => {
+          const turns = buildReplyTurns(get().owl.messages);
+          try {
+            const { msgs, chips } = await callLiveOwl(turns);
+            set((st) => {
+              let messages = st.owl.messages.filter((m) => m.id !== typingId);
+              msgs.forEach((nodes) => {
+                messages = [...messages, { kind: 'msg', id: nextId(), who: 'owl', nodes }];
+              });
+              return { owl: { ...st.owl, busy: false, messages, chips } };
+            });
+          } catch {
+            // offline / not deployed / upstream error → the mockup brain answers instead
+            const fb = {
+              ...get().owl.session,
+              wxKey: WX[get().wxIndex].k,
+              usedGuides: [...get().owl.session.usedGuides],
+            };
+            const reply = respond(text, fb);
+            set((st) => {
+              let messages = st.owl.messages.filter((m) => m.id !== typingId);
+              reply.msgs.forEach((nodes) => {
+                messages = [...messages, { kind: 'msg', id: nextId(), who: 'owl', nodes }];
+              });
+              let collected = st.owl.collected;
+              let lastBatch = st.owl.lastBatch;
+              if (reply.batch) {
+                lastBatch = reply.batch;
+                collected = [...st.owl.collected];
+                [reply.batch.main, ...reply.batch.also].forEach((id) => {
+                  if (!collected.includes(id)) collected.unshift(id);
+                });
+              }
+              if (reply.letter) messages = [...messages, { kind: 'letter', id: nextId(), book: reply.letter }];
+              return { owl: { ...st.owl, busy: false, messages, chips: reply.chips, collected, lastBatch, session: fb } };
+            });
+          }
+        })();
+        return;
+      }
+
+      // ── simulated mockup brain (unchanged): typing delay scales with reply length ──
       const st0 = get();
       const session = {
         ...st0.owl.session,
@@ -301,7 +409,10 @@ export const useStore = create<Store>()(
         usedGuides: [...st0.owl.session.usedGuides],
       };
       const reply = respond(text, session);
-      const replyLen = reply.msgs.reduce((n, m) => n + m.reduce((x, nd) => x + nd.v.length, 0), 0);
+      const replyLen = reply.msgs.reduce(
+        (n, m) => n + m.reduce((x, nd) => x + (nd.t === 'rec' ? nd.title.length : nd.v.length), 0),
+        0,
+      );
       const think = Math.min(1500, 650 + replyLen * 3);
 
       setTimeout(() => {

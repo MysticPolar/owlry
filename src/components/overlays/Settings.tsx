@@ -1,12 +1,18 @@
 import { useState } from 'react';
 import { useStore } from '../../store/useStore';
-import type { ReaderScale } from '../../store/types';
+import type { OwlEngine, ReaderScale } from '../../store/types';
+import { isBackendConfigured } from '../../lib/supabase';
 import { Icon } from '../Icon';
 
 const SCALES: [ReaderScale, string][] = [
   ['sm', 'S'],
   ['md', 'M'],
   ['lg', 'L'],
+];
+
+const ENGINES: [OwlEngine, string][] = [
+  ['live', 'LIVE'],
+  ['mockup', 'CLASSIC'],
 ];
 
 function Toggle({ on, onToggle, label }: { on: boolean; onToggle: () => void; label: string }) {
@@ -29,12 +35,20 @@ export function Settings() {
   const prefs = useStore((s) => s.prefs);
   const setPref = useStore((s) => s.setPref);
   const resetProgress = useStore((s) => s.resetProgress);
+  const restartChat = useStore((s) => s.restartChat);
   const showToast = useStore((s) => s.showToast);
   const lv = useStore((s) => s.lv);
   const coins = useStore((s) => s.coins);
   const [confirmReset, setConfirmReset] = useState(false);
 
   const comingSoon = (label: string) => showToast('ti-clock', `${label} — coming soon`);
+  const engine: OwlEngine = prefs.owlEngine ?? 'live';
+  const pickEngine = (e: OwlEngine) => {
+    if (e === engine) return;
+    setPref('owlEngine', e);
+    restartChat();
+    showToast('ti-feather', e === 'live' ? 'the live owl is at the desk' : 'classic owl — the original mockup');
+  };
 
   return (
     <div className={`settings ${open ? 'on' : ''}`} id="settings" role="dialog" aria-modal="true" aria-label="Settings">
@@ -81,6 +95,32 @@ export function Settings() {
             <div className="set-sub">calm the swipes and pops</div>
           </div>
           <Toggle on={prefs.reduceMotion} onToggle={() => setPref('reduceMotion', !prefs.reduceMotion)} label="Reduce motion" />
+        </div>
+
+        {/* the owl */}
+        <div className="sh-sec">THE OWL</div>
+        <div className="set-row">
+          <div className="set-info">
+            <div className="set-lab d">owl at the desk</div>
+            <div className="set-sub">
+              {isBackendConfigured()
+                ? 'live reads your real sky & the whole world of books; classic is the original mockup'
+                : 'classic mockup (live owl needs a backend configured)'}
+            </div>
+          </div>
+          <div className="seg-inline">
+            {ENGINES.map(([k, l]) => (
+              <button
+                key={k}
+                className={`segchip ${engine === k ? 'on' : ''}`}
+                aria-pressed={engine === k}
+                aria-label={`Owl ${l}`}
+                onClick={() => pickEngine(k)}
+              >
+                {l}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* reminders */}

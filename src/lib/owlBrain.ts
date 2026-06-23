@@ -18,7 +18,14 @@ import type { WeatherKey } from '../content/weather';
 export type MsgNode =
   | { t: 'text'; v: string }
   | { t: 'book'; id: BookId; v: string }
-  | { t: 'em'; v: string };
+  | { t: 'em'; v: string }
+  /**
+   * An open-world book the live owl named — a real title/author that is NOT in
+   * the local catalog. Rendered as a styled (non-navigating) mention, since
+   * there is no BOOKS[id] sheet/reader behind it. The simulated mockup brain
+   * never emits these; only the live LLM engine does.
+   */
+  | { t: 'rec'; title: string; author: string; note?: string };
 
 export type OwlMessage = MsgNode[];
 

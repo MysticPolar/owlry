@@ -12,12 +12,17 @@ export type LibTab = 'reading' | 'saved' | 'finished';
 
 export type ReaderScale = 'sm' | 'md' | 'lg';
 
+/** Which owl answers the chat: the live LLM, or the offline mockup brain. */
+export type OwlEngine = 'live' | 'mockup';
+
 /** User preferences (set on the settings page), persisted with the loop. */
 export interface Prefs {
   readerScale: ReaderScale;
   reduceMotion: boolean;
   dailyReminder: boolean;
   sounds: boolean;
+  /** the live owl when a backend is configured; 'mockup' forces the offline brain */
+  owlEngine: OwlEngine;
 }
 
 /** The durable loop persisted to IndexedDB (and, later, a backend). */

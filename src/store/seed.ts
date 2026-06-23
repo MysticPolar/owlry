@@ -21,5 +21,6 @@ export const SEED: PersistedState = {
     reduceMotion: false,
     dailyReminder: false,
     sounds: false,
+    owlEngine: 'live',
   },
 };

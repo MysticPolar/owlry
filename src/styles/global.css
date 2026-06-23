@@ -189,6 +189,7 @@ h1, h2, h3, h4 { margin: 0; font-size: inherit; font-weight: inherit; }
 .msg.owl { align-self: flex-start; background: #fff; box-shadow: 3px 3px 0 var(--ink); border-bottom-left-radius: 3px; }
 .msg.me { align-self: flex-end; background: var(--green); color: #fff; box-shadow: 3px 3px 0 var(--ink); border-bottom-right-radius: 3px; font-weight: 600; }
 .bk { font-weight: 800; cursor: pointer; background: linear-gradient(transparent 60%, var(--yellow) 0); padding: 0 1px; }
+.bk.flat { cursor: default; }
 .lettercard { align-self: flex-start; display: flex; align-items: center; gap: 10px; max-width: 88%; background: var(--paper); border: 2px solid var(--ink); border-radius: 12px; box-shadow: 4px 4px 0 var(--ink); padding: 10px 12px; cursor: pointer; text-align: left; }
 .stamp { width: 30px; height: 30px; flex: 0 0 30px; display: flex; align-items: center; justify-content: center; background: var(--yellow); border: 2px solid var(--ink); border-radius: 6px; }
 .stamp .ti { font-size: 15px; }

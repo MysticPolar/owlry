@@ -18,6 +18,16 @@ function renderNodes(nodes: OwlMessage, openSheet: (id: BookId) => void) {
           {n.v}
         </span>
       );
+    if (n.t === 'rec') {
+      // open-world book the live owl named — styled like a book, but not a
+      // catalog entry, so it's a plain mention (the note rides on the tooltip)
+      const tip = [n.author, n.note].filter(Boolean).join(' — ');
+      return (
+        <span key={i} className="bk flat" title={tip || undefined}>
+          {n.title}
+        </span>
+      );
+    }
     return (
       <span
         key={i}
