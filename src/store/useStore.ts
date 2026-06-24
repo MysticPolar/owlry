@@ -273,7 +273,15 @@ export const useStore = create<Store>()(
         },
       ];
 
-      if (liveOwlEnabled(get().prefs)) {
+      const live = liveOwlEnabled(get().prefs);
+      // surface which brain is answering and why — so "is it live?" is answerable
+      // from the browser console, and a silent live→mockup fallback is never invisible
+      console.info('[owlry] owl engine →', live ? 'LIVE (Sonnet)' : 'mockup (offline)', {
+        backendConfigured: isBackendConfigured(),
+        enginePref: get().prefs.owlEngine ?? 'live (default)',
+      });
+
+      if (live) {
         const typingId = nextId();
         set((s) => ({ owl: { ...s.owl, started: true, messages: [{ kind: 'typing', id: typingId }], chips: [] } }));
         void (async () => {
@@ -298,7 +306,8 @@ export const useStore = create<Store>()(
                 },
               };
             });
-          } catch {
+          } catch (err) {
+            console.warn('[owlry] live owl greeting failed → mockup fallback:', err);
             // backend missing / offline → the mockup greeting, so the desk always opens
             const wxKey = WX[get().wxIndex].k;
             set((s) => {
@@ -371,7 +380,8 @@ export const useStore = create<Store>()(
               });
               return { owl: { ...st.owl, busy: false, messages, chips } };
             });
-          } catch {
+          } catch (err) {
+            console.warn('[owlry] live owl reply failed → mockup fallback:', err);
             // offline / not deployed / upstream error → the mockup brain answers instead
             const fb = {
               ...get().owl.session,
