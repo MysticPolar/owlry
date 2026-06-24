@@ -50,10 +50,23 @@ VITE_SUPABASE_URL=https://YOUR-PROJECT.supabase.co
 VITE_SUPABASE_ANON_KEY=YOUR-ANON-PUBLIC-KEY
 ```
 
-Model and limits live in `supabase/functions/owl-chat/owl-system.ts`
-(`OWL_MODEL = claude-sonnet-4-6`, `OWL_MAX_TOKENS = 400`, thinking off +
-effort low for speed) alongside the
-`OWL_SYSTEM` prompt and the structured-output schema. The function returns
+**Switching model vendor (Claude ⇄ Gemini).** The function supports both,
+chosen by the `OWL_PROVIDER` secret — the `OWL_SYSTEM` prompt and the
+`{say,letter,picks,chips}` contract are shared, so the client never changes:
+
+```sh
+# Claude (default)
+supabase secrets set OWL_PROVIDER=anthropic ANTHROPIC_API_KEY=sk-ant-...
+# Gemini  (get a key at https://aistudio.google.com/apikey — free tier available)
+supabase secrets set OWL_PROVIDER=gemini    GEMINI_API_KEY=AIza...
+supabase functions deploy owl-chat
+```
+
+Keep both keys set and you can flip vendor just by changing `OWL_PROVIDER`.
+Models live in `supabase/functions/owl-chat/owl-system.ts`
+(`OWL_MODEL = claude-sonnet-4-6`; `OWL_GEMINI_MODEL = gemini-2.5-flash` —
+swap to `gemini-2.5-flash-lite` for the cheapest tier). Both run with
+thinking disabled for low latency on the short reply. The function returns
 
 ```json
 { "say": "...", "letter": {"title","author"}|null,
