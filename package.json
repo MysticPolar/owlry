@@ -11,7 +11,8 @@
     "preview": "vite preview",
     "preview:host": "vite preview --host",
     "typecheck": "tsc -b",
-    "test": "tsx scripts/owl-smoke.ts && tsx scripts/store-smoke.ts"
+    "test": "tsx scripts/owl-smoke.ts && tsx scripts/store-smoke.ts",
+    "bench": "tsx scripts/owl-bench.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.108.1",

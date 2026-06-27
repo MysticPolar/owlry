@@ -39,20 +39,31 @@ const FALLBACK: OwlReplyPayload = {
   chips: ['rest', 'need focus', 'feeling blue', 'cozy escape'],
 };
 
+// The mockup uses fixed chip sets per response kind (content/owl.ts). To match
+// its style exactly, override the model's chips deterministically by shape. (The
+// greeting's starter chips are set client-side from START_CHIPS by day-part.)
+const CHIPS = {
+  letter: ['go deeper', 'something lighter', 'more like this', 'new vibe'],
+  fiction: ['more like this', 'new vibe', 'surprise me'],
+  ask: ['rest', 'need focus', 'feeling blue', 'cozy escape'],
+};
+
 /** Trim a raw model reply into the strict contract so a stray field can't crash the client. */
 function sanitize(parsed: OwlReplyPayload): OwlReplyPayload {
+  const letter =
+    parsed.letter && typeof parsed.letter.title === 'string'
+      ? { title: parsed.letter.title, author: String(parsed.letter.author ?? '') }
+      : null;
+  const picks = Array.isArray(parsed.picks)
+    ? parsed.picks
+        .filter((p) => p && typeof p.title === 'string')
+        .map((p) => ({ title: p.title, author: String(p.author ?? ''), note: String(p.note ?? '') }))
+    : [];
   return {
     say: typeof parsed.say === 'string' && parsed.say.trim() ? parsed.say : FALLBACK.say,
-    letter:
-      parsed.letter && typeof parsed.letter.title === 'string'
-        ? { title: parsed.letter.title, author: String(parsed.letter.author ?? '') }
-        : null,
-    picks: Array.isArray(parsed.picks)
-      ? parsed.picks
-          .filter((p) => p && typeof p.title === 'string')
-          .map((p) => ({ title: p.title, author: String(p.author ?? ''), note: String(p.note ?? '') }))
-      : [],
-    chips: Array.isArray(parsed.chips) ? parsed.chips.filter((c) => typeof c === 'string').slice(0, 4) : [],
+    letter,
+    picks,
+    chips: letter ? CHIPS.letter : picks.length ? CHIPS.fiction : CHIPS.ask,
   };
 }
 

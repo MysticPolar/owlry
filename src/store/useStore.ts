@@ -291,7 +291,7 @@ export const useStore = create<Store>()(
             if (idx >= 0) set({ wxIndex: idx }); // seed the theme from the real sky
           }
           try {
-            const { msgs, chips } = await callLiveOwl(greetTurns(dp, weather));
+            const { msgs } = await callLiveOwl(greetTurns(dp, weather));
             set((s) => {
               let messages = s.owl.messages.filter((m) => m.id !== typingId);
               msgs.forEach((nodes) => {
@@ -301,7 +301,8 @@ export const useStore = create<Store>()(
                 owl: {
                   ...s.owl,
                   messages,
-                  chips: chips.length ? chips : START_CHIPS[dp],
+                  // greeting chips match the mockup's day-part starters, not the model's
+                  chips: START_CHIPS[dp],
                   session: { ...s.owl.session, wxKey: weather ? weather.wxKey : s.owl.session.wxKey },
                 },
               };
