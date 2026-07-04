@@ -51,13 +51,7 @@ function renderNodes(nodes: OwlMessage, openSheet: (id: BookId) => void) {
 /* ---------- shelf: every rec collected this session ---------- */
 function Shelf({ onPick, activeId }: { onPick: (id: BookId) => void; activeId: BookId | null }) {
   const collected = useStore((s) => s.owl.collected);
-  if (!collected.length) {
-    return (
-      <div className="tray" id="tray">
-        <div className="strip-hint">the owl's picks will perch here</div>
-      </div>
-    );
-  }
+  if (!collected.length) return null;
   return (
     <div className="strip" id="stripRow">
       <span className="strip-label">SHELF · {collected.length}</span>
@@ -78,8 +72,8 @@ function Shelf({ onPick, activeId }: { onPick: (id: BookId) => void; activeId: B
   );
 }
 
-/* ---------- book card popover (anchored under the shelf) ---------- */
-function Popover({ id, onClose }: { id: BookId; onClose: () => void }) {
+/* ---------- selected-book card, shown inline in the tray ---------- */
+function TrayCard({ id, onClose }: { id: BookId; onClose: () => void }) {
   const b = BOOKS[id];
   const saved = useStore((s) => s.savedIds.includes(id));
   const toggleSave = useStore((s) => s.toggleSave);
@@ -87,8 +81,7 @@ function Popover({ id, onClose }: { id: BookId; onClose: () => void }) {
   const openLetter = useStore((s) => s.openLetter);
   const openReader = useStore((s) => s.openReader);
   return (
-    <div className="spine-pop" role="dialog" aria-label={b.t}>
-      <div className="tray-card">
+    <div className="tray-card" role="dialog" aria-label={b.t}>
         <button
           className={`save ${saved ? 'on' : ''}`}
           aria-label="Save to library"
@@ -138,7 +131,6 @@ function Popover({ id, onClose }: { id: BookId; onClose: () => void }) {
           </div>
         </div>
       </div>
-    </div>
   );
 }
 
@@ -237,8 +229,8 @@ function Composer() {
           ref={inputRef}
           id="qIn"
           type="text"
-          placeholder="tell the owl what’s going on…"
-          aria-label="Message the owl"
+          placeholder="tell scout what’s going on…"
+          aria-label="Message scout"
           autoCapitalize="none"
           autoComplete="off"
           enterKeyHint="send"
@@ -268,19 +260,26 @@ export function DiscoverScreen() {
   return (
     <section className={`screen ${active ? 'on' : ''}`} id="screen-discover">
       <div className="pad-h" style={{ paddingBottom: 2 }}>
+        <span className="ghost" aria-hidden="true">Scout</span>
         <h1 className="hl sm d">
           <span className="u" />
           <span className="t">
             discover<span className="gdot">.</span>
           </span>
         </h1>
+        <svg className="owl mini" viewBox="0 0 120 130" aria-hidden="true">
+          <use href="#owl-scout" />
+        </svg>
       </div>
 
-      <div className={`spine-zone ${popoverId ? 'lift' : ''}`}>
-        <Shelf onPick={(id) => setPopoverId((p) => (p === id ? null : id))} activeId={popoverId} />
-        {popoverId && <Popover id={popoverId} onClose={() => setPopoverId(null)} />}
+      <div className="tray" id="tray">
+        {popoverId ? (
+          <TrayCard id={popoverId} onClose={() => setPopoverId(null)} />
+        ) : (
+          <div className="tray-card tray-empty">scout's picks will perch here</div>
+        )}
       </div>
-      {popoverId && <div className="spine-dim" onClick={() => setPopoverId(null)} aria-hidden="true" />}
+      <Shelf onPick={(id) => setPopoverId((p) => (p === id ? null : id))} activeId={popoverId} />
 
       <Chat />
       <Chips />
