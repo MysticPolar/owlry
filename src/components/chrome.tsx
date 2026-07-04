@@ -37,6 +37,7 @@ export function BottomNav() {
           <button
             key={n.tab}
             className={`nv ${on ? 'on' : ''}`}
+            data-tab={n.tab}
             aria-current={on ? 'page' : undefined}
             onClick={() => setTab(n.tab)}
           >
