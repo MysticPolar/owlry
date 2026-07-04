@@ -25,7 +25,7 @@ export function RadarChart({ replayKey }: { replayKey: number }) {
 
   return (
     <svg className="radar-svg" id="radarSvg" viewBox="0 0 352 264" role="img" aria-label={ARIA}>
-      <polygon points={ringPts(1)} fill="var(--cream)" stroke="var(--ink)" strokeWidth={2} />
+      <polygon points={ringPts(1)} fill="var(--surface2)" stroke="var(--line2)" strokeWidth={1.5} />
       {[0.75, 0.5, 0.25].map((f) => (
         <polygon key={f} points={ringPts(f)} fill="none" stroke="var(--paper2)" strokeWidth={1.5} />
       ))}
@@ -46,8 +46,8 @@ export function RadarChart({ replayKey }: { replayKey: number }) {
       <g id="rg" key={replayKey}>
         <polygon
           points={dataPoints}
-          fill="rgba(21,109,68,.18)"
-          stroke="var(--green)"
+          fill="var(--radarFill)"
+          stroke="var(--violet)"
           strokeWidth={2.5}
           strokeLinejoin="round"
         />
@@ -92,7 +92,7 @@ export function RadarChart({ replayKey }: { replayKey: number }) {
               y={+ny.toFixed(1)}
               textAnchor={ANCH[i]}
               fill="var(--fade)"
-              style={{ font: '800 10px "Inter Tight",sans-serif', letterSpacing: '1px', textTransform: 'uppercase' }}
+              style={{ font: '800 8.5px "Inter Tight",sans-serif', letterSpacing: '1px', textTransform: 'uppercase' }}
             >
               {name.toUpperCase()}
             </text>
@@ -101,7 +101,7 @@ export function RadarChart({ replayKey }: { replayKey: number }) {
               y={+vy.toFixed(1)}
               textAnchor={ANCH[i]}
               fill="var(--ink)"
-              style={{ font: '800 13px "Bricolage Grotesque",sans-serif' }}
+              style={{ font: '400 14px "Anton",sans-serif' }}
             >
               {v}
             </text>

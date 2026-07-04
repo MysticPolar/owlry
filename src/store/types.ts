@@ -15,6 +15,9 @@ export type ReaderScale = 'sm' | 'md' | 'lg';
 /** Which owl answers the chat: the live LLM, or the offline mockup brain. */
 export type OwlEngine = 'live' | 'mockup';
 
+/** The theatre's lighting rig: 'day' matinée or 'night' evening show. */
+export type Mode = 'day' | 'night';
+
 /** User preferences (set on the settings page), persisted with the loop. */
 export interface Prefs {
   readerScale: ReaderScale;
@@ -23,6 +26,8 @@ export interface Prefs {
   sounds: boolean;
   /** the live owl when a backend is configured; 'mockup' forces the offline brain */
   owlEngine: OwlEngine;
+  /** lighting rig — 'night' is the default evening show */
+  mode: Mode;
 }
 
 /** The durable loop persisted to IndexedDB (and, later, a backend). */

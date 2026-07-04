@@ -183,7 +183,12 @@ function QuotesTab() {
     <div className="tpanel on swap" id="tab-quotes" role="tabpanel">
       <div className="sec">
         <div className="sec-head">
-          <h2 className="sec-title d">tucked away</h2>
+          <div className="qhead">
+            <svg className="owl mini" viewBox="0 0 120 130" aria-hidden="true">
+              <use href="#owl-scribe" />
+            </svg>
+            <div className="sec-title d">tucked away</div>
+          </div>
           <span style={{ fontSize: 11, color: 'var(--fade)', fontWeight: 700 }}>{QUOTES.length} quotes kept</span>
         </div>
         <div className="qlist" id="qList" style={{ paddingTop: 0 }}>
@@ -227,13 +232,19 @@ export function ProfileScreen() {
 
   return (
     <section className={`screen ${active ? 'on' : ''}`} id="screen-profile" ref={sectionRef}>
-      <div className="pad-h prof-head">
+      <div className="pad-h">
+        <span className="ghost" aria-hidden="true">
+          Mirror
+        </span>
         <h1 className="hl sm d">
           <span className="u" />
           <span className="t">
             profile<span className="gdot">.</span>
           </span>
         </h1>
+        <svg className="owl mini" viewBox="0 0 120 130" aria-hidden="true">
+          <use href="#owl-mirror" />
+        </svg>
         <button className="iconbtn lite set-gear" aria-label="Settings" onClick={openSettings}>
           <Icon name="ti-settings" />
         </button>

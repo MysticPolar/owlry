@@ -22,5 +22,6 @@ export const SEED: PersistedState = {
     dailyReminder: false,
     sounds: false,
     owlEngine: 'live',
+    mode: 'night',
   },
 };

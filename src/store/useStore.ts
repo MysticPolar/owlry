@@ -66,6 +66,7 @@ export interface Store extends PersistedState {
   openSettings: () => void;
   closeSettings: () => void;
   setPref: <K extends keyof Prefs>(key: K, value: Prefs[K]) => void;
+  toggleMode: () => void;
   resetProgress: () => void;
   initChat: () => void;
   restartChat: () => void;
@@ -255,6 +256,11 @@ export const useStore = create<Store>()(
     openSettings: () => set({ settingsOpen: true }),
     closeSettings: () => set({ settingsOpen: false }),
     setPref: (key, value) => set((s) => ({ prefs: { ...s.prefs, [key]: value } })),
+    toggleMode: () => {
+      const mode = get().prefs.mode === 'night' ? 'day' : 'night';
+      set((s) => ({ prefs: { ...s.prefs, mode } }));
+      get().showToast(mode === 'night' ? 'ti-moon-stars' : 'ti-sun', mode === 'night' ? 'the evening show' : 'the matinée');
+    },
     resetProgress: () =>
       set((s) => ({
         ...SEED,

@@ -12,6 +12,8 @@ import { Cover } from '../Cover';
 function Masthead() {
   const wxIndex = useStore((s) => s.wxIndex);
   const cycleWeather = useStore((s) => s.cycleWeather);
+  const toggleMode = useStore((s) => s.toggleMode);
+  const mode = useStore((s) => s.prefs.mode);
   const { dt } = useClock();
   const w = WX[wxIndex];
   return (
@@ -32,6 +34,9 @@ function Masthead() {
             <span className="star" />
             <span className="star" />
           </span>
+        </button>
+        <button className="wx mode" id="modeBtn" aria-label="Lighting" onClick={toggleMode}>
+          <Icon name={mode === 'night' ? 'ti-sun' : 'ti-moon-stars'} />
         </button>
       </div>
       <span className="dt" id="dt">
@@ -118,6 +123,9 @@ function PickCard() {
         </button>
         <Cover id={id} cls="cover-lg" />
         <div className="pick-info">
+          <div className="lk">
+            owl post &middot; n&ordm; {pickIndex + 1} of {PICKS.length}
+          </div>
           <div className="ttl d">{b.t}</div>
           <div className="auth">{b.a}</div>
           <div className="quote it">&ldquo;{b.q}&rdquo;</div>
@@ -156,8 +164,8 @@ function Shelf() {
   return (
     <div className="sec">
       <div className="sec-head">
-        <h2 className="sec-title d">pick up where you left off</h2>
-        <button className="all" onClick={() => setTab('library')}>
+        <div className="sec-title d">pick up where you left off</div>
+        <button className="all" data-tab="library" onClick={() => setTab('library')}>
           ALL &rarr;
         </button>
       </div>
@@ -190,13 +198,17 @@ export function TodayScreen() {
     <section className={`screen ${active ? 'on' : ''}`} id="screen-today">
       <Masthead />
       <StatsRow />
-      <div className="headline">
-        <h1 className="hl d">
-          <span className="u" />
-          <span className="t">
-            today's pick<span className="gdot">.</span>
+      <div className="marquee">
+        <h2 className="mq" aria-label="Today's post">
+          <span>today's</span>
+          <span>
+            post<span className="gdot">.</span>
           </span>
-        </h1>
+        </h2>
+        <div className="mq-sub it">delivered while you slept.</div>
+        <svg className="owl hero" viewBox="0 0 120 130" aria-hidden="true">
+          <use href="#owl-scout" />
+        </svg>
       </div>
       <PickCard />
       <Dots />

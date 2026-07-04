@@ -4,19 +4,299 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content" />
 <title>Owlry — a gamified reading app</title>
-<meta name="description" content="Owlry — a small, warm, tactile reading app. Earn XP and ink, keep a streak, and ask the owl for a reading letter." />
-<meta name="theme-color" content="#156D44" />
+<meta name="description" content="Owlry — the Owlery staged like a night theatre. Earn XP and ink, keep a streak, and ask the owl for a reading letter." />
+<meta name="theme-color" content="#0D111F" />
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="Owlry" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Inter+Tight:wght@400;500;600;700;800&family=Source+Serif+4:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter+Tight:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <link rel="icon" href="/owl.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 </head>
 <body>
+<!-- Owl Theatre sprites — ported verbatim from the mockup (the cast + the icon set). -->
+<svg class="owldefs" width="0" height="0" style="position:absolute" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="fluff" x="-25%" y="-25%" width="150%" height="150%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="8" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="4.5"/>
+    </filter>
+    <filter id="fluff2" x="-35%" y="-35%" width="170%" height="170%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.5" numOctaves="2" seed="4" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="9"/>
+    </filter>
+    <radialGradient id="g-scout" cx="0.42" cy="0.28" r="0.95">
+      <stop offset="0" stop-color="var(--ember-l,#FF9163)"/>
+      <stop offset="0.58" stop-color="var(--ember,#D8481E)"/>
+      <stop offset="1" stop-color="var(--ember-d,#93290C)"/>
+    </radialGradient>
+    <radialGradient id="g-peek" cx="0.42" cy="0.28" r="0.95">
+      <stop offset="0" stop-color="var(--teal-l,#5CC0B1)"/>
+      <stop offset="0.58" stop-color="var(--teal,#177E71)"/>
+      <stop offset="1" stop-color="var(--teal-d,#0B5348)"/>
+    </radialGradient>
+    <radialGradient id="g-scribe" cx="0.42" cy="0.28" r="0.95">
+      <stop offset="0" stop-color="var(--quill-l,#7E93E6)"/>
+      <stop offset="0.58" stop-color="var(--quill,#3A55B4)"/>
+      <stop offset="1" stop-color="var(--quill-d,#1F326E)"/>
+    </radialGradient>
+    <radialGradient id="g-mirror" cx="0.42" cy="0.28" r="0.95">
+      <stop offset="0" stop-color="var(--violet-l,#B29AEF)"/>
+      <stop offset="0.58" stop-color="var(--violet,#7451CC)"/>
+      <stop offset="1" stop-color="var(--violet-d,#452B93)"/>
+    </radialGradient>
+    <radialGradient id="g-keeper" cx="0.42" cy="0.28" r="0.95">
+      <stop offset="0" stop-color="var(--moss-l,#5FB183)"/>
+      <stop offset="0.58" stop-color="var(--moss,#156D44)"/>
+      <stop offset="1" stop-color="var(--moss-d,#0C4A2C)"/>
+    </radialGradient>
+    <radialGradient id="g-belly" cx="0.5" cy="0.3" r="0.9">
+      <stop offset="0" stop-color="#FBF0D6"/>
+      <stop offset="0.7" stop-color="var(--belly,#F4E6C4)"/>
+      <stop offset="1" stop-color="#E2D1A6"/>
+    </radialGradient>
+  </defs>
+
+  <!-- SCOUT · finds your next book · overeager, ear tufts up -->
+  <symbol id="owl-scout" viewBox="0 0 120 130">
+    <ellipse cx="60" cy="122" rx="28" ry="5.5" fill="var(--oShadow,rgba(40,26,8,.2))"/>
+    <g filter="url(#fluff2)">
+      <path d="M32,28 L22,7 L45,17 Z" fill="url(#g-scout)"/>
+      <path d="M88,28 L98,7 L75,17 Z" fill="url(#g-scout)"/>
+    </g>
+    <g filter="url(#fluff)">
+      <path d="M60,15 C89,15 98,45 98,74 C98,103 82,119 60,119 C38,119 22,103 22,74 C22,45 31,15 60,15 Z" fill="url(#g-scout)"/>
+      <path d="M23,62 C13,82 19,102 34,111 C27,95 27,76 31,60 Z" fill="var(--ember-d,#93290C)"/>
+      <path d="M97,62 C107,82 101,102 86,111 C93,95 93,76 89,60 Z" fill="var(--ember-d,#93290C)"/>
+      <ellipse cx="60" cy="87" rx="24" ry="26" fill="url(#g-belly)"/>
+    </g>
+    <circle cx="44" cy="52" r="16.5" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
+    <circle cx="76" cy="52" r="16.5" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
+    <circle cx="44.5" cy="53" r="8.6" fill="var(--irisC,#4A2F14)"/>
+    <circle cx="75.5" cy="53" r="8.6" fill="var(--irisC,#4A2F14)"/>
+    <circle cx="44.5" cy="53" r="4" fill="#17110B"/>
+    <circle cx="75.5" cy="53" r="4" fill="#17110B"/>
+    <circle cx="48" cy="49.4" r="2.7" fill="#FFFFFF"/>
+    <circle cx="79" cy="49.4" r="2.7" fill="#FFFFFF"/>
+    <circle cx="41.6" cy="56" r="1.3" fill="rgba(255,255,255,.85)"/>
+    <circle cx="72.6" cy="56" r="1.3" fill="rgba(255,255,255,.85)"/>
+    <g transform="translate(27.5,35.5)">
+      <rect width="33" height="33.5" rx="15" fill="url(#g-scout)" transform="scale(1 0.05)">
+        <animateTransform attributeName="transform" type="scale"
+          values="1 0.05;1 0.05;1 1;1 0.05;1 0.05" keyTimes="0;0.9;0.94;0.98;1"
+          dur="5.4s" repeatCount="indefinite"/>
+      </rect>
+    </g>
+    <g transform="translate(59.5,35.5)">
+      <rect width="33" height="33.5" rx="15" fill="url(#g-scout)" transform="scale(1 0.05)">
+        <animateTransform attributeName="transform" type="scale"
+          values="1 0.05;1 0.05;1 1;1 0.05;1 0.05" keyTimes="0;0.9;0.94;0.98;1"
+          dur="5.4s" repeatCount="indefinite"/>
+      </rect>
+    </g>
+    <path d="M60,61 L53.5,67 Q60,75 66.5,67 Z" fill="var(--beakC,#E9A238)" stroke="rgba(0,0,0,.18)" stroke-width="1"/>
+    <path d="M45,118 q4,7 9,0 M66,118 q4,7 9,0" stroke="var(--beakC,#E9A238)" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- PEEK · previews everything, finishes nothing · one wing raised -->
+  <symbol id="owl-peek" viewBox="0 0 120 130">
+    <g transform="translate(60,66) scale(0.9) translate(-60,-66)">
+      <ellipse cx="60" cy="120" rx="27" ry="5.5" fill="var(--oShadow,rgba(40,26,8,.2))"/>
+      <g filter="url(#fluff)">
+        <path d="M60,20 C86,20 94,46 94,74 C94,100 79,116 60,116 C41,116 26,100 26,74 C26,46 34,20 60,20 Z" fill="url(#g-peek)"/>
+        <path d="M94,64 C103,82 98,100 85,108 C91,93 91,76 87,62 Z" fill="var(--teal-d,#0B5348)"/>
+        <ellipse cx="62" cy="86" rx="22" ry="24" fill="url(#g-belly)"/>
+      </g>
+      <circle cx="41" cy="57" r="11" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
+      <circle cx="41.5" cy="58" r="5.8" fill="var(--irisC,#4A2F14)"/>
+      <circle cx="41.5" cy="58" r="2.7" fill="#17110B"/>
+      <circle cx="43.8" cy="55.6" r="1.6" fill="#FFFFFF"/>
+      <circle cx="77" cy="50" r="17.5" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
+      <circle cx="76.5" cy="51" r="9.2" fill="var(--irisC,#4A2F14)"/>
+      <circle cx="76.5" cy="51" r="4.4" fill="#17110B"/>
+      <circle cx="80.4" cy="47" r="2.9" fill="#FFFFFF"/>
+      <circle cx="73" cy="54.4" r="1.4" fill="rgba(255,255,255,.85)"/>
+      <g transform="translate(59.5,32.5)">
+        <rect width="35" height="35.5" rx="16" fill="url(#g-peek)" transform="scale(1 0.05)">
+          <animateTransform attributeName="transform" type="scale"
+            values="1 0.05;1 0.05;1 1;1 0.05;1 0.05" keyTimes="0;0.86;0.9;0.94;1"
+            dur="4.6s" repeatCount="indefinite"/>
+        </rect>
+      </g>
+      <path d="M60,63 L54,69 Q60,76.5 66,69 Z" fill="var(--beakC,#E9A238)" stroke="rgba(0,0,0,.18)" stroke-width="1"/>
+      <g filter="url(#fluff)">
+        <path d="M24,62 C12,40 28,22 46,30 C39,40 36,51 39,63 C33,66 27,65 24,62 Z" fill="url(#g-peek)"/>
+      </g>
+      <path d="M46,115 q4,7 9,0 M66,115 q4,7 9,0" stroke="var(--beakC,#E9A238)" stroke-width="3" fill="none" stroke-linecap="round"/>
+    </g>
+  </symbol>
+
+  <!-- SCRIBE · remembers every line · spectacles and a quill -->
+  <symbol id="owl-scribe" viewBox="0 0 120 130">
+    <ellipse cx="60" cy="123" rx="27" ry="5.5" fill="var(--oShadow,rgba(40,26,8,.2))"/>
+    <g filter="url(#fluff)">
+      <path d="M60,12 C85,12 92,44 92,76 C92,104 78,120 60,120 C42,120 28,104 28,76 C28,44 35,12 60,12 Z" fill="url(#g-scribe)"/>
+      <path d="M29,60 C20,80 25,100 38,110 C32,94 32,75 35,58 Z" fill="var(--quill-d,#1F326E)"/>
+      <ellipse cx="60" cy="90" rx="22" ry="24" fill="url(#g-belly)"/>
+    </g>
+    <g transform="rotate(18 90 82)">
+      <line x1="90" y1="100" x2="90" y2="55" stroke="var(--beakC,#E9A238)" stroke-width="2"/>
+      <path d="M90,55 C84,63 83,77 89,89 C95,77 96,63 90,55 Z" fill="var(--quill-l,#7E93E6)" stroke="var(--quill-d,#1F326E)" stroke-width="1"/>
+    </g>
+    <circle cx="44" cy="50" r="13.5" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
+    <circle cx="76" cy="50" r="13.5" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
+    <circle cx="44.5" cy="51" r="7.4" fill="var(--irisC,#4A2F14)"/>
+    <circle cx="75.5" cy="51" r="7.4" fill="var(--irisC,#4A2F14)"/>
+    <circle cx="44.5" cy="51" r="3.4" fill="#17110B"/>
+    <circle cx="75.5" cy="51" r="3.4" fill="#17110B"/>
+    <circle cx="47.4" cy="47.8" r="2.2" fill="#FFFFFF"/>
+    <circle cx="78.4" cy="47.8" r="2.2" fill="#FFFFFF"/>
+    <g transform="translate(30.5,36.5)">
+      <rect width="27" height="27.5" rx="12" fill="url(#g-scribe)" transform="scale(1 0.05)">
+        <animateTransform attributeName="transform" type="scale"
+          values="1 0.05;1 0.05;1 1;1 0.05;1 0.05" keyTimes="0;0.92;0.95;0.98;1"
+          dur="6.2s" repeatCount="indefinite"/>
+      </rect>
+    </g>
+    <g transform="translate(62.5,36.5)">
+      <rect width="27" height="27.5" rx="12" fill="url(#g-scribe)" transform="scale(1 0.05)">
+        <animateTransform attributeName="transform" type="scale"
+          values="1 0.05;1 0.05;1 1;1 0.05;1 0.05" keyTimes="0;0.92;0.95;0.98;1"
+          dur="6.2s" repeatCount="indefinite"/>
+      </rect>
+    </g>
+    <circle cx="44" cy="50" r="15.5" fill="none" stroke="var(--specs,#2A2013)" stroke-width="2.6"/>
+    <circle cx="76" cy="50" r="15.5" fill="none" stroke="var(--specs,#2A2013)" stroke-width="2.6"/>
+    <path d="M59.5,50 L60.5,50" stroke="var(--specs,#2A2013)" stroke-width="2.6"/>
+    <path d="M28.5,48 L23,44.5 M91.5,48 L97,44.5" stroke="var(--specs,#2A2013)" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M60,60 L54,66 Q60,73.5 66,66 Z" fill="var(--beakC,#E9A238)" stroke="rgba(0,0,0,.18)" stroke-width="1"/>
+    <path d="M46,119 q4,7 9,0 M66,119 q4,7 9,0" stroke="var(--beakC,#E9A238)" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- MIRROR · draws your reading identity · calm half-lidded gaze -->
+  <symbol id="owl-mirror" viewBox="0 0 120 130">
+    <ellipse cx="60" cy="121" rx="27" ry="5.5" fill="var(--oShadow,rgba(40,26,8,.2))"/>
+    <g filter="url(#fluff)">
+      <path d="M60,16 C84,16 92,46 92,76 C92,102 78,117 60,117 C42,117 28,102 28,76 C28,46 36,16 60,16 Z" fill="url(#g-mirror)"/>
+      <path d="M29,62 C20,82 25,101 38,110 C32,94 32,76 35,60 Z" fill="var(--violet-d,#452B93)"/>
+      <path d="M91,62 C100,82 95,101 82,110 C88,94 88,76 85,60 Z" fill="var(--violet-d,#452B93)"/>
+      <ellipse cx="60" cy="87" rx="23" ry="25" fill="url(#g-belly)"/>
+    </g>
+    <path d="M50,82 a12,12 0 1 0 17,5 a9.5,9.5 0 1 1 -17,-5 Z" fill="var(--violet-d,#452B93)" opacity="0.8"/>
+    <circle cx="44" cy="52" r="15" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
+    <circle cx="76" cy="52" r="15" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
+    <circle cx="44.5" cy="54" r="8" fill="var(--irisC,#4A2F14)"/>
+    <circle cx="75.5" cy="54" r="8" fill="var(--irisC,#4A2F14)"/>
+    <circle cx="44.5" cy="54" r="3.6" fill="#17110B"/>
+    <circle cx="75.5" cy="54" r="3.6" fill="#17110B"/>
+    <circle cx="47.6" cy="51" r="2.2" fill="#FFFFFF"/>
+    <circle cx="78.6" cy="51" r="2.2" fill="#FFFFFF"/>
+    <g transform="translate(29,37)">
+      <rect width="30" height="30" rx="14" fill="url(#g-mirror)" transform="scale(1 0.46)"/>
+    </g>
+    <g transform="translate(61,37)">
+      <rect width="30" height="30" rx="14" fill="url(#g-mirror)" transform="scale(1 0.46)"/>
+    </g>
+    <path d="M60,62 L54.5,67.5 Q60,74.5 65.5,67.5 Z" fill="var(--beakC,#E9A238)" stroke="rgba(0,0,0,.18)" stroke-width="1"/>
+    <path d="M46,116 q4,7 9,0 M66,116 q4,7 9,0" stroke="var(--beakC,#E9A238)" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- KEEPER · counts everything twice · brow tufts and a little book -->
+  <symbol id="owl-keeper" viewBox="0 0 120 130">
+    <ellipse cx="60" cy="122" rx="33" ry="6" fill="var(--oShadow,rgba(40,26,8,.2))"/>
+    <g filter="url(#fluff)">
+      <path d="M60,18 C92,18 102,48 102,78 C102,104 84,118 60,118 C36,118 18,104 18,78 C18,48 28,18 60,18 Z" fill="url(#g-keeper)"/>
+      <path d="M19,64 C10,84 16,103 32,112 C25,96 25,78 29,62 Z" fill="var(--moss-d,#0C4A2C)"/>
+      <path d="M101,64 C110,84 104,103 88,112 C95,96 95,78 91,62 Z" fill="var(--moss-d,#0C4A2C)"/>
+      <ellipse cx="60" cy="88" rx="28" ry="26" fill="url(#g-belly)"/>
+    </g>
+    <g filter="url(#fluff2)">
+      <path d="M30,40 Q44,29 57,37 L55,43 Q44,37 33,45 Z" fill="var(--moss-d,#0C4A2C)"/>
+      <path d="M90,40 Q76,29 63,37 L65,43 Q76,37 87,45 Z" fill="var(--moss-d,#0C4A2C)"/>
+    </g>
+    <circle cx="45" cy="54" r="13" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
+    <circle cx="75" cy="54" r="13" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
+    <circle cx="45.5" cy="55" r="7" fill="var(--irisC,#4A2F14)"/>
+    <circle cx="74.5" cy="55" r="7" fill="var(--irisC,#4A2F14)"/>
+    <circle cx="45.5" cy="55" r="3.2" fill="#17110B"/>
+    <circle cx="74.5" cy="55" r="3.2" fill="#17110B"/>
+    <circle cx="48.2" cy="52" r="2" fill="#FFFFFF"/>
+    <circle cx="77.2" cy="52" r="2" fill="#FFFFFF"/>
+    <g transform="translate(32,41)">
+      <rect width="26" height="26.5" rx="12" fill="url(#g-keeper)" transform="scale(1 0.05)">
+        <animateTransform attributeName="transform" type="scale"
+          values="1 0.05;1 0.05;1 1;1 0.05;1 0.05" keyTimes="0;0.93;0.955;0.98;1"
+          dur="7.1s" repeatCount="indefinite"/>
+      </rect>
+    </g>
+    <g transform="translate(62,41)">
+      <rect width="26" height="26.5" rx="12" fill="url(#g-keeper)" transform="scale(1 0.05)">
+        <animateTransform attributeName="transform" type="scale"
+          values="1 0.05;1 0.05;1 1;1 0.05;1 0.05" keyTimes="0;0.93;0.955;0.98;1"
+          dur="7.1s" repeatCount="indefinite"/>
+      </rect>
+    </g>
+    <path d="M60,64 L54,70 Q60,77 66,70 Z" fill="var(--beakC,#E9A238)" stroke="rgba(0,0,0,.18)" stroke-width="1"/>
+    <g transform="rotate(-8 84 96)">
+      <rect x="73" y="88" width="22" height="16" rx="2" fill="var(--ember,#D8481E)" stroke="rgba(0,0,0,.22)" stroke-width="1"/>
+      <rect x="75.5" y="90.5" width="17" height="11" fill="url(#g-belly)"/>
+      <line x1="84" y1="90.5" x2="84" y2="101.5" stroke="rgba(0,0,0,.25)" stroke-width="1"/>
+    </g>
+    <path d="M45,117 q4,7 9,0 M67,117 q4,7 9,0" stroke="var(--beakC,#E9A238)" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </symbol>
+</svg>
+<!-- ============ ICON SPRITE (self-contained, no CDN) ============ -->
+<svg class="icondefs" width="0" height="0" style="position:absolute" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+<symbol id="i-arrow-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M5 12l14 0" /> <path d="M5 12l6 6" /> <path d="M5 12l6 -6" /></symbol>
+<symbol id="i-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M5 12l14 0" /> <path d="M13 18l6 -6" /> <path d="M13 6l6 6" /></symbol>
+<symbol id="i-battery-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M6 7h11a2 2 0 0 1 2 2v.5a.5 .5 0 0 0 .5 .5a.5 .5 0 0 1 .5 .5v3a.5 .5 0 0 1 -.5 .5a.5 .5 0 0 0 -.5 .5v.5a2 2 0 0 1 -2 2h-11a2 2 0 0 1 -2 -2v-6a2 2 0 0 1 2 -2" /> <path d="M7 10l0 4" /> <path d="M10 10l0 4" /> <path d="M13 10l0 4" /></symbol>
+<symbol id="i-book-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M19 4v16h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12z" /> <path d="M19 16h-12a2 2 0 0 0 -2 2" /> <path d="M9 8h6" /></symbol>
+<symbol id="i-books" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M5 4m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z" /> <path d="M9 4m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z" /> <path d="M5 8h4" /> <path d="M9 16h4" /> <path d="M13.803 4.56l2.184 -.53c.562 -.135 1.133 .19 1.282 .732l3.695 13.418a1.02 1.02 0 0 1 -.634 1.219l-.133 .041l-2.184 .53c-.562 .135 -1.133 -.19 -1.282 -.732l-3.695 -13.418a1.02 1.02 0 0 1 .634 -1.219l.133 -.041z" /> <path d="M14 9l4 -1" /> <path d="M16 16l3.923 -.98" /></symbol>
+<symbol id="i-calendar-event" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M4 5m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /> <path d="M16 3l0 4" /> <path d="M8 3l0 4" /> <path d="M4 11l16 0" /> <path d="M8 15h2v2h-2z" /></symbol>
+<symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M5 12l5 5l10 -10" /></symbol>
+<symbol id="i-chevron-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M15 6l-6 6l6 6" /></symbol>
+<symbol id="i-chevron-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M9 6l6 6l-6 6" /></symbol>
+<symbol id="i-cloud" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M6.657 18c-2.572 0 -4.657 -2.007 -4.657 -4.483c0 -2.475 2.085 -4.482 4.657 -4.482c.393 -1.762 1.794 -3.2 3.675 -3.773c1.88 -.572 3.956 -.193 5.444 1c1.488 1.19 2.162 3.007 1.77 4.769h.99c1.913 0 3.464 1.56 3.464 3.486c0 1.927 -1.551 3.487 -3.465 3.487h-11.878" /></symbol>
+<symbol id="i-cloud-rain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M7 18a4.6 4.4 0 0 1 0 -9a5 4.5 0 0 1 11 2h1a3.5 3.5 0 0 1 0 7" /> <path d="M11 13v2m0 3v2m4 -5v2m0 3v2" /></symbol>
+<symbol id="i-coin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /> <path d="M14.8 9a2 2 0 0 0 -1.8 -1h-2a2 2 0 1 0 0 4h2a2 2 0 1 1 0 4h-2a2 2 0 0 1 -1.8 -1" /> <path d="M12 7v10" /></symbol>
+<symbol id="i-compass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M8 16l2 -6l6 -2l-2 6l-6 2" /> <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /> <path d="M12 3l0 2" /> <path d="M12 19l0 2" /> <path d="M3 12l2 0" /> <path d="M19 12l2 0" /></symbol>
+<symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" /> <path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" /></symbol>
+<symbol id="i-external-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6" /> <path d="M11 13l9 -9" /> <path d="M15 4h5v5" /></symbol>
+<symbol id="i-feather" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M4 20l10 -10m0 -5v5h5m-9 -1v5h5m-9 -1v5h5m-5 -5l4 -4l4 -4" /> <path d="M19 10c.638 -.636 1 -1.515 1 -2.486a3.515 3.515 0 0 0 -3.517 -3.514c-.97 0 -1.847 .367 -2.483 1m-3 13l4 -4l4 -4" /></symbol>
+<symbol id="i-flame" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M12 10.941c2.333 -3.308 .167 -7.823 -1 -8.941c0 3.395 -2.235 5.299 -3.667 6.706c-1.43 1.408 -2.333 3.621 -2.333 5.588c0 3.704 3.134 6.706 7 6.706s7 -3.002 7 -6.706c0 -1.712 -1.232 -4.403 -2.333 -5.588c-2.084 3.353 -3.257 3.353 -4.667 2.235" /></symbol>
+<symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></symbol>
+<symbol id="i-heart-broken" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /> <path d="M12 6l-2 4l4 3l-2 4v3" /></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6z" /> <path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" /> <path d="M8 11v-4a4 4 0 1 1 8 0v4" /></symbol>
+<symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /> <path d="M3 7l9 6l9 -6" /></symbol>
+<symbol id="i-mail-opened" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M3 9l9 6l9 -6l-9 -6l-9 6" /> <path d="M21 9v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10" /> <path d="M3 19l6 -6" /> <path d="M15 13l6 6" /></symbol>
+<symbol id="i-microphone-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M15 12.9a5 5 0 1 0 -3.902 -3.9" /> <path d="M15 12.9l-3.902 -3.899l-7.513 8.584a2 2 0 1 0 2.827 2.83l8.588 -7.515z" /></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" /></symbol>
+<symbol id="i-moon-stars" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" /> <path d="M17 4a2 2 0 0 0 2 2a2 2 0 0 0 -2 2a2 2 0 0 0 -2 -2a2 2 0 0 0 2 -2" /> <path d="M19 11h2m-1 -1v2" /></symbol>
+<symbol id="i-pencil" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" /> <path d="M13.5 6.5l4 4" /></symbol>
+<symbol id="i-player-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M7 4v16l13 -8z" /></symbol>
+<symbol id="i-quote" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M10 11h-4a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h3a1 1 0 0 1 1 1v6c0 2.667 -1.333 4.333 -4 5" /> <path d="M19 11h-4a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h3a1 1 0 0 1 1 1v6c0 2.667 -1.333 4.333 -4 5" /></symbol>
+<symbol id="i-radar-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /> <path d="M15.51 15.56a5 5 0 1 0 -3.51 1.44" /> <path d="M18.832 17.86a9 9 0 1 0 -6.832 3.14" /> <path d="M12 12v9" /></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /> <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></symbol>
+<symbol id="i-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M10 14l11 -11" /> <path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5" /></symbol>
+<symbol id="i-snowflake" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M10 4l2 1l2 -1" /> <path d="M12 2v6.5l3 1.72" /> <path d="M17.928 6.268l.134 2.232l1.866 1.232" /> <path d="M20.66 7l-5.629 3.25l.01 3.458" /> <path d="M19.928 14.268l-1.866 1.232l-.134 2.232" /> <path d="M20.66 17l-5.629 -3.25l-2.99 1.738" /> <path d="M14 20l-2 -1l-2 1" /> <path d="M12 22v-6.5l-3 -1.72" /> <path d="M6.072 17.732l-.134 -2.232l-1.866 -1.232" /> <path d="M3.34 17l5.629 -3.25l-.01 -3.458" /> <path d="M4.072 9.732l1.866 -1.232l.134 -2.232" /> <path d="M3.34 7l5.629 3.25l2.99 -1.738" /></symbol>
+<symbol id="i-sparkles" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M16 18a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2zm0 -12a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2zm-7 12a6 6 0 0 1 6 -6a6 6 0 0 1 -6 -6a6 6 0 0 1 -6 6a6 6 0 0 1 6 6z" /></symbol>
+<symbol id="i-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" /> <path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" /></symbol>
+<symbol id="i-trophy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M8 21l8 0" /> <path d="M12 17l0 4" /> <path d="M7 4l10 0" /> <path d="M17 4v8a5 5 0 0 1 -10 0v-8" /> <path d="M5 9m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /> <path d="M19 9m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /></symbol>
+<symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /> <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /></symbol>
+<symbol id="i-wifi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M12 18l.01 0" /> <path d="M9.172 15.172a4 4 0 0 1 5.656 0" /> <path d="M6.343 12.343a8 8 0 0 1 11.314 0" /> <path d="M3.515 9.515c4.686 -4.687 12.284 -4.687 17 0" /></symbol>
+<symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M18 6l-12 12" /> <path d="M6 6l12 12" /></symbol>
+</svg>
+<!-- app-only icons not in the mockup's 39 (settings screen + toasts) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+<symbol id="i-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" /> <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" /></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" /> <path d="M12 7v5l3 3" /></symbol>
+<symbol id="i-shield-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M12 3a12 12 0 0 0 8.5 3a12 12 0 0 1 -8.5 15a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3" /> <path d="M12 11m-1 0a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" /> <path d="M12 12l0 2.5" /></symbol>
+<symbol id="i-file-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M14 3v4a1 1 0 0 0 1 1h4" /> <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /> <path d="M9 9l1 0" /> <path d="M9 13l6 0" /> <path d="M9 17l6 0" /></symbol>
+</svg>
 <div id="root"></div>
 <script type="module" src="/src/main.tsx"></script>
 </body>

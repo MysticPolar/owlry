@@ -119,12 +119,18 @@ export function LibraryScreen() {
   return (
     <section className={`screen ${active ? 'on' : ''}`} id="screen-library">
       <div className="pad-h">
+        <span className="ghost" aria-hidden="true">
+          Keeper
+        </span>
         <h1 className="hl sm d">
           <span className="u" />
           <span className="t">
             library<span className="gdot">.</span>
           </span>
         </h1>
+        <svg className="owl mini" viewBox="0 0 120 130" aria-hidden="true">
+          <use href="#owl-keeper" />
+        </svg>
       </div>
       <div className="seg" id="segRow">
         {segs.map(([k, l]) => (

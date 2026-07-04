@@ -21,6 +21,7 @@ export default function App() {
   const bootstrap = useStore((s) => s.bootstrap);
   const readerScale = useStore((s) => s.prefs.readerScale);
   const reduceMotion = useStore((s) => s.prefs.reduceMotion);
+  const mode = useStore((s) => s.prefs.mode ?? 'night');
   const kb = useKeyboardInset();
 
   useEffect(() => {
@@ -39,6 +40,7 @@ export default function App() {
           className={`app b${reduceMotion ? ' no-motion' : ''}`}
           id="app"
           data-wx={WX[wxIndex].k}
+          data-mode={mode}
           data-kb={kb > 0 ? 'open' : 'closed'}
           style={appStyle}
         >
@@ -63,6 +65,7 @@ export default function App() {
           )}
         </div>
       </div>
+      <p className="caption">tap the sun for the matinée · swipe the post · ask scout · flip the profile tabs</p>
     </div>
   );
 }
