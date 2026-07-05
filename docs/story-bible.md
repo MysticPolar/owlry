@@ -454,7 +454,7 @@ design and copy):
 
 | Story element | In the app |
 |---|---|
-| The Postmaster fronts the desk | Discover chat speaks as **Scout, by name** ("scout here, at the post desk…"). *Follow-up: align `OWL_SYSTEM`'s persona name from "the owl" to Scout.* |
+| The Postmaster fronts the desk | Discover chat speaks as **Scout, by name** ("scout here, at the post desk…") — aligned in `OWL_SYSTEM` (live) and the offline greeting. |
 | The window shows your sky | Real-weather greeting (geolocation → the greeting's opening line) |
 | Matinée / evening show | The lighting toggle + its toasts |
 | "Delivered while you slept" | The Today marquee + nightly letter cards |

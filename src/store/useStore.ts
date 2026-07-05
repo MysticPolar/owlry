@@ -275,7 +275,7 @@ export const useStore = create<Store>()(
       const simulatedGreeting = (wxKey: ReturnType<typeof newSession>['wxKey']): OwlMessage => [
         {
           t: 'text',
-          v: `${SAL[dp]} ${FLAVOR[wxKey]}. i'm the owl at the post desk — tell me what's going on, and i'll sort you a reading letter.`,
+          v: `${SAL[dp]} ${FLAVOR[wxKey]}. scout here, at the post desk — tell me what's going on, and i'll sort you a reading letter.`,
         },
       ];
 

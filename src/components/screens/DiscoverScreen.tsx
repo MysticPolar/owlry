@@ -166,7 +166,7 @@ function Chat() {
                 <span />
                 <span />
               </span>
-              <span className="sr-only">the owl is typing…</span>
+              <span className="sr-only">scout is typing…</span>
             </div>
           );
         }
