@@ -4,6 +4,7 @@ import type { LibTab } from '../../store/types';
 import { pct } from '../../lib/format';
 import { Icon } from '../Icon';
 import { Cover } from '../Cover';
+import { CastOwl } from '../CastOwl';
 
 function ReadingList() {
   const readingIds = useStore((s) => s.readingIds);
@@ -128,9 +129,7 @@ export function LibraryScreen() {
             library<span className="gdot">.</span>
           </span>
         </h1>
-        <svg className="owl mini" viewBox="0 0 120 130" aria-hidden="true">
-          <use href="#owl-keeper" />
-        </svg>
+        <CastOwl owl="keeper" cls="mini" />
       </div>
       <div className="seg" id="segRow">
         {segs.map(([k, l]) => (

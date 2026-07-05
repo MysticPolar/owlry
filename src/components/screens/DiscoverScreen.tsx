@@ -7,6 +7,7 @@ import type { OwlMessage } from '../../lib/owlBrain';
 import { isGuide } from '../../lib/format';
 import { Icon } from '../Icon';
 import { Cover } from '../Cover';
+import { CastOwl } from '../CastOwl';
 
 /* render structured owl-message nodes as real, clickable React */
 function renderNodes(nodes: OwlMessage, openSheet: (id: BookId) => void) {
@@ -267,9 +268,7 @@ export function DiscoverScreen() {
             discover<span className="gdot">.</span>
           </span>
         </h1>
-        <svg className="owl mini" viewBox="0 0 120 130" aria-hidden="true">
-          <use href="#owl-scout" />
-        </svg>
+        <CastOwl owl="scout" cls="mini" />
       </div>
 
       <div className="tray" id="tray">

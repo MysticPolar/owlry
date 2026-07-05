@@ -7,6 +7,7 @@ import { useClock } from '../../hooks/useClock';
 import { pct } from '../../lib/format';
 import { Icon } from '../Icon';
 import { Cover } from '../Cover';
+import { CastOwl } from '../CastOwl';
 
 /* ---------- weather-reactive masthead ---------- */
 function Masthead() {
@@ -206,9 +207,7 @@ export function TodayScreen() {
           </span>
         </h2>
         <div className="mq-sub it">delivered while you slept.</div>
-        <svg className="owl hero" viewBox="0 0 120 130" aria-hidden="true">
-          <use href="#owl-scout" />
-        </svg>
+        <CastOwl owl="scout" cls="hero" />
       </div>
       <PickCard />
       <Dots />

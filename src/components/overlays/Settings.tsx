@@ -3,6 +3,16 @@ import { useStore } from '../../store/useStore';
 import type { OwlEngine, ReaderScale } from '../../store/types';
 import { isBackendConfigured } from '../../lib/supabase';
 import { Icon } from '../Icon';
+import { owlLine, type CastOwlName } from '../CastOwl';
+
+/* the playbill, in order of finding (docs/story-bible.md) */
+const CAST: [CastOwlName, string, string, string][] = [
+  ['scout', 'scout', 'postmaster', 'ember'],
+  ['keeper', 'keeper', 'the shelves', 'moss'],
+  ['scribe', 'scribe', 'the archive', 'quill'],
+  ['peek', 'peek', 'first chapters', 'teal'],
+  ['mirror', 'mirror', 'the radar', 'violet'],
+];
 
 const SCALES: [ReaderScale, string][] = [
   ['sm', 'S'],
@@ -177,6 +187,28 @@ export function Settings() {
             </div>
           </div>
         )}
+
+        {/* the company — a playbill (tap an owl for a word) */}
+        <div className="sh-sec">THE COMPANY</div>
+        <div className="cast-row">
+          {CAST.map(([owl, name, job, color]) => (
+            <button
+              key={owl}
+              className="cast-cell"
+              aria-label={`${name} — ${job}`}
+              onClick={() => showToast('ti-feather', owlLine(owl))}
+            >
+              <svg className="owl cast" viewBox="0 0 120 130" aria-hidden="true">
+                <use href={`#owl-${owl}`} />
+              </svg>
+              <span className="cast-name d" style={{ color: `var(--${color})` }}>
+                {name}
+              </span>
+              <span className="cast-job">{job}</span>
+            </button>
+          ))}
+        </div>
+        <div className="set-sub cast-sub it">the owlery's company — found by scout, in this order.</div>
 
         {/* about */}
         <div className="sh-sec">ABOUT</div>

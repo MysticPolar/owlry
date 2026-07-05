@@ -627,3 +627,22 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .link-row.danger{color:var(--ember)}
 .link-row .ext{margin-left:auto;color:var(--fade)}
 .btn.danger{background:var(--ember);color:#fff;box-shadow:0 3px 0 rgba(90,20,6,.35)}
+
+/* ============================================================
+   The cast, tappable — every owl answers with a word (CastOwl).
+   The pop animates an inner <g> so it composes with the hero's
+   swoop/perch transforms. Playbill grid lives in Settings.
+   ============================================================ */
+.owl.tap{pointer-events:auto;cursor:pointer}
+.owl.tap:focus-visible{outline:2px solid var(--yellow);outline-offset:2px;border-radius:10px}
+.owlpop{transform-box:fill-box;transform-origin:50% 85%;animation:owlpop .5s cubic-bezier(.2,.8,.2,1)}
+@keyframes owlpop{0%{transform:scale(1)}35%{transform:scale(1.14) rotate(-3deg)}65%{transform:scale(.95)}100%{transform:scale(1)}}
+
+.cast-row{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:12px 0 2px}
+.cast-cell{background:var(--surface);border:1px solid var(--line);border-radius:12px;
+  padding:9px 2px 7px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer}
+.cast-cell:active{transform:translateY(1px)}
+.cast-cell .owl{position:static;width:40px;height:44px;pointer-events:none}
+.cast-name{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase}
+.cast-job{font-size:8px;color:var(--mut);letter-spacing:.02em;white-space:nowrap}
+.cast-sub{margin:8px 2px 0;text-align:center}

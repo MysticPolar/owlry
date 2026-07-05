@@ -16,6 +16,7 @@ import {
 } from '../../content/profile';
 import { Icon } from '../Icon';
 import { Cover } from '../Cover';
+import { CastOwl } from '../CastOwl';
 import { RadarChart } from '../profile/RadarChart';
 
 type ProfileTab = 'stats' | 'cal' | 'quotes';
@@ -184,9 +185,7 @@ function QuotesTab() {
       <div className="sec">
         <div className="sec-head">
           <div className="qhead">
-            <svg className="owl mini" viewBox="0 0 120 130" aria-hidden="true">
-              <use href="#owl-scribe" />
-            </svg>
+            <CastOwl owl="scribe" cls="mini" />
             <div className="sec-title d">tucked away</div>
           </div>
           <span style={{ fontSize: 11, color: 'var(--fade)', fontWeight: 700 }}>{QUOTES.length} quotes kept</span>
@@ -242,9 +241,7 @@ export function ProfileScreen() {
             profile<span className="gdot">.</span>
           </span>
         </h1>
-        <svg className="owl mini" viewBox="0 0 120 130" aria-hidden="true">
-          <use href="#owl-mirror" />
-        </svg>
+        <CastOwl owl="mirror" cls="mini" />
         <button className="iconbtn lite set-gear" aria-label="Settings" onClick={openSettings}>
           <Icon name="ti-settings" />
         </button>

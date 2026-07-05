@@ -5,6 +5,7 @@ import { GUIDES } from '../../content/guides';
 import { isGuide } from '../../lib/format';
 import { Icon } from '../Icon';
 import { Cover } from '../Cover';
+import { CastOwl } from '../CastOwl';
 
 export function Letter() {
   const letterId = useStore((s) => s.letterId);
@@ -30,7 +31,10 @@ export function Letter() {
         <button className="iconbtn lite" aria-label="Close letter" onClick={closeLetter}>
           <Icon name="ti-arrow-left" />
         </button>
-        <div className="d">OWL POST</div>
+        <div className="d">
+          <CastOwl owl="peek" cls="mini" />
+          OWL POST
+        </div>
         <button
           className={`save ${saved ? 'on' : ''}`}
           style={{ position: 'static' }}
