@@ -179,7 +179,7 @@ export function Settings() {
                   resetProgress();
                   setConfirmReset(false);
                   close();
-                  showToast('ti-refresh', 'progress reset');
+                  showToast('ti-refresh', 'reset. keeper looked away.', 'keeper');
                 }}
               >
                 RESET

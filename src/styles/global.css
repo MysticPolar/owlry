@@ -646,3 +646,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .cast-name{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase}
 .cast-job{font-size:8px;color:var(--mut);letter-spacing:.02em;white-space:nowrap}
 .cast-sub{margin:8px 2px 0;text-align:center}
+
+/* owl-owned moments: the toast carries the owl's face */
+.toast .owl.toasty{position:static;width:24px;height:26px;flex:0 0 24px;pointer-events:none;
+  animation:owlpop .5s cubic-bezier(.2,.8,.2,1)}

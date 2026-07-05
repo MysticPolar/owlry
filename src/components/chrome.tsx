@@ -63,7 +63,13 @@ export function Toast() {
     <div className={`toast ${toast ? 'on' : ''}`} id="toast" role="status" aria-live="polite">
       {shown && (
         <>
-          <Icon name={shown.icon} />
+          {shown.owl ? (
+            <svg className="owl toasty" viewBox="0 0 120 130" aria-hidden="true" key={shown.key}>
+              <use href={`#owl-${shown.owl}`} />
+            </svg>
+          ) : (
+            <Icon name={shown.icon} />
+          )}
           <span>{shown.msg}</span>
         </>
       )}

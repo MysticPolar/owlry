@@ -52,10 +52,21 @@ export type ChatItem =
   | { kind: 'typing'; id: number }
   | { kind: 'letter'; id: number; book: GuideId };
 
+/** The cast (docs/story-bible.md). */
+export type OwlName = 'scout' | 'peek' | 'scribe' | 'mirror' | 'keeper';
+
 export interface ToastState {
   icon: string;
   msg: string;
   key: number;
+  /** when a moment belongs to an owl, the toast carries its face */
+  owl?: OwlName;
+}
+
+/** a moment an owl reacts to — any mounted CastOwl of that name pops */
+export interface OwlReact {
+  owl: OwlName;
+  nonce: number;
 }
 
 export interface OwlState {

@@ -1,14 +1,17 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useStore } from '../store/useStore';
+import type { OwlName } from '../store/types';
 
 /* ============================================================
-   The cast, tappable. Every owl in the app answers a tap with a
-   line in its own voice (docs/story-bible.md) and a little pop.
+   The cast, tappable and reactive. Every owl answers a tap with a
+   line in its own voice (docs/story-bible.md) and a little pop —
+   and pops on its own when a moment in its territory happens
+   (store.owlReact: keeper on save/finish, peek on letters, …).
    The svg keeps the mockup's `.owl.hero/.owl.mini` classes so all
    positioning/animation CSS applies; the pop animates an INNER
    group so it composes with the hero's swoop/perch transforms.
    ============================================================ */
-export type CastOwlName = 'scout' | 'peek' | 'scribe' | 'mirror' | 'keeper';
+export type CastOwlName = OwlName;
 
 const VOICE: Record<CastOwlName, string[]> = {
   scout: [
@@ -52,11 +55,16 @@ export function owlLine(owl: CastOwlName): string {
 
 export function CastOwl({ owl, cls }: { owl: CastOwlName; cls: 'hero' | 'mini' }) {
   const showToast = useStore((s) => s.showToast);
+  const react = useStore((s) => s.owlReact);
   const [nonce, setNonce] = useState(0);
   const speak = () => {
     showToast('ti-feather', owlLine(owl));
     setNonce((n) => n + 1);
   };
+  // pop when a moment in this owl's territory happens anywhere in the app
+  useEffect(() => {
+    if (react && react.owl === owl) setNonce((n) => n + 1);
+  }, [react, owl]);
   return (
     <svg
       className={`owl ${cls} tap`}

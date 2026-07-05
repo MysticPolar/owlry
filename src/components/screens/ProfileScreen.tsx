@@ -150,9 +150,9 @@ function QuoteCard({ index }: { index: number }) {
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(`“${q.x}” — ${bk.a}, ${bk.t}`);
-      showToast('ti-copy', 'quote copied');
+      showToast('ti-copy', 'copied — word for word.', 'scribe');
     } catch {
-      showToast('ti-copy', 'quote ready to keep');
+      showToast('ti-copy', 'kept. word for word.', 'scribe');
     }
     setDone(false);
     requestAnimationFrame(() => setDone(true));

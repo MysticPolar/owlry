@@ -21,7 +21,7 @@ import { callLiveOwl, buildReplyTurns, greetTurns } from '../lib/owl/liveOwl';
 
 import { repository } from './persistence';
 import { SEED } from './seed';
-import type { PersistedState, Prefs, Tab, LibTab, OwlState, ReaderState, ToastState } from './types';
+import type { PersistedState, Prefs, Tab, LibTab, OwlState, OwlName, OwlReact, ReaderState, ToastState } from './types';
 
 /** The live owl answers when a backend is configured and the user hasn't pinned the mockup. */
 const liveOwlEnabled = (prefs: Prefs): boolean =>
@@ -37,6 +37,7 @@ export interface Store extends PersistedState {
   sheetId: BookId | null;
   letterId: GuideId | null;
   toast: ToastState | null;
+  owlReact: OwlReact | null;
   burstNonce: number;
   owl: OwlState;
   openedLetters: GuideId[];
@@ -52,7 +53,7 @@ export interface Store extends PersistedState {
   toggleSave: (id: BookId) => void;
   addXP: (n: number) => void;
   addInk: (n: number) => void;
-  showToast: (icon: string, msg: string) => void;
+  showToast: (icon: string, msg: string, owl?: OwlName) => void;
   triggerBurst: () => void;
   openReader: (id: BookId, page?: number) => void;
   closeReader: () => void;
@@ -109,6 +110,7 @@ export const useStore = create<Store>()(
     sheetId: null,
     letterId: null,
     toast: null,
+    owlReact: null,
     burstNonce: 0,
     owl: {
       messages: [],
@@ -145,10 +147,10 @@ export const useStore = create<Store>()(
       const { savedIds } = get();
       if (savedIds.includes(id)) {
         set({ savedIds: savedIds.filter((x) => x !== id) });
-        get().showToast('ti-heart-broken', 'removed from library');
+        get().showToast('ti-heart-broken', 'unshelved. keeper noticed.', 'keeper');
       } else {
         set({ savedIds: [...savedIds, id] });
-        get().showToast('ti-heart', 'saved to library · +5 XP');
+        get().showToast('ti-heart', 'shelved · +5 XP', 'keeper');
         get().addXP(5);
       }
     },
@@ -181,9 +183,13 @@ export const useStore = create<Store>()(
       }
     },
 
-    showToast: (icon, msg) => {
+    showToast: (icon, msg, owl) => {
       const key = nextId();
-      set({ toast: { icon, msg, key } });
+      set((st) => ({
+        toast: { icon, msg, key, owl },
+        // the owning owl reacts wherever it's perched (any mounted CastOwl pops)
+        owlReact: owl ? { owl, nonce: (st.owlReact?.nonce ?? 0) + 1 } : st.owlReact,
+      }));
       clearTimeout(toastTimer);
       toastTimer = setTimeout(() => {
         if (get().toast?.key === key) set({ toast: null });
@@ -235,7 +241,7 @@ export const useStore = create<Store>()(
       const readingIds = s.readingIds.filter((x) => x !== id);
       const finishedIds = s.finishedIds.includes(id) ? s.finishedIds : [id, ...s.finishedIds];
       set({ pagesRead, readingIds, finishedIds, reader: { open: false, id: null, p: 1 } });
-      get().showToast('ti-trophy', 'finished! +40 XP');
+      get().showToast('ti-trophy', 'finished — counted twice. +40 XP', 'keeper');
       get().addXP(40);
     },
 
@@ -247,7 +253,7 @@ export const useStore = create<Store>()(
       const { openedLetters } = get();
       if (!openedLetters.includes(id)) {
         set({ openedLetters: [...openedLetters, id] });
-        get().showToast('ti-mail-opened', 'a letter, opened · +5 XP');
+        get().showToast('ti-mail-opened', 'a letter, opened · +5 XP', 'peek');
         get().addXP(5);
       }
     },
@@ -380,7 +386,7 @@ export const useStore = create<Store>()(
       // breaks — reading pages refills the well and the live owl returns.
       const liveWanted = liveOwlEnabled(s.prefs);
       if (liveWanted && s.ink < 1) {
-        get().showToast('ti-pencil', 'the inkwell is dry — a few pages will refill it');
+        get().showToast('ti-pencil', 'the inkwell is dry — a few pages will refill it', 'scout');
       }
       if (liveWanted && s.ink >= 1) {
         get().addInk(-1); // spend up front; refunded if the delivery fails
