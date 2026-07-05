@@ -102,7 +102,7 @@ export const OWL_SCHEMA = {
    never call this; their letters are curated.)
    ============================================================ */
 
-export const OWL_LETTER_MAX_TOKENS = 1800;
+export const OWL_LETTER_MAX_TOKENS = 2200;
 
 export const LETTER_SYSTEM = `You write the reading letters of Owlry — the letters the owl at the post desk sorts for its visitors. A letter takes ONE real book, opens it to the one chapter (or section) the reader needs right now, and walks them through it with the specificity of someone who has genuinely read it.
 
@@ -114,12 +114,14 @@ THE READER. You are given what the reader asked the desk for. Let it shape the l
 
 THE SHAPE — reply with one JSON object, nothing else:
 - "res": one sentence, the feeling the reader arrived with, second person, present tense. (e.g. "It's late, your mind won't dim, and sleep keeps slipping just out of reach.")
+- "pages": the book's approximate page count — a plausible whole number for a common edition.
 - "chap": the recommended chapter/part — its real name, short, no quotes around it.
 - "core": the chapter's actual argument, 60–90 words, written as a flowing paragraph — what the author claims and why it matters.
 - "ins": EXACTLY three insights from the chapter/book. Each: "t" a 3–7 word title; "r" the reasoning, 30–45 words; "ex" one concrete example, story, or detail the author actually uses, 25–40 words; "q" a verbatim quote {t, by} or null (at most one non-null across all three).
 - "close": 1–2 sentences that land the argument back on the reader's own situation.
 - "take": exactly two short imperatives to carry away (each ≤ 15 words).
 - "ask": exactly two questions for the reader to sit with (each ≤ 18 words).
+- "fr": exactly two or three further-reading neighbours, each {"title", "author", "why"} — real, well-regarded books, "why" ≤ 12 words in the desk's voice ("if the real obstacle is the 3 a.m. thoughts"), never repeating this letter's book.
 
 A condensed example of the register (for Why We Sleep, reader who can't switch off):
 res "It's late, your mind won't dim, and sleep keeps slipping just out of reach." · chap "Caffeine, Jet Lag, and Melatonin" · core "Walker's argument is that falling asleep isn't one switch but two independent systems that must agree: a circadian clock timing your wakefulness, and a chemical pressure — adenosine — building for every minute you're awake. Most modern sleeplessness comes from setting these two against each other, and caffeine is the most common saboteur: it doesn't remove sleep pressure, it only hides it from you." · an insight: t "Sleepiness is a chemical debt, not a mood" / r "Adenosine accumulates from the moment you wake; high concentration is felt as sleep pressure. The debt can be masked but never negotiated — it waits." / ex "He describes the caffeine crash: when the drug clears the receptors it was blocking, the accumulated backlog of adenosine lands at once, leaving you sleepier than before the cup." · close "So tonight's sleeplessness isn't a character flaw — it's two systems out of sync, and both respond to small, boring adjustments far better than to effort." · take "Protect the last eight to ten hours before bed from caffeine — it's arithmetic, not willpower." · ask "What time was today's last coffee — and what time did your brain actually clock out?"
@@ -129,9 +131,10 @@ Respond ONLY with the JSON object.`;
 export const OWL_LETTER_SCHEMA = {
   type: 'object',
   additionalProperties: false,
-  required: ['res', 'chap', 'core', 'ins', 'close', 'take', 'ask'],
+  required: ['res', 'pages', 'chap', 'core', 'ins', 'close', 'take', 'ask', 'fr'],
   properties: {
     res: { type: 'string' },
+    pages: { type: 'integer' },
     chap: { type: 'string' },
     core: { type: 'string' },
     ins: {
@@ -161,5 +164,14 @@ export const OWL_LETTER_SCHEMA = {
     close: { type: 'string' },
     take: { type: 'array', items: { type: 'string' } },
     ask: { type: 'array', items: { type: 'string' } },
+    fr: {
+      type: 'array',
+      items: {
+        type: 'object',
+        additionalProperties: false,
+        required: ['title', 'author', 'why'],
+        properties: { title: { type: 'string' }, author: { type: 'string' }, why: { type: 'string' } },
+      },
+    },
   },
 } as const;

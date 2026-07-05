@@ -15,7 +15,6 @@ import { SAL, FLAVOR, START_CHIPS, dayPart } from '../content/owl';
 import { respond, newSession } from '../lib/owlBrain';
 import type { OwlMessage } from '../lib/owlBrain';
 import type { BookId, GuideId } from '../content/types';
-import { isGuide } from '../lib/format';
 import { isBackendConfigured } from '../lib/supabase';
 import { getLocalWeather } from '../lib/weather';
 import { callLiveOwl, buildReplyTurns, greetTurns, generateRecLetter } from '../lib/owl/liveOwl';
@@ -101,6 +100,14 @@ let saveTimer: ReturnType<typeof setTimeout> | undefined;
 const recLetterCache = new Map<string, GeneratedLetter>();
 const recKey = (title: string) => title.trim().toLowerCase();
 export const getRecLetterData = (title: string): GeneratedLetter | undefined => recLetterCache.get(recKey(title));
+
+// test hook (verification builds only): seed a generated letter without a backend
+// (`import.meta.env` guarded — undefined outside Vite, e.g. the node test runner)
+const _env = (import.meta.env ?? {}) as Record<string, string | undefined>;
+if (_env.VITE_EXPOSE_STORE === '1' && typeof window !== 'undefined') {
+  (window as unknown as { __owlrySeedLetter: (t: string, d: GeneratedLetter) => void }).__owlrySeedLetter = (t, d) =>
+    recLetterCache.set(recKey(t), d);
+}
 
 function extractPersisted(s: Store): PersistedState {
   return {
@@ -447,18 +454,20 @@ export const useStore = create<Store>()(
               return { owl: { ...st.owl, busy: false, messages, chips } };
             });
             // every named book becomes a letter card, arriving a beat apart —
-            // zero tokens: content generates only when a card is tapped. Books
-            // that match a catalog guide reuse the curated letter outright.
+            // zero tokens: content generates only when a card is tapped, and
+            // always fresh, written to THIS reader's ask (never the canned
+            // catalog letter — those belong to the classic engine).
             books.forEach((bk, i) => {
               setTimeout(() => {
-                const hit = (Object.keys(BOOKS) as BookId[]).find(
-                  (bid) => BOOKS[bid].t.toLowerCase() === bk.title.trim().toLowerCase(),
-                );
-                const card =
-                  hit && isGuide(hit)
-                    ? ({ kind: 'letter', id: nextId(), book: hit } as const)
-                    : ({ kind: 'recletter', id: nextId(), title: bk.title, author: bk.author, note: bk.note } as const);
-                set((st) => ({ owl: { ...st.owl, messages: [...st.owl.messages, card] } }));
+                set((st) => ({
+                  owl: {
+                    ...st.owl,
+                    messages: [
+                      ...st.owl.messages,
+                      { kind: 'recletter', id: nextId(), title: bk.title, author: bk.author, note: bk.note },
+                    ],
+                  },
+                }));
               }, 450 + i * 340);
             });
           } catch (err) {

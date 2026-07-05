@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useStore, getRecLetterData } from '../../store/useStore';
 import { BOOKS } from '../../content/books';
 import { GUIDES } from '../../content/guides';
@@ -6,6 +6,57 @@ import { isGuide } from '../../lib/format';
 import { Icon } from '../Icon';
 import { Cover } from '../Cover';
 import { CastOwl } from '../CastOwl';
+
+/* the desk, writing — a typewriter line while a letter generates */
+const WRITING = ['opening the book…', 'finding the right chapter…', 'writing your letter…', 'sealing the envelope…'];
+function Typewriter() {
+  const [txt, setTxt] = useState('');
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setTxt('writing your letter…');
+      return;
+    }
+    let phrase = 0;
+    let ch = 0;
+    let timer: ReturnType<typeof setTimeout>;
+    const tick = () => {
+      const line = WRITING[phrase % WRITING.length];
+      if (ch <= line.length) {
+        setTxt(line.slice(0, ch));
+        ch += 1;
+        timer = setTimeout(tick, 42);
+      } else {
+        phrase += 1;
+        ch = 0;
+        timer = setTimeout(tick, 1100);
+      }
+    };
+    tick();
+    return () => clearTimeout(timer);
+  }, []);
+  return (
+    <div className="l-type it" aria-live="off">
+      {txt}
+      <span className="l-caret" aria-hidden="true" />
+    </div>
+  );
+}
+
+/* a small deterministic faux cover for open-world further-reading rows */
+const FR_COVERS = ['#2F5757', '#2A3852', '#56324B', '#7A2E2E', '#3D405B', '#5E7A55', '#8A5A2B', '#403B33'];
+function PseudoCover({ title }: { title: string }) {
+  let h = 0;
+  for (let i = 0; i < title.length; i++) h = (h * 31 + title.charCodeAt(i)) >>> 0;
+  const bg = FR_COVERS[h % FR_COVERS.length];
+  const words = title.split(/\s+/).slice(0, 2);
+  return (
+    <div className="cover cover-xs" style={{ background: bg }}>
+      <div className="it" style={{ color: '#E8E0BC' }}>
+        {words.join(' ')}
+      </div>
+    </div>
+  );
+}
 
 export function Letter() {
   const letterId = useStore((s) => s.letterId);
@@ -168,17 +219,15 @@ export function Letter() {
           <div className="l-swap" key={rec.title + rec.status}>
             <div className="l-kick">OWL POST · READING LETTER</div>
             <div className="l-ttl d">{rec.title}</div>
-            <div className="l-auth">{rec.author}</div>
-            {rec.note && <div className="l-res it">{rec.note}</div>}
+            <div className="l-auth">
+              {rec.author}
+              {recData?.pages ? ` · ${recData.pages} pages` : ''}
+            </div>
+            {rec.note && rec.status !== 'ready' && <div className="l-res it">{rec.note}</div>}
 
             {rec.status === 'loading' && (
               <div className="l-wait">
-                <span className="tdots" aria-hidden="true">
-                  <span />
-                  <span />
-                  <span />
-                </span>
-                <div className="it">sorting your letter…</div>
+                <Typewriter />
               </div>
             )}
 
@@ -203,7 +252,7 @@ export function Letter() {
                 <div className="l-sec">1 · THE CORE IDEA</div>
                 <p className="l-p">{recData.core}</p>
 
-                <div className="l-sec">2 · INSIGHTS FROM THE BOOK</div>
+                <div className="l-sec">2 · INSIGHTS FROM THE CHAPTER</div>
                 {recData.ins.map((n, i) => (
                   <div className="l-ins" key={i}>
                     <div className="l-ins-t d">
@@ -236,6 +285,25 @@ export function Letter() {
                     {t}
                   </p>
                 ))}
+
+                {recData.fr.length > 0 && (
+                  <>
+                    <div className="l-sec">FURTHER READING</div>
+                    {recData.fr.map((f, i) => (
+                      <button className="fr-row" key={i} onClick={() => openRecLetter(f.title, f.author, f.why)}>
+                        <PseudoCover title={f.title} />
+                        <span className="fr-txt">
+                          <span className="rtitle d">{f.title}</span>
+                          <span className="rauth" style={{ display: 'block' }}>
+                            {f.author}
+                          </span>
+                          <span className="fr-why">{f.why}</span>
+                        </span>
+                        <Icon name="ti-mail" className="fr-mark" />
+                      </button>
+                    ))}
+                  </>
+                )}
                 <div className="l-sign it">— sorted with care, the owl post office</div>
               </>
             )}

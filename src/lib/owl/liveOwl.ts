@@ -152,12 +152,14 @@ export interface GeneratedInsight {
 }
 export interface GeneratedLetter {
   res: string;
+  pages?: number;
   chap: string;
   core: string;
   ins: GeneratedInsight[];
   close: string;
   take: string[];
   ask: string[];
+  fr: { title: string; author: string; why: string }[];
 }
 
 function guardLetter(d: Partial<GeneratedLetter>): GeneratedLetter {
@@ -174,12 +176,17 @@ function guardLetter(d: Partial<GeneratedLetter>): GeneratedLetter {
   if (!str(d.core) || !ins.length) throw new Error('owl-letter: malformed letter');
   return {
     res: str(d.res),
+    pages: typeof d.pages === 'number' && d.pages > 0 ? Math.round(d.pages) : undefined,
     chap: str(d.chap),
     core: str(d.core),
     ins,
     close: str(d.close),
     take: (Array.isArray(d.take) ? d.take : []).filter((t): t is string => typeof t === 'string').slice(0, 2),
     ask: (Array.isArray(d.ask) ? d.ask : []).filter((t): t is string => typeof t === 'string').slice(0, 2),
+    fr: (Array.isArray(d.fr) ? d.fr : [])
+      .filter((f) => f && typeof f.title === 'string' && f.title.trim())
+      .slice(0, 3)
+      .map((f) => ({ title: str(f.title), author: str(f.author), why: str(f.why) })),
   };
 }
 
