@@ -15,13 +15,26 @@ import { SAL, FLAVOR, START_CHIPS, dayPart } from '../content/owl';
 import { respond, newSession } from '../lib/owlBrain';
 import type { OwlMessage } from '../lib/owlBrain';
 import type { BookId, GuideId } from '../content/types';
+import { isGuide } from '../lib/format';
 import { isBackendConfigured } from '../lib/supabase';
 import { getLocalWeather } from '../lib/weather';
-import { callLiveOwl, buildReplyTurns, greetTurns } from '../lib/owl/liveOwl';
+import { callLiveOwl, buildReplyTurns, greetTurns, generateRecLetter } from '../lib/owl/liveOwl';
+import type { GeneratedLetter } from '../lib/owl/liveOwl';
 
 import { repository } from './persistence';
 import { SEED } from './seed';
-import type { PersistedState, Prefs, Tab, LibTab, OwlState, OwlName, OwlReact, ReaderState, ToastState } from './types';
+import type {
+  PersistedState,
+  Prefs,
+  Tab,
+  LibTab,
+  OwlState,
+  OwlName,
+  OwlReact,
+  ReaderState,
+  RecLetterState,
+  ToastState,
+} from './types';
 
 /** The live owl answers when a backend is configured and the user hasn't pinned the mockup. */
 const liveOwlEnabled = (prefs: Prefs): boolean =>
@@ -36,6 +49,8 @@ export interface Store extends PersistedState {
   reader: ReaderState;
   sheetId: BookId | null;
   letterId: GuideId | null;
+  /** the open-world letter being viewed (mutually exclusive with letterId) */
+  recLetter: RecLetterState | null;
   toast: ToastState | null;
   owlReact: OwlReact | null;
   burstNonce: number;
@@ -63,6 +78,7 @@ export interface Store extends PersistedState {
   openSheet: (id: BookId) => void;
   closeSheet: () => void;
   openLetter: (id: GuideId) => void;
+  openRecLetter: (title: string, author: string, note?: string) => void;
   closeLetter: () => void;
   openSettings: () => void;
   closeSettings: () => void;
@@ -79,6 +95,12 @@ const nextId = () => ++chatId;
 
 let toastTimer: ReturnType<typeof setTimeout> | undefined;
 let saveTimer: ReturnType<typeof setTimeout> | undefined;
+
+/* generated open-world letters, cached per book for the session — a tap
+   generates once; every later open is free */
+const recLetterCache = new Map<string, GeneratedLetter>();
+const recKey = (title: string) => title.trim().toLowerCase();
+export const getRecLetterData = (title: string): GeneratedLetter | undefined => recLetterCache.get(recKey(title));
 
 function extractPersisted(s: Store): PersistedState {
   return {
@@ -109,6 +131,7 @@ export const useStore = create<Store>()(
     reader: { open: false, id: null, p: 1 },
     sheetId: null,
     letterId: null,
+    recLetter: null,
     toast: null,
     owlReact: null,
     burstNonce: 0,
@@ -257,7 +280,28 @@ export const useStore = create<Store>()(
         get().addXP(5);
       }
     },
-    closeLetter: () => set({ letterId: null }),
+    closeLetter: () => set({ letterId: null, recLetter: null }),
+
+    openRecLetter: (title, author, note) => {
+      const cached = recLetterCache.get(recKey(title));
+      set({ recLetter: { title, author, note, status: cached ? 'ready' : 'loading' }, sheetId: null });
+      if (cached) return;
+      // ground the letter in what the reader actually asked for
+      const msgs = get().owl.messages;
+      const lastAsk = [...msgs].reverse().find((m) => m.kind === 'msg' && m.who === 'me');
+      const context = lastAsk && lastAsk.kind === 'msg' ? lastAsk.nodes.map((n) => (n.t === 'rec' ? n.title : n.v)).join('') : '';
+      void generateRecLetter(title, author, [context, note].filter(Boolean).join(' · '))
+        .then((data) => {
+          recLetterCache.set(recKey(title), data);
+          const cur = get().recLetter;
+          if (cur && recKey(cur.title) === recKey(title)) set({ recLetter: { ...cur, status: 'ready' } });
+        })
+        .catch((err) => {
+          console.warn('[owlry] letter generation failed:', err);
+          const cur = get().recLetter;
+          if (cur && recKey(cur.title) === recKey(title)) set({ recLetter: { ...cur, status: 'error' } });
+        });
+    },
 
     openSettings: () => set({ settingsOpen: true }),
     closeSettings: () => set({ settingsOpen: false }),
@@ -393,7 +437,7 @@ export const useStore = create<Store>()(
         void (async () => {
           const turns = buildReplyTurns(get().owl.messages);
           try {
-            const { msgs, chips } = await callLiveOwl(turns);
+            const { msgs, chips, books } = await callLiveOwl(turns);
             get().addXP(3);
             set((st) => {
               let messages = st.owl.messages.filter((m) => m.id !== typingId);
@@ -401,6 +445,21 @@ export const useStore = create<Store>()(
                 messages = [...messages, { kind: 'msg', id: nextId(), who: 'owl', nodes }];
               });
               return { owl: { ...st.owl, busy: false, messages, chips } };
+            });
+            // every named book becomes a letter card, arriving a beat apart —
+            // zero tokens: content generates only when a card is tapped. Books
+            // that match a catalog guide reuse the curated letter outright.
+            books.forEach((bk, i) => {
+              setTimeout(() => {
+                const hit = (Object.keys(BOOKS) as BookId[]).find(
+                  (bid) => BOOKS[bid].t.toLowerCase() === bk.title.trim().toLowerCase(),
+                );
+                const card =
+                  hit && isGuide(hit)
+                    ? ({ kind: 'letter', id: nextId(), book: hit } as const)
+                    : ({ kind: 'recletter', id: nextId(), title: bk.title, author: bk.author, note: bk.note } as const);
+                set((st) => ({ owl: { ...st.owl, messages: [...st.owl.messages, card] } }));
+              }, 450 + i * 340);
             });
           } catch (err) {
             get().addInk(1); // the desk refunds failed deliveries

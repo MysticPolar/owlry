@@ -50,7 +50,10 @@ export interface PersistedState {
 export type ChatItem =
   | { kind: 'msg'; id: number; who: 'owl' | 'me'; nodes: OwlMessage }
   | { kind: 'typing'; id: number }
-  | { kind: 'letter'; id: number; book: GuideId };
+  | { kind: 'letter'; id: number; book: GuideId }
+  /** a letter card for an open-world (live) recommendation — content is
+      generated lazily, only when the reader taps the card */
+  | { kind: 'recletter'; id: number; title: string; author: string; note?: string };
 
 /** The cast (docs/story-bible.md). */
 export type OwlName = 'scout' | 'peek' | 'scribe' | 'mirror' | 'keeper';
@@ -77,6 +80,14 @@ export interface OwlState {
   session: OwlSession;
   busy: boolean;
   started: boolean;
+}
+
+/** an open-world reading letter being viewed (content arrives lazily) */
+export interface RecLetterState {
+  title: string;
+  author: string;
+  note?: string;
+  status: 'loading' | 'ready' | 'error';
 }
 
 export interface ReaderState {

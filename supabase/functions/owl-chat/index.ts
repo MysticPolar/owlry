@@ -18,7 +18,16 @@
 //          (or OWL_PROVIDER=anthropic ANTHROPIC_API_KEY=sk-ant-...)
 // ============================================================
 import { corsHeaders, jsonResponse } from '../_shared/cors.ts';
-import { OWL_SYSTEM, OWL_SCHEMA, OWL_MODEL, OWL_GEMINI_MODEL, OWL_MAX_TOKENS } from './owl-system.ts';
+import {
+  OWL_SYSTEM,
+  OWL_SCHEMA,
+  OWL_MODEL,
+  OWL_GEMINI_MODEL,
+  OWL_MAX_TOKENS,
+  LETTER_SYSTEM,
+  OWL_LETTER_SCHEMA,
+  OWL_LETTER_MAX_TOKENS,
+} from './owl-system.ts';
 
 interface Turn {
   role: 'user' | 'assistant';
@@ -89,6 +98,48 @@ async function anthropicReply(turns: Turn[], apiKey: string): Promise<string> {
   return textBlock?.text ?? '';
 }
 
+/** Claude: write a reading letter for one open-world book (tap-triggered, cached client-side). */
+async function anthropicLetter(title: string, author: string, context: string, apiKey: string): Promise<string> {
+  const Anthropic = (await import('npm:@anthropic-ai/sdk')).default;
+  const client = new Anthropic({ apiKey });
+  const ask = context ? ` The reader's ask: "${context}".` : '';
+  const res = await client.messages.create({
+    model: OWL_MODEL,
+    max_tokens: OWL_LETTER_MAX_TOKENS,
+    thinking: { type: 'disabled' },
+    // letters are the product — worth a notch more deliberation than chat turns
+    system: [{ type: 'text', text: LETTER_SYSTEM, cache_control: { type: 'ephemeral' } }],
+    messages: [{ role: 'user', content: `The book: ${title} by ${author}.${ask} Write the reading letter.` }],
+    output_config: { effort: 'medium', format: { type: 'json_schema', schema: OWL_LETTER_SCHEMA } },
+    // deno-lint-ignore no-explicit-any
+  } as any);
+  if (res.stop_reason === 'refusal') return '';
+  const textBlock = res.content.find((b: { type: string }) => b.type === 'text') as
+    | { type: 'text'; text: string }
+    | undefined;
+  return textBlock?.text ?? '';
+}
+
+/** Gemini letter variant (JSON mode; schema enforced by prompt + client guard). */
+async function geminiLetter(title: string, author: string, context: string, apiKey: string): Promise<string> {
+  const { GoogleGenAI } = await import('npm:@google/genai');
+  const ai = new GoogleGenAI({ apiKey });
+  const ask = context ? ` The reader's ask: "${context}".` : '';
+  const response = await ai.models.generateContent({
+    model: OWL_GEMINI_MODEL,
+    contents: [{ role: 'user', parts: [{ text: `The book: ${title} by ${author}.${ask} Write the reading letter.` }] }],
+    config: {
+      systemInstruction: LETTER_SYSTEM,
+      maxOutputTokens: 2400,
+      temperature: 0.7,
+      responseMimeType: 'application/json',
+      thinkingConfig: { thinkingBudget: 0 },
+    },
+    // deno-lint-ignore no-explicit-any
+  } as any);
+  return (response.text ?? '').trim();
+}
+
 /** Gemini: JSON mode via responseMimeType; thinking disabled so the short reply stays fast. */
 async function geminiReply(turns: Turn[], apiKey: string): Promise<string> {
   const { GoogleGenAI } = await import('npm:@google/genai');
@@ -125,11 +176,40 @@ Deno.serve(async (req: Request): Promise<Response> => {
   if (!apiKey) return jsonResponse({ error: `owl-chat: ${provider} key not configured` }, 503);
 
   let turns: Turn[];
+  let letterFor: { title: string; author: string } | null = null;
+  let letterContext = '';
   try {
-    const body = (await req.json()) as { turns?: Turn[] };
+    const body = (await req.json()) as {
+      turns?: Turn[];
+      letterFor?: { title?: string; author?: string };
+      context?: string;
+    };
     turns = Array.isArray(body.turns) ? body.turns : [];
+    if (body.letterFor && typeof body.letterFor.title === 'string' && body.letterFor.title.trim()) {
+      letterFor = {
+        title: body.letterFor.title.trim().slice(0, 200),
+        author: String(body.letterFor.author ?? '').trim().slice(0, 200),
+      };
+      letterContext = String(body.context ?? '').slice(0, 400);
+    }
   } catch {
     return jsonResponse({ error: 'invalid body' }, 400);
+  }
+
+  // ── letter mode: write one reading letter for a tapped recommendation ──
+  if (letterFor) {
+    try {
+      const text =
+        provider === 'gemini'
+          ? await geminiLetter(letterFor.title, letterFor.author, letterContext, apiKey)
+          : await anthropicLetter(letterFor.title, letterFor.author, letterContext, apiKey);
+      if (!text) return jsonResponse({ error: 'letter refused' }, 502);
+      return jsonResponse(JSON.parse(text));
+    } catch (err) {
+      console.error('owl-letter error', err);
+      const e = err as { status?: number; message?: string };
+      return jsonResponse({ error: 'owl-letter upstream error', detail: { status: e?.status ?? null, message: e?.message ?? String(err) } }, 502);
+    }
   }
 
   // keep the window bounded (cost + latency); the desk doesn't need deep history

@@ -141,6 +141,7 @@ function Chat() {
   const active = useStore((s) => s.activeTab === 'discover');
   const openSheet = useStore((s) => s.openSheet);
   const openLetter = useStore((s) => s.openLetter);
+  const openRecLetter = useStore((s) => s.openRecLetter);
   const kb = useKeyboardInset();
   const ref = useRef<HTMLDivElement>(null);
   const prevCount = useRef(0);
@@ -181,6 +182,20 @@ function Chat() {
                 <span className="lc-t d">a reading letter has arrived</span>
                 <br />
                 <span className="lc-s">{BOOKS[m.book].t} — tap to open</span>
+              </span>
+            </button>
+          );
+        }
+        if (m.kind === 'recletter') {
+          return (
+            <button key={m.id} className="lettercard" onClick={() => openRecLetter(m.title, m.author, m.note)}>
+              <span className="stamp">
+                <Icon name="ti-feather" />
+              </span>
+              <span>
+                <span className="lc-t d">a reading letter has arrived</span>
+                <br />
+                <span className="lc-s">{m.title} — tap to open</span>
               </span>
             </button>
           );

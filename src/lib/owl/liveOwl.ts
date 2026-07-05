@@ -32,6 +32,8 @@ interface OwlReplyPayload {
 export interface LiveReply {
   msgs: OwlMessage[];
   chips: string[];
+  /** every book named in the reply (letter + picks, deduped) — one letter card each */
+  books: { title: string; author: string; note?: string }[];
 }
 
 const OPENER: Turn = { role: 'user', text: '(a visitor sits down at the post desk.)' };
@@ -115,7 +117,15 @@ function payloadToReply(p: OwlReplyPayload): LiveReply {
     ...(Array.isArray(p.picks) ? p.picks : []),
   ];
   const nodes = wrapTitles(p.say || '', recs);
-  return { msgs: [nodes], chips: Array.isArray(p.chips) ? p.chips : [] };
+  // every named book, deduped by title — each becomes a letter card in the chat
+  const seen = new Set<string>();
+  const books = recs.filter((r) => {
+    const k = (r.title || '').trim().toLowerCase();
+    if (!k || seen.has(k)) return false;
+    seen.add(k);
+    return true;
+  });
+  return { msgs: [nodes], chips: Array.isArray(p.chips) ? p.chips : [], books };
 }
 
 /**
@@ -127,4 +137,58 @@ export async function callLiveOwl(turns: Turn[]): Promise<LiveReply> {
   const { data, error } = await supabase.functions.invoke('owl-chat', { body: { turns } });
   if (error || !data) throw error ?? new Error('owl-chat: empty response');
   return payloadToReply(data as OwlReplyPayload);
+}
+
+/* ============================================================
+   Reading letters for open-world books — generated lazily, only
+   when the reader taps a letter card. Shaped like the catalog's
+   GUIDES letters so the paper overlay renders both the same way.
+   ============================================================ */
+export interface GeneratedInsight {
+  t: string;
+  r: string;
+  ex: string;
+  q?: { t: string; by: string };
+}
+export interface GeneratedLetter {
+  res: string;
+  chap: string;
+  core: string;
+  ins: GeneratedInsight[];
+  close: string;
+  take: string[];
+  ask: string[];
+}
+
+function guardLetter(d: Partial<GeneratedLetter>): GeneratedLetter {
+  const str = (v: unknown): string => (typeof v === 'string' ? v : '');
+  const ins = (Array.isArray(d.ins) ? d.ins : [])
+    .filter((i) => i && typeof i.t === 'string')
+    .slice(0, 3)
+    .map((i) => ({
+      t: str(i.t),
+      r: str(i.r),
+      ex: str(i.ex),
+      ...(i.q && typeof i.q.t === 'string' ? { q: { t: str(i.q.t), by: str(i.q.by) } } : {}),
+    }));
+  if (!str(d.core) || !ins.length) throw new Error('owl-letter: malformed letter');
+  return {
+    res: str(d.res),
+    chap: str(d.chap),
+    core: str(d.core),
+    ins,
+    close: str(d.close),
+    take: (Array.isArray(d.take) ? d.take : []).filter((t): t is string => typeof t === 'string').slice(0, 2),
+    ask: (Array.isArray(d.ask) ? d.ask : []).filter((t): t is string => typeof t === 'string').slice(0, 2),
+  };
+}
+
+/** Generate a reading letter for one recommended book (one model call, cached by the store). */
+export async function generateRecLetter(title: string, author: string, context?: string): Promise<GeneratedLetter> {
+  if (!supabase) throw new Error('owl-letter: backend not configured');
+  const { data, error } = await supabase.functions.invoke('owl-chat', {
+    body: { letterFor: { title, author }, context: context ?? '' },
+  });
+  if (error || !data) throw error ?? new Error('owl-letter: empty response');
+  return guardLetter(data as Partial<GeneratedLetter>);
 }

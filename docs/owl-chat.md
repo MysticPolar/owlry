@@ -78,10 +78,15 @@ weaving the named titles back into the owl's prose as styled mentions.
 
 ## Known v1 limits / next steps
 
-- **Open-world books have no reader or rich letter.** They're real
-  recommendations rendered as styled mentions (title + tooltip). The catalog's
-  Reader / About-sheet / 7-section Letter overlays remain a classic-owl feature.
-  A future `owl-letter` function could generate a letter on demand for any book.
+- **Open-world reading letters (lazy).** Every book a live reply names spawns
+  a letter card in the chat (zero tokens — cards come straight from the reply
+  payload, one per book, arriving a beat apart). Books matching a catalog
+  guide reuse the curated GUIDES letter outright; open-world books generate
+  their letter **only when the card is tapped** (`letterFor` mode on the
+  `owl-chat` function, `LETTER_SYSTEM` prompt, GUIDES-shaped JSON), cached per
+  book for the session so re-opening is free. The paper overlay renders both
+  sources identically; open-world letters skip further-reading/OPEN/SAVE
+  (catalog-only affordances). Open-world books still have no page-turn reader.
 - **Ink meters the live owl (local economy).** Each live reply costs 1 ink and
   grants +3 XP (the backend plan's chat cost); a failed delivery is refunded.
   With a dry inkwell the chat falls through to the free offline brain and a
