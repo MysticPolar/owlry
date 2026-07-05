@@ -154,7 +154,7 @@ export const useStore = create<Store>()(
       busy: false,
       started: false,
     },
-    deskMode: 'fiction',
+    deskMode: 'all',
     openedLetters: [],
     hydrated: false,
     settingsOpen: false,
@@ -426,11 +426,11 @@ export const useStore = create<Store>()(
           v:
             mode === 'pro'
               ? 'right — office hours. what are we solving?'
-              : 'off the clock. where shall we wander?',
+              : 'off the clock — the whole desk is open. where shall we wander?',
         },
       ];
       const chips =
-        mode === 'pro' ? ['need focus', 'build a habit', 'career', 'money'] : ['cozy escape', 'adventure', 'heartache', 'surprise me'];
+        mode === 'pro' ? ['need focus', 'build a habit', 'career', 'money'] : ['rest', 'cozy escape', 'feeling stuck', 'surprise me'];
       set((st) => ({
         owl: {
           ...st.owl,

@@ -289,15 +289,15 @@ export function DiscoverScreen() {
         <CastOwl owl="scout" cls="mini" variant={desk === 'pro' ? 'pro' : undefined} />
       </div>
 
-      {/* scout's two desks: stories, or office hours */}
+      {/* scout's two desks: the whole desk, or office hours (non-fiction only) */}
       <div className="deskrow" role="tablist" aria-label="Scout's desk">
         <button
-          className={`deskchip ${desk === 'fiction' ? 'on' : ''}`}
+          className={`deskchip ${desk === 'all' ? 'on' : ''}`}
           role="tab"
-          aria-selected={desk === 'fiction'}
-          onClick={() => setDeskMode('fiction')}
+          aria-selected={desk === 'all'}
+          onClick={() => setDeskMode('all')}
         >
-          FICTION
+          EVERYTHING
         </button>
         <button
           className={`deskchip ${desk === 'pro' ? 'on' : ''}`}

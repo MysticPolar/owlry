@@ -131,9 +131,10 @@ function payloadToReply(p: OwlReplyPayload): LiveReply {
 /**
  * Call the live owl. Throws if the backend isn't reachable or errors — the
  * caller falls back to the simulated brain. `desk` selects scout's mode:
- * 'fiction' (default) or 'pro' (office hours — non-fiction, goal-driven).
+ * 'all' (default — fiction and non-fiction, whatever fits) or 'pro'
+ * (office hours — non-fiction only, goal-driven).
  */
-export async function callLiveOwl(turns: Turn[], desk: 'fiction' | 'pro' = 'fiction'): Promise<LiveReply> {
+export async function callLiveOwl(turns: Turn[], desk: 'all' | 'pro' = 'all'): Promise<LiveReply> {
   if (!supabase) throw new Error('owl-chat: backend not configured');
   const { data, error } = await supabase.functions.invoke('owl-chat', { body: { turns, desk } });
   if (error || !data) throw error ?? new Error('owl-chat: empty response');
