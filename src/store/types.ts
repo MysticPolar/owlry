@@ -58,6 +58,10 @@ export type ChatItem =
 /** The cast (docs/story-bible.md). */
 export type OwlName = 'scout' | 'peek' | 'scribe' | 'mirror' | 'keeper';
 
+/** Scout's two desks: fiction (default, the storyteller) and non-fiction
+    ("office hours" — collar on, goal-driven, cooler stage). */
+export type DeskMode = 'fiction' | 'pro';
+
 export interface ToastState {
   icon: string;
   msg: string;

@@ -661,3 +661,30 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 /* typewriter while the desk writes */
 .l-type{font-size:14px;color:var(--mut);min-height:22px}
 .l-caret{display:inline-block;width:2px;height:14px;margin-left:2px;background:var(--gold);vertical-align:-2px;animation:blink 1s steps(1) infinite}
+
+/* ============================================================
+   Scout's two desks. FICTION is the house stage; NON-FICTION is
+   office hours — the chat goes graphite-dark and cooler (in both
+   lighting rigs) via scoped token overrides, scout puts a tie on.
+   ============================================================ */
+.deskrow{display:flex;gap:6px;padding:10px 22px 0;position:relative;z-index:2}
+.deskchip{flex:0 0 auto;background:var(--surface);border:1px solid var(--line2);border-radius:999px;
+  padding:6px 13px;font-family:'Anton',sans-serif;font-weight:400;font-size:10px;letter-spacing:.12em;
+  color:var(--mut);cursor:pointer;transition:background .25s ease,color .25s ease}
+.deskchip.on{background:var(--ember);border-color:transparent;color:#FFF6E8}
+
+#screen-discover{transition:background .45s ease}
+#screen-discover[data-desk="pro"]{
+  background:linear-gradient(180deg,#171A23 0%,#10131B 100%);
+  color:var(--ink); /* re-resolve inherited text against the scoped tokens */
+  --surface:#20242F;
+  --surface2:#272C3A;
+  --ink:#E9E7E0;
+  --mut:#9BA1AE;
+  --fade:#6E7480;
+  --line:rgba(150,165,200,.14);
+  --line2:rgba(150,165,200,.30);
+  --track:#262B37;
+  --ghost:rgba(233,231,224,.045);
+  --shadow-sm:0 8px 18px -10px rgba(0,0,0,.55);
+}

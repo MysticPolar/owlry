@@ -228,6 +228,7 @@ function Chips() {
 function Composer() {
   const send = useStore((s) => s.sendToOwl);
   const busy = useStore((s) => s.owl.busy);
+  const desk = useStore((s) => s.deskMode);
   const [val, setVal] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
   const submit = () => {
@@ -245,7 +246,7 @@ function Composer() {
           ref={inputRef}
           id="qIn"
           type="text"
-          placeholder="tell scout what’s going on…"
+          placeholder={desk === 'pro' ? 'tell scout what you’re solving…' : 'tell scout what’s going on…'}
           aria-label="Message scout"
           autoCapitalize="none"
           autoComplete="off"
@@ -266,6 +267,8 @@ function Composer() {
 
 export function DiscoverScreen() {
   const active = useStore((s) => s.activeTab === 'discover');
+  const desk = useStore((s) => s.deskMode);
+  const setDeskMode = useStore((s) => s.setDeskMode);
   const [popoverId, setPopoverId] = useState<BookId | null>(null);
 
   // close the popover when leaving discover
@@ -274,7 +277,7 @@ export function DiscoverScreen() {
   }, [active]);
 
   return (
-    <section className={`screen ${active ? 'on' : ''}`} id="screen-discover">
+    <section className={`screen ${active ? 'on' : ''}`} id="screen-discover" data-desk={desk}>
       <div className="pad-h" style={{ paddingBottom: 2 }}>
         <span className="ghost" aria-hidden="true">Scout</span>
         <h1 className="hl sm d">
@@ -283,7 +286,27 @@ export function DiscoverScreen() {
             discover<span className="gdot">.</span>
           </span>
         </h1>
-        <CastOwl owl="scout" cls="mini" />
+        <CastOwl owl="scout" cls="mini" variant={desk === 'pro' ? 'pro' : undefined} />
+      </div>
+
+      {/* scout's two desks: stories, or office hours */}
+      <div className="deskrow" role="tablist" aria-label="Scout's desk">
+        <button
+          className={`deskchip ${desk === 'fiction' ? 'on' : ''}`}
+          role="tab"
+          aria-selected={desk === 'fiction'}
+          onClick={() => setDeskMode('fiction')}
+        >
+          FICTION
+        </button>
+        <button
+          className={`deskchip ${desk === 'pro' ? 'on' : ''}`}
+          role="tab"
+          aria-selected={desk === 'pro'}
+          onClick={() => setDeskMode('pro')}
+        >
+          NON-FICTION
+        </button>
       </div>
 
       <div className="tray" id="tray">

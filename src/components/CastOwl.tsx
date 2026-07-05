@@ -13,11 +13,16 @@ import type { OwlName } from '../store/types';
    ============================================================ */
 export type CastOwlName = OwlName;
 
-const VOICE: Record<CastOwlName, string[]> = {
+const VOICE: Record<CastOwlName | 'scout-pro', string[]> = {
   scout: [
     'okay okay okay — this one first.',
     'i found four more. sorting!',
     'tell me what’s going on.',
+  ],
+  'scout-pro': [
+    'office hours. what are we solving?',
+    'goal first. book second.',
+    'i brought the useful ones.',
   ],
   peek: [
     'just the first chapter.',
@@ -46,19 +51,20 @@ const JOB: Record<CastOwlName, string> = {
 };
 
 /* each owl cycles through its lines across taps, anywhere in the app */
-const counters: Record<CastOwlName, number> = { scout: 0, peek: 0, scribe: 0, mirror: 0, keeper: 0 };
+const counters: Record<string, number> = { scout: 0, 'scout-pro': 0, peek: 0, scribe: 0, mirror: 0, keeper: 0 };
 
-export function owlLine(owl: CastOwlName): string {
+export function owlLine(owl: CastOwlName | 'scout-pro'): string {
   const lines = VOICE[owl];
   return lines[counters[owl]++ % lines.length];
 }
 
-export function CastOwl({ owl, cls }: { owl: CastOwlName; cls: 'hero' | 'mini' }) {
+export function CastOwl({ owl, cls, variant }: { owl: CastOwlName; cls: 'hero' | 'mini'; variant?: 'pro' }) {
   const showToast = useStore((s) => s.showToast);
   const react = useStore((s) => s.owlReact);
   const [nonce, setNonce] = useState(0);
+  const pro = owl === 'scout' && variant === 'pro';
   const speak = () => {
-    showToast('ti-feather', owlLine(owl));
+    showToast('ti-feather', owlLine(pro ? 'scout-pro' : owl));
     setNonce((n) => n + 1);
   };
   // pop when a moment in this owl's territory happens anywhere in the app
@@ -86,7 +92,7 @@ export function CastOwl({ owl, cls }: { owl: CastOwlName; cls: 'hero' | 'mini' }
       }}
     >
       <g key={nonce} className={nonce ? 'owlpop' : undefined}>
-        <use href={`#owl-${owl}`} />
+        <use href={`#owl-${owl}${pro ? '-pro' : ''}`} />
       </g>
     </svg>
   );

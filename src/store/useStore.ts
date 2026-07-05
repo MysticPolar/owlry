@@ -23,6 +23,7 @@ import type { GeneratedLetter } from '../lib/owl/liveOwl';
 import { repository } from './persistence';
 import { SEED } from './seed';
 import type {
+  DeskMode,
   PersistedState,
   Prefs,
   Tab,
@@ -54,6 +55,7 @@ export interface Store extends PersistedState {
   owlReact: OwlReact | null;
   burstNonce: number;
   owl: OwlState;
+  deskMode: DeskMode;
   openedLetters: GuideId[];
   hydrated: boolean;
   settingsOpen: boolean;
@@ -87,6 +89,7 @@ export interface Store extends PersistedState {
   initChat: () => void;
   restartChat: () => void;
   sendToOwl: (text: string) => void;
+  setDeskMode: (mode: DeskMode) => void;
 }
 
 let chatId = 0;
@@ -151,6 +154,7 @@ export const useStore = create<Store>()(
       busy: false,
       started: false,
     },
+    deskMode: 'fiction',
     openedLetters: [],
     hydrated: false,
     settingsOpen: false,
@@ -412,6 +416,31 @@ export const useStore = create<Store>()(
       get().initChat();
     },
 
+    setDeskMode: (mode) => {
+      if (get().deskMode === mode) return;
+      set({ deskMode: mode });
+      // scout acknowledges the switch in voice — canned, zero tokens
+      const ack: OwlMessage = [
+        {
+          t: 'text',
+          v:
+            mode === 'pro'
+              ? 'right — office hours. what are we solving?'
+              : 'off the clock. where shall we wander?',
+        },
+      ];
+      const chips =
+        mode === 'pro' ? ['need focus', 'build a habit', 'career', 'money'] : ['cozy escape', 'adventure', 'heartache', 'surprise me'];
+      set((st) => ({
+        owl: {
+          ...st.owl,
+          chips,
+          messages: [...st.owl.messages, { kind: 'msg', id: nextId(), who: 'owl', nodes: ack }],
+        },
+        owlReact: { owl: 'scout', nonce: (st.owlReact?.nonce ?? 0) + 1 },
+      }));
+    },
+
     sendToOwl: (raw) => {
       const text = (raw ?? '').trim();
       const s = get();
@@ -444,7 +473,7 @@ export const useStore = create<Store>()(
         void (async () => {
           const turns = buildReplyTurns(get().owl.messages);
           try {
-            const { msgs, chips, books } = await callLiveOwl(turns);
+            const { msgs, chips, books } = await callLiveOwl(turns, get().deskMode);
             get().addXP(3);
             set((st) => {
               let messages = st.owl.messages.filter((m) => m.id !== typingId);

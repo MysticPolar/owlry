@@ -24,6 +24,7 @@ import {
   OWL_MODEL,
   OWL_GEMINI_MODEL,
   OWL_MAX_TOKENS,
+  OWL_PRO_DESK,
   LETTER_SYSTEM,
   OWL_LETTER_SCHEMA,
   OWL_LETTER_MAX_TOKENS,
@@ -77,7 +78,7 @@ function sanitize(parsed: OwlReplyPayload): OwlReplyPayload {
 }
 
 /** Claude (Anthropic): structured output via output_config.format. Returns the JSON text, or '' on refusal. */
-async function anthropicReply(turns: Turn[], apiKey: string): Promise<string> {
+async function anthropicReply(turns: Turn[], apiKey: string, system: string): Promise<string> {
   const Anthropic = (await import('npm:@anthropic-ai/sdk')).default;
   const client = new Anthropic({ apiKey });
   const res = await client.messages.create({
@@ -86,7 +87,7 @@ async function anthropicReply(turns: Turn[], apiKey: string): Promise<string> {
     // Sonnet 4.6 defaults to effort:"high"; an owl reply is one or two sentences,
     // so keep it fast — thinking off, effort low.
     thinking: { type: 'disabled' },
-    system: [{ type: 'text', text: OWL_SYSTEM, cache_control: { type: 'ephemeral' } }],
+    system: [{ type: 'text', text: system, cache_control: { type: 'ephemeral' } }],
     messages: turns.map((t) => ({ role: t.role, content: t.text })),
     output_config: { effort: 'low', format: { type: 'json_schema', schema: OWL_SCHEMA } },
     // deno-lint-ignore no-explicit-any
@@ -141,7 +142,7 @@ async function geminiLetter(title: string, author: string, context: string, apiK
 }
 
 /** Gemini: JSON mode via responseMimeType; thinking disabled so the short reply stays fast. */
-async function geminiReply(turns: Turn[], apiKey: string): Promise<string> {
+async function geminiReply(turns: Turn[], apiKey: string, system: string): Promise<string> {
   const { GoogleGenAI } = await import('npm:@google/genai');
   const ai = new GoogleGenAI({ apiKey });
   // Gemini has no 'system' role — the prompt goes in config.systemInstruction,
@@ -154,7 +155,7 @@ async function geminiReply(turns: Turn[], apiKey: string): Promise<string> {
     model: OWL_GEMINI_MODEL,
     contents,
     config: {
-      systemInstruction: OWL_SYSTEM,
+      systemInstruction: system,
       maxOutputTokens: 512,
       temperature: 0.8,
       responseMimeType: 'application/json',
@@ -176,15 +177,18 @@ Deno.serve(async (req: Request): Promise<Response> => {
   if (!apiKey) return jsonResponse({ error: `owl-chat: ${provider} key not configured` }, 503);
 
   let turns: Turn[];
+  let desk: 'fiction' | 'pro' = 'fiction';
   let letterFor: { title: string; author: string } | null = null;
   let letterContext = '';
   try {
     const body = (await req.json()) as {
       turns?: Turn[];
+      desk?: string;
       letterFor?: { title?: string; author?: string };
       context?: string;
     };
     turns = Array.isArray(body.turns) ? body.turns : [];
+    if (body.desk === 'pro') desk = 'pro';
     if (body.letterFor && typeof body.letterFor.title === 'string' && body.letterFor.title.trim()) {
       letterFor = {
         title: body.letterFor.title.trim().slice(0, 200),
@@ -219,7 +223,9 @@ Deno.serve(async (req: Request): Promise<Response> => {
   if (recent[0].role !== 'user') recent.unshift({ role: 'user', text: '(a visitor sits down at the post desk.)' });
 
   try {
-    const text = provider === 'gemini' ? await geminiReply(recent, apiKey) : await anthropicReply(recent, apiKey);
+    const system = desk === 'pro' ? OWL_SYSTEM + OWL_PRO_DESK : OWL_SYSTEM;
+    const text =
+      provider === 'gemini' ? await geminiReply(recent, apiKey, system) : await anthropicReply(recent, apiKey, system);
     if (!text) return jsonResponse(FALLBACK); // refusal / empty
     return jsonResponse(sanitize(JSON.parse(text) as OwlReplyPayload));
   } catch (err) {
