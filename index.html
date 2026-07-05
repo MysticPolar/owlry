@@ -60,192 +60,247 @@
     </radialGradient>
   </defs>
 
-  <!-- SCOUT · finds your next book · overeager, ear tufts up -->
+  <!-- SCOUT · finds your next book · forward-leaning teardrop (the wordmark's lean),
+       antenna tufts, the biggest eyes of the cast, three spines fanned under a wing -->
   <symbol id="owl-scout" viewBox="0 0 120 130">
-    <ellipse cx="60" cy="122" rx="28" ry="5.5" fill="var(--oShadow,rgba(40,26,8,.2))"/>
-    <g filter="url(#fluff2)">
-      <path d="M32,28 L22,7 L45,17 Z" fill="url(#g-scout)"/>
-      <path d="M88,28 L98,7 L75,17 Z" fill="url(#g-scout)"/>
+    <ellipse cx="56" cy="122" rx="28" ry="5.5" fill="var(--oShadow,rgba(40,26,8,.2))"/>
+    <g transform="rotate(-8 60 120)">
+      <g filter="url(#fluff2)">
+        <path d="M37,28 L29,4 L52,17 Z" fill="url(#g-scout)"/>
+        <path d="M83,28 L91,4 L68,17 Z" fill="url(#g-scout)"/>
+      </g>
+      <g filter="url(#fluff)">
+        <path d="M60,16 C80,16 95,44 96,76 C97,103 81,119 60,119 C39,119 23,103 24,76 C25,44 40,16 60,16 Z" fill="url(#g-scout)"/>
+        <path d="M25,62 C11,80 13,100 27,111 C22,94 24,75 31,60 Z" fill="var(--ember-d,#93290C)"/>
+        <ellipse cx="60" cy="88" rx="23" ry="25" fill="url(#g-belly)"/>
+      </g>
+      <!-- the fan: always brings back three too many -->
+      <g stroke="rgba(0,0,0,.25)" stroke-width="1">
+        <rect x="88" y="74" width="8" height="30" rx="1.5" fill="var(--gold,#A8730A)" transform="rotate(20 92 100)"/>
+        <rect x="92" y="74" width="8" height="30" rx="1.5" fill="var(--belly,#F4E6C4)" transform="rotate(40 96 100)"/>
+        <rect x="96" y="74" width="8" height="30" rx="1.5" fill="var(--ember-d,#93290C)" transform="rotate(60 100 100)"/>
+      </g>
+      <g filter="url(#fluff)">
+        <path d="M95,58 C106,76 104,98 88,112 C94,95 94,74 88,60 Z" fill="var(--ember-d,#93290C)"/>
+      </g>
+      <circle cx="44" cy="50" r="17" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
+      <circle cx="76" cy="50" r="17" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
+      <circle cx="44.5" cy="51.5" r="9" fill="var(--irisC,#4A2F14)"/>
+      <circle cx="75.5" cy="51.5" r="9" fill="var(--irisC,#4A2F14)"/>
+      <circle cx="44.5" cy="51.5" r="4.2" fill="#17110B"/>
+      <circle cx="75.5" cy="51.5" r="4.2" fill="#17110B"/>
+      <circle cx="48.2" cy="47.6" r="2.9" fill="#FFFFFF"/>
+      <circle cx="79.2" cy="47.6" r="2.9" fill="#FFFFFF"/>
+      <circle cx="41.4" cy="54.8" r="1.4" fill="rgba(255,255,255,.85)"/>
+      <circle cx="72.4" cy="54.8" r="1.4" fill="rgba(255,255,255,.85)"/>
+      <g transform="translate(26.5,32.5)">
+        <rect width="35" height="35.5" rx="16" fill="url(#g-scout)" transform="scale(1 0.05)">
+          <animateTransform attributeName="transform" type="scale"
+            values="1 0.05;1 0.05;1 1;1 0.05;1 0.05" keyTimes="0;0.9;0.94;0.98;1"
+            dur="5.4s" repeatCount="indefinite"/>
+        </rect>
+      </g>
+      <g transform="translate(58.5,32.5)">
+        <rect width="35" height="35.5" rx="16" fill="url(#g-scout)" transform="scale(1 0.05)">
+          <animateTransform attributeName="transform" type="scale"
+            values="1 0.05;1 0.05;1 1;1 0.05;1 0.05" keyTimes="0;0.9;0.94;0.98;1"
+            dur="5.4s" repeatCount="indefinite"/>
+        </rect>
+      </g>
+      <path d="M60,59.5 L53.5,65.5 Q60,73.5 66.5,65.5 Z" fill="var(--beakC,#E9A238)" stroke="rgba(0,0,0,.18)" stroke-width="1"/>
+      <path d="M45,118 q4,7 9,0 M66,118 q4,7 9,0" stroke="var(--beakC,#E9A238)" stroke-width="3" fill="none" stroke-linecap="round"/>
     </g>
-    <g filter="url(#fluff)">
-      <path d="M60,15 C89,15 98,45 98,74 C98,103 82,119 60,119 C38,119 22,103 22,74 C22,45 31,15 60,15 Z" fill="url(#g-scout)"/>
-      <path d="M23,62 C13,82 19,102 34,111 C27,95 27,76 31,60 Z" fill="var(--ember-d,#93290C)"/>
-      <path d="M97,62 C107,82 101,102 86,111 C93,95 93,76 89,60 Z" fill="var(--ember-d,#93290C)"/>
-      <ellipse cx="60" cy="87" rx="24" ry="26" fill="url(#g-belly)"/>
-    </g>
-    <circle cx="44" cy="52" r="16.5" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
-    <circle cx="76" cy="52" r="16.5" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
-    <circle cx="44.5" cy="53" r="8.6" fill="var(--irisC,#4A2F14)"/>
-    <circle cx="75.5" cy="53" r="8.6" fill="var(--irisC,#4A2F14)"/>
-    <circle cx="44.5" cy="53" r="4" fill="#17110B"/>
-    <circle cx="75.5" cy="53" r="4" fill="#17110B"/>
-    <circle cx="48" cy="49.4" r="2.7" fill="#FFFFFF"/>
-    <circle cx="79" cy="49.4" r="2.7" fill="#FFFFFF"/>
-    <circle cx="41.6" cy="56" r="1.3" fill="rgba(255,255,255,.85)"/>
-    <circle cx="72.6" cy="56" r="1.3" fill="rgba(255,255,255,.85)"/>
-    <g transform="translate(27.5,35.5)">
-      <rect width="33" height="33.5" rx="15" fill="url(#g-scout)" transform="scale(1 0.05)">
-        <animateTransform attributeName="transform" type="scale"
-          values="1 0.05;1 0.05;1 1;1 0.05;1 0.05" keyTimes="0;0.9;0.94;0.98;1"
-          dur="5.4s" repeatCount="indefinite"/>
-      </rect>
-    </g>
-    <g transform="translate(59.5,35.5)">
-      <rect width="33" height="33.5" rx="15" fill="url(#g-scout)" transform="scale(1 0.05)">
-        <animateTransform attributeName="transform" type="scale"
-          values="1 0.05;1 0.05;1 1;1 0.05;1 0.05" keyTimes="0;0.9;0.94;0.98;1"
-          dur="5.4s" repeatCount="indefinite"/>
-      </rect>
-    </g>
-    <path d="M60,61 L53.5,67 Q60,75 66.5,67 Z" fill="var(--beakC,#E9A238)" stroke="rgba(0,0,0,.18)" stroke-width="1"/>
-    <path d="M45,118 q4,7 9,0 M66,118 q4,7 9,0" stroke="var(--beakC,#E9A238)" stroke-width="3" fill="none" stroke-linecap="round"/>
   </symbol>
 
-  <!-- PEEK · previews everything, finishes nothing · one wing raised -->
+  <!-- PEEK · previews everything, finishes nothing · tall craning silhouette,
+       one huge eye, the wing lifts for a peek every few seconds, bookmark never used -->
   <symbol id="owl-peek" viewBox="0 0 120 130">
-    <g transform="translate(60,66) scale(0.9) translate(-60,-66)">
-      <ellipse cx="60" cy="120" rx="27" ry="5.5" fill="var(--oShadow,rgba(40,26,8,.2))"/>
-      <g filter="url(#fluff)">
-        <path d="M60,20 C86,20 94,46 94,74 C94,100 79,116 60,116 C41,116 26,100 26,74 C26,46 34,20 60,20 Z" fill="url(#g-peek)"/>
-        <path d="M94,64 C103,82 98,100 85,108 C91,93 91,76 87,62 Z" fill="var(--teal-d,#0B5348)"/>
-        <ellipse cx="62" cy="86" rx="22" ry="24" fill="url(#g-belly)"/>
+    <ellipse cx="62" cy="121" rx="21" ry="5" fill="var(--oShadow,rgba(40,26,8,.2))"/>
+    <g transform="rotate(4 60 118)">
+      <!-- single tuft, gold bookmark tucked behind it -->
+      <g transform="rotate(24 76 8)">
+        <rect x="73" y="1" width="6" height="14" fill="var(--yellow,#FFC017)" stroke="rgba(0,0,0,.2)" stroke-width=".8"/>
+        <path d="M73,15 l6,0 -3,-4.5 z" fill="var(--teal-d,#0B5348)"/>
       </g>
-      <circle cx="41" cy="57" r="11" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
-      <circle cx="41.5" cy="58" r="5.8" fill="var(--irisC,#4A2F14)"/>
-      <circle cx="41.5" cy="58" r="2.7" fill="#17110B"/>
-      <circle cx="43.8" cy="55.6" r="1.6" fill="#FFFFFF"/>
-      <circle cx="77" cy="50" r="17.5" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
-      <circle cx="76.5" cy="51" r="9.2" fill="var(--irisC,#4A2F14)"/>
-      <circle cx="76.5" cy="51" r="4.4" fill="#17110B"/>
-      <circle cx="80.4" cy="47" r="2.9" fill="#FFFFFF"/>
-      <circle cx="73" cy="54.4" r="1.4" fill="rgba(255,255,255,.85)"/>
-      <g transform="translate(59.5,32.5)">
-        <rect width="35" height="35.5" rx="16" fill="url(#g-peek)" transform="scale(1 0.05)">
+      <g filter="url(#fluff2)">
+        <path d="M68,14 L78,1 L58,8 Z" fill="url(#g-peek)"/>
+      </g>
+      <g filter="url(#fluff)">
+        <path d="M60,10 C77,10 86,40 86,76 C86,104 74,118 60,118 C46,118 34,104 34,76 C34,40 43,10 60,10 Z" fill="url(#g-peek)"/>
+        <path d="M85,64 C94,82 90,101 78,109 C84,94 84,77 80,63 Z" fill="var(--teal-d,#0B5348)"/>
+        <ellipse cx="61" cy="88" rx="18" ry="21" fill="url(#g-belly)"/>
+      </g>
+      <!-- the huge visible eye -->
+      <circle cx="76" cy="48" r="19" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
+      <circle cx="75.5" cy="49.5" r="10" fill="var(--irisC,#4A2F14)"/>
+      <circle cx="75.5" cy="49.5" r="4.8" fill="#17110B"/>
+      <circle cx="80.4" cy="44.8" r="3.2" fill="#FFFFFF"/>
+      <circle cx="71.4" cy="53.4" r="1.5" fill="rgba(255,255,255,.85)"/>
+      <g transform="translate(56,28.5)">
+        <rect width="40" height="39.5" rx="18" fill="url(#g-peek)" transform="scale(1 0.05)">
           <animateTransform attributeName="transform" type="scale"
             values="1 0.05;1 0.05;1 1;1 0.05;1 0.05" keyTimes="0;0.86;0.9;0.94;1"
             dur="4.6s" repeatCount="indefinite"/>
         </rect>
       </g>
-      <path d="M60,63 L54,69 Q60,76.5 66,69 Z" fill="var(--beakC,#E9A238)" stroke="rgba(0,0,0,.18)" stroke-width="1"/>
-      <g filter="url(#fluff)">
-        <path d="M24,62 C12,40 28,22 46,30 C39,40 36,51 39,63 C33,66 27,65 24,62 Z" fill="url(#g-peek)"/>
+      <!-- the hidden eye: shut tight beneath the wing -->
+      <path d="M34,54 q8,7 16,0" stroke="rgba(0,0,0,.5)" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+      <path d="M60,62 L54.5,67.5 Q60,74.5 65.5,67.5 Z" fill="var(--beakC,#E9A238)" stroke="rgba(0,0,0,.18)" stroke-width="1"/>
+      <!-- the raised wing — lifts for a quick look, then drops -->
+      <g>
+        <animateTransform attributeName="transform" type="rotate"
+          values="0 34 64;0 34 64;-26 34 64;-26 34 64;0 34 64;0 34 64" keyTimes="0;0.78;0.83;0.9;0.95;1"
+          dur="7.4s" repeatCount="indefinite"/>
+        <g filter="url(#fluff)">
+          <path d="M30,58 C18,36 34,20 52,28 C45,38 42,50 45,63 C39,67 33,64 30,58 Z" fill="url(#g-peek)"/>
+        </g>
       </g>
-      <path d="M46,115 q4,7 9,0 M66,115 q4,7 9,0" stroke="var(--beakC,#E9A238)" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <!-- one foot planted, one mid-step -->
+      <path d="M52,117 q4,7 9,0" stroke="var(--beakC,#E9A238)" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M68,113 q3,5 7,1" stroke="var(--beakC,#E9A238)" stroke-width="2.6" fill="none" stroke-linecap="round"/>
     </g>
   </symbol>
 
-  <!-- SCRIBE · remembers every line · spectacles and a quill -->
+  <!-- SCRIBE · remembers every line · the only smooth-feathered owl (tidy),
+       spectacles dominate the face, an oversized jotting quill, one ink smudge -->
   <symbol id="owl-scribe" viewBox="0 0 120 130">
-    <ellipse cx="60" cy="123" rx="27" ry="5.5" fill="var(--oShadow,rgba(40,26,8,.2))"/>
-    <g filter="url(#fluff)">
-      <path d="M60,12 C85,12 92,44 92,76 C92,104 78,120 60,120 C42,120 28,104 28,76 C28,44 35,12 60,12 Z" fill="url(#g-scribe)"/>
-      <path d="M29,60 C20,80 25,100 38,110 C32,94 32,75 35,58 Z" fill="var(--quill-d,#1F326E)"/>
-      <ellipse cx="60" cy="90" rx="22" ry="24" fill="url(#g-belly)"/>
+    <ellipse cx="60" cy="120" rx="24" ry="5" fill="var(--oShadow,rgba(40,26,8,.2))"/>
+    <!-- deliberately NO fluff filter: Scribe keeps its feathers in order -->
+    <path d="M60,18 C81,18 89,46 89,76 C89,102 76,116 60,116 C44,116 31,102 31,76 C31,46 39,18 60,18 Z" fill="url(#g-scribe)"/>
+    <path d="M32,62 C25,80 28,97 39,106 C34,92 34,75 37,60 Z" fill="var(--quill-d,#1F326E)"/>
+    <path d="M88,62 C95,80 92,97 81,106 C86,92 86,75 83,60 Z" fill="var(--quill-d,#1F326E)"/>
+    <ellipse cx="60" cy="89" rx="20" ry="22" fill="url(#g-belly)"/>
+    <!-- the one imperfection: an ink smudge -->
+    <path d="M66,96 c3,-2 7,-1 8,2 c1,3 -2,6 -6,5 c-4,-1 -5,-4 -2,-7 Z" fill="var(--specs,#2A2013)" opacity="0.5"/>
+    <circle cx="74.5" cy="106" r="1.4" fill="var(--specs,#2A2013)" opacity="0.45"/>
+    <!-- the quill, mid-jot — tilted outward so it breaks the tidy outline -->
+    <g>
+      <animateTransform attributeName="transform" type="rotate"
+        values="-14 92 88;-14 92 88;-8 92 88;-19 92 88;-11 92 88;-14 92 88" keyTimes="0;0.84;0.87;0.9;0.93;1"
+        dur="6.2s" repeatCount="indefinite"/>
+      <line x1="92" y1="106" x2="92" y2="48" stroke="var(--beakC,#E9A238)" stroke-width="2.2"/>
+      <path d="M92,48 C84,58 83,76 91,92 C99,76 100,58 92,48 Z" fill="var(--quill-l,#7E93E6)" stroke="var(--quill-d,#1F326E)" stroke-width="1"/>
+      <line x1="92" y1="52" x2="92" y2="90" stroke="var(--quill-d,#1F326E)" stroke-width="1" opacity="0.6"/>
     </g>
-    <g transform="rotate(18 90 82)">
-      <line x1="90" y1="100" x2="90" y2="55" stroke="var(--beakC,#E9A238)" stroke-width="2"/>
-      <path d="M90,55 C84,63 83,77 89,89 C95,77 96,63 90,55 Z" fill="var(--quill-l,#7E93E6)" stroke="var(--quill-d,#1F326E)" stroke-width="1"/>
-    </g>
-    <circle cx="44" cy="50" r="13.5" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
-    <circle cx="76" cy="50" r="13.5" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
-    <circle cx="44.5" cy="51" r="7.4" fill="var(--irisC,#4A2F14)"/>
-    <circle cx="75.5" cy="51" r="7.4" fill="var(--irisC,#4A2F14)"/>
-    <circle cx="44.5" cy="51" r="3.4" fill="#17110B"/>
-    <circle cx="75.5" cy="51" r="3.4" fill="#17110B"/>
-    <circle cx="47.4" cy="47.8" r="2.2" fill="#FFFFFF"/>
-    <circle cx="78.4" cy="47.8" r="2.2" fill="#FFFFFF"/>
-    <g transform="translate(30.5,36.5)">
-      <rect width="27" height="27.5" rx="12" fill="url(#g-scribe)" transform="scale(1 0.05)">
+    <circle cx="44" cy="50" r="11.5" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
+    <circle cx="76" cy="50" r="11.5" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
+    <circle cx="44.5" cy="51" r="5.5" fill="var(--irisC,#4A2F14)"/>
+    <circle cx="75.5" cy="51" r="5.5" fill="var(--irisC,#4A2F14)"/>
+    <circle cx="44.5" cy="51" r="2.6" fill="#17110B"/>
+    <circle cx="75.5" cy="51" r="2.6" fill="#17110B"/>
+    <circle cx="46.6" cy="48.6" r="1.8" fill="#FFFFFF"/>
+    <circle cx="77.6" cy="48.6" r="1.8" fill="#FFFFFF"/>
+    <g transform="translate(33,39)">
+      <rect width="22" height="22.5" rx="10" fill="url(#g-scribe)" transform="scale(1 0.05)">
         <animateTransform attributeName="transform" type="scale"
           values="1 0.05;1 0.05;1 1;1 0.05;1 0.05" keyTimes="0;0.92;0.95;0.98;1"
           dur="6.2s" repeatCount="indefinite"/>
       </rect>
     </g>
-    <g transform="translate(62.5,36.5)">
-      <rect width="27" height="27.5" rx="12" fill="url(#g-scribe)" transform="scale(1 0.05)">
+    <g transform="translate(65,39)">
+      <rect width="22" height="22.5" rx="10" fill="url(#g-scribe)" transform="scale(1 0.05)">
         <animateTransform attributeName="transform" type="scale"
           values="1 0.05;1 0.05;1 1;1 0.05;1 0.05" keyTimes="0;0.92;0.95;0.98;1"
           dur="6.2s" repeatCount="indefinite"/>
       </rect>
     </g>
-    <circle cx="44" cy="50" r="15.5" fill="none" stroke="var(--specs,#2A2013)" stroke-width="2.6"/>
-    <circle cx="76" cy="50" r="15.5" fill="none" stroke="var(--specs,#2A2013)" stroke-width="2.6"/>
-    <path d="M59.5,50 L60.5,50" stroke="var(--specs,#2A2013)" stroke-width="2.6"/>
-    <path d="M28.5,48 L23,44.5 M91.5,48 L97,44.5" stroke="var(--specs,#2A2013)" stroke-width="2.2" stroke-linecap="round"/>
-    <path d="M60,60 L54,66 Q60,73.5 66,66 Z" fill="var(--beakC,#E9A238)" stroke="rgba(0,0,0,.18)" stroke-width="1"/>
-    <path d="M46,119 q4,7 9,0 M66,119 q4,7 9,0" stroke="var(--beakC,#E9A238)" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- the spectacles own the face -->
+    <circle cx="44" cy="50" r="17" fill="none" stroke="var(--specs,#2A2013)" stroke-width="3"/>
+    <circle cx="76" cy="50" r="17" fill="none" stroke="var(--specs,#2A2013)" stroke-width="3"/>
+    <path d="M59.2,50 L60.8,50" stroke="var(--specs,#2A2013)" stroke-width="3"/>
+    <path d="M27,48 L21.5,44 M93,48 L98.5,44" stroke="var(--specs,#2A2013)" stroke-width="2.4" stroke-linecap="round"/>
+    <path d="M32.5,41 a15,15 0 0 1 8,-6.5" stroke="var(--yellow,#FFC017)" stroke-width="1.6" fill="none" stroke-linecap="round" opacity="0.75"/>
+    <path d="M64.5,41 a15,15 0 0 1 8,-6.5" stroke="var(--yellow,#FFC017)" stroke-width="1.6" fill="none" stroke-linecap="round" opacity="0.75"/>
+    <path d="M60,60 L54.5,65.5 Q60,72.5 65.5,65.5 Z" fill="var(--beakC,#E9A238)" stroke="rgba(0,0,0,.18)" stroke-width="1"/>
+    <path d="M47,115 q4,7 9,0 M65,115 q4,7 9,0" stroke="var(--beakC,#E9A238)" stroke-width="3" fill="none" stroke-linecap="round"/>
   </symbol>
 
-  <!-- MIRROR · draws your reading identity · calm half-lidded gaze -->
+  <!-- MIRROR · draws your reading identity · the only perfectly symmetrical owl:
+       sealed wings, no feet, never blinks — stillness is the design -->
   <symbol id="owl-mirror" viewBox="0 0 120 130">
-    <ellipse cx="60" cy="121" rx="27" ry="5.5" fill="var(--oShadow,rgba(40,26,8,.2))"/>
+    <ellipse cx="60" cy="119" rx="20" ry="4.5" fill="var(--oShadow,rgba(40,26,8,.2))"/>
     <g filter="url(#fluff)">
-      <path d="M60,16 C84,16 92,46 92,76 C92,102 78,117 60,117 C42,117 28,102 28,76 C28,46 36,16 60,16 Z" fill="url(#g-mirror)"/>
-      <path d="M29,62 C20,82 25,101 38,110 C32,94 32,76 35,60 Z" fill="var(--violet-d,#452B93)"/>
-      <path d="M91,62 C100,82 95,101 82,110 C88,94 88,76 85,60 Z" fill="var(--violet-d,#452B93)"/>
-      <ellipse cx="60" cy="87" rx="23" ry="25" fill="url(#g-belly)"/>
+      <path d="M60,16 C82,16 90,44 90,74 C90,100 77,115 60,115 C43,115 30,100 30,74 C30,44 38,16 60,16 Z" fill="url(#g-mirror)"/>
+      <ellipse cx="60" cy="86" rx="21" ry="23" fill="url(#g-belly)"/>
     </g>
-    <path d="M50,82 a12,12 0 1 0 17,5 a9.5,9.5 0 1 1 -17,-5 Z" fill="var(--violet-d,#452B93)" opacity="0.8"/>
-    <circle cx="44" cy="52" r="15" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
-    <circle cx="76" cy="52" r="15" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
-    <circle cx="44.5" cy="54" r="8" fill="var(--irisC,#4A2F14)"/>
-    <circle cx="75.5" cy="54" r="8" fill="var(--irisC,#4A2F14)"/>
-    <circle cx="44.5" cy="54" r="3.6" fill="#17110B"/>
-    <circle cx="75.5" cy="54" r="3.6" fill="#17110B"/>
-    <circle cx="47.6" cy="51" r="2.2" fill="#FFFFFF"/>
-    <circle cx="78.6" cy="51" r="2.2" fill="#FFFFFF"/>
-    <g transform="translate(29,37)">
-      <rect width="30" height="30" rx="14" fill="url(#g-mirror)" transform="scale(1 0.46)"/>
+    <!-- sealed wing seams — mirrored, closed -->
+    <path d="M39,54 C33,72 34,92 42,104" stroke="var(--violet-d,#452B93)" stroke-width="2" fill="none" opacity="0.55"/>
+    <path d="M81,54 C87,72 86,92 78,104" stroke="var(--violet-d,#452B93)" stroke-width="2" fill="none" opacity="0.55"/>
+    <!-- the crescent, centered; the house light touches it now and then -->
+    <path d="M52,82 a11,11 0 1 0 16,6 a8.5,8.5 0 1 1 -16,-6 Z" fill="var(--violet-d,#452B93)" opacity="0.85"/>
+    <path d="M52,82 a11,11 0 1 0 16,6 a8.5,8.5 0 1 1 -16,-6 Z" fill="var(--yellow,#FFC017)" opacity="0">
+      <animate attributeName="opacity" values="0;0;0.55;0" keyTimes="0;0.9;0.94;1" dur="11s" repeatCount="indefinite"/>
+    </path>
+    <circle cx="44" cy="52" r="14" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
+    <circle cx="76" cy="52" r="14" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
+    <circle cx="44" cy="54" r="7.6" fill="var(--irisC,#4A2F14)"/>
+    <circle cx="76" cy="54" r="7.6" fill="var(--irisC,#4A2F14)"/>
+    <circle cx="44" cy="54" r="3.4" fill="#17110B"/>
+    <circle cx="76" cy="54" r="3.4" fill="#17110B"/>
+    <circle cx="46.6" cy="51.4" r="1.6" fill="rgba(255,255,255,.9)"/>
+    <circle cx="78.6" cy="51.4" r="1.6" fill="rgba(255,255,255,.9)"/>
+    <!-- static half-lids: Mirror does not blink -->
+    <g transform="translate(30,38)">
+      <rect width="28" height="28" rx="13" fill="url(#g-mirror)" transform="scale(1 0.5)"/>
     </g>
-    <g transform="translate(61,37)">
-      <rect width="30" height="30" rx="14" fill="url(#g-mirror)" transform="scale(1 0.46)"/>
+    <g transform="translate(62,38)">
+      <rect width="28" height="28" rx="13" fill="url(#g-mirror)" transform="scale(1 0.5)"/>
     </g>
-    <path d="M60,62 L54.5,67.5 Q60,74.5 65.5,67.5 Z" fill="var(--beakC,#E9A238)" stroke="rgba(0,0,0,.18)" stroke-width="1"/>
-    <path d="M46,116 q4,7 9,0 M66,116 q4,7 9,0" stroke="var(--beakC,#E9A238)" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M60,63 L55,68 Q60,74 65,68 Z" fill="var(--beakC,#E9A238)" stroke="rgba(0,0,0,.18)" stroke-width="1"/>
   </symbol>
 
-  <!-- KEEPER · counts everything twice · brow tufts and a little book -->
+  <!-- KEEPER · counts everything twice · widest and lowest of the cast,
+       grumpy down-brows, both wings hugging the ember book, perched on the hoard -->
   <symbol id="owl-keeper" viewBox="0 0 120 130">
-    <ellipse cx="60" cy="122" rx="33" ry="6" fill="var(--oShadow,rgba(40,26,8,.2))"/>
+    <ellipse cx="60" cy="123" rx="35" ry="5" fill="var(--oShadow,rgba(40,26,8,.2))"/>
+    <!-- the hoard: a pedestal of confiscated returns -->
+    <g stroke="rgba(0,0,0,.28)" stroke-width="1">
+      <rect x="32" y="115" width="56" height="7.5" rx="1.5" fill="#7A5230"/>
+      <rect x="37" y="108" width="48" height="7.5" rx="1.5" fill="#5D4460" transform="rotate(-1.6 61 112)"/>
+    </g>
+    <line x1="35" y1="118.7" x2="85" y2="118.7" stroke="rgba(251,244,225,.5)" stroke-width="1.6"/>
+    <line x1="40" y1="111.6" x2="82" y2="111.6" stroke="rgba(251,244,225,.5)" stroke-width="1.6" transform="rotate(-1.6 61 112)"/>
     <g filter="url(#fluff)">
-      <path d="M60,18 C92,18 102,48 102,78 C102,104 84,118 60,118 C36,118 18,104 18,78 C18,48 28,18 60,18 Z" fill="url(#g-keeper)"/>
-      <path d="M19,64 C10,84 16,103 32,112 C25,96 25,78 29,62 Z" fill="var(--moss-d,#0C4A2C)"/>
-      <path d="M101,64 C110,84 104,103 88,112 C95,96 95,78 91,62 Z" fill="var(--moss-d,#0C4A2C)"/>
-      <ellipse cx="60" cy="88" rx="28" ry="26" fill="url(#g-belly)"/>
+      <path d="M60,28 C94,28 104,52 104,80 C104,100 86,110 60,110 C34,110 16,100 16,80 C16,52 26,28 60,28 Z" fill="url(#g-keeper)"/>
+      <ellipse cx="60" cy="86" rx="28" ry="22" fill="url(#g-belly)"/>
     </g>
+    <!-- heavy brows, angled down: someone touched the shelves -->
     <g filter="url(#fluff2)">
-      <path d="M30,40 Q44,29 57,37 L55,43 Q44,37 33,45 Z" fill="var(--moss-d,#0C4A2C)"/>
-      <path d="M90,40 Q76,29 63,37 L65,43 Q76,37 87,45 Z" fill="var(--moss-d,#0C4A2C)"/>
+      <path d="M30,40 Q44,29 57,37 L55,43 Q44,37 33,45 Z" fill="var(--moss-d,#0C4A2C)" transform="rotate(9 43 40)"/>
+      <path d="M90,40 Q76,29 63,37 L65,43 Q76,37 87,45 Z" fill="var(--moss-d,#0C4A2C)" transform="rotate(-9 77 40)"/>
     </g>
-    <circle cx="45" cy="54" r="13" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
-    <circle cx="75" cy="54" r="13" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
-    <circle cx="45.5" cy="55" r="7" fill="var(--irisC,#4A2F14)"/>
-    <circle cx="74.5" cy="55" r="7" fill="var(--irisC,#4A2F14)"/>
-    <circle cx="45.5" cy="55" r="3.2" fill="#17110B"/>
-    <circle cx="74.5" cy="55" r="3.2" fill="#17110B"/>
-    <circle cx="48.2" cy="52" r="2" fill="#FFFFFF"/>
-    <circle cx="77.2" cy="52" r="2" fill="#FFFFFF"/>
-    <g transform="translate(32,41)">
-      <rect width="26" height="26.5" rx="12" fill="url(#g-keeper)" transform="scale(1 0.05)">
+    <circle cx="45" cy="56" r="12" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
+    <circle cx="75" cy="56" r="12" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
+    <circle cx="46.8" cy="57" r="6.6" fill="var(--irisC,#4A2F14)"/>
+    <circle cx="76.8" cy="57" r="6.6" fill="var(--irisC,#4A2F14)"/>
+    <circle cx="47.4" cy="57" r="3" fill="#17110B"/>
+    <circle cx="77.4" cy="57" r="3" fill="#17110B"/>
+    <circle cx="49.4" cy="54.4" r="1.9" fill="#FFFFFF"/>
+    <circle cx="79.4" cy="54.4" r="1.9" fill="#FFFFFF"/>
+    <g transform="translate(33,44)">
+      <rect width="24" height="24.5" rx="11" fill="url(#g-keeper)" transform="scale(1 0.05)">
         <animateTransform attributeName="transform" type="scale"
           values="1 0.05;1 0.05;1 1;1 0.05;1 0.05" keyTimes="0;0.93;0.955;0.98;1"
           dur="7.1s" repeatCount="indefinite"/>
       </rect>
     </g>
-    <g transform="translate(62,41)">
-      <rect width="26" height="26.5" rx="12" fill="url(#g-keeper)" transform="scale(1 0.05)">
+    <g transform="translate(63,44)">
+      <rect width="24" height="24.5" rx="11" fill="url(#g-keeper)" transform="scale(1 0.05)">
         <animateTransform attributeName="transform" type="scale"
           values="1 0.05;1 0.05;1 1;1 0.05;1 0.05" keyTimes="0;0.93;0.955;0.98;1"
           dur="7.1s" repeatCount="indefinite"/>
       </rect>
     </g>
-    <path d="M60,64 L54,70 Q60,77 66,70 Z" fill="var(--beakC,#E9A238)" stroke="rgba(0,0,0,.18)" stroke-width="1"/>
-    <g transform="rotate(-8 84 96)">
-      <rect x="73" y="88" width="22" height="16" rx="2" fill="var(--ember,#D8481E)" stroke="rgba(0,0,0,.22)" stroke-width="1"/>
-      <rect x="75.5" y="90.5" width="17" height="11" fill="url(#g-belly)"/>
-      <line x1="84" y1="90.5" x2="84" y2="101.5" stroke="rgba(0,0,0,.25)" stroke-width="1"/>
+    <path d="M60,66 L54.5,71.5 Q60,78 65.5,71.5 Z" fill="var(--beakC,#E9A238)" stroke="rgba(0,0,0,.18)" stroke-width="1"/>
+    <!-- the ember book, held with both wings — not for lending -->
+    <rect x="45" y="86" width="30" height="21" rx="2" fill="var(--ember,#D8481E)" stroke="rgba(0,0,0,.22)" stroke-width="1"/>
+    <rect x="48" y="89" width="24" height="15" fill="url(#g-belly)"/>
+    <line x1="60" y1="89" x2="60" y2="104" stroke="rgba(0,0,0,.25)" stroke-width="1"/>
+    <g filter="url(#fluff)">
+      <path d="M20,72 C22,88 32,98 47,100 L47,91 C37,89 29,81 27,70 Z" fill="var(--moss-d,#0C4A2C)"/>
+      <path d="M100,72 C98,88 88,98 73,100 L73,91 C83,89 91,81 93,70 Z" fill="var(--moss-d,#0C4A2C)"/>
     </g>
-    <path d="M45,117 q4,7 9,0 M67,117 q4,7 9,0" stroke="var(--beakC,#E9A238)" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M46,108 q4,6 8,0 M66,108 q4,6 8,0" stroke="var(--beakC,#E9A238)" stroke-width="3" fill="none" stroke-linecap="round"/>
   </symbol>
 </svg>
 <!-- ============ ICON SPRITE (self-contained, no CDN) ============ -->
