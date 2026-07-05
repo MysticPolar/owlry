@@ -82,7 +82,12 @@ weaving the named titles back into the owl's prose as styled mentions.
   recommendations rendered as styled mentions (title + tooltip). The catalog's
   Reader / About-sheet / 7-section Letter overlays remain a classic-owl feature.
   A future `owl-letter` function could generate a letter on demand for any book.
-- **No ink metering yet.** Per `docs/backend-plan.md`, chat should cost ink
-  (`performAction('chat')`); wiring the economy to the chat is a separate step.
+- **Ink meters the live owl (local economy).** Each live reply costs 1 ink and
+  grants +3 XP (the backend plan's chat cost); a failed delivery is refunded.
+  With a dry inkwell the chat falls through to the free offline brain and a
+  toast explains that pages refill the well — so the live path is naturally
+  capped per visitor. (Server-authoritative metering via
+  `performAction('chat')` remains the follow-up when the economy backend is
+  wired in.)
 - **The live path can't be exercised without a deployed backend** — locally it
   transparently uses the mockup brain.

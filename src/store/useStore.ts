@@ -375,11 +375,20 @@ export const useStore = create<Store>()(
       }));
 
       // ── live owl: real LLM via the edge function, with a simulated fallback ──
-      if (liveOwlEnabled(s.prefs)) {
+      // Ink meters the live owl (the economy plan's chat cost: −1 ink, +3 XP).
+      // A dry inkwell falls through to the free offline brain, so chat never
+      // breaks — reading pages refills the well and the live owl returns.
+      const liveWanted = liveOwlEnabled(s.prefs);
+      if (liveWanted && s.ink < 1) {
+        get().showToast('ti-pencil', 'the inkwell is dry — a few pages will refill it');
+      }
+      if (liveWanted && s.ink >= 1) {
+        get().addInk(-1); // spend up front; refunded if the delivery fails
         void (async () => {
           const turns = buildReplyTurns(get().owl.messages);
           try {
             const { msgs, chips } = await callLiveOwl(turns);
+            get().addXP(3);
             set((st) => {
               let messages = st.owl.messages.filter((m) => m.id !== typingId);
               msgs.forEach((nodes) => {
@@ -388,6 +397,7 @@ export const useStore = create<Store>()(
               return { owl: { ...st.owl, busy: false, messages, chips } };
             });
           } catch (err) {
+            get().addInk(1); // the desk refunds failed deliveries
             console.warn('[owlry] live owl reply failed → mockup fallback:', err);
             // offline / not deployed / upstream error → the mockup brain answers instead
             const fb = {
