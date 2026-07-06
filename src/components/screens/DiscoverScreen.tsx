@@ -116,7 +116,7 @@ function TrayCard({ id, onClose }: { id: BookId; onClose: () => void }) {
                   openLetter(id);
                 }}
               >
-                PREVIEW <Icon name="ti-mail" />
+                PEEK <Icon name="ti-mail" />
               </button>
             ) : (
               <button

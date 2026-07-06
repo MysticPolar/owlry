@@ -41,6 +41,7 @@ export function Settings() {
   const setPref = useStore((s) => s.setPref);
   const resetProgress = useStore((s) => s.resetProgress);
   const restartChat = useStore((s) => s.restartChat);
+  const openOnboarding = useStore((s) => s.openOnboarding);
   const showToast = useStore((s) => s.showToast);
   const lv = useStore((s) => s.lv);
   const coins = useStore((s) => s.coins);
@@ -212,6 +213,11 @@ export function Settings() {
 
         {/* about */}
         <div className="sh-sec">ABOUT</div>
+        <button className="link-row" onClick={openOnboarding}>
+          <Icon name="ti-player-play" />
+          watch opening night again
+          <Icon name="ti-chevron-right" className="ext" />
+        </button>
         <button className="link-row" onClick={() => showToast('ti-external-link', 'opens outside owlry')}>
           <Icon name="ti-shield-lock" />
           privacy

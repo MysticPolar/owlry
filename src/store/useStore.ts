@@ -56,6 +56,8 @@ export interface Store extends PersistedState {
   burstNonce: number;
   owl: OwlState;
   deskMode: DeskMode;
+  /** opening night: playing when true (first run, or replayed from settings) */
+  showOnboarding: boolean;
   openedLetters: GuideId[];
   hydrated: boolean;
   settingsOpen: boolean;
@@ -90,6 +92,9 @@ export interface Store extends PersistedState {
   restartChat: () => void;
   sendToOwl: (text: string) => void;
   setDeskMode: (mode: DeskMode) => void;
+  openOnboarding: () => void;
+  /** end opening night; when a first letter was sorted, plant it in the chat and open it */
+  finishOnboarding: (firstLetter?: GuideId) => void;
 }
 
 let chatId = 0;
@@ -155,6 +160,7 @@ export const useStore = create<Store>()(
       started: false,
     },
     deskMode: 'all',
+    showOnboarding: false,
     openedLetters: [],
     hydrated: false,
     settingsOpen: false,
@@ -163,6 +169,8 @@ export const useStore = create<Store>()(
       const loaded = await repository.load();
       if (loaded) set({ ...loaded, hydrated: true });
       else set({ hydrated: true });
+      // opening night, once — the curtain waits for first-timers
+      if (!get().prefs.onboarded) set({ showOnboarding: true });
       get().initChat();
     },
 
@@ -297,6 +305,14 @@ export const useStore = create<Store>()(
       const cached = recLetterCache.get(recKey(title));
       set({ recLetter: { title, author, note, status: cached ? 'ready' : 'loading' }, sheetId: null });
       if (cached) return;
+      // a peek costs ink (the economy's preview cost, lightened); re-opening a
+      // written letter is free. dry well → no generation until pages refill it.
+      if (get().ink < 2) {
+        get().showToast('ti-pencil', 'the inkwell is dry — a few pages will refill it', 'scout');
+        set((s) => (s.recLetter ? { recLetter: { ...s.recLetter, status: 'error' } } : {}));
+        return;
+      }
+      get().addInk(-2); // spend up front; refunded if the letter fails
       // ground the letter in what the reader actually asked for
       const msgs = get().owl.messages;
       const lastAsk = [...msgs].reverse().find((m) => m.kind === 'msg' && m.who === 'me');
@@ -304,10 +320,12 @@ export const useStore = create<Store>()(
       void generateRecLetter(title, author, [context, note].filter(Boolean).join(' · '))
         .then((data) => {
           recLetterCache.set(recKey(title), data);
+          get().addXP(10); // a peek pays back in XP
           const cur = get().recLetter;
           if (cur && recKey(cur.title) === recKey(title)) set({ recLetter: { ...cur, status: 'ready' } });
         })
         .catch((err) => {
+          get().addInk(2); // the desk refunds failed letters
           console.warn('[owlry] letter generation failed:', err);
           const cur = get().recLetter;
           if (cur && recKey(cur.title) === recKey(title)) set({ recLetter: { ...cur, status: 'error' } });
@@ -414,6 +432,25 @@ export const useStore = create<Store>()(
         },
       }));
       get().initChat();
+    },
+
+    openOnboarding: () => set({ showOnboarding: true, settingsOpen: false }),
+
+    finishOnboarding: (firstLetter) => {
+      set((s) => ({ showOnboarding: false, prefs: { ...s.prefs, onboarded: true } }));
+      if (firstLetter) {
+        // the show ends in the real thing: the letter lands in the actual chat,
+        // opens as the first peek, and the desk is ready behind it
+        set((s) => ({
+          activeTab: 'discover',
+          owl: {
+            ...s.owl,
+            messages: [...s.owl.messages, { kind: 'letter', id: nextId(), book: firstLetter }],
+            chips: ['go deeper', 'something lighter', 'more like this', 'new vibe'],
+          },
+        }));
+        get().openLetter(firstLetter);
+      }
     },
 
     setDeskMode: (mode) => {

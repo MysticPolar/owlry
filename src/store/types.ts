@@ -28,6 +28,8 @@ export interface Prefs {
   owlEngine: OwlEngine;
   /** lighting rig — 'night' is the default evening show */
   mode: Mode;
+  /** opening night (onboarding) has been seen */
+  onboarded?: boolean;
 }
 
 /** The durable loop persisted to IndexedDB (and, later, a backend). */

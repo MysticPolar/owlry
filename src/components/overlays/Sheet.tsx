@@ -56,7 +56,7 @@ export function Sheet() {
           <div className="btnrow">
             {guide && (
               <button className="btn" onClick={() => isGuide(id) && openLetter(id)}>
-                PREVIEW <Icon name="ti-mail" />
+                PEEK <Icon name="ti-mail" />
               </button>
             )}
             <button className={`btn ${guide ? 'ghost' : ''}`} onClick={() => openReader(id)}>

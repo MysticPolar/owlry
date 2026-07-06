@@ -126,7 +126,7 @@ function CalendarTab() {
         </div>
         <div className="rec-lab">YOU ASKED</div>
         <div className="ask">{rec.q}</div>
-        <div className="rec-lab">YOU PREVIEWED</div>
+        <div className="rec-lab">YOU PEEKED</div>
         <div className="prev-row">
           <Cover id={rec.book} cls="cover-xs" />
           <div>

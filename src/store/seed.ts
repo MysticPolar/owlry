@@ -23,5 +23,6 @@ export const SEED: PersistedState = {
     sounds: false,
     owlEngine: 'live',
     mode: 'night',
+    onboarded: false,
   },
 };
