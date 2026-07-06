@@ -742,3 +742,28 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .ob-radar-poly{transform-box:fill-box;transform-origin:50% 50%;animation:radarGrow 1.6s cubic-bezier(.2,.8,.2,1) .3s backwards}
 .ob-radar-dot{animation:msgIn .4s ease 1.2s backwards}
 @keyframes radarGrow{from{transform:scale(.15);opacity:0}to{transform:scale(1);opacity:1}}
+
+/* ============================================================
+   FULL APP ON PHONES — below 560px the desk presentation retires:
+   no bezel, no desk, the theatre fills the real screen (100dvh,
+   safe-area aware). Desktop keeps the staged phone-on-a-desk.
+   ============================================================ */
+@media (max-width: 560px){
+  /* the desk centres its children; on a real phone the app must fill the
+     width instead of shrink-wrapping — stretch the cross axis */
+  body{padding:0;background:#07070C;align-items:stretch;justify-content:flex-start}
+  .page{gap:0;width:100%}
+  .caption{display:none}
+  .phone{width:100%;max-width:none;padding:0;border-radius:0;border:0;box-shadow:none;background:transparent}
+  .app{height:100vh;height:100dvh;border-radius:0;padding-top:env(safe-area-inset-top)}
+  /* the fake phone chrome retires on a real phone */
+  .status{display:none}
+  .nav{bottom:calc(10px + env(safe-area-inset-bottom))}
+  .screen{padding-bottom:calc(104px + env(safe-area-inset-bottom))}
+  #screen-discover{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
+  /* fluid display type so nothing clips on narrow screens */
+  .mq{font-size:clamp(42px, 15vw, 57px)}
+  .pad-h .ghost{font-size:clamp(64px, 25vw, 94px)}
+  .logo{font-size:clamp(21px, 6.6vw, 25px)}
+  .ob-marquee>span:first-child{font-size:clamp(40px, 14vw, 54px)}
+}
