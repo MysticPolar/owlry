@@ -99,7 +99,7 @@ async function anthropicReply(turns: Turn[], apiKey: string, system: string): Pr
   return textBlock?.text ?? '';
 }
 
-/** Claude: write a reading letter for one open-world book (tap-triggered, cached client-side). */
+/** Claude: write a peek for one open-world book (tap-triggered, cached client-side). */
 async function anthropicLetter(title: string, author: string, context: string, apiKey: string): Promise<string> {
   const Anthropic = (await import('npm:@anthropic-ai/sdk')).default;
   const client = new Anthropic({ apiKey });
@@ -110,7 +110,7 @@ async function anthropicLetter(title: string, author: string, context: string, a
     thinking: { type: 'disabled' },
     // letters are the product — worth a notch more deliberation than chat turns
     system: [{ type: 'text', text: LETTER_SYSTEM, cache_control: { type: 'ephemeral' } }],
-    messages: [{ role: 'user', content: `The book: ${title} by ${author}.${ask} Write the reading letter.` }],
+    messages: [{ role: 'user', content: `The book: ${title} by ${author}.${ask} Write the peek.` }],
     output_config: { effort: 'medium', format: { type: 'json_schema', schema: OWL_LETTER_SCHEMA } },
     // deno-lint-ignore no-explicit-any
   } as any);
@@ -128,7 +128,7 @@ async function geminiLetter(title: string, author: string, context: string, apiK
   const ask = context ? ` The reader's ask: "${context}".` : '';
   const response = await ai.models.generateContent({
     model: OWL_GEMINI_MODEL,
-    contents: [{ role: 'user', parts: [{ text: `The book: ${title} by ${author}.${ask} Write the reading letter.` }] }],
+    contents: [{ role: 'user', parts: [{ text: `The book: ${title} by ${author}.${ask} Write the peek.` }] }],
     config: {
       systemInstruction: LETTER_SYSTEM,
       maxOutputTokens: 2400,

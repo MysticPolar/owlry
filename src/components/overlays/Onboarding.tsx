@@ -152,7 +152,7 @@ export function Onboarding() {
           </div>
           <div className="ob-row">
             <span className="stamp"><Icon name="ti-mail-opened" /></span>
-            <span><b className="d">PEEK</b> — open the letter it sorts you: the right book, the right chapter.</span>
+            <span><b className="d">PEEK</b> — open what scout sends you: the right book, the right chapter.</span>
           </div>
           <div className="ob-row">
             <span className="stamp"><Icon name="ti-radar-2" /></span>
@@ -241,13 +241,13 @@ export function Onboarding() {
             <CastOwl owl="scout" cls="hero" />
           </div>
           <div className="ob-lines">
-            <div className="msg owl">sorted. your first letter — don’t open it quite yet.</div>
+            <div className="msg owl">sorted. your first peek — don’t open it quite yet.</div>
             <div className="lettercard ob-letter">
               <span className="stamp">
                 <Icon name="ti-feather" />
               </span>
               <span>
-                <span className="lc-t d">your first letter has arrived</span>
+                <span className="lc-t d">your first peek has arrived</span>
                 <br />
                 <span className="lc-s">{BOOKS[pick].t}</span>
               </span>
@@ -273,7 +273,7 @@ export function Onboarding() {
             </div>
           </div>
           <button className="btn ob-next" onClick={() => finish(pick)}>
-            OPEN YOUR LETTER <Icon name="ti-mail" />
+            OPEN YOUR PEEK <Icon name="ti-mail" />
           </button>
         </div>
       )}

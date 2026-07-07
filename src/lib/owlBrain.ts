@@ -101,7 +101,7 @@ function fictionReply(s: OwlSession): OwlReply {
 function deeperReply(s: OwlSession): OwlReply {
   const g = GUIDES[s.lastGuide as GuideId];
   return {
-    msgs: [[text('from the same letter, something to sit with: '), em(`“${g.ask[0]}”`), text(' — no rush.')]],
+    msgs: [[text('from the same peek, something to sit with: '), em(`“${g.ask[0]}”`), text(' — no rush.')]],
     chips: AFTER_CHIPS,
   };
 }

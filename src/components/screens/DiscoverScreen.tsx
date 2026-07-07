@@ -179,7 +179,7 @@ function Chat() {
                 <Icon name="ti-feather" />
               </span>
               <span>
-                <span className="lc-t d">a reading letter has arrived</span>
+                <span className="lc-t d">your peek has arrived</span>
                 <br />
                 <span className="lc-s">{BOOKS[m.book].t} — tap to open</span>
               </span>
@@ -193,7 +193,7 @@ function Chat() {
                 <Icon name="ti-feather" />
               </span>
               <span>
-                <span className="lc-t d">a reading letter has arrived</span>
+                <span className="lc-t d">your peek has arrived</span>
                 <br />
                 <span className="lc-s">{m.title} — tap to open</span>
               </span>

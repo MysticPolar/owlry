@@ -103,7 +103,7 @@ function CalendarTab() {
                 className={cls}
                 disabled={!clickable}
                 aria-label={
-                  dayRec ? `june ${d} — asked the owl, previewed ${BOOKS[dayRec.book].t}` : `june ${d}`
+                  dayRec ? `june ${d} — asked the owl, peeked ${BOOKS[dayRec.book].t}` : `june ${d}`
                 }
                 aria-pressed={dayRec ? sel : undefined}
                 onClick={clickable ? () => setSelDay(d) : undefined}
@@ -114,7 +114,7 @@ function CalendarTab() {
           })}
         </div>
         <div className="cal-foot">
-          <i aria-hidden="true" />a day you asked the owl &amp; previewed a pick
+          <i aria-hidden="true" />a day you asked the owl &amp; peeked a pick
         </div>
       </div>
       <div className="pcard" id="recCard" aria-live="polite" key={selDay}>

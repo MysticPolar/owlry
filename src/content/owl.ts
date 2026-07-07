@@ -37,7 +37,7 @@ export const START_CHIPS: Record<DayPart, string[]> = {
   night: ["can't sleep", 'big life question', 'cozy escape', 'surprise me'],
 };
 
-/** chips offered after a reading letter has been sorted */
+/** chips offered after a peek has been sorted */
 export const AFTER_CHIPS: string[] = ['go deeper', 'something lighter', 'more like this', 'new vibe'];
 
 /** fiction picks by weather (the "no homework, just pages" path) */

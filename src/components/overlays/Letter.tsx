@@ -7,13 +7,13 @@ import { Icon } from '../Icon';
 import { Cover } from '../Cover';
 import { CastOwl } from '../CastOwl';
 
-/* the desk, writing — a typewriter line while a letter generates */
-const WRITING = ['opening the book…', 'finding the right chapter…', 'writing your letter…', 'sealing the envelope…'];
+/* the desk, writing — a typewriter line while a peek generates */
+const WRITING = ['opening the book…', 'finding the right chapter…', 'writing your peek…', 'sealing the envelope…'];
 function Typewriter() {
   const [txt, setTxt] = useState('');
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setTxt('writing your letter…');
+      setTxt('writing your peek…');
       return;
     }
     let phrase = 0;
@@ -82,9 +82,9 @@ export function Letter() {
   }, [open, id, rec?.title, rec?.status]);
 
   return (
-    <div className={`letter ${open ? 'on' : ''}`} id="letter" role="dialog" aria-modal="true" aria-label="Reading letter">
+    <div className={`letter ${open ? 'on' : ''}`} id="letter" role="dialog" aria-modal="true" aria-label="Peek">
       <div className="l-top">
-        <button className="iconbtn lite" aria-label="Close letter" onClick={closeLetter}>
+        <button className="iconbtn lite" aria-label="Close peek" onClick={closeLetter}>
           <Icon name="ti-arrow-left" />
         </button>
         <div className="d">
@@ -109,7 +109,7 @@ export function Letter() {
       <div className="l-body" id="ltBody" ref={bodyRef}>
         {g && b && id && (
           <div className="l-swap" key={id}>
-            <div className="l-kick">OWL POST · READING LETTER</div>
+            <div className="l-kick">OWL POST · PEEK</div>
             <div className="l-ttl d">
               <span
                 className="l-ttl-link"
@@ -217,7 +217,7 @@ export function Letter() {
         {/* open-world letter: content arrives only after the card is tapped */}
         {rec && (
           <div className="l-swap" key={rec.title + rec.status}>
-            <div className="l-kick">OWL POST · READING LETTER</div>
+            <div className="l-kick">OWL POST · PEEK</div>
             <div className="l-ttl d">{rec.title}</div>
             <div className="l-auth">
               {rec.author}

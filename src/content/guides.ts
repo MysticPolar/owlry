@@ -2,7 +2,7 @@ import type { Guide, GuideId } from './types';
 
 export const GUIDES: Record<GuideId, Guide> = {
   wws: {
-    say: `ah, the wide-awake hours. i've sorted a letter for you — {{b}}, on the two clocks you're fighting tonight.`,
+    say: `ah, the wide-awake hours. i've sorted a peek for you — {{b}}, on the two clocks you're fighting tonight.`,
     res: `It's late, your mind won't dim, and sleep keeps slipping just out of reach.`,
     chap: `Caffeine, Jet Lag, and Melatonin`,
     core: `Walker's argument in this chapter is that falling asleep isn't one switch but two independent systems that must agree: a circadian clock that times your wakefulness, and a chemical pressure — adenosine — that builds for every minute you're awake. Most modern sleeplessness, he says, comes from accidentally setting these two against each other, and caffeine is the most common saboteur, because it doesn't remove sleep pressure; it only hides it from you.`,
@@ -39,7 +39,7 @@ export const GUIDES: Record<GuideId, Guide> = {
     ],
   },
   medit: {
-    say: `a fresh morning deserves an old voice. your letter opens {{b}} — book five, the getting-out-of-bed argument itself.`,
+    say: `a fresh morning deserves an old voice. your peek opens {{b}} — book five, the getting-out-of-bed argument itself.`,
     res: `A new morning, and you want it to count for something.`,
     chap: `Book Five`,
     core: `Book Five opens with Marcus arguing himself out of bed: you were not made for warmth under blankets but for the work of a human being, the way bees were made for the hive. The deeper claim running through the book is that a day is shaped less by its events than by the thoughts you dye it with — so the morning's first task is choosing the dye on purpose.`,
@@ -77,7 +77,7 @@ export const GUIDES: Record<GuideId, Guide> = {
     ],
   },
   deep: {
-    say: `stuck usually isn't a you problem — it's a room problem. i've written you a letter on {{b}}.`,
+    say: `stuck usually isn't a you problem — it's a room problem. i've written you a peek on {{b}}.`,
     res: `Busy all day, blocked all the same — your attention is everywhere except the thing.`,
     chap: `Rule #1: Work Deeply`,
     core: `Newport's claim is that focus is not a virtue you summon but an environment you construct. Willpower, he argues, is a finite battery that loses every open-ended fight with distraction — so the chapter's case is to stop relying on intention and start relying on architecture: choose a philosophy of depth, build rituals around it, and make your commitments expensive enough that quitting feels absurd.`,
@@ -114,7 +114,7 @@ export const GUIDES: Record<GuideId, Guide> = {
     ],
   },
   atomic: {
-    say: `forget motivation; let's talk identity. your letter opens {{b}} to the chapter on becoming the person first.`,
+    say: `forget motivation; let's talk identity. your peek opens {{b}} to the chapter on becoming the person first.`,
     res: `You don't want a burst of motivation — you want to become someone who doesn't need one.`,
     chap: `How Your Habits Shape Your Identity (and Vice Versa)`,
     core: `Clear argues that most change fails because it aims at outcomes — lose the weight, write the book — instead of identity: become a healthy person, become a writer. Behavior that contradicts self-image never lasts, so the chapter flips the order. Decide who you want to be, then let small actions pile up as evidence, until the identity is simply true.`,
@@ -151,7 +151,7 @@ export const GUIDES: Record<GuideId, Guide> = {
     ],
   },
   pema: {
-    say: `i'm sorry it aches. come sit by the radiator — your letter is {{b}}, on staying when everything says run.`,
+    say: `i'm sorry it aches. come sit by the radiator — your peek is {{b}}, on staying when everything says run.`,
     res: `Something has cracked — and every instinct says run from the feeling.`,
     chap: `Intimacy with Fear`,
     core: `Chödrön opens with the moment her own life collapsed, and makes the radical claim of the whole book: the rawness we flee is the doorway. Fear is not a verdict that something is wrong with us; it is the sensation of getting close to the truth. Healing, she argues, begins not when the pain ends but when we stop abandoning ourselves in the middle of it.`,
@@ -189,7 +189,7 @@ export const GUIDES: Record<GuideId, Guide> = {
     ],
   },
   frankl: {
-    say: `the big question. for that, only one book will do: {{b}}. the letter's inside.`,
+    say: `the big question. for that, only one book will do: {{b}}. the peek's inside.`,
     res: `The question isn't how to feel better — it's what any of this is for.`,
     chap: `Part One: Experiences in a Concentration Camp`,
     core: `Frankl's testimony argues that when everything is stripped away, one freedom remains: choosing your stance toward what happens. In the camps, he observed, survival tracked neither strength nor optimism but a "why" — a person, a task, a future that needed you. Meaning, he insists, is not found by interrogating life for answers; it is answered by what life is asking of you.`,
@@ -227,7 +227,7 @@ export const GUIDES: Record<GuideId, Guide> = {
     ],
   },
   bird: {
-    say: `deep breath. your letter is {{b}} — permission, in writing, to do this one bird at a time.`,
+    say: `deep breath. your peek is {{b}} — permission, in writing, to do this one bird at a time.`,
     res: `The project is a mountain, the deadline is breathing, and you can't even start.`,
     chap: `Shitty First Drafts`,
     core: `Lamott's argument is that paralysis comes from demanding the final version first. All good writing — all good anything — begins with a draft so bad nobody will ever see it; the first pass exists only to give the second pass something to fix. Perfectionism, she says, is the voice of the oppressor, and the cure is permission, granted daily, to be briefly terrible.`,

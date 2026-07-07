@@ -295,7 +295,7 @@ export const useStore = create<Store>()(
       const { openedLetters } = get();
       if (!openedLetters.includes(id)) {
         set({ openedLetters: [...openedLetters, id] });
-        get().showToast('ti-mail-opened', 'a letter, opened · +5 XP', 'peek');
+        get().showToast('ti-mail-opened', 'a peek, opened · +5 XP', 'peek');
         get().addXP(5);
       }
     },
@@ -354,7 +354,7 @@ export const useStore = create<Store>()(
       const simulatedGreeting = (wxKey: ReturnType<typeof newSession>['wxKey']): OwlMessage => [
         {
           t: 'text',
-          v: `${SAL[dp]} ${FLAVOR[wxKey]}. scout here, at the post desk — tell me what's going on, and i'll sort you a reading letter.`,
+          v: `${SAL[dp]} ${FLAVOR[wxKey]}. scout here, at the post desk — tell me what's going on, and i'll sort you a peek.`,
         },
       ];
 
