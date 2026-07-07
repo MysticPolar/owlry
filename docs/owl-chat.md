@@ -6,8 +6,8 @@ chat log don't care which one is answering.
 | | **Live owl** | **Classic owl (the mockup)** |
 |---|---|---|
 | Brain | Claude Sonnet 4.6, in the `owl-chat` edge function | `respond()` in `src/lib/owlBrain.ts` — pure, offline, regex intent matching |
-| Books | open-world — any real, well-loved book; chosen by the model | the fixed 23-book catalog (`content/books.ts`) |
-| Letters | the framing is spoken in voice; rich letter overlay is catalog-only | the 7 hand-written `GUIDES` letters, fully rendered |
+| Books | open-world — any real, well-loved book; chosen by the model | the fixed 24-book catalog (`content/books.ts`) |
+| Peeks | spoken framing in voice, then a full peek generated on tap | the 7 hand-written `GUIDES` peeks, fully rendered |
 | Greeting | the visitor's **real** local weather + time (geolocation → Open-Meteo) | the faked weather cycle (tap the glyph) |
 | Needs | a Supabase backend + `ANTHROPIC_API_KEY` secret | nothing — always available |
 
@@ -78,14 +78,14 @@ weaving the named titles back into the owl's prose as styled mentions.
 
 ## Known v1 limits / next steps
 
-- **Open-world reading letters (lazy).** Every book a live reply names spawns
-  a letter card in the chat (zero tokens — cards come straight from the reply
+- **Open-world peeks (lazy).** Every book a live reply names spawns
+  a peek card in the chat (zero tokens — cards come straight from the reply
   payload, one per book, arriving a beat apart). Books matching a catalog
-  guide reuse the curated GUIDES letter outright; open-world books generate
-  their letter **only when the card is tapped** (`letterFor` mode on the
+  guide reuse the curated GUIDES peek outright; open-world books generate
+  their peek **only when the card is tapped** (`letterFor` mode on the
   `owl-chat` function, `LETTER_SYSTEM` prompt, GUIDES-shaped JSON), cached per
   book for the session so re-opening is free. The paper overlay renders both
-  sources identically; open-world letters skip further-reading/OPEN/SAVE
+  sources identically; open-world peeks skip further-reading/OPEN/SAVE
   (catalog-only affordances). Open-world books still have no page-turn reader.
 - **Ink meters the live owl (local economy).** Each live reply costs 1 ink and
   grants +3 XP (the backend plan's chat cost); a failed delivery is refunded.
