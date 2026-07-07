@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useStore } from '../../store/useStore';
+import { useAuth } from '../../store/useAuth';
 import { BOOKS } from '../../content/books';
 import {
   RADAR_NOTE,
@@ -213,6 +214,7 @@ export function ProfileScreen() {
   const coins = useStore((s) => s.coins);
   const streak = useStore((s) => s.streak);
   const openSettings = useStore((s) => s.openSettings);
+  const authUser = useAuth((s) => (s.status === 'authed' ? s.user : null));
 
   const [profileTab, setProfileTab] = useState<ProfileTab>('stats');
   const [radarKey, setRadarKey] = useState(0);
@@ -249,9 +251,9 @@ export function ProfileScreen() {
 
       <div className="pcard">
         <div className="prof">
-          <div className="avatar lg d">M</div>
+          <div className="avatar lg d">{authUser ? authUser.avatar : 'M'}</div>
           <div>
-            <div className="pname d">Mira</div>
+            <div className="pname d">{authUser ? authUser.name : 'Mira'}</div>
             <div className="psub">
               LV {lv} BIBLIOPHILE · {coins} COINS
             </div>

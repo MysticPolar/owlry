@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useStore } from '../../store/useStore';
+import { useAuth } from '../../store/useAuth';
 import type { OwlEngine, ReaderScale } from '../../store/types';
 import { isBackendConfigured } from '../../lib/supabase';
 import { Icon } from '../Icon';
@@ -45,6 +46,10 @@ export function Settings() {
   const showToast = useStore((s) => s.showToast);
   const lv = useStore((s) => s.lv);
   const coins = useStore((s) => s.coins);
+  const authed = useAuth((s) => s.status === 'authed');
+  const authUser = useAuth((s) => s.user);
+  const openAuth = useAuth((s) => s.openAuth);
+  const logout = useAuth((s) => s.logout);
   const [confirmReset, setConfirmReset] = useState(false);
 
   const comingSoon = (label: string) => showToast('ti-clock', `${label} — coming soon`);
@@ -142,22 +147,43 @@ export function Settings() {
         <div className="sh-sec">ACCOUNT</div>
         <div className="set-card">
           <div className="prof">
-            <div className="avatar lg d">M</div>
+            <div className="avatar lg d">{authed && authUser ? authUser.avatar : 'M'}</div>
             <div>
-              <div className="pname d">Mira</div>
+              <div className="pname d">{authed && authUser ? authUser.name : 'Mira'}</div>
               <div className="psub">
-                LV {lv} BIBLIOPHILE · {coins} COINS
+                {authed && authUser ? authUser.email : `LV ${lv} BIBLIOPHILE · ${coins} COINS`}
               </div>
             </div>
           </div>
         </div>
-        <button className="link-row" onClick={() => comingSoon('sync across devices')}>
-          <Icon name="ti-cloud" />
-          sync across devices
-          <span className="soon" style={{ marginLeft: 'auto' }}>
-            SOON
-          </span>
-        </button>
+        {authed ? (
+          <>
+            <button className="link-row" onClick={() => comingSoon('sync across devices')}>
+              <Icon name="ti-cloud" />
+              sync across devices
+              <span className="soon" style={{ marginLeft: 'auto' }}>
+                SOON
+              </span>
+            </button>
+            <button
+              className="link-row"
+              onClick={() => {
+                void logout();
+                showToast('ti-arrow-left', 'signed out. keeper closed the ledger.', 'keeper');
+              }}
+            >
+              <Icon name="ti-arrow-left" />
+              sign out
+              <Icon name="ti-chevron-right" className="ext" />
+            </button>
+          </>
+        ) : (
+          <button className="link-row" onClick={() => openAuth('login')}>
+            <Icon name="ti-user" />
+            sign in or create account
+            <Icon name="ti-chevron-right" className="ext" />
+          </button>
+        )}
 
         {/* data */}
         <div className="sh-sec">DATA</div>

@@ -767,3 +767,63 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
   .logo{font-size:clamp(21px, 6.6vw, 25px)}
   .ob-marquee>span:first-child{font-size:clamp(40px, 14vw, 54px)}
 }
+
+/* ============================================================
+   THE MEMBERS' DOOR — auth (login / signup), staged as the Owlery
+   box office at night. Evening stage like opening night; Keeper
+   presides (accounts are the ledger). Always dark, both rigs.
+   ============================================================ */
+.auth{position:absolute;inset:0;z-index:15;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:15px;overflow-y:auto;
+  padding:26px 24px calc(26px + env(safe-area-inset-bottom));
+  background:linear-gradient(180deg,#0D111F 0%,#151B31 100%);color:#F2EBD7;
+  --surface:#1B2239;--line:rgba(255,213,105,.13);--line2:rgba(255,213,105,.26);--mut:#A9AEC4;--fade:#767C97;
+  opacity:0;visibility:hidden;pointer-events:none;transition:opacity .32s ease,visibility .32s ease}
+.auth.on{opacity:1;visibility:visible;pointer-events:auto}
+.auth-glow{position:absolute;left:50%;top:-90px;width:340px;height:280px;transform:translateX(-50%);
+  background:radial-gradient(50% 60% at 50% 40%, rgba(255,192,23,.22) 0%, transparent 70%);pointer-events:none}
+.auth-close{position:absolute;top:calc(14px + env(safe-area-inset-top));right:16px;z-index:3;
+  display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:999px;
+  background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--mut);font-size:16px;cursor:pointer}
+.auth-close:active{transform:translateY(1px)}
+
+.auth-stage{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:15px;
+  width:100%;max-width:340px;transform:translateY(10px);transition:transform .34s cubic-bezier(.2,.9,.25,1.05)}
+.auth.on .auth-stage{transform:none}
+.auth-owl .owl.hero{position:static;width:104px;height:113px;
+  animation:swoop .7s cubic-bezier(.2,.9,.25,1.05) both, perch 4.4s 1s ease-in-out infinite}
+.auth-head{text-align:center;display:flex;flex-direction:column;gap:4px;margin-top:-4px}
+.auth-mark{font-size:30px;letter-spacing:.02em;transform:skewX(-7deg)}
+.auth-tag{font-size:10px;font-weight:800;letter-spacing:.3em;text-transform:uppercase;color:#FFC017}
+
+/* the card is cream paper — pin dark ink so inputs never inherit the night
+   rig's light --ink (which would render text invisible on the paper) */
+.auth-card{gap:12px;--ink:#241B0E;--fade:#9C8F77}
+.auth-tabs{display:flex;gap:5px;background:var(--surface);border-radius:11px;padding:4px;margin-bottom:2px}
+.auth-tabs button{flex:1;padding:8px 10px;border:0;border-radius:8px;background:transparent;cursor:pointer;
+  font-family:'Anton',sans-serif;font-weight:400;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+.auth-tabs button.on{background:var(--yellow);color:#241B0E;box-shadow:0 2px 0 rgba(90,62,6,.3)}
+
+.auth-field{display:flex;flex-direction:column;gap:5px}
+.auth-lab{display:flex;align-items:center;gap:6px;font-size:10px;font-weight:800;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--mut)}
+.auth-lab .ti{font-size:13px;color:var(--ember)}
+.auth-field input{width:100%;border:1px solid var(--line2);border-radius:10px;background:var(--surface);
+  padding:11px 12px;font:600 14px 'Inter Tight',sans-serif;color:var(--ink)}
+.auth-field input::placeholder{color:var(--fade);font-weight:500}
+.auth-field input:focus-visible{outline:2px solid var(--yellow);outline-offset:1px;border-color:transparent}
+
+.auth-err{font-size:12px;font-weight:600;line-height:1.45;color:var(--ember-d,#93290C);
+  background:rgba(216,72,30,.10);border:1px solid rgba(216,72,30,.28);border-radius:9px;padding:8px 10px}
+.auth-submit{width:100%;justify-content:center;margin-top:4px}
+.auth-submit:disabled{opacity:.6;cursor:progress}
+
+.auth-alt{text-align:center;font-size:11.5px;color:var(--mut);font-weight:600}
+.auth-alt button{background:none;border:0;color:var(--gold,#A8730A);font-weight:800;cursor:pointer;padding:0;
+  text-decoration:underline;text-underline-offset:2px;font-size:11.5px;font-family:inherit}
+
+.auth-guest{display:inline-flex;align-items:center;gap:6px;background:none;border:0;cursor:pointer;
+  color:#F2EBD7;font-size:12px;font-weight:800;letter-spacing:.02em;opacity:.92}
+.auth-guest .ti{font-size:14px;color:#FFC017}
+.auth-guest:active{transform:translateY(1px)}
+.auth-note{font-size:11px;color:var(--mut);text-align:center;max-width:264px;line-height:1.5}

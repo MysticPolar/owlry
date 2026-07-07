@@ -1,5 +1,6 @@
 import { useEffect, useState, type CSSProperties } from 'react';
 import { useStore } from './store/useStore';
+import { useAuth } from './store/useAuth';
 import { useKeyboardInset } from './hooks/useKeyboardInset';
 import { WX } from './content/weather';
 import type { ReaderScale } from './store/types';
@@ -13,6 +14,7 @@ import { Reader } from './components/overlays/Reader';
 import { Letter } from './components/overlays/Letter';
 import { Settings } from './components/overlays/Settings';
 import { Onboarding } from './components/overlays/Onboarding';
+import { Auth } from './components/overlays/Auth';
 
 const READER_SCALE: Record<ReaderScale, number> = { sm: 0.9, md: 1, lg: 1.15 };
 
@@ -48,6 +50,7 @@ export default function App() {
   const mode = useStore((s) => s.prefs.mode ?? 'night');
   const onboarded = useStore((s) => s.prefs.onboarded);
   const showOnboarding = useStore((s) => s.showOnboarding);
+  const initAuth = useAuth((s) => s.init);
   const kb = useKeyboardInset();
 
   // opening night claims the entrance — the brief curtain stands down
@@ -57,7 +60,8 @@ export default function App() {
 
   useEffect(() => {
     void bootstrap();
-  }, [bootstrap]);
+    void initAuth();
+  }, [bootstrap, initAuth]);
 
   const appStyle = {
     '--reader-scale': String(READER_SCALE[readerScale]),
@@ -91,6 +95,7 @@ export default function App() {
               <Letter />
               <Settings />
               <Onboarding />
+              <Auth />
               {onboarded && !showOnboarding && !curtainDone && <CurtainBrief />}
               <Toast />
               <BurstLayer />
