@@ -396,7 +396,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .l-res{border-left:3px solid var(--yellow);padding:2px 0 2px 10px;margin-top:14px;font-size:14.5px;line-height:1.55}
 .l-sec{font-size:9.5px;font-weight:800;letter-spacing:2px;color:var(--gold);margin:20px 0 8px;padding-top:14px;border-top:1px dashed rgba(60,44,16,.3)}
 .l-chap{font-size:17px;letter-spacing:.02em}
-.l-p{margin:0 0 10px;font-family:'Fraunces',Georgia,serif;font-weight:420;font-size:13.5px;line-height:1.72}
+.l-p{margin:0 0 12px;font-family:'Fraunces',Georgia,serif;font-weight:430;font-size:calc(15px * var(--reader-scale,1));line-height:1.75}
 .l-ins{margin-bottom:14px}
 .l-ins-t{font-size:14px;margin-bottom:4px;letter-spacing:.03em}
 .l-tag{font-family:'Inter Tight',sans-serif;font-style:normal;font-size:9px;font-weight:800;letter-spacing:1.2px;color:var(--ember);text-transform:uppercase;margin-right:5px}
@@ -566,7 +566,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .r-body::-webkit-scrollbar{display:none}
 .r-body.swap{animation:swapIn .22s ease}
 .r-chap{font-size:10px;font-weight:800;letter-spacing:2.4px;color:var(--gold);margin-bottom:14px}
-.r-body p{margin:0 0 16px;font-family:'Fraunces',Georgia,serif;font-weight:430;font-size:15px;line-height:1.8}
+.r-body p{margin:0 0 17px;font-family:'Fraunces',Georgia,serif;font-weight:430;font-size:calc(16px * var(--reader-scale,1));line-height:1.82}
 .r-body p:first-of-type::first-letter{float:left;margin:6px 9px 0 0;font-family:'Anton',sans-serif;font-weight:400;font-size:42px;line-height:.82;color:var(--ember)}
 .r-foot{display:flex;align-items:center;gap:12px;background:#FFFCF0;border-top:1px solid rgba(60,44,16,.2);padding:12px 16px 18px}
 .r-prog{flex:1}
@@ -827,3 +827,45 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .auth-guest .ti{font-size:14px;color:#FFC017}
 .auth-guest:active{transform:translateY(1px)}
 .auth-note{font-size:11px;color:var(--mut);text-align:center;max-width:264px;line-height:1.5}
+
+/* ============================================================
+   MOBILE READING — comfortable type for the peek & the book on a
+   real phone. The reading bodies scale fluidly with the viewport
+   AND the reader S/M/L setting; small labels get a legibility nudge.
+   (vw is safe here: below 560px the app fills the whole screen.)
+   ============================================================ */
+@media (max-width: 560px){
+  /* ---- the peek ---- */
+  .l-body{padding:20px 20px 34px}
+  .l-kick{font-size:10px}
+  .l-ttl{font-size:clamp(25px, 7.6vw, 31px);line-height:1.04}
+  .l-auth{font-size:12.5px}
+  .l-res{font-size:clamp(15.5px, 4.3vw, 17px);line-height:1.6}
+  .l-sec{font-size:10px}
+  .l-chap{font-size:clamp(17px, 4.9vw, 19px)}
+  .l-ins-t{font-size:clamp(14.5px, 4.1vw, 16px)}
+  .l-tag{font-size:9.5px}
+  .l-p{font-size:calc(clamp(15px, 4.15vw, 17px) * var(--reader-scale,1));line-height:1.78}
+  .l-q{font-size:calc(clamp(14px, 3.9vw, 15.5px) * var(--reader-scale,1));line-height:1.6}
+  .l-q small{font-size:9.5px}
+  .l-sign{font-size:14px}
+  .rtitle{font-size:15px}
+  .rauth{font-size:11.5px}
+  .fr-why{font-size:12px;line-height:1.45}
+
+  /* ---- the book (reader) ---- */
+  .r-title{font-size:14.5px}
+  .r-chap{font-size:10.5px}
+  .r-body{padding:22px 22px 26px}
+  .r-body p{font-size:calc(clamp(16.5px, 4.6vw, 19px) * var(--reader-scale,1));line-height:1.85}
+  .r-body p:first-of-type::first-letter{font-size:clamp(44px, 12vw, 52px)}
+  .r-page{font-size:10.5px}
+  .r-auth{font-size:10px}
+
+  /* ---- chat & cards (reading Scout, book intros) ---- */
+  .msg{font-size:clamp(14px, 3.8vw, 15px);line-height:1.55}
+  .lc-s{font-size:10.5px}
+  .mq-sub{font-size:14px}
+  .bk-intro{font-size:clamp(13.5px, 3.8vw, 15px);line-height:1.62}
+  .bk-bio{font-size:13px;line-height:1.55}
+}
