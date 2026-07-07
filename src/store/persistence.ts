@@ -1,37 +1,47 @@
 /* ============================================================
-   owlry — persistence layer.
+   owlry — local persistence (the offline cache).
 
-   The store talks to a ProgressRepository, never to storage
-   directly. v1 ships an IndexedDB implementation; swapping the one
-   exported `repository` line for an `ApiRepository` moves the whole
-   app to a backend with zero UI or store-shape changes.
+   The store keeps a local copy of the durable slice in IndexedDB,
+   keyed by OWNER so a guest and each signed-in account never read
+   each other's data on a shared device. Guests keep the original
+   key, so existing local progress carries over untouched.
+
+   Cloud sync (src/lib/sync/cloud.ts) layers on top for signed-in
+   users; this file stays the always-on, offline-first cache.
    ============================================================ */
 import { get, set } from 'idb-keyval';
 import type { PersistedState } from './types';
 
-const KEY = 'owlry/progress/v1';
+/** who owns a given local cache: the shared guest, or a user id */
+export type Owner = 'guest' | string;
+
+const GUEST_KEY = 'owlry/progress/v1';
+const keyFor = (owner: Owner): string =>
+  owner === 'guest' ? GUEST_KEY : `${GUEST_KEY}/${owner}`;
+
+export async function loadLocal(owner: Owner): Promise<PersistedState | null> {
+  try {
+    return (await get<PersistedState>(keyFor(owner))) ?? null;
+  } catch {
+    return null;
+  }
+}
+
+export async function saveLocal(owner: Owner, state: PersistedState): Promise<void> {
+  try {
+    await set(keyFor(owner), state);
+  } catch {
+    /* best-effort; private-mode / quota errors are non-fatal */
+  }
+}
 
 export interface ProgressRepository {
   load(): Promise<PersistedState | null>;
   save(state: PersistedState): Promise<void>;
 }
 
-class IndexedDbRepository implements ProgressRepository {
-  async load(): Promise<PersistedState | null> {
-    try {
-      return (await get<PersistedState>(KEY)) ?? null;
-    } catch {
-      return null;
-    }
-  }
-  async save(state: PersistedState): Promise<void> {
-    try {
-      await set(KEY, state);
-    } catch {
-      /* best-effort; private-mode / quota errors are non-fatal */
-    }
-  }
-}
-
-// ── swap this single binding to move persistence to a backend ──
-export const repository: ProgressRepository = new IndexedDbRepository();
+/** the guest-facing local repository (kept for the offline default path) */
+export const repository: ProgressRepository = {
+  load: () => loadLocal('guest'),
+  save: (state) => saveLocal('guest', state),
+};

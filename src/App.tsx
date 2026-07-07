@@ -1,4 +1,4 @@
-import { useEffect, useState, type CSSProperties } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { useStore } from './store/useStore';
 import { useAuth } from './store/useAuth';
 import { useKeyboardInset } from './hooks/useKeyboardInset';
@@ -51,7 +51,27 @@ export default function App() {
   const onboarded = useStore((s) => s.prefs.onboarded);
   const showOnboarding = useStore((s) => s.showOnboarding);
   const initAuth = useAuth((s) => s.init);
+  const authStatus = useAuth((s) => s.status);
+  const authUserId = useAuth((s) => s.user?.id ?? null);
+  const adoptAccount = useStore((s) => s.adoptAccount);
+  const revertToGuest = useStore((s) => s.revertToGuest);
+  const syncOwner = useRef<string>('guest');
   const kb = useKeyboardInset();
+
+  // route progress to the account (pull + merge + push) on sign-in, and back to
+  // the local guest cache on sign-out — once the local bootstrap has hydrated
+  useEffect(() => {
+    if (!hydrated) return;
+    if (authStatus === 'authed' && authUserId) {
+      if (syncOwner.current !== authUserId) {
+        syncOwner.current = authUserId;
+        void adoptAccount(authUserId);
+      }
+    } else if (authStatus === 'guest' && syncOwner.current !== 'guest') {
+      syncOwner.current = 'guest';
+      void revertToGuest();
+    }
+  }, [authStatus, authUserId, hydrated, adoptAccount, revertToGuest]);
 
   // opening night claims the entrance — the brief curtain stands down
   useEffect(() => {

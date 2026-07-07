@@ -20,7 +20,9 @@ import { getLocalWeather } from '../lib/weather';
 import { callLiveOwl, buildReplyTurns, greetTurns, generateRecLetter } from '../lib/owl/liveOwl';
 import type { GeneratedLetter } from '../lib/owl/liveOwl';
 
-import { repository } from './persistence';
+import { loadLocal, saveLocal, type Owner } from './persistence';
+import { mergeProgress } from '../lib/sync/mergeProgress';
+import { cloudPull, cloudPush } from '../lib/sync/cloud';
 import { SEED } from './seed';
 import type {
   DeskMode,
@@ -61,6 +63,8 @@ export interface Store extends PersistedState {
   openedLetters: GuideId[];
   hydrated: boolean;
   settingsOpen: boolean;
+  /** cross-device sync: 'off' as guest, else the live push state */
+  syncStatus: 'off' | 'syncing' | 'synced' | 'error';
 
   /* actions */
   bootstrap: () => Promise<void>;
@@ -95,6 +99,10 @@ export interface Store extends PersistedState {
   openOnboarding: () => void;
   /** end opening night; when a first letter was sorted, plant it in the chat and open it */
   finishOnboarding: (firstLetter?: GuideId) => void;
+  /** sign-in: adopt an account — pull cloud progress, merge, and start syncing */
+  adoptAccount: (userId: string) => Promise<void>;
+  /** sign-out: stop syncing and fall back to the local guest cache */
+  revertToGuest: () => Promise<void>;
 }
 
 let chatId = 0;
@@ -102,6 +110,11 @@ const nextId = () => ++chatId;
 
 let toastTimer: ReturnType<typeof setTimeout> | undefined;
 let saveTimer: ReturnType<typeof setTimeout> | undefined;
+let cloudTimer: ReturnType<typeof setTimeout> | undefined;
+
+/* who owns the local cache + whether changes push to the cloud. 'guest' →
+   local only (offline-first, as before); a user id → local + cloud sync. */
+let owner: Owner = 'guest';
 
 /* generated open-world letters, cached per book for the session — a tap
    generates once; every later open is free */
@@ -164,9 +177,10 @@ export const useStore = create<Store>()(
     openedLetters: [],
     hydrated: false,
     settingsOpen: false,
+    syncStatus: 'off',
 
     bootstrap: async () => {
-      const loaded = await repository.load();
+      const loaded = await loadLocal('guest');
       if (loaded) set({ ...loaded, hydrated: true });
       else set({ hydrated: true });
       // opening night, once — the curtain waits for first-timers
@@ -436,6 +450,46 @@ export const useStore = create<Store>()(
 
     openOnboarding: () => set({ showOnboarding: true, settingsOpen: false }),
 
+    adoptAccount: async (userId) => {
+      owner = userId;
+      set({ syncStatus: 'syncing' });
+      // what's on screen right now (a guest's play, waiting to carry over)
+      const current = extractPersisted(get());
+      const [userLocal, cloud] = await Promise.all([
+        loadLocal(userId),
+        cloudPull().catch(() => null), // offline → treat as no cloud
+      ]);
+
+      // brand-new account on a fresh device (nothing local, nothing in the
+      // cloud) → carry over the current guest progress as its starting point.
+      // Otherwise adopt the account's own data (this device's cache merged with
+      // the cloud), never folding in the transient guest/demo state.
+      let next: PersistedState;
+      if (!userLocal && !cloud) next = current;
+      else {
+        const base = userLocal ?? (cloud as PersistedState);
+        next = cloud ? mergeProgress(base, cloud) : base;
+      }
+
+      set({ ...next });
+      await saveLocal(userId, next);
+      try {
+        await cloudPush(next);
+        set({ syncStatus: 'synced' });
+      } catch {
+        set({ syncStatus: 'error' });
+      }
+    },
+
+    revertToGuest: async () => {
+      owner = 'guest';
+      set({ syncStatus: 'off' });
+      const guest = await loadLocal('guest');
+      // show the guest cache again (or the fresh seed) so an account's data
+      // doesn't linger on screen after signing out
+      set({ ...(guest ?? SEED) });
+    },
+
     finishOnboarding: (firstLetter) => {
       set((s) => ({ showOnboarding: false, prefs: { ...s.prefs, onboarded: true } }));
       if (firstLetter) {
@@ -625,14 +679,27 @@ export const useStore = create<Store>()(
 );
 
 /* ── persist the durable slice (debounced) whenever it changes ── */
+/* local cache always (offline-first); a longer-debounced cloud push too when
+   signed in, so progress follows the account across devices */
+function scheduleCloudPush(slice: PersistedState) {
+  clearTimeout(cloudTimer);
+  cloudTimer = setTimeout(() => {
+    useStore.setState({ syncStatus: 'syncing' });
+    void cloudPush(slice)
+      .then(() => useStore.setState({ syncStatus: 'synced' }))
+      .catch(() => useStore.setState({ syncStatus: 'error' }));
+  }, 1400);
+}
+
 useStore.subscribe(
   (s) => extractPersisted(s),
   (slice) => {
     if (!useStore.getState().hydrated) return;
     clearTimeout(saveTimer);
     saveTimer = setTimeout(() => {
-      void repository.save(slice);
+      void saveLocal(owner, slice);
     }, 250);
+    if (owner !== 'guest') scheduleCloudPush(slice);
   },
   { equalityFn: shallow },
 );

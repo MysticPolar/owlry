@@ -33,9 +33,11 @@ needs the gate.
 You need the same Supabase project the live owl uses. All of this is additive
 and namespaced `owlry_*`, so it won’t touch anything else in the project.
 
-1. **Run the migration** — creates `owlry_invites` + `owlry_profiles` with RLS.
-   Paste `supabase/migrations/0001_owlry_auth.sql` into the Supabase **SQL
-   editor** and run it (or `supabase db push` if you use the CLI locally).
+1. **Run the migrations** — paste both into the Supabase **SQL editor** and run
+   them (or `supabase db push` with the CLI):
+   - `supabase/migrations/0001_owlry_auth.sql` — `owlry_invites` + `owlry_profiles`.
+   - `supabase/migrations/0002_owlry_progress.sql` — `owlry_progress` (the
+     per-account jsonb blob that cross-device sync reads and writes).
 
 2. **Deploy the function** — Actions → **Deploy edge functions
    (owl-chat + owl-auth)** → *Run workflow*. (It now deploys both.) No secrets to
@@ -76,11 +78,34 @@ and namespaced `owlry_*`, so it won’t touch anything else in the project.
   bypasses RLS. The gate is real, not cosmetic.
 - `owlry_profiles` — a signed-in user can read/update **only their own** row.
 
+## Cross-device sync (built)
+
+Signed-in progress follows the account across devices.
+
+- **Where:** `public.owlry_progress` — one jsonb row per user (RLS: own row only).
+- **Local stays the cache:** IndexedDB is still written on every change
+  (offline-first), keyed by owner (`guest` vs a user id) so accounts never read
+  each other's cache on a shared device. Guests keep the original key untouched.
+- **On sign-in** (`adoptAccount`): pull the cloud row, **merge** it with this
+  device's cached progress, show + push the result. A brand-new account with
+  nothing local and nothing in the cloud carries over the current guest play as
+  its starting point; an established account adopts its own data and ignores the
+  transient guest/demo state.
+- **On change:** debounced local save (250 ms) + a longer debounced cloud push
+  (1.4 s). Settings → ACCOUNT shows the live status (`SYNCING… / SYNCED / RETRY`);
+  tap the row to force a sync.
+- **The merge never loses progress** (`src/lib/sync/mergeProgress.ts`, unit-tested
+  in `scripts/sync-smoke.ts`): shelves union, per-book max reading position,
+  furthest level/xp wins, currencies take the max, onboarding stays seen.
+- **On sign-out:** stop syncing, fall back to the local guest cache.
+
+> Note: the app still ships with the demo seed (Mira, LV 7…) as everyone's
+> starting state, so a fresh account begins from there. Zero-start accounts would
+> be a separate seed decision.
+
 ## Not built yet (follow-ups)
 
-- **Cross-device sync of progress** — accounts currently establish identity
-  (name, email, avatar); reading progress still lives in local IndexedDB. Syncing
-  XP / shelves / progress to the account is the next step (it needs its own
-  `owlry_*` table + RLS and a repository swap in `src/store/persistence.ts`).
 - **Password reset** and **email confirmation** flows.
 - **Social sign-in** (Google/Apple), if wanted, layers onto the same store.
+- **Realtime multi-device** (live updates while two devices are open) — today
+  sync is pull-on-login + push-on-change, which covers the common case.

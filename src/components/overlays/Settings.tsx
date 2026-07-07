@@ -21,6 +21,13 @@ const SCALES: [ReaderScale, string][] = [
   ['lg', 'L'],
 ];
 
+const SYNC_LABEL: Record<'off' | 'syncing' | 'synced' | 'error', string> = {
+  off: 'ON',
+  syncing: 'SYNCING…',
+  synced: 'SYNCED',
+  error: 'RETRY',
+};
+
 function Toggle({ on, onToggle, label }: { on: boolean; onToggle: () => void; label: string }) {
   return (
     <button
@@ -50,9 +57,10 @@ export function Settings() {
   const authUser = useAuth((s) => s.user);
   const openAuth = useAuth((s) => s.openAuth);
   const logout = useAuth((s) => s.logout);
+  const syncStatus = useStore((s) => s.syncStatus);
+  const adoptAccount = useStore((s) => s.adoptAccount);
   const [confirmReset, setConfirmReset] = useState(false);
 
-  const comingSoon = (label: string) => showToast('ti-clock', `${label} — coming soon`);
   const liveOn = (prefs.owlEngine ?? 'live') === 'live';
   const toggleEngine = () => {
     const next: OwlEngine = liveOn ? 'mockup' : 'live';
@@ -158,11 +166,21 @@ export function Settings() {
         </div>
         {authed ? (
           <>
-            <button className="link-row" onClick={() => comingSoon('sync across devices')}>
+            <button
+              className="link-row"
+              onClick={() => authUser && void adoptAccount(authUser.id)}
+              aria-label="Sync progress across devices now"
+            >
               <Icon name="ti-cloud" />
               sync across devices
-              <span className="soon" style={{ marginLeft: 'auto' }}>
-                SOON
+              <span
+                className="soon"
+                style={{
+                  marginLeft: 'auto',
+                  color: syncStatus === 'error' ? 'var(--ember)' : undefined,
+                }}
+              >
+                {SYNC_LABEL[syncStatus]}
               </span>
             </button>
             <button

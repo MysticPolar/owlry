@@ -11,7 +11,7 @@
     "preview": "vite preview",
     "preview:host": "vite preview --host",
     "typecheck": "tsc -b",
-    "test": "tsx scripts/owl-smoke.ts && tsx scripts/store-smoke.ts",
+    "test": "tsx scripts/owl-smoke.ts && tsx scripts/store-smoke.ts && tsx scripts/sync-smoke.ts",
     "bench": "tsx scripts/owl-bench.ts"
   },
   "dependencies": {
