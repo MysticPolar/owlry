@@ -128,6 +128,8 @@ Scout is one owl with two modes, switchable in the Discover chat:
 
 If an Office-Hours visitor wants a novel, Scout points them to the fiction desk "one tap away" and still offers the nearest non-fiction fit.
 
+*In the UI the two desks are tabs labelled **EVERYTHING** and **NON-FICTION**; "Office Hours" is Scout's in-voice name for the non-fiction desk.*
+
 ---
 
 ## 9. Gamification & economy
@@ -140,9 +142,10 @@ Three currencies drive the loop. Values are exact to the current build; the loop
 | **Finish a book** | — | +40 | |
 | **Save / shelve** | — | +5 | |
 | **Ask Scout** (live owl) | **−1** | +3 | Refunded if delivery fails; dry well falls through to the free offline owl |
-| **Peek** (open a letter) | **−2** | +10 | Charged up front, refunded on failure; re-opening a cached letter is free |
+| **Peek** — open a live letter | **−2** | +10 | Charged up front, refunded on failure; re-opening a cached letter is free |
+| **Open a curated catalog letter** | — | +5 | The 7 hand-written guides — no ink cost |
 
-- **Ink** is capped at **120**. First time it fills to the cap each day → **+50 coins**.
+- **Ink** is capped at **120**; filling the well to the cap awards **+50 coins** (a one-time bonus in the current build — a daily reset is not yet wired).
 - **XP → Level:** level up every **400 XP** (v1: fixed threshold), with a "level up!" celebration.
 - **Streak:** consecutive reading days, tended by Keeper.
 - **Dry inkwell** blocks asks/peeks with a gentle nudge ("a few pages will refill it") — never a hard paywall.
@@ -155,7 +158,7 @@ Three currencies drive the loop. Values are exact to the current build; the loop
 The live owl runs **server-side** so no API key ever reaches the browser.
 
 - **Model:** Claude `claude-sonnet-4-6` powers both Scout's chat and the letters, inside the **`owl-chat` Supabase Edge Function** (Deno). A **Gemini `gemini-2.5-flash`** parity path is selectable via a server secret; both share one system prompt and one `{say, letter, picks, chips}` JSON contract.
-- **Structured outputs:** replies and letters are validated JSON (schema-enforced), so the UI renders reliably.
+- **Structured outputs:** replies and letters are validated JSON — schema-enforced on the Claude path, and JSON mode plus a client-side guard on the Gemini path — so the UI renders reliably.
 - **Zero-token peek cards → generate-on-tap:** every book Scout names spawns a "a reading letter has arrived" card **for free** (straight from the reply payload). The full letter is generated **only when the card is tapped**, always written fresh to *this reader's* ask, then cached for the session.
 - **Grounding ("the law of the letter"):** real books only; never invent a title, author, rating, chapter, statistic, page number, or scene; **at most one verbatim quote** in a letter, and only when the wording is certain — otherwise none.
 - **Two-desk steering** via a `desk` parameter (see §8).
@@ -180,7 +183,7 @@ The live owl runs **server-side** so no API key ever reaches the browser.
 - **PWA:** installable, offline-capable via `vite-plugin-pwa` (Workbox, auto-update). App shell precached; web fonts runtime-cached so type survives offline.
 - **Mobile chrome:** `viewport-fit=cover`, `100dvh`, and `env(safe-area-inset-*)` for notch/home-indicator-safe full-bleed layout; native-ready for Capacitor.
 - **Hosting & CI:**
-  - **App** → GitHub Pages at `/owlry/`, auto-deployed on every push (`deploy.yml`).
+  - **App** → GitHub Pages at `/owlry/`, auto-deployed on push to the release branch (`deploy.yml`).
   - **Live owl** → a separate **manual** pipeline (`owl-chat-deploy.yml`) deploys the Edge Function.
 - **Layered seams** (per the repo README) keep persistence, the owl brain, and book text independently swappable.
 
