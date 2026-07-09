@@ -8,17 +8,30 @@ import { create } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
 import { shallow } from 'zustand/shallow';
 
-import { BOOKS } from '../content/books';
 import { PICKS } from '../content/picks';
 import { WX } from '../content/weather';
 import { SAL, FLAVOR, START_CHIPS, dayPart } from '../content/owl';
-import { respond, newSession } from '../lib/owlBrain';
+import { newSession } from '../lib/owlBrain';
 import type { OwlMessage } from '../lib/owlBrain';
-import type { BookId, GuideId } from '../content/types';
+import { fetchOwlTurn, fetchLetter } from '../lib/owlClient';
+import { getBook, getGuide } from '../lib/bookRegistry';
+import { supabase } from '../lib/supabase';
+import { rowsToChat } from '../lib/chatHydrate';
+import type { ChatRow } from '../lib/chatHydrate';
+import type { BookRef } from '../content/types';
+
+/** lazy reading-letter state: the letter is generated only when the reader taps the card */
+export type LetterStatus = 'idle' | 'loading' | 'ready';
+
+/** the signed-in reader, once a backend is configured and a session exists */
+export interface AuthUser {
+  id: string;
+  email: string | null;
+}
 
 import { repository } from './persistence';
 import { SEED } from './seed';
-import type { PersistedState, Tab, LibTab, OwlState, ReaderState, ToastState } from './types';
+import type { PersistedState, Tab, LibTab, OwlState, ReaderState, ToastState, ChatItem } from './types';
 
 export interface Store extends PersistedState {
   /* ephemeral UI / session */
@@ -27,13 +40,25 @@ export interface Store extends PersistedState {
   wxIndex: number;
   pickIndex: number;
   reader: ReaderState;
-  sheetId: BookId | null;
-  letterId: GuideId | null;
+  sheetId: BookRef | null;
+  letterId: BookRef | null;
+  letterStatus: LetterStatus;
   toast: ToastState | null;
   burstNonce: number;
   owl: OwlState;
-  openedLetters: GuideId[];
+  openedLetters: BookRef[];
   hydrated: boolean;
+
+  /* auth — null user + authReady:true whenever no backend is configured, so the
+     app never gates on login unless VITE_SUPABASE_URL/ANON_KEY are set */
+  authUser: AuthUser | null;
+  authReady: boolean;
+  signOut: () => Promise<void>;
+
+  /* the separate, read-only history list (past days; today lives in Discover) */
+  historyOpen: boolean;
+  openHistory: () => void;
+  closeHistory: () => void;
 
   /* actions */
   bootstrap: () => Promise<void>;
@@ -41,21 +66,23 @@ export interface Store extends PersistedState {
   setLibTab: (t: LibTab) => void;
   cycleWeather: () => void;
   setPick: (i: number) => void;
-  toggleSave: (id: BookId) => void;
+  toggleSave: (id: BookRef) => void;
   addXP: (n: number) => void;
   addInk: (n: number) => void;
   showToast: (icon: string, msg: string) => void;
   triggerBurst: () => void;
-  openReader: (id: BookId, page?: number) => void;
+  openReader: (id: BookRef, page?: number) => void;
   closeReader: () => void;
   nextPage: () => void;
   prevPage: () => void;
   finishBook: () => void;
-  openSheet: (id: BookId) => void;
+  openSheet: (id: BookRef) => void;
   closeSheet: () => void;
-  openLetter: (id: GuideId) => void;
+  openLetter: (id: BookRef) => void;
   closeLetter: () => void;
   initChat: () => void;
+  /** load today's persisted chat (authenticated + configured) or fall back to the greeting */
+  hydrateChat: () => Promise<void>;
   sendToOwl: (text: string) => void;
 }
 
@@ -93,6 +120,7 @@ export const useStore = create<Store>()(
     reader: { open: false, id: null, p: 1 },
     sheetId: null,
     letterId: null,
+    letterStatus: 'idle',
     toast: null,
     burstNonce: 0,
     owl: {
@@ -107,11 +135,69 @@ export const useStore = create<Store>()(
     openedLetters: [],
     hydrated: false,
 
+    // no backend configured → already "ready", with no user; the app never gates on login
+    authUser: null,
+    authReady: !supabase,
+
+    signOut: async () => {
+      if (!supabase) return;
+      await supabase.auth.signOut();
+      // the module-level onAuthStateChange listener below clears authUser + resets the chat
+    },
+
+    historyOpen: false,
+    openHistory: () => set({ historyOpen: true }),
+    closeHistory: () => set({ historyOpen: false }),
+
     bootstrap: async () => {
-      const loaded = await repository.load();
+      const [loaded, session] = await Promise.all([
+        repository.load(),
+        supabase ? supabase.auth.getSession().then((r) => r.data.session) : Promise.resolve(null),
+      ]);
       if (loaded) set({ ...loaded, hydrated: true });
       else set({ hydrated: true });
-      get().initChat();
+      if (supabase) {
+        set({
+          authUser: session?.user ? { id: session.user.id, email: session.user.email ?? null } : null,
+          authReady: true,
+        });
+      }
+      await get().hydrateChat();
+    },
+
+    hydrateChat: async () => {
+      const s = get();
+      if (!supabase || !s.authUser) {
+        get().initChat();
+        return;
+      }
+
+      const startOfDay = new Date();
+      startOfDay.setHours(0, 0, 0, 0);
+      const { data, error } = await supabase
+        .from('owlry_chat_messages')
+        .select('id, who, kind, payload, created_at')
+        .eq('user_id', s.authUser.id)
+        .gte('created_at', startOfDay.toISOString())
+        .order('created_at', { ascending: true });
+
+      if (error || !data || !data.length) {
+        get().initChat();
+        return;
+      }
+
+      const hydrated = rowsToChat(data as unknown as ChatRow[]);
+      chatId = Math.max(chatId, hydrated.maxId); // never collide with hydrated row ids
+      set((st) => ({
+        owl: {
+          ...st.owl,
+          started: true,
+          messages: hydrated.messages,
+          collected: hydrated.collected,
+          lastBatch: hydrated.lastBatch,
+          chips: hydrated.chips,
+        },
+      }));
     },
 
     setTab: (t) => set({ activeTab: t }),
@@ -182,7 +268,7 @@ export const useStore = create<Store>()(
       const readingIds = s.readingIds.includes(id) ? s.readingIds : [id, ...s.readingIds];
       const pagesRead = { ...s.pagesRead };
       if (page) pagesRead[id] = page - 1;
-      const n = BOOKS[id].n;
+      const n = getBook(id)?.n ?? 1;
       const p = Math.min(Math.max(page ?? (pagesRead[id] ?? 0) + 1, 1), n);
       set({ finishedIds, readingIds, pagesRead, reader: { open: true, id, p } });
     },
@@ -193,7 +279,7 @@ export const useStore = create<Store>()(
       const s = get();
       const id = s.reader.id;
       if (!id) return;
-      const n = BOOKS[id].n;
+      const n = getBook(id)?.n ?? 1;
       if (s.reader.p >= n) {
         get().finishBook();
         return;
@@ -215,7 +301,7 @@ export const useStore = create<Store>()(
       const s = get();
       const id = s.reader.id;
       if (!id) return;
-      const pagesRead = { ...s.pagesRead, [id]: BOOKS[id].n };
+      const pagesRead = { ...s.pagesRead, [id]: getBook(id)?.n ?? s.reader.p };
       const readingIds = s.readingIds.filter((x) => x !== id);
       const finishedIds = s.finishedIds.includes(id) ? s.finishedIds : [id, ...s.finishedIds];
       set({ pagesRead, readingIds, finishedIds, reader: { open: false, id: null, p: 1 } });
@@ -226,16 +312,28 @@ export const useStore = create<Store>()(
     openSheet: (id) => set({ sheetId: id }),
     closeSheet: () => set({ sheetId: null }),
 
+    // the letter is GENERATED on tap (never before): open the overlay, then resolve
+    // its content lazily. Already-generated letters resolve instantly (generate once).
     openLetter: (id) => {
-      set({ letterId: id, sheetId: null });
+      const ready = !!getGuide(id);
+      set({ letterId: id, sheetId: null, letterStatus: ready ? 'ready' : 'loading' });
+
       const { openedLetters } = get();
       if (!openedLetters.includes(id)) {
         set({ openedLetters: [...openedLetters, id] });
         get().showToast('ti-mail-opened', 'a letter, opened · +5 XP');
         get().addXP(5);
       }
+
+      if (ready) return;
+      void (async () => {
+        const guide = await fetchLetter(id);
+        // ignore if the reader closed or opened a different letter meanwhile
+        if (get().letterId !== id) return;
+        set({ letterStatus: guide ? 'ready' : 'idle' });
+      })();
     },
-    closeLetter: () => set({ letterId: null }),
+    closeLetter: () => set({ letterId: null, letterStatus: 'idle' }),
 
     initChat: () => {
       if (get().owl.started) return;
@@ -264,6 +362,8 @@ export const useStore = create<Store>()(
       if (!text || s.owl.busy) return;
       const meId = nextId();
       const typingId = nextId();
+      const wxKey = WX[s.wxIndex].k;
+
       set((st) => ({
         owl: {
           ...st.owl,
@@ -277,55 +377,55 @@ export const useStore = create<Store>()(
         },
       }));
 
-      // compute the reply up front so the typing delay can scale with its length
-      const st0 = get();
-      const session = {
-        ...st0.owl.session,
-        wxKey: WX[st0.wxIndex].k,
-        usedGuides: [...st0.owl.session.usedGuides],
-      };
-      const reply = respond(text, session);
-      const replyLen = reply.msgs.reduce((n, m) => n + m.reduce((x, nd) => x + nd.v.length, 0), 0);
-      const think = Math.min(1500, 650 + replyLen * 3);
+      void (async () => {
+        // resolve the turn (live model or offline brain); offline resolves fast so
+        // the typing delay below reproduces the mockup's pacing exactly
+        const { reply, session } = await fetchOwlTurn(text, { session: s.owl.session, wxKey });
+        const replyLen = reply.msgs.reduce((n, m) => n + m.reduce((x, nd) => x + nd.v.length, 0), 0);
+        const think = Math.min(1500, 650 + replyLen * 3);
 
-      setTimeout(() => {
-        const st = get();
-        let messages = st.owl.messages.filter((m) => m.id !== typingId);
-        reply.msgs.forEach((nodes) => {
-          messages = [...messages, { kind: 'msg', id: nextId(), who: 'owl', nodes }];
-        });
+        // a contextual note (e.g. "not financial advice") trails the reply as its own quiet line
+        const withNote = (msgs: ChatItem[]): ChatItem[] =>
+          reply.note
+            ? [...msgs, { kind: 'msg', id: nextId(), who: 'owl', nodes: [{ t: 'text', v: reply.note }], tone: 'note' }]
+            : msgs;
 
-        let collected = st.owl.collected;
-        let lastBatch = st.owl.lastBatch;
-        if (reply.batch) {
-          lastBatch = reply.batch;
-          collected = [...st.owl.collected];
-          [reply.batch.main, ...reply.batch.also].forEach((id) => {
-            if (!collected.includes(id)) collected.unshift(id);
+        setTimeout(() => {
+          const st = get();
+          let messages = st.owl.messages.filter((m) => m.id !== typingId);
+          reply.msgs.forEach((nodes) => {
+            messages = [...messages, { kind: 'msg', id: nextId(), who: 'owl', nodes }];
           });
-        }
 
-        if (reply.letter) {
-          // the reply lands first; the letter arrives a beat later, as its own moment
-          const letterBook = reply.letter;
-          set({ owl: { ...st.owl, messages, collected, lastBatch, session } });
-          setTimeout(() => {
-            const st2 = get();
-            set({
-              owl: {
-                ...st2.owl,
-                busy: false,
-                chips: reply.chips,
-                messages: [...st2.owl.messages, { kind: 'letter', id: nextId(), book: letterBook }],
-              },
+          let collected = st.owl.collected;
+          let lastBatch = st.owl.lastBatch;
+          if (reply.batch) {
+            lastBatch = reply.batch;
+            collected = [...st.owl.collected];
+            [reply.batch.main, ...reply.batch.also].forEach((id) => {
+              if (!collected.includes(id)) collected.unshift(id);
             });
-          }, 450);
-        } else {
-          set({
-            owl: { ...st.owl, busy: false, messages, chips: reply.chips, collected, lastBatch, session },
-          });
-        }
-      }, think);
+          }
+
+          if (reply.letter) {
+            // the reply lands first; the letter (and any note) arrive a beat later, as their own moment
+            const letterBook = reply.letter;
+            set({ owl: { ...st.owl, messages, collected, lastBatch, session } });
+            setTimeout(() => {
+              const st2 = get();
+              const msgs2: ChatItem[] = withNote([
+                ...st2.owl.messages,
+                { kind: 'letter', id: nextId(), book: letterBook },
+              ]);
+              set({ owl: { ...st2.owl, busy: false, chips: reply.chips, messages: msgs2 } });
+            }, 450);
+          } else {
+            set({
+              owl: { ...st.owl, busy: false, messages: withNote(messages), chips: reply.chips, collected, lastBatch, session },
+            });
+          }
+        }, think);
+      })();
     },
   })),
 );
@@ -342,3 +442,25 @@ useStore.subscribe(
   },
   { equalityFn: shallow },
 );
+
+/* ── keep authUser (+ the chat) in sync with Supabase's own session lifecycle
+   (sign in/out, token refresh) — set up ONCE at module scope, never inside
+   bootstrap(), so a dev-mode double-invoke of bootstrap() can't double-
+   subscribe. A redundant hydrateChat() call right after bootstrap's own is
+   harmless (it replaces owl.messages wholesale, never appends). No-op when no
+   backend is configured. ── */
+if (supabase) {
+  supabase.auth.onAuthStateChange((_event, session) => {
+    const user = session?.user ? { id: session.user.id, email: session.user.email ?? null } : null;
+    useStore.setState({ authUser: user });
+    if (user) {
+      void useStore.getState().hydrateChat();
+    } else {
+      // signed out: back to a fresh, ephemeral greeting
+      useStore.setState((s) => ({
+        owl: { ...s.owl, started: false, messages: [], chips: [], collected: [], lastBatch: null },
+      }));
+      useStore.getState().initChat();
+    }
+  });
+}

@@ -14,6 +14,13 @@ export type BookId =
 /** Books that the owl can write a reading letter for. */
 export type GuideId = 'wws' | 'medit' | 'deep' | 'atomic' | 'pema' | 'frankl' | 'bird';
 
+/**
+ * A reference to a book: either a catalog `BookId` or a slug for an
+ * open-world book the live owl recommended (registered at runtime in
+ * lib/bookRegistry.ts). Widened to string so both resolve identically.
+ */
+export type BookRef = string;
+
 export type Genre = 'history' | 'fiction' | 'scifi' | 'mystery' | 'romance' | 'life';
 
 /** A catalog entry — the mockup's `B` (core) merged with `BMETA` (about-sheet). */
@@ -59,7 +66,8 @@ export interface GuideInsight {
 }
 
 export interface GuideFurther {
-  id: BookId;
+  /** catalog BookId, or an open-world slug registered at runtime */
+  id: BookRef;
   why: string;
 }
 

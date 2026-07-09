@@ -1,42 +1,11 @@
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useStore } from '../../store/useStore';
 import { useKeyboardInset } from '../../hooks/useKeyboardInset';
-import { BOOKS } from '../../content/books';
-import type { BookId } from '../../content/types';
-import type { OwlMessage } from '../../lib/owlBrain';
-import { isGuide } from '../../lib/format';
+import { isConfigured } from '../../lib/supabase';
+import { getBook, hasGuide } from '../../lib/bookRegistry';
+import { renderChatItem } from '../chat/ChatItems';
 import { Icon } from '../Icon';
 import { Cover } from '../Cover';
-
-/* render structured owl-message nodes as real, clickable React */
-function renderNodes(nodes: OwlMessage, openSheet: (id: BookId) => void) {
-  return nodes.map((n, i) => {
-    if (n.t === 'text') return <Fragment key={i}>{n.v}</Fragment>;
-    if (n.t === 'em')
-      return (
-        <span key={i} className="it">
-          {n.v}
-        </span>
-      );
-    return (
-      <span
-        key={i}
-        className="bk"
-        role="button"
-        tabIndex={0}
-        onClick={() => openSheet(n.id)}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            openSheet(n.id);
-          }
-        }}
-      >
-        {n.v}
-      </span>
-    );
-  });
-}
 
 /* ---------- tray: the latest pick ---------- */
 function Tray() {
@@ -56,7 +25,14 @@ function Tray() {
   }
 
   const id = lastBatch.main;
-  const b = BOOKS[id];
+  const b = getBook(id);
+  if (!b) {
+    return (
+      <div className="tray" id="tray">
+        <div className="tray-card tray-empty">the owl's picks will perch here</div>
+      </div>
+    );
+  }
   return (
     <div className="tray" id="tray">
       <div className="tray-card">
@@ -79,7 +55,7 @@ function Tray() {
             <button className="btn xs ghost" onClick={() => openSheet(id)}>
               ABOUT
             </button>
-            {isGuide(id) ? (
+            {hasGuide(id) ? (
               <button className="btn xs" onClick={() => openLetter(id)}>
                 PREVIEW <Icon name="ti-mail" />
               </button>
@@ -104,16 +80,20 @@ function Strip() {
     <div className="strip" id="stripRow">
       <span className="strip-label">SHELF · {collected.length}</span>
       <div className="strip-row">
-        {collected.map((id) => (
-          <button
-            key={id}
-            className="spinelet"
-            style={{ background: BOOKS[id].c }}
-            aria-label={BOOKS[id].t}
-            title={BOOKS[id].t}
-            onClick={() => openSheet(id)}
-          />
-        ))}
+        {collected.map((id) => {
+          const b = getBook(id);
+          if (!b) return null;
+          return (
+            <button
+              key={id}
+              className="spinelet"
+              style={{ background: b.c }}
+              aria-label={b.t}
+              title={b.t}
+              onClick={() => openSheet(id)}
+            />
+          );
+        })}
       </div>
     </div>
   );
@@ -142,39 +122,7 @@ function Chat() {
 
   return (
     <div className="chat" id="chat" role="log" aria-live="polite" ref={ref}>
-      {messages.map((m) => {
-        if (m.kind === 'typing') {
-          return (
-            <div key={m.id} className="msg owl">
-              <span className="tdots" aria-hidden="true">
-                <span />
-                <span />
-                <span />
-              </span>
-              <span className="sr-only">the owl is typing…</span>
-            </div>
-          );
-        }
-        if (m.kind === 'letter') {
-          return (
-            <button key={m.id} className="lettercard" onClick={() => openLetter(m.book)}>
-              <span className="stamp">
-                <Icon name="ti-feather" />
-              </span>
-              <span>
-                <span className="lc-t d">a reading letter has arrived</span>
-                <br />
-                <span className="lc-s">{BOOKS[m.book].t} — tap to open</span>
-              </span>
-            </button>
-          );
-        }
-        return (
-          <div key={m.id} className={`msg ${m.who}`}>
-            {renderNodes(m.nodes, openSheet)}
-          </div>
-        );
-      })}
+      {messages.map((m) => renderChatItem(m, openSheet, openLetter))}
     </div>
   );
 }
@@ -236,15 +184,21 @@ function Composer() {
 
 export function DiscoverScreen() {
   const active = useStore((s) => s.activeTab === 'discover');
+  const openHistory = useStore((s) => s.openHistory);
   return (
     <section className={`screen ${active ? 'on' : ''}`} id="screen-discover">
-      <div className="pad-h" style={{ paddingBottom: 2 }}>
+      <div className="pad-h disc-head" style={{ paddingBottom: 2 }}>
         <div className="hl sm d">
           <span className="u" />
           <span className="t">
             discover<span className="gdot">.</span>
           </span>
         </div>
+        {isConfigured && (
+          <button className="iconbtn lite" aria-label="Chat history" onClick={openHistory}>
+            <Icon name="ti-history" />
+          </button>
+        )}
       </div>
       <Tray />
       <Strip />

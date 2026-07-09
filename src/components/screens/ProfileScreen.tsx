@@ -17,8 +17,9 @@ import {
 import { Icon } from '../Icon';
 import { Cover } from '../Cover';
 import { RadarChart } from '../profile/RadarChart';
+import { MemoryCard } from '../profile/MemoryCard';
 
-type ProfileTab = 'stats' | 'cal' | 'quotes';
+type ProfileTab = 'stats' | 'cal' | 'quotes' | 'mem';
 
 /* ---------- stats tab ---------- */
 function StatsTab({ radarKey }: { radarKey: number }) {
@@ -196,18 +197,30 @@ function QuotesTab() {
   );
 }
 
+/* ---------- memory tab ---------- */
+function MemTab() {
+  return (
+    <div className="tpanel on swap" id="tab-mem" role="tabpanel">
+      <MemoryCard />
+    </div>
+  );
+}
+
 /* ---------- profile screen ---------- */
-const TABS: [ProfileTab, string, string][] = [
+const BASE_TABS: [ProfileTab, string, string][] = [
   ['stats', 'ti-radar-2', 'stats'],
   ['cal', 'ti-calendar-event', 'calendar'],
   ['quotes', 'ti-quote', 'quotes'],
 ];
+const MEM_TAB: [ProfileTab, string, string] = ['mem', 'ti-feather', 'memory'];
 
 export function ProfileScreen() {
   const active = useStore((s) => s.activeTab === 'profile');
   const lv = useStore((s) => s.lv);
   const coins = useStore((s) => s.coins);
   const streak = useStore((s) => s.streak);
+  const authUser = useStore((s) => s.authUser);
+  const signOut = useStore((s) => s.signOut);
 
   const [profileTab, setProfileTab] = useState<ProfileTab>('stats');
   const [radarKey, setRadarKey] = useState(0);
@@ -217,6 +230,13 @@ export function ProfileScreen() {
   useEffect(() => {
     if (active) setRadarKey((k) => k + 1);
   }, [active]);
+
+  // guard against an orphaned "memory" tab if the reader signs out while viewing it
+  useEffect(() => {
+    if (profileTab === 'mem' && !authUser) setProfileTab('stats');
+  }, [authUser, profileTab]);
+
+  const tabs = authUser ? [...BASE_TABS, MEM_TAB] : BASE_TABS;
 
   const switchTab = (key: ProfileTab) => {
     setProfileTab(key);
@@ -260,10 +280,19 @@ export function ProfileScreen() {
             ))}
           </div>
         </div>
+        {authUser && (
+          <>
+            <div className="pdiv" />
+            <button className="link-row" onClick={() => void signOut()}>
+              <Icon name="ti-logout" />
+              sign out{authUser.email ? ` · ${authUser.email}` : ''}
+            </button>
+          </>
+        )}
       </div>
 
       <div className="seg" role="tablist" aria-label="Profile sections">
-        {TABS.map(([key, icon, label]) => {
+        {tabs.map(([key, icon, label]) => {
           const on = profileTab === key;
           return (
             <button
@@ -283,6 +312,7 @@ export function ProfileScreen() {
       {profileTab === 'stats' && <StatsTab radarKey={radarKey} />}
       {profileTab === 'cal' && <CalendarTab />}
       {profileTab === 'quotes' && <QuotesTab />}
+      {profileTab === 'mem' && <MemTab />}
     </section>
   );
 }

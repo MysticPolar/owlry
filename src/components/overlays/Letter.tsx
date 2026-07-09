@@ -1,12 +1,16 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useStore } from '../../store/useStore';
-import { BOOKS } from '../../content/books';
-import { GUIDES } from '../../content/guides';
+import { getBook, getGuide } from '../../lib/bookRegistry';
+import { useTypewriter } from '../../hooks/useTypewriter';
 import { Icon } from '../Icon';
 import { Cover } from '../Cover';
 
+/** letters that have already typed out once this session — re-opening shows them instantly */
+const typedOnce = new Set<string>();
+
 export function Letter() {
   const letterId = useStore((s) => s.letterId);
+  const letterStatus = useStore((s) => s.letterStatus);
   const closeLetter = useStore((s) => s.closeLetter);
   const toggleSave = useStore((s) => s.toggleSave);
   const openReader = useStore((s) => s.openReader);
@@ -14,13 +18,42 @@ export function Letter() {
   const saved = useStore((s) => (s.letterId ? s.savedIds.includes(s.letterId) : false));
 
   const id = letterId;
-  const g = id ? GUIDES[id] : null;
-  const b = id ? BOOKS[id] : null;
+  const g = id && letterStatus === 'ready' ? getGuide(id) : null;
+  const b = id ? getBook(id) : null;
   const bodyRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (id && bodyRef.current) bodyRef.current.scrollTop = 0;
-  }, [id]);
+  }, [id, letterStatus]);
+
+  // the letter is "written" with a typewriter the first time it's shown
+  const total = useMemo(() => {
+    if (!g) return 0;
+    let n = g.res.length + g.chap.length + g.core.length + g.close.length;
+    for (const x of g.ins) n += x.t.length + x.r.length + x.ex.length + (x.q ? x.q.t.length + x.q.by.length : 0);
+    for (const t of g.take) n += t.length;
+    for (const t of g.ask) n += t.length;
+    return n;
+  }, [g]);
+  // type out on first reveal; show instantly if this letter has already been written once
+  const firstReveal = !!id && !typedOnce.has(id);
+  const { shown, done, skip } = useTypewriter(total, { enabled: !!g && firstReveal });
+  useEffect(() => {
+    if (id && g && done) typedOnce.add(id);
+  }, [id, g, done]);
+
+  // cursor-based reveal: type() consumes budget; blocks render once the cursor reaches them
+  let cur = 0;
+  const type = (s: string): string => {
+    const start = cur;
+    cur += s.length;
+    if (shown >= start + s.length) return s;
+    if (shown <= start) return '';
+    return s.slice(0, shown - start);
+  };
+  const at = (): number => cur;
+
+  const writing = !!id && !g;
 
   return (
     <div className={`letter ${id ? 'on' : ''}`} id="letter" role="dialog" aria-modal="true" aria-label="Reading letter">
@@ -40,7 +73,26 @@ export function Letter() {
         </button>
       </div>
 
-      <div className="l-body" id="ltBody" ref={bodyRef}>
+      <div className="l-body" id="ltBody" ref={bodyRef} onClick={() => !done && skip()}>
+        {/* the letter is generated on tap; show it being written first */}
+        {writing && b && (
+          <>
+            <div className="l-kick">OWL POST · READING LETTER</div>
+            <div className="l-ttl d">{b.t}</div>
+            <div className="l-auth">
+              {b.a} · {b.n} pages
+            </div>
+            <div className="l-writing">
+              <span className="tdots" aria-hidden="true">
+                <span />
+                <span />
+                <span />
+              </span>
+              <span className="it">the owl is writing your letter…</span>
+            </div>
+          </>
+        )}
+
         {g && b && id && (
           <>
             <div className="l-kick">OWL POST · READING LETTER</div>
@@ -48,82 +100,104 @@ export function Letter() {
             <div className="l-auth">
               {b.a} · {b.n} pages
             </div>
-            <div className="l-res it">{g.res}</div>
+            <div className="l-res it">{type(g.res)}</div>
 
-            <div className="l-sec">RECOMMENDED CHAPTER</div>
-            <div className="l-chap d">&ldquo;{g.chap}&rdquo;</div>
+            {shown >= at() && <div className="l-sec">RECOMMENDED CHAPTER</div>}
+            <div className="l-chap d">&ldquo;{type(g.chap)}&rdquo;</div>
 
-            <div className="l-sec">1 · THE CORE IDEA</div>
-            <p className="l-p">{g.core}</p>
+            {shown >= at() && <div className="l-sec">1 · THE CORE IDEA</div>}
+            <p className="l-p">{type(g.core)}</p>
 
-            <div className="l-sec">2 · INSIGHTS FROM THE CHAPTER</div>
-            {g.ins.map((n, i) => (
-              <div className="l-ins" key={i}>
-                <div className="l-ins-t d">
-                  {i + 1}. {n.t}
-                </div>
-                <p className="l-p">{n.r}</p>
-                <p className="l-p">
-                  <span className="l-tag">from the book</span>
-                  {n.ex}
-                </p>
-                {n.q && (
-                  <div className="l-q it">
-                    &ldquo;{n.q.t}&rdquo;<small>{n.q.by}</small>
-                  </div>
-                )}
-              </div>
-            ))}
-
-            <div className="l-sec">3 · CLOSING REFLECTION</div>
-            <p className="l-p">{g.close}</p>
-            {g.take.map((t, i) => (
-              <p className="l-p" key={i}>
-                <span className="l-tag">take with you</span>
-                {t}
-              </p>
-            ))}
-            {g.ask.map((t, i) => (
-              <p className="l-p it" key={i}>
-                <span className="l-tag">to sit with</span>
-                {t}
-              </p>
-            ))}
-
-            <div className="l-sec">FURTHER READING</div>
-            {g.fr.map((f, i) => {
-              const fb = BOOKS[f.id];
+            {shown >= at() && <div className="l-sec">2 · INSIGHTS FROM THE CHAPTER</div>}
+            {g.ins.map((n, i) => {
+              const tt = type(n.t);
+              const rr = type(n.r);
+              const ex = type(n.ex);
+              const q = n.q ? type(n.q.t) : '';
+              const by = n.q ? type(n.q.by) : '';
+              if (!tt) return null;
               return (
-                <button className="fr-row" key={i} onClick={() => openSheet(f.id)}>
-                  <Cover id={f.id} cls="cover-xs" />
-                  <span>
-                    <span className="rtitle d">{fb.t}</span>
-                    <span className="rauth" style={{ display: 'block' }}>
-                      {fb.a}
-                    </span>
-                    <span className="fr-why">{f.why}</span>
-                  </span>
-                </button>
+                <div className="l-ins" key={i}>
+                  <div className="l-ins-t d">
+                    {i + 1}. {tt}
+                  </div>
+                  {rr && <p className="l-p">{rr}</p>}
+                  {ex && (
+                    <p className="l-p">
+                      <span className="l-tag">from the book</span>
+                      {ex}
+                    </p>
+                  )}
+                  {n.q && q && (
+                    <div className="l-q it">
+                      &ldquo;{q}&rdquo;<small>{by}</small>
+                    </div>
+                  )}
+                </div>
               );
             })}
 
-            <div className="l-btnrow">
-              <button className="btn" onClick={() => openReader(id)}>
-                OPEN <Icon name="ti-arrow-right" />
-              </button>
-              <button className="btn ghost" aria-pressed={saved} onClick={() => toggleSave(id)}>
-                {saved ? (
-                  <>
-                    SAVED <Icon name="ti-check" />
-                  </>
-                ) : (
-                  <>
-                    SAVE <Icon name="ti-heart" />
-                  </>
-                )}
-              </button>
-            </div>
-            <div className="l-sign it">— sorted with care, the owl post office</div>
+            {shown >= at() && <div className="l-sec">3 · CLOSING REFLECTION</div>}
+            <p className="l-p">{type(g.close)}</p>
+            {g.take.map((t, i) => {
+              const v = type(t);
+              return v ? (
+                <p className="l-p" key={i}>
+                  <span className="l-tag">take with you</span>
+                  {v}
+                </p>
+              ) : null;
+            })}
+            {g.ask.map((t, i) => {
+              const v = type(t);
+              return v ? (
+                <p className="l-p it" key={i}>
+                  <span className="l-tag">to sit with</span>
+                  {v}
+                </p>
+              ) : null;
+            })}
+
+            {/* the further reading + actions land once the letter is fully written */}
+            {done && (
+              <>
+                <div className="l-sec">FURTHER READING</div>
+                {g.fr.map((f, i) => {
+                  const fb = getBook(f.id);
+                  if (!fb) return null;
+                  return (
+                    <button className="fr-row" key={i} onClick={() => openSheet(f.id)}>
+                      <Cover id={f.id} cls="cover-xs" />
+                      <span>
+                        <span className="rtitle d">{fb.t}</span>
+                        <span className="rauth" style={{ display: 'block' }}>
+                          {fb.a}
+                        </span>
+                        <span className="fr-why">{f.why}</span>
+                      </span>
+                    </button>
+                  );
+                })}
+
+                <div className="l-btnrow">
+                  <button className="btn" onClick={() => openReader(id)}>
+                    OPEN <Icon name="ti-arrow-right" />
+                  </button>
+                  <button className="btn ghost" aria-pressed={saved} onClick={() => toggleSave(id)}>
+                    {saved ? (
+                      <>
+                        SAVED <Icon name="ti-check" />
+                      </>
+                    ) : (
+                      <>
+                        SAVE <Icon name="ti-heart" />
+                      </>
+                    )}
+                  </button>
+                </div>
+                <div className="l-sign it">— sorted with care, the owl post office</div>
+              </>
+            )}
           </>
         )}
       </div>

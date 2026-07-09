@@ -11,26 +11,29 @@
 import { BOOKS } from '../content/books';
 import { GUIDES } from '../content/guides';
 import { INTENTS, FPOOL, FNOTE, AFTER_CHIPS } from '../content/owl';
-import type { BookId, GuideId } from '../content/types';
+import type { BookId, BookRef, GuideId } from '../content/types';
 import type { WeatherKey } from '../content/weather';
 
 /** A renderable fragment of an owl message. */
 export type MsgNode =
   | { t: 'text'; v: string }
-  | { t: 'book'; id: BookId; v: string }
+  | { t: 'book'; id: BookRef; v: string }
   | { t: 'em'; v: string };
 
 export type OwlMessage = MsgNode[];
 
 export interface OwlBatch {
-  main: BookId;
-  also: BookId[];
+  main: BookRef;
+  also: BookRef[];
 }
 
 export interface OwlReply {
   msgs: OwlMessage[];
-  letter?: GuideId;
+  /** a reading letter to post (catalog GuideId or an open-world slug) */
+  letter?: BookRef;
   batch?: OwlBatch;
+  /** contextual, non-blocking note appended after the reply (e.g. "not financial advice") */
+  note?: string;
   chips: string[];
 }
 
@@ -52,7 +55,7 @@ export const newSession = (wxKey: WeatherKey): OwlSession => ({
 });
 
 const text = (v: string): MsgNode => ({ t: 'text', v });
-const book = (id: BookId): MsgNode => ({ t: 'book', id, v: BOOKS[id].t });
+const book = (id: BookRef): MsgNode => ({ t: 'book', id, v: BOOKS[id as BookId]?.t ?? id });
 const em = (v: string): MsgNode => ({ t: 'em', v });
 
 function guideReply(k: GuideId, s: OwlSession): OwlReply {

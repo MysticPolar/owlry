@@ -11,9 +11,10 @@
     "preview": "vite preview",
     "preview:host": "vite preview --host",
     "typecheck": "tsc -b",
-    "test": "tsx scripts/owl-smoke.ts && tsx scripts/store-smoke.ts"
+    "test": "tsx scripts/owl-smoke.ts && tsx scripts/owl-contract-smoke.ts && tsx scripts/owl-wire-v2-smoke.ts && tsx scripts/memory-merge-smoke.ts && tsx scripts/chat-hydrate-smoke.ts && tsx scripts/store-smoke.ts"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.110.1",
     "idb-keyval": "^6.2.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
