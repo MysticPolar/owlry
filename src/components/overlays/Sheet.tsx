@@ -7,7 +7,7 @@ import { ClampText } from '../ClampText';
 export function Sheet() {
   const sheetId = useStore((s) => s.sheetId);
   const openLetter = useStore((s) => s.openLetter);
-  const openReader = useStore((s) => s.openReader);
+  const openBook = useStore((s) => s.openBook);
   const toggleSave = useStore((s) => s.toggleSave);
   const showToast = useStore((s) => s.showToast);
   const saved = useStore((s) => (s.sheetId ? s.savedIds.includes(s.sheetId) : false));
@@ -58,7 +58,7 @@ export function Sheet() {
                 PEEK <Icon name="ti-mail" />
               </button>
             )}
-            <button className={`btn ${guide ? 'ghost' : ''}`} onClick={() => openReader(id)}>
+            <button className={`btn ${guide ? 'ghost' : ''}`} onClick={() => openBook(id)}>
               {resuming ? 'RESUME' : 'OPEN'} <Icon name="ti-arrow-right" />
             </button>
           </div>

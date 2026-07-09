@@ -16,7 +16,7 @@ function TrayCard({ id, onClose }: { id: BookRef; onClose: () => void }) {
   const toggleSave = useStore((s) => s.toggleSave);
   const openSheet = useStore((s) => s.openSheet);
   const openLetter = useStore((s) => s.openLetter);
-  const openReader = useStore((s) => s.openReader);
+  const openBook = useStore((s) => s.openBook);
   if (!b) return <div className="tray-card tray-empty">scout's picks will perch here</div>;
 
   // a peek is available for catalog guides (instant) and, with a backend, for any
@@ -64,7 +64,7 @@ function TrayCard({ id, onClose }: { id: BookRef; onClose: () => void }) {
               className="btn xs"
               onClick={() => {
                 onClose();
-                openReader(id);
+                openBook(id);
               }}
             >
               OPEN <Icon name="ti-arrow-right" />

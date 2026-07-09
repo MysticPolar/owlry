@@ -26,6 +26,9 @@ import { supabase, isBackendConfigured } from '../lib/supabase';
 import { getLocalWeather } from '../lib/weather';
 import { rowsToChat } from '../lib/chatHydrate';
 import type { ChatRow } from '../lib/chatHydrate';
+import { resolvePublicDomain } from '../lib/ebook/resolve';
+import { loadUpload } from '../lib/ebook/storage';
+import type { ReadingSource } from '../lib/ebook/types';
 import type { BookRef } from '../content/types';
 
 import { loadLocal, saveLocal, type Owner } from './persistence';
@@ -48,6 +51,19 @@ import type {
 
 /** lazy reading-letter state: the letter is generated only when the reader taps the card */
 export type LetterStatus = 'idle' | 'loading' | 'ready';
+
+/** The real in-app reader (public-domain EPUB or an uploaded file). */
+export type EbookStatus = 'resolving' | 'reading' | 'empty' | 'error';
+export interface EbookState {
+  open: boolean;
+  bookId: BookRef | null;
+  status: EbookStatus;
+  source: ReadingSource | null;
+  percent: number;
+  secondsRead: number;
+  error: string | null;
+  uploadOpen: boolean;
+}
 
 /** the signed-in reader, once a backend is configured and a session exists */
 export interface AuthUser {
@@ -96,6 +112,15 @@ export interface Store extends PersistedState {
   openHistory: () => void;
   closeHistory: () => void;
 
+  /* the real in-app reader (Open flow: uploaded copy → public-domain EPUB → upload) */
+  ebook: EbookState;
+  openBook: (id: BookRef) => Promise<void>;
+  closeBook: () => void;
+  openUpload: () => void;
+  closeUpload: () => void;
+  setUploadedSource: (id: BookRef, source: ReadingSource) => void;
+  reportProgress: (percent: number, secondsRead: number) => void;
+
   /* actions */
   bootstrap: () => Promise<void>;
   setTab: (t: Tab) => void;
@@ -139,6 +164,22 @@ export interface Store extends PersistedState {
 
 let chatId = 0;
 const nextId = () => ++chatId;
+
+/* per-book reading milestones, for throttling progress→XP awards (cosmetic) */
+const progressMark = new Map<BookRef, number>();
+const secondsMark = new Map<BookRef, number>();
+const finishedMark = new Set<BookRef>();
+
+const EBOOK_IDLE: EbookState = {
+  open: false,
+  bookId: null,
+  status: 'resolving',
+  source: null,
+  percent: 0,
+  secondsRead: 0,
+  error: null,
+  uploadOpen: false,
+};
 
 let toastTimer: ReturnType<typeof setTimeout> | undefined;
 let saveTimer: ReturnType<typeof setTimeout> | undefined;
@@ -210,6 +251,76 @@ export const useStore = create<Store>()(
     historyOpen: false,
     openHistory: () => set({ historyOpen: true }),
     closeHistory: () => set({ historyOpen: false }),
+
+    /* ---------- the real in-app reader (Open flow) ---------- */
+    ebook: EBOOK_IDLE,
+
+    openBook: async (id) => {
+      const b = getBook(id);
+      if (!b) return;
+      const readingIds = get().readingIds.includes(id) ? get().readingIds : [id, ...get().readingIds];
+      progressMark.delete(id);
+      secondsMark.delete(id);
+      finishedMark.delete(id);
+      set({ readingIds, ebook: { ...EBOOK_IDLE, open: true, bookId: id, status: 'resolving' } });
+
+      // 1) a copy already uploaded on this device wins — instant + offline
+      try {
+        const up = await loadUpload(id);
+        if (get().ebook.bookId !== id) return; // the reader moved on
+        if (up) {
+          set({ ebook: { ...get().ebook, status: 'reading', source: up.source } });
+          return;
+        }
+      } catch {
+        /* ignore storage errors */
+      }
+
+      // 2) resolve a public-domain EPUB by title + author (Gutendex)
+      const source = await resolvePublicDomain(b.t, b.a);
+      if (get().ebook.bookId !== id) return;
+      set({
+        ebook: source ? { ...get().ebook, status: 'reading', source } : { ...get().ebook, status: 'empty' },
+      });
+    },
+
+    closeBook: () => set({ ebook: { ...get().ebook, open: false, uploadOpen: false } }),
+    openUpload: () => set({ ebook: { ...get().ebook, uploadOpen: true } }),
+    closeUpload: () => set({ ebook: { ...get().ebook, uploadOpen: false } }),
+
+    setUploadedSource: (id, source) => {
+      const e = get().ebook;
+      if (e.bookId !== id) return;
+      set({ ebook: { ...e, source, status: 'reading', uploadOpen: false, error: null } });
+    },
+
+    reportProgress: (percent, secondsRead) => {
+      const e = get().ebook;
+      const id = e.bookId;
+      if (!id) return;
+      set({ ebook: { ...e, percent, secondsRead } });
+
+      // cosmetic XP: one "page turn" per 5% advanced, gated by ≥8s of active reading —
+      // the same economics as the mock reader's nextPage (+2 XP, +2 ink).
+      const lastPct = progressMark.get(id) ?? 0;
+      const lastSec = secondsMark.get(id) ?? 0;
+      if (percent >= lastPct + 5 && secondsRead >= lastSec + 8) {
+        progressMark.set(id, Math.floor(percent / 5) * 5);
+        secondsMark.set(id, secondsRead);
+        get().addXP(2);
+        get().addInk(2);
+      }
+
+      // finishing near the end (fires once per open)
+      if (percent >= 97 && !finishedMark.has(id)) {
+        finishedMark.add(id);
+        const finishedIds = get().finishedIds.includes(id) ? get().finishedIds : [id, ...get().finishedIds];
+        const readingIds = get().readingIds.filter((x) => x !== id);
+        set({ finishedIds, readingIds });
+        get().showToast('ti-trophy', 'finished — counted twice. +40 XP', 'keeper');
+        get().addXP(40);
+      }
+    },
 
     bootstrap: async () => {
       const [loaded, session] = await Promise.all([

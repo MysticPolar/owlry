@@ -11,6 +11,8 @@ import { LibraryScreen } from './components/screens/LibraryScreen';
 import { ProfileScreen } from './components/screens/ProfileScreen';
 import { Sheet } from './components/overlays/Sheet';
 import { Reader } from './components/overlays/Reader';
+import { EbookReader } from './components/overlays/EbookReader';
+import { UploadModal } from './components/overlays/UploadModal';
 import { History } from './components/overlays/History';
 import { Letter } from './components/overlays/Letter';
 import { Settings } from './components/overlays/Settings';
@@ -121,6 +123,8 @@ export default function App() {
               <Backdrop />
               <Sheet />
               <Reader />
+              <EbookReader />
+              <UploadModal />
               <History />
               <Letter />
               <Settings />
