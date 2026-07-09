@@ -3,6 +3,7 @@ import { useStore } from '../../store/useStore';
 import { BOOKS } from '../../content/books';
 import { PICKS } from '../../content/picks';
 import { WX } from '../../content/weather';
+import { getBook } from '../../lib/bookRegistry';
 import { useClock } from '../../hooks/useClock';
 import { pct } from '../../lib/format';
 import { Icon } from '../Icon';
@@ -172,7 +173,8 @@ function Shelf() {
       </div>
       <div className="shelf" id="shelf">
         {readingIds.map((id) => {
-          const b = BOOKS[id];
+          const b = getBook(id);
+          if (!b) return null;
           const p = pct(pagesRead[id] ?? 0, b.n);
           return (
             <button key={id} className="sh-item" onClick={() => openReader(id)}>

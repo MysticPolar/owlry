@@ -1,0 +1,43 @@
+/* ============================================================
+   owlry — book + guide resolver.
+
+   The catalog (content/books.ts, content/guides.ts) is the v1
+   source of truth. The live owl can recommend open-world books
+   that aren't in the catalog; those are registered here at
+   runtime (session-scoped) so every UI surface — Cover, Tray,
+   Strip, Sheet, Letter — can resolve a book or its reading letter
+   by ref WITHOUT changing how it renders. Catalog refs resolve
+   byte-identically to before; this is purely additive.
+   ============================================================ */
+import { BOOKS } from '../content/books';
+import { GUIDES } from '../content/guides';
+import type { Book, BookId, BookRef, Guide, GuideId } from '../content/types';
+
+/** session-scoped open-world books/guides (not persisted in v1) */
+const dynBooks: Record<string, Book> = {};
+const dynGuides: Record<string, Guide> = {};
+
+export function registerBook(ref: BookRef, b: Book): void {
+  if (!(ref in BOOKS)) dynBooks[ref] = b;
+}
+
+export function registerGuide(ref: BookRef, g: Guide): void {
+  if (!(ref in GUIDES)) dynGuides[ref] = g;
+}
+
+/** resolve a book by ref — catalog first, then session-registered open-world */
+export function getBook(ref: BookRef | null | undefined): Book | undefined {
+  if (!ref) return undefined;
+  return BOOKS[ref as BookId] ?? dynBooks[ref];
+}
+
+/** resolve a reading letter by ref — catalog first, then session-registered */
+export function getGuide(ref: BookRef | null | undefined): Guide | undefined {
+  if (!ref) return undefined;
+  return GUIDES[ref as GuideId] ?? dynGuides[ref];
+}
+
+/** does this ref have a reading letter the owl can show? */
+export function hasGuide(ref: BookRef | null | undefined): boolean {
+  return !!ref && (ref in GUIDES || ref in dynGuides);
+}

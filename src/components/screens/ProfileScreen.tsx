@@ -19,8 +19,9 @@ import { Icon } from '../Icon';
 import { Cover } from '../Cover';
 import { CastOwl } from '../CastOwl';
 import { RadarChart } from '../profile/RadarChart';
+import { MemoryCard } from '../profile/MemoryCard';
 
-type ProfileTab = 'stats' | 'cal' | 'quotes';
+type ProfileTab = 'stats' | 'cal' | 'quotes' | 'mem';
 
 /* ---------- stats tab ---------- */
 function StatsTab({ radarKey }: { radarKey: number }) {
@@ -201,12 +202,22 @@ function QuotesTab() {
   );
 }
 
+/* ---------- memory tab ---------- */
+function MemTab() {
+  return (
+    <div className="tpanel on swap" id="tab-mem" role="tabpanel">
+      <MemoryCard />
+    </div>
+  );
+}
+
 /* ---------- profile screen ---------- */
-const TABS: [ProfileTab, string, string][] = [
+const BASE_TABS: [ProfileTab, string, string][] = [
   ['stats', 'ti-radar-2', 'stats'],
   ['cal', 'ti-calendar-event', 'calendar'],
   ['quotes', 'ti-quote', 'quotes'],
 ];
+const MEM_TAB: [ProfileTab, string, string] = ['mem', 'ti-feather', 'memory'];
 
 export function ProfileScreen() {
   const active = useStore((s) => s.activeTab === 'profile');
@@ -214,6 +225,9 @@ export function ProfileScreen() {
   const coins = useStore((s) => s.coins);
   const streak = useStore((s) => s.streak);
   const openSettings = useStore((s) => s.openSettings);
+  // the profile display (avatar/name) + the memory-tab gate use the rich useAuth
+  // profile; sign-out lives in Settings (product). Chat/history gate on
+  // useStore.authUser separately — both reflect the same Supabase session.
   const authUser = useAuth((s) => (s.status === 'authed' ? s.user : null));
 
   const [profileTab, setProfileTab] = useState<ProfileTab>('stats');
@@ -224,6 +238,13 @@ export function ProfileScreen() {
   useEffect(() => {
     if (active) setRadarKey((k) => k + 1);
   }, [active]);
+
+  // guard against an orphaned "memory" tab if the reader signs out while viewing it
+  useEffect(() => {
+    if (profileTab === 'mem' && !authUser) setProfileTab('stats');
+  }, [authUser, profileTab]);
+
+  const tabs = authUser ? [...BASE_TABS, MEM_TAB] : BASE_TABS;
 
   const switchTab = (key: ProfileTab) => {
     setProfileTab(key);
@@ -277,7 +298,7 @@ export function ProfileScreen() {
       </div>
 
       <div className="seg" role="tablist" aria-label="Profile sections">
-        {TABS.map(([key, icon, label]) => {
+        {tabs.map(([key, icon, label]) => {
           const on = profileTab === key;
           return (
             <button
@@ -297,6 +318,7 @@ export function ProfileScreen() {
       {profileTab === 'stats' && <StatsTab radarKey={radarKey} />}
       {profileTab === 'cal' && <CalendarTab />}
       {profileTab === 'quotes' && <QuotesTab />}
+      {profileTab === 'mem' && <MemTab />}
     </section>
   );
 }

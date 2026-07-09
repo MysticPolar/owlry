@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useStore } from '../../store/useStore';
-import { BOOKS } from '../../content/books';
+import { getBook } from '../../lib/bookRegistry';
 import { getSpread } from '../../content/reader-text';
 import { Icon } from '../Icon';
 
@@ -13,7 +13,7 @@ export function Reader() {
   const saved = useStore((s) => (s.reader.id ? s.savedIds.includes(s.reader.id) : false));
 
   const { id, p, open } = reader;
-  const b = id ? BOOKS[id] : null;
+  const b = id ? getBook(id) : null;
   const n = b ? b.n : 0;
   const last = b ? p >= n : false;
   const spread = id ? getSpread(id, p) : [];

@@ -1,137 +1,106 @@
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useStore } from '../../store/useStore';
 import { useKeyboardInset } from '../../hooks/useKeyboardInset';
-import { BOOKS } from '../../content/books';
-import type { BookId } from '../../content/types';
-import type { OwlMessage } from '../../lib/owlBrain';
-import { isGuide } from '../../lib/format';
+import { isConfigured } from '../../lib/supabase';
+import { getBook, hasGuide } from '../../lib/bookRegistry';
+import { renderChatItem } from '../chat/ChatItems';
+import type { BookRef } from '../../content/types';
 import { Icon } from '../Icon';
 import { Cover } from '../Cover';
 import { CastOwl } from '../CastOwl';
 
-/* render structured owl-message nodes as real, clickable React */
-function renderNodes(nodes: OwlMessage, openSheet: (id: BookId) => void) {
-  return nodes.map((n, i) => {
-    if (n.t === 'text') return <Fragment key={i}>{n.v}</Fragment>;
-    if (n.t === 'em')
-      return (
-        <span key={i} className="it">
-          {n.v}
-        </span>
-      );
-    if (n.t === 'rec') {
-      // open-world book the live owl named — styled like a book, but not a
-      // catalog entry, so it's a plain mention (the note rides on the tooltip)
-      const tip = [n.author, n.note].filter(Boolean).join(' — ');
-      return (
-        <span key={i} className="bk flat" title={tip || undefined}>
-          {n.title}
-        </span>
-      );
-    }
-    return (
-      <span
-        key={i}
-        className="bk"
-        role="button"
-        tabIndex={0}
-        onClick={() => openSheet(n.id)}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            openSheet(n.id);
-          }
-        }}
-      >
-        {n.v}
-      </span>
-    );
-  });
-}
-
-/* ---------- shelf: every rec collected this session ---------- */
-function Shelf({ onPick, activeId }: { onPick: (id: BookId) => void; activeId: BookId | null }) {
-  const collected = useStore((s) => s.owl.collected);
-  if (!collected.length) return null;
-  return (
-    <div className="strip" id="stripRow">
-      <span className="strip-label">SHELF · {collected.length}</span>
-      <div className="strip-row">
-        {collected.map((id) => (
-          <button
-            key={id}
-            className={`spinelet ${activeId === id ? 'sel' : ''}`}
-            style={{ background: BOOKS[id].c }}
-            aria-label={BOOKS[id].t}
-            aria-pressed={activeId === id}
-            title={BOOKS[id].t}
-            onClick={() => onPick(id)}
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
-
 /* ---------- selected-book card, shown inline in the tray ---------- */
-function TrayCard({ id, onClose }: { id: BookId; onClose: () => void }) {
-  const b = BOOKS[id];
+function TrayCard({ id, onClose }: { id: BookRef; onClose: () => void }) {
+  const b = getBook(id);
   const saved = useStore((s) => s.savedIds.includes(id));
   const toggleSave = useStore((s) => s.toggleSave);
   const openSheet = useStore((s) => s.openSheet);
   const openLetter = useStore((s) => s.openLetter);
   const openReader = useStore((s) => s.openReader);
+  if (!b) return <div className="tray-card tray-empty">scout's picks will perch here</div>;
+
+  // a peek is available for catalog guides (instant) and, with a backend, for any
+  // recommended book (Peek writes it on tap); offline non-guides just open to read.
+  const canPeek = hasGuide(id) || isConfigured;
   return (
     <div className="tray-card" role="dialog" aria-label={b.t}>
-        <button
-          className={`save ${saved ? 'on' : ''}`}
-          aria-label="Save to library"
-          aria-pressed={saved}
-          onClick={() => toggleSave(id)}
-        >
-          <Icon name="ti-heart" />
-        </button>
-        <Cover id={id} cls="cover-xs" />
-        <div className="tray-info">
-          <div className="tray-ttl d">{b.t}</div>
-          <div className="tray-auth">
-            {b.a} · {b.n} pages
-          </div>
-          <div className="tray-intro">{b.i ?? b.q}</div>
-          <div className="tray-btns">
+      <button
+        className={`save ${saved ? 'on' : ''}`}
+        aria-label="Save to library"
+        aria-pressed={saved}
+        onClick={() => toggleSave(id)}
+      >
+        <Icon name="ti-heart" />
+      </button>
+      <Cover id={id} cls="cover-xs" />
+      <div className="tray-info">
+        <div className="tray-ttl d">{b.t}</div>
+        <div className="tray-auth">
+          {b.a} · {b.n} pages
+        </div>
+        <div className="tray-intro">{b.i ?? b.q}</div>
+        <div className="tray-btns">
+          <button
+            className="btn xs ghost"
+            onClick={() => {
+              onClose();
+              openSheet(id);
+            }}
+          >
+            ABOUT
+          </button>
+          {canPeek ? (
             <button
-              className="btn xs ghost"
+              className="btn xs"
               onClick={() => {
                 onClose();
-                openSheet(id);
+                openLetter(id);
               }}
             >
-              ABOUT
+              PEEK <Icon name="ti-mail" />
             </button>
-            {isGuide(id) ? (
-              <button
-                className="btn xs"
-                onClick={() => {
-                  onClose();
-                  openLetter(id);
-                }}
-              >
-                PEEK <Icon name="ti-mail" />
-              </button>
-            ) : (
-              <button
-                className="btn xs"
-                onClick={() => {
-                  onClose();
-                  openReader(id);
-                }}
-              >
-                OPEN <Icon name="ti-arrow-right" />
-              </button>
-            )}
-          </div>
+          ) : (
+            <button
+              className="btn xs"
+              onClick={() => {
+                onClose();
+                openReader(id);
+              }}
+            >
+              OPEN <Icon name="ti-arrow-right" />
+            </button>
+          )}
         </div>
       </div>
+    </div>
+  );
+}
+
+/* ---------- shelf: every rec collected this session ---------- */
+function Shelf({ onPick, activeId }: { onPick: (id: BookRef) => void; activeId: BookRef | null }) {
+  const collected = useStore((s) => s.owl.collected);
+  if (!collected.length) return <div className="strip" id="stripRow" />;
+  return (
+    <div className="strip" id="stripRow">
+      <span className="strip-label">SHELF · {collected.length}</span>
+      <div className="strip-row">
+        {collected.map((id) => {
+          const b = getBook(id);
+          if (!b) return null;
+          return (
+            <button
+              key={id}
+              className={`spinelet ${activeId === id ? 'sel' : ''}`}
+              style={{ background: b.c }}
+              aria-label={b.t}
+              aria-pressed={activeId === id}
+              title={b.t}
+              onClick={() => onPick(id)}
+            />
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
@@ -141,7 +110,6 @@ function Chat() {
   const active = useStore((s) => s.activeTab === 'discover');
   const openSheet = useStore((s) => s.openSheet);
   const openLetter = useStore((s) => s.openLetter);
-  const openRecLetter = useStore((s) => s.openRecLetter);
   const kb = useKeyboardInset();
   const ref = useRef<HTMLDivElement>(null);
   const prevCount = useRef(0);
@@ -159,53 +127,7 @@ function Chat() {
 
   return (
     <div className="chat" id="chat" role="log" aria-live="polite" ref={ref}>
-      {messages.map((m) => {
-        if (m.kind === 'typing') {
-          return (
-            <div key={m.id} className="msg owl">
-              <span className="tdots" aria-hidden="true">
-                <span />
-                <span />
-                <span />
-              </span>
-              <span className="sr-only">scout is typing…</span>
-            </div>
-          );
-        }
-        if (m.kind === 'letter') {
-          return (
-            <button key={m.id} className="lettercard" onClick={() => openLetter(m.book)}>
-              <span className="stamp">
-                <Icon name="ti-feather" />
-              </span>
-              <span>
-                <span className="lc-t d">your peek has arrived</span>
-                <br />
-                <span className="lc-s">{BOOKS[m.book].t} — tap to open</span>
-              </span>
-            </button>
-          );
-        }
-        if (m.kind === 'recletter') {
-          return (
-            <button key={m.id} className="lettercard" onClick={() => openRecLetter(m.title, m.author, m.note)}>
-              <span className="stamp">
-                <Icon name="ti-feather" />
-              </span>
-              <span>
-                <span className="lc-t d">your peek has arrived</span>
-                <br />
-                <span className="lc-s">{m.title} — tap to open</span>
-              </span>
-            </button>
-          );
-        }
-        return (
-          <div key={m.id} className={`msg ${m.who}`}>
-            {renderNodes(m.nodes, openSheet)}
-          </div>
-        );
-      })}
+      {messages.map((m) => renderChatItem(m, openSheet, openLetter))}
     </div>
   );
 }
@@ -269,7 +191,8 @@ export function DiscoverScreen() {
   const active = useStore((s) => s.activeTab === 'discover');
   const desk = useStore((s) => s.deskMode);
   const setDeskMode = useStore((s) => s.setDeskMode);
-  const [popoverId, setPopoverId] = useState<BookId | null>(null);
+  const openHistory = useStore((s) => s.openHistory);
+  const [popoverId, setPopoverId] = useState<BookRef | null>(null);
 
   // close the popover when leaving discover
   useEffect(() => {
@@ -278,15 +201,24 @@ export function DiscoverScreen() {
 
   return (
     <section className={`screen ${active ? 'on' : ''}`} id="screen-discover" data-desk={desk}>
-      <div className="pad-h" style={{ paddingBottom: 2 }}>
-        <span className="ghost" aria-hidden="true">Scout</span>
+      <div className="pad-h disc-head" style={{ paddingBottom: 2 }}>
+        <span className="ghost" aria-hidden="true">
+          Scout
+        </span>
         <h1 className="hl sm d">
           <span className="u" />
           <span className="t">
             discover<span className="gdot">.</span>
           </span>
         </h1>
-        <CastOwl owl="scout" cls="mini" variant={desk === 'pro' ? 'pro' : undefined} />
+        <div className="disc-head-right">
+          <CastOwl owl="scout" cls="mini" variant={desk === 'pro' ? 'pro' : undefined} />
+          {isConfigured && (
+            <button className="iconbtn lite" aria-label="Chat history" onClick={openHistory}>
+              <Icon name="ti-history" />
+            </button>
+          )}
+        </div>
       </div>
 
       {/* scout's two desks: the whole desk, or office hours (non-fiction only) */}

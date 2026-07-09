@@ -1,250 +1,270 @@
 // ============================================================
-// owlry — owl-chat edge function (Deno / Supabase).
+// owlry — owl-chat v2 edge function (Deno / Supabase).
 //
-// The live owl's brain. The browser sends the conversation so far;
-// this runs an LLM server-side (so the API key never touches the
-// client) and returns the structured owl reply. The client maps
-// that onto the chat UI; if this function is missing, errors, or
-// the user is offline, the client falls back to the simulated
-// mockup brain (src/lib/owlBrain.ts) — chat never breaks.
+// Scout: the reader's turn, in three model calls (docs/owl-chat-revision.md
+// + the memory/history plan). The browser sends only the current message —
+// history and memory are loaded server-side, so the ANTHROPIC_API_KEY and
+// the reader's memory never touch the client.
 //
-// PROVIDER SWITCH — pick the model vendor with the OWL_PROVIDER secret:
-//   • OWL_PROVIDER=anthropic  (default) → Claude, needs ANTHROPIC_API_KEY
-//   • OWL_PROVIDER=gemini               → Gemini, needs GEMINI_API_KEY
-// The OWL_SYSTEM prompt + {say,letter,picks,chips} contract are shared.
+//   A  Haiku 4.5   digest   → semantic_query + memory selection
+//   B  Sonnet 4.6  Scout    → {say, main, picks, note?, chips}  (NO letter)
 //
-// Deploy:  supabase functions deploy owl-chat
-// Secrets: supabase secrets set OWL_PROVIDER=gemini GEMINI_API_KEY=...
-//          (or OWL_PROVIDER=anthropic ANTHROPIC_API_KEY=sk-ant-...)
+// The user's turn is persisted immediately (survives even if generation
+// fails); the owl's reply is persisted after. Peek context (book + query +
+// selected memory) is stashed in `cached_responses` so a cold instance can
+// still serve Peek later. The memory-merge job (Haiku) runs AFTER the
+// response, non-blocking (EdgeRuntime.waitUntil) — it never delays the reply.
+//
+// If this function is missing, errors, or the reader is offline, the client
+// falls back to the simulated mockup brain (src/lib/owlBrain.ts) — chat
+// never breaks.
+//
+// Deploy:   supabase functions deploy owl-chat
+// Secrets:  supabase secrets set ANTHROPIC_API_KEY=sk-ant-...
+//           (SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY / SUPABASE_ANON_KEY
+//            are provided automatically to every edge function)
 // ============================================================
+import Anthropic from 'npm:@anthropic-ai/sdk';
+import { createClient } from 'npm:@supabase/supabase-js@2';
 import { corsHeaders, jsonResponse } from '../_shared/cors.ts';
-import {
-  OWL_SYSTEM,
-  OWL_SCHEMA,
-  OWL_MODEL,
-  OWL_GEMINI_MODEL,
-  OWL_MAX_TOKENS,
-  OWL_PRO_DESK,
-  LETTER_SYSTEM,
-  OWL_LETTER_SCHEMA,
-  OWL_LETTER_MAX_TOKENS,
-} from './owl-system.ts';
+import { slugify } from '../_shared/slug.ts';
+import { capSelectedMemory, EMPTY_LONG_TERM, mergeTopic, sanitizeLongTerm } from '../_shared/memory.ts';
+import { DIGEST_SYSTEM, digestUser } from '../_shared/prompts/digest.ts';
+import { SCOUT_SYSTEM, scoutUser } from '../_shared/prompts/scout.ts';
+import { MEMORY_MERGE_SYSTEM, memoryMergeUser } from '../_shared/prompts/memoryMerge.ts';
+import { SEMANTIC_QUERY_SCHEMA, SCOUT_SCHEMA, MEMORY_PATCH_SCHEMA } from '../_shared/schemas.ts';
+import type { SemanticQuery, ScoutReply, MemoryPatch } from '../_shared/schemas.ts';
 
-interface Turn {
-  role: 'user' | 'assistant';
-  text: string;
+interface ChatRequest {
+  message?: string;
+  client_day?: string; // reader's local YYYY-MM-DD (drives dated topics + history grouping)
 }
 
-interface OwlReplyPayload {
-  say: string;
-  letter: { title: string; author: string } | null;
-  picks: { title: string; author: string; note: string }[];
-  chips: string[];
-}
-
-const FALLBACK: OwlReplyPayload = {
+const FALLBACK: ScoutReply = {
   say: "the post desk is quiet for a moment — tell me what's going on and i'll sort you something.",
-  letter: null,
+  main: null,
   picks: [],
+  note: null,
   chips: ['rest', 'need focus', 'feeling blue', 'cozy escape'],
 };
 
-// The mockup uses fixed chip sets per response kind (content/owl.ts). To match
-// its style exactly, override the model's chips deterministically by shape. (The
-// greeting's starter chips are set client-side from START_CHIPS by day-part.)
-const CHIPS = {
-  letter: ['go deeper', 'something lighter', 'more like this', 'new vibe'],
-  fiction: ['more like this', 'new vibe', 'surprise me'],
-  ask: ['rest', 'need focus', 'feeling blue', 'cozy escape'],
+const FALLBACK_QUERY: Omit<SemanticQuery, 'themes' | 'intent'> = {
+  mood: '',
+  avoid: [],
+  depth: 'mixed',
+  length: 'any',
+  language: 'en',
+  selected_memory: [],
+  topic_candidate: null,
+  note_domain: null,
 };
 
-/** Trim a raw model reply into the strict contract so a stray field can't crash the client. */
-function sanitize(parsed: OwlReplyPayload): OwlReplyPayload {
-  const letter =
-    parsed.letter && typeof parsed.letter.title === 'string'
-      ? { title: parsed.letter.title, author: String(parsed.letter.author ?? '') }
-      : null;
-  const picks = Array.isArray(parsed.picks)
-    ? parsed.picks
-        .filter((p) => p && typeof p.title === 'string')
-        .map((p) => ({ title: p.title, author: String(p.author ?? ''), note: String(p.note ?? '') }))
-    : [];
-  return {
-    say: typeof parsed.say === 'string' && parsed.say.trim() ? parsed.say : FALLBACK.say,
-    letter,
-    picks,
-    chips: letter ? CHIPS.letter : picks.length ? CHIPS.fiction : CHIPS.ask,
-  };
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+
+function today(): string {
+  return new Date().toISOString().slice(0, 10);
 }
 
-/** Claude (Anthropic): structured output via output_config.format. Returns the JSON text, or '' on refusal. */
-async function anthropicReply(turns: Turn[], apiKey: string, system: string): Promise<string> {
-  const Anthropic = (await import('npm:@anthropic-ai/sdk')).default;
-  const client = new Anthropic({ apiKey });
-  const res = await client.messages.create({
-    model: OWL_MODEL,
-    max_tokens: OWL_MAX_TOKENS,
-    // Sonnet 4.6 defaults to effort:"high"; an owl reply is one or two sentences,
-    // so keep it fast — thinking off, effort low.
-    thinking: { type: 'disabled' },
-    system: [{ type: 'text', text: system, cache_control: { type: 'ephemeral' } }],
-    messages: turns.map((t) => ({ role: t.role, content: t.text })),
-    output_config: { effort: 'low', format: { type: 'json_schema', schema: OWL_SCHEMA } },
-    // deno-lint-ignore no-explicit-any
-  } as any);
-  if (res.stop_reason === 'refusal') return '';
-  const textBlock = res.content.find((b: { type: string }) => b.type === 'text') as
-    | { type: 'text'; text: string }
-    | undefined;
-  return textBlock?.text ?? '';
+function textOf(res: Anthropic.Message): string {
+  return res.content
+    .filter((b): b is Anthropic.TextBlock => b.type === 'text')
+    .map((b) => b.text)
+    .join('')
+    .trim();
 }
 
-/** Claude: write a peek for one open-world book (tap-triggered, cached client-side). */
-async function anthropicLetter(title: string, author: string, context: string, apiKey: string): Promise<string> {
-  const Anthropic = (await import('npm:@anthropic-ai/sdk')).default;
-  const client = new Anthropic({ apiKey });
-  const ask = context ? ` The reader's ask: "${context}".` : '';
-  const res = await client.messages.create({
-    model: OWL_MODEL,
-    max_tokens: OWL_LETTER_MAX_TOKENS,
-    thinking: { type: 'disabled' },
-    // letters are the product — worth a notch more deliberation than chat turns
-    system: [{ type: 'text', text: LETTER_SYSTEM, cache_control: { type: 'ephemeral' } }],
-    messages: [{ role: 'user', content: `The book: ${title} by ${author}.${ask} Write the peek.` }],
-    output_config: { effort: 'medium', format: { type: 'json_schema', schema: OWL_LETTER_SCHEMA } },
-    // deno-lint-ignore no-explicit-any
-  } as any);
-  if (res.stop_reason === 'refusal') return '';
-  const textBlock = res.content.find((b: { type: string }) => b.type === 'text') as
-    | { type: 'text'; text: string }
-    | undefined;
-  return textBlock?.text ?? '';
+function hourStart(): Date {
+  const d = new Date();
+  return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), d.getUTCHours()));
 }
 
-/** Gemini letter variant (JSON mode; schema enforced by prompt + client guard). */
-async function geminiLetter(title: string, author: string, context: string, apiKey: string): Promise<string> {
-  const { GoogleGenAI } = await import('npm:@google/genai');
-  const ai = new GoogleGenAI({ apiKey });
-  const ask = context ? ` The reader's ask: "${context}".` : '';
-  const response = await ai.models.generateContent({
-    model: OWL_GEMINI_MODEL,
-    contents: [{ role: 'user', parts: [{ text: `The book: ${title} by ${author}.${ask} Write the peek.` }] }],
-    config: {
-      systemInstruction: LETTER_SYSTEM,
-      maxOutputTokens: 2400,
-      temperature: 0.7,
-      responseMimeType: 'application/json',
-      thinkingConfig: { thinkingBudget: 0 },
-    },
-    // deno-lint-ignore no-explicit-any
-  } as any);
-  return (response.text ?? '').trim();
+function dayStart(): Date {
+  const d = new Date();
+  return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
 }
 
-/** Gemini: JSON mode via responseMimeType; thinking disabled so the short reply stays fast. */
-async function geminiReply(turns: Turn[], apiKey: string, system: string): Promise<string> {
-  const { GoogleGenAI } = await import('npm:@google/genai');
-  const ai = new GoogleGenAI({ apiKey });
-  // Gemini has no 'system' role — the prompt goes in config.systemInstruction,
-  // and the assistant role is named 'model'.
-  const contents = turns.map((t) => ({
-    role: t.role === 'assistant' ? 'model' : 'user',
-    parts: [{ text: t.text }],
-  }));
-  const response = await ai.models.generateContent({
-    model: OWL_GEMINI_MODEL,
-    contents,
-    config: {
-      systemInstruction: system,
-      maxOutputTokens: 512,
-      temperature: 0.8,
-      responseMimeType: 'application/json',
-      // 2.5-flash thinks by default and would eat the token budget; disable it so
-      // the whole budget goes to the (short) JSON reply, and latency stays low.
-      thinkingConfig: { thinkingBudget: 0 },
-    },
-    // deno-lint-ignore no-explicit-any
-  } as any);
-  return (response.text ?? '').trim();
+/** background job: merge this exchange into the reader's memory. Never blocks the reply. */
+async function runMemoryMerge(
+  anthropic: Anthropic,
+  admin: ReturnType<typeof createClient>,
+  uid: string,
+  currentLongTerm: unknown,
+  currentTopics: unknown,
+  message: string,
+  say: string,
+  mainTitle: string | null,
+  clientDay: string,
+): Promise<void> {
+  try {
+    const res = await anthropic.messages.create({
+      model: 'claude-haiku-4-5',
+      max_tokens: 700,
+      temperature: 0.2, // extraction job — stay close to the evidence, never embellish
+      system: [{ type: 'text', text: MEMORY_MERGE_SYSTEM, cache_control: { type: 'ephemeral', ttl: '1h' } }],
+      messages: [
+        {
+          role: 'user',
+          content: memoryMergeUser(JSON.stringify(currentLongTerm ?? {}), JSON.stringify(currentTopics ?? []), message, say, mainTitle, clientDay),
+        },
+      ],
+      output_config: { format: { type: 'json_schema', schema: MEMORY_PATCH_SCHEMA } },
+      // deno-lint-ignore no-explicit-any
+    } as any);
+    if (res.stop_reason === 'refusal') return;
+
+    const parsed = JSON.parse(textOf(res)) as MemoryPatch;
+    if (!parsed.change) return;
+
+    const longTerm = sanitizeLongTerm(parsed.long_term);
+    const topics = mergeTopic(currentTopics, parsed.topic, clientDay);
+    await admin.from('owlry_user_memory').upsert({ user_id: uid, long_term: longTerm, topics, updated_at: new Date().toISOString() });
+  } catch (err) {
+    console.error('[owl-chat] memory merge failed', err);
+  }
 }
 
 Deno.serve(async (req: Request): Promise<Response> => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
   if (req.method !== 'POST') return jsonResponse({ error: 'method not allowed' }, 405);
 
-  const provider = (Deno.env.get('OWL_PROVIDER') ?? 'anthropic').trim().toLowerCase();
-  const apiKey = provider === 'gemini' ? Deno.env.get('GEMINI_API_KEY') : Deno.env.get('ANTHROPIC_API_KEY');
-  if (!apiKey) return jsonResponse({ error: `owl-chat: ${provider} key not configured` }, 503);
+  const apiKey = Deno.env.get('ANTHROPIC_API_KEY');
+  if (!apiKey) return jsonResponse({ error: 'owl-chat is not configured' }, 503);
 
-  let turns: Turn[];
-  let desk: 'fiction' | 'pro' = 'fiction';
-  let letterFor: { title: string; author: string } | null = null;
-  let letterContext = '';
+  const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
+  const SUPABASE_ANON_KEY = Deno.env.get('SUPABASE_ANON_KEY')!;
+  const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+
+  let body: ChatRequest;
   try {
-    const body = (await req.json()) as {
-      turns?: Turn[];
-      desk?: string;
-      letterFor?: { title?: string; author?: string };
-      context?: string;
-    };
-    turns = Array.isArray(body.turns) ? body.turns : [];
-    if (body.desk === 'pro') desk = 'pro';
-    if (body.letterFor && typeof body.letterFor.title === 'string' && body.letterFor.title.trim()) {
-      letterFor = {
-        title: body.letterFor.title.trim().slice(0, 200),
-        author: String(body.letterFor.author ?? '').trim().slice(0, 200),
-      };
-      letterContext = String(body.context ?? '').slice(0, 400);
-    }
+    body = (await req.json()) as ChatRequest;
   } catch {
     return jsonResponse({ error: 'invalid body' }, 400);
   }
+  const message = typeof body.message === 'string' ? body.message.trim().slice(0, 600) : '';
+  if (!message) return jsonResponse({ error: 'message required' }, 400);
+  const clientDay = typeof body.client_day === 'string' && DATE_RE.test(body.client_day) ? body.client_day : today();
 
-  // ── letter mode: write one reading letter for a tapped recommendation ──
-  if (letterFor) {
-    try {
-      const text =
-        provider === 'gemini'
-          ? await geminiLetter(letterFor.title, letterFor.author, letterContext, apiKey)
-          : await anthropicLetter(letterFor.title, letterFor.author, letterContext, apiKey);
-      if (!text) return jsonResponse({ error: 'letter refused' }, 502);
-      return jsonResponse(JSON.parse(text));
-    } catch (err) {
-      console.error('owl-letter error', err);
-      const e = err as { status?: number; message?: string };
-      return jsonResponse({ error: 'owl-letter upstream error', detail: { status: e?.status ?? null, message: e?.message ?? String(err) } }, 502);
-    }
-  }
+  // ── auth: revalidate the caller's JWT against the auth server ──
+  const authHeader = req.headers.get('Authorization') ?? '';
+  const authedClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { global: { headers: { Authorization: authHeader } } });
+  const { data: userData, error: authErr } = await authedClient.auth.getUser();
+  if (authErr || !userData?.user) return jsonResponse({ error: 'unauthorized' }, 401);
+  const uid = userData.user.id;
 
-  // keep the window bounded (cost + latency); the desk doesn't need deep history
-  const recent = turns.filter((t) => t && t.text && t.text.trim()).slice(-24);
-  if (!recent.length) return jsonResponse(FALLBACK);
-  // both providers want the first turn to be the visitor
-  if (recent[0].role !== 'user') recent.unshift({ role: 'user', text: '(a visitor sits down at the post desk.)' });
+  // service-role client for all DB access from here — always scoped to `uid` explicitly.
+  const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
+  // ── rate limit: 20/hour and 120/day per reader ──
+  const [{ data: hourOk }, { data: dayOk }] = await Promise.all([
+    admin.rpc('owlry_rl_bump', { p_key: `owl-chat:${uid}`, p_window_start: hourStart().toISOString(), p_max: 20 }),
+    admin.rpc('owlry_rl_bump', { p_key: `owl-chat-day:${uid}`, p_window_start: dayStart().toISOString(), p_max: 120 }),
+  ]);
+  if (hourOk === false || dayOk === false) return jsonResponse({ error: 'rate_limited' }, 429);
+
+  // ── load memory + recent history in parallel ──
+  const [{ data: memRow }, { data: historyRows }] = await Promise.all([
+    admin.from('owlry_user_memory').select('long_term, topics').eq('user_id', uid).maybeSingle(),
+    admin
+      .from('owlry_chat_messages')
+      .select('who, kind, payload, created_at')
+      .eq('user_id', uid)
+      .eq('kind', 'msg')
+      .order('created_at', { ascending: false })
+      .limit(12),
+  ]);
+  const longTerm = memRow?.long_term ?? EMPTY_LONG_TERM;
+  const topics = memRow?.topics ?? [];
+  type Row = { who: string; kind: string; payload: Record<string, unknown> };
+  const history = ((historyRows ?? []) as Row[])
+    .slice()
+    .reverse()
+    .map((r) => ({
+      role: (r.who === 'me' ? 'user' : 'owl') as 'user' | 'owl',
+      text: r.who === 'me' ? String(r.payload.text ?? '') : String(r.payload.say ?? ''),
+    }))
+    .filter((t) => t.text);
+
+  // persist the reader's turn immediately — history survives even if generation fails
+  const { error: persistUserErr } = await admin
+    .from('owlry_chat_messages')
+    .insert({ user_id: uid, who: 'me', kind: 'msg', payload: { text: message } });
+  if (persistUserErr) console.error('[owl-chat] failed to persist user turn', persistUserErr);
+
+  const anthropic = new Anthropic({ apiKey });
+
+  // ── Call A — digest (Haiku): semantic_query + memory selection ──
+  let query: SemanticQuery;
   try {
-    const system = desk === 'pro' ? OWL_SYSTEM + OWL_PRO_DESK : OWL_SYSTEM;
-    const text =
-      provider === 'gemini' ? await geminiReply(recent, apiKey, system) : await anthropicReply(recent, apiKey, system);
-    if (!text) return jsonResponse(FALLBACK); // refusal / empty
-    return jsonResponse(sanitize(JSON.parse(text) as OwlReplyPayload));
+    const digestRes = await anthropic.messages.create({
+      model: 'claude-haiku-4-5',
+      max_tokens: 500,
+      temperature: 0.2, // intake distillation — near-deterministic, no invented themes
+      system: [{ type: 'text', text: DIGEST_SYSTEM, cache_control: { type: 'ephemeral', ttl: '1h' } }],
+      messages: [{ role: 'user', content: digestUser(message, history, JSON.stringify(longTerm), JSON.stringify(topics), clientDay) }],
+      output_config: { format: { type: 'json_schema', schema: SEMANTIC_QUERY_SCHEMA } },
+      // deno-lint-ignore no-explicit-any
+    } as any);
+    if (digestRes.stop_reason === 'refusal') throw new Error('digest refused');
+    const parsed = JSON.parse(textOf(digestRes)) as SemanticQuery;
+    query = { ...parsed, selected_memory: capSelectedMemory(parsed.selected_memory) };
   } catch (err) {
-    console.error('owl-chat error', err);
-    // surface the upstream cause (status/type/message) so failures are diagnosable
-    // from the client — no secrets are present in these fields.
-    const e = err as { status?: number; message?: string; error?: { type?: string; message?: string } };
-    return jsonResponse(
-      {
-        ...FALLBACK,
-        error: 'owl-chat upstream error',
-        detail: {
-          provider,
-          status: e?.status ?? null,
-          type: e?.error?.type ?? null,
-          message: e?.error?.message ?? e?.message ?? String(err),
-        },
-      },
-      502,
-    );
+    console.error('[owl-chat] digest failed, using thin fallback query', err);
+    query = { themes: [message], intent: message, ...FALLBACK_QUERY };
   }
+
+  // ── Call B — Scout (Sonnet): pick + bubble, no letter ──
+  let scout: ScoutReply;
+  try {
+    const scoutRes = await anthropic.messages.create({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 900,
+      temperature: 0.8, // warmth without drift (founder spec) — steadier book picks than the 1.0 default
+      thinking: { type: 'disabled' },
+      system: [{ type: 'text', text: SCOUT_SYSTEM, cache_control: { type: 'ephemeral', ttl: '1h' } }],
+      messages: [{ role: 'user', content: scoutUser(JSON.stringify(query)) }],
+      output_config: { effort: 'low', format: { type: 'json_schema', schema: SCOUT_SCHEMA } },
+      // deno-lint-ignore no-explicit-any
+    } as any);
+    if (scoutRes.stop_reason === 'refusal') {
+      scout = FALLBACK;
+    } else {
+      scout = JSON.parse(textOf(scoutRes)) as ScoutReply;
+    }
+  } catch (err) {
+    console.error('[owl-chat] Scout call failed', err);
+    return jsonResponse({ error: 'generation_failed' }, 502);
+  }
+
+  // ── slug + persistence + peek context (survives cold instances) ──
+  const slug = scout.main ? slugify(scout.main.title) : null;
+  const rows: Record<string, unknown>[] = [
+    { user_id: uid, who: 'owl', kind: 'msg', payload: { say: scout.say, main: scout.main, picks: scout.picks, chips: scout.chips } },
+  ];
+  if (scout.main && slug) rows.push({ user_id: uid, who: 'owl', kind: 'letter', payload: { slug, book: scout.main } });
+  if (scout.note) rows.push({ user_id: uid, who: 'owl', kind: 'note', payload: { text: scout.note } });
+  const { error: persistOwlErr } = await admin.from('owlry_chat_messages').insert(rows);
+  if (persistOwlErr) console.error('[owl-chat] failed to persist owl turn', persistOwlErr);
+
+  if (scout.main && slug) {
+    const { error: cacheErr } = await admin.from('cached_responses').upsert(
+      {
+        question_hash: `peek_ctx:${uid}:${slug}`,
+        mode: 'peek_ctx',
+        question_text: message,
+        response_json: { book: { title: scout.main.title, author: scout.main.author }, query, selectedMemory: query.selected_memory },
+        ttl_hours: 72,
+      },
+      { onConflict: 'question_hash' },
+    );
+    if (cacheErr) console.error('[owl-chat] failed to stash peek context', cacheErr);
+  }
+
+  // ── memory merge: fire-and-forget, never blocks the reply ──
+  const mergeJob = runMemoryMerge(anthropic, admin, uid, longTerm, topics, message, scout.say, scout.main?.title ?? null, clientDay);
+  // deno-lint-ignore no-explicit-any
+  const waitUntil = (globalThis as any).EdgeRuntime?.waitUntil as ((p: Promise<unknown>) => void) | undefined;
+  if (waitUntil) waitUntil(mergeJob);
+  else void mergeJob;
+
+  return jsonResponse({ say: scout.say, main: scout.main, picks: scout.picks, note: scout.note, chips: scout.chips, slug });
 });

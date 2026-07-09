@@ -33,3 +33,6 @@ export const supabase: SupabaseClient | null =
     : null;
 
 export const isBackendConfigured = (): boolean => supabase !== null;
+
+/** const alias of isBackendConfigured() — the OwlChat client/store seams import this name. */
+export const isConfigured: boolean = supabase !== null;

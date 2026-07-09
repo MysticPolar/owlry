@@ -1,5 +1,5 @@
 import { useStore } from '../../store/useStore';
-import { BOOKS } from '../../content/books';
+import { getBook } from '../../lib/bookRegistry';
 import type { LibTab } from '../../store/types';
 import { pct } from '../../lib/format';
 import { Icon } from '../Icon';
@@ -13,7 +13,8 @@ function ReadingList() {
   return (
     <div className="list">
       {readingIds.map((id) => {
-        const b = BOOKS[id];
+        const b = getBook(id);
+        if (!b) return null;
         const p = pct(pagesRead[id] ?? 0, b.n);
         return (
           <div key={id} className="rowc">
@@ -53,7 +54,8 @@ function SavedGrid() {
   return (
     <div className="grid">
       {savedIds.map((id) => {
-        const b = BOOKS[id];
+        const b = getBook(id);
+        if (!b) return null;
         return (
           <button key={id} className="g-item" onClick={() => openSheet(id)}>
             <span className="g-heart">
@@ -75,7 +77,8 @@ function FinishedList() {
   return (
     <div className="list">
       {finishedIds.map((id) => {
-        const b = BOOKS[id];
+        const b = getBook(id);
+        if (!b) return null;
         return (
           <div key={id} className="rowc">
             <Cover id={id} cls="cover-xs" />

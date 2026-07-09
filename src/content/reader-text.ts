@@ -11,7 +11,7 @@
    zero UI changes. Genuinely public-domain catalog titles (e.g.
    `medit` — Meditations) are the natural first candidates.
    ============================================================ */
-import type { BookId } from './types';
+import type { BookId, BookRef } from './types';
 
 /** A page "spread" is the set of paragraphs shown on one reader page. */
 export type PageSpread = string[];
@@ -43,8 +43,8 @@ export const PAGES: PageSpread[] = [
 /** Per-book real texts plug in here (public domain). Empty in v1. */
 const BOOK_TEXT: Partial<Record<BookId, PageSpread[]>> = {};
 
-/** Returns the spread for a 1-indexed page of a given book. */
-export function getSpread(id: BookId, pageNumber: number): PageSpread {
-  const text = BOOK_TEXT[id] ?? PAGES;
+/** Returns the spread for a 1-indexed page of a given book (open-world slugs fall back to PAGES). */
+export function getSpread(id: BookRef, pageNumber: number): PageSpread {
+  const text = BOOK_TEXT[id as BookId] ?? PAGES;
   return text[(pageNumber - 1 + text.length) % text.length];
 }

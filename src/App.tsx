@@ -11,6 +11,7 @@ import { LibraryScreen } from './components/screens/LibraryScreen';
 import { ProfileScreen } from './components/screens/ProfileScreen';
 import { Sheet } from './components/overlays/Sheet';
 import { Reader } from './components/overlays/Reader';
+import { History } from './components/overlays/History';
 import { Letter } from './components/overlays/Letter';
 import { Settings } from './components/overlays/Settings';
 import { Onboarding } from './components/overlays/Onboarding';
@@ -59,7 +60,9 @@ export default function App() {
   const kb = useKeyboardInset();
 
   // route progress to the account (pull + merge + push) on sign-in, and back to
-  // the local guest cache on sign-out — once the local bootstrap has hydrated
+  // the local guest cache on sign-out — once the local bootstrap has hydrated.
+  // This is the SINGLE owner of sync-adoption (useStore's own auth listener owns
+  // only the chat side), so a login never adopts twice.
   useEffect(() => {
     if (!hydrated) return;
     if (authStatus === 'authed' && authUserId) {
@@ -88,6 +91,12 @@ export default function App() {
     ...(kb > 0 ? { paddingBottom: kb } : {}),
   } as CSSProperties;
 
+  // Guest-first: the app is always usable without an account (the offline owl
+  // answers). Signing in — via the <Auth /> members-door overlay — turns on
+  // cross-device sync, chat history, and the live memory owl (owl-chat is
+  // JWT-gated, so a guest silently gets the offline brain).
+  const ready = hydrated;
+
   return (
     <div className="page">
       <div className="phone">
@@ -99,7 +108,7 @@ export default function App() {
           data-kb={kb > 0 ? 'open' : 'closed'}
           style={appStyle}
         >
-          {hydrated && (
+          {ready && (
             <>
               <StatusBar />
               <main className="screens">
@@ -112,6 +121,7 @@ export default function App() {
               <Backdrop />
               <Sheet />
               <Reader />
+              <History />
               <Letter />
               <Settings />
               <Onboarding />

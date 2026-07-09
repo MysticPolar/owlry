@@ -2,23 +2,31 @@
    owlry — the store. Ports the mockup's game loop (XP, levels,
    ink, coins, streak, saved/reading/finished, reading progress)
    and the Owl Post conversation. Persists the durable slice to a
-   ProgressRepository (IndexedDB in v1).
+   local cache (IndexedDB) and, when signed in, syncs to the cloud.
+
+   The chat runs the memory-backed pipeline: fetchOwlTurn() calls the
+   owl-chat edge function (Haiku digest → Sonnet Scout, memory loaded
+   server-side) and falls back to the offline brain on any failure;
+   fetchLetter() calls owl-peek lazily, only when a card is tapped.
+   Ink meters the LIVE owl (a live ask costs 1 ink; a tapped peek
+   costs 2); a dry inkwell falls back to the free offline brain.
    ============================================================ */
 import { create } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
 import { shallow } from 'zustand/shallow';
 
-import { BOOKS } from '../content/books';
 import { PICKS } from '../content/picks';
 import { WX } from '../content/weather';
 import { SAL, FLAVOR, START_CHIPS, dayPart } from '../content/owl';
-import { respond, newSession } from '../lib/owlBrain';
+import { newSession } from '../lib/owlBrain';
 import type { OwlMessage } from '../lib/owlBrain';
-import type { BookId, GuideId } from '../content/types';
-import { isBackendConfigured } from '../lib/supabase';
+import { fetchOwlTurn, fetchLetter } from '../lib/owlClient';
+import { getBook, getGuide } from '../lib/bookRegistry';
+import { supabase, isBackendConfigured } from '../lib/supabase';
 import { getLocalWeather } from '../lib/weather';
-import { callLiveOwl, buildReplyTurns, greetTurns, generateRecLetter } from '../lib/owl/liveOwl';
-import type { GeneratedLetter } from '../lib/owl/liveOwl';
+import { rowsToChat } from '../lib/chatHydrate';
+import type { ChatRow } from '../lib/chatHydrate';
+import type { BookRef } from '../content/types';
 
 import { loadLocal, saveLocal, type Owner } from './persistence';
 import { mergeProgress } from '../lib/sync/mergeProgress';
@@ -34,13 +42,25 @@ import type {
   OwlName,
   OwlReact,
   ReaderState,
-  RecLetterState,
   ToastState,
+  ChatItem,
 } from './types';
 
+/** lazy reading-letter state: the letter is generated only when the reader taps the card */
+export type LetterStatus = 'idle' | 'loading' | 'ready';
+
+/** the signed-in reader, once a backend is configured and a session exists */
+export interface AuthUser {
+  id: string;
+  email: string | null;
+}
+
 /** The live owl answers when a backend is configured and the user hasn't pinned the mockup. */
-const liveOwlEnabled = (prefs: Prefs): boolean =>
-  isBackendConfigured() && prefs.owlEngine !== 'mockup' && import.meta.env.VITE_OWL_LIVE !== 'off';
+const liveOwlEnabled = (prefs: Prefs): boolean => {
+  if (!isBackendConfigured() || prefs.owlEngine === 'mockup') return false;
+  const env = (import.meta as unknown as { env?: Record<string, string | undefined> }).env;
+  return env?.VITE_OWL_LIVE !== 'off';
+};
 
 export interface Store extends PersistedState {
   /* ephemeral UI / session */
@@ -49,10 +69,9 @@ export interface Store extends PersistedState {
   wxIndex: number;
   pickIndex: number;
   reader: ReaderState;
-  sheetId: BookId | null;
-  letterId: GuideId | null;
-  /** the open-world letter being viewed (mutually exclusive with letterId) */
-  recLetter: RecLetterState | null;
+  sheetId: BookRef | null;
+  letterId: BookRef | null;
+  letterStatus: LetterStatus;
   toast: ToastState | null;
   owlReact: OwlReact | null;
   burstNonce: number;
@@ -60,11 +79,22 @@ export interface Store extends PersistedState {
   deskMode: DeskMode;
   /** opening night: playing when true (first run, or replayed from settings) */
   showOnboarding: boolean;
-  openedLetters: GuideId[];
+  openedLetters: BookRef[];
   hydrated: boolean;
   settingsOpen: boolean;
   /** cross-device sync: 'off' as guest, else the live push state */
   syncStatus: 'off' | 'syncing' | 'synced' | 'error';
+
+  /* auth — null user + authReady:true whenever no backend is configured, so the
+     app never gates on login unless VITE_SUPABASE_URL/ANON_KEY are set */
+  authUser: AuthUser | null;
+  authReady: boolean;
+  signOut: () => Promise<void>;
+
+  /* the separate, read-only history list (past days; today lives in Discover) */
+  historyOpen: boolean;
+  openHistory: () => void;
+  closeHistory: () => void;
 
   /* actions */
   bootstrap: () => Promise<void>;
@@ -72,20 +102,19 @@ export interface Store extends PersistedState {
   setLibTab: (t: LibTab) => void;
   cycleWeather: () => void;
   setPick: (i: number) => void;
-  toggleSave: (id: BookId) => void;
+  toggleSave: (id: BookRef) => void;
   addXP: (n: number) => void;
   addInk: (n: number) => void;
   showToast: (icon: string, msg: string, owl?: OwlName) => void;
   triggerBurst: () => void;
-  openReader: (id: BookId, page?: number) => void;
+  openReader: (id: BookRef, page?: number) => void;
   closeReader: () => void;
   nextPage: () => void;
   prevPage: () => void;
   finishBook: () => void;
-  openSheet: (id: BookId) => void;
+  openSheet: (id: BookRef) => void;
   closeSheet: () => void;
-  openLetter: (id: GuideId) => void;
-  openRecLetter: (title: string, author: string, note?: string) => void;
+  openLetter: (id: BookRef) => void;
   closeLetter: () => void;
   openSettings: () => void;
   closeSettings: () => void;
@@ -93,12 +122,15 @@ export interface Store extends PersistedState {
   toggleMode: () => void;
   resetProgress: () => void;
   initChat: () => void;
+  /** wipe the conversation and greet fresh (user-initiated "new chat") */
   restartChat: () => void;
+  /** load today's persisted chat (authenticated + configured) or fall back to the greeting */
+  hydrateChat: () => Promise<void>;
   sendToOwl: (text: string) => void;
   setDeskMode: (mode: DeskMode) => void;
   openOnboarding: () => void;
   /** end opening night; when a first letter was sorted, plant it in the chat and open it */
-  finishOnboarding: (firstLetter?: GuideId) => void;
+  finishOnboarding: (firstLetter?: BookRef) => void;
   /** sign-in: adopt an account — pull cloud progress, merge, and start syncing */
   adoptAccount: (userId: string) => Promise<void>;
   /** sign-out: stop syncing and fall back to the local guest cache */
@@ -115,20 +147,6 @@ let cloudTimer: ReturnType<typeof setTimeout> | undefined;
 /* who owns the local cache + whether changes push to the cloud. 'guest' →
    local only (offline-first, as before); a user id → local + cloud sync. */
 let owner: Owner = 'guest';
-
-/* generated open-world letters, cached per book for the session — a tap
-   generates once; every later open is free */
-const recLetterCache = new Map<string, GeneratedLetter>();
-const recKey = (title: string) => title.trim().toLowerCase();
-export const getRecLetterData = (title: string): GeneratedLetter | undefined => recLetterCache.get(recKey(title));
-
-// test hook (verification builds only): seed a generated letter without a backend
-// (`import.meta.env` guarded — undefined outside Vite, e.g. the node test runner)
-const _env = (import.meta.env ?? {}) as Record<string, string | undefined>;
-if (_env.VITE_EXPOSE_STORE === '1' && typeof window !== 'undefined') {
-  (window as unknown as { __owlrySeedLetter: (t: string, d: GeneratedLetter) => void }).__owlrySeedLetter = (t, d) =>
-    recLetterCache.set(recKey(t), d);
-}
 
 function extractPersisted(s: Store): PersistedState {
   return {
@@ -159,7 +177,7 @@ export const useStore = create<Store>()(
     reader: { open: false, id: null, p: 1 },
     sheetId: null,
     letterId: null,
-    recLetter: null,
+    letterStatus: 'idle',
     toast: null,
     owlReact: null,
     burstNonce: 0,
@@ -179,13 +197,71 @@ export const useStore = create<Store>()(
     settingsOpen: false,
     syncStatus: 'off',
 
+    // no backend configured → already "ready", with no user; the app never gates on login
+    authUser: null,
+    authReady: !supabase,
+
+    signOut: async () => {
+      if (!supabase) return;
+      await supabase.auth.signOut();
+      // the module-level onAuthStateChange listener below clears authUser + resets the chat
+    },
+
+    historyOpen: false,
+    openHistory: () => set({ historyOpen: true }),
+    closeHistory: () => set({ historyOpen: false }),
+
     bootstrap: async () => {
-      const loaded = await loadLocal('guest');
+      const [loaded, session] = await Promise.all([
+        loadLocal('guest'),
+        supabase ? supabase.auth.getSession().then((r) => r.data.session) : Promise.resolve(null),
+      ]);
       if (loaded) set({ ...loaded, hydrated: true });
       else set({ hydrated: true });
       // opening night, once — the curtain waits for first-timers
       if (!get().prefs.onboarded) set({ showOnboarding: true });
-      get().initChat();
+      if (supabase) {
+        set({
+          authUser: session?.user ? { id: session.user.id, email: session.user.email ?? null } : null,
+          authReady: true,
+        });
+      }
+      await get().hydrateChat();
+    },
+
+    hydrateChat: async () => {
+      const s = get();
+      if (!supabase || !s.authUser) {
+        get().initChat();
+        return;
+      }
+
+      const startOfDay = new Date();
+      startOfDay.setHours(0, 0, 0, 0);
+      const { data, error } = await supabase
+        .from('owlry_chat_messages')
+        .select('id, who, kind, payload, created_at')
+        .eq('user_id', s.authUser.id)
+        .gte('created_at', startOfDay.toISOString())
+        .order('created_at', { ascending: true });
+
+      if (error || !data || !data.length) {
+        get().initChat();
+        return;
+      }
+
+      const hydrated = rowsToChat(data as unknown as ChatRow[]);
+      chatId = Math.max(chatId, hydrated.maxId); // never collide with hydrated row ids
+      set((st) => ({
+        owl: {
+          ...st.owl,
+          started: true,
+          messages: hydrated.messages,
+          collected: hydrated.collected,
+          lastBatch: hydrated.lastBatch,
+          chips: hydrated.chips,
+        },
+      }));
     },
 
     setTab: (t) => set({ activeTab: t }),
@@ -260,7 +336,7 @@ export const useStore = create<Store>()(
       const readingIds = s.readingIds.includes(id) ? s.readingIds : [id, ...s.readingIds];
       const pagesRead = { ...s.pagesRead };
       if (page) pagesRead[id] = page - 1;
-      const n = BOOKS[id].n;
+      const n = getBook(id)?.n ?? 1;
       const p = Math.min(Math.max(page ?? (pagesRead[id] ?? 0) + 1, 1), n);
       set({ finishedIds, readingIds, pagesRead, reader: { open: true, id, p } });
     },
@@ -271,7 +347,7 @@ export const useStore = create<Store>()(
       const s = get();
       const id = s.reader.id;
       if (!id) return;
-      const n = BOOKS[id].n;
+      const n = getBook(id)?.n ?? 1;
       if (s.reader.p >= n) {
         get().finishBook();
         return;
@@ -293,7 +369,7 @@ export const useStore = create<Store>()(
       const s = get();
       const id = s.reader.id;
       if (!id) return;
-      const pagesRead = { ...s.pagesRead, [id]: BOOKS[id].n };
+      const pagesRead = { ...s.pagesRead, [id]: getBook(id)?.n ?? s.reader.p };
       const readingIds = s.readingIds.filter((x) => x !== id);
       const finishedIds = s.finishedIds.includes(id) ? s.finishedIds : [id, ...s.finishedIds];
       set({ pagesRead, readingIds, finishedIds, reader: { open: false, id: null, p: 1 } });
@@ -304,47 +380,45 @@ export const useStore = create<Store>()(
     openSheet: (id) => set({ sheetId: id }),
     closeSheet: () => set({ sheetId: null }),
 
+    // the letter is GENERATED on tap (never before): open the overlay, then resolve
+    // its content lazily via owl-peek. Already-generated letters resolve instantly
+    // (generate-once). A cache-miss generation meters ink; re-opening is free.
     openLetter: (id) => {
-      set({ letterId: id, sheetId: null });
+      const ready = !!getGuide(id);
+      set({ letterId: id, sheetId: null, letterStatus: ready ? 'ready' : 'loading' });
+
       const { openedLetters } = get();
       if (!openedLetters.includes(id)) {
         set({ openedLetters: [...openedLetters, id] });
         get().showToast('ti-mail-opened', 'a peek, opened · +5 XP', 'peek');
         get().addXP(5);
       }
-    },
-    closeLetter: () => set({ letterId: null, recLetter: null }),
 
-    openRecLetter: (title, author, note) => {
-      const cached = recLetterCache.get(recKey(title));
-      set({ recLetter: { title, author, note, status: cached ? 'ready' : 'loading' }, sheetId: null });
-      if (cached) return;
-      // a peek costs ink (the economy's preview cost, lightened); re-opening a
-      // written letter is free. dry well → no generation until pages refill it.
-      if (get().ink < 2) {
+      if (ready) return;
+
+      // a cache-miss peek is written live (owl-peek) — that costs ink; a dry well
+      // holds the letter until reading a few pages refills it.
+      const willGenerate = liveOwlEnabled(get().prefs);
+      if (willGenerate && get().ink < 2) {
         get().showToast('ti-pencil', 'the inkwell is dry — a few pages will refill it', 'scout');
-        set((s) => (s.recLetter ? { recLetter: { ...s.recLetter, status: 'error' } } : {}));
+        if (get().letterId === id) set({ letterStatus: 'idle' });
         return;
       }
-      get().addInk(-2); // spend up front; refunded if the letter fails
-      // ground the letter in what the reader actually asked for
-      const msgs = get().owl.messages;
-      const lastAsk = [...msgs].reverse().find((m) => m.kind === 'msg' && m.who === 'me');
-      const context = lastAsk && lastAsk.kind === 'msg' ? lastAsk.nodes.map((n) => (n.t === 'rec' ? n.title : n.v)).join('') : '';
-      void generateRecLetter(title, author, [context, note].filter(Boolean).join(' · '))
-        .then((data) => {
-          recLetterCache.set(recKey(title), data);
-          get().addXP(10); // a peek pays back in XP
-          const cur = get().recLetter;
-          if (cur && recKey(cur.title) === recKey(title)) set({ recLetter: { ...cur, status: 'ready' } });
-        })
-        .catch((err) => {
-          get().addInk(2); // the desk refunds failed letters
-          console.warn('[owlry] letter generation failed:', err);
-          const cur = get().recLetter;
-          if (cur && recKey(cur.title) === recKey(title)) set({ recLetter: { ...cur, status: 'error' } });
-        });
+      if (willGenerate) get().addInk(-2); // spend up front; refunded if it fails
+
+      void (async () => {
+        const guide = await fetchLetter(id);
+        if (get().letterId !== id) return; // the reader closed or opened a different letter
+        if (guide) {
+          set({ letterStatus: 'ready' });
+        } else {
+          if (willGenerate) get().addInk(2); // the desk refunds a failed letter
+          set({ letterStatus: 'idle' });
+        }
+      })();
     },
+
+    closeLetter: () => set({ letterId: null, letterStatus: 'idle' }),
 
     openSettings: () => set({ settingsOpen: true }),
     closeSettings: () => set({ settingsOpen: false }),
@@ -363,73 +437,37 @@ export const useStore = create<Store>()(
     initChat: () => {
       if (get().owl.started) return;
       const dp = dayPart();
+      const wxKey = WX[get().wxIndex].k;
 
-      // simulated greeting — the mockup, instant, weather from the fake cycle
-      const simulatedGreeting = (wxKey: ReturnType<typeof newSession>['wxKey']): OwlMessage => [
+      // the greeting is local + instant (Scout's canned welcome, zero tokens) —
+      // the live pipeline answers real asks, but the door always opens the same way.
+      const greeting: OwlMessage = [
         {
           t: 'text',
           v: `${SAL[dp]} ${FLAVOR[wxKey]}. scout here, at the post desk — tell me what's going on, and i'll sort you a peek.`,
         },
       ];
-
-      const live = liveOwlEnabled(get().prefs);
-      // surface which brain is answering and why — so "is it live?" is answerable
-      // from the browser console, and a silent live→mockup fallback is never invisible
-      console.info('[owlry] owl engine →', live ? 'LIVE (Sonnet)' : 'mockup (offline)', {
-        backendConfigured: isBackendConfigured(),
-        enginePref: get().prefs.owlEngine ?? 'live (default)',
-      });
-
-      if (live) {
-        const typingId = nextId();
-        set((s) => ({ owl: { ...s.owl, started: true, messages: [{ kind: 'typing', id: typingId }], chips: [] } }));
-        void (async () => {
-          const weather = await getLocalWeather().catch(() => null);
-          if (weather) {
-            const idx = WX.findIndex((w) => w.k === weather.wxKey);
-            if (idx >= 0) set({ wxIndex: idx }); // seed the theme from the real sky
-          }
-          try {
-            const { msgs } = await callLiveOwl(greetTurns(dp, weather));
-            set((s) => {
-              let messages = s.owl.messages.filter((m) => m.id !== typingId);
-              msgs.forEach((nodes) => {
-                messages = [...messages, { kind: 'msg', id: nextId(), who: 'owl', nodes }];
-              });
-              return {
-                owl: {
-                  ...s.owl,
-                  messages,
-                  // greeting chips match the mockup's day-part starters, not the model's
-                  chips: START_CHIPS[dp],
-                  session: { ...s.owl.session, wxKey: weather ? weather.wxKey : s.owl.session.wxKey },
-                },
-              };
-            });
-          } catch (err) {
-            console.warn('[owlry] live owl greeting failed → mockup fallback:', err);
-            // backend missing / offline → the mockup greeting, so the desk always opens
-            const wxKey = WX[get().wxIndex].k;
-            set((s) => {
-              let messages = s.owl.messages.filter((m) => m.id !== typingId);
-              messages = [...messages, { kind: 'msg', id: nextId(), who: 'owl', nodes: simulatedGreeting(wxKey) }];
-              return { owl: { ...s.owl, messages, chips: START_CHIPS[dp], session: { ...s.owl.session, wxKey } } };
-            });
-          }
-        })();
-        return;
-      }
-
-      const wxKey = WX[get().wxIndex].k;
+      console.info('[owlry] owl engine →', liveOwlEnabled(get().prefs) ? 'LIVE (Scout + memory)' : 'mockup (offline)');
       set((s) => ({
         owl: {
           ...s.owl,
           started: true,
-          messages: [{ kind: 'msg', id: nextId(), who: 'owl', nodes: simulatedGreeting(wxKey) }],
+          messages: [{ kind: 'msg', id: nextId(), who: 'owl', nodes: greeting }],
           chips: START_CHIPS[dp],
           session: { ...s.owl.session, wxKey },
         },
       }));
+
+      // best-effort: seed the theme from the real local sky (never blocks the greeting)
+      if (liveOwlEnabled(get().prefs)) {
+        void getLocalWeather()
+          .then((w) => {
+            if (!w) return;
+            const idx = WX.findIndex((x) => x.k === w.wxKey);
+            if (idx >= 0) set({ wxIndex: idx });
+          })
+          .catch(() => {});
+      }
     },
 
     restartChat: () => {
@@ -538,6 +576,8 @@ export const useStore = create<Store>()(
       if (!text || s.owl.busy) return;
       const meId = nextId();
       const typingId = nextId();
+      const wxKey = WX[s.wxIndex].k;
+
       set((st) => ({
         owl: {
           ...st.owl,
@@ -551,129 +591,70 @@ export const useStore = create<Store>()(
         },
       }));
 
-      // ── live owl: real LLM via the edge function, with a simulated fallback ──
-      // Ink meters the live owl (the economy plan's chat cost: −1 ink, +3 XP).
-      // A dry inkwell falls through to the free offline brain, so chat never
-      // breaks — reading pages refills the well and the live owl returns.
-      const liveWanted = liveOwlEnabled(s.prefs);
-      if (liveWanted && s.ink < 1) {
-        get().showToast('ti-pencil', 'the inkwell is dry — a few pages will refill it', 'scout');
-      }
-      if (liveWanted && s.ink >= 1) {
-        get().addInk(-1); // spend up front; refunded if the delivery fails
-        void (async () => {
-          const turns = buildReplyTurns(get().owl.messages);
-          try {
-            const { msgs, chips, books } = await callLiveOwl(turns, get().deskMode);
-            get().addXP(3);
-            set((st) => {
-              let messages = st.owl.messages.filter((m) => m.id !== typingId);
-              msgs.forEach((nodes) => {
-                messages = [...messages, { kind: 'msg', id: nextId(), who: 'owl', nodes }];
-              });
-              return { owl: { ...st.owl, busy: false, messages, chips } };
-            });
-            // every named book becomes a letter card, arriving a beat apart —
-            // zero tokens: content generates only when a card is tapped, and
-            // always fresh, written to THIS reader's ask (never the canned
-            // catalog letter — those belong to the classic engine).
-            books.forEach((bk, i) => {
-              setTimeout(() => {
-                set((st) => ({
-                  owl: {
-                    ...st.owl,
-                    messages: [
-                      ...st.owl.messages,
-                      { kind: 'recletter', id: nextId(), title: bk.title, author: bk.author, note: bk.note },
-                    ],
-                  },
-                }));
-              }, 450 + i * 340);
-            });
-          } catch (err) {
-            get().addInk(1); // the desk refunds failed deliveries
-            console.warn('[owlry] live owl reply failed → mockup fallback:', err);
-            // offline / not deployed / upstream error → the mockup brain answers instead
-            const fb = {
-              ...get().owl.session,
-              wxKey: WX[get().wxIndex].k,
-              usedGuides: [...get().owl.session.usedGuides],
-            };
-            const reply = respond(text, fb);
-            set((st) => {
-              let messages = st.owl.messages.filter((m) => m.id !== typingId);
-              reply.msgs.forEach((nodes) => {
-                messages = [...messages, { kind: 'msg', id: nextId(), who: 'owl', nodes }];
-              });
-              let collected = st.owl.collected;
-              let lastBatch = st.owl.lastBatch;
-              if (reply.batch) {
-                lastBatch = reply.batch;
-                collected = [...st.owl.collected];
-                [reply.batch.main, ...reply.batch.also].forEach((id) => {
-                  if (!collected.includes(id)) collected.unshift(id);
-                });
-              }
-              if (reply.letter) messages = [...messages, { kind: 'letter', id: nextId(), book: reply.letter }];
-              return { owl: { ...st.owl, busy: false, messages, chips: reply.chips, collected, lastBatch, session: fb } };
+      void (async () => {
+        // ink meters the LIVE owl (−1 ink, +3 XP). A dry inkwell → the free
+        // offline brain answers instead (never charged), so chat never breaks.
+        const canLive = liveOwlEnabled(get().prefs);
+        const spend = canLive && get().ink >= 1;
+        if (canLive && !spend) get().showToast('ti-pencil', 'the inkwell is dry — a few pages will refill it', 'scout');
+
+        const { reply, session, live } = await fetchOwlTurn(
+          text,
+          { session: s.owl.session, wxKey, desk: get().deskMode },
+          { offline: !spend },
+        );
+        if (live) {
+          get().addInk(-1); // charged only when the live Scout actually answered
+          get().addXP(3);
+        }
+
+        // offline resolves instantly; the typing delay below reproduces the mockup's pacing
+        const replyLen = reply.msgs.reduce((n, m) => n + m.reduce((x, nd) => x + nd.v.length, 0), 0);
+        const think = Math.min(1500, 650 + replyLen * 3);
+
+        // a contextual note (e.g. "not financial advice") trails the reply as its own quiet line
+        const withNote = (msgs: ChatItem[]): ChatItem[] =>
+          reply.note
+            ? [...msgs, { kind: 'msg', id: nextId(), who: 'owl', nodes: [{ t: 'text', v: reply.note }], tone: 'note' }]
+            : msgs;
+
+        setTimeout(() => {
+          const st = get();
+          let messages = st.owl.messages.filter((m) => m.id !== typingId);
+          reply.msgs.forEach((nodes) => {
+            messages = [...messages, { kind: 'msg', id: nextId(), who: 'owl', nodes }];
+          });
+
+          let collected = st.owl.collected;
+          let lastBatch = st.owl.lastBatch;
+          if (reply.batch) {
+            lastBatch = reply.batch;
+            collected = [...st.owl.collected];
+            [reply.batch.main, ...reply.batch.also].forEach((id) => {
+              if (!collected.includes(id)) collected.unshift(id);
             });
           }
-        })();
-        return;
-      }
 
-      // ── simulated mockup brain (unchanged): typing delay scales with reply length ──
-      const st0 = get();
-      const session = {
-        ...st0.owl.session,
-        wxKey: WX[st0.wxIndex].k,
-        usedGuides: [...st0.owl.session.usedGuides],
-      };
-      const reply = respond(text, session);
-      const replyLen = reply.msgs.reduce(
-        (n, m) => n + m.reduce((x, nd) => x + (nd.t === 'rec' ? nd.title.length : nd.v.length), 0),
-        0,
-      );
-      const think = Math.min(1500, 650 + replyLen * 3);
-
-      setTimeout(() => {
-        const st = get();
-        let messages = st.owl.messages.filter((m) => m.id !== typingId);
-        reply.msgs.forEach((nodes) => {
-          messages = [...messages, { kind: 'msg', id: nextId(), who: 'owl', nodes }];
-        });
-
-        let collected = st.owl.collected;
-        let lastBatch = st.owl.lastBatch;
-        if (reply.batch) {
-          lastBatch = reply.batch;
-          collected = [...st.owl.collected];
-          [reply.batch.main, ...reply.batch.also].forEach((id) => {
-            if (!collected.includes(id)) collected.unshift(id);
-          });
-        }
-
-        if (reply.letter) {
-          // the reply lands first; the letter arrives a beat later, as its own moment
-          const letterBook = reply.letter;
-          set({ owl: { ...st.owl, messages, collected, lastBatch, session } });
-          setTimeout(() => {
-            const st2 = get();
-            set({
-              owl: {
-                ...st2.owl,
-                busy: false,
-                chips: reply.chips,
-                messages: [...st2.owl.messages, { kind: 'letter', id: nextId(), book: letterBook }],
-              },
-            });
-          }, 450);
-        } else {
-          set({
-            owl: { ...st.owl, busy: false, messages, chips: reply.chips, collected, lastBatch, session },
-          });
-        }
-      }, think);
+          if (reply.letter) {
+            // the reply lands first; the letter (and any note) arrive a beat later, as their own moment
+            const letterBook = reply.letter;
+            set({ owl: { ...st.owl, messages, collected, lastBatch, session } });
+            setTimeout(() => {
+              const st2 = get();
+              const msgs2: ChatItem[] = withNote([...st2.owl.messages, { kind: 'letter', id: nextId(), book: letterBook }]);
+              set((st3) => ({
+                owl: { ...st2.owl, busy: false, chips: reply.chips, messages: msgs2 },
+                owlReact: { owl: 'scout', nonce: (st3.owlReact?.nonce ?? 0) + 1 },
+              }));
+            }, 450);
+          } else {
+            set((st4) => ({
+              owl: { ...st.owl, busy: false, messages: withNote(messages), chips: reply.chips, collected, lastBatch, session },
+              owlReact: { owl: 'scout', nonce: (st4.owlReact?.nonce ?? 0) + 1 },
+            }));
+          }
+        }, think);
+      })();
     },
   })),
 );
@@ -703,3 +684,25 @@ useStore.subscribe(
   },
   { equalityFn: shallow },
 );
+
+/* ── keep authUser + the chat in sync with Supabase's own session lifecycle
+   (sign in/out, token refresh) — set up ONCE at module scope. This listener owns
+   only the CHAT side (authUser + hydrateChat + reset); cloud-sync adoption is
+   owned solely by App.tsx's effect (driven by useAuth), so a login never adopts
+   twice. A redundant hydrateChat() right after bootstrap's own is harmless (it
+   replaces owl.messages wholesale). No-op when no backend is configured. ── */
+if (supabase) {
+  supabase.auth.onAuthStateChange((_event, session) => {
+    const user = session?.user ? { id: session.user.id, email: session.user.email ?? null } : null;
+    useStore.setState({ authUser: user, authReady: true });
+    if (user) {
+      void useStore.getState().hydrateChat();
+    } else {
+      // signed out: back to a fresh, ephemeral greeting
+      useStore.setState((s) => ({
+        owl: { ...s.owl, started: false, messages: [], chips: [], collected: [], lastBatch: null },
+      }));
+      useStore.getState().initChat();
+    }
+  });
+}

@@ -4,7 +4,7 @@
    ephemeral session/UI state, re-derived each load (matching the
    mockup, whose chat + carousel reset on refresh).
    ============================================================ */
-import type { BookId, GuideId } from '../content/types';
+import type { BookRef } from '../content/types';
 import type { OwlMessage, OwlBatch, OwlSession } from '../lib/owlBrain';
 
 export type Tab = 'today' | 'discover' | 'library' | 'profile';
@@ -42,20 +42,20 @@ export interface PersistedState {
   lv: number;
   inkDone: boolean;
   streak: number;
-  savedIds: BookId[];
-  readingIds: BookId[];
-  finishedIds: BookId[];
+  savedIds: BookRef[];
+  readingIds: BookRef[];
+  finishedIds: BookRef[];
   pagesRead: Record<string, number>;
   prefs: Prefs;
 }
 
 export type ChatItem =
-  | { kind: 'msg'; id: number; who: 'owl' | 'me'; nodes: OwlMessage }
+  | { kind: 'msg'; id: number; who: 'owl' | 'me'; nodes: OwlMessage; tone?: 'note' }
   | { kind: 'typing'; id: number }
-  | { kind: 'letter'; id: number; book: GuideId }
-  /** a letter card for an open-world (live) recommendation — content is
-      generated lazily, only when the reader taps the card */
-  | { kind: 'recletter'; id: number; title: string; author: string; note?: string };
+  /** the unified lazy reading-letter card — the book (catalog id OR open-world
+      slug) is registered in bookRegistry before the card is shown; the letter
+      itself is generated on tap via owl-peek and cached in the registry. */
+  | { kind: 'letter'; id: number; book: BookRef };
 
 /** The cast (docs/story-bible.md). */
 export type OwlName = 'scout' | 'peek' | 'scribe' | 'mirror' | 'keeper';
@@ -82,7 +82,7 @@ export interface OwlReact {
 export interface OwlState {
   messages: ChatItem[];
   chips: string[];
-  collected: BookId[];
+  collected: BookRef[];
   lastBatch: OwlBatch | null;
   session: OwlSession;
   busy: boolean;
@@ -99,6 +99,6 @@ export interface RecLetterState {
 
 export interface ReaderState {
   open: boolean;
-  id: BookId | null;
+  id: BookRef | null;
   p: number;
 }

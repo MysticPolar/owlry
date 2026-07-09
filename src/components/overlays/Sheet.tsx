@@ -1,6 +1,5 @@
 import { useStore } from '../../store/useStore';
-import { BOOKS } from '../../content/books';
-import { isGuide } from '../../lib/format';
+import { getBook, hasGuide } from '../../lib/bookRegistry';
 import { Icon } from '../Icon';
 import { Cover } from '../Cover';
 import { ClampText } from '../ClampText';
@@ -15,8 +14,8 @@ export function Sheet() {
   const resuming = useStore((s) => (s.sheetId ? !!s.pagesRead[s.sheetId] : false));
 
   const id = sheetId;
-  const b = id ? BOOKS[id] : null;
-  const guide = id ? isGuide(id) : false;
+  const b = id ? getBook(id) : null;
+  const guide = id ? hasGuide(id) : false;
 
   return (
     <div
@@ -55,7 +54,7 @@ export function Sheet() {
           </ClampText>
           <div className="btnrow">
             {guide && (
-              <button className="btn" onClick={() => isGuide(id) && openLetter(id)}>
+              <button className="btn" onClick={() => hasGuide(id) && openLetter(id)}>
                 PEEK <Icon name="ti-mail" />
               </button>
             )}
