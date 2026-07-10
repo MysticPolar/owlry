@@ -300,6 +300,14 @@ export const useStore = create<Store>()(
       if (!id) return;
       set({ ebook: { ...e, percent, secondsRead } });
 
+      // bridge percent → pagesRead so the library bars, the RESUME label, and
+      // cross-device sync (owlry_progress persists pagesRead, not the ephemeral
+      // ebook state) all reflect real reading. Write only when a page boundary is
+      // crossed — never regress on a scroll-back — so saves don't churn every second.
+      const n = getBook(id)?.n ?? 1;
+      const pages = Math.min(n, Math.round((percent / 100) * n));
+      if (pages > (get().pagesRead[id] ?? 0)) set({ pagesRead: { ...get().pagesRead, [id]: pages } });
+
       // cosmetic XP: one "page turn" per 5% advanced, gated by ≥8s of active reading —
       // the same economics as the mock reader's nextPage (+2 XP, +2 ink).
       const lastPct = progressMark.get(id) ?? 0;
@@ -311,12 +319,13 @@ export const useStore = create<Store>()(
         get().addInk(2);
       }
 
-      // finishing near the end (fires once per open)
-      if (percent >= 97 && !finishedMark.has(id)) {
+      // finishing near the end — requires real reading time (≥30s), so scrubbing
+      // the bar to the end can't farm the +40. Fires once per open.
+      if (percent >= 97 && secondsRead >= 30 && !finishedMark.has(id)) {
         finishedMark.add(id);
         const finishedIds = get().finishedIds.includes(id) ? get().finishedIds : [id, ...get().finishedIds];
         const readingIds = get().readingIds.filter((x) => x !== id);
-        set({ finishedIds, readingIds });
+        set({ finishedIds, readingIds, pagesRead: { ...get().pagesRead, [id]: n } });
         get().showToast('ti-trophy', 'finished — counted twice. +40 XP', 'keeper');
         get().addXP(40);
       }

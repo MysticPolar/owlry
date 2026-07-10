@@ -5,6 +5,7 @@ import { loadPosition, savePosition } from '../../lib/ebook/storage';
 import type { ReadingPosition } from '../../lib/ebook/types';
 import type { EngineHandle, ProgressUpdate } from '../reader/shared';
 import { Icon } from '../Icon';
+import { CastOwl } from '../CastOwl';
 
 // Heavy renderers (epub.js / pdf.js) are split out and loaded only when a book
 // actually opens — the "Open" click stays fast.
@@ -100,21 +101,25 @@ export function EbookReader() {
           </div>
 
           <div className="r-body" style={{ padding: 0, position: 'relative', cursor: 'default' }}>
-            {status === 'resolving' && <div className="ebook-center it">finding a free copy…</div>}
+            {status === 'resolving' && <div className="ebook-center it">checking the free shelves…</div>}
             {status === 'error' && (
-              <div className="ebook-center">{ebook.error ?? 'Something went wrong.'}</div>
+              <div className="ebook-center">{ebook.error ?? 'something went sideways — try again in a moment.'}</div>
             )}
             {status === 'empty' && (
               <div className="ebook-center ebook-empty">
-                <Icon name="ti-book-off" style={{ fontSize: 30, color: 'var(--fade)' }} />
+                <CastOwl owl="keeper" cls="mini" />
                 <div className="d" style={{ fontSize: 15 }}>
-                  We don’t have a free copy of this book.
+                  keeper here — the free shelves don’t carry this one.
                 </div>
                 <p className="l-p" style={{ margin: 0, color: 'var(--fade)' }}>
-                  Upload your own file to read &amp; track it.
+                  bring your own copy — an epub, pdf, or txt — and i’ll shelve it for you. it stays on this
+                  device; nothing leaves.
                 </p>
                 <button className="btn" onClick={openUpload}>
-                  Upload your ebook <Icon name="ti-upload" />
+                  upload your copy <Icon name="ti-upload" />
+                </button>
+                <button className="gate-switch" onClick={close}>
+                  keep looking
                 </button>
               </div>
             )}
