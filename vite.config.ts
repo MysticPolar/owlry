@@ -4,7 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vite.dev/config/
 export default defineConfig({
-  // '/' for local + custom domain; workflow can override via BASE_PATH
+  // relative base: works on github.io/owlry/ and on app.owlry.ai/
   base: process.env.BASE_PATH || '/',
   plugins: [
     react(),
