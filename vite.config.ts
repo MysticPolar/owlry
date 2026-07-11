@@ -4,7 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vite.dev/config/
 export default defineConfig({
-  // '/' for local dev/preview; the Pages workflow sets BASE_PATH=/owlry/
+  // '/' for local + custom domain; workflow can override via BASE_PATH
   base: process.env.BASE_PATH || '/',
   plugins: [
     react(),

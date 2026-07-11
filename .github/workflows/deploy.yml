@@ -32,8 +32,8 @@ jobs:
       - run: npm ci
       - run: npm run build
         env:
-          # project pages are served from /<repo>/
-          BASE_PATH: /owlry/
+          # custom domain app.owlry.ai is served from the site root
+          BASE_PATH: /
           # backend wiring — set these as repo Variables to light up the live owl
           # (both are public-safe: the anon key is protected by RLS). Empty = the
           # app runs local-only with the offline mockup brain, exactly as before.
