@@ -7,9 +7,9 @@ import type { EngineHandle, ProgressUpdate } from '../reader/shared';
 import { Icon } from '../Icon';
 import { CastOwl } from '../CastOwl';
 
-// Heavy renderers (epub.js / pdf.js) are split out and loaded only when a book
+// Heavy renderers (foliate-js / pdf.js) are split out and loaded only when a book
 // actually opens — the "Open" click stays fast.
-const EpubView = lazy(() => import('../reader/EpubView').then((m) => ({ default: m.EpubView })));
+const FoliateView = lazy(() => import('../reader/FoliateView').then((m) => ({ default: m.FoliateView })));
 const PdfView = lazy(() => import('../reader/PdfView').then((m) => ({ default: m.PdfView })));
 const TextView = lazy(() => import('../reader/TextView').then((m) => ({ default: m.TextView })));
 
@@ -125,16 +125,7 @@ export function EbookReader() {
             )}
             {status === 'reading' && source && (
               <Suspense fallback={<div className="ebook-center it">opening…</div>}>
-                {source.format === 'epub' ? (
-                  <EpubView
-                    ref={engineRef}
-                    bookId={bookId}
-                    source={source}
-                    initial={initial}
-                    onProgress={onProgress}
-                    onError={onError}
-                  />
-                ) : source.format === 'pdf' ? (
+                {source.format === 'pdf' ? (
                   <PdfView
                     ref={engineRef}
                     bookId={bookId}
@@ -143,8 +134,18 @@ export function EbookReader() {
                     onProgress={onProgress}
                     onError={onError}
                   />
-                ) : (
+                ) : source.format === 'txt' ? (
                   <TextView
+                    ref={engineRef}
+                    bookId={bookId}
+                    source={source}
+                    initial={initial}
+                    onProgress={onProgress}
+                    onError={onError}
+                  />
+                ) : (
+                  // epub (local + remote), mobi, azw3, fb2 → foliate-js
+                  <FoliateView
                     ref={engineRef}
                     bookId={bookId}
                     source={source}

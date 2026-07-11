@@ -1,24 +1,8 @@
-/* TXT / FB2 rendering as scrollable, paginated HTML. Progress = scroll fraction. */
+/* Plain-text (.txt) rendering as scrollable, paginated HTML. Progress = scroll
+   fraction. (EPUB/MOBI/AZW3/FB2 are handled by FoliateView.) */
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { loadUpload } from '../../lib/ebook/storage';
 import type { EngineHandle, EngineProps } from './shared';
-
-function fb2ToParas(xml: string): string[] {
-  try {
-    const doc = new DOMParser().parseFromString(xml, 'application/xml');
-    const ps = Array.from(doc.getElementsByTagName('p'))
-      .map((p) => p.textContent?.trim() ?? '')
-      .filter(Boolean);
-    if (ps.length) return ps;
-  } catch {
-    /* fall through to a tag strip */
-  }
-  return xml
-    .replace(/<[^>]+>/g, ' ')
-    .split(/\n\s*\n/)
-    .map((s) => s.trim())
-    .filter(Boolean);
-}
 
 function txtToParas(t: string): string[] {
   return t
@@ -62,7 +46,7 @@ export const TextView = forwardRef<EngineHandle, EngineProps>(function TextView(
         if (!up) return onError('Your uploaded file is missing — please upload it again.', true);
         const text = await up.blob.text();
         if (cancelled) return;
-        setParas(source.format === 'fb2' ? fb2ToParas(text) : txtToParas(text));
+        setParas(txtToParas(text));
       } catch {
         onError('We couldn’t open this file.');
       }

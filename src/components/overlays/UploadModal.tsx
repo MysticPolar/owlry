@@ -73,11 +73,11 @@ export function UploadModal() {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="l-sec" style={{ marginTop: 0, borderTop: 'none', paddingTop: 0 }}>
-          UPLOAD YOUR EBOOK
+          BRING YOUR OWN COPY
         </div>
         <p className="l-p">
-          Your file stays on this device — we never upload the book itself, only your progress.
-          Accepted: EPUB, PDF, FB2, TXT.
+          your file stays on this device — keeper shelves it, but the book itself never leaves;
+          only your progress syncs. accepted: epub, kindle (mobi/azw3), fb2, pdf, txt — DRM-free.
         </p>
         <input
           ref={inputRef}

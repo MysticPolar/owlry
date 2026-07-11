@@ -4,7 +4,7 @@
    ============================================================ */
 import type { BookRef } from '../../content/types';
 
-export type EbookFormat = 'epub' | 'pdf' | 'txt' | 'fb2';
+export type EbookFormat = 'epub' | 'pdf' | 'txt' | 'fb2' | 'mobi' | 'azw3';
 
 /** Where the reader gets its bytes. Remote = a legal public-domain EPUB URL;
  *  local = a user-uploaded file kept in IndexedDB (never sent to our server). */

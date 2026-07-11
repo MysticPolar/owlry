@@ -22,15 +22,20 @@ export async function inspectFile(file: File): Promise<FileInspection> {
   const name = file.name.toLowerCase();
   const ext = name.slice(name.lastIndexOf('.') + 1);
 
-  if (ext === 'mobi' || ext === 'azw3' || ext === 'azw') {
-    return {
-      ok: false,
-      reason: 'MOBI/AZW files are usually DRM-protected and can’t be opened. Try a DRM-free EPUB.',
-    };
-  }
-
   const buf = new Uint8Array(await file.arrayBuffer());
   const head = buf.subarray(0, 4096);
+
+  // MOBI / AZW3 (KF8) — DRM-FREE only. Palm Database magic: bytes 60..67 spell
+  // "BOOKMOBI". We never strip DRM: an encrypted (real-Kindle-DRM) file passes this
+  // check but foliate throws when it hits the encrypted records → the reader shows
+  // the copy-protected message. Old-style DRM .azw resolves the same way.
+  if (ext === 'mobi' || ext === 'azw3' || ext === 'azw') {
+    const magic = new TextDecoder('latin1').decode(buf.subarray(60, 68));
+    if (magic !== 'BOOKMOBI') {
+      return { ok: false, reason: 'this doesn’t look like a DRM-free kindle file. try a DRM-free EPUB or MOBI.' };
+    }
+    return { ok: true, format: ext === 'mobi' ? 'mobi' : 'azw3' };
+  }
   const isZip = buf[0] === 0x50 && buf[1] === 0x4b; // "PK"
 
   // EPUB (zip carrying the epub mimetype)
