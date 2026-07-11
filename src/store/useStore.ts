@@ -155,7 +155,8 @@ export interface Store extends PersistedState {
   setDeskMode: (mode: DeskMode) => void;
   openOnboarding: () => void;
   /** end opening night; when a first letter was sorted, plant it in the chat and open it */
-  finishOnboarding: (firstLetter?: BookRef) => void;
+  /** end opening night: the house opens at scout's desk, ready for the first ask */
+  finishOnboarding: () => void;
   /** sign-in: adopt an account — pull cloud progress, merge, and start syncing */
   adoptAccount: (userId: string) => Promise<void>;
   /** sign-out: stop syncing and fall back to the local guest cache */
@@ -648,21 +649,13 @@ export const useStore = create<Store>()(
       set({ ...(guest ?? SEED) });
     },
 
-    finishOnboarding: (firstLetter) => {
-      set((s) => ({ showOnboarding: false, prefs: { ...s.prefs, onboarded: true } }));
-      if (firstLetter) {
-        // the show ends in the real thing: the letter lands in the actual chat,
-        // opens as the first peek, and the desk is ready behind it
-        set((s) => ({
-          activeTab: 'discover',
-          owl: {
-            ...s.owl,
-            messages: [...s.owl.messages, { kind: 'letter', id: nextId(), book: firstLetter }],
-            chips: ['go deeper', 'something lighter', 'more like this', 'new vibe'],
-          },
-        }));
-        get().openLetter(firstLetter);
-      }
+    finishOnboarding: () => {
+      // the house opens at scout's desk — the first move is to ask
+      set((s) => ({
+        showOnboarding: false,
+        activeTab: 'discover',
+        prefs: { ...s.prefs, onboarded: true },
+      }));
     },
 
     setDeskMode: (mode) => {

@@ -1,282 +1,347 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { useStore } from '../../store/useStore';
-import type { GuideId } from '../../content/types';
-import { BOOKS } from '../../content/books';
+import { useAuth } from '../../store/useAuth';
 import { Icon } from '../Icon';
-import { CastOwl } from '../CastOwl';
+import { CastOwl, type CastOwlName } from '../CastOwl';
 
 /* ============================================================
-   OPENING NIGHT — the onboarding show. One continuous scene:
-   curtain → two playbill pages (the loop, the economy) → scout
-   swoops in and asks the one question → the first letter arrives
-   → mirror & the growing radar → open your letter, you're in.
-   Skippable at every beat; replayable from settings.
+   OPENING NIGHT — the onboarding, renovated as "the playbill".
+   1 · landing: the curtain rises on the marquee + the five owls.
+   2 · the deck: five swipe slides, one owl each, in the order
+       you'll meet them — scout → peek → scribe → keeper → mirror.
+   3 · the members' door: the deck ends at the real auth page
+       (invite signup / login / peek in as a guest).
+   Skippable from the deck; replayable from settings.
    ============================================================ */
 
-type Scene = 'curtain' | 'loop' | 'economy' | 'scout' | 'ask' | 'letter' | 'mirror';
+interface Slide {
+  owl: CastOwlName;
+  job: string;
+  rot: number; // perch tilt, degrees
+  head: ReactNode;
+  body: ReactNode;
+}
 
-/** the one question's four directions → a first letter each (offline-safe) */
-const MOODS: [string, GuideId][] = [
-  ['rest', 'wws'],
-  ['need focus', 'deep'],
-  ['heartache', 'pema'],
-  ['overwhelmed', 'bird'],
+const SLIDES: Slide[] = [
+  {
+    owl: 'scout',
+    job: 'the finder',
+    rot: -5,
+    head: (
+      <>
+        the right book finds you<span className="dot">.</span>
+      </>
+    ),
+    body: (
+      <>
+        tell scout what&rsquo;s going on — a problem, a mood, a rainy sunday.{' '}
+        <em>she always brings back one too many.</em>
+      </>
+    ),
+  },
+  {
+    owl: 'peek',
+    job: 'the taster',
+    rot: 0,
+    head: (
+      <>
+        taste before you commit<span className="dot">.</span>
+      </>
+    ),
+    body: (
+      <>
+        a peek opens the right chapter first — the pages that matter to <em>you</em>.{' '}
+        <em>peek has never finished a book. that&rsquo;s the point.</em>
+      </>
+    ),
+  },
+  {
+    owl: 'scribe',
+    job: 'the rememberer',
+    rot: 4,
+    head: (
+      <>
+        never lose a line<span className="dot">.</span>
+      </>
+    ),
+    body: (
+      <>
+        keep a line once — scribe files it forever, word for word.{' '}
+        <em>page 118 is not page 117.</em>
+      </>
+    ),
+  },
+  {
+    owl: 'keeper',
+    job: 'the collector',
+    rot: 0,
+    head: (
+      <>
+        your shelf remembers<span className="dot">.</span>
+      </>
+    ),
+    body: (
+      <>
+        every book, every streak, your whole reading life —{' '}
+        <em>shelved lovingly, counted twice.</em>
+      </>
+    ),
+  },
+  {
+    owl: 'mirror',
+    job: 'the reflection',
+    rot: 3,
+    head: (
+      <>
+        meet your reading self<span className="dot">.</span>
+      </>
+    ),
+    body: (
+      <>
+        mirror charts your reading identity, and it levels as you read.{' '}
+        <em>six shelves of you.</em>
+      </>
+    ),
+  },
 ];
 
-const SCOUT_LINES = [
-  'evening. i’m scout — the postmaster.',
-  'this was a theatre once. now it sorts the world’s unread mail — every book is a letter that hasn’t found its reader.',
-];
+/* ---------- act 1 · the landing ---------- */
+function Landing({ onEnter }: { onEnter: () => void }) {
+  const [curtain, setCurtain] = useState(true);
 
-/** types a line once, with a caret; calls onDone when finished */
-function TypeOnce({ text, speed = 26, onDone }: { text: string; speed?: number; onDone?: () => void }) {
-  const [n, setN] = useState(0);
-  const done = useRef(false);
+  // the curtain rises on its own; the timed unmount is what makes
+  // reduced-motion work (the media query kills the rise animation)
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setN(text.length);
-      if (!done.current) {
-        done.current = true;
-        onDone?.();
-      }
-      return;
-    }
-    if (n >= text.length) {
-      if (!done.current) {
-        done.current = true;
-        onDone?.();
-      }
-      return;
-    }
-    const t = setTimeout(() => setN((x) => x + 1), speed);
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const t = setTimeout(() => setCurtain(false), reduce ? 250 : 2200);
     return () => clearTimeout(t);
-  }, [n, text, speed, onDone]);
+  }, []);
+
   return (
-    <span>
-      {text.slice(0, n)}
-      {n < text.length && <span className="l-caret" aria-hidden="true" />}
-    </span>
+    <div className="ob-landing">
+      <div className="ob-glow" aria-hidden="true" />
+      <div className="ob-marquee d">
+        <span>
+          owlry<span className="gdot">.</span>
+        </span>
+        <span className="ob-tag">READ BETTER.</span>
+      </div>
+      <div className="ob-cast" aria-label="The company — five owls">
+        {SLIDES.map((s, i) => (
+          <div className="ob-seat" style={{ animationDelay: `${1.35 + i * 0.12}s` }} key={s.owl}>
+            <CastOwl owl={s.owl} cls="mini" />
+            <span className="ob-seat-name">{s.owl}</span>
+          </div>
+        ))}
+      </div>
+      <button className="btn ob-enter" onClick={onEnter}>
+        take your seat <Icon name="ti-arrow-right" />
+      </button>
+      {curtain && (
+        <div className="ob-curtain" aria-hidden="true">
+          <div className="ob-velvet" />
+          <div className="ob-fringe" />
+        </div>
+      )}
+    </div>
   );
 }
 
-/** the identity radar, growing — mirror's act */
-function GrowingRadar() {
-  const pts = (r: number) =>
-    Array.from({ length: 6 }, (_, i) => {
-      const a = (Math.PI / 3) * i - Math.PI / 2;
-      return `${60 + r * Math.cos(a)},${62 + r * Math.sin(a)}`;
-    }).join(' ');
+/* ---------- act 2 · the playbill deck (five owls, one per slide) ---------- */
+function Playbill({ onDone }: { onDone: () => void }) {
+  const deckRef = useRef<HTMLDivElement>(null);
+  const ghostRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const [current, setCurrent] = useState(0);
+  const [live, setLive] = useState<boolean[]>(() => SLIDES.map((_, i) => i === 0));
+  const last = current === SLIDES.length - 1;
+
+  const goTo = (i: number) => {
+    const deck = deckRef.current;
+    if (!deck) return;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    deck.scrollTo({ left: i * deck.clientWidth, behavior: reduce ? 'auto' : 'smooth' });
+  };
+
+  // which slide is on stage (and which owls have made their entrance)
+  useEffect(() => {
+    const deck = deckRef.current;
+    if (!deck) return;
+    const slides = Array.from(deck.querySelectorAll('.ob-slide'));
+    const io = new IntersectionObserver(
+      (es) =>
+        es.forEach((e) => {
+          const i = slides.indexOf(e.target);
+          if (i < 0) return;
+          if (e.intersectionRatio >= 0.6) {
+            setLive((l) => (l[i] ? l : l.map((v, k) => (k === i ? true : v))));
+            setCurrent(i);
+          } else if (e.intersectionRatio <= 0.15) {
+            setLive((l) => (l[i] ? l.map((v, k) => (k === i ? false : v)) : l));
+          }
+        }),
+      { root: deck, threshold: [0.15, 0.6] },
+    );
+    slides.forEach((s) => io.observe(s));
+    return () => io.disconnect();
+  }, []);
+
+  // ghost-name parallax as the deck scrolls
+  const raf = useRef<number | null>(null);
+  const onScroll = () => {
+    if (raf.current) return;
+    raf.current = requestAnimationFrame(() => {
+      const deck = deckRef.current;
+      if (deck) {
+        const w = deck.clientWidth;
+        const x = deck.scrollLeft;
+        ghostRefs.current.forEach((g, i) => {
+          if (g) g.style.transform = `translate(calc(-50% + ${(i * w - x) * -0.16}px), -50%)`;
+        });
+      }
+      raf.current = null;
+    });
+  };
+
+  // mouse drag-to-swipe (touch is native)
+  const drag = useRef<{ x: number; left: number } | null>(null);
+  const endDrag = () => {
+    const deck = deckRef.current;
+    if (!drag.current || !deck) return;
+    drag.current = null;
+    deck.classList.remove('dragging');
+    deck.style.scrollSnapType = '';
+    goTo(Math.max(0, Math.min(SLIDES.length - 1, Math.round(deck.scrollLeft / deck.clientWidth))));
+  };
+
   return (
-    <svg viewBox="0 0 120 124" className="ob-radar" aria-hidden="true">
-      {[44, 33, 22, 11].map((r) => (
-        <polygon key={r} points={pts(r)} fill="none" stroke="var(--line2)" strokeWidth="1" />
-      ))}
-      <polygon
-        className="ob-radar-poly"
-        points="60,24 95,44 88,84 60,98 34,80 28,42"
-        fill="var(--radarFill)"
-        stroke="var(--violet)"
-        strokeWidth="2.5"
-        strokeLinejoin="round"
-      />
-      {['60,24', '95,44', '88,84', '60,98', '34,80', '28,42'].map((p, i) => {
-        const [x, y] = p.split(',').map(Number);
-        return <rect key={i} className="ob-radar-dot" x={x - 2.6} y={y - 2.6} width="5.2" height="5.2" fill="var(--yellow)" transform={`rotate(45 ${x} ${y})`} />;
-      })}
-    </svg>
+    <div className="ob-playbill">
+      <div className="ob-topbar">
+        <span className="ob-mark d">
+          owlry<span className="gdot">.</span>
+        </span>
+        <button className="ob-skip" onClick={onDone}>
+          skip
+        </button>
+      </div>
+
+      <div
+        className="ob-deck"
+        ref={deckRef}
+        tabIndex={0}
+        aria-label="Meet the cast — swipe through five owls"
+        onScroll={onScroll}
+        onPointerDown={(e) => {
+          const deck = deckRef.current;
+          if (e.pointerType !== 'mouse' || !deck) return;
+          drag.current = { x: e.clientX, left: deck.scrollLeft };
+          deck.classList.add('dragging');
+          deck.style.scrollSnapType = 'none';
+          deck.setPointerCapture(e.pointerId);
+        }}
+        onPointerMove={(e) => {
+          const deck = deckRef.current;
+          if (!drag.current || !deck) return;
+          deck.scrollLeft = drag.current.left - (e.clientX - drag.current.x);
+        }}
+        onPointerUp={endDrag}
+        onPointerCancel={endDrag}
+        onKeyDown={(e) => {
+          if (e.key === 'ArrowRight') goTo(Math.min(current + 1, SLIDES.length - 1));
+          if (e.key === 'ArrowLeft') goTo(Math.max(current - 1, 0));
+        }}
+      >
+        {SLIDES.map((s, i) => (
+          <section
+            key={s.owl}
+            className={`ob-slide${live[i] ? ' live' : ''}`}
+            data-owl={s.owl}
+            aria-label={`${i + 1} of ${SLIDES.length} — ${s.owl}`}
+          >
+            <span
+              className="ob-ghost"
+              aria-hidden="true"
+              ref={(el) => {
+                ghostRefs.current[i] = el;
+              }}
+            >
+              {s.owl}
+            </span>
+            <div className="ob-shead">
+              <span className="ob-num d">{String(i + 1).padStart(2, '0')}</span>
+              <span className="ob-oname">
+                {s.owl} · {s.job}
+              </span>
+            </div>
+            <div className="ob-perch" style={{ '--rot': `${s.rot}deg` } as CSSProperties}>
+              <svg className="owl big" viewBox="0 0 120 130" aria-hidden="true">
+                <use href={`#owl-${s.owl}`} />
+              </svg>
+            </div>
+            <h2 className="ob-val d">{s.head}</h2>
+            <p className="ob-body">{s.body}</p>
+          </section>
+        ))}
+      </div>
+
+      <div className="ob-botbar">
+        <div className="ob-dots" role="tablist" aria-label="Slides">
+          {SLIDES.map((s, i) => (
+            <button
+              key={s.owl}
+              role="tab"
+              aria-selected={i === current}
+              aria-label={`Go to slide ${i + 1} — ${s.owl}`}
+              className={`ob-dot${i === current ? ' on' : ''}`}
+              style={{ '--dc': `var(--${OWL_ACCENT[s.owl]})` } as CSSProperties}
+              onClick={() => goTo(i)}
+            />
+          ))}
+        </div>
+        <button
+          className={`ob-next${last ? ' last' : ''}`}
+          aria-label={last ? 'Enter the owlery' : 'Next'}
+          onClick={() => (last ? onDone() : goTo(current + 1))}
+        >
+          <span className="lbl">enter the owlery</span>
+          <Icon name="ti-arrow-right" />
+        </button>
+      </div>
+    </div>
   );
 }
 
+const OWL_ACCENT: Record<CastOwlName, string> = {
+  scout: 'ember',
+  peek: 'teal',
+  scribe: 'quill',
+  keeper: 'moss',
+  mirror: 'violet',
+};
+
+/* ---------- the show ---------- */
 export function Onboarding() {
   const show = useStore((s) => s.showOnboarding);
   const finish = useStore((s) => s.finishOnboarding);
-  const [scene, setScene] = useState<Scene>('curtain');
-  const [scoutLine, setScoutLine] = useState(0);
-  const [pick, setPick] = useState<GuideId | null>(null);
+  const openAuth = useAuth((s) => s.openAuth);
+  const authed = useAuth((s) => s.status === 'authed');
+  const [phase, setPhase] = useState<'landing' | 'playbill'>('landing');
 
-  // reset the show each time it opens
+  // reset the show each time it opens (first run, or replayed from settings)
   useEffect(() => {
-    if (show) {
-      setScene('curtain');
-      setScoutLine(0);
-      setPick(null);
-    }
+    if (show) setPhase('landing');
   }, [show]);
-
-  // the curtain rises on its own
-  useEffect(() => {
-    if (!show || scene !== 'curtain') return;
-    const t = setTimeout(() => setScene('loop'), window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 250 : 2100);
-    return () => clearTimeout(t);
-  }, [show, scene]);
 
   if (!show) return null;
 
-  const skip = () => finish();
+  // the deck ends at the members' door — unless this is a signed-in replay
+  const done = () => {
+    finish();
+    if (!authed) openAuth('signup');
+  };
 
   return (
     <div className="onboard" role="dialog" aria-modal="true" aria-label="Opening night">
-      {/* the house light, always burning */}
-      <div className="ob-glow" aria-hidden="true" />
-
-      {scene !== 'curtain' && (
-        <button className="ob-skip" onClick={skip}>
-          skip to the desk <Icon name="ti-arrow-right" />
-        </button>
-      )}
-
-      {/* ACT I — the curtain rises */}
-      {scene === 'curtain' && (
-        <>
-          <div className="ob-marquee d">
-            <span>
-              owlry<span className="gdot">.</span>
-            </span>
-            <span className="ob-tag">READ BETTER.</span>
-          </div>
-          <div className="ob-curtain" aria-hidden="true">
-            <div className="ob-velvet" />
-            <div className="ob-fringe" />
-          </div>
-        </>
-      )}
-
-      {/* PLAYBILL i — the loop */}
-      {scene === 'loop' && (
-        <div className="ob-card l-swap">
-          <div className="l-kick">THE PROGRAMME · No 1</div>
-          <div className="ob-h d">how the owlery works</div>
-          <div className="ob-row">
-            <span className="stamp"><Icon name="ti-feather" /></span>
-            <span><b className="d">ASK</b> — tell scout what’s going on.</span>
-          </div>
-          <div className="ob-row">
-            <span className="stamp"><Icon name="ti-mail-opened" /></span>
-            <span><b className="d">PEEK</b> — open what scout sends you: the right book, the right chapter.</span>
-          </div>
-          <div className="ob-row">
-            <span className="stamp"><Icon name="ti-radar-2" /></span>
-            <span><b className="d">GROW</b> — save what stays with you; your reading identity takes shape.</span>
-          </div>
-          <button className="btn ob-next" onClick={() => setScene('economy')}>
-            NEXT <Icon name="ti-arrow-right" />
-          </button>
-        </div>
-      )}
-
-      {/* PLAYBILL ii — ink & xp */}
-      {scene === 'economy' && (
-        <div className="ob-card l-swap">
-          <div className="l-kick">THE PROGRAMME · No 2</div>
-          <div className="ob-h d">the house economy</div>
-          <div className="ob-row">
-            <span className="stamp"><Icon name="ti-pencil" /></span>
-            <span>asks and peeks spend <b className="d">INK</b>.</span>
-          </div>
-          <div className="ob-row">
-            <span className="stamp"><Icon name="ti-sparkles" /></span>
-            <span>every ask and peek pays back in <b className="d">XP</b> — your seat moves closer to the stage.</span>
-          </div>
-          <div className="ob-row">
-            <span className="stamp"><Icon name="ti-book-2" /></span>
-            <span>reading pages <b className="d">refills the well</b>. the loop feeds itself.</span>
-          </div>
-          <button className="btn ob-next" onClick={() => setScene('scout')}>
-            MEET THE POSTMASTER <Icon name="ti-arrow-right" />
-          </button>
-        </div>
-      )}
-
-      {/* ACT II & III — scout swoops in, asks the one question */}
-      {(scene === 'scout' || scene === 'ask') && (
-        <div className="ob-stage">
-          <div className="ob-owl">
-            <CastOwl owl="scout" cls="hero" />
-          </div>
-          <div className="ob-lines">
-            {SCOUT_LINES.slice(0, scoutLine + 1).map((l, i) => (
-              <div className="msg owl" key={i}>
-                {i === scoutLine && scene === 'scout' ? (
-                  <TypeOnce
-                    text={l}
-                    onDone={() => {
-                      if (scoutLine < SCOUT_LINES.length - 1) setTimeout(() => setScoutLine((x) => x + 1), 500);
-                      else setTimeout(() => setScene('ask'), 500);
-                    }}
-                  />
-                ) : (
-                  l
-                )}
-              </div>
-            ))}
-            {scene === 'ask' && (
-              <div className="msg owl">
-                <TypeOnce text="so — what’s going on with you tonight?" />
-              </div>
-            )}
-          </div>
-          {scene === 'ask' && (
-            <div className="chips ob-chips">
-              {MOODS.map(([label, g]) => (
-                <button
-                  key={g}
-                  className="chip"
-                  onClick={() => {
-                    setPick(g);
-                    setScene('letter');
-                  }}
-                >
-                  {label.toUpperCase()}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* ACT IV — the first letter arrives */}
-      {scene === 'letter' && pick && (
-        <div className="ob-stage">
-          <div className="ob-owl">
-            <CastOwl owl="scout" cls="hero" />
-          </div>
-          <div className="ob-lines">
-            <div className="msg owl">sorted. your first peek — don’t open it quite yet.</div>
-            <div className="lettercard ob-letter">
-              <span className="stamp">
-                <Icon name="ti-feather" />
-              </span>
-              <span>
-                <span className="lc-t d">your first peek has arrived</span>
-                <br />
-                <span className="lc-s">{BOOKS[pick].t}</span>
-              </span>
-            </div>
-          </div>
-          <button className="btn ob-next" onClick={() => setScene('mirror')}>
-            ONE MORE THING <Icon name="ti-arrow-right" />
-          </button>
-        </div>
-      )}
-
-      {/* ACT V — mirror, and the shape you'll grow */}
-      {scene === 'mirror' && pick && (
-        <div className="ob-stage">
-          <div className="ob-mirror">
-            <CastOwl owl="mirror" cls="mini" />
-          </div>
-          <GrowingRadar />
-          <div className="ob-lines">
-            <div className="msg owl">this is mirror. it doesn’t say much — it watches what you read.</div>
-            <div className="msg owl">
-              <span className="it">save what speaks to you, and it charts who you’re becoming.</span>
-            </div>
-          </div>
-          <button className="btn ob-next" onClick={() => finish(pick)}>
-            OPEN YOUR PEEK <Icon name="ti-mail" />
-          </button>
-        </div>
-      )}
+      {phase === 'landing' ? <Landing onEnter={() => setPhase('playbill')} /> : <Playbill onDone={done} />}
     </div>
   );
 }

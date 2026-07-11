@@ -68,7 +68,7 @@ export function Auth() {
           <div className="auth-tag">members’ door · by invitation</div>
         </div>
 
-        <div className="ob-card auth-card">
+        <div className="auth-card">
           <div className="auth-tabs" role="tablist" aria-label="Log in or sign up">
             <button
               role="tab"
