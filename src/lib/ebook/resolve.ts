@@ -9,7 +9,7 @@
 import type { ReadingSource } from './types';
 
 const GUTENDEX = 'https://gutendex.com/books';
-const TIMEOUT_MS = 3500;
+const TIMEOUT_MS = 8000; // gutendex can be slow on a cold hit
 const cache = new Map<string, ReadingSource | null>();
 
 const norm = (s: string) =>
@@ -69,11 +69,13 @@ export async function resolvePublicDomain(title: string, author: string): Promis
     const source: ReadingSource | null = url
       ? { kind: 'remote-epub', format: 'epub', title, author, url, sourceLabel: 'Project Gutenberg' }
       : null;
+    // cache only a DEFINITIVE answer (found, or genuinely not on Gutenberg) — a
+    // hit won't change, so it's safe to remember.
     cache.set(key, source);
     return source;
   } catch {
-    // network / CORS / timeout / no match → fall through to the upload flow
-    cache.set(key, null);
+    // network / CORS / timeout → transient; do NOT cache, so a later open can retry
+    // (caching null here would poison the book forever after one slow response).
     return null;
   } finally {
     clearTimeout(t);

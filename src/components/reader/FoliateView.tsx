@@ -9,6 +9,7 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 import '../../vendor/foliate-js/view.js'; // side effect: registers <foliate-view>
 import { loadUpload } from '../../lib/ebook/storage';
+import { fetchRemoteBook } from '../../lib/ebook/remote';
 import type { EngineHandle, EngineProps } from './shared';
 
 /** the minimal <foliate-view> surface we drive (the element is plain-JS). */
@@ -47,7 +48,9 @@ export const FoliateView = forwardRef<EngineHandle, EngineProps>(function Foliat
     };
     // remote copies can be CORS-blocked or slow, and a stray file can hang — fall
     // back to the upload flow if nothing has rendered in time.
-    const watchdog = setTimeout(() => fail('We couldn’t load this book. Upload your own file to read it.'), 9000);
+    // generous: a remote classic streams through book-proxy (~4-5s from Gutenberg)
+    // before foliate even parses it.
+    const watchdog = setTimeout(() => fail('We couldn’t load this book. Upload your own file to read it.'), 20000);
 
     (async () => {
       try {
@@ -57,7 +60,9 @@ export const FoliateView = forwardRef<EngineHandle, EngineProps>(function Foliat
           if (!up) return fail('Your uploaded file is missing — please upload it again.');
           input = up.blob;
         } else {
-          input = source.url as string; // remote public-domain EPUB — foliate fetches it
+          // remote public-domain EPUB — routed through book-proxy (the host sends
+          // no CORS header, so the browser can't fetch it directly)
+          input = await fetchRemoteBook(source.url as string, source.title);
         }
         if (cancelled) return;
 
