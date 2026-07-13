@@ -31,14 +31,22 @@ function ProfilePill({ icon }: { icon: string }) {
     };
   }, [locked, gone]);
 
-  // the chains fall when level 5 lands
+  // the chains fall when level 5 lands — and snap back if the level ever drops
+  // below 5 again (e.g. a progress reset), so a re-locked profile is re-chained
   useEffect(() => {
-    if (prevLocked.current && !locked) {
+    const was = prevLocked.current;
+    prevLocked.current = locked;
+    if (was && !locked) {
+      // just unlocked → the chains fall away, then vanish
       setFalling(true);
       const t = setTimeout(() => setGone(true), 900);
       return () => clearTimeout(t);
     }
-    prevLocked.current = locked;
+    if (!was && locked) {
+      // re-locked → the chains are back, whole
+      setFalling(false);
+      setGone(false);
+    }
   }, [locked]);
 
   return (
