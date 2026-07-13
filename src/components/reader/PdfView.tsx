@@ -34,7 +34,7 @@ export const PdfView = forwardRef<EngineHandle, EngineProps>(function PdfView(
     canvas.height = viewport.height;
     await page.render({ canvas, canvasContext: ctx, viewport }).promise;
     const num = numRef.current;
-    onProgress({ percent: num > 1 ? ((n - 1) / (num - 1)) * 100 : 100, page: n });
+    onProgress({ percent: num > 1 ? ((n - 1) / (num - 1)) * 100 : 100, page: n, pageTotal: num });
   };
 
   const go = (n: number) => {
@@ -92,13 +92,20 @@ export const PdfView = forwardRef<EngineHandle, EngineProps>(function PdfView(
         overflow: 'auto',
         display: 'flex',
         justifyContent: 'center',
-        padding: 12,
+        padding: '24px 12px 44px',
         boxSizing: 'border-box',
+        background: 'var(--reader-paper)',
       }}
     >
       <canvas
         ref={canvasRef}
-        style={{ maxWidth: '100%', height: 'auto', boxShadow: '0 2px 12px rgba(0,0,0,.15)' }}
+        style={{
+          maxWidth: '100%',
+          height: 'auto',
+          alignSelf: 'flex-start',
+          boxShadow: '0 2px 12px rgba(0,0,0,.15)',
+          mixBlendMode: 'multiply',
+        }}
       />
     </div>
   );

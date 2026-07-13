@@ -10,7 +10,15 @@ import type { OwlMessage, OwlBatch, OwlSession } from '../lib/owlBrain';
 export type Tab = 'today' | 'discover' | 'library' | 'profile';
 export type LibTab = 'reading' | 'saved' | 'finished';
 
-export type ReaderScale = 'sm' | 'md' | 'lg';
+export type ReaderFont = 'literata' | 'fraunces' | 'system';
+export type ReaderFlow = 'scroll' | 'page';
+
+export interface ReaderPrefs {
+  font: ReaderFont;
+  size: number;
+  dimmer: number;
+  flow: ReaderFlow;
+}
 
 /** Which owl answers the chat: the live LLM, or the offline mockup brain. */
 export type OwlEngine = 'live' | 'mockup';
@@ -20,7 +28,8 @@ export type Mode = 'day' | 'night';
 
 /** User preferences (set on the settings page), persisted with the loop. */
 export interface Prefs {
-  readerScale: ReaderScale;
+  /** One library-wide reading setup. Format-specific engines may disable controls they cannot honor. */
+  reader: ReaderPrefs;
   reduceMotion: boolean;
   dailyReminder: boolean;
   sounds: boolean;

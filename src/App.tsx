@@ -3,14 +3,12 @@ import { useStore } from './store/useStore';
 import { useAuth } from './store/useAuth';
 import { useKeyboardInset } from './hooks/useKeyboardInset';
 import { WX } from './content/weather';
-import type { ReaderScale } from './store/types';
 import { StatusBar, BottomNav, Toast, BurstLayer, Backdrop } from './components/chrome';
 import { TodayScreen } from './components/screens/TodayScreen';
 import { DiscoverScreen } from './components/screens/DiscoverScreen';
 import { LibraryScreen } from './components/screens/LibraryScreen';
 import { ProfileScreen } from './components/screens/ProfileScreen';
 import { Sheet } from './components/overlays/Sheet';
-import { Reader } from './components/overlays/Reader';
 import { EbookReader } from './components/overlays/EbookReader';
 import { UploadModal } from './components/overlays/UploadModal';
 import { History } from './components/overlays/History';
@@ -18,8 +16,6 @@ import { Letter } from './components/overlays/Letter';
 import { Settings } from './components/overlays/Settings';
 import { Onboarding } from './components/overlays/Onboarding';
 import { Auth } from './components/overlays/Auth';
-
-const READER_SCALE: Record<ReaderScale, number> = { sm: 0.9, md: 1, lg: 1.15 };
 
 /* the standing entrance: a brief curtain-rise on every app open (skipped on
    opening night, which plays the long one, and under reduced motion) */
@@ -48,7 +44,6 @@ export default function App() {
   const wxIndex = useStore((s) => s.wxIndex);
   const hydrated = useStore((s) => s.hydrated);
   const bootstrap = useStore((s) => s.bootstrap);
-  const readerScale = useStore((s) => s.prefs.readerScale);
   const reduceMotion = useStore((s) => s.prefs.reduceMotion);
   const mode = useStore((s) => s.prefs.mode ?? 'night');
   const onboarded = useStore((s) => s.prefs.onboarded);
@@ -89,7 +84,6 @@ export default function App() {
   }, [bootstrap, initAuth]);
 
   const appStyle = {
-    '--reader-scale': String(READER_SCALE[readerScale]),
     ...(kb > 0 ? { paddingBottom: kb } : {}),
   } as CSSProperties;
 
@@ -122,7 +116,6 @@ export default function App() {
               <BottomNav />
               <Backdrop />
               <Sheet />
-              <Reader />
               <EbookReader />
               <UploadModal />
               <History />

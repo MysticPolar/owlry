@@ -18,6 +18,7 @@ export function Letter() {
   const openSheet = useStore((s) => s.openSheet);
   const openLetter = useStore((s) => s.openLetter);
   const saved = useStore((s) => (s.letterId ? s.savedIds.includes(s.letterId) : false));
+  const reduceMotion = useStore((s) => s.prefs.reduceMotion);
 
   const id = letterId;
   const g = id && letterStatus === 'ready' ? getGuide(id) : null;
@@ -40,7 +41,7 @@ export function Letter() {
   }, [g]);
   // type out on first reveal; show instantly if this letter has already been written once
   const firstReveal = !!id && !typedOnce.has(id);
-  const { shown, done, skip } = useTypewriter(total, { enabled: !!g && firstReveal });
+  const { shown, done, skip } = useTypewriter(total, { enabled: !!g && firstReveal, reduceMotion });
   useEffect(() => {
     if (id && g && done) typedOnce.add(id);
   }, [id, g, done]);
@@ -61,8 +62,10 @@ export function Letter() {
   // generation failed — offer a retry rather than an endless "writing…"
   const failed = !!id && !g && letterStatus === 'idle';
 
+  if (!open) return null;
+
   return (
-    <div className={`letter ${open ? 'on' : ''}`} id="letter" role="dialog" aria-modal="true" aria-label="Peek">
+    <div className="letter on" id="letter" role="dialog" aria-modal="true" aria-label="Peek">
       <div className="l-top">
         <button className="iconbtn lite" aria-label="Close peek" onClick={closeLetter}>
           <Icon name="ti-arrow-left" />
@@ -86,7 +89,10 @@ export function Letter() {
         )}
       </div>
 
-      <div className="l-body" id="ltBody" ref={bodyRef} onClick={() => !done && skip()}>
+      <div className="l-body" id="ltBody" ref={bodyRef} aria-busy={Boolean(g && !done)}>
+        {g && !done && (
+          <button className="l-skip" onClick={skip}>SHOW FULL LETTER</button>
+        )}
         {/* the letter is generated on tap; show it being written first */}
         {writing && b && (
           <>
@@ -126,20 +132,13 @@ export function Letter() {
           <div className="l-swap" key={id}>
             <div className="l-kick">OWL POST · PEEK</div>
             <div className="l-ttl d">
-              <span
+              <button
                 className="l-ttl-link"
-                role="button"
-                tabIndex={0}
+                type="button"
                 onClick={() => openSheet(id)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    openSheet(id);
-                  }
-                }}
               >
                 {b.t}
-              </span>
+              </button>
             </div>
             <div className="l-auth">
               {b.a} · {b.n} pages
@@ -167,10 +166,10 @@ export function Letter() {
                   </div>
                   {rr && <p className="l-p">{rr}</p>}
                   {ex && (
-                    <p className="l-p">
+                    <div className="l-book-note">
                       <span className="l-tag">from the book</span>
-                      {ex}
-                    </p>
+                      <p>{ex}</p>
+                    </div>
                   )}
                   {n.q && q && (
                     <div className="l-q it">
@@ -186,7 +185,7 @@ export function Letter() {
             {g.take.map((t, i) => {
               const v = type(t);
               return v ? (
-                <p className="l-p" key={i}>
+                <p className="l-p l-note" key={i}>
                   <span className="l-tag">take with you</span>
                   {v}
                 </p>
@@ -195,7 +194,7 @@ export function Letter() {
             {g.ask.map((t, i) => {
               const v = type(t);
               return v ? (
-                <p className="l-p it" key={i}>
+                <p className="l-p l-note it" key={i}>
                   <span className="l-tag">to sit with</span>
                   {v}
                 </p>

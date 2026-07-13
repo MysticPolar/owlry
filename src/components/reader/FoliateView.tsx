@@ -10,7 +10,13 @@ import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 import '../../vendor/foliate-js/view.js'; // side effect: registers <foliate-view>
 import { loadUpload } from '../../lib/ebook/storage';
 import { fetchRemoteBook } from '../../lib/ebook/remote';
+import type { ReaderPrefs } from '../../store/types';
 import type { EngineHandle, EngineProps } from './shared';
+
+type FoliateRenderer = HTMLElement & {
+  destroy?: () => void;
+  setStyles?: (styles: string | [string, string]) => void;
+};
 
 /** the minimal <foliate-view> surface we drive (the element is plain-JS). */
 type FoliateViewEl = HTMLElement & {
@@ -19,11 +25,48 @@ type FoliateViewEl = HTMLElement & {
   next(distance?: number): Promise<void>;
   prev(distance?: number): Promise<void>;
   goToFraction(frac: number): Promise<void>;
-  renderer?: { destroy?: () => void };
+  renderer?: FoliateRenderer;
+};
+
+const paper = (amount: number): string => {
+  const from = [251, 244, 225];
+  const to = [230, 214, 172];
+  const channel = (i: number) => Math.round(from[i]! + (to[i]! - from[i]!) * amount);
+  return `rgb(${channel(0)} ${channel(1)} ${channel(2)})`;
+};
+
+const readerStyles = (prefs: ReaderPrefs): string => {
+  const family = prefs.font === 'fraunces'
+    ? "'Fraunces', Georgia, serif"
+    : prefs.font === 'system'
+      ? "ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+      : "'Literata', Georgia, serif";
+  return `
+    @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=Literata:opsz,wght@7..72,400..700&display=swap');
+    :root { color-scheme: light !important; background: ${paper(prefs.dimmer)} !important; color: #241B0E !important; font-optical-sizing: auto; }
+    html, body { background: ${paper(prefs.dimmer)} !important; color: #241B0E !important; }
+    body { box-sizing: border-box; max-width: 42em; margin: 0 auto !important; padding: 24px !important; font-family: ${family} !important; font-size: ${prefs.size}px !important; font-weight: 430; line-height: 1.6 !important; text-align: left !important; hyphens: none !important; -webkit-hyphens: none !important; }
+    p { margin-block: 0 !important; text-indent: 1.2em; text-align: left !important; }
+    h1 + p, h2 + p, h3 + p, hr + p, blockquote p, li p { text-indent: 0; }
+    h1, h2, h3, h4, h5, h6, blockquote, ul, ol, figure, table, pre { margin-block: 1em !important; }
+    img, svg, video, table { max-width: 100% !important; height: auto; }
+    a { color: #775008 !important; text-decoration-color: #A8730A !important; }
+  `;
+};
+
+const applyReaderPrefs = (view: FoliateViewEl | null, prefs: ReaderPrefs) => {
+  const renderer = view?.renderer;
+  if (!renderer) return;
+  renderer.setAttribute('flow', prefs.flow === 'scroll' ? 'scrolled' : 'paginated');
+  renderer.setAttribute('margin', '24');
+  renderer.setAttribute('gap', '6');
+  renderer.setAttribute('max-inline-size', '520');
+  renderer.setAttribute('max-column-count', '1');
+  renderer.setStyles?.(readerStyles(prefs));
 };
 
 export const FoliateView = forwardRef<EngineHandle, EngineProps>(function FoliateView(
-  { bookId, source, initial, onProgress, onError },
+  { bookId, source, initial, prefs, onProgress, onError },
   ref,
 ) {
   const hostRef = useRef<HTMLDivElement>(null);
@@ -80,6 +123,7 @@ export const FoliateView = forwardRef<EngineHandle, EngineProps>(function Foliat
 
         await view.open(input);
         if (cancelled) return;
+        applyReaderPrefs(view, prefs);
         // display at the saved position (CFI), or the start
         await view.init({ lastLocation: initial?.cfi || undefined });
 
@@ -103,6 +147,10 @@ export const FoliateView = forwardRef<EngineHandle, EngineProps>(function Foliat
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bookId, source]);
+
+  useEffect(() => {
+    applyReaderPrefs(viewRef.current, prefs);
+  }, [prefs]);
 
   return <div ref={hostRef} style={{ width: '100%', height: '100%' }} />;
 });

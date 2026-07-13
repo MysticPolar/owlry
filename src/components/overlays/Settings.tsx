@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useStore } from '../../store/useStore';
 import { useAuth } from '../../store/useAuth';
-import type { OwlEngine, ReaderScale } from '../../store/types';
+import type { OwlEngine } from '../../store/types';
 import { isBackendConfigured } from '../../lib/supabase';
 import { Icon } from '../Icon';
 import { owlLine, type CastOwlName } from '../CastOwl';
@@ -13,12 +13,6 @@ const CAST: [CastOwlName, string, string, string][] = [
   ['scribe', 'scribe', 'the archive', 'quill'],
   ['peek', 'peek', 'first chapters', 'teal'],
   ['mirror', 'mirror', 'the radar', 'violet'],
-];
-
-const SCALES: [ReaderScale, string][] = [
-  ['sm', 'S'],
-  ['md', 'M'],
-  ['lg', 'L'],
 ];
 
 const SYNC_LABEL: Record<'off' | 'syncing' | 'synced' | 'error', string> = {
@@ -69,8 +63,10 @@ export function Settings() {
     showToast('ti-feather', next === 'live' ? 'the live owl is at the desk' : 'classic owl — the original mockup');
   };
 
+  if (!open) return null;
+
   return (
-    <div className={`settings ${open ? 'on' : ''}`} id="settings" role="dialog" aria-modal="true" aria-label="Settings">
+    <div className="settings on" id="settings" role="dialog" aria-modal="true" aria-label="Settings">
       <div className="l-top">
         <button className="iconbtn lite" aria-label="Close settings" onClick={close}>
           <Icon name="ti-arrow-left" />
@@ -91,22 +87,10 @@ export function Settings() {
         <div className="sh-sec">READING</div>
         <div className="set-row">
           <div className="set-info">
-            <div className="set-lab d">text size</div>
-            <div className="set-sub">how the reader sets its pages</div>
+            <div className="set-lab d">reading page</div>
+            <div className="set-sub">font, size, candle and flow live inside every open book</div>
           </div>
-          <div className="seg-inline">
-            {SCALES.map(([k, l]) => (
-              <button
-                key={k}
-                className={`segchip ${prefs.readerScale === k ? 'on' : ''}`}
-                aria-pressed={prefs.readerScale === k}
-                aria-label={`Text size ${l}`}
-                onClick={() => setPref('readerScale', k)}
-              >
-                {l}
-              </button>
-            ))}
-          </div>
+          <Icon name="ti-book-2" />
         </div>
         <div className="set-row">
           <div className="set-info">

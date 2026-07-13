@@ -15,9 +15,18 @@ import { getBook } from '../../lib/bookRegistry';
 import { Icon } from '../Icon';
 
 /* render structured owl-message nodes as real, clickable React */
-export function renderNodes(nodes: OwlMessage, openSheet: (id: BookRef) => void) {
+const renderText = (value: string, excerpts: boolean) => {
+  if (!excerpts || !value.includes('“')) return value;
+  return value.split(/(“[^”]+”)/g).map((part, index) =>
+    part.startsWith('“') && part.endsWith('”')
+      ? <span className="chat-excerpt" key={index}>{part}</span>
+      : <Fragment key={index}>{part}</Fragment>,
+  );
+};
+
+export function renderNodes(nodes: OwlMessage, openSheet: (id: BookRef) => void, excerpts = false) {
   return nodes.map((n, i) => {
-    if (n.t === 'text') return <Fragment key={i}>{n.v}</Fragment>;
+    if (n.t === 'text') return <Fragment key={i}>{renderText(n.v, excerpts)}</Fragment>;
     if (n.t === 'em')
       return (
         <span key={i} className="it">
@@ -25,21 +34,14 @@ export function renderNodes(nodes: OwlMessage, openSheet: (id: BookRef) => void)
         </span>
       );
     return (
-      <span
+      <button
         key={i}
         className="bk"
-        role="button"
-        tabIndex={0}
+        type="button"
         onClick={() => openSheet(n.id)}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            openSheet(n.id);
-          }
-        }}
       >
         {n.v}
-      </span>
+      </button>
     );
   });
 }
@@ -59,22 +61,24 @@ export function renderChatItem(m: ChatItem, openSheet: (id: BookRef) => void, op
     );
   }
   if (m.kind === 'letter') {
+    const book = getBook(m.book);
     return (
       <button key={m.id} className="lettercard" onClick={() => openLetter(m.book)}>
         <span className="stamp">
           <Icon name="ti-feather" />
         </span>
-        <span>
-          <span className="lc-t d">a reading letter has arrived</span>
-          <br />
-          <span className="lc-s">{getBook(m.book)?.t} — tap to open</span>
+        <span className="lettercard-copy">
+          <span className="lc-k">OWL POST · PEEK</span>
+          <span className="lc-t d">A READING LETTER HAS ARRIVED</span>
+          <span className="lc-s">{book?.t}</span>
         </span>
+        <Icon name="ti-arrow-right" className="lettercard-arrow" />
       </button>
     );
   }
   return (
     <div key={m.id} className={`msg ${m.who}${m.tone === 'note' ? ' note' : ''}`}>
-      {renderNodes(m.nodes, openSheet)}
+      {renderNodes(m.nodes, openSheet, m.who === 'me')}
     </div>
   );
 }

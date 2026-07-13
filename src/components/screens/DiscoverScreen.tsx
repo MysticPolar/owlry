@@ -23,7 +23,7 @@ function TrayCard({ id, onClose }: { id: BookRef; onClose: () => void }) {
   // recommended book (Peek writes it on tap); offline non-guides just open to read.
   const canPeek = hasGuide(id) || isConfigured;
   return (
-    <div className="tray-card" role="dialog" aria-label={b.t}>
+    <article className="tray-card" aria-label={`Scout recommends ${b.t}`}>
       <button
         className={`save ${saved ? 'on' : ''}`}
         aria-label="Save to library"
@@ -72,14 +72,14 @@ function TrayCard({ id, onClose }: { id: BookRef; onClose: () => void }) {
           )}
         </div>
       </div>
-    </div>
+    </article>
   );
 }
 
 /* ---------- shelf: every rec collected this session ---------- */
 function Shelf({ onPick, activeId }: { onPick: (id: BookRef) => void; activeId: BookRef | null }) {
   const collected = useStore((s) => s.owl.collected);
-  if (!collected.length) return <div className="strip" id="stripRow" />;
+  if (!collected.length) return null;
   return (
     <div className="strip" id="stripRow">
       <span className="strip-label">SHELF · {collected.length}</span>
@@ -151,8 +151,18 @@ function Composer() {
   const send = useStore((s) => s.sendToOwl);
   const busy = useStore((s) => s.owl.busy);
   const desk = useStore((s) => s.deskMode);
+  const scoutDraft = useStore((s) => s.scoutDraft);
+  const clearScoutDraft = useStore((s) => s.clearScoutDraft);
   const [val, setVal] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (!scoutDraft) return;
+    setVal(scoutDraft);
+    clearScoutDraft();
+    inputRef.current?.focus({ preventScroll: true });
+  }, [scoutDraft, clearScoutDraft]);
+
   const submit = () => {
     const t = val.trim();
     if (!t || busy) return;
@@ -192,12 +202,17 @@ export function DiscoverScreen() {
   const desk = useStore((s) => s.deskMode);
   const setDeskMode = useStore((s) => s.setDeskMode);
   const openHistory = useStore((s) => s.openHistory);
+  const lastBatch = useStore((s) => s.owl.lastBatch);
   const [popoverId, setPopoverId] = useState<BookRef | null>(null);
 
   // close the popover when leaving discover
   useEffect(() => {
     if (!active) setPopoverId(null);
   }, [active]);
+
+  useEffect(() => {
+    if (active && lastBatch?.main) setPopoverId(lastBatch.main);
+  }, [active, lastBatch]);
 
   return (
     <section className={`screen ${active ? 'on' : ''}`} id="screen-discover" data-desk={desk}>
@@ -241,13 +256,11 @@ export function DiscoverScreen() {
         </button>
       </div>
 
-      <div className="tray" id="tray">
-        {popoverId ? (
+      {popoverId && (
+        <div className="tray tray-arrived" id="tray">
           <TrayCard id={popoverId} onClose={() => setPopoverId(null)} />
-        ) : (
-          <div className="tray-card tray-empty">scout's picks will perch here</div>
-        )}
-      </div>
+        </div>
+      )}
       <Shelf onPick={(id) => setPopoverId((p) => (p === id ? null : id))} activeId={popoverId} />
 
       <Chat />

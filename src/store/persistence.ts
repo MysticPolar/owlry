@@ -11,6 +11,7 @@
    ============================================================ */
 import { get, set } from 'idb-keyval';
 import type { PersistedState } from './types';
+import { normalizePersisted } from './normalize';
 
 /** who owns a given local cache: the shared guest, or a user id */
 export type Owner = 'guest' | string;
@@ -21,7 +22,8 @@ const keyFor = (owner: Owner): string =>
 
 export async function loadLocal(owner: Owner): Promise<PersistedState | null> {
   try {
-    return (await get<PersistedState>(keyFor(owner))) ?? null;
+    const state = await get<unknown>(keyFor(owner));
+    return state ? normalizePersisted(state) : null;
   } catch {
     return null;
   }

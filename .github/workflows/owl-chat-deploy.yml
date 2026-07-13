@@ -1,4 +1,4 @@
-name: Deploy edge functions (owl-chat + owl-peek + signup-with-invite)
+name: Deploy edge functions (owl-chat + owl-peek + book-proxy + signup-with-invite)
 
 # One-click deploy of the live owl functions to your Supabase project.
 # Manual trigger only (Actions tab → "Run workflow") so it never runs before
@@ -13,8 +13,9 @@ name: Deploy edge functions (owl-chat + owl-peek + signup-with-invite)
 # GitHub. Supabase injects SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY /
 # SUPABASE_ANON_KEY into every function automatically.
 #
-# owl-chat + owl-peek are JWT-gated (default); signup-with-invite is public
-# (--no-verify-jwt) because the landing page calls it before a session exists.
+# owl-chat + owl-peek are JWT-gated (default); book-proxy and
+# signup-with-invite are public (--no-verify-jwt) because guests call them
+# before a session exists.
 
 on:
   workflow_dispatch:
@@ -34,6 +35,11 @@ jobs:
           SUPABASE_PROJECT_REF: ${{ vars.SUPABASE_PROJECT_REF }}
       - name: Deploy owl-peek
         run: supabase functions deploy owl-peek --project-ref "$SUPABASE_PROJECT_REF"
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_REF: ${{ vars.SUPABASE_PROJECT_REF }}
+      - name: Deploy book-proxy (public — no JWT)
+        run: supabase functions deploy book-proxy --no-verify-jwt --project-ref "$SUPABASE_PROJECT_REF"
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
           SUPABASE_PROJECT_REF: ${{ vars.SUPABASE_PROJECT_REF }}

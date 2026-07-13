@@ -8,6 +8,7 @@
    ============================================================ */
 import { supabase } from '../supabase';
 import type { PersistedState } from '../../store/types';
+import { normalizePersisted } from '../../store/normalize';
 
 export const cloudAvailable = (): boolean => supabase !== null;
 
@@ -28,7 +29,7 @@ export async function cloudPull(): Promise<PersistedState | null> {
     .eq('user_id', uid)
     .maybeSingle();
   if (error || !data?.state) return null;
-  return data.state as PersistedState;
+  return normalizePersisted(data.state);
 }
 
 /** upsert the signed-in user's progress; throws so the caller can flag sync errors */

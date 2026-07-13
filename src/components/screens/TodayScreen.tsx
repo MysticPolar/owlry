@@ -57,21 +57,35 @@ function StatsRow() {
   const coins = useStore((s) => s.coins);
   const lv = useStore((s) => s.lv);
   return (
-    <div className="stats">
-      <div className="avatar d">M</div>
+    <section className="stats" aria-label="Your reading progress">
+      <div className="avatar d" aria-label="Reader initial M">M</div>
       <div className="bars">
         <div className="brow">
           <span className="blab d" id="lvLab">
             LV {lv}
           </span>
-          <div className="track">
+          <div
+            className="track"
+            role="progressbar"
+            aria-label={`Level ${lv} experience`}
+            aria-valuemin={0}
+            aria-valuemax={xpMax}
+            aria-valuenow={xp}
+          >
             <div className="fill xp" style={{ width: `${(xp / xpMax) * 100}%` }} />
           </div>
           <span className="bval">{xp} XP</span>
         </div>
         <div className="brow">
           <span className="blab d">INK</span>
-          <div className="track">
+          <div
+            className="track"
+            role="progressbar"
+            aria-label="Ink"
+            aria-valuemin={0}
+            aria-valuemax={inkMax}
+            aria-valuenow={ink}
+          >
             <div className="fill ink" style={{ width: `${(ink / inkMax) * 100}%` }} />
           </div>
           <span className="bval">
@@ -79,11 +93,11 @@ function StatsRow() {
           </span>
         </div>
       </div>
-      <div className="coins">
+      <div className="coins" aria-label={`${coins} coins`}>
         <Icon name="ti-coin" />
         <span>{coins}</span>
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -92,19 +106,20 @@ function PickCard() {
   const pickIndex = useStore((s) => s.pickIndex);
   const setPick = useStore((s) => s.setPick);
   const saved = useStore((s) => s.savedIds.includes(PICKS[s.pickIndex]));
-  const resuming = useStore((s) => !!s.pagesRead[PICKS[s.pickIndex]]);
   const toggleSave = useStore((s) => s.toggleSave);
-  const openBook = useStore((s) => s.openBook);
+  const startAsk = useStore((s) => s.startAsk);
 
   const id = PICKS[pickIndex];
   const b = BOOKS[id];
   const swipeX = useRef<number | null>(null);
 
   return (
-    <div className="pick-wrap">
-      <div
-        className="card swap"
+    <div className="pick-wrap quote-wrap">
+      <article
+        className="quote-post swap"
         key={pickIndex}
+        aria-label={`Owl post ${pickIndex + 1} of ${PICKS.length}`}
+        aria-roledescription="carousel"
         onPointerDown={(e) => {
           swipeX.current = e.clientX;
         }}
@@ -115,27 +130,37 @@ function PickCard() {
           if (Math.abs(dx) > 40) setPick(pickIndex + (dx < 0 ? 1 : -1));
         }}
       >
-        <button
-          className={`save ${saved ? 'on' : ''}`}
-          aria-label="Save to library"
-          aria-pressed={saved}
-          onClick={() => toggleSave(id)}
-        >
-          <Icon name="ti-heart" />
-        </button>
-        <Cover id={id} cls="cover-lg" />
-        <div className="pick-info">
-          <div className="lk">
-            owl post &middot; n&ordm; {pickIndex + 1} of {PICKS.length}
+        <div className="post-toolbar">
+          <div className="post-meta">scout&rsquo;s daily pick</div>
+          <div className="post-stepper" aria-label={`Pick ${pickIndex + 1} of ${PICKS.length}`}>
+            <button type="button" aria-label="Previous daily pick" onClick={() => setPick(pickIndex - 1)}>
+              <Icon name="ti-arrow-left" />
+            </button>
+            <span>{String(pickIndex + 1).padStart(2, '0')} / {String(PICKS.length).padStart(2, '0')}</span>
+            <button type="button" aria-label="Next daily pick" onClick={() => setPick(pickIndex + 1)}>
+              <Icon name="ti-arrow-right" />
+            </button>
           </div>
-          <div className="ttl d">{b.t}</div>
-          <div className="auth">{b.a}</div>
-          <div className="quote it">&ldquo;{b.q}&rdquo;</div>
-          <button className="btn" onClick={() => openBook(id)}>
-            {resuming ? 'RESUME' : 'OPEN'} <Icon name="ti-arrow-right" />
+        </div>
+        <blockquote className="quote-hero">&ldquo;{b.q}&rdquo;</blockquote>
+        <footer className="quote-source">
+          <cite className="quote-title">{b.t}</cite>
+          <span className="quote-author">{b.a}</span>
+        </footer>
+        <div className="quote-actions">
+          <button className="btn ask-btn" onClick={() => startAsk(id)} aria-label={`Ask Scout about ${b.t}`}>
+            ASK SCOUT <Icon name="ti-arrow-right" />
+          </button>
+          <button
+            className={`save ${saved ? 'on' : ''}`}
+            aria-label="Save to library"
+            aria-pressed={saved}
+            onClick={() => toggleSave(id)}
+          >
+            <Icon name="ti-heart" />
           </button>
         </div>
-      </div>
+      </article>
     </div>
   );
 }
@@ -164,9 +189,9 @@ function Shelf() {
   const openBook = useStore((s) => s.openBook);
   const setTab = useStore((s) => s.setTab);
   return (
-    <div className="sec">
+    <section className="sec resume-sec" aria-labelledby="resume-title">
       <div className="sec-head">
-        <div className="sec-title d">pick up where you left off</div>
+        <h2 className="sec-title d" id="resume-title">pick up where you left off</h2>
         <button className="all" data-tab="library" onClick={() => setTab('library')}>
           ALL &rarr;
         </button>
@@ -177,21 +202,26 @@ function Shelf() {
           if (!b) return null;
           const p = pct(pagesRead[id] ?? 0, b.n);
           return (
-            <button key={id} className="sh-item" onClick={() => openBook(id)}>
-              <Cover id={id} cls="cover-sm" />
+            <button
+              key={id}
+              className="sh-item"
+              onClick={() => openBook(id)}
+              aria-label={`Continue ${b.t}, ${p}% complete`}
+            >
+              <div className="sh-cover-wrap">
+                <Cover id={id} cls="cover-home" />
+                <span className="sh-badge">{p}%</span>
+              </div>
               <div className="sh-title d">{b.t}</div>
+              <div className="sh-author">{b.a}</div>
               <div className="mini-track">
                 <div className="mini-fill" style={{ width: `${p}%` }} />
               </div>
-              <div className="mini-pct">{p}%</div>
             </button>
           );
         })}
-        <div className="ph">
-          <div className="cover cover-sm" style={{ background: '#5E7A55' }} />
-        </div>
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -203,10 +233,8 @@ export function TodayScreen() {
       <StatsRow />
       <div className="marquee">
         <h2 className="mq" aria-label="Today's post">
-          <span>today's</span>
-          <span>
-            post<span className="gdot">.</span>
-          </span>
+          <span>today&rsquo;s</span>
+          <span>post<span className="gdot">.</span></span>
         </h2>
         <div className="mq-sub it">delivered while you slept.</div>
         <CastOwl owl="scout" cls="hero" />

@@ -63,6 +63,7 @@ export interface EbookState {
   secondsRead: number;
   error: string | null;
   uploadOpen: boolean;
+  returnTo: { kind: 'letter' | 'sheet'; bookId: BookRef } | null;
 }
 
 /** the signed-in reader, once a backend is configured and a session exists */
@@ -93,6 +94,8 @@ export interface Store extends PersistedState {
   burstNonce: number;
   owl: OwlState;
   deskMode: DeskMode;
+  /** A user-authored starting point carried from Today into Scout's composer. */
+  scoutDraft: string;
   /** opening night: playing when true (first run, or replayed from settings) */
   showOnboarding: boolean;
   openedLetters: BookRef[];
@@ -124,6 +127,8 @@ export interface Store extends PersistedState {
   /* actions */
   bootstrap: () => Promise<void>;
   setTab: (t: Tab) => void;
+  startAsk: (id: BookRef) => void;
+  clearScoutDraft: () => void;
   setLibTab: (t: LibTab) => void;
   cycleWeather: () => void;
   setPick: (i: number) => void;
@@ -180,6 +185,7 @@ const EBOOK_IDLE: EbookState = {
   secondsRead: 0,
   error: null,
   uploadOpen: false,
+  returnTo: null,
 };
 
 let toastTimer: ReturnType<typeof setTimeout> | undefined;
@@ -233,6 +239,7 @@ export const useStore = create<Store>()(
       started: false,
     },
     deskMode: 'all',
+    scoutDraft: '',
     showOnboarding: false,
     openedLetters: [],
     hydrated: false,
@@ -259,11 +266,23 @@ export const useStore = create<Store>()(
     openBook: async (id) => {
       const b = getBook(id);
       if (!b) return;
+      const current = get();
+      const returnTo = current.letterId
+        ? { kind: 'letter' as const, bookId: current.letterId }
+        : current.sheetId
+          ? { kind: 'sheet' as const, bookId: current.sheetId }
+          : null;
       const readingIds = get().readingIds.includes(id) ? get().readingIds : [id, ...get().readingIds];
       progressMark.delete(id);
       secondsMark.delete(id);
       finishedMark.delete(id);
-      set({ readingIds, ebook: { ...EBOOK_IDLE, open: true, bookId: id, status: 'resolving' } });
+      set({
+        readingIds,
+        letterId: null,
+        letterStatus: 'idle',
+        sheetId: null,
+        ebook: { ...EBOOK_IDLE, open: true, bookId: id, status: 'resolving', returnTo },
+      });
 
       // 1) a copy already uploaded on this device wins — instant + offline
       try {
@@ -285,7 +304,15 @@ export const useStore = create<Store>()(
       });
     },
 
-    closeBook: () => set({ ebook: { ...get().ebook, open: false, uploadOpen: false } }),
+    closeBook: () => {
+      const { returnTo } = get().ebook;
+      set({
+        ebook: EBOOK_IDLE,
+        letterId: returnTo?.kind === 'letter' ? returnTo.bookId : null,
+        letterStatus: returnTo?.kind === 'letter' ? 'ready' : 'idle',
+        sheetId: returnTo?.kind === 'sheet' ? returnTo.bookId : null,
+      });
+    },
     openUpload: () => set({ ebook: { ...get().ebook, uploadOpen: true } }),
     closeUpload: () => set({ ebook: { ...get().ebook, uploadOpen: false } }),
 
@@ -386,6 +413,16 @@ export const useStore = create<Store>()(
     },
 
     setTab: (t) => set({ activeTab: t }),
+    startAsk: (id) => {
+      const b = getBook(id);
+      if (!b) return;
+      set({
+        activeTab: 'discover',
+        deskMode: 'all',
+        scoutDraft: `I'm thinking about this line from ${b.t} by ${b.a}: “${b.q}” — what should I notice?`,
+      });
+    },
+    clearScoutDraft: () => set({ scoutDraft: '' }),
     setLibTab: (t) => set({ libTab: t }),
 
     cycleWeather: () => {
