@@ -1121,11 +1121,16 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
   background:none;border:0;padding:6px;cursor:pointer;font-size:9px;font-weight:800;letter-spacing:.24em;
   text-transform:uppercase;color:var(--fade)}
 .ob-scoutwrap{position:absolute;left:50%;top:30%;transform:translateX(-50%);z-index:2}
+/* scout hops in (once, on mount / every deliver), then idly perches; on the
+   ask he dashes off to the shelves — 1:1 with the mockup's .hop/.idle/.dash */
 .ob-scout{width:170px;height:auto;aspect-ratio:120/130;transform:rotate(-4deg);
   filter:drop-shadow(0 10px 14px rgba(0,0,0,.5)) drop-shadow(0 0 12px rgba(255,192,23,.28));
-  animation:obPerch 3.6s ease-in-out infinite}
+  animation:obHop .55s cubic-bezier(.3,1.6,.5,1), obPerch 3.6s ease-in-out .55s infinite}
+@keyframes obHop{0%{transform:rotate(-4deg) translateY(0)}40%{transform:rotate(-2deg) translateY(-14px)}
+  100%{transform:rotate(-4deg) translateY(0)}}
 @keyframes obPerch{0%,100%{transform:rotate(-4deg) translateY(0)}50%{transform:rotate(-3deg) translateY(-4px)}}
-.ob-scout.flew{opacity:.9}
+.ob-scout.dash{animation:none;transform:translateX(230px) rotate(14deg);opacity:0;
+  transition:transform .6s cubic-bezier(.5,0,.85,.35),opacity .55s ease}
 .ob-say-plaque{position:absolute;left:50%;bottom:calc(118px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:5;
   width:calc(100% - 52px);max-width:306px;padding:18px 18px 15px;text-align:center;cursor:pointer;
   background:rgba(12,7,5,.82);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);

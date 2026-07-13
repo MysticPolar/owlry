@@ -560,6 +560,8 @@ function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void
   const [line, setLine] = useState<ReactNode>(null); // overrides step text during the ask
   const [stamp, setStamp] = useState(false);
   const [banner, setBanner] = useState<0 | 1 | 2>(0);
+  const [scoutDash, setScoutDash] = useState(false); // scout dashes off to the shelves
+  const [hopN, setHopN] = useState(0); // bump → scout hops (svg remounts, replays obHop)
 
   const flightRef = useRef<HTMLDivElement>(null);
   const inkHudRef = useRef<HTMLDivElement>(null);
@@ -626,9 +628,20 @@ function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void
       };
     }
     setTimeout(() => setInk(0), reduced() ? 1 : 650);
-    setTimeout(() => setLine(<em>…off to the shelves…</em>), reduced() ? 1 : 1050);
-    // the letter lands (rendered from live state below) + the celebration begins
-    setTimeout(() => setMode('done'), reduced() ? 60 : 2100);
+    // scout dashes off to the shelves…
+    setTimeout(() => {
+      setLine(<em>…off to the shelves…</em>);
+      setScoutDash(true);
+    }, reduced() ? 1 : 1050);
+    // …then hops back, and the letter lands + the celebration begins
+    setTimeout(
+      () => {
+        setScoutDash(false);
+        setHopN((n) => n + 1);
+        setMode('done');
+      },
+      reduced() ? 60 : 2100,
+    );
   };
 
   // the one celebration timeline, once the letter has landed
@@ -754,7 +767,7 @@ function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void
       )}
 
       <div className="ob-scoutwrap" aria-hidden="true">
-        <svg className={`owl ob-scout${mode !== 'story' ? ' flew' : ''}`} viewBox="0 0 120 130">
+        <svg key={hopN} className={`owl ob-scout${scoutDash ? ' dash' : ''}`} viewBox="0 0 120 130">
           <use href="#owl-scout" />
         </svg>
       </div>
