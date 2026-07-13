@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 
 import { useStore } from '../../store/useStore';
 import { useAuth } from '../../store/useAuth';
 import { Icon } from '../Icon';
-import { CastOwl, type CastOwlName } from '../CastOwl';
+import { type CastOwlName } from '../CastOwl';
 import { BOOKS } from '../../content/books';
 import type { BookRef } from '../../content/types';
 
@@ -115,41 +115,19 @@ const OWL_ACCENT: Record<CastOwlName, string> = {
   mirror: 'violet',
 };
 
-/* ---------- act 1 · the landing ---------- */
-function Landing({ onEnter }: { onEnter: () => void }) {
-  const [curtain, setCurtain] = useState(true);
+/* ---------- act 1a · the splash (day / matinée) ---------- */
+function Splash({ onEnter }: { onEnter: () => void }) {
   useEffect(() => {
-    const t = setTimeout(() => setCurtain(false), reduced() ? 250 : 2200);
+    const t = setTimeout(onEnter, reduced() ? 350 : 1700);
     return () => clearTimeout(t);
-  }, []);
+  }, [onEnter]);
   return (
-    <div className="ob-landing">
-      <div className="ob-glow" aria-hidden="true" />
-      <div className="ob-marquee d">
-        <span>
-          owlry<span className="gdot">.</span>
-        </span>
-        <span className="ob-tag">READ BETTER.</span>
-        <span className="ob-prod">a wakeup! human production</span>
+    <button className="ob-splash" onClick={onEnter} aria-label="Owlry — a wakeup! human production">
+      <div className="ob-sp-mark d">
+        owlry<span className="gdot">.</span>
       </div>
-      <div className="ob-cast" aria-label="The company — five owls">
-        {SLIDES.map((s, i) => (
-          <div className="ob-seat" style={{ animationDelay: `${1.35 + i * 0.12}s` }} key={s.owl}>
-            <CastOwl owl={s.owl} cls="mini" />
-            <span className="ob-seat-name">{s.owl}</span>
-          </div>
-        ))}
-      </div>
-      <button className="btn ob-enter" onClick={onEnter}>
-        take your seat <Icon name="ti-arrow-right" />
-      </button>
-      {curtain && (
-        <div className="ob-curtain" aria-hidden="true">
-          <div className="ob-velvet" />
-          <div className="ob-fringe" />
-        </div>
-      )}
-    </div>
+      <div className="ob-sp-sub">a wakeup! human production</div>
+    </button>
   );
 }
 
@@ -335,6 +313,11 @@ function NameCard({ onDone }: { onDone: () => void }) {
   return (
     <div className="ob-gate">
       <div className="ob-drape" aria-hidden="true" />
+      <div className="ob-valance" aria-hidden="true" />
+      <div className="ob-eyes" aria-hidden="true">
+        <span style={{ '--x': '46%', '--y': '74%' } as CSSProperties} />
+        <span style={{ '--x': '48%', '--y': '84%' } as CSSProperties} />
+      </div>
       <div className="ob-plaque">
         <div className="ob-crest d">
           owlry<span className="gdot">.</span>
@@ -376,10 +359,22 @@ function CurtainReveal({ onEnter }: { onEnter: () => void }) {
     setRaising(true);
     setTimeout(() => setOpen(true), reduced() ? 250 : 950);
   };
-  const FLOCK: CastOwlName[] = ['scout', 'keeper', 'mirror', 'scribe', 'peek'];
+  const GROUND: CastOwlName[] = ['scout', 'keeper', 'mirror', 'scribe'];
   return (
     <div className={`ob-reveal${open ? ' open' : ''}`}>
-      <div className="ob-glow" aria-hidden="true" />
+      <div className="ob-beam" aria-hidden="true" />
+      <div className="ob-dust" aria-hidden="true">
+        {Array.from({ length: 14 }).map((_, i) => (
+          <span key={i} style={{ '--i': i } as CSSProperties} />
+        ))}
+      </div>
+      <div className="ob-valance" aria-hidden="true" />
+      <div className="ob-rope" aria-hidden="true">
+        <span className="ob-rope-line" />
+        <svg className="owl o-peek" viewBox="0 0 120 130">
+          <use href="#owl-peek" />
+        </svg>
+      </div>
       <div className="ob-bill">
         <p className="ob-kick">tonight &amp; every night</p>
         <h1 className="ob-marq">
@@ -390,8 +385,8 @@ function CurtainReveal({ onEnter }: { onEnter: () => void }) {
           <em>at</em> owlry<span className="gdot">.</span>
         </div>
       </div>
-      <div className="ob-flock" aria-hidden="true">
-        {FLOCK.map((o) => (
+      <div className="ob-ground" aria-hidden="true">
+        {GROUND.map((o) => (
           <svg key={o} className={`owl o-${o}`} viewBox="0 0 120 130">
             <use href={`#owl-${o}`} />
           </svg>
@@ -428,13 +423,39 @@ interface Ask {
   k: string;
   label: string;
   guide: BookRef;
+  why: string; // peek's note — why this book, for this ask
 }
 const ASKS: Ask[] = [
-  { k: 'focus', label: "can't focus lately", guide: 'deep' },
-  { k: 'habit', label: 'new manager, no manual', guide: 'atomic' },
-  { k: 'heart', label: 'heartbreak', guide: 'pema' },
-  { k: 'rest', label: 'rainy sunday', guide: 'wws' },
-  { k: 'decide', label: 'before a big decision', guide: 'frankl' },
+  {
+    k: 'focus',
+    label: "can't focus lately",
+    guide: 'deep',
+    why: "you said you can't hold a thought lately. this one argues your attention is a muscle the world keeps poking — and shows how to guard it.",
+  },
+  {
+    k: 'habit',
+    label: 'new manager, no manual',
+    guide: 'atomic',
+    why: "new role, no handbook — so build the systems that do the managing. clear's case: you don't rise to your goals, you fall to your habits.",
+  },
+  {
+    k: 'heart',
+    label: 'heartbreak',
+    guide: 'pema',
+    why: "heartbreak. this one won't rush you past it — pema's advice is to stop running and let the ground be gone a while. gentler than it sounds.",
+  },
+  {
+    k: 'rest',
+    label: 'rainy sunday',
+    guide: 'wws',
+    why: 'a rainy sunday earns a slow read. walker on why the sleeping third of your life quietly runs the waking two — and how to get it back.',
+  },
+  {
+    k: 'decide',
+    label: 'before a big decision',
+    guide: 'frankl',
+    why: "before a big decision, the biggest question: what's it for? frankl found the one thing that survives when everything else is taken.",
+  },
 ];
 
 interface Step {
@@ -617,7 +638,7 @@ function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void
         </span>
       </div>
       <div className={`ob-hud ob-inkhud${inkOn ? ' on' : ''}${ink === 0 && inkOn ? ' empty' : ''}`} aria-label="Ink">
-        <Icon name="ti-pencil" />
+        <Icon name="ti-inkdrop" />
         <span className="ob-inkn d">{ink}</span>
       </div>
 
@@ -672,7 +693,7 @@ function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void
           <div className="ob-pk">owl post · nº 1 · for {(name || 'you').toLowerCase()}</div>
           <div className="ob-lt">{BOOKS[picked.guide as keyof typeof BOOKS]?.t ?? 'your first book'}</div>
           <div className="ob-la">{BOOKS[picked.guide as keyof typeof BOOKS]?.a ?? ''}</div>
-          <p className="ob-lw">{BOOKS[picked.guide as keyof typeof BOOKS]?.q ?? ''}</p>
+          <p className="ob-lw">{picked.why}</p>
           <div className="ob-lsign">— scout, first post</div>
         </div>
       )}
@@ -685,7 +706,7 @@ function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void
           <div className="ob-bbundle">
             <div className="ob-bbig">welcome bundle — your first ten questions are on us.</div>
             <div className="ob-bink d">
-              <Icon name="ti-pencil" /> +10 ink
+              <Icon name="ti-inkdrop" /> +10 ink
             </div>
             <button className="ob-bcont" onClick={() => picked && onFinish(picked)}>
               continue
@@ -732,11 +753,25 @@ export function Onboarding() {
     }
   };
 
+  // act i (the cast) plays in the matinée; the gate onward is the evening show
+  const day = phase === 'landing' || phase === 'playbill';
+
   return (
-    <div className="onboard" role="dialog" aria-modal="true" aria-label="Opening night">
-      {phase === 'landing' && <Landing onEnter={() => setPhase('playbill')} />}
+    <div
+      className="onboard"
+      data-onbnight={day ? undefined : '1'}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Opening night"
+    >
+      {phase === 'landing' && <Splash onEnter={() => setPhase('playbill')} />}
       {phase === 'playbill' && <Playbill onDone={afterDeck} />}
-      {phase === 'gate' && <div className="ob-gate"><div className="ob-drape" aria-hidden="true" /></div>}
+      {phase === 'gate' && (
+        <div className="ob-gate">
+          <div className="ob-drape" aria-hidden="true" />
+          <div className="ob-valance" aria-hidden="true" />
+        </div>
+      )}
       {phase === 'name' && <NameCard onDone={() => setPhase('curtain')} />}
       {phase === 'curtain' && <CurtainReveal onEnter={() => setPhase('flight')} />}
       {phase === 'flight' && <Flight name={name} onFinish={(ask) => finish({ label: ask.label, guide: ask.guide })} />}
