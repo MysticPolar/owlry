@@ -545,6 +545,36 @@ function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void
   const [stamp, setStamp] = useState(false);
   const [banner, setBanner] = useState<0 | 1 | 2>(0);
 
+  const flightRef = useRef<HTMLDivElement>(null);
+  const inkHudRef = useRef<HTMLDivElement>(null);
+  const lvHudRef = useRef<HTMLDivElement>(null);
+  const letterRef = useRef<HTMLDivElement>(null);
+  const dropRef = useRef<HTMLSpanElement>(null);
+  const xpflyRef = useRef<HTMLSpanElement>(null);
+  const sparkRef = useRef<HTMLDivElement>(null);
+
+  // a confetti burst of sparks at an element's centre (the mockup's burst())
+  const spark = (el: Element | null, n: number) => {
+    const layer = sparkRef.current;
+    const cont = flightRef.current;
+    if (!el || !layer || !cont || reduced()) return;
+    const r = el.getBoundingClientRect();
+    const a = cont.getBoundingClientRect();
+    const cx = r.left - a.left + r.width / 2;
+    const cy = r.top - a.top + r.height * 0.28;
+    for (let i = 0; i < n; i++) {
+      const sp = document.createElement('span');
+      sp.className = 'ob-spark';
+      sp.style.left = `${cx}px`;
+      sp.style.top = `${cy}px`;
+      sp.style.background = i % 2 ? 'var(--ember)' : 'var(--yellow)';
+      sp.style.setProperty('--dx', `${(Math.random() * 130 - 65).toFixed(0)}px`);
+      sp.style.setProperty('--dy', `${(-24 - Math.random() * 74).toFixed(0)}px`);
+      layer.appendChild(sp);
+      setTimeout(() => sp.remove(), 850);
+    }
+  };
+
   const s = steps[step];
   const onLast = step === steps.length - 1;
 
@@ -579,9 +609,28 @@ function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void
         <em>{ask.label}</em> — say no more.
       </>,
     );
-    const b = BOOKS[ask.guide as keyof typeof BOOKS];
-    // the drop leaves the vial
-    void b;
+    // the ink spends itself: a drop leaves the vial and arcs down (WAAPI, 1:1)
+    const drop = dropRef.current;
+    const hud = inkHudRef.current;
+    const cont = flightRef.current;
+    if (drop && hud && cont && !reduced()) {
+      const h = hud.getBoundingClientRect();
+      const a = cont.getBoundingClientRect();
+      drop.style.display = 'block';
+      drop.style.left = `${h.left - a.left + h.width / 2}px`;
+      drop.style.top = `${h.top - a.top + h.height}px`;
+      const anim = drop.animate(
+        [
+          { transform: 'translate(0,0) scale(1)', opacity: 1 },
+          { transform: 'translate(-70px,180px) scale(1.25)', opacity: 1, offset: 0.7 },
+          { transform: 'translate(-90px,260px) scale(.4)', opacity: 0 },
+        ],
+        { duration: 800, easing: 'cubic-bezier(.4,0,.7,1)' },
+      );
+      anim.onfinish = () => {
+        drop.style.display = 'none';
+      };
+    }
     setTimeout(() => setInk(0), reduced() ? 1 : 650);
     setTimeout(() => setLine(<em>…off to the shelves…</em>), reduced() ? 1 : 1050);
     // the letter lands (rendered from live state below) + the celebration begins
@@ -592,15 +641,51 @@ function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void
   useEffect(() => {
     if (mode !== 'done') return;
     const R = reduced();
-    const t1 = setTimeout(() => setStamp(true), R ? 1 : 250);
+    // 1 · the stamp slams + confetti at the letter
+    const t1 = setTimeout(() => {
+      setStamp(true);
+      spark(letterRef.current, 34);
+    }, R ? 1 : 250);
+    // 2 · xp flies from the letter to the level bar, then fills it
     const t2 = setTimeout(() => {
-      setXp(96);
+      const f = xpflyRef.current;
+      const lvh = lvHudRef.current;
+      const L = letterRef.current;
+      const cont = flightRef.current;
+      if (f && lvh && L && cont && !R) {
+        const lr = L.getBoundingClientRect();
+        const hr = lvh.getBoundingClientRect();
+        const a = cont.getBoundingClientRect();
+        const cx = lr.left - a.left + lr.width / 2;
+        const cy = lr.top - a.top + 20;
+        f.style.display = 'block';
+        f.style.left = `${cx}px`;
+        f.style.top = `${cy + 30}px`;
+        const dx = hr.left - a.left + hr.width / 2 - cx;
+        const dy = hr.top - a.top + hr.height / 2 - (cy + 30);
+        const anim = f.animate(
+          [
+            { transform: 'translate(0,0) scale(1)', opacity: 1 },
+            { transform: `translate(${dx}px,${dy}px) scale(.55)`, opacity: 0.2 },
+          ],
+          { duration: 750, easing: 'cubic-bezier(.3,0,.6,1)' },
+        );
+        anim.onfinish = () => {
+          f.style.display = 'none';
+          setXp(96);
+        };
+      } else {
+        setXp(96);
+      }
     }, R ? 10 : 650);
+    // 3 · level up — the banner drops (stage 1) + a burst on it
     const t3 = setTimeout(() => {
       setLv(2);
       setXp(14);
       setBanner(1);
+      setTimeout(() => spark(document.querySelector('.ob-banner'), 26), 60);
     }, R ? 20 : 2050);
+    // 4 · the welcome bundle joins (stage 2) — ink rains in
     const t4 = setTimeout(() => {
       setBanner(2);
       let k = 0;
@@ -627,17 +712,28 @@ function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void
   };
 
   return (
-    <div className={`ob-flight${mode === 'done' ? ' celebrating' : ''}`}>
+    <div className={`ob-flight${mode === 'done' ? ' celebrating' : ''}`} ref={flightRef}>
       <div className="ob-glow" aria-hidden="true" />
+      <span className="ob-drop" ref={dropRef} aria-hidden="true">
+        <Icon name="ti-inkdrop" />
+      </span>
+      <span className="ob-xpfly" ref={xpflyRef} aria-hidden="true">
+        +20 xp
+      </span>
+      <div className="ob-sparks" ref={sparkRef} aria-hidden="true" />
 
       {/* the two HUDs — ink (right) and level (left) */}
-      <div className={`ob-hud ob-lvhud${lvOn ? ' on' : ''}${banner ? ' flash' : ''}`} aria-label="Level">
+      <div className={`ob-hud ob-lvhud${lvOn ? ' on' : ''}${banner ? ' flash' : ''}`} aria-label="Level" ref={lvHudRef}>
         <span className="ob-lv d">lv {lv}</span>
         <span className="ob-track">
           <span className="ob-fill" style={{ width: `${xp}%` }} />
         </span>
       </div>
-      <div className={`ob-hud ob-inkhud${inkOn ? ' on' : ''}${ink === 0 && inkOn ? ' empty' : ''}`} aria-label="Ink">
+      <div
+        className={`ob-hud ob-inkhud${inkOn ? ' on' : ''}${ink === 0 && inkOn ? ' empty' : ''}`}
+        aria-label="Ink"
+        ref={inkHudRef}
+      >
         <Icon name="ti-inkdrop" />
         <span className="ob-inkn d">{ink}</span>
       </div>
@@ -688,7 +784,7 @@ function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void
       )}
 
       {mode === 'done' && picked && (
-        <div className="ob-letter on">
+        <div className="ob-letter on" ref={letterRef}>
           <span className={`ob-stamp${stamp ? ' on' : ''}`}>first ask</span>
           <div className="ob-pk">owl post · nº 1 · for {(name || 'you').toLowerCase()}</div>
           <div className="ob-lt">{BOOKS[picked.guide as keyof typeof BOOKS]?.t ?? 'your first book'}</div>

@@ -1199,6 +1199,18 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
   box-shadow:0 3px 0 rgba(90,62,6,.4);padding:11px 26px 10px;font-family:'Anton',sans-serif;font-size:12.5px;
   letter-spacing:.2em;text-transform:uppercase;cursor:pointer}
 .ob-bcont:active{transform:translateY(2px);box-shadow:none}
+/* the ink drop that leaves the vial, the xp that flies to the bar, the sparks */
+.ob-drop{position:absolute;z-index:15;width:14px;height:14px;color:var(--quill-l,#8AA0F2);pointer-events:none;display:none}
+.ob-drop .ti{font-size:14px}
+.ob-xpfly{position:absolute;z-index:16;font-family:'Anton',sans-serif;font-size:16px;letter-spacing:.04em;
+  color:var(--yellow);text-shadow:0 0 12px rgba(255,192,23,.7);pointer-events:none;display:none}
+.ob-sparks{position:absolute;inset:0;z-index:16;pointer-events:none;overflow:visible}
+.ob-spark{position:absolute;width:7px;height:7px;border-radius:2px;pointer-events:none;
+  animation:obSpark .8s cubic-bezier(.2,.6,.4,1) forwards}
+@keyframes obSpark{
+  0%{transform:translate(0,0) scale(1) rotate(0);opacity:1}
+  45%{transform:translate(calc(var(--dx) * .62), var(--dy)) scale(1)}
+  100%{transform:translate(var(--dx), 74px) scale(.35) rotate(170deg);opacity:0}}
 
 /* ============================================================
    FULL APP ON PHONES — below 560px the desk presentation retires:
