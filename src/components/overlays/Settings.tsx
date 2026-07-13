@@ -47,6 +47,8 @@ export function Settings() {
   const showToast = useStore((s) => s.showToast);
   const lv = useStore((s) => s.lv);
   const coins = useStore((s) => s.coins);
+  const addXP = useStore((s) => s.addXP);
+  const xpMax = useStore((s) => s.xpMax);
   const authed = useAuth((s) => s.status === 'authed');
   const authUser = useAuth((s) => s.user);
   const openAuth = useAuth((s) => s.openAuth);
@@ -187,6 +189,25 @@ export function Settings() {
           </button>
         )}
 
+        {/* guest preview — a shortcut to feel the level ladder + its unlocks
+            (office hours at 3, the mirror's room at 5) without a backend */}
+        {!authed && (
+          <>
+            <div className="sh-sec">GUEST PREVIEW</div>
+            <button
+              className="link-row"
+              onClick={() => addXP(xpMax)}
+              aria-label="Gain a level to preview the unlocks"
+            >
+              <Icon name="ti-sparkles" />
+              gain a level
+              <span className="soon" style={{ marginLeft: 'auto' }}>
+                LV {lv}
+              </span>
+            </button>
+          </>
+        )}
+
         {/* data */}
         <div className="sh-sec">DATA</div>
         {!confirmReset ? (
@@ -197,7 +218,10 @@ export function Settings() {
           </button>
         ) : (
           <div className="reset-confirm">
-            <span className="it">this clears your xp, ink, coins, shelves &amp; reading progress.</span>
+            <span className="it">
+              this clears everything — xp, ink, coins, shelves &amp; reading progress — and starts opening night
+              over from the very beginning.
+            </span>
             <div className="reset-btns">
               <button className="btn ghost xs" onClick={() => setConfirmReset(false)}>
                 CANCEL
@@ -205,10 +229,9 @@ export function Settings() {
               <button
                 className="btn xs danger"
                 onClick={() => {
-                  resetProgress();
                   setConfirmReset(false);
                   close();
-                  showToast('ti-refresh', 'reset. keeper looked away.', 'keeper');
+                  resetProgress(); // wipes progress + raises the full opening night
                 }}
               >
                 RESET

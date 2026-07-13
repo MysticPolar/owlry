@@ -649,11 +649,12 @@ export const useStore = create<Store>()(
       set((s) => ({ prefs: { ...s.prefs, mode } }));
       get().showToast(mode === 'night' ? 'ti-moon-stars' : 'ti-sun', mode === 'night' ? 'the evening show' : 'the matinée');
     },
-    // Reset to a true new-reader default — NOT the SEED demo state (which is
-    // level 7 with books already shelved). Level 1, empty shelves, every gate
-    // re-locked, and the owl intros re-armed so they introduce themselves
-    // again. Keeps the reader's settings + name; the opening night has its own
-    // "watch again" row, so onboarded stays put.
+    // A true first-run reset — NOT the SEED demo state (level 7 with books
+    // already shelved). Level 1, empty shelves, every gate re-locked, the owl
+    // intros re-armed, and the ENTIRE opening night replays as if this were a
+    // brand-new reader: onboarded + name cleared and showOnboarding raised, so
+    // the door, the name entry, the curtain and scout's first flight all play
+    // again. Keeps the reader's device settings (font, motion, mode).
     resetProgress: () =>
       set((s) => ({
         xp: 0,
@@ -668,13 +669,14 @@ export const useStore = create<Store>()(
         readingIds: [],
         finishedIds: [],
         pagesRead: {},
-        prefs: { ...s.prefs, introsSeen: [] },
+        prefs: { ...s.prefs, introsSeen: [], onboarded: false, name: undefined },
+        showOnboarding: true,
         activeTab: 'today',
         deskMode: 'all',
         mirrorRoomOpen: false,
         introCard: null,
         introAfter: null,
-        owl: { ...s.owl, collected: [] },
+        owl: { ...s.owl, messages: [], chips: [], collected: [], lastBatch: null, started: false },
       })),
 
     initChat: () => {
