@@ -1247,8 +1247,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .ob-bbig{font-family:'Fraunces',Georgia,serif;font-style:italic;font-size:14.5px;color:#F2E8CE}
 .ob-bink{display:inline-flex;align-items:center;gap:7px;margin-top:9px;font-size:16px;letter-spacing:.06em;color:var(--yellow)}
 .ob-bink .ti{font-size:16px;color:var(--quill-l)}
-.ob-bcont{display:inline-flex;margin-top:14px;background:var(--quill);color:#161B33;border:0;border-radius:9px;
-  box-shadow:0 3px 0 rgba(43,56,140,.55), 0 0 22px -4px rgba(138,160,242,.5);padding:11px 26px 10px;
+.ob-bcont{display:inline-flex;margin-top:14px;background:var(--yellow);color:#241B0E;border:0;border-radius:9px;
+  box-shadow:0 3px 0 rgba(90,62,6,.4), 0 0 22px -4px rgba(255,192,23,.5);padding:11px 26px 10px;
   font-family:'Anton',sans-serif;font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;
   opacity:0;transition:opacity .5s .3s ease}
 .ob-banner.stage2 .ob-bcont{opacity:1}
