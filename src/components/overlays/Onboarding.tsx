@@ -36,7 +36,7 @@ const SLIDES: Slide[] = [
     rot: -5,
     head: (
       <>
-        the right book finds you<span className="dot">.</span>
+        the right book finds you<span className="hdot">.</span>
       </>
     ),
     body: (
@@ -52,7 +52,7 @@ const SLIDES: Slide[] = [
     rot: 0,
     head: (
       <>
-        taste before you commit<span className="dot">.</span>
+        taste before you commit<span className="hdot">.</span>
       </>
     ),
     body: (
@@ -68,7 +68,7 @@ const SLIDES: Slide[] = [
     rot: 4,
     head: (
       <>
-        never lose a line<span className="dot">.</span>
+        never lose a line<span className="hdot">.</span>
       </>
     ),
     body: (
@@ -83,7 +83,7 @@ const SLIDES: Slide[] = [
     rot: 0,
     head: (
       <>
-        your shelf remembers<span className="dot">.</span>
+        your shelf remembers<span className="hdot">.</span>
       </>
     ),
     body: (
@@ -98,7 +98,7 @@ const SLIDES: Slide[] = [
     rot: 3,
     head: (
       <>
-        meet your reading self<span className="dot">.</span>
+        meet your reading self<span className="hdot">.</span>
       </>
     ),
     body: (

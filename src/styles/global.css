@@ -839,7 +839,9 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
   font-size:clamp(26px, 8vw, 31px);line-height:1;letter-spacing:.015em;text-shadow:var(--glowT);
   opacity:0;transform:translateY(18px) skewX(-6deg);
   transition:opacity .55s .08s cubic-bezier(.18,.9,.24,1.04),transform .55s .08s cubic-bezier(.18,.9,.24,1.04)}
-.ob-val .dot{color:var(--acc)}
+/* the headline period — its own class so it never picks up the pagination .dot
+   (which carries a grey --line2 background that showed as a box behind it) */
+.ob-val .hdot{color:var(--acc)}
 .ob-body{position:relative;z-index:1;margin:13px auto 0;max-width:31ch;font-size:14px;line-height:1.6;font-weight:500;color:var(--ink);
   opacity:0;transform:translateY(18px);transition:opacity .55s .16s ease,transform .55s .16s ease}
 .ob-body em{font-family:'Fraunces',Georgia,serif;font-style:italic;font-weight:500;color:var(--mut)}
