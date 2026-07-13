@@ -56,9 +56,12 @@ function StatsRow() {
   const inkMax = useStore((s) => s.inkMax);
   const coins = useStore((s) => s.coins);
   const lv = useStore((s) => s.lv);
+  const name = useStore((s) => s.prefs.name);
   return (
     <section className="stats" aria-label="Your reading progress">
-      <div className="avatar d" aria-label="Reader initial M">M</div>
+      <div className="avatar d" aria-label={`Reader initial ${(name?.[0] ?? 'M').toUpperCase()}`}>
+        {(name?.[0] ?? 'M').toUpperCase()}
+      </div>
       <div className="bars">
         <div className="brow">
           <span className="blab d" id="lvLab">

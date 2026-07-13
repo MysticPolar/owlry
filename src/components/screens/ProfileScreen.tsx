@@ -225,6 +225,7 @@ export function ProfileScreen() {
   const coins = useStore((s) => s.coins);
   const streak = useStore((s) => s.streak);
   const openSettings = useStore((s) => s.openSettings);
+  const prefName = useStore((s) => s.prefs.name);
   // the profile display (avatar/name) + the memory-tab gate use the rich useAuth
   // profile; sign-out lives in Settings (product). Chat/history gate on
   // useStore.authUser separately — both reflect the same Supabase session.
@@ -272,9 +273,11 @@ export function ProfileScreen() {
 
       <div className="pcard">
         <div className="prof">
-          <div className="avatar lg d">{authUser ? authUser.avatar : 'M'}</div>
+          <div className="avatar lg d">
+            {(prefName?.[0] ?? authUser?.avatar ?? 'M').toUpperCase()}
+          </div>
           <div>
-            <div className="pname d">{authUser ? authUser.name : 'Mira'}</div>
+            <div className="pname d">{prefName ?? authUser?.name ?? 'Mira'}</div>
             <div className="psub">
               LV {lv} BIBLIOPHILE · {coins} COINS
             </div>

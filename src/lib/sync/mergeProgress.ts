@@ -50,6 +50,10 @@ export function mergeProgress(a: PersistedState, b: PersistedState): PersistedSt
     finishedIds,
     pagesRead,
     // prefs follow the further-along device, but "seen onboarding" is sticky
-    prefs: { ...lead.prefs, onboarded: a.prefs.onboarded || b.prefs.onboarded },
+    prefs: {
+      ...lead.prefs,
+      onboarded: a.prefs.onboarded || b.prefs.onboarded,
+      name: a.prefs.name || b.prefs.name,
+    },
   };
 }

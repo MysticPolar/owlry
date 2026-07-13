@@ -848,6 +848,174 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
   .ob-val,.ob-body{opacity:1;transform:none}
 }
 
+/* the landing production credit */
+.ob-prod{font-size:9px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:var(--fade);
+  margin-top:4px;animation:mqIn .62s cubic-bezier(.18,.9,.24,1.04) 1.25s backwards}
+
+/* ============================================================
+   THE DOOR + THE NAME — a closed velvet curtain the invite/login
+   sits against; then "Dear ___," signs the letter live.
+   ============================================================ */
+.ob-gate,.ob-name{position:relative;flex:1;min-height:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;padding:26px;overflow:hidden}
+.ob-drape{position:absolute;inset:0;z-index:0;
+  background:repeating-linear-gradient(90deg,#5A1119 0 26px,#71202D 26px 54px,#4A0E16 54px 80px)}
+.ob-drape::after{content:"";position:absolute;inset:0;
+  background:radial-gradient(120% 80% at 50% -10%, rgba(255,192,23,.14), transparent 60%),
+             linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.45))}
+.ob-plaque{position:relative;z-index:1;width:100%;max-width:300px;text-align:center;
+  background:rgba(12,7,5,.82);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  border:1px solid rgba(232,180,58,.32);border-radius:14px;padding:22px 20px 18px;
+  box-shadow:0 26px 54px -18px rgba(0,0,0,.85), inset 0 1px 0 rgba(255,230,170,.08);
+  animation:obRise .5s cubic-bezier(.2,.9,.25,1.05) both}
+.ob-crest{font-size:22px;letter-spacing:.02em;transform:skewX(-8deg);color:#F2EBD7}
+.ob-qline{margin:12px 0 4px;font-family:'Fraunces',Georgia,serif;font-style:italic;font-size:15px;color:#E9DEC0}
+.ob-dear{font-family:'Fraunces',Georgia,serif;font-size:19px;color:#F2E8CE;margin:6px 0 14px;min-height:26px}
+.ob-dear em{font-style:italic;color:#D9C49A}
+.ob-dearname{font-weight:600}
+.ob-cur{display:inline-block;width:2px;height:18px;vertical-align:-3px;margin-left:1px;background:var(--yellow);
+  animation:tblink 1s steps(1) infinite}
+@keyframes tblink{50%{opacity:0}}
+.ob-namein{width:100%;background:#FFFCF0;border:1px solid rgba(60,44,16,.32);border-radius:10px;
+  padding:12px 14px;font:700 16px 'Inter Tight',sans-serif;color:#241B0E;text-align:center}
+.ob-namein::placeholder{color:#B9AC90;font-weight:600}
+.gbtn{display:inline-flex;width:100%;justify-content:center;margin-top:11px;background:var(--yellow);color:#241B0E;
+  border:0;border-radius:10px;box-shadow:0 3px 0 rgba(90,62,6,.35);padding:12px 16px 11px;
+  font-family:'Anton',sans-serif;font-size:13px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
+.gbtn:active{transform:translateY(2px);box-shadow:none}
+.ob-dearnote{margin-top:13px;font-size:9px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:var(--fade)}
+
+/* ============================================================
+   THE CURTAIN — read better, at owlry.  the flock roosts; a tap
+   raises the house curtain; the seat opens.
+   ============================================================ */
+.ob-reveal{position:relative;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:26px;overflow:hidden}
+.ob-bill{position:relative;z-index:1;text-align:center;opacity:0;transform:translateY(10px);
+  transition:opacity .6s ease .2s,transform .6s ease .2s}
+.ob-reveal.open .ob-bill{opacity:1;transform:none}
+.ob-kick{font-size:10px;font-weight:800;letter-spacing:.34em;text-transform:uppercase;color:var(--fade);margin:0 0 6px}
+.ob-marq{margin:0;font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;line-height:.9;
+  font-size:clamp(52px, 17vw, 68px);letter-spacing:.01em;text-shadow:var(--glowT)}
+.ob-marq span{display:block}
+.ob-marq span:nth-child(2){color:var(--yellow)}
+.ob-at{margin-top:8px;font-family:'Fraunces',Georgia,serif;font-size:18px;color:#E9DEC0}
+.ob-at em{font-style:italic;color:var(--mut)}
+.ob-flock{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .8s ease .3s}
+.ob-reveal.open .ob-flock{opacity:.5}
+.ob-flock .owl{position:absolute;width:70px;height:76px;filter:drop-shadow(0 6px 10px rgba(0,0,0,.5))}
+.ob-flock .o-scout{left:8%;top:16%;transform:rotate(-8deg)}
+.ob-flock .o-keeper{right:6%;top:20%;transform:rotate(6deg)}
+.ob-flock .o-mirror{left:12%;bottom:20%;transform:rotate(4deg)}
+.ob-flock .o-scribe{right:10%;bottom:22%;transform:rotate(-4deg)}
+.ob-flock .o-peek{left:50%;top:6%;transform:translateX(-50%)}
+.ob-seatrow{position:relative;z-index:1;margin-top:28px;opacity:0;transform:translateY(12px);
+  transition:opacity .5s ease .5s,transform .5s ease .5s}
+.ob-reveal.open .ob-seatrow{opacity:1;transform:none}
+.ob-seatbtn{padding:14px 30px 13px;font-size:14px;letter-spacing:.16em;text-transform:uppercase;
+  box-shadow:0 4px 0 rgba(90,62,6,.4), 0 0 26px rgba(255,192,23,.4)}
+.ob-house{position:absolute;inset:0;z-index:5;border:0;padding:0;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#F2EBD7}
+.ob-house .ob-velvet{position:absolute;inset:0;z-index:0}
+.ob-house .ob-fringe{position:absolute;left:0;right:0;bottom:-14px;height:16px;z-index:0;
+  background:repeating-linear-gradient(90deg,#FFC017 0 5px,#A8730A 5px 10px);border-radius:0 0 4px 4px}
+.ob-house-txt{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:6px}
+.ob-house-mark{font-size:30px;letter-spacing:.02em;transform:skewX(-8deg)}
+.ob-house-show{font-size:11px;font-weight:800;letter-spacing:.3em;text-transform:uppercase;color:rgba(242,235,215,.7)}
+.ob-house-seat{margin-top:6px;font-family:'Fraunces',Georgia,serif;font-style:italic;font-size:13px;color:var(--yellow);
+  animation:tapPulse 2s ease-in-out infinite}
+@keyframes tapPulse{0%,100%{opacity:.55}50%{opacity:1}}
+.ob-house.rising{animation:curtainRise 1s cubic-bezier(.6,.05,.35,1) forwards;pointer-events:none}
+
+/* ============================================================
+   THE FLIGHT — scout's origin story, the first ask, the ink drop,
+   the level-up + welcome bundle.
+   ============================================================ */
+.ob-flight{position:relative;flex:1;min-height:0;overflow:hidden;animation:obFade .5s ease}
+.ob-hud{position:absolute;top:calc(20px + env(safe-area-inset-top));z-index:12;display:flex;align-items:center;gap:8px;
+  background:rgba(12,7,5,.78);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  border:1px solid rgba(232,180,58,.28);border-radius:999px;padding:7px 12px;
+  opacity:0;transform:translateY(-10px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.9,.3,1.1)}
+.ob-hud.on{opacity:1;transform:none}
+.ob-lvhud{left:16px}
+.ob-inkhud{right:16px}
+.ob-lvhud.flash{animation:hudFlash .6s ease}
+@keyframes hudFlash{30%{box-shadow:0 0 18px rgba(255,192,23,.65);border-color:var(--yellow)}}
+.ob-lv{font-size:13px;letter-spacing:.08em;color:#F2EBD7}
+.ob-track{width:52px;height:5px;background:rgba(255,246,220,.14);border-radius:3px;overflow:hidden}
+.ob-fill{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--yellow),#FFD866);border-radius:3px;
+  transition:width .7s cubic-bezier(.2,.8,.2,1)}
+.ob-inkhud .ti{font-size:15px;color:var(--yellow)}
+.ob-inkn{font-size:13px;letter-spacing:.06em;min-width:14px;text-align:center;color:#F2EBD7}
+.ob-inkhud.empty .ti{opacity:.4}
+.ob-inkhud.empty .ob-inkn{color:var(--fade)}
+.ob-skipper{position:absolute;top:calc(56px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);z-index:9;
+  background:none;border:0;padding:6px;cursor:pointer;font-size:9px;font-weight:800;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--fade)}
+.ob-scoutwrap{position:absolute;left:50%;top:30%;transform:translateX(-50%);z-index:2}
+.ob-scout{width:170px;height:auto;aspect-ratio:120/130;transform:rotate(-4deg);
+  filter:drop-shadow(0 10px 14px rgba(0,0,0,.5)) drop-shadow(0 0 12px rgba(255,192,23,.28));
+  animation:obPerch 3.6s ease-in-out infinite}
+@keyframes obPerch{0%,100%{transform:rotate(-4deg) translateY(0)}50%{transform:rotate(-3deg) translateY(-4px)}}
+.ob-scout.flew{opacity:.9}
+.ob-say-plaque{position:absolute;left:50%;bottom:calc(118px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:5;
+  width:calc(100% - 52px);max-width:306px;padding:18px 18px 15px;text-align:center;cursor:pointer;
+  background:rgba(12,7,5,.82);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  border:1px solid rgba(232,180,58,.32);border-radius:12px;
+  box-shadow:0 24px 50px -18px rgba(0,0,0,.85), inset 0 1px 0 rgba(255,230,170,.08)}
+.ob-who{font-size:8px;font-weight:800;letter-spacing:.24em;text-transform:uppercase;color:var(--ember);margin-bottom:8px}
+.ob-say{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:16.5px;line-height:1.55;color:#F2E8CE;min-height:52px}
+.ob-say em{font-style:italic;color:#D9C49A}
+.ob-tcur{display:inline-block;width:2px;height:1em;vertical-align:-2px;margin-left:1px;background:var(--yellow);
+  animation:tblink 1s steps(1) infinite}
+.ob-tapnote{margin-top:11px;font-size:8px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(233,222,192,.4);min-height:10px;animation:tapPulse 2s ease-in-out infinite}
+.ob-askchips{position:absolute;left:26px;right:26px;bottom:calc(110px + env(safe-area-inset-bottom));z-index:6;
+  display:flex;flex-wrap:wrap;gap:9px;justify-content:center}
+.ob-chip{background:rgba(12,7,5,.82);border:1px solid rgba(232,180,58,.3);border-radius:999px;padding:11px 16px;
+  font-size:12px;font-weight:700;color:#F2E8CE;cursor:pointer;animation:chipIn .5s cubic-bezier(.18,.9,.24,1.04) both}
+.ob-chip:nth-child(2){animation-delay:.06s}
+.ob-chip:nth-child(3){animation-delay:.12s}
+.ob-chip:nth-child(4){animation-delay:.18s}
+.ob-chip:nth-child(5){animation-delay:.24s}
+@keyframes chipIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.ob-chip:active{transform:translateY(2px)}
+.ob-letter{position:absolute;left:50%;top:47%;z-index:7;width:284px;transform:translate(-50%,-50%) rotate(-1.5deg);
+  text-align:left;background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,0) 26%),var(--letter);
+  color:var(--letter-ink);border:1px solid rgba(60,44,16,.24);border-radius:13px;box-shadow:var(--letterGlow);
+  padding:17px 17px 15px;animation:obLetterIn .55s cubic-bezier(.18,.9,.24,1.05) both}
+@keyframes obLetterIn{from{opacity:0;transform:translate(-50%,-40%) scale(.9) rotate(-2deg)}
+  to{opacity:1;transform:translate(-50%,-50%) rotate(-1.5deg)}}
+.ob-pk{font-size:8px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:#A8730A}
+.ob-lt{font-family:'Anton',sans-serif;font-size:22px;letter-spacing:.02em;text-transform:uppercase;margin-top:7px}
+.ob-la{font-size:12px;font-weight:600;color:#6E6250;margin-top:3px}
+.ob-lw{margin:11px 0 0;font-family:'Fraunces',Georgia,serif;font-weight:430;font-style:italic;font-size:13.5px;
+  line-height:1.6;color:#3E301B}
+.ob-lsign{margin-top:11px;font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#9F927A}
+.ob-stamp{position:absolute;top:-14px;right:-10px;transform:rotate(9deg) scale(3);opacity:0;
+  font-family:'Anton',sans-serif;font-size:13px;letter-spacing:.16em;color:#B3341A;
+  border:2.5px solid #B3341A;border-radius:6px;padding:5px 9px;background:rgba(255,247,230,.6);text-transform:uppercase}
+.ob-stamp.on{animation:stampIn .45s cubic-bezier(.6,-.2,.3,1.4) forwards}
+@keyframes stampIn{to{opacity:.92;transform:rotate(-8deg) scale(1)}}
+.ob-banner{position:absolute;left:26px;right:26px;top:calc(96px + env(safe-area-inset-top));z-index:15;text-align:center;
+  background:rgba(12,7,5,.92);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  border:1px solid rgba(255,192,23,.5);border-radius:14px;padding:18px 18px 16px;
+  box-shadow:0 20px 46px -14px rgba(0,0,0,.85), 0 0 30px -6px rgba(255,192,23,.35);
+  transform:translateY(-150%);transition:transform .6s cubic-bezier(.2,.9,.25,1.1)}
+.ob-banner.on{transform:none}
+.ob-blv{font-size:34px;letter-spacing:.05em;color:var(--yellow);text-shadow:0 0 20px rgba(255,192,23,.5)}
+.ob-bsub{margin-top:3px;font-size:9px;font-weight:800;letter-spacing:.3em;text-transform:uppercase;color:var(--mut)}
+.ob-bbundle{margin-top:13px;padding-top:12px;border-top:1px dashed rgba(232,180,58,.3);
+  opacity:0;transform:translateY(8px);transition:opacity .5s ease,transform .5s ease}
+.ob-banner.stage2 .ob-bbundle{opacity:1;transform:none}
+.ob-bbig{font-family:'Fraunces',Georgia,serif;font-style:italic;font-size:14.5px;color:#F2E8CE}
+.ob-bink{display:inline-flex;align-items:center;gap:7px;margin-top:9px;font-size:16px;letter-spacing:.06em;color:var(--quill-l)}
+.ob-bink .ti{font-size:16px;color:var(--yellow)}
+.ob-bcont{display:inline-flex;margin-top:14px;background:var(--yellow);color:#241B0E;border:0;border-radius:9px;
+  box-shadow:0 3px 0 rgba(90,62,6,.4);padding:11px 26px 10px;font-family:'Anton',sans-serif;font-size:12.5px;
+  letter-spacing:.2em;text-transform:uppercase;cursor:pointer}
+.ob-bcont:active{transform:translateY(2px);box-shadow:none}
+
 /* ============================================================
    FULL APP ON PHONES — below 560px the desk presentation retires:
    no bezel, no desk, the theatre fills the real screen (100dvh,

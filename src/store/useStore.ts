@@ -161,7 +161,7 @@ export interface Store extends PersistedState {
   openOnboarding: () => void;
   /** end opening night; when a first letter was sorted, plant it in the chat and open it */
   /** end opening night: the house opens at scout's desk, ready for the first ask */
-  finishOnboarding: () => void;
+  finishOnboarding: (firstAsk?: { label: string; guide: BookRef }) => void;
   /** sign-in: adopt an account — pull cloud progress, merge, and start syncing */
   adoptAccount: (userId: string) => Promise<void>;
   /** sign-out: stop syncing and fall back to the local guest cache */
@@ -686,13 +686,39 @@ export const useStore = create<Store>()(
       set({ ...(guest ?? SEED) });
     },
 
-    finishOnboarding: () => {
-      // the house opens at scout's desk — the first move is to ask
+    finishOnboarding: (firstAsk) => {
+      // the house opens at scout's desk. if the reader made a first ask during
+      // the flight, land the conversation already in motion: their line, scout's
+      // reply, and the first peek waiting to be opened (free).
       set((s) => ({
         showOnboarding: false,
         activeTab: 'discover',
         prefs: { ...s.prefs, onboarded: true },
       }));
+      if (!firstAsk) return;
+      const meNodes: OwlMessage = [{ t: 'text', v: firstAsk.label }];
+      const owlNodes: OwlMessage = [
+        { t: 'text', v: `sorted. and since you're new — peek pulled the pages that matter. ` },
+        { t: 'em', v: `first taste is free.` },
+      ];
+      set((st) => ({
+        owl: {
+          ...st.owl,
+          started: true,
+          messages: [
+            ...st.owl.messages,
+            { kind: 'msg', id: nextId(), who: 'me', nodes: meNodes },
+            { kind: 'msg', id: nextId(), who: 'owl', nodes: owlNodes },
+            { kind: 'letter', id: nextId(), book: firstAsk.guide },
+          ],
+          collected: st.owl.collected.includes(firstAsk.guide)
+            ? st.owl.collected
+            : [firstAsk.guide, ...st.owl.collected],
+          chips: ['go deeper', 'something lighter', 'more like this', 'new vibe'],
+        },
+      }));
+      // the welcome bundle, made real — a few drops in the well to start
+      get().addInk(10);
     },
 
     setDeskMode: (mode) => {

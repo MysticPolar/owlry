@@ -39,6 +39,8 @@ export interface Prefs {
   mode: Mode;
   /** opening night (onboarding) has been seen */
   onboarded?: boolean;
+  /** the name the reader gave the owls at the door ("Dear ___,") */
+  name?: string;
 }
 
 /** The durable loop persisted to IndexedDB (and, later, a backend). */
