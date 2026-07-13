@@ -1,9 +1,39 @@
 import { useEffect, useRef, useState } from 'react';
 import { useStore } from '../store/useStore';
+import { useAuth } from '../store/useAuth';
 import type { Tab } from '../store/types';
 import { useClock } from '../hooks/useClock';
 import { Icon } from './Icon';
 import { chainsInner } from '../lib/chains';
+
+/* guest-only shortcut to walk the level ladder (and trip its unlocks) from
+   the main screens — the desk, the shelves, today. Hidden on the profile tab
+   and for signed-in accounts (whose xp is server-authoritative). */
+export function GuestLevelButton() {
+  const authed = useAuth((s) => s.status === 'authed');
+  const tab = useStore((s) => s.activeTab);
+  const roomOpen = useStore((s) => s.mirrorRoomOpen);
+  const lv = useStore((s) => s.lv);
+  const addXP = useStore((s) => s.addXP);
+  const xpMax = useStore((s) => s.xpMax);
+  if (authed) return null;
+  // the locked profile (mirror's room) leaves activeTab where it was, so guard
+  // on it too — that page gets its own settings gear, not this pill
+  if (roomOpen) return null;
+  if (tab !== 'today' && tab !== 'discover' && tab !== 'library') return null;
+  return (
+    <button
+      className="guest-lvl"
+      data-tab={tab}
+      onClick={() => addXP(xpMax)}
+      aria-label={`Gain a level — guest preview (level ${lv})`}
+    >
+      <Icon name="ti-sparkles" />
+      <span>gain a level</span>
+      <b className="d">LV {lv}</b>
+    </button>
+  );
+}
 
 /* the profile pill, bound in chains until level 5: it wiggles for attention
    (4s after mount, then every 30s), and the chains fall when 5 arrives */

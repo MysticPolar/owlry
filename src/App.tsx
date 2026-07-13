@@ -3,7 +3,7 @@ import { useStore } from './store/useStore';
 import { useAuth } from './store/useAuth';
 import { useKeyboardInset } from './hooks/useKeyboardInset';
 import { WX } from './content/weather';
-import { StatusBar, BottomNav, Toast, BurstLayer, Backdrop } from './components/chrome';
+import { StatusBar, BottomNav, Toast, BurstLayer, Backdrop, GuestLevelButton } from './components/chrome';
 import { TodayScreen } from './components/screens/TodayScreen';
 import { DiscoverScreen } from './components/screens/DiscoverScreen';
 import { LibraryScreen } from './components/screens/LibraryScreen';
@@ -116,6 +116,7 @@ export default function App() {
                 <ProfileScreen />
               </main>
               <BottomNav />
+              <GuestLevelButton />
               <Backdrop />
               <Sheet />
               <EbookReader />

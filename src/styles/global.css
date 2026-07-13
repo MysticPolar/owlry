@@ -589,6 +589,19 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .nv.on[data-tab="library"] .pill{background:var(--moss);box-shadow:0 0 12px rgba(43,150,96,.4)}
 .nv.on[data-tab="profile"] .pill{background:var(--violet);box-shadow:0 0 12px rgba(140,100,235,.42)}
 
+/* guest preview: a floating "gain a level" pill above the nav (clears the
+   discover composer); sits below overlays so a letter/sheet/reader covers it */
+.guest-lvl[data-tab="discover"]{bottom:calc(196px + env(safe-area-inset-bottom))} /* clears the chip row */
+.guest-lvl{position:absolute;right:14px;bottom:calc(150px + env(safe-area-inset-bottom));z-index:7;
+  display:inline-flex;align-items:center;gap:7px;padding:8px 13px 7px;border-radius:999px;cursor:pointer;
+  background:rgba(255,192,23,.16);border:1px solid rgba(255,192,23,.45);color:var(--yellow);
+  font-size:11px;font-weight:800;letter-spacing:.03em;text-transform:lowercase;
+  -webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);
+  box-shadow:0 8px 20px -8px rgba(0,0,0,.55), 0 0 16px -6px rgba(255,192,23,.4)}
+.guest-lvl:active{transform:translateY(1px)}
+.guest-lvl .ti{font-size:14px}
+.guest-lvl b{font-size:11px;letter-spacing:.08em;opacity:.85}
+
 /* ---------- backdrop, sheet, reader, toast, burst ---------- */
 .backdrop{position:absolute;inset:0;z-index:6;background:rgba(6,7,14,.55);opacity:0;pointer-events:none;transition:opacity .25s}
 .backdrop.on{opacity:1;pointer-events:auto}
@@ -959,6 +972,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 @keyframes mroomIn{from{opacity:0}to{opacity:1}}
 .mroom::before{content:"";position:absolute;inset:0;pointer-events:none;
   background:radial-gradient(70% 46% at 50% 30%, rgba(140,100,235,.13), transparent 70%)}
+.mr-gear{position:absolute;top:calc(16px + env(safe-area-inset-top));right:18px;z-index:6}
 .mr-eb{font-size:8.5px;font-weight:800;letter-spacing:2.8px;text-transform:uppercase;color:var(--violet)}
 .mr-owl{position:relative;width:148px;height:160px;margin:18px 0 4px;
   filter:drop-shadow(0 12px 16px rgba(0,0,0,.55)) drop-shadow(0 0 18px rgba(140,100,235,.4));

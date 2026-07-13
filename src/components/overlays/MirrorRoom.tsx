@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useStore } from '../../store/useStore';
 import { chainsInner } from '../../lib/chains';
+import { Icon } from '../Icon';
 
 /* ============================================================
    The locked room — where the profile pill leads until level 5.
@@ -52,6 +53,7 @@ function Typed({ seq, n }: { seq: { ch: string; em: boolean }[]; n: number }) {
 
 function Room({ freed }: { freed: boolean }) {
   const setTab = useStore((s) => s.setTab);
+  const openSettings = useStore((s) => s.openSettings);
   const lv = useStore((s) => s.lv);
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const say = useRef(chars(freed ? FREED_SAY : LOCKED_SAY)).current;
@@ -77,6 +79,9 @@ function Room({ freed }: { freed: boolean }) {
 
   return (
     <section className={`mroom on${freed ? ' freed' : ''}`} aria-label="Mirror's room — locked">
+      <button className="iconbtn lite mr-gear" aria-label="Settings" onClick={openSettings}>
+        <Icon name="ti-settings" />
+      </button>
       <div className="mr-eb">mirror&rsquo;s room · {freed ? 'open' : 'locked'}</div>
       <svg className="owl mr-owl" viewBox="0 0 120 130" aria-hidden="true">
         <use href="#owl-mirror" />
