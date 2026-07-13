@@ -649,10 +649,32 @@ export const useStore = create<Store>()(
       set((s) => ({ prefs: { ...s.prefs, mode } }));
       get().showToast(mode === 'night' ? 'ti-moon-stars' : 'ti-sun', mode === 'night' ? 'the evening show' : 'the matinée');
     },
+    // Reset to a true new-reader default — NOT the SEED demo state (which is
+    // level 7 with books already shelved). Level 1, empty shelves, every gate
+    // re-locked, and the owl intros re-armed so they introduce themselves
+    // again. Keeps the reader's settings + name; the opening night has its own
+    // "watch again" row, so onboarded stays put.
     resetProgress: () =>
       set((s) => ({
-        ...SEED,
-        prefs: s.prefs, // keep the user's settings; only the loop resets
+        xp: 0,
+        xpMax: 400,
+        ink: 10, // the welcome bundle, so scout is still askable from zero
+        inkMax: 120,
+        coins: 0,
+        lv: 1,
+        inkDone: false,
+        streak: 0,
+        savedIds: [],
+        readingIds: [],
+        finishedIds: [],
+        pagesRead: {},
+        prefs: { ...s.prefs, introsSeen: [] },
+        activeTab: 'today',
+        deskMode: 'all',
+        mirrorRoomOpen: false,
+        introCard: null,
+        introAfter: null,
+        owl: { ...s.owl, collected: [] },
       })),
 
     initChat: () => {
