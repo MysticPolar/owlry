@@ -101,6 +101,9 @@ export interface Store extends PersistedState {
   showIntro: (key: IntroKey, afterLetter?: BookRef) => void;
   dismissIntro: () => void;
   saveQuote: () => void;
+  /** the profile section is chained until level 5 — the pill opens this instead */
+  mirrorRoomOpen: boolean;
+  closeMirrorRoom: () => void;
   /** A user-authored starting point carried from Today into Scout's composer. */
   scoutDraft: string;
   /** opening night: playing when true (first run, or replayed from settings) */
@@ -248,6 +251,7 @@ export const useStore = create<Store>()(
     deskMode: 'all',
     introCard: null,
     introAfter: null,
+    mirrorRoomOpen: false,
     scoutDraft: '',
     showOnboarding: false,
     openedLetters: [],
@@ -422,12 +426,19 @@ export const useStore = create<Store>()(
     },
 
       setTab: (t) => {
-      set({ activeTab: t });
+      // the profile section is chained until level 5 — the pill opens the
+      // locked room instead of switching (mirror's tone, the sealed chart)
+      if (t === 'profile' && get().lv < 5) {
+        set({ mirrorRoomOpen: true });
+        return;
+      }
+      set({ activeTab: t, mirrorRoomOpen: false });
       // keeper introduces the shelves on the first library visit (a beat later)
       if (t === 'library' && !(get().prefs.introsSeen ?? []).includes('keeper')) {
         setTimeout(() => get().showIntro('keeper'), 420);
       }
     },
+    closeMirrorRoom: () => set({ mirrorRoomOpen: false }),
 
     showIntro: (key, afterLetter) => {
       const seen = get().prefs.introsSeen ?? [];
@@ -485,6 +496,7 @@ export const useStore = create<Store>()(
     addXP: (n) => {
       let { xp, lv } = get();
       const { xpMax } = get();
+      const before = lv;
       xp += n;
       let leveled = false;
       while (xp >= xpMax) {
@@ -496,6 +508,14 @@ export const useStore = create<Store>()(
       if (leveled) {
         get().showToast('ti-sparkles', 'level up! LV ' + lv);
         get().triggerBurst();
+      }
+      // the two gates open on their level crossings
+      if (before < 3 && lv >= 3) setTimeout(() => get().showIntro('proscout'), 600);
+      if (before < 5 && lv >= 5) {
+        setTimeout(() => {
+          get().showToast('ti-sparkles', 'level 5 — the chains fall. the mirror is yours.', 'mirror');
+          get().triggerBurst();
+        }, 700);
       }
     },
 
@@ -766,6 +786,12 @@ export const useStore = create<Store>()(
 
     setDeskMode: (mode) => {
       if (get().deskMode === mode) return;
+      // office hours — the non-fiction desk — opens at level 3; before that,
+      // tapping it summons scout pro to explain (the desk stays shut)
+      if (mode === 'pro' && get().lv < 3) {
+        get().showIntro('proscoutLocked');
+        return;
+      }
       set({ deskMode: mode });
       // scout acknowledges the switch in voice — canned, zero tokens
       const ack: OwlMessage = [

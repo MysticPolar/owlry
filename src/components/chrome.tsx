@@ -3,6 +3,58 @@ import { useStore } from '../store/useStore';
 import type { Tab } from '../store/types';
 import { useClock } from '../hooks/useClock';
 import { Icon } from './Icon';
+import { chainsInner } from '../lib/chains';
+
+/* the profile pill, bound in chains until level 5: it wiggles for attention
+   (4s after mount, then every 30s), and the chains fall when 5 arrives */
+function ProfilePill({ icon }: { icon: string }) {
+  const lv = useStore((s) => s.lv);
+  const locked = lv < 5;
+  const [wiggle, setWiggle] = useState(false);
+  const [falling, setFalling] = useState(false);
+  const [gone, setGone] = useState(!locked);
+  const prevLocked = useRef(locked);
+
+  // wiggle the button for attention while locked
+  useEffect(() => {
+    if (!locked || gone) return;
+    const bump = () => {
+      setWiggle(false);
+      requestAnimationFrame(() => setWiggle(true));
+      setTimeout(() => setWiggle(false), 850);
+    };
+    const first = setTimeout(bump, 4000);
+    const iv = setInterval(bump, 30000);
+    return () => {
+      clearTimeout(first);
+      clearInterval(iv);
+    };
+  }, [locked, gone]);
+
+  // the chains fall when level 5 lands
+  useEffect(() => {
+    if (prevLocked.current && !locked) {
+      setFalling(true);
+      const t = setTimeout(() => setGone(true), 900);
+      return () => clearTimeout(t);
+    }
+    prevLocked.current = locked;
+  }, [locked]);
+
+  return (
+    <span className={`pill${wiggle ? ' nv-wiggle' : ''}`}>
+      <Icon name={icon} />
+      {!gone && (
+        <svg
+          className={`nv-chains${falling ? ' broken' : ''}`}
+          viewBox="0 0 56 42"
+          aria-hidden="true"
+          dangerouslySetInnerHTML={{ __html: chainsInner(56, 42, 3, 13, 18, 26) }}
+        />
+      )}
+    </span>
+  );
+}
 
 /* ---------- status bar ---------- */
 export function StatusBar() {
@@ -29,21 +81,28 @@ const NAV: { tab: Tab; icon: string; lab: string }[] = [
 export function BottomNav() {
   const activeTab = useStore((s) => s.activeTab);
   const setTab = useStore((s) => s.setTab);
+  const lv = useStore((s) => s.lv);
   return (
     <nav className="nav" aria-label="Primary">
       {NAV.map((n) => {
         const on = activeTab === n.tab;
+        const chained = n.tab === 'profile' && lv < 5;
         return (
           <button
             key={n.tab}
             className={`nv ${on ? 'on' : ''}`}
             data-tab={n.tab}
             aria-current={on ? 'page' : undefined}
+            aria-label={chained ? 'Profile — chained until level 5' : undefined}
             onClick={() => setTab(n.tab)}
           >
-            <span className="pill">
-              <Icon name={n.icon} />
-            </span>
+            {n.tab === 'profile' ? (
+              <ProfilePill icon={n.icon} />
+            ) : (
+              <span className="pill">
+                <Icon name={n.icon} />
+              </span>
+            )}
             <span className="lab">{n.lab}</span>
           </button>
         );

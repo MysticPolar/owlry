@@ -913,6 +913,85 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
   .pintro-card,.pintro-scrim,.pi-owl{transition:none !important;animation:none !important}
 }
 
+/* ============================================================
+   LEVEL GATES — office hours (opens lv 3) + the chained profile
+   pill and the locked room (open lv 5). Ported 1:1 (Phase D).
+   ============================================================ */
+.nav .pill{position:relative}
+.nv-chains{position:absolute;inset:-6px -7px;pointer-events:none;z-index:2;overflow:visible;
+  filter:drop-shadow(0 2px 2px rgba(0,0,0,.5))}
+.nv-chains ellipse{fill:none;stroke:var(--violet);stroke-width:1.7}
+.nv-chains .shadowlinks ellipse{stroke:rgba(8,5,18,.6);stroke-width:1.7}
+.nv-chains .cB ellipse{stroke:#6E4BC8}
+.nv-chains .plock rect{fill:#2A1852;stroke:var(--violet-l,#A98BF5);stroke-width:1.5}
+.nv-chains .plock path{fill:none;stroke:var(--violet-l,#A98BF5);stroke-width:1.5;stroke-linecap:round}
+.card-chains{position:absolute;inset:6px 2px 2px;pointer-events:none;overflow:visible;
+  filter:drop-shadow(0 3px 3px rgba(0,0,0,.55))}
+.card-chains ellipse{fill:none;stroke:var(--violet);stroke-width:3}
+.card-chains .shadowlinks ellipse{stroke:rgba(8,5,18,.6);stroke-width:3}
+.card-chains .cB ellipse{stroke:#6E4BC8}
+.card-chains .plock rect{fill:#2A1852;stroke:var(--violet-l,#A98BF5);stroke-width:2.2}
+.card-chains .plock path{fill:none;stroke:var(--violet-l,#A98BF5);stroke-width:2.2;stroke-linecap:round}
+.nv-chains.broken .cA,.card-chains.broken .cA{animation:chainFallA .8s cubic-bezier(.5,-.1,.8,.6) forwards}
+.nv-chains.broken .cB,.card-chains.broken .cB{animation:chainFallB .8s cubic-bezier(.5,-.1,.8,.6) forwards}
+.nv-chains.broken .plock,.card-chains.broken .plock{animation:lockFall .8s cubic-bezier(.5,-.1,.8,.6) forwards}
+.nv-chains.broken .shadowlinks,.card-chains.broken .shadowlinks{animation:chainFallA .8s forwards}
+@keyframes chainFallA{25%{transform:translate(-3px,2px) rotate(-3deg)}to{transform:translate(-14px,34px) rotate(-11deg);opacity:0}}
+@keyframes chainFallB{25%{transform:translate(3px,2px) rotate(3deg)}to{transform:translate(14px,38px) rotate(10deg);opacity:0}}
+@keyframes lockFall{to{transform:translate(6px,44px) rotate(38deg);opacity:0}}
+.nv-wiggle{animation:nvWiggle .8s ease}
+@keyframes nvWiggle{10%{transform:rotate(-8deg)}25%{transform:rotate(7deg)}40%{transform:rotate(-5deg)}
+  55%{transform:rotate(4deg)}70%{transform:rotate(-2deg)}100%{transform:rotate(0)}}
+
+/* office hours lives on the non-fiction desk */
+.deskchip.oh-locked{opacity:.72;border-style:dashed !important}
+.deskchip .ohlock{display:inline-flex;width:11px;height:11px;margin-right:6px;vertical-align:-1px;color:var(--yellow)}
+.deskchip .ohlock svg{width:100%;height:100%;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+
+/* ---- the locked room (mirror's) ---- */
+.mroom{position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;
+  padding:70px 26px calc(118px + env(safe-area-inset-bottom));text-align:center;overflow-y:auto;scrollbar-width:none;
+  background:linear-gradient(180deg,var(--stage) 0%,var(--stage2) 100%);animation:mroomIn .35s ease}
+.mroom::-webkit-scrollbar{display:none}
+@keyframes mroomIn{from{opacity:0}to{opacity:1}}
+.mroom::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(70% 46% at 50% 30%, rgba(140,100,235,.13), transparent 70%)}
+.mr-eb{font-size:8.5px;font-weight:800;letter-spacing:2.8px;text-transform:uppercase;color:var(--violet-l,#A98BF5)}
+.mr-owl{position:relative;width:148px;height:160px;margin:18px 0 4px;
+  filter:drop-shadow(0 12px 16px rgba(0,0,0,.55)) drop-shadow(0 0 18px rgba(140,100,235,.4));
+  animation:mrSway 7s ease-in-out infinite}
+@keyframes mrSway{0%,100%{transform:rotate(2.4deg) translateY(0)}50%{transform:rotate(3.4deg) translateY(-3px)}}
+.mr-say{min-height:46px;max-width:30ch;margin-top:8px;font-family:'Fraunces',Georgia,serif;font-weight:500;
+  font-size:15.5px;line-height:1.55;color:#F2E8CE}
+.mr-say em{font-style:italic;color:#CBB6F2}
+.mr-cur{display:inline-block;width:2px;height:1.02em;vertical-align:-2px;margin-left:1px;background:var(--yellow);
+  animation:piBlink 1s steps(1) infinite}
+.mr-lvrow{display:flex;gap:9px;margin:16px 0 22px}
+.mr-dia{width:11px;height:11px;transform:rotate(45deg);border:1.5px solid rgba(169,139,245,.55);border-radius:2px;
+  transition:background .4s,border-color .4s,box-shadow .4s}
+.mr-dia.on{background:var(--violet);border-color:var(--violet-l,#A98BF5);box-shadow:0 0 9px rgba(140,100,235,.55)}
+.mr-dia.goal{border-color:rgba(255,192,23,.6)}
+.mr-dia.goal.on{background:var(--yellow);border-color:var(--yellow);box-shadow:0 0 11px rgba(255,192,23,.6)}
+.mr-lab{margin-top:-14px;margin-bottom:16px;font-size:8px;font-weight:800;letter-spacing:2px;
+  text-transform:uppercase;color:var(--fade)}
+.mr-card{position:relative;width:min(292px,100%);border-radius:16px;padding:16px 12px 12px;
+  background:rgba(12,7,5,.8);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  border:1px solid rgba(140,100,235,.36);box-shadow:0 22px 48px -16px rgba(0,0,0,.85), 0 0 24px -10px rgba(140,100,235,.5)}
+.mr-card .cap{font-size:8px;font-weight:800;letter-spacing:2.4px;text-transform:uppercase;color:rgba(203,182,242,.8)}
+.mr-radar{display:block;width:100%;margin-top:6px;filter:blur(2.1px) saturate(.55);opacity:.5;
+  transition:filter .8s ease,opacity .8s ease}
+.mr-radar .axis{stroke:rgba(169,139,245,.35);stroke-width:1}
+.mr-radar .ringp{fill:rgba(140,100,235,.07);stroke:rgba(169,139,245,.4);stroke-width:1.4}
+.mr-radar .ring{fill:none;stroke:rgba(169,139,245,.3);stroke-width:1;stroke-dasharray:2 4}
+.mr-radar .shape{fill:var(--radarFill,rgba(140,100,235,.28));stroke:var(--violet);stroke-width:2.4;stroke-linejoin:round}
+.mr-radar .lab{font:800 8.5px 'Inter Tight',sans-serif;letter-spacing:1.2px;fill:rgba(233,222,192,.4);text-transform:uppercase}
+.mroom.freed .mr-radar{filter:none;opacity:1}
+@media (prefers-reduced-motion:reduce){
+  .nv-wiggle,.mr-owl{animation:none !important}
+  .nv-chains.broken,.card-chains.broken{display:none}
+  .mr-radar{transition:none}
+}
+
 /* the landing production credit */
 .ob-prod{font-size:9px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:var(--fade);
   margin-top:4px;animation:mqIn .62s cubic-bezier(.18,.9,.24,1.04) 1.25s backwards}

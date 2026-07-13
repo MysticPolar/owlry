@@ -201,6 +201,7 @@ export function DiscoverScreen() {
   const active = useStore((s) => s.activeTab === 'discover');
   const desk = useStore((s) => s.deskMode);
   const setDeskMode = useStore((s) => s.setDeskMode);
+  const lv = useStore((s) => s.lv);
   const openHistory = useStore((s) => s.openHistory);
   const lastBatch = useStore((s) => s.owl.lastBatch);
   const [popoverId, setPopoverId] = useState<BookRef | null>(null);
@@ -247,12 +248,25 @@ export function DiscoverScreen() {
           EVERYTHING
         </button>
         <button
-          className={`deskchip ${desk === 'pro' ? 'on' : ''}`}
+          className={`deskchip ${desk === 'pro' ? 'on' : ''}${lv < 3 ? ' oh-locked' : ''}`}
           role="tab"
           aria-selected={desk === 'pro'}
+          aria-label={lv < 3 ? 'Office hour — opens at level 3' : 'Non-fiction'}
           onClick={() => setDeskMode('pro')}
         >
-          NON-FICTION
+          {lv < 3 ? (
+            <>
+              <span className="ohlock">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="5.5" y="11" width="13" height="8.5" rx="2" />
+                  <path d="M8.5 11V8a3.5 3.5 0 0 1 7 0v3" />
+                </svg>
+              </span>
+              OFFICE HOUR
+            </>
+          ) : (
+            'NON-FICTION'
+          )}
         </button>
       </div>
 
