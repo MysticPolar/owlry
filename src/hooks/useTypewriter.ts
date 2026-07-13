@@ -8,12 +8,12 @@ import { useEffect, useRef, useState } from 'react';
  */
 export function useTypewriter(
   total: number,
-  opts: { enabled?: boolean; durationMs?: number } = {},
+  opts: { enabled?: boolean; durationMs?: number; reduceMotion?: boolean } = {},
 ): { shown: number; done: boolean; skip: () => void } {
-  const { enabled = true, durationMs = 4500 } = opts;
+  const { enabled = true, durationMs = 4500, reduceMotion = false } = opts;
   const reduce =
     typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const animate = enabled && !reduce && total > 0;
+  const animate = enabled && !reduce && !reduceMotion && total > 0;
 
   const [shown, setShown] = useState(animate ? 0 : total);
   const skipRef = useRef(false);

@@ -17,7 +17,7 @@ export const SEED: PersistedState = {
   finishedIds: ['oldman', 'none'],
   pagesRead: { goldfinch: 463, pachinko: 118, tranq: 224 },
   prefs: {
-    readerScale: 'md',
+    reader: { font: 'literata', size: 18, dimmer: 0, flow: 'scroll' },
     reduceMotion: false,
     dailyReminder: false,
     sounds: false,

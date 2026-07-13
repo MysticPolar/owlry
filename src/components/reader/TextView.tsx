@@ -1,88 +1,96 @@
-/* Plain-text (.txt) rendering as scrollable, paginated HTML. Progress = scroll
-   fraction. (EPUB/MOBI/AZW3/FB2 are handled by FoliateView.) */
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState, type CSSProperties } from 'react';
 import { loadUpload } from '../../lib/ebook/storage';
+import { useStore } from '../../store/useStore';
 import type { EngineHandle, EngineProps } from './shared';
 
-function txtToParas(t: string): string[] {
-  return t
-    .replace(/\r\n/g, '\n')
-    .split(/\n\s*\n/)
-    .map((s) => s.trim())
-    .filter(Boolean);
+function txtToParas(text: string): string[] {
+  return text.replace(/\r\n/g, '\n').split(/\n\s*\n/).map((value) => value.trim()).filter(Boolean);
 }
 
+const stack = (font: EngineProps['prefs']['font']): string => {
+  if (font === 'fraunces') return "'Fraunces', Georgia, serif";
+  if (font === 'system') return "ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+  return "'Literata', Georgia, serif";
+};
+
 export const TextView = forwardRef<EngineHandle, EngineProps>(function TextView(
-  { bookId, source, initial, onProgress, onError },
+  { bookId, source, initial, prefs, onProgress, onError },
   ref,
 ) {
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const viewportRef = useRef<HTMLDivElement>(null);
   const [paras, setParas] = useState<string[] | null>(null);
+  const fractionRef = useRef(initial?.scroll ?? 0);
+  const restoredRef = useRef(false);
+  const reduceMotion = useStore((s) => s.prefs.reduceMotion);
 
   const emit = () => {
-    const el = scrollRef.current;
+    const el = viewportRef.current;
     if (!el) return;
-    const max = el.scrollHeight - el.clientHeight;
-    const frac = max > 0 ? el.scrollTop / max : 1;
-    onProgress({ percent: Math.max(0, Math.min(100, frac * 100)), scroll: frac });
+    const page = prefs.flow === 'page';
+    const max = page ? el.scrollWidth - el.clientWidth : el.scrollHeight - el.clientHeight;
+    const offset = page ? el.scrollLeft : el.scrollTop;
+    const fraction = max > 0 ? offset / max : 1;
+    fractionRef.current = Math.max(0, Math.min(1, fraction));
+    const pageTotal = page ? Math.max(1, Math.ceil(el.scrollWidth / el.clientWidth)) : undefined;
+    const pageNumber = page ? Math.min(pageTotal ?? 1, Math.round(offset / el.clientWidth) + 1) : undefined;
+    onProgress({ percent: fractionRef.current * 100, scroll: fractionRef.current, page: pageNumber, pageTotal });
   };
 
   const pageBy = (dir: number) => {
-    const el = scrollRef.current;
+    const el = viewportRef.current;
     if (!el) return;
-    el.scrollBy({ top: dir * el.clientHeight * 0.9, behavior: 'smooth' });
+    const behavior = reduceMotion || window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+    if (prefs.flow === 'page') el.scrollBy({ left: dir * el.clientWidth, behavior });
+    else el.scrollBy({ top: dir * el.clientHeight * 0.9, behavior });
   };
 
-  useImperativeHandle(ref, () => ({
-    next: () => pageBy(1),
-    prev: () => pageBy(-1),
-  }));
+  useImperativeHandle(ref, () => ({ next: () => pageBy(1), prev: () => pageBy(-1) }));
 
   useEffect(() => {
     let cancelled = false;
-    (async () => {
+    void (async () => {
       try {
-        const up = await loadUpload(bookId);
-        if (!up) return onError('Your uploaded file is missing — please upload it again.', true);
-        const text = await up.blob.text();
-        if (cancelled) return;
-        setParas(txtToParas(text));
+        const upload = await loadUpload(bookId);
+        if (!upload) return onError('Your uploaded file is missing — please upload it again.', true);
+        const text = await upload.blob.text();
+        if (!cancelled) setParas(txtToParas(text));
       } catch {
         onError('We couldn’t open this file.');
       }
     })();
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bookId, source]);
 
-  // restore position once rendered, then emit an initial progress reading
   useEffect(() => {
     if (!paras) return;
-    const el = scrollRef.current;
+    const el = viewportRef.current;
     if (!el) return;
     requestAnimationFrame(() => {
-      if (initial?.scroll) el.scrollTop = initial.scroll * (el.scrollHeight - el.clientHeight);
+      const fraction = restoredRef.current ? fractionRef.current : (initial?.scroll ?? 0);
+      restoredRef.current = true;
+      if (prefs.flow === 'page') el.scrollLeft = fraction * (el.scrollWidth - el.clientWidth);
+      else el.scrollTop = fraction * (el.scrollHeight - el.clientHeight);
       emit();
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [paras]);
+  }, [paras, prefs.flow, prefs.font, prefs.size]);
+
+  const style = {
+    '--text-reader-font': stack(prefs.font),
+    '--text-reader-size': `${prefs.size}px`,
+  } as CSSProperties;
 
   return (
     <div
-      ref={scrollRef}
+      ref={viewportRef}
+      className={`text-reader ${prefs.flow === 'page' ? 'is-paged' : 'is-scroll'}`}
+      style={style}
       onScroll={emit}
-      style={{ width: '100%', height: '100%', overflowY: 'auto', padding: '10px 22px 44px', boxSizing: 'border-box' }}
     >
-      {paras?.map((p, i) => (
-        <p
-          key={i}
-          style={{ fontFamily: "'Source Serif 4', Georgia, serif", fontSize: 16, lineHeight: 1.7, margin: '0 0 14px' }}
-        >
-          {p}
-        </p>
-      ))}
+      <article className="text-reader-page">
+        {paras?.map((paragraph, index) => <p key={index}>{paragraph}</p>)}
+      </article>
     </div>
   );
 });

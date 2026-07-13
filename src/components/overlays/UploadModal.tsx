@@ -60,7 +60,7 @@ export function UploadModal() {
       style={{
         position: 'absolute',
         inset: 0,
-        zIndex: 12,
+        zIndex: 16,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',

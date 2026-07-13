@@ -57,8 +57,10 @@ export function History() {
     });
   };
 
+  if (!open) return null;
+
   return (
-    <div className={`history ${open ? 'on' : ''}`} id="history" role="dialog" aria-modal="true" aria-label="Chat history">
+    <div className="history on" id="history" role="dialog" aria-modal="true" aria-label="Chat history">
       <div className="l-top">
         <button
           className="iconbtn lite"

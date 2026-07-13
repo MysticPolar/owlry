@@ -17,16 +17,17 @@ export function Sheet() {
   const b = id ? getBook(id) : null;
   const guide = id ? hasGuide(id) : false;
 
+  if (!id || !b) return null;
+
   return (
     <div
-      className={`sheet ${id ? 'on' : ''}`}
+      className="sheet on"
       id="sheet"
       role="dialog"
       aria-modal="true"
       aria-label="Book details"
     >
-      {b && id && (
-        <>
+      <>
           <button
             className={`save ${saved ? 'on' : ''}`}
             aria-label="Save to library"
@@ -83,8 +84,7 @@ export function Sheet() {
           <p className="sv-note">
             what fellow readers underlined, argued with, and loved — landing in a future issue.
           </p>
-        </>
-      )}
+      </>
     </div>
   );
 }

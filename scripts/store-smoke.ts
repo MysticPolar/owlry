@@ -1,6 +1,8 @@
 /* runtime smoke test of the store game loop (not part of the app build) */
 import { useStore } from '../src/store/useStore';
 import { BOOKS } from '../src/content/books';
+import { normalizePersisted } from '../src/store/normalize';
+import { SEED } from '../src/store/seed';
 
 const g = () => useStore.getState();
 let pass = 0;
@@ -16,6 +18,14 @@ function check(label: string, cond: boolean, detail = '') {
 }
 
 check('seed xp/ink/coins/lv', g().xp === 260 && g().ink === 84 && g().coins === 240 && g().lv === 7);
+
+const migrated = normalizePersisted({
+  ...SEED,
+  prefs: { ...SEED.prefs, reader: undefined, readerScale: 'lg' },
+});
+check('legacy reader scale migrates to 21px', migrated.prefs.reader.size === 21);
+const clamped = normalizePersisted({ ...SEED, prefs: { ...SEED.prefs, reader: { ...SEED.prefs.reader, size: 99 } } });
+check('reader size migration clamps at 24px', clamped.prefs.reader.size === 24);
 
 g().addXP(5);
 check('addXP(5) → 265', g().xp === 265, `${g().xp}`);
