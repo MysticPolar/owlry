@@ -37,6 +37,7 @@ import { cloudPull, cloudPush } from '../lib/sync/cloud';
 import { SEED } from './seed';
 import type {
   DeskMode,
+  IntroKey,
   PersistedState,
   Prefs,
   Tab,
@@ -94,6 +95,12 @@ export interface Store extends PersistedState {
   burstNonce: number;
   owl: OwlState;
   deskMode: DeskMode;
+  /** the first-use owl intro card on screen, or null; introAfter opens after peek's */
+  introCard: IntroKey | null;
+  introAfter: BookRef | null;
+  showIntro: (key: IntroKey, afterLetter?: BookRef) => void;
+  dismissIntro: () => void;
+  saveQuote: () => void;
   /** A user-authored starting point carried from Today into Scout's composer. */
   scoutDraft: string;
   /** opening night: playing when true (first run, or replayed from settings) */
@@ -239,6 +246,8 @@ export const useStore = create<Store>()(
       started: false,
     },
     deskMode: 'all',
+    introCard: null,
+    introAfter: null,
     scoutDraft: '',
     showOnboarding: false,
     openedLetters: [],
@@ -412,7 +421,35 @@ export const useStore = create<Store>()(
       }));
     },
 
-    setTab: (t) => set({ activeTab: t }),
+      setTab: (t) => {
+      set({ activeTab: t });
+      // keeper introduces the shelves on the first library visit (a beat later)
+      if (t === 'library' && !(get().prefs.introsSeen ?? []).includes('keeper')) {
+        setTimeout(() => get().showIntro('keeper'), 420);
+      }
+    },
+
+    showIntro: (key, afterLetter) => {
+      const seen = get().prefs.introsSeen ?? [];
+      if (seen.includes(key) || get().introCard) return; // once, ever; one at a time
+      set((s) => ({
+        prefs: { ...s.prefs, introsSeen: [...seen, key] },
+        introCard: key,
+        introAfter: afterLetter ?? null,
+      }));
+    },
+
+    dismissIntro: () => {
+      const after = get().introAfter;
+      set({ introCard: null, introAfter: null });
+      if (after) get().openLetter(after); // 'peek' is now seen → the letter opens for real
+    },
+
+    saveQuote: () => {
+      // scribe reveals herself the first time a line is kept; after that, a quiet toast
+      if (!(get().prefs.introsSeen ?? []).includes('scribe')) get().showIntro('scribe');
+      else get().showToast('ti-quote', 'line saved — scribe has it', 'scribe');
+    },
     startAsk: (id) => {
       const b = getBook(id);
       if (!b) return;
@@ -542,6 +579,12 @@ export const useStore = create<Store>()(
     // its content lazily via owl-peek. Already-generated letters resolve instantly
     // (generate-once). A cache-miss generation meters ink; re-opening is free.
     openLetter: (id) => {
+      // peek introduces herself the very first time a letter is opened, then the
+      // letter opens on dismiss (dismissIntro re-calls openLetter — now seen)
+      if (!(get().prefs.introsSeen ?? []).includes('peek')) {
+        get().showIntro('peek', id);
+        return;
+      }
       const ready = !!getGuide(id);
       set({ letterId: id, sheetId: null, letterStatus: ready ? 'ready' : 'loading' });
 

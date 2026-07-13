@@ -41,6 +41,8 @@ export interface Prefs {
   onboarded?: boolean;
   /** the name the reader gave the owls at the door ("Dear ___,") */
   name?: string;
+  /** first-use owl intros already shown (peek/scribe/keeper/…), fired once */
+  introsSeen?: string[];
 }
 
 /** The durable loop persisted to IndexedDB (and, later, a backend). */
@@ -75,6 +77,9 @@ export type OwlName = 'scout' | 'peek' | 'scribe' | 'mirror' | 'keeper';
     fits) and 'pro' ("office hours" — non-fiction only, suit on, cooler
     stage, goal-driven). */
 export type DeskMode = 'all' | 'pro';
+
+/** first-use owl introduction cards, fired once at their trigger */
+export type IntroKey = 'peek' | 'scribe' | 'keeper' | 'proscout' | 'proscoutLocked';
 
 export interface ToastState {
   icon: string;

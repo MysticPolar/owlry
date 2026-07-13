@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useStore } from '../../store/useStore';
 import { getBook, getGuide } from '../../lib/bookRegistry';
 import { useTypewriter } from '../../hooks/useTypewriter';
@@ -8,6 +8,26 @@ import { CastOwl } from '../CastOwl';
 
 /** letters that have already typed out once this session — re-opening shows them instantly */
 const typedOnce = new Set<string>();
+
+/** the "save line" chip — keeping a line is scribe's trigger */
+function SaveLine() {
+  const saveQuote = useStore((s) => s.saveQuote);
+  const [saved, setSaved] = useState(false);
+  return (
+    <button
+      className={`lq-save${saved ? ' on' : ''}`}
+      aria-pressed={saved}
+      onClick={() => {
+        if (saved) return;
+        setSaved(true);
+        saveQuote();
+      }}
+    >
+      <Icon name={saved ? 'ti-check' : 'ti-quote'} />
+      {saved ? 'saved' : 'save line'}
+    </button>
+  );
+}
 
 export function Letter() {
   const letterId = useStore((s) => s.letterId);
@@ -174,6 +194,7 @@ export function Letter() {
                   {n.q && q && (
                     <div className="l-q it">
                       &ldquo;{q}&rdquo;<small>{by}</small>
+                      <SaveLine />
                     </div>
                   )}
                 </div>

@@ -868,6 +868,51 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
   .ob-val,.ob-body{opacity:1;transform:none}
 }
 
+/* ============================================================
+   FIRST-USE OWL INTROS — the card an owl pops up the first time
+   you trigger its thing (ported 1:1 from the standalone).
+   ============================================================ */
+.pintro{position:absolute;inset:0;z-index:28;display:flex;align-items:flex-end;justify-content:center;
+  padding:0 16px calc(20px + env(safe-area-inset-bottom));pointer-events:none}
+.pintro-scrim{position:absolute;inset:0;background:rgba(4,5,10,.58);opacity:0;transition:opacity .3s ease}
+.pintro.on{pointer-events:auto}
+.pintro.on .pintro-scrim{opacity:1}
+.pintro-card{--acc:var(--teal);
+  position:relative;width:min(322px,100%);text-align:center;
+  background:rgba(12,7,5,.92);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  border:1px solid rgba(232,180,58,.34);border-top:3px solid var(--acc);border-radius:16px;
+  box-shadow:0 24px 54px -16px rgba(0,0,0,.9), 0 0 26px -8px var(--acc);
+  padding:56px 20px 18px;
+  transform:translateY(28px) scale(.97);opacity:0;
+  transition:transform .38s cubic-bezier(.2,.9,.28,1.15),opacity .3s ease}
+.pintro.on .pintro-card{transform:none;opacity:1}
+.pi-owl{position:absolute;left:50%;top:-58px;width:106px;height:115px;transform:translateX(-50%);
+  filter:drop-shadow(0 10px 14px rgba(0,0,0,.55)) drop-shadow(0 0 14px var(--acc))}
+.pintro.on .pi-owl{animation:piPop .55s cubic-bezier(.3,1.5,.45,1) both}
+@keyframes piPop{from{transform:translateX(-50%) translateY(26px) scale(.9)}to{transform:translateX(-50%)}}
+.pi-eb{font-size:8.5px;font-weight:800;letter-spacing:2.6px;text-transform:uppercase;color:var(--acc)}
+.pi-say{min-height:48px;margin-top:9px;font-family:'Fraunces',Georgia,serif;font-weight:500;
+  font-size:15.5px;line-height:1.55;color:#F2E8CE}
+.pi-say em{font-style:italic;color:#D9C49A}
+.pi-cur{display:inline-block;width:2px;height:1.02em;vertical-align:-2px;margin-left:1px;background:var(--yellow);
+  animation:piBlink 1s steps(1) infinite}
+@keyframes piBlink{50%{opacity:0}}
+.pi-btn{display:inline-flex;margin-top:14px;background:var(--yellow);color:#241B0E;border:0;border-radius:9px;
+  box-shadow:0 3px 0 rgba(90,62,6,.4);padding:11px 24px 10px;font-family:'Anton',sans-serif;font-size:12px;
+  letter-spacing:.18em;text-transform:uppercase;cursor:pointer}
+.pi-btn:active{transform:translateY(2px);box-shadow:none}
+/* the "save line" chip inside peek letters (scribe's trigger) */
+.lq-save{display:inline-flex;align-items:center;gap:6px;margin-top:9px;
+  background:transparent;border:1px solid rgba(60,44,16,.32);border-radius:999px;padding:5px 12px;
+  font:800 9px 'Inter Tight',sans-serif;letter-spacing:1.3px;text-transform:uppercase;
+  color:#3A55B4;cursor:pointer}
+.lq-save .ti{font-size:11px}
+.lq-save.on{background:#3A55B4;border-color:transparent;color:#F3F5FF;cursor:default}
+.lq-save:not(.on):active{transform:translateY(1px)}
+@media (prefers-reduced-motion:reduce){
+  .pintro-card,.pintro-scrim,.pi-owl{transition:none !important;animation:none !important}
+}
+
 /* the landing production credit */
 .ob-prod{font-size:9px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:var(--fade);
   margin-top:4px;animation:mqIn .62s cubic-bezier(.18,.9,.24,1.04) 1.25s backwards}

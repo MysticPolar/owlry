@@ -54,6 +54,7 @@ export function mergeProgress(a: PersistedState, b: PersistedState): PersistedSt
       ...lead.prefs,
       onboarded: a.prefs.onboarded || b.prefs.onboarded,
       name: a.prefs.name || b.prefs.name,
+      introsSeen: union(a.prefs.introsSeen ?? [], b.prefs.introsSeen ?? []),
     },
   };
 }
