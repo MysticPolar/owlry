@@ -1046,35 +1046,84 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 @keyframes valSway{0%,100%{transform:translateY(0)}50%{transform:translateY(1.5px)}}
 .ob-valance::after{content:"";position:absolute;left:0;right:0;bottom:-9px;height:9px;
   background:repeating-linear-gradient(90deg,#FFC017 0 5px,#A8730A 5px 10px)}
-/* peek hangs on a rope from the valance, dangling in front of the cloth (z 23) */
+/* peek hangs on a swaying rope from the valance, dangling in front of the
+   cloth (z 23); once open, peek drops in on the line, then idly ducks */
 .ob-rope{position:absolute;left:14%;top:44px;width:64px;z-index:23;pointer-events:none;
-  opacity:0;transition:opacity .6s ease .5s}
+  opacity:0;transform-origin:50% 0;transition:opacity .6s ease 1.2s;animation:obRopeSway 5.4s ease-in-out infinite}
 .ob-reveal.open .ob-rope{opacity:1}
+@keyframes obRopeSway{0%,100%{transform:rotate(1.1deg)}50%{transform:rotate(-1.3deg)}}
 .ob-rope-line{position:absolute;left:50%;top:0;width:4px;height:150px;transform:translateX(-50%);border-radius:3px;
   background:repeating-linear-gradient(180deg,#C89A3A 0 6px,#8A6520 6px 12px)}
-.ob-rope .o-peek{position:absolute;top:132px;left:50%;transform:translateX(-50%) rotate(-6deg);width:58px;height:63px;
-  animation:obSway 4.5s ease-in-out infinite}
-@keyframes obSway{0%,100%{transform:translateX(-50%) rotate(-6deg)}50%{transform:translateX(-50%) rotate(2deg)}}
-.ob-bill{position:absolute;left:0;right:0;top:23%;z-index:2;text-align:center;padding:0 14px;
-  opacity:0;transform:translateY(10px);transition:opacity .6s ease .2s,transform .6s ease .2s}
-.ob-reveal.open .ob-bill{opacity:1;transform:none}
-.ob-kick{font-size:10px;font-weight:800;letter-spacing:.42em;text-transform:uppercase;color:var(--fade);margin:0 0 12px}
+.ob-rope .o-peek{position:absolute;top:132px;left:50%;width:58px;height:63px;
+  transform:translateX(-50%) translateY(0) rotate(-5deg);opacity:0}
+.ob-reveal.open .o-peek{animation:obPeekIn 1.15s cubic-bezier(.25,.8,.3,1) 1.5s forwards,
+  obPeekDuck 6s ease-in-out 3.1s infinite}
+@keyframes obPeekIn{0%{opacity:0;transform:translateX(-50%) translateY(-118px) rotate(-6deg)}
+  45%{opacity:1;transform:translateX(-50%) translateY(-46px) rotate(-6deg)}
+  62%{transform:translateX(-50%) translateY(-46px) rotate(-6deg)}
+  100%{opacity:1;transform:translateX(-50%) translateY(0) rotate(-5deg)}}
+@keyframes obPeekDuck{0%,100%{transform:translateX(-50%) translateY(0) rotate(-5deg)}
+  9%{transform:translateX(-50%) translateY(-22px) rotate(-6deg)}
+  20%{transform:translateX(-50%) translateY(0) rotate(-5deg)}
+  62%{transform:translateX(-50%) translateY(-4px) rotate(-4.4deg)}}
+/* mirror's violet aura + a stray glint, both easing in behind the flock */
+.ob-aura{position:absolute;left:69%;bottom:6px;width:150px;height:150px;transform:translateX(-50%);border-radius:50%;
+  background:radial-gradient(50% 50% at 50% 50%, rgba(166,138,240,.16), transparent 70%);
+  opacity:0;pointer-events:none;z-index:2}
+.ob-reveal.open .ob-aura{animation:obAuraIn 1s ease 1.9s forwards, obAuraPulse 5s ease-in-out 3s infinite}
+@keyframes obAuraIn{to{opacity:1}}
+@keyframes obAuraPulse{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.07)}}
+.ob-glint{position:absolute;left:calc(84% + 6px);bottom:150px;z-index:4;font-size:13px;color:#FFF3C4;
+  text-shadow:0 0 8px rgba(255,214,102,.9);opacity:0;pointer-events:none}
+.ob-reveal.open .ob-glint{animation:obGlint .7s ease 2.6s 1, obGlint .7s ease 9s 1}
+@keyframes obGlint{0%{opacity:0;transform:scale(.4) rotate(0)}35%{opacity:1;transform:scale(1.15) rotate(20deg)}
+  100%{opacity:0;transform:scale(.6) rotate(40deg)}}
+/* the marquee — each line steps in on its own beat once the curtain parts */
+.ob-bill{position:absolute;left:0;right:0;top:23%;z-index:2;text-align:center;padding:0 14px}
+.ob-kick{font-size:10px;font-weight:800;letter-spacing:.42em;text-transform:uppercase;color:var(--fade);margin:0 0 12px;
+  opacity:0;transform:translateY(10px)}
+.ob-reveal.open .ob-kick{transition:opacity .7s ease 1.1s,transform .7s ease 1.1s;opacity:1;transform:none}
 .ob-marq{margin:0;font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;line-height:.86;
   font-size:clamp(64px, 22vw, 92px);letter-spacing:.01em;color:var(--letter,#FBF4E1);
   text-shadow:0 0 30px rgba(255,240,200,.28)}
-.ob-marq span{display:block}
+.ob-marq span{display:block;opacity:0;transform:translateY(26px) skewX(-9deg)}
 .ob-marq span:nth-child(2){color:var(--yellow)}
-.ob-at{margin-top:12px;font-family:'Anton',sans-serif;font-size:22px;letter-spacing:.02em;transform:skewX(-6deg);color:#F2EBD7}
+.ob-reveal.open .ob-marq span{animation:obMqIn .8s cubic-bezier(.18,.9,.24,1.04) forwards}
+.ob-reveal.open .ob-marq span:nth-child(1){animation-delay:1.0s}
+.ob-reveal.open .ob-marq span:nth-child(2){animation-delay:1.13s}
+@keyframes obMqIn{to{opacity:1;transform:none}}
+.ob-at{margin-top:12px;font-family:'Anton',sans-serif;font-size:22px;letter-spacing:.02em;color:#F2EBD7;
+  opacity:0;transform:skewX(-6deg) translateY(12px)}
+.ob-reveal.open .ob-at{transition:opacity .7s ease 1.65s,transform .7s cubic-bezier(.18,.9,.24,1.04) 1.65s;
+  opacity:1;transform:skewX(-6deg) translateY(0)}
 .ob-at em{font-family:'Fraunces',Georgia,serif;font-style:italic;font-size:16px;color:var(--mut);margin-right:6px;text-transform:none}
-/* the flock roosts along the bottom, lit by the beam */
+/* the flock — each owl swoops up into place, then settles into an idle,
+   staggered so they arrive one after another (adapted from the mockup) */
 .ob-ground{position:absolute;left:0;right:0;bottom:0;height:38%;z-index:3;pointer-events:none;
-  display:flex;align-items:flex-end;justify-content:center;
-  opacity:0;transform:translateY(20px);transition:opacity .8s ease .35s,transform .8s ease .35s}
-.ob-reveal.open .ob-ground{opacity:1;transform:none}
-.ob-ground .owl{width:clamp(74px, 21vw, 96px);height:auto;aspect-ratio:120/130;margin:0 -8px}
-.ob-ground .o-scout{transform:rotate(-6deg)}
-.ob-ground .o-keeper{transform:translateY(-6px)}
-.ob-ground .o-scribe{transform:rotate(5deg)}
+  display:flex;align-items:flex-end;justify-content:center}
+.ob-ground .owl{width:clamp(74px, 21vw, 96px);height:auto;aspect-ratio:120/130;margin:0 -8px;
+  opacity:0;transform-origin:50% 100%}
+.ob-reveal.open .o-scout{animation:obScoutIn .75s cubic-bezier(.2,.9,.3,1.1) 1.0s forwards,
+  obScoutBob 2.7s ease-in-out 1.9s infinite}
+@keyframes obScoutIn{0%{opacity:0;transform:translateY(90px) rotate(-11deg) scale(.92)}
+  62%{opacity:1;transform:translateY(-10px) rotate(-4deg)}82%{transform:translateY(3px) rotate(-7deg)}
+  100%{opacity:1;transform:rotate(-6deg)}}
+@keyframes obScoutBob{0%,100%{transform:rotate(-6deg) translateY(0)}
+  18%{transform:rotate(-5deg) translateY(-6px)}36%{transform:rotate(-6.5deg) translateY(0)}}
+.ob-reveal.open .o-keeper{animation:obKeepIn .85s cubic-bezier(.3,.8,.4,1) 1.15s forwards,
+  obKeepBreathe 5.6s ease-in-out 2.1s infinite}
+@keyframes obKeepIn{0%{opacity:0;transform:translateY(110px)}58%{opacity:1;transform:translateY(-6px) scaleY(1)}
+  70%{transform:translateY(-6px) scaleY(.93) scaleX(1.05)}84%{transform:translateY(-6px) scaleY(1.025) scaleX(.99)}
+  100%{opacity:1;transform:translateY(-6px)}}
+@keyframes obKeepBreathe{0%,100%{transform:translateY(-6px) scaleY(1)}50%{transform:translateY(-7px) scaleY(1.016)}}
+.ob-reveal.open .o-mirror{animation:obMirrorIn 1.05s cubic-bezier(.22,.7,.25,1) 1.45s forwards,
+  obMirrorSway 7.5s ease-in-out 2.6s infinite}
+@keyframes obMirrorIn{0%{opacity:0;transform:translateY(72px) rotate(1deg)}100%{opacity:1;transform:rotate(3deg)}}
+@keyframes obMirrorSway{0%,100%{transform:rotate(3deg) translateY(0)}50%{transform:rotate(3.8deg) translateY(-2.5px)}}
+.ob-reveal.open .o-scribe{animation:obScribeIn .7s cubic-bezier(.2,.85,.3,1) 1.3s forwards,
+  obScribeIdle 6s ease-in-out 2.1s infinite}
+@keyframes obScribeIn{0%{opacity:0;transform:translateY(80px) rotate(9deg)}100%{opacity:1;transform:rotate(5deg)}}
+@keyframes obScribeIdle{0%,100%{transform:rotate(5deg) translateY(0)}50%{transform:rotate(4.6deg) translateY(-2px)}}
 .ob-seatrow{position:absolute;left:0;right:0;bottom:calc(30px + env(safe-area-inset-bottom));z-index:8;
   display:flex;justify-content:center;opacity:0;transform:translateY(12px);
   transition:opacity .5s ease .6s,transform .5s ease .6s}

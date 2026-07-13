@@ -393,6 +393,10 @@ function CurtainReveal({ onEnter }: { onEnter: () => void }) {
           <em>at</em> owlry<span className="gdot">.</span>
         </div>
       </div>
+      <div className="ob-aura" aria-hidden="true" />
+      <span className="ob-glint" aria-hidden="true">
+        ✦
+      </span>
       <div className="ob-ground" aria-hidden="true">
         {GROUND.map((o) => (
           <svg key={o} className={`owl o-${o}`} viewBox="0 0 120 130">
