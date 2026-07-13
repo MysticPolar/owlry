@@ -21,6 +21,8 @@ import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 export interface CurtainHandle {
   raise: () => void;
   burst: (x: number, y: number, n?: number) => void;
+  /** aim the eyes at a point (fractions of the container, 0..1) — e.g. the name input */
+  lookAt: (nx: number, ny: number) => void;
 }
 
 const RM = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -81,7 +83,7 @@ export const CurtainCloth = forwardRef<CurtainHandle, Props>(function CurtainClo
   const backRef = useRef<HTMLCanvasElement>(null);
   const frontRef = useRef<HTMLCanvasElement>(null);
   const sparkRef = useRef<HTMLCanvasElement>(null);
-  const api = useRef<CurtainHandle>({ raise: () => {}, burst: () => {} });
+  const api = useRef<CurtainHandle>({ raise: () => {}, burst: () => {}, lookAt: () => {} });
 
   // keep the callbacks/props current without re-initialising the engine
   const cb = useRef({ onRaise, onOpen, autoRaiseMs, motes });
@@ -92,6 +94,7 @@ export const CurtainCloth = forwardRef<CurtainHandle, Props>(function CurtainClo
     () => ({
       raise: () => api.current.raise(),
       burst: (x, y, n) => api.current.burst(x, y, n),
+      lookAt: (nx, ny) => api.current.lookAt(nx, ny),
     }),
     [],
   );
@@ -429,7 +432,13 @@ export const CurtainCloth = forwardRef<CurtainHandle, Props>(function CurtainClo
       S.target = 1;
       S.phase = 'opening';
     }
-    api.current = { raise, burst };
+    // aim the eyes at a point (the mockup's lookAtPlaque — the owls watch you type)
+    const lookAt = (nx: number, ny: number) => {
+      S.gazeTarget.x = nx;
+      S.gazeTarget.y = ny;
+      S.pointerAt = S.t;
+    };
+    api.current = { raise, burst, lookAt };
 
     /* ---------- pointer → the eyes follow ---------- */
     const host = front.parentElement;

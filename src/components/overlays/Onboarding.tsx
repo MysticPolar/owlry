@@ -304,6 +304,15 @@ function NamePlaque({ onDone, clothRef }: { onDone: () => void; clothRef: React.
     return () => clearTimeout(t);
   }, []);
   const clean = name.replace(/\s+/g, ' ').trimStart();
+  // the eyes look at the plaque while you write your name (the mockup's lookAtPlaque)
+  const lookAtInput = () => {
+    const el = ref.current;
+    const gate = el?.closest('.ob-gate');
+    if (!el || !gate || !clothRef.current) return;
+    const r = el.getBoundingClientRect();
+    const a = gate.getBoundingClientRect();
+    clothRef.current.lookAt((r.left - a.left + r.width / 2) / a.width, (r.top - a.top + r.height / 2) / a.height);
+  };
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     const n = clean.trim();
@@ -339,7 +348,11 @@ function NamePlaque({ onDone, clothRef }: { onDone: () => void; clothRef: React.
           ref={ref}
           className="ob-namein"
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={(e) => {
+            setName(e.target.value);
+            lookAtInput();
+          }}
+          onFocus={lookAtInput}
           placeholder="your name"
           maxLength={18}
           autoComplete="given-name"
