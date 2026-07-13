@@ -17,19 +17,12 @@
 // Deploy:  supabase functions deploy book-proxy --no-verify-jwt
 // ============================================================
 import { createClient } from 'npm:@supabase/supabase-js@2';
+import {
+  BOOK_PROXY_ALLOWED_HOSTS,
+  BOOK_PROXY_EBOOK_PATH,
+  isAllowedBookUrl,
+} from '../_shared/bookProxyPolicy.ts';
 import { corsHeaders, jsonResponse } from '../_shared/cors.ts';
-
-// Project Gutenberg + its official mirrors (gutendex hands out gutenberg.org URLs;
-// files sometimes redirect to a mirror). Add mirrors here, never a wildcard.
-const ALLOWED_HOSTS = new Set([
-  'www.gutenberg.org',
-  'gutenberg.org',
-  'gutenberg.pglaf.org',
-  'aleph.gutenberg.org',
-  'gutenberg.readingroo.ms',
-  'www.gutenberg.net.au',
-]);
-const EBOOK_PATH = /\.(epub|mobi|azw3|fb2|txt)$/i;
 const MAX_BYTES = 30 * 1024 * 1024; // 30 MB hard cap
 const FETCH_TIMEOUT_MS = 20_000;
 const MAX_REDIRECTS = 4;
@@ -41,7 +34,7 @@ function hourStart(): Date {
 
 /** an https URL whose host is allowlisted and whose path looks like an ebook file */
 function isAllowed(u: URL): boolean {
-  return u.protocol === 'https:' && ALLOWED_HOSTS.has(u.hostname) && EBOOK_PATH.test(u.pathname);
+  return isAllowedBookUrl(u);
 }
 
 /** fetch, following redirects MANUALLY so every hop's host is re-validated (SSRF-safe) */
@@ -90,8 +83,8 @@ Deno.serve(async (req: Request): Promise<Response> => {
     return jsonResponse({ error: 'invalid url' }, 400);
   }
   if (u.protocol !== 'https:') return jsonResponse({ error: 'https only' }, 400);
-  if (!ALLOWED_HOSTS.has(u.hostname)) return jsonResponse({ error: 'host not allowed' }, 403);
-  if (!EBOOK_PATH.test(u.pathname)) return jsonResponse({ error: 'not an ebook path' }, 400);
+  if (!BOOK_PROXY_ALLOWED_HOSTS.has(u.hostname)) return jsonResponse({ error: 'host not allowed' }, 403);
+  if (!BOOK_PROXY_EBOOK_PATH.test(u.pathname)) return jsonResponse({ error: 'not an ebook path' }, 400);
 
   // ── per-IP rate limit (120/hour) — a light guard on egress abuse ──
   try {
