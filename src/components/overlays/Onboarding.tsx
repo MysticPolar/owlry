@@ -4,6 +4,7 @@ import { useAuth } from '../../store/useAuth';
 import { Icon } from '../Icon';
 import { type CastOwlName } from '../CastOwl';
 import { CurtainCloth, type CurtainHandle } from './CurtainCloth';
+import { Confetti, type ConfettiHandle } from './Confetti';
 import { BOOKS } from '../../content/books';
 import type { BookRef } from '../../content/types';
 
@@ -566,29 +567,7 @@ function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void
   const letterRef = useRef<HTMLDivElement>(null);
   const dropRef = useRef<HTMLSpanElement>(null);
   const xpflyRef = useRef<HTMLSpanElement>(null);
-  const sparkRef = useRef<HTMLDivElement>(null);
-
-  // a confetti burst of sparks at an element's centre (the mockup's burst())
-  const spark = (el: Element | null, n: number) => {
-    const layer = sparkRef.current;
-    const cont = flightRef.current;
-    if (!el || !layer || !cont || reduced()) return;
-    const r = el.getBoundingClientRect();
-    const a = cont.getBoundingClientRect();
-    const cx = r.left - a.left + r.width / 2;
-    const cy = r.top - a.top + r.height * 0.28;
-    for (let i = 0; i < n; i++) {
-      const sp = document.createElement('span');
-      sp.className = 'ob-spark';
-      sp.style.left = `${cx}px`;
-      sp.style.top = `${cy}px`;
-      sp.style.background = i % 2 ? 'var(--ember)' : 'var(--yellow)';
-      sp.style.setProperty('--dx', `${(Math.random() * 130 - 65).toFixed(0)}px`);
-      sp.style.setProperty('--dy', `${(-24 - Math.random() * 74).toFixed(0)}px`);
-      layer.appendChild(sp);
-      setTimeout(() => sp.remove(), 850);
-    }
-  };
+  const confettiRef = useRef<ConfettiHandle>(null);
 
   const s = steps[step];
   const onLast = step === steps.length - 1;
@@ -656,10 +635,16 @@ function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void
   useEffect(() => {
     if (mode !== 'done') return;
     const R = reduced();
-    // 1 · the stamp slams + confetti at the letter
+    // 1 · the stamp slams + a confetti burst at the stamp corner
     const t1 = setTimeout(() => {
       setStamp(true);
-      spark(letterRef.current, 34);
+      const L = letterRef.current;
+      const cont = flightRef.current;
+      if (L && cont) {
+        const lr = L.getBoundingClientRect();
+        const a = cont.getBoundingClientRect();
+        confettiRef.current?.burst(lr.left - a.left + lr.width - 30, lr.top - a.top + 20, 34, true);
+      }
     }, R ? 1 : 250);
     // 2 · xp flies from the letter to the level bar, then fills it
     const t2 = setTimeout(() => {
@@ -698,7 +683,15 @@ function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void
       setLv(2);
       setXp(14);
       setBanner(1);
-      setTimeout(() => spark(document.querySelector('.ob-banner'), 26), 60);
+      setTimeout(() => {
+        const banner = document.querySelector('.ob-banner');
+        const cont = flightRef.current;
+        if (banner && cont) {
+          const br = banner.getBoundingClientRect();
+          const a = cont.getBoundingClientRect();
+          confettiRef.current?.burst(br.left - a.left + br.width / 2, br.top - a.top + 40, 26, true);
+        }
+      }, 60);
     }, R ? 20 : 2050);
     // 4 · the welcome bundle joins (stage 2) — ink rains in
     const t4 = setTimeout(() => {
@@ -735,7 +728,8 @@ function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void
       <span className="ob-xpfly" ref={xpflyRef} aria-hidden="true">
         +20 xp
       </span>
-      <div className="ob-sparks" ref={sparkRef} aria-hidden="true" />
+      <Confetti ref={confettiRef} />
+
 
       {/* the two HUDs — ink (right) and level (left) */}
       <div className={`ob-hud ob-lvhud${lvOn ? ' on' : ''}${banner ? ' flash' : ''}`} aria-label="Level" ref={lvHudRef}>
