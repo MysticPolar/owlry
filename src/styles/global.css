@@ -1164,12 +1164,12 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .ob-lvhud{left:16px}
 .ob-inkhud{right:16px}
 .ob-lvhud.flash{animation:hudFlash .6s ease}
-@keyframes hudFlash{30%{box-shadow:0 0 18px rgba(255,192,23,.65);border-color:var(--yellow)}}
+@keyframes hudFlash{30%{box-shadow:0 0 18px rgba(138,160,242,.7);border-color:var(--quill)}}
 .ob-lv{font-size:13px;letter-spacing:.08em;color:#F2EBD7}
 .ob-track{width:52px;height:5px;background:rgba(255,246,220,.14);border-radius:3px;overflow:hidden}
-.ob-fill{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--yellow),#FFD866);border-radius:3px;
-  transition:width .7s cubic-bezier(.2,.8,.2,1)}
-.ob-inkhud .ti{font-size:15px;color:var(--yellow)}
+.ob-fill{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--quill-d),var(--quill-l));border-radius:3px;
+  box-shadow:0 0 10px rgba(138,160,242,.5);transition:width .7s cubic-bezier(.2,.8,.2,1)}
+.ob-inkhud .ti{font-size:15px;color:var(--quill-l)}
 .ob-inkn{font-size:13px;letter-spacing:.06em;min-width:14px;text-align:center;color:#F2EBD7}
 .ob-inkhud.empty .ti{opacity:.4}
 .ob-inkhud.empty .ob-inkn{color:var(--fade)}
@@ -1242,10 +1242,11 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .ob-banner.stage2 .ob-bbundle{opacity:1;transform:none}
 .ob-bbig{font-family:'Fraunces',Georgia,serif;font-style:italic;font-size:14.5px;color:#F2E8CE}
 .ob-bink{display:inline-flex;align-items:center;gap:7px;margin-top:9px;font-size:16px;letter-spacing:.06em;color:var(--quill-l)}
-.ob-bink .ti{font-size:16px;color:var(--yellow)}
-.ob-bcont{display:inline-flex;margin-top:14px;background:var(--yellow);color:#241B0E;border:0;border-radius:9px;
-  box-shadow:0 3px 0 rgba(90,62,6,.4);padding:11px 26px 10px;font-family:'Anton',sans-serif;font-size:12.5px;
-  letter-spacing:.2em;text-transform:uppercase;cursor:pointer;opacity:0;transition:opacity .5s .3s ease}
+.ob-bink .ti{font-size:16px;color:var(--quill-l)}
+.ob-bcont{display:inline-flex;margin-top:14px;background:var(--quill);color:#161B33;border:0;border-radius:9px;
+  box-shadow:0 3px 0 rgba(43,56,140,.55), 0 0 22px -4px rgba(138,160,242,.5);padding:11px 26px 10px;
+  font-family:'Anton',sans-serif;font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;
+  opacity:0;transition:opacity .5s .3s ease}
 .ob-banner.stage2 .ob-bcont{opacity:1}
 .ob-bcont:active{transform:translateY(2px);box-shadow:none}
 /* the ink drop that leaves the vial, the xp that flies to the bar, the confetti */
