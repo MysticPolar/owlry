@@ -3,6 +3,7 @@ import { useStore } from '../../store/useStore';
 import { useAuth } from '../../store/useAuth';
 import { Icon } from '../Icon';
 import { type CastOwlName } from '../CastOwl';
+import { CurtainCloth, type CurtainHandle } from './CurtainCloth';
 import { BOOKS } from '../../content/books';
 import type { BookRef } from '../../content/types';
 
@@ -290,11 +291,13 @@ function Playbill({ onDone }: { onDone: () => void }) {
   );
 }
 
-/* ---------- act 3b · the name (against the closed curtain) ---------- */
-function NameCard({ onDone }: { onDone: () => void }) {
+/* ---------- act 3b · the name (against the closed velvet, eyes watching) ---------- */
+function NamePlaque({ onDone, clothRef }: { onDone: () => void; clothRef: React.RefObject<CurtainHandle> }) {
   const setPref = useStore((s) => s.setPref);
   const [name, setName] = useState('');
+  const [sealed, setSealed] = useState(false);
   const ref = useRef<HTMLInputElement>(null);
+  const btnRef = useRef<HTMLButtonElement>(null);
   useEffect(() => {
     const t = setTimeout(() => ref.current?.focus(), 320);
     return () => clearTimeout(t);
@@ -308,73 +311,77 @@ function NameCard({ onDone }: { onDone: () => void }) {
       return;
     }
     setPref('name', n.slice(0, 18));
-    onDone();
+    setSealed(true);
+    // sparks off the button, in the curtain's coordinate space
+    const btn = btnRef.current;
+    const gate = btn?.closest('.ob-gate');
+    if (btn && gate && clothRef.current) {
+      const r = btn.getBoundingClientRect();
+      const a = gate.getBoundingClientRect();
+      clothRef.current.burst(r.left - a.left + r.width / 2, r.top - a.top + 4, 26);
+    }
+    setTimeout(onDone, reduced() ? 200 : 1200);
   };
   return (
-    <div className="ob-gate">
-      <div className="ob-drape" aria-hidden="true" />
-      <div className="ob-valance" aria-hidden="true" />
-      <div className="ob-eyes" aria-hidden="true">
-        <span style={{ '--x': '46%', '--y': '74%' } as CSSProperties} />
-        <span style={{ '--x': '48%', '--y': '84%' } as CSSProperties} />
+    <div className="ob-plaque">
+      <div className="ob-crest d">
+        owlry<span className="gdot">.</span>
       </div>
-      <div className="ob-plaque">
-        <div className="ob-crest d">
-          owlry<span className="gdot">.</span>
-        </div>
-        <p className="ob-qline">how should the owls address you?</p>
-        <div className="ob-dear">
-          <em>Dear</em> <span className="ob-dearname">{clean}</span>
-          <span className="ob-cur" />
-          {clean && ','}
-        </div>
-        <form onSubmit={submit}>
-          <input
-            ref={ref}
-            className="ob-namein"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="your name"
-            maxLength={18}
-            autoComplete="given-name"
-            spellCheck={false}
-            aria-label="Your name"
-          />
-          <button className="gbtn" type="submit">
-            that&rsquo;s me
-          </button>
-        </form>
-        <p className="ob-dearnote">every letter you receive opens this way</p>
+      <p className="ob-qline">how should the owls address you?</p>
+      <div className="ob-dear">
+        <em>Dear</em> <span className="ob-dearname">{clean}</span>
+        {!sealed && <span className="ob-cur" />}
+        {clean && ','}
       </div>
+      <form onSubmit={submit}>
+        <input
+          ref={ref}
+          className="ob-namein"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="your name"
+          maxLength={18}
+          autoComplete="given-name"
+          spellCheck={false}
+          aria-label="Your name"
+          disabled={sealed}
+        />
+        <button className="gbtn" type="submit" ref={btnRef} disabled={sealed}>
+          {sealed ? `sealed for ${clean}` : "that’s me"}
+        </button>
+      </form>
+      <p className="ob-dearnote">every letter you receive opens this way</p>
     </div>
   );
 }
 
-/* ---------- act 4 · the curtain rises ---------- */
+/* ---------- act 4 · the curtain rises (canvas cloth) ---------- */
 function CurtainReveal({ onEnter }: { onEnter: () => void }) {
-  const [raising, setRaising] = useState(false);
   const [open, setOpen] = useState(false);
-  const raise = () => {
-    if (raising) return;
-    setRaising(true);
-    setTimeout(() => setOpen(true), reduced() ? 250 : 950);
-  };
+  const [entering, setEntering] = useState(false);
+  const clothRef = useRef<CurtainHandle>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
   const GROUND: CastOwlName[] = ['scout', 'keeper', 'mirror', 'scribe'];
+
+  const enter = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (entering) return;
+    setEntering(true);
+    const btn = e.currentTarget;
+    const root = rootRef.current;
+    if (btn && root && clothRef.current) {
+      const r = btn.getBoundingClientRect();
+      const a = root.getBoundingClientRect();
+      clothRef.current.burst(r.left - a.left + r.width / 2, r.top - a.top + 6, 30);
+    }
+    setTimeout(onEnter, reduced() ? 200 : 950);
+  };
+
   return (
-    <div className={`ob-reveal${open ? ' open' : ''}`}>
-      <div className="ob-beam" aria-hidden="true" />
-      <div className="ob-dust" aria-hidden="true">
-        {Array.from({ length: 14 }).map((_, i) => (
-          <span key={i} style={{ '--i': i } as CSSProperties} />
-        ))}
-      </div>
-      <div className="ob-valance" aria-hidden="true" />
-      <div className="ob-rope" aria-hidden="true">
-        <span className="ob-rope-line" />
-        <svg className="owl o-peek" viewBox="0 0 120 130">
-          <use href="#owl-peek" />
-        </svg>
-      </div>
+    <div className={`ob-reveal${open ? ' open' : ''}`} ref={rootRef}>
+      {/* the velvet cloth, spring physics + eyes + beam + dust — parts to reveal the house */}
+      <CurtainCloth ref={clothRef} motes={88} autoRaiseMs={reduced() ? 700 : 2600} onRaise={() => setOpen(true)} />
+
+      {/* the house behind the cloth, revealed as it parts */}
       <div className="ob-bill">
         <p className="ob-kick">tonight &amp; every night</p>
         <h1 className="ob-marq">
@@ -393,27 +400,35 @@ function CurtainReveal({ onEnter }: { onEnter: () => void }) {
         ))}
       </div>
       <div className="ob-seatrow">
-        <button className="btn ob-seatbtn" onClick={onEnter}>
+        <button className="btn ob-seatbtn" onClick={enter}>
           enter <Icon name="ti-arrow-right" />
         </button>
       </div>
-      {!open && (
-        <button
-          className={`ob-house${raising ? ' rising' : ''}`}
-          onClick={raise}
-          aria-label="Raise the curtain"
-        >
-          <div className="ob-velvet" />
-          <div className="ob-fringe" />
-          <span className="ob-house-txt">
-            <span className="ob-house-mark d">
-              owlry<span className="gdot">.</span>
-            </span>
-            <span className="ob-house-show">the evening show</span>
-            <span className="ob-house-seat">now seating — tap to raise the curtain</span>
+
+      {/* peek dangles on a rope, and the pelmet — both in front of the cloth */}
+      <div className="ob-rope" aria-hidden="true">
+        <span className="ob-rope-line" />
+        <svg className="owl o-peek" viewBox="0 0 120 130">
+          <use href="#owl-peek" />
+        </svg>
+      </div>
+      <div className="ob-valance" aria-hidden="true" />
+
+      {/* the closed-curtain invitation + tap target; fades out as it rises */}
+      <button
+        className="ob-house"
+        onClick={() => clothRef.current?.raise()}
+        aria-label="Raise the curtain"
+        aria-hidden={open}
+      >
+        <span className="ob-house-txt">
+          <span className="ob-house-mark d">
+            owlry<span className="gdot">.</span>
           </span>
-        </button>
-      )}
+          <span className="ob-house-show">the evening show</span>
+          <span className="ob-house-seat">now seating — tap to raise the curtain</span>
+        </span>
+      </button>
     </div>
   );
 }
@@ -826,6 +841,7 @@ export function Onboarding() {
   const authOpen = useAuth((s) => s.authOpen);
   const authed = useAuth((s) => s.status === 'authed');
   const [phase, setPhase] = useState<Phase>('landing');
+  const gateCloth = useRef<CurtainHandle>(null);
 
   useEffect(() => {
     if (show) setPhase('landing');
@@ -862,13 +878,14 @@ export function Onboarding() {
     >
       {phase === 'landing' && <Splash onEnter={() => setPhase('playbill')} />}
       {phase === 'playbill' && <Playbill onDone={afterDeck} />}
-      {phase === 'gate' && (
+      {/* act 3 · the door + the name share one closed velvet curtain (eyes watching) */}
+      {(phase === 'gate' || phase === 'name') && (
         <div className="ob-gate">
-          <div className="ob-drape" aria-hidden="true" />
+          <CurtainCloth ref={gateCloth} motes={60} />
           <div className="ob-valance" aria-hidden="true" />
+          {phase === 'name' && <NamePlaque onDone={() => setPhase('curtain')} clothRef={gateCloth} />}
         </div>
       )}
-      {phase === 'name' && <NameCard onDone={() => setPhase('curtain')} />}
       {phase === 'curtain' && <CurtainReveal onEnter={() => setPhase('flight')} />}
       {phase === 'flight' && <Flight name={name} onFinish={(ask) => finish({ label: ask.label, guide: ask.guide })} />}
     </div>
