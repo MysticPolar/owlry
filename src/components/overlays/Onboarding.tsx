@@ -743,6 +743,7 @@ function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void
 
   const skip = () => {
     setStep(steps.length - 1);
+    setLine(steps[steps.length - 1].node); // show the last line whole, not mid-type
     setTyped(true);
     setInkOn(true);
     setLvOn(true);
@@ -791,7 +792,7 @@ function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void
 
       {mode !== 'done' && (
         <div
-          className="ob-say-plaque"
+          className={`ob-say-plaque${mode === 'story' && onLast ? ' ob-q' : ''}`}
           role="button"
           tabIndex={0}
           onClick={tap}
@@ -843,6 +844,7 @@ function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void
             <div className="ob-bink d">
               <Icon name="ti-inkdrop" /> +10 ink
             </div>
+            <br />
             <button className="ob-bcont" onClick={() => picked && onFinish(picked)}>
               continue
             </button>

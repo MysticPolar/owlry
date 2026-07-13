@@ -1038,14 +1038,19 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
   justify-content:flex-start;padding:0;overflow:hidden}
 /* the beam + dust are drawn on the back canvas now; the valance is the curtain's
    scalloped top hem + gold fringe, sitting in front of the cloth (z 24) */
-.ob-valance{position:absolute;top:0;left:-2%;right:-2%;height:50px;z-index:24;pointer-events:none;
-  background:linear-gradient(180deg,#7A1A24,#5A1119);
-  -webkit-mask:radial-gradient(22px 26px at 22px 50px, transparent 96%, #000 100%) 0 0/44px 100% repeat-x;
-  mask:radial-gradient(22px 26px at 22px 50px, transparent 96%, #000 100%) 0 0/44px 100% repeat-x;
+.ob-valance{position:absolute;top:0;left:-2%;right:-2%;height:56px;z-index:24;pointer-events:none;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,0) 60%),
+    repeating-linear-gradient(90deg, rgba(255,190,160,.10) 0 3px, rgba(255,190,160,0) 3px 12px),
+    repeating-linear-gradient(90deg,#8E1B26 0 12px,#63101A 12px 26px,#7A151F 26px 38px);
   animation:valSway 4.2s ease-in-out infinite}
 @keyframes valSway{0%,100%{transform:translateY(0)}50%{transform:translateY(1.5px)}}
-.ob-valance::after{content:"";position:absolute;left:0;right:0;bottom:-9px;height:9px;
-  background:repeating-linear-gradient(90deg,#FFC017 0 5px,#A8730A 5px 10px)}
+.ob-valance::before{content:"";position:absolute;left:0;right:0;bottom:-16px;height:16px;
+  background:radial-gradient(circle at 8px -4px, #6E121C 15px, transparent 16px);
+  background-size:38px 16px;background-repeat:repeat-x}
+.ob-valance::after{content:"";position:absolute;left:0;right:0;bottom:-24px;height:9px;
+  background:repeating-linear-gradient(90deg, rgba(232,180,58,.9) 0 2px, transparent 2px 6px);
+  filter:drop-shadow(0 1px 1px rgba(0,0,0,.5))}
 /* peek hangs on a swaying rope from the valance, dangling in front of the
    cloth (z 23); once open, peek drops in on the line, then idly ducks */
 .ob-rope{position:absolute;left:14%;top:44px;width:64px;z-index:23;pointer-events:none;
@@ -1055,7 +1060,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .ob-rope-line{position:absolute;left:50%;top:0;width:4px;height:150px;transform:translateX(-50%);border-radius:3px;
   background:repeating-linear-gradient(180deg,#C89A3A 0 6px,#8A6520 6px 12px)}
 .ob-rope .o-peek{position:absolute;top:132px;left:50%;width:58px;height:63px;
-  transform:translateX(-50%) translateY(0) rotate(-5deg);opacity:0}
+  transform:translateX(-50%) translateY(0) rotate(-5deg);transform-origin:50% 4px;opacity:0;will-change:transform}
 .ob-reveal.open .o-peek{animation:obPeekIn 1.15s cubic-bezier(.25,.8,.3,1) 2.7s forwards,
   obPeekDuck 6s ease-in-out 4.4s infinite}
 @keyframes obPeekIn{0%{opacity:0;transform:translateX(-50%) translateY(-118px) rotate(-6deg)}
@@ -1125,7 +1130,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 @keyframes obScribeIn{0%{opacity:0;transform:translateY(80px) rotate(9deg)}100%{opacity:1;transform:rotate(5deg)}}
 @keyframes obScribeAdjust{0%,100%{transform:rotate(5deg)}40%{transform:rotate(8deg) translateY(-3px)}70%{transform:rotate(4deg)}}
 @keyframes obScribeIdle{0%,100%{transform:rotate(5deg) translateY(0)}50%{transform:rotate(4.6deg) translateY(-2px)}}
-.ob-seatrow{position:absolute;left:0;right:0;bottom:calc(30px + env(safe-area-inset-bottom));z-index:8;
+/* the seat floats in the beam, well above the roosting flock (mockup: bottom 308/800) */
+.ob-seatrow{position:absolute;left:0;right:0;bottom:38%;z-index:8;
   display:flex;justify-content:center;opacity:0;transform:translateY(16px);
   transition:opacity .7s ease 3.0s,transform .7s cubic-bezier(.18,.9,.24,1.04) 3.0s}
 .ob-reveal.open .ob-seatrow{opacity:1;transform:none}
@@ -1185,7 +1191,10 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
   width:calc(100% - 52px);max-width:306px;padding:18px 18px 15px;text-align:center;cursor:pointer;
   background:rgba(12,7,5,.82);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
   border:1px solid rgba(232,180,58,.32);border-radius:12px;
-  box-shadow:0 24px 50px -18px rgba(0,0,0,.85), inset 0 1px 0 rgba(255,230,170,.08)}
+  box-shadow:0 24px 50px -18px rgba(0,0,0,.85), inset 0 1px 0 rgba(255,230,170,.08);
+  transition:bottom .45s cubic-bezier(.2,.9,.25,1.05)}
+/* on the last beat the chips appear below, so the question rises to make room */
+.ob-say-plaque.ob-q{bottom:calc(236px + env(safe-area-inset-bottom))}
 .ob-who{font-size:8px;font-weight:800;letter-spacing:.24em;text-transform:uppercase;color:var(--ember);margin-bottom:8px}
 .ob-say{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:16.5px;line-height:1.55;color:#F2E8CE;min-height:52px}
 .ob-say em{font-style:italic;color:#D9C49A}
@@ -1193,7 +1202,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
   animation:tblink 1s steps(1) infinite}
 .ob-tapnote{margin-top:11px;font-size:8px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;
   color:rgba(233,222,192,.4);min-height:10px;animation:tapPulse 2s ease-in-out infinite}
-.ob-askchips{position:absolute;left:26px;right:26px;bottom:calc(110px + env(safe-area-inset-bottom));z-index:6;
+.ob-askchips{position:absolute;left:26px;right:26px;bottom:calc(64px + env(safe-area-inset-bottom));z-index:6;
   display:flex;flex-wrap:wrap;gap:9px;justify-content:center}
 .ob-chip{background:rgba(12,7,5,.82);border:1px solid rgba(232,180,58,.3);border-radius:999px;padding:11px 16px;
   font-size:12px;font-weight:700;color:#F2E8CE;cursor:pointer;animation:chipIn .5s cubic-bezier(.18,.9,.24,1.04) both}
@@ -1220,7 +1229,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
   border:2.5px solid #B3341A;border-radius:6px;padding:5px 9px;background:rgba(255,247,230,.6);text-transform:uppercase}
 .ob-stamp.on{animation:stampIn .45s cubic-bezier(.6,-.2,.3,1.4) forwards}
 @keyframes stampIn{to{opacity:.92;transform:rotate(-8deg) scale(1)}}
-.ob-banner{position:absolute;left:26px;right:26px;top:calc(96px + env(safe-area-inset-top));z-index:15;text-align:center;
+.ob-banner{position:absolute;left:26px;right:26px;top:calc(110px + env(safe-area-inset-top));z-index:15;text-align:center;
   background:rgba(12,7,5,.92);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
   border:1px solid rgba(255,192,23,.5);border-radius:14px;padding:18px 18px 16px;
   box-shadow:0 20px 46px -14px rgba(0,0,0,.85), 0 0 30px -6px rgba(255,192,23,.35);
@@ -1236,7 +1245,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .ob-bink .ti{font-size:16px;color:var(--yellow)}
 .ob-bcont{display:inline-flex;margin-top:14px;background:var(--yellow);color:#241B0E;border:0;border-radius:9px;
   box-shadow:0 3px 0 rgba(90,62,6,.4);padding:11px 26px 10px;font-family:'Anton',sans-serif;font-size:12.5px;
-  letter-spacing:.2em;text-transform:uppercase;cursor:pointer}
+  letter-spacing:.2em;text-transform:uppercase;cursor:pointer;opacity:0;transition:opacity .5s .3s ease}
+.ob-banner.stage2 .ob-bcont{opacity:1}
 .ob-bcont:active{transform:translateY(2px);box-shadow:none}
 /* the ink drop that leaves the vial, the xp that flies to the bar, the confetti */
 .ob-drop{position:absolute;z-index:15;width:14px;height:14px;color:var(--quill-l,#8AA0F2);pointer-events:none;display:none}
