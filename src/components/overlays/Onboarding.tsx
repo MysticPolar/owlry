@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { useStore } from '../../store/useStore';
+import { useClock } from '../../hooks/useClock';
 import { Icon } from '../Icon';
 import { type CastOwlName } from '../CastOwl';
 import { CurtainCloth, type CurtainHandle } from './CurtainCloth';
@@ -457,6 +458,7 @@ function NamePlaque({ onDone, clothRef }: { onDone: () => void; clothRef: React.
 function CurtainReveal({ onEnter }: { onEnter: () => void }) {
   const [open, setOpen] = useState(false);
   const [entering, setEntering] = useState(false);
+  const { time } = useClock();
   const clothRef = useRef<CurtainHandle>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   const GROUND: CastOwlName[] = ['scout', 'keeper', 'mirror', 'scribe'];
@@ -505,6 +507,9 @@ function CurtainReveal({ onEnter }: { onEnter: () => void }) {
         <button className="btn ob-seatbtn" onClick={enter}>
           enter <Icon name="ti-arrow-right" />
         </button>
+      </div>
+      <div className="ob-showline" aria-hidden="true">
+        the evening show · {time}
       </div>
 
       {/* peek dangles on a rope, and the pelmet — both in front of the cloth */}

@@ -1131,7 +1131,6 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
   font-size:clamp(64px, 22vw, 92px);letter-spacing:.01em;color:var(--letter,#FBF4E1);
   text-shadow:0 0 30px rgba(255,240,200,.28)}
 .ob-marq span{display:block;opacity:0;transform:translateY(26px) skewX(-9deg)}
-.ob-marq span:nth-child(2){color:var(--yellow)}
 .ob-reveal.open .ob-marq span{animation:obMqIn .8s cubic-bezier(.18,.9,.24,1.04) forwards}
 .ob-reveal.open .ob-marq span:nth-child(1){animation-delay:1.05s}
 .ob-reveal.open .ob-marq span:nth-child(2){animation-delay:1.18s}
@@ -1141,34 +1140,43 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .ob-reveal.open .ob-at{transition:opacity .7s ease 1.7s,transform .7s cubic-bezier(.18,.9,.24,1.04) 1.7s;
   opacity:1;transform:skewX(-6deg) translateY(0)}
 .ob-at em{font-family:'Fraunces',Georgia,serif;font-style:italic;font-size:16px;color:var(--mut);margin-right:6px;text-transform:none}
-/* the flock — each owl swoops up into place, then settles into an idle,
-   staggered so they arrive one after another (adapted from the mockup) */
-.ob-ground{position:absolute;left:0;right:0;bottom:0;height:38%;z-index:3;pointer-events:none;
-  display:flex;align-items:flex-end;justify-content:center}
-.ob-ground .owl{width:clamp(74px, 21vw, 96px);height:auto;aspect-ratio:120/130;margin:0 -8px;
-  opacity:0;transform-origin:50% 100%}
+/* the flock — the mockup's stage marks: keeper biggest in the centre, the
+   others flanking, all roosting at the stage floor (slightly cropped). Each
+   swoops up into place then settles into its own idle, staggered. */
+.ob-ground{position:absolute;inset:auto 0 0 0;height:44%;z-index:3;pointer-events:none}
+.ob-ground .owl{position:absolute;height:auto;aspect-ratio:120/130;opacity:0;transform-origin:50% 100%}
+.ob-ground .o-scout{left:30%;bottom:-6px;width:134px}
+.ob-ground .o-keeper{left:50%;bottom:-13px;width:176px}
+.ob-ground .o-mirror{left:69%;bottom:-4px;width:126px}
+.ob-ground .o-scribe{left:86%;bottom:-7px;width:112px}
 .ob-reveal.open .o-scout{animation:obScoutIn .75s cubic-bezier(.2,.9,.3,1.1) 1.5s forwards,
   obScoutBob 2.7s ease-in-out 2.6s infinite}
-@keyframes obScoutIn{0%{opacity:0;transform:translateY(90px) rotate(-11deg) scale(.92)}
-  62%{opacity:1;transform:translateY(-10px) rotate(-4deg)}82%{transform:translateY(3px) rotate(-7deg)}
-  100%{opacity:1;transform:rotate(-6deg)}}
-@keyframes obScoutBob{0%,100%{transform:rotate(-6deg) translateY(0)}
-  18%{transform:rotate(-5deg) translateY(-6px)}36%{transform:rotate(-6.5deg) translateY(0)}}
+@keyframes obScoutIn{0%{opacity:0;transform:translateX(-50%) translateY(96px) rotate(-11deg) scale(.92)}
+  62%{opacity:1;transform:translateX(-50%) translateY(-10px) rotate(-4deg)}
+  82%{transform:translateX(-50%) translateY(3px) rotate(-7deg)}100%{opacity:1;transform:translateX(-50%) rotate(-6deg)}}
+@keyframes obScoutBob{0%,100%{transform:translateX(-50%) rotate(-6deg) translateY(0)}
+  18%{transform:translateX(-50%) rotate(-5deg) translateY(-6px)}36%{transform:translateX(-50%) rotate(-6.5deg) translateY(0)}}
 .ob-reveal.open .o-keeper{animation:obKeepIn .85s cubic-bezier(.3,.8,.4,1) 1.72s forwards,
   obKeepBreathe 5.6s ease-in-out 2.9s infinite}
-@keyframes obKeepIn{0%{opacity:0;transform:translateY(110px)}58%{opacity:1;transform:translateY(-6px) scaleY(1)}
-  70%{transform:translateY(-6px) scaleY(.93) scaleX(1.05)}84%{transform:translateY(-6px) scaleY(1.025) scaleX(.99)}
-  100%{opacity:1;transform:translateY(-6px)}}
-@keyframes obKeepBreathe{0%,100%{transform:translateY(-6px) scaleY(1)}50%{transform:translateY(-7px) scaleY(1.016)}}
+@keyframes obKeepIn{0%{opacity:0;transform:translateX(-50%) translateY(116px)}
+  58%{opacity:1;transform:translateX(-50%) translateY(0) scaleY(1)}
+  70%{transform:translateX(-50%) scaleY(.93) scaleX(1.05)}84%{transform:translateX(-50%) scaleY(1.025) scaleX(.99)}
+  100%{opacity:1;transform:translateX(-50%)}}
+@keyframes obKeepBreathe{0%,100%{transform:translateX(-50%) scaleY(1)}50%{transform:translateX(-50%) scaleY(1.016) translateY(-1px)}}
 .ob-reveal.open .o-mirror{animation:obMirrorIn 1.05s cubic-bezier(.22,.7,.25,1) 2.15s forwards,
   obMirrorSway 7.5s ease-in-out 3.4s infinite}
-@keyframes obMirrorIn{0%{opacity:0;transform:translateY(72px) rotate(1deg)}100%{opacity:1;transform:rotate(3deg)}}
-@keyframes obMirrorSway{0%,100%{transform:rotate(3deg) translateY(0)}50%{transform:rotate(3.8deg) translateY(-2.5px)}}
+@keyframes obMirrorIn{0%{opacity:0;transform:translateX(-50%) translateY(72px) rotate(1deg)}
+  100%{opacity:1;transform:translateX(-50%) rotate(3deg)}}
+@keyframes obMirrorSway{0%,100%{transform:translateX(-50%) rotate(3deg) translateY(0)}
+  50%{transform:translateX(-50%) rotate(3.8deg) translateY(-2.5px)}}
 .ob-reveal.open .o-scribe{animation:obScribeIn .7s cubic-bezier(.2,.85,.3,1) 1.95s forwards,
   obScribeAdjust .55s ease 3.1s 1, obScribeIdle 6s ease-in-out 3.8s infinite}
-@keyframes obScribeIn{0%{opacity:0;transform:translateY(80px) rotate(9deg)}100%{opacity:1;transform:rotate(5deg)}}
-@keyframes obScribeAdjust{0%,100%{transform:rotate(5deg)}40%{transform:rotate(8deg) translateY(-3px)}70%{transform:rotate(4deg)}}
-@keyframes obScribeIdle{0%,100%{transform:rotate(5deg) translateY(0)}50%{transform:rotate(4.6deg) translateY(-2px)}}
+@keyframes obScribeIn{0%{opacity:0;transform:translateX(-50%) translateY(84px) rotate(9deg)}
+  100%{opacity:1;transform:translateX(-50%) rotate(4deg)}}
+@keyframes obScribeAdjust{0%,100%{transform:translateX(-50%) rotate(4deg)}
+  40%{transform:translateX(-50%) rotate(7deg) translateY(-3px)}70%{transform:translateX(-50%) rotate(3deg)}}
+@keyframes obScribeIdle{0%,100%{transform:translateX(-50%) rotate(4deg) translateY(0)}
+  50%{transform:translateX(-50%) rotate(4.6deg) translateY(-2px)}}
 /* the seat floats in the beam, well above the roosting flock (mockup: bottom 308/800) */
 .ob-seatrow{position:absolute;left:0;right:0;bottom:38%;z-index:8;
   display:flex;justify-content:center;opacity:0;transform:translateY(16px);
@@ -1176,6 +1184,11 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .ob-reveal.open .ob-seatrow{opacity:1;transform:none}
 .ob-seatbtn{padding:14px 30px 13px;font-size:14px;letter-spacing:.16em;text-transform:uppercase;
   box-shadow:0 4px 0 rgba(90,62,6,.4), 0 0 26px rgba(255,192,23,.4)}
+/* the show line just below the seat, anchoring the lower composition */
+.ob-showline{position:absolute;left:0;right:0;bottom:34%;z-index:6;text-align:center;pointer-events:none;
+  font-size:9px;font-weight:800;letter-spacing:.26em;text-transform:uppercase;color:var(--fade);
+  opacity:0;transition:opacity .8s ease 3.3s}
+.ob-reveal.open .ob-showline{opacity:1}
 /* the closed-curtain invitation + tap target, in front of the cloth (z 22),
    fading out as the velvet parts */
 .ob-house{position:absolute;inset:0;z-index:22;border:0;padding:0;cursor:pointer;background:none;
