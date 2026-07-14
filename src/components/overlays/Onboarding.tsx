@@ -200,9 +200,6 @@ function Playbill({ onDone }: { onDone: () => void }) {
         <span className="ob-mark d">
           owlry<span className="gdot">.</span>
         </span>
-        <button className="ob-skip" onClick={onDone}>
-          skip
-        </button>
       </div>
 
       <div
