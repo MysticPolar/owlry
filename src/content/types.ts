@@ -47,6 +47,21 @@ export interface Book {
   i?: string;
   /** about-sheet: who the author is */
   w?: string;
+  /* ── Google Books hydration (pre-baked for catalog, resolved at runtime for
+     open-world books — see lib/gbooks.ts). All optional; the UI falls back to
+     the CSS spine + fields above when absent. ── */
+  /** real cover image URL (https) */
+  img?: string;
+  /** subtitle */
+  sub?: string;
+  /** publisher */
+  pub?: string;
+  /** numeric rating 1–5 (Google Books) */
+  rn?: number;
+  /** ratings count (Google Books) */
+  rc?: number;
+  /** which source the rating came from */
+  rsrc?: 'google' | 'goodreads' | 'openlibrary';
 }
 
 export interface GuideQuote {

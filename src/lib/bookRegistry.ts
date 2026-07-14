@@ -11,10 +11,21 @@
    ============================================================ */
 import { BOOKS } from '../content/books';
 import { BOOKS_ZH } from '../content/books.zh';
+import { BOOK_META } from '../content/books-meta';
 import { GUIDES } from '../content/guides';
 import { GUIDES_ZH } from '../content/guides.zh';
 import { getActiveLang } from '../i18n';
 import type { Book, BookId, BookRef, Guide, GuideId } from '../content/types';
+
+/** the catalog merged once with its pre-baked Google Books fields (img/sub/pub/
+    rating). Computed at module load so getBook returns a stable identity and
+    catalog refs resolve byte-identically to before wherever no meta was baked. */
+const CATALOG: Record<BookId, Book> = Object.fromEntries(
+  (Object.keys(BOOKS) as BookId[]).map((k) => {
+    const m = BOOK_META[k];
+    return [k, m ? { ...BOOKS[k], ...m } : BOOKS[k]];
+  }),
+) as Record<BookId, Book>;
 
 /** session-scoped open-world books/guides (not persisted in v1) */
 const dynBooks: Record<string, Book> = {};
@@ -28,11 +39,12 @@ export function registerGuide(ref: BookRef, g: Guide): void {
   if (!(ref in GUIDES)) dynGuides[ref] = g;
 }
 
-/** resolve a book by ref — catalog first, then session-registered open-world.
-    In 简体中文 the catalog entry is overlaid with its translated fields. */
+/** resolve a book by ref — catalog (with pre-baked meta) first, then session-registered
+    open-world. In 简体中文 the translated fields overlay the catalog entry; they land ON
+    TOP of the baked meta, so a reader gets the Chinese title AND the real cover. */
 export function getBook(ref: BookRef | null | undefined): Book | undefined {
   if (!ref) return undefined;
-  const base = BOOKS[ref as BookId] ?? dynBooks[ref];
+  const base = CATALOG[ref as BookId] ?? dynBooks[ref];
   if (base && getActiveLang() === 'zh') {
     const z = BOOKS_ZH[ref as BookId];
     if (z) return { ...base, ...z };

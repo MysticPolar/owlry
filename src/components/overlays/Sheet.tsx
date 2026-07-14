@@ -1,6 +1,7 @@
 import { useStore } from '../../store/useStore';
 import { useT } from '../../i18n/react';
 import { getBook, hasGuide } from '../../lib/bookRegistry';
+import { useBookMeta } from '../../hooks/useBookMeta';
 import { Icon } from '../Icon';
 import { Cover } from '../Cover';
 import { ClampText } from '../ClampText';
@@ -18,8 +19,12 @@ export function Sheet() {
   const id = sheetId;
   const b = id ? getBook(id) : null;
   const guide = id ? hasGuide(id) : false;
+  const meta = useBookMeta(id);
 
   if (!id || !b) return null;
+
+  // catalog page count wins; the live lookup fills the gap for open-world books
+  const pageCount = b.n || meta?.pageCount;
 
   return (
     <div
@@ -42,18 +47,42 @@ export function Sheet() {
             <Cover id={id} cls="cover-md" />
             <div className="sh-info">
               <div className="ttl d">{b.t}</div>
+              {(b.sub ?? meta?.subtitle) && <div className="sub it">{b.sub ?? meta?.subtitle}</div>}
               <div className="auth">
-                {b.a} · {t.reader.pages(b.n)}
+                {meta?.authors?.length ? meta.authors.join(', ') : b.a}
+                {pageCount ? ` · ${t.reader.pages(pageCount)}` : ''}
               </div>
+              {(b.pub ?? meta?.publisher) && <div className="pub">{b.pub ?? meta?.publisher}</div>}
               <div className="rate">
                 <Icon name="ti-star" />
-                {b.r ?? '4.0'}
-                <small>&nbsp;{t.reader.goodreads}</small>
+                {(() => {
+                  // pre-baked numeric rating (b.rn + b.rsrc), else live (meta), else catalog string
+                  const rn = b.rn ?? meta?.rating;
+                  const rc = b.rn != null ? b.rc : meta?.ratingsCount;
+                  const src = b.rn != null ? b.rsrc : meta?.source;
+                  if (rn != null) {
+                    // source names are brands — untranslated, same as goodreads is in both dicts
+                    const label = src === 'openlibrary' ? 'OPEN LIBRARY' : 'GOOGLE BOOKS';
+                    return (
+                      <>
+                        {rn.toFixed(1)}
+                        {rc != null && <span className="rcount">&nbsp;({rc.toLocaleString()})</span>}
+                        <small>&nbsp;{label}</small>
+                      </>
+                    );
+                  }
+                  return (
+                    <>
+                      {b.r ?? '4.0'}
+                      <small>&nbsp;{t.reader.goodreads}</small>
+                    </>
+                  );
+                })()}
               </div>
             </div>
           </div>
           <ClampText lines={5} className="bk-intro">
-            {b.i ?? b.q}
+            {b.i ?? meta?.description ?? b.q}
           </ClampText>
           <div className="btnrow">
             {guide && (
