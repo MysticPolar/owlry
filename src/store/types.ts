@@ -79,7 +79,7 @@ export type OwlName = 'scout' | 'peek' | 'scribe' | 'mirror' | 'keeper';
 export type DeskMode = 'all' | 'pro';
 
 /** first-use owl introduction cards, fired once at their trigger */
-export type IntroKey = 'peek' | 'scribe' | 'keeper' | 'proscout' | 'proscoutLocked';
+export type IntroKey = 'peek' | 'scribe' | 'keeper' | 'proscout' | 'proscoutLocked' | 'mirror';
 
 export interface ToastState {
   icon: string;

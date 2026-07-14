@@ -512,10 +512,9 @@ export const useStore = create<Store>()(
       // the two gates open on their level crossings
       if (before < 3 && lv >= 3) setTimeout(() => get().showIntro('proscout'), 600);
       if (before < 5 && lv >= 5) {
-        setTimeout(() => {
-          get().showToast('ti-sparkles', 'level 5 — the chains fall. the mirror is yours.', 'mirror');
-          get().triggerBurst();
-        }, 700);
+        // the chains fall (a burst), then mirror steps out of the glass to introduce itself
+        setTimeout(() => get().triggerBurst(), 700);
+        setTimeout(() => get().showIntro('mirror'), 1150);
       }
     },
 

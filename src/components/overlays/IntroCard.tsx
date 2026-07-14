@@ -89,6 +89,22 @@ const CARDS: Record<IntroKey, CardDef> = {
     ],
     btn: 'noted',
   },
+  // mirror is the quiet, mystical one — the reflection that has been watching
+  // from behind the glass all along. one calm reveal; never a question.
+  mirror: {
+    owl: 'mirror',
+    acc: 'violet',
+    eb: 'mirror · the reflection',
+    say: [
+      s('the chains fall — you climbed all the way to me. i am '),
+      e('mirror'),
+      s('. the others keep your books; i keep '),
+      e('you'),
+      s('. every page you turn leaves a mark, and i have kept them all. '),
+      e('come — see who you are becoming.'),
+    ],
+    btn: 'i see',
+  },
 };
 
 /* flatten segments to chars, tag each with its em state */
