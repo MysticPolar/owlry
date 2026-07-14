@@ -11,7 +11,7 @@ import type { BookRef } from '../../content/types';
    OPENING NIGHT — the full five-act arrival.
    1 · landing  — curtain rises on the marquee + the five owls
    2 · playbill — five swipe slides, one owl each
-   3 · the door — invite/login (Auth), then "Dear ___," the name
+   3 · the door — invite code (or peek in as guest), then "Dear ___," the name
    4 · the curtain — read better, at owlry.  → raise → enter
    5 · the flight — scout's origin story, the first ask, the ink
        drop, the level-up + welcome bundle → land at the desk.
@@ -364,13 +364,18 @@ function InvitePlaque({
         </button>
       </form>
       <div className="ob-gerr">that code isn&rsquo;t on the list.</div>
-      <button className="ob-peek" type="button" onClick={onPeek}>
-        peek in as guest
-      </button>
       <div className="ob-microline">
         no invite yet?{' '}
-        <button type="button" onClick={() => showToast('ti-external-link', 'the waitlist opens outside owlry')}>
+        <button
+          type="button"
+          disabled={granted}
+          onClick={() => showToast('ti-external-link', 'the waitlist opens outside owlry')}
+        >
           join the waitlist
+        </button>{' '}
+        <span className="ob-or">or</span>{' '}
+        <button type="button" disabled={granted} onClick={onPeek}>
+          peek in as guest
         </button>
       </div>
     </div>
