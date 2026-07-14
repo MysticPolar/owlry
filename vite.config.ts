@@ -53,6 +53,17 @@ export default defineConfig({
               cacheableResponse: { statuses: [0, 200] },
             },
           },
+          {
+            // Book cover art (Google Books + Open Library) — cache so covers
+            // render offline. statuses includes 0 (opaque cross-origin images).
+            urlPattern: /^https:\/\/(books\.google(usercontent)?\.com\/books\/content|covers\.openlibrary\.org)\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'book-covers',
+              expiration: { maxEntries: 120, maxAgeSeconds: 60 * 60 * 24 * 30 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
         ],
       },
       devOptions: { enabled: false },

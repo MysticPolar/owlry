@@ -1,5 +1,6 @@
 import { useStore } from '../../store/useStore';
 import { getBook, hasGuide } from '../../lib/bookRegistry';
+import { useBookMeta } from '../../hooks/useBookMeta';
 import { Icon } from '../Icon';
 import { Cover } from '../Cover';
 import { ClampText } from '../ClampText';
@@ -16,6 +17,7 @@ export function Sheet() {
   const id = sheetId;
   const b = id ? getBook(id) : null;
   const guide = id ? hasGuide(id) : false;
+  const meta = useBookMeta(id);
 
   return (
     <div
@@ -39,18 +41,41 @@ export function Sheet() {
             <Cover id={id} cls="cover-md" />
             <div className="sh-info">
               <div className="ttl d">{b.t}</div>
+              {(b.sub ?? meta?.subtitle) && <div className="sub it">{b.sub ?? meta?.subtitle}</div>}
               <div className="auth">
-                {b.a} · {b.n} pages
+                {meta?.authors?.length ? meta.authors.join(', ') : b.a}
+                {b.n || meta?.pageCount ? ` · ${b.n || meta?.pageCount} pages` : ''}
               </div>
+              {(b.pub ?? meta?.publisher) && <div className="pub">{b.pub ?? meta?.publisher}</div>}
               <div className="rate">
                 <Icon name="ti-star" />
-                {b.r ?? '4.0'}
-                <small>&nbsp;GOODREADS</small>
+                {(() => {
+                  // pre-baked numeric rating (b.rn + b.rsrc), else live (meta), else catalog string
+                  const rn = b.rn ?? meta?.rating;
+                  const rc = b.rn != null ? b.rc : meta?.ratingsCount;
+                  const src = b.rn != null ? b.rsrc : meta?.source;
+                  if (rn != null) {
+                    const label = src === 'openlibrary' ? 'OPEN LIBRARY' : 'GOOGLE BOOKS';
+                    return (
+                      <>
+                        {rn.toFixed(1)}
+                        {rc != null && <span className="rcount">&nbsp;({rc.toLocaleString()})</span>}
+                        <small>&nbsp;{label}</small>
+                      </>
+                    );
+                  }
+                  return (
+                    <>
+                      {b.r ?? '4.0'}
+                      <small>&nbsp;GOODREADS</small>
+                    </>
+                  );
+                })()}
               </div>
             </div>
           </div>
           <ClampText lines={5} className="bk-intro">
-            {b.i ?? b.q}
+            {b.i ?? meta?.description ?? b.q}
           </ClampText>
           <div className="btnrow">
             {guide && (

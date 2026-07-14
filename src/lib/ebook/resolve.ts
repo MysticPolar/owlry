@@ -7,23 +7,11 @@
    the request is time-boxed so the "Open" click stays fast.
    ============================================================ */
 import type { ReadingSource } from './types';
+import { norm, surname } from '../textMatch';
 
 const GUTENDEX = 'https://gutendex.com/books';
 const TIMEOUT_MS = 8000; // gutendex can be slow on a cold hit
 const cache = new Map<string, ReadingSource | null>();
-
-const norm = (s: string) =>
-  s
-    .toLowerCase()
-    .replace(/^(the|a|an)\s+/, '')
-    .replace(/[^a-z0-9 ]/g, '')
-    .replace(/\s+/g, ' ')
-    .trim();
-
-const surname = (author: string) => {
-  const a = author.includes(',') ? author.split(',')[0] : author.split(' ').slice(-1)[0];
-  return norm(a);
-};
 
 interface GutendexBook {
   title: string;

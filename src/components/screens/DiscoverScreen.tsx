@@ -3,6 +3,7 @@ import { useStore } from '../../store/useStore';
 import { useKeyboardInset } from '../../hooks/useKeyboardInset';
 import { isConfigured } from '../../lib/supabase';
 import { getBook, hasGuide } from '../../lib/bookRegistry';
+import { useBookMeta } from '../../hooks/useBookMeta';
 import { renderChatItem } from '../chat/ChatItems';
 import type { BookRef } from '../../content/types';
 import { Icon } from '../Icon';
@@ -17,6 +18,7 @@ function TrayCard({ id, onClose }: { id: BookRef; onClose: () => void }) {
   const openSheet = useStore((s) => s.openSheet);
   const openLetter = useStore((s) => s.openLetter);
   const openBook = useStore((s) => s.openBook);
+  const meta = useBookMeta(id);
   if (!b) return <div className="tray-card tray-empty">scout's picks will perch here</div>;
 
   // a peek is available for catalog guides (instant) and, with a backend, for any
@@ -35,10 +37,12 @@ function TrayCard({ id, onClose }: { id: BookRef; onClose: () => void }) {
       <Cover id={id} cls="cover-xs" />
       <div className="tray-info">
         <div className="tray-ttl d">{b.t}</div>
+        {(b.sub ?? meta?.subtitle) && <div className="tray-sub it">{b.sub ?? meta?.subtitle}</div>}
         <div className="tray-auth">
-          {b.a} · {b.n} pages
+          {meta?.authors?.length ? meta.authors.join(', ') : b.a}
+          {b.n || meta?.pageCount ? ` · ${b.n || meta?.pageCount} pages` : ''}
         </div>
-        <div className="tray-intro">{b.i ?? b.q}</div>
+        <div className="tray-intro">{b.i ?? meta?.description ?? b.q}</div>
         <div className="tray-btns">
           <button
             className="btn xs ghost"
