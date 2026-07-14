@@ -110,6 +110,7 @@ function PickCard() {
   const setPick = useStore((s) => s.setPick);
   const saved = useStore((s) => s.savedIds.includes(PICKS[s.pickIndex]));
   const toggleSave = useStore((s) => s.toggleSave);
+  const openSheet = useStore((s) => s.openSheet);
   const startAsk = useStore((s) => s.startAsk);
 
   const id = PICKS[pickIndex];
@@ -117,9 +118,9 @@ function PickCard() {
   const swipeX = useRef<number | null>(null);
 
   return (
-    <div className="pick-wrap quote-wrap">
+    <div className="pick-wrap">
       <article
-        className="quote-post swap"
+        className="card today-pick-card swap"
         key={pickIndex}
         aria-label={`Owl post ${pickIndex + 1} of ${PICKS.length}`}
         aria-roledescription="carousel"
@@ -133,34 +134,46 @@ function PickCard() {
           if (Math.abs(dx) > 40) setPick(pickIndex + (dx < 0 ? 1 : -1));
         }}
       >
-        <div className="post-toolbar">
-          <div className="post-meta">scout&rsquo;s daily pick</div>
-          <div className="post-stepper" aria-label={`Pick ${pickIndex + 1} of ${PICKS.length}`}>
-            <button type="button" aria-label="Previous daily pick" onClick={() => setPick(pickIndex - 1)}>
-              <Icon name="ti-arrow-left" />
-            </button>
-            <span>{String(pickIndex + 1).padStart(2, '0')} / {String(PICKS.length).padStart(2, '0')}</span>
-            <button type="button" aria-label="Next daily pick" onClick={() => setPick(pickIndex + 1)}>
-              <Icon name="ti-arrow-right" />
-            </button>
-          </div>
+        <button
+          type="button"
+          className={`save ${saved ? 'on' : ''}`}
+          aria-label={saved ? `Remove ${b.t} from library` : `Save ${b.t} to library`}
+          aria-pressed={saved}
+          onClick={() => toggleSave(id)}
+        >
+          <Icon name="ti-heart" />
+        </button>
+        <div
+          className="pick-cover-link"
+          role="button"
+          tabIndex={0}
+          aria-label={`About ${b.t}`}
+          aria-haspopup="dialog"
+          onClick={() => openSheet(id)}
+          onKeyDown={(e) => {
+            if (e.key !== 'Enter' && e.key !== ' ') return;
+            e.preventDefault();
+            openSheet(id);
+          }}
+        >
+          <Cover id={id} cls="cover-lg" />
         </div>
-        <blockquote className="quote-hero">&ldquo;{b.q}&rdquo;</blockquote>
-        <footer className="quote-source">
-          <cite className="quote-title">{b.t}</cite>
-          <span className="quote-author">{b.a}</span>
-        </footer>
-        <div className="quote-actions">
-          <button className="btn ask-btn" onClick={() => startAsk(id)} aria-label={`Ask Scout about ${b.t}`}>
-            ASK SCOUT <Icon name="ti-arrow-right" />
-          </button>
-          <button
-            className={`save ${saved ? 'on' : ''}`}
-            aria-label="Save to library"
-            aria-pressed={saved}
-            onClick={() => toggleSave(id)}
-          >
-            <Icon name="ti-heart" />
+        <div className="pick-info">
+          <h3 className="ttl d">
+            <button
+              type="button"
+              className="pick-title-link"
+              onClick={() => openSheet(id)}
+              aria-label={`About ${b.t}`}
+              aria-haspopup="dialog"
+            >
+              {b.t}
+            </button>
+          </h3>
+          <div className="pick-author">{b.a}</div>
+          <blockquote className="quote it">&ldquo;{b.q}&rdquo;</blockquote>
+          <button type="button" className="btn" onClick={() => startAsk(id)} aria-label={`Ask Scout about ${b.t}`}>
+            ASK <Icon name="ti-arrow-right" />
           </button>
         </div>
       </article>
