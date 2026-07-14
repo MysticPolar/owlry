@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { useStore } from '../../store/useStore';
-import { useAuth } from '../../store/useAuth';
 import { Icon } from '../Icon';
 import { type CastOwlName } from '../CastOwl';
 import { CurtainCloth, type CurtainHandle } from './CurtainCloth';
@@ -292,6 +291,92 @@ function Playbill({ onDone }: { onDone: () => void }) {
   );
 }
 
+/* ---------- act 3a · the door — invite only (against the closed velvet) ---------- */
+function InvitePlaque({
+  onEnter,
+  onPeek,
+  clothRef,
+}: {
+  onEnter: () => void;
+  onPeek: () => void;
+  clothRef: React.RefObject<CurtainHandle>;
+}) {
+  const showToast = useStore((s) => s.showToast);
+  const [code, setCode] = useState('');
+  const [err, setErr] = useState(false);
+  const [granted, setGranted] = useState(false);
+  const [shaking, setShaking] = useState(false);
+  const ref = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    const t = setTimeout(() => ref.current?.focus(), 340);
+    return () => clearTimeout(t);
+  }, []);
+  // the eyes look at the plaque while the reader types the code (lookAtPlaque)
+  const lookAtInput = () => {
+    const el = ref.current;
+    const gate = el?.closest('.ob-gate');
+    if (!el || !gate || !clothRef.current) return;
+    const r = el.getBoundingClientRect();
+    const a = gate.getBoundingClientRect();
+    clothRef.current.lookAt((r.left - a.left + r.width / 2) / a.width, (r.top - a.top + r.height / 2) / a.height);
+  };
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // demo: any non-empty code is on the list (production redeems the invite)
+    if (!code.trim()) {
+      setErr(true);
+      setShaking(false);
+      requestAnimationFrame(() => setShaking(true));
+      ref.current?.focus();
+      return;
+    }
+    setErr(false);
+    setGranted(true);
+    setTimeout(onEnter, reduced() ? 100 : 440);
+  };
+  return (
+    <div className={`ob-plaque ob-inv${granted ? ' granted' : ''}${err ? ' err' : ''}`}>
+      <p className="ob-pline">
+        the owlery opens
+        <br />
+        by invite only<span className="gdot">.</span>
+      </p>
+      <form onSubmit={submit}>
+        <input
+          ref={ref}
+          className={`ob-codein${shaking ? ' shake' : ''}`}
+          value={code}
+          onChange={(e) => {
+            setCode(e.target.value);
+            setErr(false);
+          }}
+          onFocus={lookAtInput}
+          onAnimationEnd={() => setShaking(false)}
+          placeholder="invite code"
+          autoComplete="off"
+          autoCapitalize="characters"
+          spellCheck={false}
+          aria-label="Invite code"
+          disabled={granted}
+        />
+        <button className="gbtn" type="submit" disabled={granted}>
+          enter
+        </button>
+      </form>
+      <div className="ob-gerr">that code isn&rsquo;t on the list.</div>
+      <button className="ob-peek" type="button" onClick={onPeek}>
+        peek in as guest
+      </button>
+      <div className="ob-microline">
+        no invite yet?{' '}
+        <button type="button" onClick={() => showToast('ti-external-link', 'the waitlist opens outside owlry')}>
+          join the waitlist
+        </button>
+      </div>
+    </div>
+  );
+}
+
 /* ---------- act 3b · the name (against the closed velvet, eyes watching) ---------- */
 function NamePlaque({ onDone, clothRef }: { onDone: () => void; clothRef: React.RefObject<CurtainHandle> }) {
   const setPref = useStore((s) => s.setPref);
@@ -334,9 +419,6 @@ function NamePlaque({ onDone, clothRef }: { onDone: () => void; clothRef: React.
   };
   return (
     <div className="ob-plaque">
-      <div className="ob-crest d">
-        owlry<span className="gdot">.</span>
-      </div>
       <p className="ob-qline">how should the owls address you?</p>
       <div className="ob-dear">
         <em>Dear</em> <span className="ob-dearname">{clean}</span>
@@ -863,9 +945,7 @@ export function Onboarding() {
   const onboarded = useStore((s) => !!s.prefs.onboarded);
   const name = useStore((s) => s.prefs.name ?? '');
   const finish = useStore((s) => s.finishOnboarding);
-  const openAuth = useAuth((s) => s.openAuth);
-  const authOpen = useAuth((s) => s.authOpen);
-  const authed = useAuth((s) => s.status === 'authed');
+  const setTab = useStore((s) => s.setTab);
   const [phase, setPhase] = useState<Phase>('landing');
   const gateCloth = useRef<CurtainHandle>(null);
 
@@ -873,22 +953,19 @@ export function Onboarding() {
     if (show) setPhase('landing');
   }, [show]);
 
-  // the door → the name: once auth closes (signed in, or "peek in as a guest")
-  useEffect(() => {
-    if (phase === 'gate' && !authOpen) setPhase('name');
-  }, [phase, authOpen]);
-
   if (!show) return null;
 
   const afterDeck = () => {
-    if (onboarded) {
-      setPhase('curtain'); // a replay from settings — skip the door + name
-    } else if (authed) {
-      setPhase('name');
-    } else {
-      openAuth('signup');
-      setPhase('gate');
-    }
+    // opening night is invite-gated now (no login/signup); a replay from
+    // settings (already onboarded) skips the door + name to the curtain
+    setPhase(onboarded ? 'curtain' : 'gate');
+  };
+
+  // "peek in as guest" — straight into the mocked app: SEED (lv 7, books, ink)
+  // on a fresh install, or the level-1 state after a settings reset
+  const peekAsGuest = () => {
+    finish();
+    setTab('today');
   };
 
   // act i (the cast) plays in the matinée; the gate onward is the evening show
@@ -904,12 +981,21 @@ export function Onboarding() {
     >
       {phase === 'landing' && <Splash onEnter={() => setPhase('playbill')} />}
       {phase === 'playbill' && <Playbill onDone={afterDeck} />}
-      {/* act 3 · the door + the name share one closed velvet curtain (eyes watching) */}
+      {/* act 3 · the door (invite) + the name share one closed velvet curtain,
+          the crest above and the eyes watching through the folds */}
       {(phase === 'gate' || phase === 'name') && (
         <div className="ob-gate">
           <CurtainCloth ref={gateCloth} motes={60} />
           <div className="ob-valance" aria-hidden="true" />
-          {phase === 'name' && <NamePlaque onDone={() => setPhase('curtain')} clothRef={gateCloth} />}
+          <div className="ob-plaquewrap">
+            <div className="ob-crest d">
+              owlry<span className="gdot">.</span>
+            </div>
+            {phase === 'gate' && (
+              <InvitePlaque onEnter={() => setPhase('name')} onPeek={peekAsGuest} clothRef={gateCloth} />
+            )}
+            {phase === 'name' && <NamePlaque onDone={() => setPhase('curtain')} clothRef={gateCloth} />}
+          </div>
         </div>
       )}
       {phase === 'curtain' && <CurtainReveal onEnter={() => setPhase('flight')} />}

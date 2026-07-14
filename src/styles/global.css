@@ -1026,12 +1026,39 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .ob-cv-back{z-index:1}
 .ob-cv-front{z-index:20}
 .ob-cv-spk{z-index:40}
-.ob-plaque{position:relative;z-index:30;width:100%;max-width:300px;text-align:center;
+.ob-plaquewrap{position:relative;z-index:30;display:flex;flex-direction:column;align-items:center;
+  width:100%;max-width:320px;padding:0 6px}
+.ob-plaque{position:relative;width:100%;max-width:300px;text-align:center;
   background:rgba(12,7,5,.82);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
   border:1px solid rgba(232,180,58,.32);border-radius:14px;padding:22px 20px 18px;
   box-shadow:0 26px 54px -18px rgba(0,0,0,.85), inset 0 1px 0 rgba(255,230,170,.08);
+  transition:border-color .5s ease, box-shadow .5s ease;
   animation:obRise .5s cubic-bezier(.2,.9,.25,1.05) both}
-.ob-crest{font-size:22px;letter-spacing:.02em;transform:skewX(-8deg);color:#F2EBD7}
+.ob-crest{font-size:22px;letter-spacing:.02em;transform:skewX(-8deg);color:#F2EBD7;margin-bottom:16px}
+/* the door — invite only (act 3a) */
+.ob-pline{margin:0 0 18px;font-family:'Anton',sans-serif;font-weight:400;font-size:15.5px;line-height:1.55;
+  letter-spacing:.11em;text-transform:uppercase;color:#F2E8CE}
+.ob-codein{width:100%;background:rgba(255,246,220,.05);border:1px solid rgba(232,180,58,.28);border-radius:10px;
+  padding:12px 13px;text-align:center;font:700 14px 'Inter Tight',sans-serif;letter-spacing:.2em;text-transform:uppercase;
+  color:#F5EDD6;caret-color:var(--yellow);transition:border-color .25s}
+.ob-codein::placeholder{color:rgba(233,214,170,.32);letter-spacing:.12em;font-weight:600;text-transform:lowercase}
+.ob-codein:focus{border-color:rgba(255,192,23,.6);outline:none}
+.ob-codein.shake{animation:obShakeX .4s ease}
+@keyframes obShakeX{20%{transform:translateX(-6px)}45%{transform:translateX(5px)}70%{transform:translateX(-3px)}}
+.ob-inv.granted{border-color:rgba(255,192,23,.75);
+  box-shadow:0 26px 54px -18px rgba(0,0,0,.85), 0 0 28px -4px rgba(255,192,23,.35), inset 0 1px 0 rgba(255,230,170,.12)}
+.ob-gerr{display:none;margin-top:10px;font-size:11px;font-weight:700;letter-spacing:.03em;color:#E07A50}
+.ob-inv.err .ob-gerr{display:block}
+.ob-peek{display:inline-flex;width:100%;justify-content:center;margin-top:12px;background:rgba(255,246,220,.06);
+  border:1px solid rgba(232,180,58,.26);border-radius:10px;padding:11px 16px 10px;cursor:pointer;
+  font-family:'Anton',sans-serif;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#EDE4CB}
+.ob-peek:hover{border-color:rgba(232,180,58,.5);color:#F5EDD6}
+.ob-peek:active{transform:translateY(1px)}
+.ob-microline{margin-top:14px;font-size:8.5px;font-weight:800;letter-spacing:1.7px;text-transform:uppercase;
+  color:rgba(233,222,192,.4)}
+.ob-microline button{background:none;border:0;padding:0;cursor:pointer;font:inherit;color:rgba(255,192,23,.7);
+  letter-spacing:inherit;text-transform:inherit}
+.ob-microline button:hover{color:var(--yellow)}
 .ob-qline{margin:12px 0 4px;font-family:'Fraunces',Georgia,serif;font-style:italic;font-size:15px;color:#E9DEC0}
 .ob-dear{font-family:'Fraunces',Georgia,serif;font-size:19px;color:#F2E8CE;margin:6px 0 14px;min-height:26px}
 .ob-dear em{font-style:italic;color:#D9C49A}
