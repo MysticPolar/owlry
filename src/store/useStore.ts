@@ -49,6 +49,7 @@ import type {
   ToastState,
   ChatItem,
   PendingTurn,
+  ShelfFly,
 } from './types';
 
 /** lazy reading-letter state: the letter is generated only when the reader taps the card */
@@ -110,6 +111,8 @@ export interface Store extends PersistedState {
   /** opening night: playing when true (first run, or replayed from settings) */
   showOnboarding: boolean;
   openedLetters: BookRef[];
+  /** a just-peeked book asking the shelf rail to fly its spine in (session-only) */
+  shelfFly: ShelfFly | null;
   hydrated: boolean;
   settingsOpen: boolean;
   /** cross-device sync: 'off' as guest, else the live push state */
@@ -194,6 +197,9 @@ const nextId = () => ++chatId;
 let chatTurn = 0;
 const bumpTurn = () => ++chatTurn;
 
+/* monotonic nonce so re-peeking the same book still triggers a fresh flight */
+let shelfFlyNonce = 0;
+
 /* per-book reading milestones, for throttling progress→XP awards (cosmetic) */
 const progressMark = new Map<BookRef, number>();
 const secondsMark = new Map<BookRef, number>();
@@ -269,6 +275,7 @@ export const useStore = create<Store>()(
     scoutDraft: '',
     showOnboarding: false,
     openedLetters: [],
+    shelfFly: null,
     hydrated: false,
     settingsOpen: false,
     syncStatus: 'off',
@@ -409,7 +416,7 @@ export const useStore = create<Store>()(
       // reloading today's chat abandons any in-flight turn — clear the turn lock
       // so a mid-stream auth refresh can never leave the composer stuck busy
       bumpTurn();
-      if (s.owl.busy || s.owl.pending) set((st) => ({ owl: { ...st.owl, busy: false, pending: null } }));
+      if (s.owl.busy || s.owl.pending || s.shelfFly) set((st) => ({ shelfFly: null, owl: { ...st.owl, busy: false, pending: null } }));
       if (!supabase || !s.authUser) {
         get().initChat();
         return;
@@ -656,7 +663,16 @@ export const useStore = create<Store>()(
       })();
     },
 
-    closeLetter: () => set({ letterId: null, letterStatus: 'idle' }),
+    closeLetter: () => {
+      // the shelf records only what the reader peeks: on closing a first peek
+      // (opened, not yet shelved) the book flies onto the rail from its card
+      const id = get().letterId;
+      const shelf =
+        id && get().openedLetters.includes(id) && !get().owl.collected.includes(id)
+          ? { id, n: ++shelfFlyNonce }
+          : get().shelfFly;
+      set({ letterId: null, letterStatus: 'idle', shelfFly: shelf });
+    },
 
     openSettings: () => set({ settingsOpen: true }),
     closeSettings: () => set({ settingsOpen: false }),
@@ -694,6 +710,7 @@ export const useStore = create<Store>()(
         mirrorRoomOpen: false,
         introCard: null,
         introAfter: null,
+        shelfFly: null,
         owl: { ...s.owl, messages: [], chips: [], collected: [], lastBatch: null, started: false, busy: false, pending: null },
       }))
     ),
@@ -737,6 +754,7 @@ export const useStore = create<Store>()(
     restartChat: () => {
       bumpTurn(); // abandon any in-flight turn so its reply can't land here
       set((s) => ({
+        shelfFly: null,
         owl: {
           ...s.owl,
           started: false,
@@ -819,9 +837,7 @@ export const useStore = create<Store>()(
             { kind: 'msg', id: nextId(), who: 'owl', nodes: owlNodes },
             { kind: 'letter', id: nextId(), book: firstAsk.guide },
           ],
-          collected: st.owl.collected.includes(firstAsk.guide)
-            ? st.owl.collected
-            : [firstAsk.guide, ...st.owl.collected],
+          // the shelf stays empty until the reader peeks this first letter
           chips: ['go deeper', 'something lighter', 'more like this', 'new vibe'],
         },
       }));
@@ -911,13 +927,10 @@ export const useStore = create<Store>()(
         // in — but never longer, so a slow live turn doesn't double-wait
         const wait = Math.max(0, 620 - (Date.now() - t0));
 
-        // what flies to the shelf, and which book (if any) becomes the letter card
+        // which book (if any) becomes the letter card — the shelf only records
+        // books the reader actually peeks (see openLetter/closeLetter), never
+        // the whole batch, so nothing is auto-collected here
         const mainId = reply.batch ? reply.batch.main : reply.letter ?? null;
-        const collectIds = reply.batch
-          ? [reply.batch.main, ...reply.batch.also]
-          : reply.letter
-            ? [reply.letter]
-            : [];
         const speaker: 'scout' | 'scout pro' = get().deskMode === 'pro' ? 'scout pro' : 'scout';
 
         setTimeout(() => {
@@ -938,7 +951,6 @@ export const useStore = create<Store>()(
 
           const pending: PendingTurn = {
             mainId,
-            collectIds,
             chips: reply.chips,
             note: reply.note,
           };
@@ -977,13 +989,12 @@ export const useStore = create<Store>()(
 
       if (pending.mainId) {
         const book = pending.mainId;
-        const collect = pending.collectIds;
         // the letter slides in a beat after the words settle (sooner if skipped)
         setTimeout(() => {
           set((st) => ({
             owl: {
               ...st.owl,
-              messages: appendNote([...st.owl.messages, { kind: 'letter', id: nextId(), book, collect }]),
+              messages: appendNote([...st.owl.messages, { kind: 'letter', id: nextId(), book }]),
             },
           }));
           // the rail flight (component-side) rides on top; chips arrive at +700
@@ -1052,6 +1063,7 @@ if (supabase) {
       // signed out: back to a fresh, ephemeral greeting (abandon any in-flight turn)
       bumpTurn();
       useStore.setState((s) => ({
+        shelfFly: null,
         owl: { ...s.owl, started: false, messages: [], chips: [], collected: [], lastBatch: null, busy: false, pending: null },
       }));
       useStore.getState().initChat();

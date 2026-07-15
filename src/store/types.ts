@@ -77,9 +77,8 @@ export type ChatItem =
   | { kind: 'typing'; id: number }
   /** the unified lazy reading-letter card — the book (catalog id OR open-world
       slug) is registered in bookRegistry before the card is shown; the letter
-      itself is generated on tap via owl-peek and cached in the registry.
-      `collect` are the shelf ids that fly onto the rail once the letter lands. */
-  | { kind: 'letter'; id: number; book: BookRef; collect?: BookRef[] };
+      itself is generated on tap via owl-peek and cached in the registry. */
+  | { kind: 'letter'; id: number; book: BookRef };
 
 /** The cast (docs/story-bible.md). */
 export type OwlName = 'scout' | 'peek' | 'scribe' | 'mirror' | 'keeper';
@@ -107,15 +106,20 @@ export interface OwlReact {
 }
 
 /** The post-text half of a turn, stashed while Scout's line streams in.
-    Consumed by `revealAfterText` once the typewriter finishes so the letter,
-    the shelf flight, and the chips arrive one-at-a-time (never mid-stream). */
+    Consumed by `revealAfterText` once the typewriter finishes so the letter
+    and the chips arrive one-at-a-time (never mid-stream). */
 export interface PendingTurn {
   /** the card book (batch.main or letter), or null when the turn has no card */
   mainId: BookRef | null;
-  /** every id that flies onto the shelf rail when the card lands */
-  collectIds: BookRef[];
   chips: string[];
   note?: string;
+}
+
+/** A book the reader has just peeked, asking the shelf rail to fly its spine
+    in from the letter card (nonce so a repeat of the same book still fires). */
+export interface ShelfFly {
+  id: BookRef;
+  n: number;
 }
 
 export interface OwlState {

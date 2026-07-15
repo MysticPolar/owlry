@@ -219,11 +219,11 @@ function Chat({ reduce }: { reduce: boolean }) {
    ============================================================ */
 function ShelfRail({ reduce }: { reduce: boolean }) {
   const collected = useStore((s) => s.owl.collected);
-  const messages = useStore((s) => s.owl.messages);
+  const shelfFly = useStore((s) => s.shelfFly);
   const collectBooks = useStore((s) => s.collectBooks);
   const openSheet = useStore((s) => s.openSheet);
   const booksRef = useRef<HTMLDivElement>(null);
-  const seenLetter = useRef(0);
+  const seenFly = useRef(0);
   const [expanded, setExpanded] = useState(false);
   const [glow, setGlow] = useState(false);
   const [flightVisible, setFlightVisible] = useState(false);
@@ -237,7 +237,8 @@ function ShelfRail({ reduce }: { reduce: boolean }) {
   }, []);
 
   const flyToShelf = useCallback(
-    (bookId: BookRef, collect: BookRef[], fromEl: Element | null) => {
+    (bookId: BookRef, fromEl: Element | null) => {
+      const collect = [bookId];
       const app = document.getElementById('app');
       const booksEl = booksRef.current;
       const b = getBook(bookId);
@@ -293,22 +294,23 @@ function ShelfRail({ reduce }: { reduce: boolean }) {
     [reduce, collectBooks, land],
   );
 
-  // a fresh letter's spine lifts off 300ms after it lands
+  // the reader peeked a book → its spine lifts off that letter's card and flies
+  // onto the rail (a beat after the peek letter slides away, so the chat shows)
   useEffect(() => {
-    for (const m of messages) {
-      if (m.kind !== 'letter' || m.id <= seenLetter.current) continue;
-      seenLetter.current = m.id;
-      if (!m.collect || !m.collect.length) continue;
-      const { book, collect, id } = m;
-      if (reduce) {
-        collectBooks(collect);
-        continue;
-      }
-      setTimeout(() => {
-        flyToShelf(book, collect, document.querySelector(`.gletter[data-mid="${id}"]`));
-      }, 300);
+    if (!shelfFly || shelfFly.n <= seenFly.current) return;
+    seenFly.current = shelfFly.n;
+    const { id } = shelfFly;
+    if (collected.includes(id)) return; // already shelved
+    if (reduce) {
+      collectBooks([id]);
+      return;
     }
-  }, [messages, reduce, collectBooks, flyToShelf]);
+    const t = setTimeout(() => {
+      const cards = document.querySelectorAll(`.gletter[data-book="${id}"]`);
+      flyToShelf(id, cards.length ? cards[cards.length - 1] : null);
+    }, 340);
+    return () => clearTimeout(t);
+  }, [shelfFly, collected, reduce, collectBooks, flyToShelf]);
 
   // when the shelf is cleared (new chat / reset / sign-out), drop the forced
   // visibility so the empty rail hides instead of lingering as "0 books"

@@ -127,6 +127,7 @@ export function GLetter({ id, no, mid }: { id: BookRef; no: number; mid?: number
       role="group"
       aria-label={`Reading letter: ${b.t}`}
       data-mid={mid}
+      data-book={id}
       onClick={(e) => {
         // the whole card is the primary action, except its own controls
         if ((e.target as HTMLElement).closest('[data-save],[data-sheet],[data-letter],[data-open]')) return;
