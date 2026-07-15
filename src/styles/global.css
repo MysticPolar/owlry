@@ -1734,6 +1734,20 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
   border-bottom:1px solid var(--line2) !important;min-height:0 !important}
 .calm #chiprow .chip:active{color:var(--ink) !important;border-bottom-color:var(--yellow) !important;transform:none !important}
 
+/* cold-start: the starter prompts stand out as tappable suggestions (the quiet
+   underlined treatment is for post-reply chips, where the letter is the point) */
+.chip-hint{padding:8px 18px 0;font-size:10px;font-weight:800;letter-spacing:1.4px;
+  text-transform:uppercase;color:var(--fade)}
+.calm #chiprow.starter{gap:8px !important;padding:8px 18px 4px !important}
+.calm #chiprow.starter .chip{
+  background:var(--surface) !important;border:1px solid var(--line2) !important;
+  border-radius:999px !important;padding:8px 14px !important;
+  font-size:11px !important;font-weight:800 !important;letter-spacing:.9px !important;
+  color:var(--ink) !important;box-shadow:var(--shadow-sm) !important}
+.calm #chiprow.starter .chip:active{
+  background:rgba(255,192,23,.12) !important;border-color:var(--yellow) !important;
+  color:var(--ink) !important;transform:translateY(1px) !important}
+
 /* -- phaseh: the shelf rail -- */
 .shelfrail{position:relative;display:none;align-items:flex-end;gap:9px;margin:2px 0 0;padding:0 18px 7px}
 .shelfrail.on{display:flex}

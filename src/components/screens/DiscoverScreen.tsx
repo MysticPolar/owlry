@@ -356,14 +356,25 @@ function ShelfRail({ reduce }: { reduce: boolean }) {
 function Chips() {
   const chips = useStore((s) => s.owl.chips);
   const send = useStore((s) => s.sendToOwl);
+  // cold start (no question asked yet) → the starter prompts read as prominent,
+  // tappable suggestions to ease opening a chat; post-reply chips stay quiet
+  const started = useStore((s) => s.owl.messages.some((m) => m.kind === 'msg' && m.who === 'me'));
+  const starter = !started && chips.length > 0;
   return (
-    <div className="chips cz" id="chiprow">
-      {chips.map((c, i) => (
-        <button key={i} className="chip" data-say={c} onClick={() => send(c)}>
-          {c.toUpperCase()}
-        </button>
-      ))}
-    </div>
+    <>
+      {starter && (
+        <div className="chip-hint" aria-hidden="true">
+          not sure where to start? tap a prompt
+        </div>
+      )}
+      <div className={`chips cz${starter ? ' starter' : ''}`} id="chiprow" aria-label={starter ? 'Starter prompts' : undefined}>
+        {chips.map((c, i) => (
+          <button key={i} className="chip" data-say={c} onClick={() => send(c)}>
+            {c.toUpperCase()}
+          </button>
+        ))}
+      </div>
+    </>
   );
 }
 
