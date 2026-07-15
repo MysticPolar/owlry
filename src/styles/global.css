@@ -182,29 +182,92 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 [data-wx="cloud"] .wx .ti{animation:drift 3.6s ease-in-out infinite}
 @keyframes drift{0%,100%{transform:translateX(0)}50%{transform:translateX(3px)}}
 
-/* ---------- stats capsule ---------- */
-.stats{
-  display:flex;align-items:center;gap:14px;margin:18px 22px 0;padding:15px;
-  background:var(--surface);border:1px solid var(--line);border-radius:22px;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.04),var(--shadow-sm);position:relative;z-index:2;
-  transition:background .45s ease,border-color .45s ease;
+/* ---------- supplied navy player frame (today) ---------- */
+.today-player{
+  --player-ink:#F6EEDB;
+  position:relative;z-index:2;isolation:isolate;
+  height:auto;aspect-ratio:431/145;margin:8px 4.15% 0;
+  color:var(--player-ink);background:transparent;border:0;
 }
+.today-player::before{
+  content:"";position:absolute;z-index:0;inset:0;pointer-events:none;
+  background:url('/user-bar-v3/frame.png') center/100% auto no-repeat;
+  transform:translateY(-4px) scale(1.06);transform-origin:center;
+  filter:drop-shadow(0 8px 7px rgba(50,32,7,.24));
+}
+.today-player-portrait{
+  position:absolute;z-index:2;left:2.5%;top:14.5%;width:21.3%;height:auto;aspect-ratio:1;
+  overflow:hidden;border-radius:50%;
+}
+.today-player-portrait-art{display:block;width:100%;height:100%;object-fit:cover;border-radius:50%}
+.today-player-level-badge{
+  position:absolute;z-index:4;left:8.8%;top:66%;width:9.2%;height:auto;aspect-ratio:113/145;
+  filter:drop-shadow(0 4px 4px rgba(35,23,6,.28));
+}
+.today-player-level-badge img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.today-player-level-badge span{
+  position:absolute;z-index:1;inset:13% 8% 12%;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  color:#F8F0DC;font-size:11px;line-height:.94;letter-spacing:.07em;text-shadow:0 1px 2px rgba(0,0,0,.8);
+}
+.today-player-level-badge strong{font-size:18px;font-weight:400;letter-spacing:0;margin-top:2px}
+.today-player-progress{
+  position:absolute;z-index:2;left:28%;right:17.8%;top:13.5%;height:58%;
+  display:grid;grid-template-rows:1fr 1fr;min-width:0;
+}
+.today-player-meter{display:grid;align-items:center;min-width:0;color:var(--player-ink)}
+.today-player-meter-xp{grid-template-columns:34px 54px minmax(0,1fr);gap:5px}
+.today-player-meter-ink{grid-template-columns:34px 38px minmax(0,1fr) 48px;gap:4px}
+.today-player-emblem{
+  width:34px;height:35px;display:block;object-fit:contain;
+  filter:drop-shadow(0 3px 3px rgba(0,0,0,.34));
+}
+.today-player-meter-label{
+  font-size:14px;line-height:1;letter-spacing:.045em;white-space:nowrap;text-shadow:0 1px 2px rgba(0,0,0,.65);
+}
+.today-player-track{
+  position:relative;height:15px;min-width:0;overflow:hidden;border-radius:999px;
+  background:url('/user-bar-v3/track.png') center/100% 100% no-repeat;
+}
+.today-player-fill{
+  position:absolute;inset:0 auto 0 0;display:block;border-radius:inherit;
+  background:url('/user-bar-v3/xp-fill.png') left center/100% 100% no-repeat;
+  transition:width .5s cubic-bezier(.2,.8,.2,1);
+}
+.today-player-meter-ink .today-player-fill{background-image:url('/user-bar-v3/ink-fill.png')}
+.today-player-meter-value{
+  font-size:13px;line-height:1;letter-spacing:.025em;text-align:right;white-space:nowrap;text-shadow:0 1px 2px rgba(0,0,0,.65);
+}
+.today-player-coins{
+  position:absolute;z-index:2;right:1.1%;top:14%;width:15.7%;height:65%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;color:#FFF4D8;
+}
+.today-player-coin{width:39px;height:40px;display:block;object-fit:contain;filter:drop-shadow(0 4px 4px rgba(0,0,0,.35))}
+.today-player-coins strong{font-size:24px;line-height:.95;letter-spacing:.04em;text-shadow:0 2px 3px rgba(0,0,0,.55)}
+.app[data-mode="night"] .today-player::before{filter:drop-shadow(0 9px 9px rgba(0,0,0,.55))}
+
+@media (max-width:350px){
+  .today-player{aspect-ratio:431/145;margin-inline:12px}
+  .today-player-progress{left:28%;right:17.6%;top:13%;height:59%}
+  .today-player-meter-xp{grid-template-columns:21px 39px minmax(0,1fr);gap:4px}
+  .today-player-meter-ink{grid-template-columns:21px 27px minmax(0,1fr) 34px;gap:3px}
+  .today-player-emblem{width:21px;height:23px}
+  .today-player-meter-label{font-size:8.8px}.today-player-meter-value{font-size:8px}
+  .today-player-track{height:10px}
+  .today-player-level-badge span{font-size:8px}.today-player-level-badge strong{font-size:13px;margin-top:1px}
+  .today-player-coin{width:27px;height:28px}.today-player-coins strong{font-size:16px}
+}
+
+/* legacy avatar + meter primitives shared by profile and reader surfaces */
 .avatar{flex:0 0 50px;width:50px;height:50px;border-radius:50%;background:linear-gradient(145deg,#FFD34E,var(--yellow));color:#241B0E;display:flex;align-items:center;justify-content:center;font-size:21px;box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 8px 20px -12px rgba(255,192,23,.8)}
-.bars{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
-.brow{display:flex;align-items:center;gap:10px}
-.blab{font-size:13px;letter-spacing:.08em;min-width:38px;color:var(--ink)}
 .track{flex:1;height:6px;background:var(--track);border-radius:999px;overflow:hidden;box-shadow:inset 0 1px 2px rgba(0,0,0,.14)}
 .fill{height:100%;border-radius:3px;transition:width .5s cubic-bezier(.2,.8,.2,1)}
 .fill.xp{background:linear-gradient(90deg,var(--yellow),#FFD866)}
 .fill.ink{background:var(--quill)}
-.bval{font-size:11.5px;color:var(--mut);font-weight:700;letter-spacing:.3px;min-width:49px;white-space:nowrap;text-align:right}
-.coins{flex:0 0 auto;display:flex;align-items:center;gap:5px;font-size:14px;font-weight:800;font-family:'Anton',sans-serif;letter-spacing:.05em;padding-left:2px}
-.coins .ti{font-size:16px;color:var(--yellow)}
 
 /* ============================================================
    the delivery desk (today) — quiet enough for the quote to lead
    ============================================================ */
-.marquee{position:relative;z-index:3;min-height:140px;padding:32px 22px 0;flex:0 0 auto}
+.marquee{position:relative;z-index:3;min-height:131px;padding:20px 22px 0;flex:0 0 auto}
 .mq{
   position:relative;z-index:1;margin:0;
   font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;
@@ -214,11 +277,12 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
   animation:mqIn .5s cubic-bezier(.18,.9,.24,1.04) both;
 }
 @keyframes mqIn{from{opacity:0;transform:translateY(20px) skewX(-9deg)}to{opacity:1;transform:none}}
+.mq-sub{position:relative;z-index:1;margin-top:13px;font-size:15px;color:var(--mut);animation:mqIn .55s .08s cubic-bezier(.18,.9,.24,1.04) both}
 
 /* the hero owl — perched on the incoming letter */
 .owl{display:block;pointer-events:none}
 .owl.hero{
-  position:absolute;right:18px;bottom:-25px;width:104px;height:113px;z-index:3;
+  position:absolute;right:14px;top:6px;bottom:auto;width:116px;height:126px;z-index:3;
   filter:drop-shadow(0 10px 14px rgba(0,0,0,.22));
   animation:swoop .8s cubic-bezier(.2,.9,.25,1.05) both, perch 4.2s 1s ease-in-out infinite;
 }
@@ -240,46 +304,36 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 /* ============================================================
    today's pick — a cover-led post from the old theatre desk
    ============================================================ */
-.pick-wrap{position:relative;z-index:1;padding:18px 22px 0}
-/* the daily post IS a letter — the one paper object on the delivery desk */
-.post-letter{
-  position:relative;min-height:296px;padding:40px 26px 22px;
-  color:var(--letter-ink);
-  background:linear-gradient(180deg,rgba(255,255,255,.5),rgba(255,255,255,0) 30%),var(--letter);
-  border:1px solid rgba(60,44,16,.24);border-radius:18px;
-  box-shadow:var(--letterGlow),0 14px 30px -16px rgba(0,0,0,.5);
+.pick-wrap{position:relative;z-index:1;padding:16px 27px 0}
+.quote-post{
+  position:relative;min-height:304px;padding:20px 30px 12px;color:var(--ink);overflow:hidden;
+  background:
+    radial-gradient(120% 72% at 50% 12%,rgba(255,192,23,.055),transparent 58%),
+    var(--surface);
+  border:1px solid var(--line);border-radius:26px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.045),var(--shadow);
 }
-.post-letter::before{ /* postmark rule along the top */
-  content:"";position:absolute;left:22px;right:22px;top:16px;height:1px;
-  background:repeating-linear-gradient(90deg,rgba(60,44,16,.26) 0 6px,transparent 6px 12px);
+.quote-post::before{
+  content:"“";position:absolute;left:30px;top:22px;height:auto;
+  background:none;color:var(--yellow);opacity:1;
+  font-family:'Fraunces',Georgia,serif;font-size:56px;line-height:1;font-weight:700;
 }
-.post-letter.swap{animation:swapIn .26s ease}
-/* the postage stamp, top-right — perforated, slightly askew */
-.post-stamp{
-  position:absolute;top:26px;right:22px;width:34px;height:40px;
-  display:flex;align-items:center;justify-content:center;
-  background:var(--yellow);color:#241B0E;border-radius:3px;transform:rotate(3deg);
-  box-shadow:0 0 0 3px #F1E7CB,0 2px 6px rgba(60,44,16,.28);
-}
-.post-stamp::after{content:"";position:absolute;inset:3px;border:1px dashed rgba(60,44,16,.45);border-radius:2px}
-.post-stamp .ti{font-size:16px}
+.quote-post.swap{animation:swapIn .26s ease}
 .quote-hero{
-  max-width:300px;margin:34px auto 0;padding:0;text-align:center;
-  font-family:'Fraunces',Georgia,serif;font-size:clamp(25px,6.9vw,30px);font-weight:430;
-  font-style:normal;line-height:1.22;letter-spacing:-.015em;text-wrap:balance;color:#241B0E;
+  max-width:310px;margin:38px auto 0;padding:0;text-align:center;
+  font-family:'Fraunces',Georgia,serif;font-size:clamp(26px,7.2vw,31px);font-weight:400;
+  font-style:normal;line-height:1.08;letter-spacing:-.025em;text-wrap:balance;
 }
-.quote-source{display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:17px;text-align:center}
-.quote-source::before{content:"";width:28px;height:2px;margin-bottom:10px;background:var(--yellow);border-radius:2px}
-.quote-title{font-size:15.5px;font-style:normal;font-weight:800;letter-spacing:.01em;color:#241B0E}
-/* the title is the about-sheet door now that the cover is gone */
-button.quote-title{padding:0;background:none;border:0;font-family:inherit;cursor:pointer}
-button.quote-title:hover{text-decoration:underline;text-decoration-color:var(--yellow);text-decoration-thickness:2px;text-underline-offset:3px}
-button.quote-title:focus-visible{outline:2px solid var(--yellow);outline-offset:4px;border-radius:4px}
-.quote-author{font-family:'Fraunces',Georgia,serif;font-size:13px;color:#6E6250;font-weight:500;font-style:italic}
-.quote-actions{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:20px;padding-top:16px;border-top:1px dashed rgba(60,44,16,.26)}
-.quote-actions .btn{min-height:44px;margin-top:0}
-.quote-actions .save{width:44px;height:44px;flex-basis:44px;background:#F1E7CB;border-color:rgba(60,44,16,.2);color:#3A2C14;box-shadow:none}
-.ask-btn{justify-content:center;flex:1;min-width:150px;max-width:212px;padding-inline:22px}
+.quote-source{display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:20px;text-align:center}
+.quote-source::before{content:"";width:28px;height:2px;margin-bottom:6px;background:var(--yellow);border-radius:2px}
+.quote-title{display:inline;padding:0;background:none;border:0;color:inherit;font-size:16px;font-style:normal;font-weight:800;line-height:1.2;letter-spacing:.01em;cursor:pointer}
+.quote-title:hover{text-decoration:underline;text-decoration-color:var(--yellow);text-decoration-thickness:2px;text-underline-offset:3px}
+.quote-author{font-family:'Fraunces',Georgia,serif;font-size:13px;color:var(--mut);font-weight:500;font-style:italic}
+.quote-actions{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.quote-actions .btn{min-height:40px;margin-top:0}
+.quote-actions .save{width:44px;height:44px;flex-basis:44px}
+.ask-btn{justify-content:center;flex:0 0 135px;min-width:135px;max-width:135px;padding-inline:20px}
+.quote-title:focus-visible{outline:2px solid var(--yellow);outline-offset:4px;border-radius:4px}
 .ask-btn .ti{transition:transform .2s ease}
 .ask-btn:hover .ti{transform:translateX(3px)}
 @keyframes swapIn{from{opacity:0;transform:translateX(var(--fx,18px))}to{opacity:1;transform:none}}
@@ -316,6 +370,7 @@ button.quote-title:focus-visible{outline:2px solid var(--yellow);outline-offset:
 
 /* ---------- sections & shelf ---------- */
 .sec{padding:24px 0 0;position:relative;z-index:1}
+.resume-sec{padding-top:12px}
 .sec-head{display:flex;align-items:center;justify-content:space-between;padding:0 22px 13px}
 .sec-title{margin:0;font-size:16px;font-weight:400;letter-spacing:.05em;text-transform:uppercase;color:var(--ink)}
 .all{min-height:32px;background:none;border:0;padding:0 2px;font-size:10.5px;font-weight:800;color:var(--gold);letter-spacing:1.2px;cursor:pointer}
