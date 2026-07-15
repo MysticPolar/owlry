@@ -16,13 +16,21 @@ import type { ChatItem } from '../../store/types';
 import { Icon } from '../Icon';
 import { CastOwl } from '../CastOwl';
 
-/* honour both the OS setting and the in-app "reduce motion" toggle */
+/* honour both the OS setting and the in-app "reduce motion" toggle, and react
+   live when the OS setting flips mid-session (not only on the next re-render) */
 function useReduceMotion(): boolean {
   const pref = useStore((s) => s.prefs.reduceMotion);
-  return (
-    pref ||
-    (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+  const [osReduce, setOsReduce] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches,
   );
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const on = () => setOsReduce(mq.matches);
+    mq.addEventListener('change', on);
+    return () => mq.removeEventListener('change', on);
+  }, []);
+  return pref || osReduce;
 }
 
 /* spine geometry — thickness reads the page count, height jitters by id so
@@ -101,11 +109,18 @@ function StreamMsg({ item, active, reduce, skipRef, onDone, onScroll, openSheet 
   // a queued (not-yet-active) streaming line renders nothing until its turn
   if (shouldStream && !active && !done && n === 0) return null;
   const caret = active && !done;
+  // the char-by-char text lives in an aria-hidden node so the polite #chat log
+  // doesn't re-announce every keystroke; the finished line is spoken once via
+  // a single sr-only node that appears when typing completes
+  const animating = !!item.stream;
   return (
     <div className={`msg owl${item.tone === 'note' ? ' note' : ''}`}>
       {item.speaker && <span className="who">{item.speaker}</span>}
-      <span className="tw">{renderStreamedNodes(nodes, done ? total : n, openSheet)}</span>
+      <span className="tw" aria-hidden={animating || undefined}>
+        {renderStreamedNodes(nodes, done ? total : n, openSheet)}
+      </span>
       {caret && <span className="tw-cur" aria-hidden="true" />}
+      {animating && done && <span className="sr-only">{nodes.map((nd) => nd.v).join('')}</span>}
     </div>
   );
 }
@@ -264,6 +279,12 @@ function ShelfRail({ reduce }: { reduce: boolean }) {
         );
         anim.onfinish = () => {
           fly.remove();
+          // if the conversation was wiped mid-flight (new chat / reset / sign-out),
+          // the letter card detached — don't re-shelve a book from a discarded turn
+          if (!document.body.contains(fromEl)) {
+            setFlightVisible(false);
+            return;
+          }
           collectBooks(collect); // the real spine renders on the rail
           land(b.t);
         };
@@ -289,30 +310,33 @@ function ShelfRail({ reduce }: { reduce: boolean }) {
     }
   }, [messages, reduce, collectBooks, flyToShelf]);
 
+  // when the shelf is cleared (new chat / reset / sign-out), drop the forced
+  // visibility so the empty rail hides instead of lingering as "0 books"
+  useEffect(() => {
+    if (!collected.length) setFlightVisible(false);
+  }, [collected.length]);
+
   const on = collected.length > 0 || flightVisible;
   const countText = announce ?? `${collected.length} ${collected.length === 1 ? 'book' : 'books'}`;
 
   return (
     <div className={`shelfrail${on ? ' on' : ''}${expanded ? ' expanded' : ''}${glow ? ' glow' : ''}`} aria-hidden={!on}>
       <div className="sr-books" id="srBooks" ref={booksRef}>
-        {collected
-          .slice()
-          .reverse()
-          .map((id) => {
-            const b = getBook(id);
-            if (!b) return null;
-            return (
-              <button
-                key={id}
-                className="sr-spine"
-                data-sheet={id}
-                aria-label={b.t}
-                title={b.t}
-                style={{ background: b.c, width: spineThickness(id), height: spineHeight(id) }}
-                onClick={() => openSheet(id)}
-              />
-            );
-          })}
+        {collected.map((id) => {
+          const b = getBook(id);
+          if (!b) return null;
+          return (
+            <button
+              key={id}
+              className="sr-spine"
+              data-sheet={id}
+              aria-label={b.t}
+              title={b.t}
+              style={{ background: b.c, width: spineThickness(id), height: spineHeight(id) }}
+              onClick={() => openSheet(id)}
+            />
+          );
+        })}
       </div>
       <button
         className={`sr-count${announce ? ' flash' : ''}`}
@@ -363,7 +387,10 @@ function Composer({ onTyping }: { onTyping: (v: boolean) => void }) {
     if (!t || busy) return;
     send(t);
     setVal('');
-    inputRef.current?.focus({ preventScroll: true });
+    // do NOT refocus: keeping focus holds the .typing state, which hides the
+    // header + shelf rail and suppresses the spine flight. Letting the composer
+    // blur lets the chrome return so the flight plays (matches the mockup).
+    inputRef.current?.blur();
   };
   return (
     <div className="composer">

@@ -187,6 +187,13 @@ export interface Store extends PersistedState {
 let chatId = 0;
 const nextId = () => ++chatId;
 
+/* a monotonic "conversation generation" — bumped whenever the conversation is
+   wiped or reloaded (restart, reset, hydrate, sign-out). A turn's deferred work
+   (the ~620ms reveal) captures the generation at send time and bails if it has
+   moved on, so a reply for a discarded question never lands in a fresh chat. */
+let chatTurn = 0;
+const bumpTurn = () => ++chatTurn;
+
 /* per-book reading milestones, for throttling progress→XP awards (cosmetic) */
 const progressMark = new Map<BookRef, number>();
 const secondsMark = new Map<BookRef, number>();
@@ -399,6 +406,10 @@ export const useStore = create<Store>()(
 
     hydrateChat: async () => {
       const s = get();
+      // reloading today's chat abandons any in-flight turn — clear the turn lock
+      // so a mid-stream auth refresh can never leave the composer stuck busy
+      bumpTurn();
+      if (s.owl.busy || s.owl.pending) set((st) => ({ owl: { ...st.owl, busy: false, pending: null } }));
       if (!supabase || !s.authUser) {
         get().initChat();
         return;
@@ -661,7 +672,8 @@ export const useStore = create<Store>()(
     // brand-new reader: onboarded + name cleared and showOnboarding raised, so
     // the door, the name entry, the curtain and scout's first flight all play
     // again. Keeps the reader's device settings (font, motion, mode).
-    resetProgress: () =>
+    resetProgress: () => (
+      bumpTurn(),
       set((s) => ({
         xp: 0,
         xpMax: 400,
@@ -683,7 +695,8 @@ export const useStore = create<Store>()(
         introCard: null,
         introAfter: null,
         owl: { ...s.owl, messages: [], chips: [], collected: [], lastBatch: null, started: false, busy: false, pending: null },
-      })),
+      }))
+    ),
 
     initChat: () => {
       if (get().owl.started) return;
@@ -722,6 +735,7 @@ export const useStore = create<Store>()(
     },
 
     restartChat: () => {
+      bumpTurn(); // abandon any in-flight turn so its reply can't land here
       set((s) => ({
         owl: {
           ...s.owl,
@@ -817,6 +831,9 @@ export const useStore = create<Store>()(
 
     setDeskMode: (mode) => {
       if (get().deskMode === mode) return;
+      // don't switch desks mid-reply — the ack line would wedge into the
+      // still-streaming turn and clobber its pending chips
+      if (get().owl.busy) return;
       // office hours — the non-fiction desk — opens at level 3; before that,
       // tapping it summons scout pro to explain (the desk stays shut)
       if (mode === 'pro' && get().lv < 3) {
@@ -834,8 +851,9 @@ export const useStore = create<Store>()(
               : 'off the clock — the whole desk is open. where shall we wander?',
         },
       ];
+      // the desk-switch ack is a reply context — keep it to three quiet chips
       const chips =
-        mode === 'pro' ? ['need focus', 'build a habit', 'career', 'money'] : ['rest', 'cozy escape', 'feeling stuck', 'surprise me'];
+        mode === 'pro' ? ['need focus', 'build a habit', 'career'] : ['rest', 'cozy escape', 'feeling stuck'];
       set((st) => ({
         owl: {
           ...st.owl,
@@ -870,6 +888,7 @@ export const useStore = create<Store>()(
       }));
 
       const t0 = Date.now();
+      const myTurn = chatTurn; // if the conversation is wiped mid-flight, this reply is stale
 
       void (async () => {
         // ink meters the LIVE owl (−1 ink, +3 XP). A dry inkwell → the free
@@ -902,6 +921,7 @@ export const useStore = create<Store>()(
         const speaker: 'scout' | 'scout pro' = get().deskMode === 'pro' ? 'scout pro' : 'scout';
 
         setTimeout(() => {
+          if (chatTurn !== myTurn) return; // the conversation was reset while we waited — drop this turn
           const st = get();
           // drop the dots, stream Scout's line(s) — first line wears the speaker label
           const messages = st.owl.messages.filter((m) => m.id !== typingId);
@@ -1029,7 +1049,8 @@ if (supabase) {
     if (user) {
       void useStore.getState().hydrateChat();
     } else {
-      // signed out: back to a fresh, ephemeral greeting
+      // signed out: back to a fresh, ephemeral greeting (abandon any in-flight turn)
+      bumpTurn();
       useStore.setState((s) => ({
         owl: { ...s.owl, started: false, messages: [], chips: [], collected: [], lastBatch: null, busy: false, pending: null },
       }));
