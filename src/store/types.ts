@@ -63,12 +63,23 @@ export interface PersistedState {
 }
 
 export type ChatItem =
-  | { kind: 'msg'; id: number; who: 'owl' | 'me'; nodes: OwlMessage; tone?: 'note' }
+  | {
+      kind: 'msg';
+      id: number;
+      who: 'owl' | 'me';
+      nodes: OwlMessage;
+      tone?: 'note';
+      /** the speaker label shown above the first owl line of a turn ('scout' | 'scout pro') */
+      speaker?: 'scout' | 'scout pro';
+      /** this owl line should type in with a caret (the calm-stream typewriter) */
+      stream?: boolean;
+    }
   | { kind: 'typing'; id: number }
   /** the unified lazy reading-letter card — the book (catalog id OR open-world
       slug) is registered in bookRegistry before the card is shown; the letter
-      itself is generated on tap via owl-peek and cached in the registry. */
-  | { kind: 'letter'; id: number; book: BookRef };
+      itself is generated on tap via owl-peek and cached in the registry.
+      `collect` are the shelf ids that fly onto the rail once the letter lands. */
+  | { kind: 'letter'; id: number; book: BookRef; collect?: BookRef[] };
 
 /** The cast (docs/story-bible.md). */
 export type OwlName = 'scout' | 'peek' | 'scribe' | 'mirror' | 'keeper';
@@ -95,6 +106,18 @@ export interface OwlReact {
   nonce: number;
 }
 
+/** The post-text half of a turn, stashed while Scout's line streams in.
+    Consumed by `revealAfterText` once the typewriter finishes so the letter,
+    the shelf flight, and the chips arrive one-at-a-time (never mid-stream). */
+export interface PendingTurn {
+  /** the card book (batch.main or letter), or null when the turn has no card */
+  mainId: BookRef | null;
+  /** every id that flies onto the shelf rail when the card lands */
+  collectIds: BookRef[];
+  chips: string[];
+  note?: string;
+}
+
 export interface OwlState {
   messages: ChatItem[];
   chips: string[];
@@ -103,6 +126,8 @@ export interface OwlState {
   session: OwlSession;
   busy: boolean;
   started: boolean;
+  /** set while Scout's reply streams; drives the after-text choreography */
+  pending: PendingTurn | null;
 }
 
 /** an open-world reading letter being viewed (content arrives lazily) */

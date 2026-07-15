@@ -14,7 +14,7 @@ import { useStore } from '../../store/useStore';
 import { listDays, loadDay } from '../../lib/history';
 import type { HistoryDay } from '../../lib/history';
 import type { HydratedChat } from '../../lib/chatHydrate';
-import { renderChatItem } from '../chat/ChatItems';
+import { renderChatItem, letterNumbers } from '../chat/ChatItems';
 import { Icon } from '../Icon';
 
 function todayLocal(): string {
@@ -97,7 +97,10 @@ export function History() {
             {transcript.messages.length === 0 ? (
               <div className="hist-empty">nothing was saved for this day.</div>
             ) : (
-              transcript.messages.map((m) => renderChatItem(m, openSheet, openLetter))
+              (() => {
+                const nos = letterNumbers(transcript.messages);
+                return transcript.messages.map((m) => renderChatItem(m, openSheet, openLetter, nos.get(m.id)));
+              })()
             )}
           </div>
         )}

@@ -597,7 +597,6 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 
 /* guest preview: a floating "gain a level" pill above the nav (clears the
    discover composer); sits below overlays so a letter/sheet/reader covers it */
-.guest-lvl[data-tab="discover"]{bottom:calc(196px + env(safe-area-inset-bottom))} /* clears the chip row */
 .guest-lvl{position:absolute;right:14px;bottom:calc(150px + env(safe-area-inset-bottom));z-index:7;
   display:inline-flex;align-items:center;gap:7px;padding:8px 13px 7px;border-radius:999px;cursor:pointer;
   background:rgba(255,192,23,.16);border:1px solid rgba(255,192,23,.45);color:var(--yellow);
@@ -1629,3 +1628,132 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
   .reader-chrome-top{padding-top:calc(8px + env(safe-area-inset-top))}
   .reader-settings{bottom:calc(8px + env(safe-area-inset-bottom))}
 }
+
+/* ============================================================
+   Discover chat v3 — the calm stream, the single-row desk header,
+   the one paper letter, and the shelf rail. Ported 1:1 from the
+   standalone modules phasee (stream+letter+typewriter), phasef
+   (desk-is-the-header), phaseh (shelf rail + flight). Everything is
+   scoped to #screen-discover via `.calm` / `.desk-head` / `.one-letter`,
+   so History keeps its bubble transcript untouched.
+   ============================================================ */
+
+/* -- retire the old tray + in-stream shelf strip (folded into letter+rail) -- */
+.one-letter #tray, .one-letter #stripRow{display:none !important}
+
+/* -- phasef: the desk is the header (one row) -- */
+.desk-head .disc-head{display:flex;align-items:center;gap:10px;padding:14px 22px 10px !important}
+.desk-head .disc-head .hl{display:none}          /* the bottom nav already says DISCOVER */
+.desk-head .deskrow{flex:1;min-width:0;margin:0 !important;padding:0 !important;
+  display:flex;align-items:center;gap:8px;overflow-x:auto;scrollbar-width:none}
+.desk-head .deskrow::-webkit-scrollbar{display:none}
+.desk-head .deskchip{flex:0 0 auto;padding:9px 15px !important;font-size:10.5px !important;letter-spacing:1.3px !important}
+.desk-head .disc-head-right{flex:0 0 auto;display:flex;align-items:center;gap:8px}
+.desk-head .ghost{top:-6px}
+.desk-head.chatting .disc-head{padding-top:10px !important}
+
+/* the guest level control, docked in the header (never over the stream) */
+.desk-lvl{flex:0 0 auto;display:inline-flex;align-items:center;gap:5px;cursor:pointer;
+  padding:7px 10px;border-radius:999px;background:rgba(255,192,23,.16);
+  border:1px solid rgba(255,192,23,.45);color:var(--yellow);
+  font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:lowercase}
+.desk-lvl .ti{font-size:13px}
+.desk-lvl b{font-size:10px;letter-spacing:.08em;opacity:.9}
+.desk-lvl:active{transform:translateY(1px)}
+
+/* -- phasee: header step-back / retreat -- */
+.calm.chatting .disc-head{padding-bottom:4px !important}
+.calm.chatting .ghost{opacity:0}
+.calm.chatting .disc-head .owl.mini{width:32px;height:35px}
+.calm .disc-head, .calm .ghost, .calm .disc-head .owl.mini{transition:all .35s ease}
+.calm.typing .disc-head{max-height:0;opacity:0;overflow:hidden;padding:0 !important;margin:0}
+.calm.typing .deskrow{opacity:.35}
+
+/* -- the stream container -- */
+.calm #chat{padding:14px 18px 6px !important;gap:0 !important}
+
+/* the user's question: a quiet pill, not a headline */
+.calm .msg.me{align-self:flex-end !important;max-width:78% !important;margin:20px 0 16px !important;
+  padding:9px 13px !important;background:var(--surface) !important;color:var(--ink) !important;
+  border:1px solid var(--line) !important;border-radius:15px 15px 4px 15px !important;box-shadow:none !important;
+  font-size:13.5px !important;font-weight:600 !important;line-height:1.45 !important}
+
+/* scout speaks in plain text — no bubble, no border, no shadow */
+.calm .msg.owl{align-self:flex-start !important;max-width:34ch !important;margin:0 0 2px !important;padding:0 !important;
+  background:none !important;border:0 !important;box-shadow:none !important;border-radius:0 !important;
+  font-size:15.5px !important;line-height:1.62 !important;color:var(--ink) !important;font-weight:500}
+.calm .msg.owl.note{opacity:.72}
+.calm .msg.owl .bk{color:var(--ink);border-bottom:1.5px solid var(--yellow);background:none;padding:0;font-weight:700}
+.calm .msg.owl .it{font-family:'Fraunces',Georgia,serif;font-style:italic;color:var(--mut)}
+
+/* a whisper of identity per turn */
+.msg.owl .who{display:block;margin:0 0 4px;font-size:8px;font-weight:800;letter-spacing:2.2px;
+  text-transform:uppercase;color:var(--ember,#D8481E);opacity:.85}
+.tw-cur{display:inline-block;width:2px;height:1em;vertical-align:-2px;margin-left:1px;background:var(--yellow);
+  animation:twBlink 1s steps(1) infinite}
+@keyframes twBlink{50%{opacity:0}}
+
+/* the letter: an enclosure, not a poster */
+.gletter{align-self:flex-start;width:min(292px,94%);margin:13px 0 2px;padding:13px 13px 10px;cursor:pointer;
+  background:linear-gradient(180deg,rgba(255,255,255,.5),rgba(255,255,255,0) 30%),var(--letter);
+  color:var(--letter-ink,#241B0E);border:1px solid rgba(60,44,16,.24);border-radius:14px;
+  box-shadow:var(--letterGlow),0 8px 22px -12px rgba(0,0,0,.4);
+  animation:glIn .5s cubic-bezier(.2,.9,.25,1.05) both;transition:transform .15s ease}
+.gletter:active{transform:translateY(1px)}
+@keyframes glIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.gl-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.gl-kick{font-size:7.5px;font-weight:800;letter-spacing:2.2px;text-transform:uppercase;color:#A8730A}
+.gl-heart{width:28px;height:28px;display:flex;align-items:center;justify-content:center;padding:0;
+  background:transparent;border:0;border-radius:8px;cursor:pointer;color:#9F927A;transition:color .2s,transform .2s}
+.gl-heart .ti{font-size:15px}
+.gl-heart.on{color:var(--ember,#D8481E)}
+.gl-heart.on .ti{fill:currentColor}
+.gl-heart:active{transform:scale(.9)}
+.gl-body{display:flex;align-items:center;gap:12px;margin-top:8px}
+.gl-body .cover-xs{flex:0 0 auto;box-shadow:2px 3px 10px rgba(0,0,0,.26)}
+.gl-info{min-width:0}
+.gl-t{font-family:'Anton',sans-serif;font-size:17.5px;line-height:1.14;letter-spacing:.02em;text-transform:uppercase;color:#241B0E}
+.gl-a{margin-top:4px;font-size:11px;font-weight:600;color:#6E6250}
+.gl-act{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:11px;padding-top:9px;
+  border-top:1px dashed rgba(60,44,16,.26)}
+.gl-about{position:relative;font-size:9px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:#9F927A;cursor:pointer}
+.gl-about:active{color:#6E6250}
+.gl-go{position:relative;display:inline-flex;align-items:center;gap:6px;cursor:pointer;
+  font-family:'Anton',sans-serif;font-size:11.5px;letter-spacing:.15em;text-transform:uppercase;color:#A8730A}
+.gl-go .ti{font-size:13px}
+.gletter:active .gl-go{color:#7E5406}
+/* pad the quiet footer words to ≥44px hit targets without changing the visual */
+.gl-about::after, .gl-go::after{content:"";position:absolute;left:-10px;right:-10px;top:50%;transform:translateY(-50%);height:44px}
+
+/* chips: quiet text, three at most */
+.calm #chiprow{display:flex !important;flex-wrap:wrap !important;gap:4px 16px !important;
+  padding:12px 18px 2px !important;overflow:visible !important;border:0 !important}
+.calm #chiprow .chip{background:none !important;border:0 !important;box-shadow:none !important;
+  padding:3px 0 !important;border-radius:0 !important;font-size:10px !important;font-weight:800 !important;
+  letter-spacing:1.5px !important;text-transform:uppercase !important;color:var(--mut) !important;
+  border-bottom:1px solid var(--line2) !important;min-height:0 !important}
+.calm #chiprow .chip:active{color:var(--ink) !important;border-bottom-color:var(--yellow) !important;transform:none !important}
+
+/* -- phaseh: the shelf rail -- */
+.shelfrail{position:relative;display:none;align-items:flex-end;gap:9px;margin:2px 0 0;padding:0 18px 7px}
+.shelfrail.on{display:flex}
+.shelfrail::after{content:"";position:absolute;left:18px;right:18px;bottom:2px;height:2px;border-radius:2px;
+  background:linear-gradient(90deg,transparent,var(--line2) 8%,var(--line2) 92%,transparent);
+  transition:background .4s ease,box-shadow .4s ease}
+.sr-books{display:flex;align-items:flex-end;gap:3px;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none;padding-bottom:1px}
+.sr-books::-webkit-scrollbar{display:none}
+.sr-spine{flex:0 0 auto;padding:0;border-radius:1.5px;cursor:pointer;border:1px solid rgba(0,0,0,.32);
+  box-shadow:1px 2px 5px rgba(0,0,0,.3);transition:transform .18s ease;
+  animation:srSettle .45s cubic-bezier(.3,1.5,.5,1) both}
+.sr-spine:hover{transform:translateY(-3px)}
+@keyframes srSettle{from{transform:translateY(-5px) rotate(-4deg)}to{transform:none}}
+.sr-count{flex:0 0 auto;background:none;border:0;padding:2px 0 3px;cursor:pointer;
+  font-size:8.5px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:var(--fade)}
+.sr-count:hover{color:var(--mut)}
+.shelfrail.glow::after{background:linear-gradient(90deg,transparent,var(--yellow) 8%,var(--yellow) 92%,transparent);
+  box-shadow:0 0 14px rgba(255,192,23,.55)}
+.shelfrail.expanded .sr-books{flex-wrap:wrap;overflow:visible;row-gap:8px}
+.sr-fly{position:absolute;z-index:30;border-radius:1.5px;pointer-events:none;border:1px solid rgba(0,0,0,.32);
+  box-shadow:2px 4px 12px rgba(0,0,0,.45),0 0 14px rgba(255,192,23,.4)}
+.sr-count.flash{color:var(--yellow)}
+.calm.typing .shelfrail{display:none}

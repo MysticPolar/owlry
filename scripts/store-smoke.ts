@@ -74,19 +74,36 @@ check(
   g().owl.busy && g().owl.messages.some((m) => m.kind === 'typing') && g().owl.chips.length === 0,
 );
 
-await new Promise((r) => setTimeout(r, 2300)); // think (≤1500) + letter beat (450)
-const items = g().owl.messages;
+// the calm stream: after ~620ms the dots clear and scout's line streams in — the
+// letter/chips wait for the typewriter to finish (the component signals that)
+await new Promise((r) => setTimeout(r, 750));
+const streamed = g().owl.messages;
 check(
-  'reply landed: me msg + owl reply + letter card (wws)',
-  items.some((m) => m.kind === 'msg' && m.who === 'me') &&
-    items.filter((m) => m.kind === 'msg' && m.who === 'owl').length >= 2 &&
-    items.some((m) => m.kind === 'letter' && m.book === 'wws'),
-);
-check(
-  'typing cleared, busy false, after-chips offered',
-  !g().owl.busy && !items.some((m) => m.kind === 'typing') && g().owl.chips.includes('go deeper'),
+  'reply streamed: me pill + owl reply flagged, letter still pending',
+  streamed.some((m) => m.kind === 'msg' && m.who === 'me') &&
+    streamed.filter((m) => m.kind === 'msg' && m.who === 'owl').length >= 2 &&
+    streamed.some((m) => m.kind === 'msg' && m.who === 'owl' && m.stream) &&
+    !streamed.some((m) => m.kind === 'letter') &&
+    g().owl.busy &&
+    g().owl.pending?.mainId === 'wws',
 );
 check('tray batch perched on wws', g().owl.lastBatch?.main === 'wws');
+
+// the stream finished → play the after-text beat (letter → flight → chips)
+g().revealAfterText(false);
+await new Promise((r) => setTimeout(r, 1000)); // letter (+170) then chips (+700)
+const items = g().owl.messages;
+check(
+  'letter landed after the reply, its own beat (wws)',
+  items.some((m) => m.kind === 'letter' && m.book === 'wws'),
+);
+check(
+  'typing cleared, busy false, after-chips offered (≤3)',
+  !g().owl.busy &&
+    !items.some((m) => m.kind === 'typing') &&
+    g().owl.chips.includes('go deeper') &&
+    g().owl.chips.length <= 3,
+);
 const letterIdx = items.findIndex((m) => m.kind === 'letter');
 const lastOwlIdx = items.map((m) => m.kind === 'msg' && m.who === 'owl').lastIndexOf(true);
 check('letter arrives after the reply (its own beat)', lastOwlIdx > 0 && letterIdx > lastOwlIdx);

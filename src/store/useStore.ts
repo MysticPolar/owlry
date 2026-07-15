@@ -48,6 +48,7 @@ import type {
   ReaderState,
   ToastState,
   ChatItem,
+  PendingTurn,
 } from './types';
 
 /** lazy reading-letter state: the letter is generated only when the reader taps the card */
@@ -167,6 +168,11 @@ export interface Store extends PersistedState {
   /** load today's persisted chat (authenticated + configured) or fall back to the greeting */
   hydrateChat: () => Promise<void>;
   sendToOwl: (text: string) => void;
+  /** the calm stream finished typing Scout's reply → play the after-text beat
+      (the letter, then the shelf flight, then the chips). Runs once per turn. */
+  revealAfterText: (skipped: boolean) => void;
+  /** merge shelf ids into the session rail (called when a spine lands) */
+  collectBooks: (ids: BookRef[]) => void;
   setDeskMode: (mode: DeskMode) => void;
   openOnboarding: () => void;
   /** end opening night; when a first letter was sorted, plant it in the chat and open it */
@@ -247,6 +253,7 @@ export const useStore = create<Store>()(
       session: newSession('rain'),
       busy: false,
       started: false,
+      pending: null,
     },
     deskMode: 'all',
     introCard: null,
@@ -675,7 +682,7 @@ export const useStore = create<Store>()(
         mirrorRoomOpen: false,
         introCard: null,
         introAfter: null,
-        owl: { ...s.owl, messages: [], chips: [], collected: [], lastBatch: null, started: false },
+        owl: { ...s.owl, messages: [], chips: [], collected: [], lastBatch: null, started: false, busy: false, pending: null },
       })),
 
     initChat: () => {
@@ -724,6 +731,7 @@ export const useStore = create<Store>()(
           collected: [],
           lastBatch: null,
           busy: false,
+          pending: null,
           session: newSession(WX[get().wxIndex].k),
         },
       }));
@@ -846,11 +854,13 @@ export const useStore = create<Store>()(
       const typingId = nextId();
       const wxKey = WX[s.wxIndex].k;
 
+      // t=0 — the user's line (a quiet pill), chips cleared, the typing dots
       set((st) => ({
         owl: {
           ...st.owl,
           busy: true,
           chips: [],
+          pending: null,
           messages: [
             ...st.owl.messages,
             { kind: 'msg', id: meId, who: 'me', nodes: [{ t: 'text', v: text }] },
@@ -858,6 +868,8 @@ export const useStore = create<Store>()(
           ],
         },
       }));
+
+      const t0 = Date.now();
 
       void (async () => {
         // ink meters the LIVE owl (−1 ink, +3 XP). A dry inkwell → the free
@@ -876,53 +888,104 @@ export const useStore = create<Store>()(
           get().addXP(3);
         }
 
-        // offline resolves instantly; the typing delay below reproduces the mockup's pacing
-        const replyLen = reply.msgs.reduce((n, m) => n + m.reduce((x, nd) => x + nd.v.length, 0), 0);
-        const think = Math.min(1500, 650 + replyLen * 3);
+        // the dots hold for ~620ms (the mockup's beat) before Scout's line streams
+        // in — but never longer, so a slow live turn doesn't double-wait
+        const wait = Math.max(0, 620 - (Date.now() - t0));
 
-        // a contextual note (e.g. "not financial advice") trails the reply as its own quiet line
-        const withNote = (msgs: ChatItem[]): ChatItem[] =>
-          reply.note
-            ? [...msgs, { kind: 'msg', id: nextId(), who: 'owl', nodes: [{ t: 'text', v: reply.note }], tone: 'note' }]
-            : msgs;
+        // what flies to the shelf, and which book (if any) becomes the letter card
+        const mainId = reply.batch ? reply.batch.main : reply.letter ?? null;
+        const collectIds = reply.batch
+          ? [reply.batch.main, ...reply.batch.also]
+          : reply.letter
+            ? [reply.letter]
+            : [];
+        const speaker: 'scout' | 'scout pro' = get().deskMode === 'pro' ? 'scout pro' : 'scout';
 
         setTimeout(() => {
           const st = get();
-          let messages = st.owl.messages.filter((m) => m.id !== typingId);
-          reply.msgs.forEach((nodes) => {
-            messages = [...messages, { kind: 'msg', id: nextId(), who: 'owl', nodes }];
+          // drop the dots, stream Scout's line(s) — first line wears the speaker label
+          const messages = st.owl.messages.filter((m) => m.id !== typingId);
+          reply.msgs.forEach((nodes, i) => {
+            messages.push({
+              kind: 'msg',
+              id: nextId(),
+              who: 'owl',
+              nodes,
+              stream: true,
+              ...(i === 0 ? { speaker } : {}),
+            });
           });
 
-          let collected = st.owl.collected;
-          let lastBatch = st.owl.lastBatch;
-          if (reply.batch) {
-            lastBatch = reply.batch;
-            collected = [...st.owl.collected];
-            [reply.batch.main, ...reply.batch.also].forEach((id) => {
-              if (!collected.includes(id)) collected.unshift(id);
-            });
-          }
+          const pending: PendingTurn = {
+            mainId,
+            collectIds,
+            chips: reply.chips,
+            note: reply.note,
+          };
 
-          if (reply.letter) {
-            // the reply lands first; the letter (and any note) arrive a beat later, as their own moment
-            const letterBook = reply.letter;
-            set({ owl: { ...st.owl, messages, collected, lastBatch, session } });
-            setTimeout(() => {
-              const st2 = get();
-              const msgs2: ChatItem[] = withNote([...st2.owl.messages, { kind: 'letter', id: nextId(), book: letterBook }]);
-              set((st3) => ({
-                owl: { ...st2.owl, busy: false, chips: reply.chips, messages: msgs2 },
-                owlReact: { owl: 'scout', nonce: (st3.owlReact?.nonce ?? 0) + 1 },
-              }));
-            }, 450);
-          } else {
-            set((st4) => ({
-              owl: { ...st.owl, busy: false, messages: withNote(messages), chips: reply.chips, collected, lastBatch, session },
-              owlReact: { owl: 'scout', nonce: (st4.owlReact?.nonce ?? 0) + 1 },
-            }));
-          }
-        }, think);
+          set((st2) => ({
+            owl: {
+              ...st.owl,
+              messages,
+              lastBatch: reply.batch ?? st.owl.lastBatch,
+              session,
+              pending,
+            },
+            owlReact: { owl: 'scout', nonce: (st2.owlReact?.nonce ?? 0) + 1 },
+          }));
+
+          // safety: a reply with no streamable line still needs its after-text beat
+          if (!reply.msgs.length) get().revealAfterText(false);
+        }, wait);
       })();
+    },
+
+    // the typewriter finished — bring in the letter, then (via the rail flight)
+    // the spine, then the chips. One paper object, one gold action, in sequence.
+    revealAfterText: (skipped) => {
+      const pending = get().owl.pending;
+      if (!pending) return; // already played (guards double-fire across stream lines)
+      set((st) => ({ owl: { ...st.owl, pending: null } }));
+
+      const appendNote = (msgs: ChatItem[]): ChatItem[] =>
+        pending.note
+          ? [...msgs, { kind: 'msg', id: nextId(), who: 'owl', nodes: [{ t: 'text', v: pending.note! }], tone: 'note' }]
+          : msgs;
+
+      const finish = () =>
+        set((st) => ({ owl: { ...st.owl, busy: false, chips: pending.chips.slice(0, 3) } }));
+
+      if (pending.mainId) {
+        const book = pending.mainId;
+        const collect = pending.collectIds;
+        // the letter slides in a beat after the words settle (sooner if skipped)
+        setTimeout(() => {
+          set((st) => ({
+            owl: {
+              ...st.owl,
+              messages: appendNote([...st.owl.messages, { kind: 'letter', id: nextId(), book, collect }]),
+            },
+          }));
+          // the rail flight (component-side) rides on top; chips arrive at +700
+          setTimeout(finish, 700);
+        }, skipped ? 40 : 170);
+      } else {
+        setTimeout(() => {
+          set((st) => ({ owl: { ...st.owl, messages: appendNote(st.owl.messages) } }));
+          finish();
+        }, 120);
+      }
+    },
+
+    collectBooks: (ids) => {
+      if (!ids.length) return;
+      set((st) => {
+        const collected = [...st.owl.collected];
+        ids.forEach((id) => {
+          if (!collected.includes(id)) collected.unshift(id);
+        });
+        return { owl: { ...st.owl, collected } };
+      });
     },
   })),
 );
@@ -968,7 +1031,7 @@ if (supabase) {
     } else {
       // signed out: back to a fresh, ephemeral greeting
       useStore.setState((s) => ({
-        owl: { ...s.owl, started: false, messages: [], chips: [], collected: [], lastBatch: null },
+        owl: { ...s.owl, started: false, messages: [], chips: [], collected: [], lastBatch: null, busy: false, pending: null },
       }));
       useStore.getState().initChat();
     }

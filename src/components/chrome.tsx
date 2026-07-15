@@ -7,8 +7,9 @@ import { Icon } from './Icon';
 import { chainsInner } from '../lib/chains';
 
 /* guest-only shortcut to walk the level ladder (and trip its unlocks) from
-   the main screens — the desk, the shelves, today. Hidden on the profile tab
-   and for signed-in accounts (whose xp is server-authoritative). */
+   the main screens — today and the shelves. Discover docks its own copy in the
+   desk header (a floating pill would sit on the chat stream); the profile tab
+   and signed-in accounts (server-authoritative xp) get none. */
 export function GuestLevelButton() {
   const authed = useAuth((s) => s.status === 'authed');
   const tab = useStore((s) => s.activeTab);
@@ -20,7 +21,7 @@ export function GuestLevelButton() {
   // the locked profile (mirror's room) leaves activeTab where it was, so guard
   // on it too — that page gets its own settings gear, not this pill
   if (roomOpen) return null;
-  if (tab !== 'today' && tab !== 'discover' && tab !== 'library') return null;
+  if (tab !== 'today' && tab !== 'library') return null;
   return (
     <button
       className="guest-lvl"
