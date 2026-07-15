@@ -204,22 +204,21 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 /* ============================================================
    the delivery desk (today) — quiet enough for the quote to lead
    ============================================================ */
-.marquee{position:relative;z-index:3;min-height:148px;padding:34px 22px 0;flex:0 0 auto}
+.marquee{position:relative;z-index:3;min-height:118px;padding:30px 22px 0;flex:0 0 auto}
 .mq{
-  position:relative;z-index:1;margin:0;
-  font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;
-  display:flex;flex-direction:column;align-items:flex-start;
-  font-size:52px;line-height:.86;letter-spacing:.015em;color:var(--ink);
+  position:relative;z-index:1;margin:0;padding-right:104px; /* keep clear of the perched owl */
+  font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;white-space:nowrap;
+  font-size:clamp(30px, 8.8vw, 38px);line-height:1;letter-spacing:.02em;color:var(--ink);
   text-shadow:var(--glowT);
   animation:mqIn .5s cubic-bezier(.18,.9,.24,1.04) both;
 }
 @keyframes mqIn{from{opacity:0;transform:translateY(20px) skewX(-9deg)}to{opacity:1;transform:none}}
-.mq-sub{position:relative;z-index:1;margin-top:13px;font-size:15px;color:var(--mut);animation:mqIn .55s .08s cubic-bezier(.18,.9,.24,1.04) both}
+.mq-sub{position:relative;z-index:1;margin-top:9px;font-size:14.5px;color:var(--mut);animation:mqIn .55s .08s cubic-bezier(.18,.9,.24,1.04) both}
 
 /* the hero owl — perched on the incoming letter */
 .owl{display:block;pointer-events:none}
 .owl.hero{
-  position:absolute;right:18px;bottom:-25px;width:104px;height:113px;z-index:3;
+  position:absolute;right:16px;bottom:-27px;width:94px;height:102px;z-index:3;
   filter:drop-shadow(0 10px 14px rgba(0,0,0,.22));
   animation:swoop .8s cubic-bezier(.2,.9,.25,1.05) both, perch 4.2s 1s ease-in-out infinite;
 }
@@ -241,71 +240,55 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 /* ============================================================
    today's pick — a cover-led post from the old theatre desk
    ============================================================ */
-.pick-wrap{position:relative;z-index:1;padding:20px 22px 0}
-.quote-post{
-  position:relative;min-height:338px;padding:20px 24px 22px;color:var(--ink);overflow:hidden;
-  background:
-    radial-gradient(120% 72% at 50% 12%,rgba(255,192,23,.055),transparent 58%),
-    var(--surface);
-  border:1px solid var(--line);border-radius:26px;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.045),var(--shadow);
+.pick-wrap{position:relative;z-index:1;padding:18px 22px 0}
+/* the daily post IS a letter — the one paper object on the delivery desk */
+.post-letter{
+  position:relative;min-height:296px;padding:40px 26px 22px;
+  color:var(--letter-ink);
+  background:linear-gradient(180deg,rgba(255,255,255,.5),rgba(255,255,255,0) 30%),var(--letter);
+  border:1px solid rgba(60,44,16,.24);border-radius:18px;
+  box-shadow:var(--letterGlow),0 14px 30px -16px rgba(0,0,0,.5);
 }
-.quote-post::before{
-  content:"“";position:absolute;left:24px;top:54px;height:auto;
-  background:none;color:var(--yellow);opacity:1;
-  font-family:'Fraunces',Georgia,serif;font-size:62px;line-height:1;font-weight:700;
+.post-letter::before{ /* postmark rule along the top */
+  content:"";position:absolute;left:22px;right:22px;top:16px;height:1px;
+  background:repeating-linear-gradient(90deg,rgba(60,44,16,.26) 0 6px,transparent 6px 12px);
 }
-.quote-post.swap{animation:swapIn .26s ease}
-.post-toolbar{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.post-meta{font-family:'Inter Tight',sans-serif;font-size:9px;font-weight:850;letter-spacing:1.55px;color:var(--gold);text-transform:uppercase;white-space:nowrap}
-.post-stepper{display:flex;align-items:center;gap:7px;font-size:9px;font-weight:850;letter-spacing:1px;color:var(--mut)}
-.post-stepper button{width:30px;height:30px;display:grid;place-items:center;padding:0;background:var(--surface2);border:1px solid var(--line);border-radius:9px;color:var(--ink);cursor:pointer;transition:background .18s,transform .18s,border-color .18s}
-.post-stepper button:hover{border-color:var(--line2);background:var(--track)}
-.post-stepper button:active{transform:translateY(1px)}
-.post-stepper .ti{font-size:14px}
+.post-letter.swap{animation:swapIn .26s ease}
+/* the postage stamp, top-right — perforated, slightly askew */
+.post-stamp{
+  position:absolute;top:26px;right:22px;width:34px;height:40px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--yellow);color:#241B0E;border-radius:3px;transform:rotate(3deg);
+  box-shadow:0 0 0 3px #F1E7CB,0 2px 6px rgba(60,44,16,.28);
+}
+.post-stamp::after{content:"";position:absolute;inset:3px;border:1px dashed rgba(60,44,16,.45);border-radius:2px}
+.post-stamp .ti{font-size:16px}
 .quote-hero{
-  max-width:310px;margin:36px auto 0;padding:0;text-align:center;
-  font-family:'Fraunces',Georgia,serif;font-size:clamp(28px,7.6vw,33px);font-weight:400;
-  font-style:normal;line-height:1.08;letter-spacing:-.025em;text-wrap:balance;
+  max-width:300px;margin:34px auto 0;padding:0;text-align:center;
+  font-family:'Fraunces',Georgia,serif;font-size:clamp(25px,6.9vw,30px);font-weight:430;
+  font-style:normal;line-height:1.22;letter-spacing:-.015em;text-wrap:balance;color:#241B0E;
 }
-.quote-source{display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:18px;text-align:center}
+.quote-source{display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:17px;text-align:center}
 .quote-source::before{content:"";width:28px;height:2px;margin-bottom:10px;background:var(--yellow);border-radius:2px}
-.quote-title{font-size:16px;font-style:normal;font-weight:800;letter-spacing:.01em}
+.quote-title{font-size:15.5px;font-style:normal;font-weight:800;letter-spacing:.01em;color:#241B0E}
 /* the title is the about-sheet door now that the cover is gone */
-button.quote-title{padding:0;background:none;border:0;color:inherit;font-family:inherit;cursor:pointer}
+button.quote-title{padding:0;background:none;border:0;font-family:inherit;cursor:pointer}
 button.quote-title:hover{text-decoration:underline;text-decoration-color:var(--yellow);text-decoration-thickness:2px;text-underline-offset:3px}
 button.quote-title:focus-visible{outline:2px solid var(--yellow);outline-offset:4px;border-radius:4px}
-.quote-author{font-family:'Fraunces',Georgia,serif;font-size:13px;color:var(--mut);font-weight:500;font-style:italic}
-.quote-actions{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:19px;padding-top:18px;border-top:1px solid var(--line)}
+.quote-author{font-family:'Fraunces',Georgia,serif;font-size:13px;color:#6E6250;font-weight:500;font-style:italic}
+.quote-actions{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:20px;padding-top:16px;border-top:1px dashed rgba(60,44,16,.26)}
 .quote-actions .btn{min-height:44px;margin-top:0}
-.quote-actions .save{width:44px;height:44px;flex-basis:44px}
+.quote-actions .save{width:44px;height:44px;flex-basis:44px;background:#F1E7CB;border-color:rgba(60,44,16,.2);color:#3A2C14;box-shadow:none}
 .ask-btn{justify-content:center;flex:1;min-width:150px;max-width:212px;padding-inline:22px}
 .ask-btn .ti{transition:transform .2s ease}
 .ask-btn:hover .ti{transform:translateX(3px)}
-.card{
-  position:relative;display:flex;gap:14px;color:var(--ink);
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,0) 26%),
-    var(--surface);
-  border:1px solid var(--line);border-radius:16px;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.04),var(--shadow);
-  padding:18px 16px 16px;
-  transition:background .45s ease,border-color .45s ease,box-shadow .45s ease;
-}
-.card::before{ /* postmark rule along the top */
-  content:"";position:absolute;left:14px;right:14px;top:8px;height:1px;
-  background:repeating-linear-gradient(90deg,var(--line2) 0 6px,transparent 6px 12px);
-}
-.card.swap{animation:swapIn .26s ease}
 @keyframes swapIn{from{opacity:0;transform:translateX(var(--fx,18px))}to{opacity:1;transform:none}}
 .lk{font-size:8.5px;font-weight:800;letter-spacing:2.2px;color:var(--gold);text-transform:uppercase;margin-bottom:5px}
 .save{width:32px;height:32px;flex:0 0 32px;display:flex;align-items:center;justify-content:center;background:var(--surface2);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow-sm);padding:0;cursor:pointer;color:var(--ink)}
-.card .save{background:var(--surface2);border-color:var(--line2);color:var(--ink);box-shadow:none}
 .save .ti{font-size:16px}
 .save.on .ti{color:var(--ember);animation:pop .35s ease}
 @keyframes pop{50%{transform:scale(1.4)}}
 .sheet .save{position:absolute;top:12px;right:12px;z-index:3}
-.card .save{position:absolute;right:12px;bottom:12px;z-index:3}
 .cover{display:flex;flex-direction:column;justify-content:flex-end;border:1px solid rgba(0,0,0,.28);border-radius:4px;color:#EFE6C2;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.08), 2px 3px 8px rgba(0,0,0,.24)}
 .cover .it{line-height:1.15}
 .cover-lg{width:100px;height:148px;flex:0 0 100px;padding:10px;font-size:12px}
@@ -323,7 +306,7 @@ button.quote-title:focus-visible{outline:2px solid var(--yellow);outline-offset:
 }
 .btn .ti{font-size:14px}
 .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line2);box-shadow:none}
-.card .btn.ghost,.letter .btn.ghost,.reader .btn.ghost{color:var(--letter-ink);border-color:rgba(60,44,16,.3)}
+.letter .btn.ghost,.reader .btn.ghost{color:var(--letter-ink);border-color:rgba(60,44,16,.3)}
 .btn:active,.save:active,.iconbtn:active,.chip:active{transform:translateY(2px);box-shadow:none}
 
 /* ---------- dots ---------- */
@@ -347,7 +330,7 @@ button.quote-title:focus-visible{outline:2px solid var(--yellow);outline-offset:
 .sh-author{margin-top:3px;font-family:'Fraunces',Georgia,serif;font-size:10.5px;font-style:italic;color:var(--fade);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .mini-track{height:4px;background:var(--track);border-radius:999px;margin-top:8px;overflow:hidden}
 .mini-fill{height:100%;background:var(--yellow);transition:width .4s}
-.sh-item:focus-visible,.post-stepper button:focus-visible{outline:2px solid var(--yellow);outline-offset:4px;border-radius:9px}
+.sh-item:focus-visible{outline:2px solid var(--yellow);outline-offset:4px;border-radius:9px}
 
 /* ---------- discover (scout's desk) ---------- */
 .search{display:flex;align-items:center;gap:9px;margin-top:16px;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow-sm);padding:11px 13px}
@@ -590,9 +573,9 @@ button.quote-title:focus-visible{outline:2px solid var(--yellow);outline-offset:
 .nv.on[data-tab="library"] .pill{background:var(--moss);box-shadow:0 0 12px rgba(43,150,96,.4)}
 .nv.on[data-tab="profile"] .pill{background:var(--violet);box-shadow:0 0 12px rgba(140,100,235,.42)}
 
-/* guest preview: a floating "gain a level" pill above the nav (clears the
-   discover composer); sits below overlays so a letter/sheet/reader covers it */
-.guest-lvl{position:absolute;right:14px;bottom:calc(150px + env(safe-area-inset-bottom));z-index:7;
+/* guest preview: a floating "gain a level" pill tucked just above the nav —
+   over cover art at worst, never on a section title; overlays still cover it */
+.guest-lvl{position:absolute;right:14px;bottom:calc(96px + env(safe-area-inset-bottom));z-index:7;
   display:inline-flex;align-items:center;gap:7px;padding:8px 13px 7px;border-radius:999px;cursor:pointer;
   background:rgba(255,192,23,.16);border:1px solid rgba(255,192,23,.45);color:var(--yellow);
   font-size:11px;font-weight:800;letter-spacing:.03em;text-transform:lowercase;
@@ -1327,7 +1310,7 @@ button.quote-title:focus-visible{outline:2px solid var(--yellow);outline-offset:
   .screen{padding-bottom:calc(104px + env(safe-area-inset-bottom))}
   #screen-discover{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
   /* fluid display type so nothing clips on narrow screens */
-  .mq{font-size:clamp(46px, 13vw, 52px)}
+  .mq{font-size:clamp(28px, 8.8vw, 38px)}
   .pad-h .ghost{font-size:clamp(64px, 25vw, 94px)}
   .logo{font-size:clamp(21px, 6.6vw, 25px)}
   .ob-marquee>span:first-child{font-size:clamp(40px, 14vw, 54px)}

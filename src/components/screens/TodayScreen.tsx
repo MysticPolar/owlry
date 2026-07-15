@@ -120,9 +120,9 @@ function PickCard() {
   return (
     <div className="pick-wrap">
       <article
-        className="quote-post swap"
+        className="post-letter swap"
         key={pickIndex}
-        aria-label={`Owl post ${pickIndex + 1} of ${PICKS.length}`}
+        aria-label={`Owl post ${pickIndex + 1} of ${PICKS.length} — swipe or use the dots below`}
         aria-roledescription="carousel"
         onPointerDown={(e) => {
           swipeX.current = e.clientX;
@@ -134,20 +134,10 @@ function PickCard() {
           if (Math.abs(dx) > 40) setPick(pickIndex + (dx < 0 ? 1 : -1));
         }}
       >
-        <div className="post-toolbar">
-          <div className="post-meta">scout&rsquo;s daily pick</div>
-          <div className="post-stepper" aria-label={`Pick ${pickIndex + 1} of ${PICKS.length}`}>
-            <button type="button" aria-label="Previous daily pick" onClick={() => setPick(pickIndex - 1)}>
-              <Icon name="ti-arrow-left" />
-            </button>
-            <span>
-              {String(pickIndex + 1).padStart(2, '0')} / {String(PICKS.length).padStart(2, '0')}
-            </span>
-            <button type="button" aria-label="Next daily pick" onClick={() => setPick(pickIndex + 1)}>
-              <Icon name="ti-arrow-right" />
-            </button>
-          </div>
-        </div>
+        {/* the postage stamp — the one small ornament that says "this is post" */}
+        <span className="post-stamp" aria-hidden="true">
+          <Icon name="ti-feather" />
+        </span>
         <blockquote className="quote-hero">&ldquo;{b.q}&rdquo;</blockquote>
         <footer className="quote-source">
           {/* the title opens the about sheet — the cover used to carry this */}
@@ -248,8 +238,7 @@ export function TodayScreen() {
       <StatsRow />
       <div className="marquee">
         <h2 className="mq" aria-label="Today's post">
-          <span>today&rsquo;s</span>
-          <span>post<span className="gdot">.</span></span>
+          today&rsquo;s post<span className="gdot">.</span>
         </h2>
         <div className="mq-sub it">delivered while you slept.</div>
         <CastOwl owl="scout" cls="hero" />
