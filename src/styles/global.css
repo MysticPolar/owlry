@@ -204,21 +204,21 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 /* ============================================================
    the delivery desk (today) — quiet enough for the quote to lead
    ============================================================ */
-.marquee{position:relative;z-index:3;min-height:118px;padding:30px 22px 0;flex:0 0 auto}
+.marquee{position:relative;z-index:3;min-height:140px;padding:32px 22px 0;flex:0 0 auto}
 .mq{
-  position:relative;z-index:1;margin:0;padding-right:104px; /* keep clear of the perched owl */
-  font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;white-space:nowrap;
-  font-size:clamp(30px, 8.8vw, 38px);line-height:1;letter-spacing:.02em;color:var(--ink);
+  position:relative;z-index:1;margin:0;
+  font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;
+  display:flex;flex-direction:column;align-items:flex-start;
+  font-size:52px;line-height:.86;letter-spacing:.015em;color:var(--ink);
   text-shadow:var(--glowT);
   animation:mqIn .5s cubic-bezier(.18,.9,.24,1.04) both;
 }
 @keyframes mqIn{from{opacity:0;transform:translateY(20px) skewX(-9deg)}to{opacity:1;transform:none}}
-.mq-sub{position:relative;z-index:1;margin-top:9px;font-size:14.5px;color:var(--mut);animation:mqIn .55s .08s cubic-bezier(.18,.9,.24,1.04) both}
 
 /* the hero owl — perched on the incoming letter */
 .owl{display:block;pointer-events:none}
 .owl.hero{
-  position:absolute;right:16px;bottom:-27px;width:94px;height:102px;z-index:3;
+  position:absolute;right:18px;bottom:-25px;width:104px;height:113px;z-index:3;
   filter:drop-shadow(0 10px 14px rgba(0,0,0,.22));
   animation:swoop .8s cubic-bezier(.2,.9,.25,1.05) both, perch 4.2s 1s ease-in-out infinite;
 }
@@ -1310,7 +1310,7 @@ button.quote-title:focus-visible{outline:2px solid var(--yellow);outline-offset:
   .screen{padding-bottom:calc(104px + env(safe-area-inset-bottom))}
   #screen-discover{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
   /* fluid display type so nothing clips on narrow screens */
-  .mq{font-size:clamp(28px, 8.8vw, 38px)}
+  .mq{font-size:clamp(46px, 13vw, 52px)}
   .pad-h .ghost{font-size:clamp(64px, 25vw, 94px)}
   .logo{font-size:clamp(21px, 6.6vw, 25px)}
   .ob-marquee>span:first-child{font-size:clamp(40px, 14vw, 54px)}
@@ -1417,7 +1417,6 @@ button.quote-title:focus-visible{outline:2px solid var(--yellow);outline-offset:
   /* ---- chat & cards (reading Scout, book intros) ---- */
   .msg{font-size:clamp(14px, 3.8vw, 15px);line-height:1.55}
   .lc-s{font-size:10.5px}
-  .mq-sub{font-size:14px}
   .bk-intro{font-size:clamp(13.5px, 3.8vw, 15px);line-height:1.62}
   .bk-bio{font-size:13px;line-height:1.55}
 }

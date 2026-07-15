@@ -238,9 +238,9 @@ export function TodayScreen() {
       <StatsRow />
       <div className="marquee">
         <h2 className="mq" aria-label="Today's post">
-          today&rsquo;s post<span className="gdot">.</span>
+          <span>today&rsquo;s</span>
+          <span>post<span className="gdot">.</span></span>
         </h2>
-        <div className="mq-sub it">delivered while you slept.</div>
         <CastOwl owl="scout" cls="hero" />
       </div>
       <PickCard />
