@@ -2,6 +2,7 @@ import { useStore } from '../../store/useStore';
 import { getBook } from '../../lib/bookRegistry';
 import type { LibTab } from '../../store/types';
 import { pct } from '../../lib/format';
+import { useT } from '../../i18n/react';
 import { Icon } from '../Icon';
 import { Cover } from '../Cover';
 import { CastOwl } from '../CastOwl';
@@ -10,6 +11,7 @@ function ReadingList() {
   const readingIds = useStore((s) => s.readingIds);
   const pagesRead = useStore((s) => s.pagesRead);
   const openBook = useStore((s) => s.openBook);
+  const t = useT().today.library;
   return (
     <div className="list">
       {readingIds.map((id) => {
@@ -29,7 +31,7 @@ function ReadingList() {
                 <span className="mini-pct">{p}%</span>
               </div>
             </div>
-            <button className="iconbtn" aria-label={`Resume ${b.t}`} onClick={() => openBook(id)}>
+            <button className="iconbtn" aria-label={t.resumeAria(b.t)} onClick={() => openBook(id)}>
               <Icon name="ti-player-play" />
             </button>
           </div>
@@ -42,12 +44,13 @@ function ReadingList() {
 function SavedGrid() {
   const savedIds = useStore((s) => s.savedIds);
   const openSheet = useStore((s) => s.openSheet);
+  const t = useT().today.library;
   if (!savedIds.length) {
     return (
       <div className="empty">
         <Icon name="ti-heart" />
-        <div className="d">nothing saved yet</div>
-        <p>tap the ♥ on any book to keep it here.</p>
+        <div className="d">{t.emptySavedTitle}</div>
+        <p>{t.emptySavedBody}</p>
       </div>
     );
   }
@@ -74,6 +77,7 @@ function SavedGrid() {
 function FinishedList() {
   const finishedIds = useStore((s) => s.finishedIds);
   const openBook = useStore((s) => s.openBook);
+  const t = useT().today.library;
   return (
     <div className="list">
       {finishedIds.map((id) => {
@@ -89,12 +93,12 @@ function FinishedList() {
                 <span className="done-badge">
                   <Icon name="ti-check" />
                 </span>
-                FINISHED
+                {t.finished}
               </div>
             </div>
             <button
               className="iconbtn lite"
-              aria-label={`Read ${b.t} again`}
+              aria-label={t.readAgainAria(b.t)}
               onClick={() => openBook(id)}
             >
               <Icon name="ti-refresh" />
@@ -113,11 +117,12 @@ export function LibraryScreen() {
   const readingCount = useStore((s) => s.readingIds.length);
   const savedCount = useStore((s) => s.savedIds.length);
   const finishedCount = useStore((s) => s.finishedIds.length);
+  const t = useT().today.library;
 
   const segs: [LibTab, string][] = [
-    ['reading', `READING · ${readingCount}`],
-    ['saved', `SAVED · ${savedCount}`],
-    ['finished', `FINISHED · ${finishedCount}`],
+    ['reading', t.segReading(readingCount)],
+    ['saved', t.segSaved(savedCount)],
+    ['finished', t.segFinished(finishedCount)],
   ];
 
   return (
@@ -129,7 +134,7 @@ export function LibraryScreen() {
         <h1 className="hl sm d">
           <span className="u" />
           <span className="t">
-            library<span className="gdot">.</span>
+            {t.title}<span className="gdot">.</span>
           </span>
         </h1>
         <CastOwl owl="keeper" cls="mini" />

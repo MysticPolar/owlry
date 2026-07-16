@@ -3,6 +3,7 @@ import { useStore } from '../store/useStore';
 import { useAuth } from '../store/useAuth';
 import type { Tab } from '../store/types';
 import { useClock } from '../hooks/useClock';
+import { useT } from '../i18n/react';
 import { Icon } from './Icon';
 import { chainsInner } from '../lib/chains';
 
@@ -17,6 +18,7 @@ export function GuestLevelButton() {
   const lv = useStore((s) => s.lv);
   const addXP = useStore((s) => s.addXP);
   const xpMax = useStore((s) => s.xpMax);
+  const t = useT().today.chrome;
   if (authed) return null;
   // the locked profile (mirror's room) leaves activeTab where it was, so guard
   // on it too — that page gets its own settings gear, not this pill
@@ -27,10 +29,10 @@ export function GuestLevelButton() {
       className="guest-lvl"
       data-tab={tab}
       onClick={() => addXP(xpMax)}
-      aria-label={`Gain a level — guest preview (level ${lv})`}
+      aria-label={t.gainLevelAria(lv)}
     >
       <Icon name="ti-sparkles" />
-      <span>gain a level</span>
+      <span>{t.gainLevel}</span>
       <b className="d">LV {lv}</b>
     </button>
   );
@@ -110,19 +112,20 @@ export function StatusBar() {
 }
 
 /* ---------- bottom nav ---------- */
-const NAV: { tab: Tab; icon: string; lab: string }[] = [
-  { tab: 'today', icon: 'ti-book-2', lab: 'today' },
-  { tab: 'discover', icon: 'ti-compass', lab: 'discover' },
-  { tab: 'library', icon: 'ti-books', lab: 'library' },
-  { tab: 'profile', icon: 'ti-user', lab: 'profile' },
+const NAV: { tab: Tab; icon: string }[] = [
+  { tab: 'today', icon: 'ti-book-2' },
+  { tab: 'discover', icon: 'ti-compass' },
+  { tab: 'library', icon: 'ti-books' },
+  { tab: 'profile', icon: 'ti-user' },
 ];
 
 export function BottomNav() {
   const activeTab = useStore((s) => s.activeTab);
   const setTab = useStore((s) => s.setTab);
   const lv = useStore((s) => s.lv);
+  const t = useT().today.chrome;
   return (
-    <nav className="nav" aria-label="Primary">
+    <nav className="nav" aria-label={t.navAria}>
       {NAV.map((n) => {
         const on = activeTab === n.tab;
         const chained = n.tab === 'profile' && lv < 5;
@@ -132,7 +135,7 @@ export function BottomNav() {
             className={`nv ${on ? 'on' : ''}`}
             data-tab={n.tab}
             aria-current={on ? 'page' : undefined}
-            aria-label={chained ? 'Profile — chained until level 5' : undefined}
+            aria-label={chained ? t.profileChainedAria : undefined}
             onClick={() => setTab(n.tab)}
           >
             {n.tab === 'profile' ? (
@@ -142,7 +145,7 @@ export function BottomNav() {
                 <Icon name={n.icon} />
               </span>
             )}
-            <span className="lab">{n.lab}</span>
+            <span className="lab">{t.nav[n.tab]}</span>
           </button>
         );
       })}

@@ -1,10 +1,10 @@
 import { useRef } from 'react';
 import { useStore } from '../../store/useStore';
-import { BOOKS } from '../../content/books';
 import { PICKS } from '../../content/picks';
-import { WX } from '../../content/weather';
+import { WX, wxLabel } from '../../content/weather';
 import { getBook } from '../../lib/bookRegistry';
 import { useClock } from '../../hooks/useClock';
+import { useT, useLang } from '../../i18n/react';
 import { pct } from '../../lib/format';
 import { Icon } from '../Icon';
 import { Cover } from '../Cover';
@@ -16,7 +16,9 @@ function Masthead() {
   const cycleWeather = useStore((s) => s.cycleWeather);
   const toggleMode = useStore((s) => s.toggleMode);
   const mode = useStore((s) => s.prefs.mode);
-  const { dt } = useClock();
+  const t = useT().today.today;
+  const lang = useLang();
+  const { dt } = useClock(lang);
   const w = WX[wxIndex];
   return (
     <div className="mast">
@@ -24,7 +26,7 @@ function Masthead() {
         <span>
           owlry<span className="gdot">.</span>
         </span>
-        <button className="wx" id="wxBtn" aria-label={`Weather: ${w.l}. Tap to change`} onClick={cycleWeather}>
+        <button className="wx" id="wxBtn" aria-label={t.wxAria(wxLabel(w, lang))} onClick={cycleWeather}>
           <Icon name={w.i} />
           <span className="wx-fx" aria-hidden="true">
             <span className="drop" />
@@ -37,7 +39,7 @@ function Masthead() {
             <span className="star" />
           </span>
         </button>
-        <button className="wx mode" id="modeBtn" aria-label="Lighting" onClick={toggleMode}>
+        <button className="wx mode" id="modeBtn" aria-label={t.lightingAria} onClick={toggleMode}>
           <Icon name={mode === 'night' ? 'ti-sun' : 'ti-moon-stars'} />
         </button>
       </div>
@@ -57,17 +59,18 @@ function StatsRow() {
   const coins = useStore((s) => s.coins);
   const lv = useStore((s) => s.lv);
   const name = useStore((s) => s.prefs.name);
+  const t = useT().today.today;
   const readerName = name?.trim() || 'Mira';
   const xpPercent = Math.min(100, Math.max(0, (xp / Math.max(1, xpMax)) * 100));
   const inkPercent = Math.min(100, Math.max(0, (ink / Math.max(1, inkMax)) * 100));
 
   return (
-    <section className="today-player" aria-label="Your reading progress">
-      <div className="today-player-portrait" role="img" aria-label={`${readerName}'s reader portrait`}>
+    <section className="today-player" aria-label={t.playerAria}>
+      <div className="today-player-portrait" role="img" aria-label={t.portraitAria(readerName)}>
         <img className="today-player-portrait-art" src="/user-bar-v3/portrait.png" alt="" aria-hidden="true" />
       </div>
 
-      <div className="today-player-level-badge" role="img" aria-label={`Level ${lv}`}>
+      <div className="today-player-level-badge" role="img" aria-label={t.levelAria(lv)}>
         <img src="/user-bar-v3/level-badge.png" alt="" aria-hidden="true" />
         <span className="d" aria-hidden="true">
           LV <strong>{lv}</strong>
@@ -81,7 +84,7 @@ function StatsRow() {
           <div
             className="today-player-track"
             role="progressbar"
-            aria-label={`Level ${lv} experience`}
+            aria-label={t.xpBarAria(lv)}
             aria-valuemin={0}
             aria-valuemax={xpMax}
             aria-valuenow={xp}
@@ -96,7 +99,7 @@ function StatsRow() {
           <div
             className="today-player-track"
             role="progressbar"
-            aria-label="Ink"
+            aria-label={t.inkBarAria}
             aria-valuemin={0}
             aria-valuemax={inkMax}
             aria-valuenow={ink}
@@ -109,7 +112,7 @@ function StatsRow() {
         </div>
       </div>
 
-      <div className="today-player-coins" role="group" aria-label={`${coins} coins`}>
+      <div className="today-player-coins" role="group" aria-label={t.coinsAria(coins)}>
         <img className="today-player-coin" src="/user-bar-v3/coin.png" alt="" aria-hidden="true" />
         <strong className="d">{coins}</strong>
       </div>
@@ -123,17 +126,19 @@ function PickCard() {
   const setPick = useStore((s) => s.setPick);
   const openSheet = useStore((s) => s.openSheet);
   const startAsk = useStore((s) => s.startAsk);
+  const t = useT().today.today;
 
   const id = PICKS[pickIndex];
-  const b = BOOKS[id];
+  const b = getBook(id);
   const swipeX = useRef<number | null>(null);
+  if (!b) return null;
 
   return (
     <div className="pick-wrap">
       <article
         className="quote-post swap"
         key={pickIndex}
-        aria-label={`Owl post ${pickIndex + 1} of ${PICKS.length}`}
+        aria-label={t.postAria(pickIndex + 1, PICKS.length)}
         aria-roledescription="carousel"
         onPointerDown={(e) => {
           swipeX.current = e.clientX;
@@ -154,7 +159,7 @@ function PickCard() {
             type="button"
             className="quote-title d"
             onClick={() => openSheet(id)}
-            aria-label={`About ${b.t}`}
+            aria-label={t.aboutAria(b.t)}
             aria-haspopup="dialog"
           >
             {b.t}
@@ -167,9 +172,9 @@ function PickCard() {
             type="button"
             className="btn ask-btn"
             onClick={() => startAsk(id)}
-            aria-label={`Ask Scout about ${b.t}`}
+            aria-label={t.askAria(b.t)}
           >
-            ASK <Icon name="ti-arrow-right" />
+            {t.ask} <Icon name="ti-arrow-right" />
           </button>
         </div>
       </article>
@@ -183,12 +188,13 @@ function Shelf() {
   const pagesRead = useStore((s) => s.pagesRead);
   const openBook = useStore((s) => s.openBook);
   const setTab = useStore((s) => s.setTab);
+  const t = useT().today.today;
   return (
     <section className="sec resume-sec" aria-labelledby="resume-title">
       <div className="sec-head">
-        <h2 className="sec-title d" id="resume-title">pick up where you left off</h2>
+        <h2 className="sec-title d" id="resume-title">{t.resumeTitle}</h2>
         <button className="all" data-tab="library" onClick={() => setTab('library')}>
-          ALL &rarr;
+          {t.all} &rarr;
         </button>
       </div>
       <div className="shelf" id="shelf">
@@ -201,7 +207,7 @@ function Shelf() {
               key={id}
               className="sh-item"
               onClick={() => openBook(id)}
-              aria-label={`Continue ${b.t}, ${p}% complete`}
+              aria-label={t.continueAria(b.t, p)}
             >
               <div className="sh-cover-wrap">
                 <Cover id={id} cls="cover-home" />
@@ -222,16 +228,17 @@ function Shelf() {
 
 export function TodayScreen() {
   const active = useStore((s) => s.activeTab === 'today');
+  const t = useT().today.today;
   return (
     <section className={`screen ${active ? 'on' : ''}`} id="screen-today">
       <Masthead />
       <StatsRow />
       <div className="marquee">
-        <h2 className="mq" aria-label="Today's post">
-          <span>today&rsquo;s</span>
-          <span>post<span className="gdot">.</span></span>
+        <h2 className="mq" aria-label={t.marqueeAria}>
+          <span>{t.mq1}</span>
+          <span>{t.mq2}<span className="gdot">.</span></span>
         </h2>
-        <div className="mq-sub it">delivered while you slept.</div>
+        <div className="mq-sub it">{t.mqSub}</div>
         <CastOwl owl="scout" cls="hero" />
       </div>
       <PickCard />
