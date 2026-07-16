@@ -15,6 +15,7 @@ import { listDays, loadDay } from '../../lib/history';
 import type { HistoryDay } from '../../lib/history';
 import type { HydratedChat } from '../../lib/chatHydrate';
 import { renderChatItem, letterNumbers } from '../chat/ChatItems';
+import { useT } from '../../i18n/react';
 import { Icon } from '../Icon';
 
 function todayLocal(): string {
@@ -32,6 +33,7 @@ export function History() {
   const [selected, setSelected] = useState<HistoryDay | null>(null);
   const [transcript, setTranscript] = useState<HydratedChat | null>(null);
   const [loading, setLoading] = useState(false);
+  const t = useT().settings.history;
 
   // fetch the day list fresh every time the overlay opens; reset to the list view on close
   useEffect(() => {
@@ -60,24 +62,24 @@ export function History() {
   if (!open) return null;
 
   return (
-    <div className="history on" id="history" role="dialog" aria-modal="true" aria-label="Chat history">
+    <div className="history on" id="history" role="dialog" aria-modal="true" aria-label={t.ariaDialog}>
       <div className="l-top">
         <button
           className="iconbtn lite"
-          aria-label={selected ? 'Back to history' : 'Close history'}
+          aria-label={selected ? t.ariaBack : t.ariaClose}
           onClick={() => (selected ? setSelected(null) : closeHistory())}
         >
           <Icon name="ti-arrow-left" />
         </button>
-        <div className="d">{selected ? selected.label.toUpperCase() : 'HISTORY'}</div>
+        <div className="d">{selected ? selected.label.toUpperCase() : t.title}</div>
         <span className="iconbtn" style={{ visibility: 'hidden' }} aria-hidden="true" />
       </div>
 
       <div className="l-body hist-body">
-        {loading && <div className="hist-empty">the owl is fetching the ledger…</div>}
+        {loading && <div className="hist-empty">{t.loading}</div>}
 
         {!loading && !selected && days?.length === 0 && (
-          <div className="hist-empty">no earlier days yet — today's conversation lives in discover.</div>
+          <div className="hist-empty">{t.empty}</div>
         )}
 
         {!loading && !selected && days && days.length > 0 && (
@@ -85,7 +87,7 @@ export function History() {
             {days.map((d) => (
               <button key={d.day} className="hist-row" onClick={() => openDay(d)}>
                 <span className="hist-row-day d">{d.label}</span>
-                <span className="hist-row-ask">{d.firstAsk || `${d.count} messages`}</span>
+                <span className="hist-row-ask">{d.firstAsk || t.messages(d.count)}</span>
                 <span className="hist-row-count">{d.count}</span>
               </button>
             ))}
@@ -95,7 +97,7 @@ export function History() {
         {!loading && selected && transcript && (
           <div className="hist-thread" role="log">
             {transcript.messages.length === 0 ? (
-              <div className="hist-empty">nothing was saved for this day.</div>
+              <div className="hist-empty">{t.emptyDay}</div>
             ) : (
               (() => {
                 const nos = letterNumbers(transcript.messages);

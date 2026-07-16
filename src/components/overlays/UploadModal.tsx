@@ -4,6 +4,7 @@ import { getBook } from '../../lib/bookRegistry';
 import { inspectFile, ACCEPT_ATTR } from '../../lib/ebook/inspect';
 import { saveUpload } from '../../lib/ebook/storage';
 import type { ReadingSource } from '../../lib/ebook/types';
+import { useT } from '../../i18n/react';
 import { Icon } from '../Icon';
 
 /**
@@ -20,6 +21,7 @@ export function UploadModal() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const t = useT().settings.upload;
 
   if (!open || !bookId) return null;
   const b = getBook(bookId);
@@ -32,7 +34,7 @@ export function UploadModal() {
     try {
       const check = await inspectFile(file);
       if (!check.ok || !check.format) {
-        setError(check.reason ?? 'We couldn’t read that file.');
+        setError(check.reason ?? t.errUnreadable);
         return;
       }
       const source: ReadingSource = {
@@ -40,12 +42,12 @@ export function UploadModal() {
         format: check.format,
         title: b.t,
         author: b.a,
-        sourceLabel: 'Your upload',
+        sourceLabel: t.sourceLabel,
       };
       await saveUpload(bookId, file, source);
       setSource(bookId, source);
     } catch {
-      setError('Something went wrong reading that file.');
+      setError(t.errGeneric);
     } finally {
       setBusy(false);
     }
@@ -55,7 +57,7 @@ export function UploadModal() {
     <div
       role="dialog"
       aria-modal="true"
-      aria-label="Upload your ebook"
+      aria-label={t.ariaDialog}
       onClick={close}
       style={{
         position: 'absolute',
@@ -73,12 +75,9 @@ export function UploadModal() {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="l-sec" style={{ marginTop: 0, borderTop: 'none', paddingTop: 0 }}>
-          BRING YOUR OWN COPY
+          {t.title}
         </div>
-        <p className="l-p">
-          your file stays on this device — keeper shelves it, but the book itself never leaves;
-          only your progress syncs. accepted: epub, kindle (mobi/azw3), fb2, pdf, txt — DRM-free.
-        </p>
+        <p className="l-p">{t.body}</p>
         <input
           ref={inputRef}
           type="file"
@@ -88,10 +87,10 @@ export function UploadModal() {
         />
         <div className="l-btnrow">
           <button className="btn" disabled={busy} onClick={() => inputRef.current?.click()}>
-            {busy ? 'READING…' : 'CHOOSE FILE'} <Icon name="ti-upload" />
+            {busy ? t.busy : t.choose} <Icon name="ti-upload" />
           </button>
           <button className="btn ghost" onClick={close}>
-            CANCEL
+            {t.cancel}
           </button>
         </div>
         {error && (
@@ -100,7 +99,7 @@ export function UploadModal() {
           </p>
         )}
         <p className="l-p" style={{ color: 'var(--fade)', fontSize: 12 }}>
-          DRM-protected files (and MOBI/AZW) can’t be opened — we never strip protection.
+          {t.drmNote}
         </p>
       </div>
     </div>

@@ -3,24 +3,19 @@ import { useStore } from '../../store/useStore';
 import { useAuth } from '../../store/useAuth';
 import type { OwlEngine } from '../../store/types';
 import { isBackendConfigured } from '../../lib/supabase';
+import { useLang, useT } from '../../i18n/react';
 import { Icon } from '../Icon';
 import { owlLine, type CastOwlName } from '../CastOwl';
 
-/* the playbill, in order of finding (docs/story-bible.md) */
-const CAST: [CastOwlName, string, string, string][] = [
-  ['scout', 'scout', 'postmaster', 'ember'],
-  ['keeper', 'keeper', 'the shelves', 'moss'],
-  ['scribe', 'scribe', 'the archive', 'quill'],
-  ['peek', 'peek', 'first chapters', 'teal'],
-  ['mirror', 'mirror', 'the radar', 'violet'],
+/* the playbill, in order of finding (docs/story-bible.md) —
+   names stay english on every stage; jobs come from the dict */
+const CAST: [CastOwlName, string, string][] = [
+  ['scout', 'scout', 'ember'],
+  ['keeper', 'keeper', 'moss'],
+  ['scribe', 'scribe', 'quill'],
+  ['peek', 'peek', 'teal'],
+  ['mirror', 'mirror', 'violet'],
 ];
-
-const SYNC_LABEL: Record<'off' | 'syncing' | 'synced' | 'error', string> = {
-  off: 'ON',
-  syncing: 'SYNCING…',
-  synced: 'SYNCED',
-  error: 'RETRY',
-};
 
 function Toggle({ on, onToggle, label }: { on: boolean; onToggle: () => void; label: string }) {
   return (
@@ -56,24 +51,26 @@ export function Settings() {
   const syncStatus = useStore((s) => s.syncStatus);
   const adoptAccount = useStore((s) => s.adoptAccount);
   const [confirmReset, setConfirmReset] = useState(false);
+  const lang = useLang();
+  const t = useT().settings.settings;
 
   const liveOn = (prefs.owlEngine ?? 'live') === 'live';
   const toggleEngine = () => {
     const next: OwlEngine = liveOn ? 'mockup' : 'live';
     setPref('owlEngine', next);
     restartChat();
-    showToast('ti-feather', next === 'live' ? 'the live owl is at the desk' : 'classic owl — the original mockup');
+    showToast('ti-feather', next === 'live' ? t.toastLiveOwl : t.toastClassicOwl);
   };
 
   if (!open) return null;
 
   return (
-    <div className="settings on" id="settings" role="dialog" aria-modal="true" aria-label="Settings">
+    <div className="settings on" id="settings" role="dialog" aria-modal="true" aria-label={t.ariaDialog}>
       <div className="l-top">
-        <button className="iconbtn lite" aria-label="Close settings" onClick={close}>
+        <button className="iconbtn lite" aria-label={t.ariaClose} onClick={close}>
           <Icon name="ti-arrow-left" />
         </button>
-        <div className="d">SETTINGS</div>
+        <div className="d">{t.top}</div>
         <span style={{ flex: '0 0 32px' }} aria-hidden="true" />
       </div>
 
@@ -81,71 +78,87 @@ export function Settings() {
         <h1 className="hl sm d" style={{ marginTop: 4 }}>
           <span className="u" />
           <span className="t">
-            settings<span className="gdot">.</span>
+            {t.headline}<span className="gdot">.</span>
           </span>
         </h1>
 
-        {/* reading */}
-        <div className="sh-sec">READING</div>
+        {/* language */}
+        <div className="sh-sec">{t.secLanguage}</div>
         <div className="set-row">
           <div className="set-info">
-            <div className="set-lab d">reading page</div>
-            <div className="set-sub">font, size, candle and flow live inside every open book</div>
+            <div className="set-lab d">{t.langLabel}</div>
+            <div className="set-sub">{t.langSub}</div>
+          </div>
+          <select
+            className="langsel"
+            value={lang}
+            onChange={(e) => setPref('lang', e.target.value as 'en' | 'zh')}
+            aria-label={t.langAria}
+          >
+            <option value="en">English</option>
+            <option value="zh">简体中文</option>
+          </select>
+        </div>
+
+        {/* reading */}
+        <div className="sh-sec">{t.secReading}</div>
+        <div className="set-row">
+          <div className="set-info">
+            <div className="set-lab d">{t.readingPage}</div>
+            <div className="set-sub">{t.readingPageSub}</div>
           </div>
           <Icon name="ti-book-2" />
         </div>
         <div className="set-row">
           <div className="set-info">
-            <div className="set-lab d">reduce motion</div>
-            <div className="set-sub">calm the swipes and pops</div>
+            <div className="set-lab d">{t.reduceMotion}</div>
+            <div className="set-sub">{t.reduceMotionSub}</div>
           </div>
-          <Toggle on={prefs.reduceMotion} onToggle={() => setPref('reduceMotion', !prefs.reduceMotion)} label="Reduce motion" />
+          <Toggle on={prefs.reduceMotion} onToggle={() => setPref('reduceMotion', !prefs.reduceMotion)} label={t.ariaReduceMotion} />
         </div>
 
         {/* the owl */}
-        <div className="sh-sec">THE OWL</div>
+        <div className="sh-sec">{t.secOwl}</div>
         <div className="set-row">
           <div className="set-info">
-            <div className="set-lab d">live owl</div>
+            <div className="set-lab d">{t.liveOwl}</div>
             <div className="set-sub">
-              {isBackendConfigured()
-                ? 'reads your real sky & the whole world of books; off is the classic mockup'
-                : 'needs a backend configured — classic mockup until then'}
+              {isBackendConfigured() ? t.liveOwlSubOn : t.liveOwlSubOff}
             </div>
           </div>
-          <Toggle on={liveOn} onToggle={toggleEngine} label="Live owl" />
+          <Toggle on={liveOn} onToggle={toggleEngine} label={t.ariaLiveOwl} />
         </div>
 
         {/* reminders */}
-        <div className="sh-sec">REMINDERS</div>
+        <div className="sh-sec">{t.secReminders}</div>
         <div className="set-row">
           <div className="set-info">
             <div className="set-lab d">
-              daily reading nudge <span className="soon">SOON</span>
+              {t.dailyNudge} <span className="soon">{t.soon}</span>
             </div>
-            <div className="set-sub">a gentle owl at your reading hour</div>
+            <div className="set-sub">{t.dailyNudgeSub}</div>
           </div>
-          <Toggle on={prefs.dailyReminder} onToggle={() => setPref('dailyReminder', !prefs.dailyReminder)} label="Daily reading nudge" />
+          <Toggle on={prefs.dailyReminder} onToggle={() => setPref('dailyReminder', !prefs.dailyReminder)} label={t.ariaDailyNudge} />
         </div>
         <div className="set-row">
           <div className="set-info">
             <div className="set-lab d">
-              page-turn sounds <span className="soon">SOON</span>
+              {t.pageSounds} <span className="soon">{t.soon}</span>
             </div>
-            <div className="set-sub">a soft paper whisper as you read</div>
+            <div className="set-sub">{t.pageSoundsSub}</div>
           </div>
-          <Toggle on={prefs.sounds} onToggle={() => setPref('sounds', !prefs.sounds)} label="Page-turn sounds" />
+          <Toggle on={prefs.sounds} onToggle={() => setPref('sounds', !prefs.sounds)} label={t.ariaPageSounds} />
         </div>
 
         {/* account */}
-        <div className="sh-sec">ACCOUNT</div>
+        <div className="sh-sec">{t.secAccount}</div>
         <div className="set-card">
           <div className="prof">
             <div className="avatar lg d">{authed && authUser ? authUser.avatar : 'M'}</div>
             <div>
               <div className="pname d">{authed && authUser ? authUser.name : 'Mira'}</div>
               <div className="psub">
-                {authed && authUser ? authUser.email : `LV ${lv} BIBLIOPHILE · ${coins} COINS`}
+                {authed && authUser ? authUser.email : t.guestSub(lv, coins)}
               </div>
             </div>
           </div>
@@ -155,10 +168,10 @@ export function Settings() {
             <button
               className="link-row"
               onClick={() => authUser && void adoptAccount(authUser.id)}
-              aria-label="Sync progress across devices now"
+              aria-label={t.ariaSyncNow}
             >
               <Icon name="ti-cloud" />
-              sync across devices
+              {t.syncRow}
               <span
                 className="soon"
                 style={{
@@ -166,25 +179,25 @@ export function Settings() {
                   color: syncStatus === 'error' ? 'var(--ember)' : undefined,
                 }}
               >
-                {SYNC_LABEL[syncStatus]}
+                {t.syncLabel[syncStatus]}
               </span>
             </button>
             <button
               className="link-row"
               onClick={() => {
                 void logout();
-                showToast('ti-arrow-left', 'signed out. keeper closed the ledger.', 'keeper');
+                showToast('ti-arrow-left', t.toastSignedOut, 'keeper');
               }}
             >
               <Icon name="ti-arrow-left" />
-              sign out
+              {t.signOut}
               <Icon name="ti-chevron-right" className="ext" />
             </button>
           </>
         ) : (
           <button className="link-row" onClick={() => openAuth('login')}>
             <Icon name="ti-user" />
-            sign in or create account
+            {t.signIn}
             <Icon name="ti-chevron-right" className="ext" />
           </button>
         )}
@@ -193,38 +206,35 @@ export function Settings() {
             (office hours at 3, the mirror's room at 5) without a backend */}
         {!authed && (
           <>
-            <div className="sh-sec">GUEST PREVIEW</div>
+            <div className="sh-sec">{t.secGuest}</div>
             <button
               className="link-row"
               onClick={() => addXP(xpMax)}
-              aria-label="Gain a level to preview the unlocks"
+              aria-label={t.ariaGainLevel}
             >
               <Icon name="ti-sparkles" />
-              gain a level
+              {t.gainLevel}
               <span className="soon" style={{ marginLeft: 'auto' }}>
-                LV {lv}
+                {t.lvPill(lv)}
               </span>
             </button>
           </>
         )}
 
         {/* data */}
-        <div className="sh-sec">DATA</div>
+        <div className="sh-sec">{t.secData}</div>
         {!confirmReset ? (
           <button className="link-row danger" onClick={() => setConfirmReset(true)}>
             <Icon name="ti-refresh" />
-            reset reading progress
+            {t.resetRow}
             <Icon name="ti-chevron-right" className="ext" />
           </button>
         ) : (
           <div className="reset-confirm">
-            <span className="it">
-              this clears everything — xp, ink, coins, shelves &amp; reading progress — and starts opening night
-              over from the very beginning.
-            </span>
+            <span className="it">{t.resetConfirm}</span>
             <div className="reset-btns">
               <button className="btn ghost xs" onClick={() => setConfirmReset(false)}>
-                CANCEL
+                {t.cancel}
               </button>
               <button
                 className="btn xs danger"
@@ -234,20 +244,20 @@ export function Settings() {
                   resetProgress(); // wipes progress + raises the full opening night
                 }}
               >
-                RESET
+                {t.reset}
               </button>
             </div>
           </div>
         )}
 
         {/* the company — a playbill (tap an owl for a word) */}
-        <div className="sh-sec">THE COMPANY</div>
+        <div className="sh-sec">{t.secCompany}</div>
         <div className="cast-row">
-          {CAST.map(([owl, name, job, color]) => (
+          {CAST.map(([owl, name, color]) => (
             <button
               key={owl}
               className="cast-cell"
-              aria-label={`${name} — ${job}`}
+              aria-label={t.castAria(name, t.castJobs[owl])}
               onClick={() => showToast('ti-feather', owlLine(owl))}
             >
               <svg className="owl cast" viewBox="0 0 120 130" aria-hidden="true">
@@ -256,31 +266,31 @@ export function Settings() {
               <span className="cast-name d" style={{ color: `var(--${color})` }}>
                 {name}
               </span>
-              <span className="cast-job">{job}</span>
+              <span className="cast-job">{t.castJobs[owl]}</span>
             </button>
           ))}
         </div>
-        <div className="set-sub cast-sub it">the owlery's company — found by scout, in this order.</div>
+        <div className="set-sub cast-sub it">{t.castSub}</div>
 
         {/* about */}
-        <div className="sh-sec">ABOUT</div>
+        <div className="sh-sec">{t.secAbout}</div>
         <button className="link-row" onClick={openOnboarding}>
           <Icon name="ti-player-play" />
-          watch opening night again
+          {t.watchOpening}
           <Icon name="ti-chevron-right" className="ext" />
         </button>
-        <button className="link-row" onClick={() => showToast('ti-external-link', 'opens outside owlry')}>
+        <button className="link-row" onClick={() => showToast('ti-external-link', t.toastExternal)}>
           <Icon name="ti-shield-lock" />
-          privacy
+          {t.privacy}
           <Icon name="ti-external-link" className="ext" />
         </button>
-        <button className="link-row" onClick={() => showToast('ti-external-link', 'opens outside owlry')}>
+        <button className="link-row" onClick={() => showToast('ti-external-link', t.toastExternal)}>
           <Icon name="ti-file-text" />
-          terms
+          {t.terms}
           <Icon name="ti-external-link" className="ext" />
         </button>
         <div className="set-foot it">
-          owlry v0.1.0 — sorted with care, the owl post office<span className="gdot">.</span>
+          {t.foot}<span className="gdot">.</span>
         </div>
       </div>
     </div>

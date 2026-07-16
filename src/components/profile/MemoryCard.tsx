@@ -10,6 +10,7 @@
 import { useEffect, useState } from 'react';
 import { useStore } from '../../store/useStore';
 import { supabase } from '../../lib/supabase';
+import { useT } from '../../i18n/react';
 import { Icon } from '../Icon';
 
 interface LongTerm {
@@ -30,6 +31,7 @@ const EMPTY: LongTerm = { profile: '', focus: '', taste: { loves: [], avoids: []
 const CAPS = { profile: 140, focus: 140, chipItem: 24, goal: 60 };
 
 export function MemoryCard() {
+  const t = useT();
   const authUser = useStore((s) => s.authUser);
   const showToast = useStore((s) => s.showToast);
 
@@ -107,7 +109,7 @@ export function MemoryCard() {
     setProfileDraft('');
     setFocusDraft('');
     setConfirmingForget(false);
-    showToast('ti-feather', 'the owl has forgotten — starting fresh');
+    showToast('ti-feather', t.profile.mem.forgotToast);
   };
 
   if (!authUser) return null;
@@ -115,7 +117,7 @@ export function MemoryCard() {
   if (loading) {
     return (
       <div className="pcard">
-        <p className="mem-empty">fetching what the owl remembers…</p>
+        <p className="mem-empty">{t.profile.mem.fetching}</p>
       </div>
     );
   }
@@ -126,10 +128,10 @@ export function MemoryCard() {
 
   return (
     <div className="pcard">
-      <div className="sh-sec" style={{ marginTop: 0 }}>WHAT THE OWL REMEMBERS</div>
-      {nothingYet && <p className="mem-empty">nothing yet — a few conversations and this fills in.</p>}
+      <div className="sh-sec" style={{ marginTop: 0 }}>{t.profile.mem.title}</div>
+      {nothingYet && <p className="mem-empty">{t.profile.mem.emptyAll}</p>}
 
-      <label className="gate-label" htmlFor="memProfile">who you are</label>
+      <label className="gate-label" htmlFor="memProfile">{t.profile.mem.whoYouAre}</label>
       <input
         id="memProfile"
         className="gate-input"
@@ -138,11 +140,11 @@ export function MemoryCard() {
         value={profileDraft}
         onChange={(e) => setProfileDraft(e.target.value)}
         onBlur={saveProfileFocus}
-        placeholder="the owl hasn't learned this yet"
+        placeholder={t.profile.mem.notLearned}
       />
 
       <label className="gate-label" htmlFor="memFocus" style={{ marginTop: 12, display: 'block' }}>
-        what you're working through lately
+        {t.profile.mem.workingThrough}
       </label>
       <input
         id="memFocus"
@@ -152,20 +154,20 @@ export function MemoryCard() {
         value={focusDraft}
         onChange={(e) => setFocusDraft(e.target.value)}
         onBlur={saveProfileFocus}
-        placeholder="the owl hasn't learned this yet"
+        placeholder={t.profile.mem.notLearned}
       />
 
-      <div className="sh-sec">WHAT YOU LOVE</div>
+      <div className="sh-sec">{t.profile.mem.love}</div>
       <div className="mem-row">
         {longTerm.taste.loves.map((v, i) => (
           <span className="mem-chip" key={v}>
             {v}
-            <button aria-label={`Remove ${v}`} onClick={() => removeChip('loves', i)}>
+            <button aria-label={t.profile.mem.removeAria(v)} onClick={() => removeChip('loves', i)}>
               <Icon name="ti-x" />
             </button>
           </span>
         ))}
-        {!longTerm.taste.loves.length && <span className="mem-empty">nothing yet</span>}
+        {!longTerm.taste.loves.length && <span className="mem-empty">{t.profile.mem.empty}</span>}
       </div>
       <div className="mem-add">
         <input
@@ -174,24 +176,24 @@ export function MemoryCard() {
           value={newLove}
           onChange={(e) => setNewLove(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && addChip('loves', newLove, () => setNewLove(''))}
-          placeholder="add a genre, author, topic…"
+          placeholder={t.profile.mem.addLove}
         />
-        <button className="iconbtn" aria-label="Add" onClick={() => addChip('loves', newLove, () => setNewLove(''))}>
+        <button className="iconbtn" aria-label={t.profile.mem.addAria} onClick={() => addChip('loves', newLove, () => setNewLove(''))}>
           <Icon name="ti-plus" />
         </button>
       </div>
 
-      <div className="sh-sec">WHAT TO AVOID</div>
+      <div className="sh-sec">{t.profile.mem.avoid}</div>
       <div className="mem-row">
         {longTerm.taste.avoids.map((v, i) => (
           <span className="mem-chip" key={v}>
             {v}
-            <button aria-label={`Remove ${v}`} onClick={() => removeChip('avoids', i)}>
+            <button aria-label={t.profile.mem.removeAria(v)} onClick={() => removeChip('avoids', i)}>
               <Icon name="ti-x" />
             </button>
           </span>
         ))}
-        {!longTerm.taste.avoids.length && <span className="mem-empty">nothing yet</span>}
+        {!longTerm.taste.avoids.length && <span className="mem-empty">{t.profile.mem.empty}</span>}
       </div>
       <div className="mem-add">
         <input
@@ -200,24 +202,24 @@ export function MemoryCard() {
           value={newAvoid}
           onChange={(e) => setNewAvoid(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && addChip('avoids', newAvoid, () => setNewAvoid(''))}
-          placeholder="add an exclusion…"
+          placeholder={t.profile.mem.addAvoid}
         />
-        <button className="iconbtn" aria-label="Add" onClick={() => addChip('avoids', newAvoid, () => setNewAvoid(''))}>
+        <button className="iconbtn" aria-label={t.profile.mem.addAria} onClick={() => addChip('avoids', newAvoid, () => setNewAvoid(''))}>
           <Icon name="ti-plus" />
         </button>
       </div>
 
-      <div className="sh-sec">WHY YOU READ</div>
+      <div className="sh-sec">{t.profile.mem.why}</div>
       <div className="mem-row">
         {longTerm.goals.map((v, i) => (
           <span className="mem-chip" key={v}>
             {v}
-            <button aria-label={`Remove ${v}`} onClick={() => removeGoal(i)}>
+            <button aria-label={t.profile.mem.removeAria(v)} onClick={() => removeGoal(i)}>
               <Icon name="ti-x" />
             </button>
           </span>
         ))}
-        {!longTerm.goals.length && <span className="mem-empty">nothing yet</span>}
+        {!longTerm.goals.length && <span className="mem-empty">{t.profile.mem.empty}</span>}
       </div>
       <div className="mem-add">
         <input
@@ -226,9 +228,9 @@ export function MemoryCard() {
           value={newGoal}
           onChange={(e) => setNewGoal(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && addGoal()}
-          placeholder="add a reason you read…"
+          placeholder={t.profile.mem.addWhy}
         />
-        <button className="iconbtn" aria-label="Add" onClick={addGoal}>
+        <button className="iconbtn" aria-label={t.profile.mem.addAria} onClick={addGoal}>
           <Icon name="ti-plus" />
         </button>
       </div>

@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useStore } from '../../store/useStore';
 import { chainsInner } from '../../lib/chains';
+import { useT } from '../../i18n/react';
 import { Icon } from '../Icon';
 
 /* ============================================================
@@ -8,23 +9,14 @@ import { Icon } from '../Icon';
    Mirror's tone, a level-of-5 stepper, and the reader chart kept
    sealed behind bundled chains. At level 5 the chains fall, the
    chart clears, and it hands off to the real profile. Ported from
-   the standalone's `.mroom`.
+   the standalone's `.mroom`. Mirror's lines live in the dict
+   (settings.mirrorRoom), one segment array per mood.
    ============================================================ */
 
 interface Seg {
   t: string;
   em?: boolean;
 }
-const LOCKED_SAY: Seg[] = [
-  { t: 'the mirror unlocks at ' },
-  { t: 'level five', em: true },
-  { t: '. ask more. read more — ' },
-  { t: "i'll be here, reflecting.", em: true },
-];
-const FREED_SAY: Seg[] = [
-  { t: 'there you are.', em: true },
-  { t: ' come in — the chart is yours now.' },
-];
 
 function chars(say: Seg[]): { ch: string; em: boolean }[] {
   const out: { ch: string; em: boolean }[] = [];
@@ -55,8 +47,9 @@ function Room({ freed }: { freed: boolean }) {
   const setTab = useStore((s) => s.setTab);
   const openSettings = useStore((s) => s.openSettings);
   const lv = useStore((s) => s.lv);
+  const t = useT().settings.mirrorRoom;
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const say = useRef(chars(freed ? FREED_SAY : LOCKED_SAY)).current;
+  const say = useMemo(() => chars(freed ? t.freedSay : t.lockedSay), [t, freed]);
   const [n, setN] = useState(reduce ? say.length : 0);
 
   useEffect(() => {
@@ -78,11 +71,11 @@ function Room({ freed }: { freed: boolean }) {
   const diamonds = [0, 1, 2, 3, 4];
 
   return (
-    <section className={`mroom on${freed ? ' freed' : ''}`} aria-label="Mirror's room — locked">
-      <button className="iconbtn lite mr-gear" aria-label="Settings" onClick={openSettings}>
+    <section className={`mroom on${freed ? ' freed' : ''}`} aria-label={t.ariaRoom}>
+      <button className="iconbtn lite mr-gear" aria-label={t.ariaSettings} onClick={openSettings}>
         <Icon name="ti-settings" />
       </button>
-      <div className="mr-eb">mirror&rsquo;s room · {freed ? 'open' : 'locked'}</div>
+      <div className="mr-eb">{t.eyebrow} · {freed ? t.stateOpen : t.stateLocked}</div>
       <svg className="owl mr-owl" viewBox="0 0 120 130" aria-hidden="true">
         <use href="#owl-mirror" />
       </svg>
@@ -95,10 +88,10 @@ function Room({ freed }: { freed: boolean }) {
           <span key={i} className={`mr-dia${i === 4 ? ' goal' : ''}${i < lv ? ' on' : ''}`} />
         ))}
       </div>
-      <div className="mr-lab">lv {Math.min(lv, 5)} of 5</div>
+      <div className="mr-lab">{t.lvOf(Math.min(lv, 5))}</div>
       <div className="mr-card">
-        <div className="cap">reader chart · {freed ? 'yours' : 'sealed'}</div>
-        <svg className="mr-radar" viewBox="0 0 300 244" role="img" aria-label="Reading identity radar">
+        <div className="cap">{t.chartCap} · {freed ? t.chartYours : t.chartSealed}</div>
+        <svg className="mr-radar" viewBox="0 0 300 244" role="img" aria-label={t.ariaRadar}>
           <polygon className="ringp" points="150,26 229.7,72 229.7,164 150,210 70.3,164 70.3,72" />
           <polygon className="ring" points="150,57 202.8,87.5 202.8,148.5 150,179 97.2,148.5 97.2,87.5" />
           <polygon className="ring" points="150,87 176.8,102.5 176.8,133.5 150,149 123.2,133.5 123.2,102.5" />
@@ -109,12 +102,12 @@ function Room({ freed }: { freed: boolean }) {
           <line className="axis" x1="150" y1="118" x2="70.3" y2="164" />
           <line className="axis" x1="150" y1="118" x2="70.3" y2="72" />
           <polygon className="shape" points="150,61 188.3,95.9 206.6,150.7 150,187.9 82.3,157.1 75.1,74.8" />
-          <text className="lab" x="150" y="14" textAnchor="middle">health</text>
-          <text className="lab" x="238" y="66" textAnchor="start">wealth</text>
-          <text className="lab" x="240" y="176" textAnchor="start">relation</text>
-          <text className="lab" x="150" y="228" textAnchor="middle">career</text>
-          <text className="lab" x="62" y="176" textAnchor="end">mindset</text>
-          <text className="lab" x="62" y="66" textAnchor="end">fiction</text>
+          <text className="lab" x="150" y="14" textAnchor="middle">{t.radar.health}</text>
+          <text className="lab" x="238" y="66" textAnchor="start">{t.radar.wealth}</text>
+          <text className="lab" x="240" y="176" textAnchor="start">{t.radar.relation}</text>
+          <text className="lab" x="150" y="228" textAnchor="middle">{t.radar.career}</text>
+          <text className="lab" x="62" y="176" textAnchor="end">{t.radar.mindset}</text>
+          <text className="lab" x="62" y="66" textAnchor="end">{t.radar.fiction}</text>
         </svg>
         <svg
           className={`card-chains${freed ? ' broken' : ''}`}

@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { useStore } from '../../store/useStore';
 import { useAuth } from '../../store/useAuth';
-import { BOOKS } from '../../content/books';
+import { getBook } from '../../lib/bookRegistry';
+import { useLang, useT } from '../../i18n/react';
 import {
   RADAR_NOTE,
   REPORT,
@@ -27,18 +28,20 @@ type ProfileTab = 'stats' | 'cal' | 'quotes' | 'mem';
 
 /* ---------- stats tab ---------- */
 function StatsTab({ radarKey }: { radarKey: number }) {
+  const t = useT();
+  const lang = useLang();
   return (
     <div className="tpanel on swap" id="tab-stats" role="tabpanel" aria-labelledby="tabbtn-stats">
       <div className="pcard radar go" id="radarCard">
         <div className="chart-head">
-          <div className="d">reading balance</div>
-          <span>six shelves of you</span>
+          <div className="d">{t.profile.readingBalance}</div>
+          <span>{t.profile.sixShelves}</span>
         </div>
         <RadarChart replayKey={radarKey} />
-        <p className="radar-note it">{RADAR_NOTE}</p>
+        <p className="radar-note it">{RADAR_NOTE[lang]}</p>
         <div className="pdiv" />
         <div className="rep-grid">
-          {REPORT.map((r) => (
+          {REPORT[lang].map((r) => (
             <div key={r.l} className="rcell">
               <div className="snum d">{r.n}</div>
               <div className="slab">{r.l}</div>
@@ -47,8 +50,8 @@ function StatsTab({ radarKey }: { radarKey: number }) {
         </div>
         <div className="pdiv" />
         <div className="chart-head">
-          <div className="d">this week</div>
-          <span>{WEEK_TIME}</span>
+          <div className="d">{t.profile.thisWeek}</div>
+          <span>{WEEK_TIME[lang]}</span>
         </div>
         <div className="week7">
           {WEEK7.map((w, i) => (
@@ -56,13 +59,13 @@ function StatsTab({ radarKey }: { radarKey: number }) {
               <div className="vtrack">
                 <div className={`vfill ${w.today ? 'today' : ''}`} style={{ height: `${w.h}%` }} />
               </div>
-              <span className="dlet">{w.d}</span>
+              <span className="dlet">{t.profile.weekdays[i]}</span>
             </div>
           ))}
         </div>
       </div>
       <div className="achgrid">
-        {ACHIEVEMENTS.map((a, i) => (
+        {ACHIEVEMENTS[lang].map((a, i) => (
           <div key={i} className={`ach ${a.lock ? 'lock' : ''}`}>
             <Icon name={a.i} />
             <span className="al">{a.l}</span>
@@ -75,18 +78,20 @@ function StatsTab({ radarKey }: { radarKey: number }) {
 
 /* ---------- calendar tab ---------- */
 function CalendarTab() {
+  const t = useT();
+  const lang = useLang();
   const [selDay, setSelDay] = useState(CTODAY);
   const rec = RECS[selDay];
-  const bk = BOOKS[rec.book];
+  const bk = getBook(rec.book);
   return (
     <div className="tpanel on swap" id="tab-cal" role="tabpanel" aria-labelledby="tabbtn-cal">
       <div className="pcard">
         <div className="chart-head">
-          <div className="d">{CMONTH}</div>
-          <span id="calCount">{Object.keys(RECS).length} owl posts</span>
+          <div className="d">{CMONTH[lang]}</div>
+          <span id="calCount">{t.profile.owlPosts(Object.keys(RECS).length)}</span>
         </div>
         <div className="cal-week" aria-hidden="true">
-          {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((d, i) => (
+          {t.profile.weekdays.map((d, i) => (
             <span key={i}>{d}</span>
           ))}
         </div>
@@ -107,7 +112,9 @@ function CalendarTab() {
                 className={cls}
                 disabled={!clickable}
                 aria-label={
-                  dayRec ? `june ${d} — asked the owl, peeked ${BOOKS[dayRec.book].t}` : `june ${d}`
+                  dayRec
+                    ? t.profile.calDayAria(d, getBook(dayRec.book)?.t ?? '')
+                    : t.profile.calDayAriaPlain(d)
                 }
                 aria-pressed={dayRec ? sel : undefined}
                 onClick={clickable ? () => setSelDay(d) : undefined}
@@ -118,7 +125,7 @@ function CalendarTab() {
           })}
         </div>
         <div className="cal-foot">
-          <i aria-hidden="true" />a day you asked the owl &amp; peeked a pick
+          <i aria-hidden="true" />{t.profile.calFoot}
         </div>
       </div>
       <div className="pcard" id="recCard" aria-live="polite" key={selDay}>
@@ -126,17 +133,17 @@ function CalendarTab() {
           <div className="stamp">
             <Icon name="ti-mail" />
           </div>
-          <span className="k">OWL POST · JUN {selDay}</span>
+          <span className="k">{t.profile.owlPost(selDay)}</span>
         </div>
-        <div className="rec-lab">YOU ASKED</div>
-        <div className="ask">{rec.q}</div>
-        <div className="rec-lab">YOU PEEKED</div>
+        <div className="rec-lab">{t.profile.youAsked}</div>
+        <div className="ask">{rec.q[lang]}</div>
+        <div className="rec-lab">{t.profile.youPeeked}</div>
         <div className="prev-row">
           <Cover id={rec.book} cls="cover-xs" />
           <div>
-            <div className="prev-ttl d">{bk.t}</div>
-            <div className="prev-auth">{bk.a}</div>
-            <div className="prev-note">first pages, by owl</div>
+            <div className="prev-ttl d">{bk?.t}</div>
+            <div className="prev-auth">{bk?.a}</div>
+            <div className="prev-note">{t.profile.firstPages}</div>
           </div>
         </div>
       </div>
@@ -146,17 +153,21 @@ function CalendarTab() {
 
 /* ---------- quotes tab ---------- */
 function QuoteCard({ index }: { index: number }) {
+  const t = useT();
+  const lang = useLang();
   const q = QUOTES[index];
-  const bk = BOOKS[q.book];
+  const bk = getBook(q.book);
   const showToast = useStore((s) => s.showToast);
   const [done, setDone] = useState(false);
 
+  if (!bk) return null; // seeded quotes use catalog ids — always resolves
+
   const copy = async () => {
     try {
-      await navigator.clipboard.writeText(`“${q.x}” — ${bk.a}, ${bk.t}`);
-      showToast('ti-copy', 'copied — word for word.', 'scribe');
+      await navigator.clipboard.writeText(t.profile.clipQuote(q.x[lang], bk.a, bk.t));
+      showToast('ti-copy', t.profile.copiedToast, 'scribe');
     } catch {
-      showToast('ti-copy', 'kept. word for word.', 'scribe');
+      showToast('ti-copy', t.profile.keptToast, 'scribe');
     }
     setDone(false);
     requestAnimationFrame(() => setDone(true));
@@ -168,31 +179,32 @@ function QuoteCard({ index }: { index: number }) {
         <div className="q-stamp" style={{ background: bk.c, color: bk.tc ?? '#E8E0BC' }}>
           <Icon name="ti-quote" />
         </div>
-        <div className="q-text it">&ldquo;{q.x}&rdquo;</div>
+        <div className="q-text it">&ldquo;{q.x[lang]}&rdquo;</div>
       </div>
-      <button className={`q-copy ${done ? 'done' : ''}`} aria-label="Copy quote" onClick={copy}>
+      <button className={`q-copy ${done ? 'done' : ''}`} aria-label={t.profile.copyAria} onClick={copy}>
         <Icon name="ti-copy" />
       </button>
       <div className="q-meta">
         <span className="q-by">
           {bk.a} · {bk.t}
         </span>
-        <span className="q-date">kept {q.d}</span>
+        <span className="q-date">{t.profile.keptOn(q.d[lang])}</span>
       </div>
     </article>
   );
 }
 
 function QuotesTab() {
+  const t = useT();
   return (
     <div className="tpanel on swap" id="tab-quotes" role="tabpanel" aria-labelledby="tabbtn-quotes">
       <div className="sec">
         <div className="sec-head">
           <div className="qhead">
             <CastOwl owl="scribe" cls="mini" />
-            <div className="sec-title d">tucked away</div>
+            <div className="sec-title d">{t.profile.tuckedAway}</div>
           </div>
-          <span style={{ fontSize: 11, color: 'var(--fade)', fontWeight: 700 }}>{QUOTES.length} quotes kept</span>
+          <span style={{ fontSize: 11, color: 'var(--fade)', fontWeight: 700 }}>{t.profile.quotesKept(QUOTES.length)}</span>
         </div>
         <div className="qlist" id="qList" style={{ paddingTop: 0 }}>
           {QUOTES.map((_, i) => (
@@ -215,7 +227,9 @@ function MemTab() {
 
 /* ---------- bio line — instagram-benched: tap to edit in place, tap done to keep it ---------- */
 function BioRow() {
-  const bio = useStore((s) => s.prefs.bio ?? DEFAULT_BIO);
+  const t = useT();
+  const lang = useLang();
+  const bio = useStore((s) => s.prefs.bio) ?? DEFAULT_BIO[lang];
   const setPref = useStore((s) => s.setPref);
   const showToast = useStore((s) => s.showToast);
   const [editing, setEditing] = useState(false);
@@ -239,7 +253,7 @@ function BioRow() {
     if (editing) {
       setPref('bio', bioRef.current?.textContent?.trim() ?? '');
       setEditing(false);
-      showToast('ti-check', 'bio kept');
+      showToast('ti-check', t.profile.bioKept);
     } else {
       setEditing(true);
     }
@@ -266,21 +280,24 @@ function BioRow() {
       </p>
       <button className="editbio" onClick={toggle}>
         <Icon name={editing ? 'ti-check' : 'ti-pencil'} />
-        <span>{editing ? 'done' : 'edit bio'}</span>
+        <span>{editing ? t.profile.bioDone : t.profile.bioEdit}</span>
       </button>
     </>
   );
 }
 
 /* ---------- profile screen ---------- */
-const BASE_TABS: [ProfileTab, string, string][] = [
-  ['stats', 'ti-radar-2', 'stats'],
-  ['cal', 'ti-calendar-event', 'calendar'],
-  ['quotes', 'ti-quote', 'quotes'],
+/* [key, icon] — the visible label comes from t.profile.tabs[key] */
+const BASE_TABS: [ProfileTab, string][] = [
+  ['stats', 'ti-radar-2'],
+  ['cal', 'ti-calendar-event'],
+  ['quotes', 'ti-quote'],
 ];
-const MEM_TAB: [ProfileTab, string, string] = ['mem', 'ti-feather', 'memory'];
+const MEM_TAB: [ProfileTab, string] = ['mem', 'ti-feather'];
 
 export function ProfileScreen() {
+  const t = useT();
+  const lang = useLang();
   const active = useStore((s) => s.activeTab === 'profile');
   const lv = useStore((s) => s.lv);
   const coins = useStore((s) => s.coins);
@@ -327,7 +344,7 @@ export function ProfileScreen() {
           </span>
         </h1>
         <CastOwl owl="mirror" cls="mini" />
-        <button className="iconbtn lite set-gear" aria-label="Settings" onClick={openSettings}>
+        <button className="iconbtn lite set-gear" aria-label={t.profile.settingsAria} onClick={openSettings}>
           <Icon name="ti-settings" />
         </button>
       </div>
@@ -339,11 +356,9 @@ export function ProfileScreen() {
           </div>
           <div className="ig-main">
             <div className="pname d">{prefName ?? authUser?.name ?? 'Mira'}</div>
-            <div className="psub">
-              LV {lv} BIBLIOPHILE · {coins} COINS
-            </div>
+            <div className="psub">{t.profile.psub(lv, coins)}</div>
             <div className="ig-stats">
-              {IG_STATS.map((s) => (
+              {IG_STATS[lang].map((s) => (
                 <button
                   key={s.l}
                   className={`ig-stat ${profileTab === s.tab ? 'on' : ''}`}
@@ -363,10 +378,10 @@ export function ProfileScreen() {
             <Icon name="ti-flame" />
           </div>
           <div>
-            <div className="stk-t d">{streak}-day streak</div>
-            <div className="stk-s">keep it kindled</div>
+            <div className="stk-t d">{t.profile.streakDays(streak)}</div>
+            <div className="stk-s">{t.profile.keepKindled}</div>
           </div>
-          <div className="wkdots" aria-label={`Reading streak, ${WK_DOTS.length} days this week`}>
+          <div className="wkdots" aria-label={t.profile.wkdotsAria(WK_DOTS.length)}>
             {WK_DOTS.map((d, i) => (
               <span key={i} className={`wd ${d.today ? 'today' : d.on ? 'on' : ''}`} />
             ))}
@@ -374,8 +389,8 @@ export function ProfileScreen() {
         </div>
       </div>
 
-      <div className="ptabs" role="tablist" aria-label="Profile sections">
-        {tabs.map(([key, icon, label]) => {
+      <div className="ptabs" role="tablist" aria-label={t.profile.sectionsAria}>
+        {tabs.map(([key, icon]) => {
           const on = profileTab === key;
           return (
             <button
@@ -388,7 +403,7 @@ export function ProfileScreen() {
               onClick={() => switchTab(key)}
             >
               <Icon name={icon} />
-              {label}
+              {t.profile.tabs[key]}
             </button>
           );
         })}

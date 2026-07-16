@@ -1,6 +1,160 @@
-/* i18n namespace "profile" — filled by the localization pass */
-const en = {};
+/* ============================================================
+   i18n namespace "profile" — the profile screen chrome (header,
+   streak, tabs, stats / calendar / quotes panels), the memory
+   card, and the radar chart aria. en values are byte-identical
+   to the strings they replaced; zh keeps the owl-post-office
+   voice — 亲切、有文气、不过度感叹. Owl cast names stay English.
+   Seeded display content (radar dims, report stats, calendar
+   recs, saved quotes…) lives in src/content/profile.ts, keyed
+   per-language there.
+   ============================================================ */
 
-const zh: typeof en = {};
+const en = {
+  /* ---------- header / identity ---------- */
+  settingsAria: 'Settings',
+  psub: (lv: number, coins: number) => `LV ${lv} BIBLIOPHILE · ${coins} COINS`,
+  bioEdit: 'edit bio',
+  bioDone: 'done',
+  bioKept: 'bio kept',
+  streakDays: (n: number) => `${n}-day streak`,
+  keepKindled: 'keep it kindled',
+  wkdotsAria: (n: number) => `Reading streak, ${n} days this week`,
+
+  /* ---------- tab bar ---------- */
+  sectionsAria: 'Profile sections',
+  tabs: {
+    stats: 'stats',
+    cal: 'calendar',
+    quotes: 'quotes',
+    mem: 'memory',
+  },
+
+  /* ---------- stats tab ---------- */
+  readingBalance: 'reading balance',
+  sixShelves: 'six shelves of you',
+  radarAria: (dims: string) => `Radar chart of reading balance: ${dims}`,
+  thisWeek: 'this week',
+  /** monday-first single letters — shared by the week bars & the calendar header */
+  weekdays: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+
+  /* ---------- calendar tab ---------- */
+  owlPosts: (n: number) => `${n} owl posts`,
+  calDayAria: (d: number, title: string) => `june ${d} — asked the owl, peeked ${title}`,
+  calDayAriaPlain: (d: number) => `june ${d}`,
+  calFoot: 'a day you asked the owl & peeked a pick',
+  owlPost: (d: number) => `OWL POST · JUN ${d}`,
+  youAsked: 'YOU ASKED',
+  youPeeked: 'YOU PEEKED',
+  firstPages: 'first pages, by owl',
+
+  /* ---------- quotes tab ---------- */
+  tuckedAway: 'tucked away',
+  quotesKept: (n: number) => `${n} quotes kept`,
+  keptOn: (d: string) => `kept ${d}`,
+  copyAria: 'Copy quote',
+  clipQuote: (x: string, author: string, title: string) => `“${x}” — ${author}, ${title}`,
+  copiedToast: 'copied — word for word.',
+  keptToast: 'kept. word for word.',
+
+  /* ---------- memory tab ---------- */
+  mem: {
+    fetching: 'fetching what the owl remembers…',
+    title: 'WHAT THE OWL REMEMBERS',
+    emptyAll: 'nothing yet — a few conversations and this fills in.',
+    whoYouAre: 'who you are',
+    workingThrough: "what you're working through lately",
+    notLearned: "the owl hasn't learned this yet",
+    love: 'WHAT YOU LOVE',
+    avoid: 'WHAT TO AVOID',
+    why: 'WHY YOU READ',
+    empty: 'nothing yet',
+    addLove: 'add a genre, author, topic…',
+    addAvoid: 'add an exclusion…',
+    addWhy: 'add a reason you read…',
+    addAria: 'Add',
+    removeAria: (v: string) => `Remove ${v}`,
+    booksReacted: "BOOKS YOU'VE REACTED TO",
+    mentioned: "THINGS YOU'VE MENTIONED",
+    forget: 'forget everything',
+    forgetConfirm: 'really forget everything the owl knows about you?',
+    forgetYes: 'yes, forget it',
+    forgetNo: 'never mind',
+    forgotToast: 'the owl has forgotten — starting fresh',
+  },
+};
+
+const zh: typeof en = {
+  /* ---------- 页首 / 身份 ---------- */
+  settingsAria: '设置',
+  psub: (lv: number, coins: number) => `LV ${lv} 藏书家 · ${coins} 金币`,
+  bioEdit: '编辑简介',
+  bioDone: '完成',
+  bioKept: '简介已收好',
+  streakDays: (n: number) => `连读 ${n} 天`,
+  keepKindled: '让火苗一直亮着',
+  wkdotsAria: (n: number) => `阅读连续记录，本周 ${n} 天`,
+
+  /* ---------- 分栏 ---------- */
+  sectionsAria: '个人主页栏目',
+  tabs: {
+    stats: '统计',
+    cal: '日历',
+    quotes: '摘句',
+    mem: '记忆',
+  },
+
+  /* ---------- 统计 ---------- */
+  readingBalance: '阅读平衡',
+  sixShelves: '六个书架上的你',
+  radarAria: (dims: string) => `阅读平衡雷达图：${dims}`,
+  thisWeek: '本周',
+  /** 周一开头的单字 — 周条形图与日历表头共用 */
+  weekdays: ['一', '二', '三', '四', '五', '六', '日'],
+
+  /* ---------- 日历 ---------- */
+  owlPosts: (n: number) => `${n} 封猫头鹰来信`,
+  calDayAria: (d: number, title: string) => `6月${d}日 — 问过猫头鹰，翻过《${title}》`,
+  calDayAriaPlain: (d: number) => `6月${d}日`,
+  calFoot: '这一天，你问过猫头鹰，也翻过它的推荐',
+  owlPost: (d: number) => `猫头鹰来信 · 6月${d}日`,
+  youAsked: '你问过',
+  youPeeked: '你翻过',
+  firstPages: '开篇几页，由猫头鹰递来',
+
+  /* ---------- 摘句 ---------- */
+  tuckedAway: '悄悄收好',
+  quotesKept: (n: number) => `已收藏 ${n} 句`,
+  keptOn: (d: string) => `${d} 收藏`,
+  copyAria: '复制摘句',
+  clipQuote: (x: string, author: string, title: string) => `“${x}” — ${author}《${title}》`,
+  copiedToast: '已复制 — 一字不差。',
+  keptToast: '已收好，一字不差。',
+
+  /* ---------- 记忆 ---------- */
+  mem: {
+    fetching: '正在取回猫头鹰的记忆…',
+    title: '猫头鹰记得的事',
+    emptyAll: '暂时还没有 — 聊上几回，这里会慢慢填满。',
+    whoYouAre: '你是谁',
+    workingThrough: '你最近在经历什么',
+    notLearned: '猫头鹰还没了解到这一点',
+    love: '你的心头好',
+    avoid: '想避开的',
+    why: '你为什么读书',
+    empty: '暂时还没有',
+    addLove: '添加类型、作者或话题…',
+    addAvoid: '添加想避开的内容…',
+    addWhy: '添加一个读书的理由…',
+    addAria: '添加',
+    removeAria: (v: string) => `移除 ${v}`,
+    booksReacted: '你留下过感受的书',
+    mentioned: '你提到过的事',
+    forget: '全部忘掉',
+    forgetConfirm: '真的要让猫头鹰忘掉关于你的一切吗？',
+    forgetYes: '对，忘掉吧',
+    forgetNo: '先不了',
+    forgotToast: '猫头鹰已经忘了 — 一切重新开始',
+  },
+};
 
 export const profile = { en, zh };

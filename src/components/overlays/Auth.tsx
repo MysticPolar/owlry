@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { useAuth } from '../../store/useAuth';
+import { useT } from '../../i18n/react';
 import { Icon } from '../Icon';
 import { CastOwl } from '../CastOwl';
 
@@ -26,6 +27,7 @@ export function Auth() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const firstRef = useRef<HTMLInputElement>(null);
+  const t = useT().settings.auth;
 
   const signup = mode === 'signup';
 
@@ -52,10 +54,10 @@ export function Auth() {
       id="auth"
       role="dialog"
       aria-modal="true"
-      aria-label="Sign in to owlry"
+      aria-label={t.ariaDialog}
     >
       <div className="auth-glow" aria-hidden="true" />
-      <button className="auth-close" aria-label="Close" onClick={closeAuth}>
+      <button className="auth-close" aria-label={t.ariaClose} onClick={closeAuth}>
         <Icon name="ti-x" />
       </button>
 
@@ -64,19 +66,19 @@ export function Auth() {
           <CastOwl owl="keeper" cls="hero" />
         </div>
         <div className="auth-head">
-          <div className="auth-mark d">the owlery</div>
-          <div className="auth-tag">members’ door · by invitation</div>
+          <div className="auth-mark d">{t.mark}</div>
+          <div className="auth-tag">{t.tag}</div>
         </div>
 
         <div className="auth-card">
-          <div className="auth-tabs" role="tablist" aria-label="Log in or sign up">
+          <div className="auth-tabs" role="tablist" aria-label={t.ariaTabs}>
             <button
               role="tab"
               aria-selected={!signup}
               className={!signup ? 'on' : ''}
               onClick={() => setMode('login')}
             >
-              log in
+              {t.tabLogin}
             </button>
             <button
               role="tab"
@@ -84,7 +86,7 @@ export function Auth() {
               className={signup ? 'on' : ''}
               onClick={() => setMode('signup')}
             >
-              sign up
+              {t.tabSignup}
             </button>
           </div>
 
@@ -92,49 +94,49 @@ export function Auth() {
             {signup && (
               <label className="auth-field">
                 <span className="auth-lab">
-                  <Icon name="ti-sparkles" /> invitation code
+                  <Icon name="ti-sparkles" /> {t.inviteLabel}
                 </span>
                 <input
                   ref={firstRef}
                   value={code}
                   onChange={(e) => setCode(e.target.value)}
-                  placeholder="OWLERY-2026"
+                  placeholder={t.invitePlaceholder}
                   autoCapitalize="characters"
                   autoComplete="off"
                   spellCheck={false}
-                  aria-label="Invitation code"
+                  aria-label={t.ariaInvite}
                 />
               </label>
             )}
             <label className="auth-field">
               <span className="auth-lab">
-                <Icon name="ti-mail" /> email
+                <Icon name="ti-mail" /> {t.emailLabel}
               </span>
               <input
                 ref={signup ? undefined : firstRef}
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@somewhere.com"
+                placeholder={t.emailPlaceholder}
                 autoCapitalize="none"
                 autoComplete="email"
                 spellCheck={false}
                 enterKeyHint={signup ? 'next' : 'go'}
-                aria-label="Email"
+                aria-label={t.ariaEmail}
               />
             </label>
             <label className="auth-field">
               <span className="auth-lab">
-                <Icon name="ti-lock" /> {signup ? 'set a password' : 'password'}
+                <Icon name="ti-lock" /> {signup ? t.passwordSetLabel : t.passwordLabel}
               </span>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder={signup ? 'at least 8 characters' : '••••••••'}
+                placeholder={signup ? t.passwordNewPlaceholder : t.passwordPlaceholder}
                 autoComplete={signup ? 'new-password' : 'current-password'}
                 enterKeyHint="go"
-                aria-label="Password"
+                aria-label={t.ariaPassword}
               />
             </label>
 
@@ -147,35 +149,35 @@ export function Auth() {
             <button className="btn auth-submit" type="submit" disabled={busy}>
               {busy
                 ? signup
-                  ? 'CHECKING THE LEDGER…'
-                  : 'SIGNING IN…'
+                  ? t.busySignup
+                  : t.busyLogin
                 : signup
-                  ? 'CREATE ACCOUNT'
-                  : 'LOG IN'}
+                  ? t.submitSignup
+                  : t.submitLogin}
             </button>
           </form>
 
           <div className="auth-alt">
             {signup ? (
               <>
-                already on the ledger?{' '}
-                <button onClick={() => setMode('login')}>log in</button>
+                {t.altHaveAccount}{' '}
+                <button onClick={() => setMode('login')}>{t.altLogin}</button>
               </>
             ) : (
               <>
-                no account yet?{' '}
-                <button onClick={() => setMode('signup')}>sign up, by invitation</button>
+                {t.altNoAccount}{' '}
+                <button onClick={() => setMode('signup')}>{t.altSignup}</button>
               </>
             )}
           </div>
         </div>
 
         <button className="auth-guest" onClick={continueAsGuest}>
-          peek in as a guest <Icon name="ti-arrow-right" />
+          {t.guest} <Icon name="ti-arrow-right" />
         </button>
         {!available && (
           <div className="auth-note it">
-            accounts need a backend — guest works fully offline.
+            {t.backendNote}
           </div>
         )}
       </div>

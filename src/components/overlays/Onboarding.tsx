@@ -5,7 +5,9 @@ import { Icon } from '../Icon';
 import { type CastOwlName } from '../CastOwl';
 import { CurtainCloth, type CurtainHandle } from './CurtainCloth';
 import { Confetti, type ConfettiHandle } from './Confetti';
-import { BOOKS } from '../../content/books';
+import { getBook } from '../../lib/bookRegistry';
+import { useT } from '../../i18n/react';
+import type { Dict } from '../../i18n/react';
 import type { BookRef } from '../../content/types';
 
 /* ============================================================
@@ -21,6 +23,9 @@ import type { BookRef } from '../../content/types';
 
 const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+/** the onboarding namespace of the active dictionary */
+type OnbT = Dict['onboarding'];
+
 interface Slide {
   owl: CastOwlName;
   job: string;
@@ -29,81 +34,91 @@ interface Slide {
   body: ReactNode;
 }
 
-const SLIDES: Slide[] = [
+const buildSlides = (t: OnbT): Slide[] => [
   {
     owl: 'scout',
-    job: 'the finder',
+    job: t.cast.scout.job,
     rot: -5,
     head: (
       <>
-        the right book finds you<span className="hdot">.</span>
+        {t.cast.scout.head}
+        <span className="hdot">.</span>
       </>
     ),
     body: (
       <>
-        tell scout what&rsquo;s going on — a problem, a mood, a rainy sunday.{' '}
-        <em>she always brings back one too many.</em>
+        {t.cast.scout.body}{' '}
+        <em>{t.cast.scout.em}</em>
       </>
     ),
   },
   {
     owl: 'peek',
-    job: 'the taster',
+    job: t.cast.peek.job,
     rot: 0,
     head: (
       <>
-        taste before you commit<span className="hdot">.</span>
+        {t.cast.peek.head}
+        <span className="hdot">.</span>
       </>
     ),
     body: (
       <>
-        a peek opens the right chapter first — the pages that matter to <em>you</em>.{' '}
-        <em>peek has never finished a book. that&rsquo;s the point.</em>
+        {t.cast.peek.bodyA}
+        <em>{t.cast.peek.bodyAEm}</em>
+        {t.cast.peek.bodyB}{' '}
+        <em>{t.cast.peek.em}</em>
       </>
     ),
   },
   {
     owl: 'scribe',
-    job: 'the rememberer',
+    job: t.cast.scribe.job,
     rot: 4,
     head: (
       <>
-        never lose a line<span className="hdot">.</span>
+        {t.cast.scribe.head}
+        <span className="hdot">.</span>
       </>
     ),
     body: (
       <>
-        keep a line once — scribe files it forever, word for word. <em>page 118 is not page 117.</em>
+        {t.cast.scribe.body}{' '}
+        <em>{t.cast.scribe.em}</em>
       </>
     ),
   },
   {
     owl: 'keeper',
-    job: 'the collector',
+    job: t.cast.keeper.job,
     rot: 0,
     head: (
       <>
-        your shelf remembers<span className="hdot">.</span>
+        {t.cast.keeper.head}
+        <span className="hdot">.</span>
       </>
     ),
     body: (
       <>
-        every book, every streak, your whole reading life — <em>shelved lovingly, counted twice.</em>
+        {t.cast.keeper.body}{' '}
+        <em>{t.cast.keeper.em}</em>
       </>
     ),
   },
   {
     owl: 'mirror',
-    job: 'the reflection',
+    job: t.cast.mirror.job,
     rot: 3,
     head: (
       <>
-        meet your reading self<span className="hdot">.</span>
+        {t.cast.mirror.head}
+        <span className="hdot">.</span>
       </>
     ),
     body: (
       <>
-        mirror charts your reading identity, and it levels as you read. <em>six shelves of you.</em>
+        {t.cast.mirror.body}{' '}
+        <em>{t.cast.mirror.em}</em>
       </>
     ),
   },
@@ -119,27 +134,30 @@ const OWL_ACCENT: Record<CastOwlName, string> = {
 
 /* ---------- act 1a · the splash (day / matinée) ---------- */
 function Splash({ onEnter }: { onEnter: () => void }) {
+  const t = useT();
   useEffect(() => {
-    const t = setTimeout(onEnter, reduced() ? 350 : 1700);
-    return () => clearTimeout(t);
+    const tm = setTimeout(onEnter, reduced() ? 350 : 1700);
+    return () => clearTimeout(tm);
   }, [onEnter]);
   return (
-    <button className="ob-splash" onClick={onEnter} aria-label="Owlry — a wakeup! human production">
+    <button className="ob-splash" onClick={onEnter} aria-label={t.onboarding.splash.aria}>
       <div className="ob-sp-mark d">
         owlry<span className="gdot">.</span>
       </div>
-      <div className="ob-sp-sub">a wakeup! human production</div>
+      <div className="ob-sp-sub">{t.onboarding.splash.sub}</div>
     </button>
   );
 }
 
 /* ---------- act 2 · the playbill deck ---------- */
 function Playbill({ onDone }: { onDone: () => void }) {
+  const t = useT();
+  const slides = buildSlides(t.onboarding);
   const deckRef = useRef<HTMLDivElement>(null);
   const ghostRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const [current, setCurrent] = useState(0);
-  const [live, setLive] = useState<boolean[]>(() => SLIDES.map((_, i) => i === 0));
-  const last = current === SLIDES.length - 1;
+  const [live, setLive] = useState<boolean[]>(() => slides.map((_, i) => i === 0));
+  const last = current === slides.length - 1;
 
   const goTo = (i: number) => {
     const deck = deckRef.current;
@@ -192,7 +210,7 @@ function Playbill({ onDone }: { onDone: () => void }) {
     drag.current = null;
     deck.classList.remove('dragging');
     deck.style.scrollSnapType = '';
-    goTo(Math.max(0, Math.min(SLIDES.length - 1, Math.round(deck.scrollLeft / deck.clientWidth))));
+    goTo(Math.max(0, Math.min(slides.length - 1, Math.round(deck.scrollLeft / deck.clientWidth))));
   };
 
   return (
@@ -207,7 +225,7 @@ function Playbill({ onDone }: { onDone: () => void }) {
         className="ob-deck"
         ref={deckRef}
         tabIndex={0}
-        aria-label="Meet the cast — swipe through five owls"
+        aria-label={t.onboarding.cast.deckAria}
         onScroll={onScroll}
         onPointerDown={(e) => {
           const deck = deckRef.current;
@@ -225,16 +243,16 @@ function Playbill({ onDone }: { onDone: () => void }) {
         onPointerUp={endDrag}
         onPointerCancel={endDrag}
         onKeyDown={(e) => {
-          if (e.key === 'ArrowRight') goTo(Math.min(current + 1, SLIDES.length - 1));
+          if (e.key === 'ArrowRight') goTo(Math.min(current + 1, slides.length - 1));
           if (e.key === 'ArrowLeft') goTo(Math.max(current - 1, 0));
         }}
       >
-        {SLIDES.map((s, i) => (
+        {slides.map((s, i) => (
           <section
             key={s.owl}
             className={`ob-slide${live[i] ? ' live' : ''}`}
             data-owl={s.owl}
-            aria-label={`${i + 1} of ${SLIDES.length} — ${s.owl}`}
+            aria-label={t.onboarding.cast.slideAria(i + 1, slides.length, s.owl)}
           >
             <span
               className="ob-ghost"
@@ -263,13 +281,13 @@ function Playbill({ onDone }: { onDone: () => void }) {
       </div>
 
       <div className="ob-botbar">
-        <div className="ob-dots" role="tablist" aria-label="Slides">
-          {SLIDES.map((s, i) => (
+        <div className="ob-dots" role="tablist" aria-label={t.onboarding.cast.dotsAria}>
+          {slides.map((s, i) => (
             <button
               key={s.owl}
               role="tab"
               aria-selected={i === current}
-              aria-label={`Go to slide ${i + 1} — ${s.owl}`}
+              aria-label={t.onboarding.cast.dotAria(i + 1, s.owl)}
               className={`ob-dot${i === current ? ' on' : ''}`}
               style={{ '--dc': `var(--${OWL_ACCENT[s.owl]})` } as CSSProperties}
               onClick={() => goTo(i)}
@@ -278,10 +296,10 @@ function Playbill({ onDone }: { onDone: () => void }) {
         </div>
         <button
           className={`ob-next${last ? ' last' : ''}`}
-          aria-label={last ? 'Enter the owlery' : 'Next'}
+          aria-label={last ? t.onboarding.cast.enterAria : t.onboarding.cast.nextAria}
           onClick={() => (last ? onDone() : goTo(current + 1))}
         >
-          <span className="lbl">enter the owlery</span>
+          <span className="lbl">{t.onboarding.cast.enter}</span>
           <Icon name="ti-arrow-right" />
         </button>
       </div>
@@ -299,6 +317,8 @@ function InvitePlaque({
   onPeek: () => void;
   clothRef: React.RefObject<CurtainHandle>;
 }) {
+  const t = useT();
+  const o = t.onboarding;
   const showToast = useStore((s) => s.showToast);
   const [code, setCode] = useState('');
   const [err, setErr] = useState(false);
@@ -306,8 +326,8 @@ function InvitePlaque({
   const [shaking, setShaking] = useState(false);
   const ref = useRef<HTMLInputElement>(null);
   useEffect(() => {
-    const t = setTimeout(() => ref.current?.focus(), 340);
-    return () => clearTimeout(t);
+    const tm = setTimeout(() => ref.current?.focus(), 340);
+    return () => clearTimeout(tm);
   }, []);
   // the eyes look at the plaque while the reader types the code (lookAtPlaque)
   const lookAtInput = () => {
@@ -335,9 +355,10 @@ function InvitePlaque({
   return (
     <div className={`ob-plaque ob-inv${granted ? ' granted' : ''}${err ? ' err' : ''}`}>
       <p className="ob-pline">
-        the owlery opens
+        {o.gate.line1}
         <br />
-        by invite only<span className="gdot">.</span>
+        {o.gate.line2}
+        <span className="gdot">.</span>
       </p>
       <form onSubmit={submit}>
         <input
@@ -350,30 +371,26 @@ function InvitePlaque({
           }}
           onFocus={lookAtInput}
           onAnimationEnd={() => setShaking(false)}
-          placeholder="invite code"
+          placeholder={o.gate.codePlaceholder}
           autoComplete="off"
           autoCapitalize="characters"
           spellCheck={false}
-          aria-label="Invite code"
+          aria-label={o.gate.codeAria}
           disabled={granted}
         />
         <button className="gbtn" type="submit" disabled={granted}>
-          enter
+          {o.gate.enter}
         </button>
       </form>
-      <div className="ob-gerr">that code isn&rsquo;t on the list.</div>
+      <div className="ob-gerr">{o.gate.err}</div>
       <div className="ob-microline">
-        no invite yet?{' '}
-        <button
-          type="button"
-          disabled={granted}
-          onClick={() => showToast('ti-external-link', 'the waitlist opens outside owlry')}
-        >
-          join the waitlist
+        {o.gate.noInvite}{' '}
+        <button type="button" disabled={granted} onClick={() => showToast('ti-external-link', o.gate.waitlistToast)}>
+          {o.gate.waitlist}
         </button>{' '}
-        <span className="ob-or">or</span>{' '}
+        <span className="ob-or">{o.gate.or}</span>{' '}
         <button type="button" disabled={granted} onClick={onPeek}>
-          peek in as guest
+          {o.gate.guest}
         </button>
       </div>
     </div>
@@ -382,14 +399,16 @@ function InvitePlaque({
 
 /* ---------- act 3b · the name (against the closed velvet, eyes watching) ---------- */
 function NamePlaque({ onDone, clothRef }: { onDone: () => void; clothRef: React.RefObject<CurtainHandle> }) {
+  const t = useT();
+  const o = t.onboarding;
   const setPref = useStore((s) => s.setPref);
   const [name, setName] = useState('');
   const [sealed, setSealed] = useState(false);
   const ref = useRef<HTMLInputElement>(null);
   const btnRef = useRef<HTMLButtonElement>(null);
   useEffect(() => {
-    const t = setTimeout(() => ref.current?.focus(), 320);
-    return () => clearTimeout(t);
+    const tm = setTimeout(() => ref.current?.focus(), 320);
+    return () => clearTimeout(tm);
   }, []);
   const clean = name.replace(/\s+/g, ' ').trimStart();
   // the eyes look at the plaque while you write your name (the mockup's lookAtPlaque)
@@ -422,11 +441,11 @@ function NamePlaque({ onDone, clothRef }: { onDone: () => void; clothRef: React.
   };
   return (
     <div className="ob-plaque">
-      <p className="ob-qline">how should the owls address you?</p>
+      <p className="ob-qline">{o.name.q}</p>
       <div className="ob-dear">
-        <em>Dear</em> <span className="ob-dearname">{clean}</span>
+        <em>{o.name.dear}</em> <span className="ob-dearname">{clean}</span>
         {!sealed && <span className="ob-cur" />}
-        {clean && ','}
+        {clean && o.name.comma}
       </div>
       <form onSubmit={submit}>
         <input
@@ -438,24 +457,26 @@ function NamePlaque({ onDone, clothRef }: { onDone: () => void; clothRef: React.
             lookAtInput();
           }}
           onFocus={lookAtInput}
-          placeholder="your name"
+          placeholder={o.name.placeholder}
           maxLength={18}
           autoComplete="given-name"
           spellCheck={false}
-          aria-label="Your name"
+          aria-label={o.name.aria}
           disabled={sealed}
         />
         <button className="gbtn" type="submit" ref={btnRef} disabled={sealed}>
-          {sealed ? `sealed for ${clean}` : "that’s me"}
+          {sealed ? o.name.sealedFor(clean) : o.name.thatsMe}
         </button>
       </form>
-      <p className="ob-dearnote">every letter you receive opens this way</p>
+      <p className="ob-dearnote">{o.name.note}</p>
     </div>
   );
 }
 
 /* ---------- act 4 · the curtain rises (canvas cloth) ---------- */
 function CurtainReveal({ onEnter }: { onEnter: () => void }) {
+  const t = useT();
+  const rv = t.onboarding.reveal;
   const [open, setOpen] = useState(false);
   const [entering, setEntering] = useState(false);
   const { time } = useClock();
@@ -483,13 +504,13 @@ function CurtainReveal({ onEnter }: { onEnter: () => void }) {
 
       {/* the house behind the cloth, revealed as it parts */}
       <div className="ob-bill">
-        <p className="ob-kick">tonight &amp; every night</p>
+        <p className="ob-kick">{rv.kick}</p>
         <h1 className="ob-marq">
-          <span>read</span>
-          <span>better</span>
+          <span>{rv.marq1}</span>
+          <span>{rv.marq2}</span>
         </h1>
         <div className="ob-at">
-          <em>at</em> owlry<span className="gdot">.</span>
+          <em>{rv.at}</em> owlry<span className="gdot">.</span>
         </div>
       </div>
       <div className="ob-aura" aria-hidden="true" />
@@ -505,11 +526,11 @@ function CurtainReveal({ onEnter }: { onEnter: () => void }) {
       </div>
       <div className="ob-seatrow">
         <button className="btn ob-seatbtn" onClick={enter}>
-          enter <Icon name="ti-arrow-right" />
+          {rv.enter} <Icon name="ti-arrow-right" />
         </button>
       </div>
       <div className="ob-showline" aria-hidden="true">
-        the evening show · {time}
+        {rv.eveningShow} · {time}
       </div>
 
       {/* peek dangles on a rope, and the pelmet — both in front of the cloth */}
@@ -525,15 +546,15 @@ function CurtainReveal({ onEnter }: { onEnter: () => void }) {
       <button
         className="ob-house"
         onClick={() => clothRef.current?.raise()}
-        aria-label="Raise the curtain"
+        aria-label={rv.raiseAria}
         aria-hidden={open}
       >
         <span className="ob-house-txt">
           <span className="ob-house-mark d">
             owlry<span className="gdot">.</span>
           </span>
-          <span className="ob-house-show">the evening show</span>
-          <span className="ob-house-seat">now seating — tap to raise the curtain</span>
+          <span className="ob-house-show">{rv.eveningShow}</span>
+          <span className="ob-house-seat">{rv.seat}</span>
         </span>
       </button>
     </div>
