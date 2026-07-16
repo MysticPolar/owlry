@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useStore } from '../../store/useStore';
+import { useT } from '../../i18n/react';
 import { getBook, getGuide } from '../../lib/bookRegistry';
 import { useTypewriter } from '../../hooks/useTypewriter';
 import { Icon } from '../Icon';
@@ -11,6 +12,7 @@ const typedOnce = new Set<string>();
 
 /** the "save line" chip — keeping a line is scribe's trigger */
 function SaveLine() {
+  const t = useT();
   const saveQuote = useStore((s) => s.saveQuote);
   const [saved, setSaved] = useState(false);
   return (
@@ -24,12 +26,13 @@ function SaveLine() {
       }}
     >
       <Icon name={saved ? 'ti-check' : 'ti-quote'} />
-      {saved ? 'saved' : 'save line'}
+      {saved ? t.reader.savedLine : t.reader.saveLine}
     </button>
   );
 }
 
 export function Letter() {
+  const t = useT();
   const letterId = useStore((s) => s.letterId);
   const letterStatus = useStore((s) => s.letterStatus);
   const closeLetter = useStore((s) => s.closeLetter);
@@ -85,20 +88,20 @@ export function Letter() {
   if (!open) return null;
 
   return (
-    <div className="letter on" id="letter" role="dialog" aria-modal="true" aria-label="Peek">
+    <div className="letter on" id="letter" role="dialog" aria-modal="true" aria-label={t.reader.letterAria}>
       <div className="l-top">
-        <button className="iconbtn lite" aria-label="Close peek" onClick={closeLetter}>
+        <button className="iconbtn lite" aria-label={t.reader.closePeekAria} onClick={closeLetter}>
           <Icon name="ti-arrow-left" />
         </button>
         <div className="d">
           <CastOwl owl="peek" cls="mini" />
-          OWL POST
+          {t.reader.owlPost}
         </div>
         {id ? (
           <button
             className={`save ${saved ? 'on' : ''}`}
             style={{ position: 'static' }}
-            aria-label="Save to library"
+            aria-label={t.reader.saveAria}
             aria-pressed={saved}
             onClick={() => toggleSave(id)}
           >
@@ -111,15 +114,15 @@ export function Letter() {
 
       <div className="l-body" id="ltBody" ref={bodyRef} aria-busy={Boolean(g && !done)}>
         {g && !done && (
-          <button className="l-skip" onClick={skip}>SHOW FULL LETTER</button>
+          <button className="l-skip" onClick={skip}>{t.reader.showFullLetter}</button>
         )}
         {/* the letter is generated on tap; show it being written first */}
         {writing && b && (
           <>
-            <div className="l-kick">OWL POST · READING LETTER</div>
+            <div className="l-kick">{t.reader.kickReadingLetter}</div>
             <div className="l-ttl d">{b.t}</div>
             <div className="l-auth">
-              {b.a} · {b.n} pages
+              {b.a} · {t.reader.pages(b.n)}
             </div>
             <div className="l-writing">
               <span className="tdots" aria-hidden="true">
@@ -127,22 +130,22 @@ export function Letter() {
                 <span />
                 <span />
               </span>
-              <span className="it">peek is writing your letter…</span>
+              <span className="it">{t.reader.peekWriting}</span>
             </div>
           </>
         )}
 
         {failed && b && (
           <>
-            <div className="l-kick">OWL POST · READING LETTER</div>
+            <div className="l-kick">{t.reader.kickReadingLetter}</div>
             <div className="l-ttl d">{b.t}</div>
             <div className="l-auth">
-              {b.a} · {b.n} pages
+              {b.a} · {t.reader.pages(b.n)}
             </div>
             <div className="l-writing">
-              <span className="it">the ink ran mid-sentence. one more try?</span>
+              <span className="it">{t.reader.inkRan}</span>
               <button className="btn xs" onClick={() => id && openLetter(id)}>
-                TRY AGAIN <Icon name="ti-refresh" />
+                {t.reader.tryAgain} <Icon name="ti-refresh" />
               </button>
             </div>
           </>
@@ -150,7 +153,7 @@ export function Letter() {
 
         {g && b && id && (
           <div className="l-swap" key={id}>
-            <div className="l-kick">OWL POST · PEEK</div>
+            <div className="l-kick">{t.reader.kickPeek}</div>
             <div className="l-ttl d">
               <button
                 className="l-ttl-link"
@@ -161,17 +164,17 @@ export function Letter() {
               </button>
             </div>
             <div className="l-auth">
-              {b.a} · {b.n} pages
+              {b.a} · {t.reader.pages(b.n)}
             </div>
             <div className="l-res it">{type(g.res)}</div>
 
-            {shown >= at() && <div className="l-sec">RECOMMENDED CHAPTER</div>}
+            {shown >= at() && <div className="l-sec">{t.reader.secChapter}</div>}
             <div className="l-chap d">&ldquo;{type(g.chap)}&rdquo;</div>
 
-            {shown >= at() && <div className="l-sec">1 · THE CORE IDEA</div>}
+            {shown >= at() && <div className="l-sec">{t.reader.secCore}</div>}
             <p className="l-p">{type(g.core)}</p>
 
-            {shown >= at() && <div className="l-sec">2 · INSIGHTS FROM THE CHAPTER</div>}
+            {shown >= at() && <div className="l-sec">{t.reader.secInsights}</div>}
             {g.ins.map((n, i) => {
               const tt = type(n.t);
               const rr = type(n.r);
@@ -187,7 +190,7 @@ export function Letter() {
                   {rr && <p className="l-p">{rr}</p>}
                   {ex && (
                     <div className="l-book-note">
-                      <span className="l-tag">from the book</span>
+                      <span className="l-tag">{t.reader.tagFromBook}</span>
                       <p>{ex}</p>
                     </div>
                   )}
@@ -201,13 +204,13 @@ export function Letter() {
               );
             })}
 
-            {shown >= at() && <div className="l-sec">3 · CLOSING REFLECTION</div>}
+            {shown >= at() && <div className="l-sec">{t.reader.secClosing}</div>}
             <p className="l-p">{type(g.close)}</p>
             {g.take.map((t, i) => {
               const v = type(t);
               return v ? (
                 <p className="l-p l-note" key={i}>
-                  <span className="l-tag">take with you</span>
+                  <span className="l-tag">{t.reader.tagTake}</span>
                   {v}
                 </p>
               ) : null;
@@ -216,7 +219,7 @@ export function Letter() {
               const v = type(t);
               return v ? (
                 <p className="l-p l-note it" key={i}>
-                  <span className="l-tag">to sit with</span>
+                  <span className="l-tag">{t.reader.tagSit}</span>
                   {v}
                 </p>
               ) : null;
@@ -225,7 +228,7 @@ export function Letter() {
             {/* the further reading + actions land once the letter is fully written */}
             {done && (
               <>
-                <div className="l-sec">FURTHER READING</div>
+                <div className="l-sec">{t.reader.secFurther}</div>
                 {g.fr.map((f, i) => {
                   const fb = getBook(f.id);
                   if (!fb) return null;
@@ -247,21 +250,21 @@ export function Letter() {
 
                 <div className="l-btnrow">
                   <button className="btn" onClick={() => openBook(id)}>
-                    OPEN <Icon name="ti-arrow-right" />
+                    {t.reader.openBtn} <Icon name="ti-arrow-right" />
                   </button>
                   <button className="btn ghost" aria-pressed={saved} onClick={() => toggleSave(id)}>
                     {saved ? (
                       <>
-                        SAVED <Icon name="ti-check" />
+                        {t.reader.savedBtn} <Icon name="ti-check" />
                       </>
                     ) : (
                       <>
-                        SAVE <Icon name="ti-heart" />
+                        {t.reader.saveBtn} <Icon name="ti-heart" />
                       </>
                     )}
                   </button>
                 </div>
-                <div className="l-sign it">— sorted with care, the owl post office</div>
+                <div className="l-sign it">{t.reader.signOff}</div>
               </>
             )}
           </div>

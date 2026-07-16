@@ -1,5 +1,6 @@
 import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import { useStore } from '../../store/useStore';
+import { useT } from '../../i18n/react';
 import { getBook } from '../../lib/bookRegistry';
 import { loadPosition, savePosition } from '../../lib/ebook/storage';
 import type { ReadingPosition } from '../../lib/ebook/types';
@@ -12,10 +13,11 @@ const FoliateView = lazy(() => import('../reader/FoliateView').then((m) => ({ de
 const PdfView = lazy(() => import('../reader/PdfView').then((m) => ({ default: m.PdfView })));
 const TextView = lazy(() => import('../reader/TextView').then((m) => ({ default: m.TextView })));
 
-const FONT_LABELS: { key: ReaderFont; label: string; note: string }[] = [
-  { key: 'literata', label: 'Literata', note: 'book serif' },
-  { key: 'fraunces', label: 'Fraunces', note: 'owl’s hand' },
-  { key: 'system', label: 'Sans', note: 'system face' },
+/* font notes live in the i18n dict (t.reader.fontNotes) — labels are typeface names */
+const FONT_LABELS: { key: ReaderFont; label: string }[] = [
+  { key: 'literata', label: 'Literata' },
+  { key: 'fraunces', label: 'Fraunces' },
+  { key: 'system', label: 'Sans' },
 ];
 
 const fontStack = (font: ReaderFont): string => {
@@ -40,21 +42,22 @@ function ReaderSettings({
   onChange: (patch: Partial<ReaderPrefs>) => void;
   onClose: () => void;
 }) {
+  const t = useT();
   return (
-    <section className="reader-settings" role="dialog" aria-label="Reading settings">
+    <section className="reader-settings" role="dialog" aria-label={t.reader.settingsAria}>
       <div className="reader-settings-head">
         <div>
-          <div className="reader-settings-kick">READING PAGE</div>
-          <div className="reader-settings-title d">SET THE LAMP</div>
+          <div className="reader-settings-kick">{t.reader.settingsKick}</div>
+          <div className="reader-settings-title d">{t.reader.settingsTitle}</div>
         </div>
-        <button className="reader-icon" aria-label="Close reading settings" onClick={onClose}>
+        <button className="reader-icon" aria-label={t.reader.closeSettingsAria} onClick={onClose}>
           <Icon name="ti-x" />
         </button>
       </div>
 
       <div className="reader-control">
-        <div className="reader-control-label"><span>Font</span>{pdf && <small>fixed by PDF</small>}</div>
-        <div className="reader-fonts" role="group" aria-label="Reading font">
+        <div className="reader-control-label"><span>{t.reader.fontLabel}</span>{pdf && <small>{t.reader.fixedByPdf}</small>}</div>
+        <div className="reader-fonts" role="group" aria-label={t.reader.fontGroupAria}>
           {FONT_LABELS.map((font) => (
             <button
               key={font.key}
@@ -64,27 +67,27 @@ function ReaderSettings({
               disabled={pdf}
               onClick={() => onChange({ font: font.key })}
             >
-              <span>{font.label}</span><small>{font.note}</small>
+              <span>{font.label}</span><small>{t.reader.fontNotes[font.key]}</small>
             </button>
           ))}
         </div>
       </div>
 
       <div className="reader-control reader-stepper-row">
-        <div className="reader-control-label"><span>Size</span>{pdf && <small>fixed by PDF</small>}</div>
-        <div className="reader-stepper" aria-label="Text size">
-          <button aria-label="Decrease text size" disabled={pdf || prefs.size <= 16} onClick={() => onChange({ size: prefs.size - 1 })}>
+        <div className="reader-control-label"><span>{t.reader.sizeLabel}</span>{pdf && <small>{t.reader.fixedByPdf}</small>}</div>
+        <div className="reader-stepper" aria-label={t.reader.sizeAria}>
+          <button aria-label={t.reader.sizeDownAria} disabled={pdf || prefs.size <= 16} onClick={() => onChange({ size: prefs.size - 1 })}>
             <Icon name="ti-minus" />
           </button>
           <output aria-live="polite">{prefs.size}px</output>
-          <button aria-label="Increase text size" disabled={pdf || prefs.size >= 24} onClick={() => onChange({ size: prefs.size + 1 })}>
+          <button aria-label={t.reader.sizeUpAria} disabled={pdf || prefs.size >= 24} onClick={() => onChange({ size: prefs.size + 1 })}>
             <Icon name="ti-plus" />
           </button>
         </div>
       </div>
 
       <label className="reader-control reader-dimmer">
-        <span className="reader-control-label"><span>Candle</span><small>paper stays lit</small></span>
+        <span className="reader-control-label"><span>{t.reader.candleLabel}</span><small>{t.reader.candleNote}</small></span>
         <span className="reader-range-row">
           <Icon name="ti-sun" />
           <input
@@ -92,7 +95,7 @@ function ReaderSettings({
             min="0"
             max="100"
             value={Math.round(prefs.dimmer * 100)}
-            aria-label="Candle dimmer"
+            aria-label={t.reader.candleAria}
             onChange={(event) => onChange({ dimmer: Number(event.target.value) / 100 })}
           />
           <Icon name="ti-flame" />
@@ -100,10 +103,10 @@ function ReaderSettings({
       </label>
 
       <div className="reader-control reader-flow-row">
-        <div className="reader-control-label"><span>Flow</span>{pdf && <small>pages only</small>}</div>
-        <div className="reader-flow" role="group" aria-label="Reading flow">
-          <button className={!pdf && prefs.flow === 'scroll' ? 'on' : ''} aria-pressed={!pdf && prefs.flow === 'scroll'} disabled={pdf} onClick={() => onChange({ flow: 'scroll' })}>SCROLL</button>
-          <button className={pdf || prefs.flow === 'page' ? 'on' : ''} aria-pressed={pdf || prefs.flow === 'page'} disabled={pdf} onClick={() => onChange({ flow: 'page' })}>PAGE</button>
+        <div className="reader-control-label"><span>{t.reader.flowLabel}</span>{pdf && <small>{t.reader.pagesOnly}</small>}</div>
+        <div className="reader-flow" role="group" aria-label={t.reader.flowGroupAria}>
+          <button className={!pdf && prefs.flow === 'scroll' ? 'on' : ''} aria-pressed={!pdf && prefs.flow === 'scroll'} disabled={pdf} onClick={() => onChange({ flow: 'scroll' })}>{t.reader.flowScroll}</button>
+          <button className={pdf || prefs.flow === 'page' ? 'on' : ''} aria-pressed={pdf || prefs.flow === 'page'} disabled={pdf} onClick={() => onChange({ flow: 'page' })}>{t.reader.flowPage}</button>
         </div>
       </div>
     </section>
@@ -111,6 +114,7 @@ function ReaderSettings({
 }
 
 export function EbookReader() {
+  const t = useT();
   const ebook = useStore((s) => s.ebook);
   const prefs = useStore((s) => s.prefs.reader);
   const setPref = useStore((s) => s.setPref);
@@ -239,10 +243,10 @@ export function EbookReader() {
   if (!open || !b || !bookId) return null;
 
   const pageLabel = pdf && location.page && location.pageTotal
-    ? `p. ${location.page} of ${location.pageTotal}`
+    ? t.reader.pageOf(location.page, location.pageTotal)
     : `${Math.round(percent)}%`;
   return (
-    <div className="reader reader-live" style={readerStyle} role="dialog" aria-modal="true" aria-label={`Reading ${b.t}`}>
+    <div className="reader reader-live" style={readerStyle} role="dialog" aria-modal="true" aria-label={t.reader.readingAria(b.t)}>
       <div
         className="reader-stage"
         onPointerDown={(event) => { tapStart.current = { x: event.clientX, y: event.clientY }; }}
@@ -259,20 +263,20 @@ export function EbookReader() {
           else chromeVisible ? setChromeVisible(false) : revealChrome();
         }}
       >
-        {status === 'resolving' && <div className="ebook-center it" role="status">checking the free shelves…</div>}
-        {status === 'error' && <div className="ebook-center" role="alert">{ebook.error ?? 'something went sideways — try again in a moment.'}</div>}
+        {status === 'resolving' && <div className="ebook-center it" role="status">{t.reader.resolving}</div>}
+        {status === 'error' && <div className="ebook-center" role="alert">{ebook.error ?? t.reader.errorFallback}</div>}
         {status === 'empty' && (
           <div className="ebook-center ebook-empty">
             <CastOwl owl="keeper" cls="mini" />
-            <div className="d ebook-empty-title">keeper here — the free shelves don’t carry this one.</div>
-            <p>Bring your own EPUB, PDF, or TXT. It stays on this device; nothing leaves.</p>
-            <button className="btn" onClick={openUpload}>UPLOAD YOUR COPY <Icon name="ti-upload" /></button>
-            <button className="gate-switch" onClick={close}>keep looking</button>
+            <div className="d ebook-empty-title">{t.reader.emptyTitle}</div>
+            <p>{t.reader.emptyBody}</p>
+            <button className="btn" onClick={openUpload}>{t.reader.uploadBtn} <Icon name="ti-upload" /></button>
+            <button className="gate-switch" onClick={close}>{t.reader.keepLooking}</button>
           </div>
         )}
-        {status === 'reading' && source && !positionReady && <div className="ebook-center it">finding your place…</div>}
+        {status === 'reading' && source && !positionReady && <div className="ebook-center it">{t.reader.findingPlace}</div>}
         {status === 'reading' && source && positionReady && (
-          <Suspense fallback={<div className="ebook-center it">opening…</div>}>
+          <Suspense fallback={<div className="ebook-center it">{t.reader.opening}</div>}>
             {source.format === 'pdf' ? (
               <PdfView ref={engineRef} bookId={bookId} source={source} initial={initial} prefs={prefs} onProgress={onProgress} onError={onError} />
             ) : source.format === 'txt' ? (
@@ -287,20 +291,20 @@ export function EbookReader() {
       {chromeVisible && (
         <>
           <header className="reader-chrome reader-chrome-top">
-            <button className="reader-icon" aria-label="Back" onClick={close}><Icon name="ti-arrow-left" /></button>
+            <button className="reader-icon" aria-label={t.reader.backAria} onClick={close}><Icon name="ti-arrow-left" /></button>
             <div className="reader-heading">
               <div className="reader-book-title d">{b.t}</div>
               <div className="reader-book-author">{(source?.sourceLabel ?? b.a).toUpperCase()}</div>
             </div>
-            <button className="reader-icon" aria-label="Reading settings" onClick={() => setSettingsOpen(true)}><Icon name="ti-settings" /></button>
+            <button className="reader-icon" aria-label={t.reader.settingsAria} onClick={() => setSettingsOpen(true)}><Icon name="ti-settings" /></button>
           </header>
           <footer className="reader-chrome reader-chrome-bottom">
-            {pageMode && <button className="reader-icon reader-page-button" aria-label="Previous page" disabled={status !== 'reading'} onClick={() => { revealChrome(); engineRef.current?.prev(); }}><Icon name="ti-chevron-left" /></button>}
+            {pageMode && <button className="reader-icon reader-page-button" aria-label={t.reader.prevPageAria} disabled={status !== 'reading'} onClick={() => { revealChrome(); engineRef.current?.prev(); }}><Icon name="ti-chevron-left" /></button>}
             <div className="reader-progress">
               <div className="reader-location">{pageLabel}</div>
               <div className="reader-thread"><span style={{ width: `${Math.round(percent)}%` }} /></div>
             </div>
-            {pageMode && <button className="reader-icon reader-page-button" aria-label="Next page" disabled={status !== 'reading'} onClick={() => { revealChrome(); engineRef.current?.next(); }}><Icon name="ti-chevron-right" /></button>}
+            {pageMode && <button className="reader-icon reader-page-button" aria-label={t.reader.nextPageAria} disabled={status !== 'reading'} onClick={() => { revealChrome(); engineRef.current?.next(); }}><Icon name="ti-chevron-right" /></button>}
           </footer>
         </>
       )}

@@ -1,6 +1,189 @@
-/* i18n namespace "reader" — filled by the localization pass */
-const en = {};
+/* ============================================================
+   i18n namespace "reader" — the reading surfaces:
+   Letter (reading-letter overlay), Sheet (book about-sheet),
+   Reader (mock paper reader), EbookReader (real reader).
+   en values are byte-identical to the shipped English strings.
+   ============================================================ */
+const en = {
+  /* ---- shared chrome ---- */
+  saveAria: 'Save to library',
+  pages: (n: number) => `${n} pages`,
+  pageOf: (p: number, n: number) => `p. ${p} of ${n}`,
+  prevPageAria: 'Previous page',
+  nextPageAria: 'Next page',
 
-const zh: typeof en = {};
+  /* ---- Letter — the reading-letter overlay ---- */
+  letterAria: 'Peek',
+  closePeekAria: 'Close peek',
+  owlPost: 'OWL POST',
+  showFullLetter: 'SHOW FULL LETTER',
+  kickReadingLetter: 'OWL POST · READING LETTER',
+  kickPeek: 'OWL POST · PEEK',
+  peekWriting: 'peek is writing your letter…',
+  inkRan: 'the ink ran mid-sentence. one more try?',
+  tryAgain: 'TRY AGAIN',
+  secChapter: 'RECOMMENDED CHAPTER',
+  secCore: '1 · THE CORE IDEA',
+  secInsights: '2 · INSIGHTS FROM THE CHAPTER',
+  secClosing: '3 · CLOSING REFLECTION',
+  secFurther: 'FURTHER READING',
+  tagFromBook: 'from the book',
+  tagTake: 'take with you',
+  tagSit: 'to sit with',
+  openBtn: 'OPEN',
+  saveBtn: 'SAVE',
+  savedBtn: 'SAVED',
+  signOff: '— sorted with care, the owl post office',
+  saveLine: 'save line',
+  savedLine: 'saved',
+
+  /* ---- Sheet — the book about-sheet ---- */
+  sheetAria: 'Book details',
+  goodreads: 'GOODREADS',
+  peekBtn: 'PEEK',
+  resumeBtn: 'RESUME',
+  secAuthor: 'THE AUTHOR',
+  linkToast: 'opens outside owlry',
+  interviews: 'interviews',
+  essays: 'essays & blog posts',
+  secSocial: 'SOCIAL REVIEWS',
+  soonPill: 'COMING SOON',
+  socialNote: 'what fellow readers underlined, argued with, and loved — landing in a future issue.',
+
+  /* ---- Reader — the mock paper reader ---- */
+  readerAria: 'Reader',
+  closeReaderAria: 'Close reader',
+  chapter: (n: number) => `CHAPTER ${n}`,
+  finishBookAria: 'Finish book',
+
+  /* ---- EbookReader — the real reader ---- */
+  readingAria: (title: string) => `Reading ${title}`,
+  resolving: 'checking the free shelves…',
+  errorFallback: 'something went sideways — try again in a moment.',
+  emptyTitle: 'keeper here — the free shelves don’t carry this one.',
+  emptyBody: 'Bring your own EPUB, PDF, or TXT. It stays on this device; nothing leaves.',
+  uploadBtn: 'UPLOAD YOUR COPY',
+  keepLooking: 'keep looking',
+  findingPlace: 'finding your place…',
+  opening: 'opening…',
+  backAria: 'Back',
+  settingsAria: 'Reading settings',
+
+  /* ---- reader settings panel ---- */
+  settingsKick: 'READING PAGE',
+  settingsTitle: 'SET THE LAMP',
+  closeSettingsAria: 'Close reading settings',
+  fontLabel: 'Font',
+  fixedByPdf: 'fixed by PDF',
+  fontGroupAria: 'Reading font',
+  fontNotes: {
+    literata: 'book serif',
+    fraunces: 'owl’s hand',
+    system: 'system face',
+  },
+  sizeLabel: 'Size',
+  sizeAria: 'Text size',
+  sizeDownAria: 'Decrease text size',
+  sizeUpAria: 'Increase text size',
+  candleLabel: 'Candle',
+  candleNote: 'paper stays lit',
+  candleAria: 'Candle dimmer',
+  flowLabel: 'Flow',
+  pagesOnly: 'pages only',
+  flowGroupAria: 'Reading flow',
+  flowScroll: 'SCROLL',
+  flowPage: 'PAGE',
+};
+
+const zh: typeof en = {
+  /* ---- shared chrome ---- */
+  saveAria: '收进书房',
+  pages: (n: number) => `${n} 页`,
+  pageOf: (p: number, n: number) => `第 ${p} 页 · 共 ${n} 页`,
+  prevPageAria: '上一页',
+  nextPageAria: '下一页',
+
+  /* ---- Letter — the reading-letter overlay ---- */
+  letterAria: 'Peek 来信',
+  closePeekAria: '关闭来信',
+  owlPost: '猫头鹰邮局',
+  showFullLetter: '展开整封信',
+  kickReadingLetter: '猫头鹰邮局 · 读书信',
+  kickPeek: '猫头鹰邮局 · PEEK',
+  peekWriting: 'peek 正在为你写信…',
+  inkRan: '墨水写到半句就断了。再试一次？',
+  tryAgain: '再试一次',
+  secChapter: '推荐章节',
+  secCore: '一 · 核心要义',
+  secInsights: '二 · 章节洞见',
+  secClosing: '三 · 掩卷所思',
+  secFurther: '延伸阅读',
+  tagFromBook: '摘自书中',
+  tagTake: '随身带走',
+  tagSit: '留待细想',
+  openBtn: '翻开',
+  saveBtn: '收藏',
+  savedBtn: '已收藏',
+  signOff: '——用心分拣，猫头鹰邮局',
+  saveLine: '摘下这句',
+  savedLine: '已摘下',
+
+  /* ---- Sheet — the book about-sheet ---- */
+  sheetAria: '书籍详情',
+  goodreads: 'GOODREADS',
+  peekBtn: 'PEEK 来信',
+  resumeBtn: '接着读',
+  secAuthor: '作者其人',
+  linkToast: '将在 owlry 之外打开',
+  interviews: '访谈',
+  essays: '随笔与博客',
+  secSocial: '书友书评',
+  soonPill: '即将寄达',
+  socialNote: '书友们划下的、争辩过的、钟爱着的字句——将随未来某一期寄达。',
+
+  /* ---- Reader — the mock paper reader ---- */
+  readerAria: '阅读器',
+  closeReaderAria: '关闭阅读器',
+  chapter: (n: number) => `第 ${n} 章`,
+  finishBookAria: '读完本书',
+
+  /* ---- EbookReader — the real reader ---- */
+  readingAria: (title: string) => `正在阅读《${title}》`,
+  resolving: '正在翻看免费书架…',
+  errorFallback: '出了点岔子——稍后再试一次。',
+  emptyTitle: 'keeper 在此——免费书架上没有这一本。',
+  emptyBody: '带上你自己的 EPUB、PDF 或 TXT。它只留在这台设备上，什么也不会外传。',
+  uploadBtn: '上传你的藏书',
+  keepLooking: '再逛逛',
+  findingPlace: '正在找你读到的那一页…',
+  opening: '正在翻开…',
+  backAria: '返回',
+  settingsAria: '阅读设置',
+
+  /* ---- reader settings panel ---- */
+  settingsKick: '阅读页',
+  settingsTitle: '调一盏灯',
+  closeSettingsAria: '关闭阅读设置',
+  fontLabel: '字体',
+  fixedByPdf: '由 PDF 固定',
+  fontGroupAria: '阅读字体',
+  fontNotes: {
+    literata: '书页衬线',
+    fraunces: '猫头鹰手迹',
+    system: '系统字体',
+  },
+  sizeLabel: '字号',
+  sizeAria: '文字大小',
+  sizeDownAria: '缩小文字',
+  sizeUpAria: '放大文字',
+  candleLabel: '烛火',
+  candleNote: '纸页长明',
+  candleAria: '烛火明暗',
+  flowLabel: '翻页方式',
+  pagesOnly: '仅逐页',
+  flowGroupAria: '翻页方式',
+  flowScroll: '滚动',
+  flowPage: '逐页',
+};
 
 export const reader = { en, zh };

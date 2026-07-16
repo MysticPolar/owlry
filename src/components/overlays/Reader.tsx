@@ -1,10 +1,12 @@
 import { useEffect, useRef } from 'react';
 import { useStore } from '../../store/useStore';
+import { useT } from '../../i18n/react';
 import { getBook } from '../../lib/bookRegistry';
 import { getSpread } from '../../content/reader-text';
 import { Icon } from '../Icon';
 
 export function Reader() {
+  const t = useT();
   const reader = useStore((s) => s.reader);
   const closeReader = useStore((s) => s.closeReader);
   const nextPage = useStore((s) => s.nextPage);
@@ -39,9 +41,9 @@ export function Reader() {
   }, [open, prevPage, nextPage]);
 
   return (
-    <div className={`reader ${open ? 'on' : ''}`} id="reader" role="dialog" aria-modal="true" aria-label="Reader">
+    <div className={`reader ${open ? 'on' : ''}`} id="reader" role="dialog" aria-modal="true" aria-label={t.reader.readerAria}>
       <div className="r-top">
-        <button className="iconbtn lite" aria-label="Close reader" onClick={closeReader}>
+        <button className="iconbtn lite" aria-label={t.reader.closeReaderAria} onClick={closeReader}>
           <Icon name="ti-arrow-left" />
         </button>
         <div className="r-mid">
@@ -51,7 +53,7 @@ export function Reader() {
         <button
           className={`save ${saved ? 'on' : ''}`}
           style={{ position: 'static' }}
-          aria-label="Save to library"
+          aria-label={t.reader.saveAria}
           aria-pressed={saved}
           onClick={() => id && toggleSave(id)}
         >
@@ -85,25 +87,25 @@ export function Reader() {
           else if (x > r.width * 0.7) nextPage();
         }}
       >
-        <div className="r-chap">CHAPTER {chapter}</div>
+        <div className="r-chap">{t.reader.chapter(chapter)}</div>
         {spread.map((t, i) => (
           <p key={i}>{t}</p>
         ))}
       </div>
 
       <div className="r-foot">
-        <button className="iconbtn lite" aria-label="Previous page" disabled={p <= 1} onClick={prevPage}>
+        <button className="iconbtn lite" aria-label={t.reader.prevPageAria} disabled={p <= 1} onClick={prevPage}>
           <Icon name="ti-chevron-left" />
         </button>
         <div className="r-prog">
           <div className="r-page">
-            p. {p} of {n}
+            {t.reader.pageOf(p, n)}
           </div>
           <div className="track">
             <div className="fill xp" style={{ width: `${n ? (p / n) * 100 : 0}%` }} />
           </div>
         </div>
-        <button className="iconbtn" aria-label={last ? 'Finish book' : 'Next page'} onClick={nextPage}>
+        <button className="iconbtn" aria-label={last ? t.reader.finishBookAria : t.reader.nextPageAria} onClick={nextPage}>
           <Icon name={last ? 'ti-check' : 'ti-chevron-right'} />
         </button>
       </div>

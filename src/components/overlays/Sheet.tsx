@@ -1,10 +1,12 @@
 import { useStore } from '../../store/useStore';
+import { useT } from '../../i18n/react';
 import { getBook, hasGuide } from '../../lib/bookRegistry';
 import { Icon } from '../Icon';
 import { Cover } from '../Cover';
 import { ClampText } from '../ClampText';
 
 export function Sheet() {
+  const t = useT();
   const sheetId = useStore((s) => s.sheetId);
   const openLetter = useStore((s) => s.openLetter);
   const openBook = useStore((s) => s.openBook);
@@ -25,12 +27,12 @@ export function Sheet() {
       id="sheet"
       role="dialog"
       aria-modal="true"
-      aria-label="Book details"
+      aria-label={t.reader.sheetAria}
     >
       <>
           <button
             className={`save ${saved ? 'on' : ''}`}
-            aria-label="Save to library"
+            aria-label={t.reader.saveAria}
             aria-pressed={saved}
             onClick={() => toggleSave(id)}
           >
@@ -41,12 +43,12 @@ export function Sheet() {
             <div className="sh-info">
               <div className="ttl d">{b.t}</div>
               <div className="auth">
-                {b.a} · {b.n} pages
+                {b.a} · {t.reader.pages(b.n)}
               </div>
               <div className="rate">
                 <Icon name="ti-star" />
                 {b.r ?? '4.0'}
-                <small>&nbsp;GOODREADS</small>
+                <small>&nbsp;{t.reader.goodreads}</small>
               </div>
             </div>
           </div>
@@ -56,33 +58,33 @@ export function Sheet() {
           <div className="btnrow">
             {guide && (
               <button className="btn" onClick={() => hasGuide(id) && openLetter(id)}>
-                PEEK <Icon name="ti-mail" />
+                {t.reader.peekBtn} <Icon name="ti-mail" />
               </button>
             )}
             <button className={`btn ${guide ? 'ghost' : ''}`} onClick={() => openBook(id)}>
-              {resuming ? 'RESUME' : 'OPEN'} <Icon name="ti-arrow-right" />
+              {resuming ? t.reader.resumeBtn : t.reader.openBtn} <Icon name="ti-arrow-right" />
             </button>
           </div>
-          <div className="sh-sec">THE AUTHOR</div>
+          <div className="sh-sec">{t.reader.secAuthor}</div>
           <div className="auth-name d">{b.a}</div>
           <ClampText lines={3} className="bk-bio">
             {b.w ?? ''}
           </ClampText>
-          <button className="link-row" onClick={() => showToast('ti-external-link', 'opens outside owlry')}>
+          <button className="link-row" onClick={() => showToast('ti-external-link', t.reader.linkToast)}>
             <Icon name="ti-microphone-2" />
-            interviews
+            {t.reader.interviews}
             <Icon name="ti-external-link" className="ext" />
           </button>
-          <button className="link-row" onClick={() => showToast('ti-external-link', 'opens outside owlry')}>
+          <button className="link-row" onClick={() => showToast('ti-external-link', t.reader.linkToast)}>
             <Icon name="ti-pencil" />
-            essays &amp; blog posts
+            {t.reader.essays}
             <Icon name="ti-external-link" className="ext" />
           </button>
           <div className="sh-sec">
-            SOCIAL REVIEWS <span className="soon">COMING SOON</span>
+            {t.reader.secSocial} <span className="soon">{t.reader.soonPill}</span>
           </div>
           <p className="sv-note">
-            what fellow readers underlined, argued with, and loved — landing in a future issue.
+            {t.reader.socialNote}
           </p>
       </>
     </div>
