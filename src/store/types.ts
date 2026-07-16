@@ -41,6 +41,8 @@ export interface Prefs {
   onboarded?: boolean;
   /** the name the reader gave the owls at the door ("Dear ___,") */
   name?: string;
+  /** the profile bio line — a sentence about your reading self */
+  bio?: string;
   /** first-use owl intros already shown (peek/scribe/keeper/…), fired once */
   introsSeen?: string[];
 }

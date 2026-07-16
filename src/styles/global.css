@@ -397,7 +397,6 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .chip{flex:0 0 auto;background:var(--surface);border:1px solid var(--line2);border-radius:999px;box-shadow:none;padding:7px 13px;font-size:10.5px;font-weight:800;letter-spacing:.8px;cursor:pointer;color:var(--ink)}
 .chip.on{background:var(--ember);border-color:transparent;color:#FFF6E8}
 #screen-library .chip.on{background:var(--moss)}
-#screen-profile .chip.on{background:var(--violet)}
 .chip.grow{flex:1;display:flex;justify-content:center}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px 12px;padding:18px 22px 0}
 .g-item{position:relative;background:none;border:0;padding:0;text-align:left;cursor:pointer;color:var(--ink)}
@@ -510,6 +509,38 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .avatar.lg{flex:0 0 56px;width:56px;height:56px;border-radius:16px;font-size:24px}
 .pname{font-size:22px;letter-spacing:.04em;text-transform:uppercase}
 .psub{font-size:10.5px;color:var(--fade);font-weight:800;letter-spacing:1px;margin-top:3px;text-transform:uppercase}
+/* identity row — benched on instagram: circled avatar left, id + totals right */
+.ig{display:flex;align-items:center;gap:14px}
+.ig-ava{flex:0 0 64px;width:64px;height:64px;border-radius:50%;background:var(--yellow);color:#241B0E;display:flex;align-items:center;justify-content:center;font-size:27px;box-shadow:0 0 0 2.5px var(--surface),0 0 0 4.5px var(--violet)}
+.ig-main{flex:1;min-width:0}
+.ig-stats{display:flex;margin-top:9px}
+.ig-stat{flex:1;min-width:0;background:none;border:0;padding:0;text-align:left;cursor:pointer;color:var(--ink)}
+.ig-stat b{display:block;font-size:19px;font-weight:400;letter-spacing:.03em;line-height:1}
+.ig-stat span{display:block;font-size:8px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--fade);margin-top:3px;white-space:nowrap}
+.ig-stat.on b{color:var(--violet)}
+.ig-stat:active{transform:translateY(1px)}
+#screen-profile .owl.mini{right:60px}
+.set-gear{position:absolute;right:18px;top:22px;z-index:3;width:32px;height:32px}
+/* flat top — instagram-clean, no card */
+.prof-top{position:relative;z-index:1;padding:16px 22px 0}
+.bio{margin:13px 0 0;font-family:'Fraunces',Georgia,serif;font-weight:430;font-size:13px;line-height:1.55;color:var(--ink)}
+.bio:focus{outline:none}
+.bio[contenteditable="true"]{outline:2px dashed var(--violet);outline-offset:5px;border-radius:3px}
+.bio:empty::before{content:'write a line about your reading self\2026';color:var(--fade)}
+.editbio{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;margin-top:13px;background:var(--surface2);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow-sm);padding:8px;font:800 10px 'Inter Tight',sans-serif;letter-spacing:1.2px;text-transform:uppercase;color:var(--ink);cursor:pointer}
+.editbio .ti{font-size:12px}
+.editbio:active{transform:translateY(2px);box-shadow:none}
+.prof-top .streak{margin-top:15px;padding-top:15px;border-top:1px dashed var(--line2)}
+/* the tab strip — one flat row, the underline marks the act */
+.ptabs{position:relative;z-index:1;display:flex;margin-top:20px;border-bottom:1px solid var(--line)}
+.ptab{flex:1;position:relative;display:flex;align-items:center;justify-content:center;gap:5px;background:none;border:0;padding:11px 0 10px;font:800 10px 'Inter Tight',sans-serif;letter-spacing:.8px;text-transform:uppercase;color:var(--fade);cursor:pointer}
+.ptab .ti{font-size:13px}
+.ptab.on{color:var(--ink)}
+.ptab.on::after{content:'';position:absolute;left:22%;right:22%;bottom:-1px;height:3px;border-radius:2px;background:var(--violet)}
+.ptab:active{transform:translateY(1px)}
+/* panels flow as one column beneath the strip */
+#screen-profile .tpanel .pcard{background:none;border:0;box-shadow:none;border-radius:0;margin:0 22px;padding:16px 0 0}
+#screen-profile .tpanel .pcard+.pcard{margin-top:16px;border-top:1px dashed var(--line2)}
 .streak{display:flex;align-items:center;gap:12px}
 .flamebox{width:40px;height:40px;flex:0 0 40px;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 35% 30%,#FFD866,var(--yellow) 70%);color:#241B0E;border:0;border-radius:12px;box-shadow:0 0 14px rgba(255,192,23,.4)}
 .flamebox .ti{font-size:20px}

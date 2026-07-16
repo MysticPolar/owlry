@@ -60,6 +60,22 @@ export const ACHIEVEMENTS: Achievement[] = [
   { i: 'ti-lock', l: 'marathon', lock: true },
 ];
 
+/* ---------- profile header: identity row (benched on instagram) ---------- */
+export const DEFAULT_BIO = 'night reader · soft spot for island myths & stubborn heroines';
+
+export interface IgStat {
+  n: string;
+  l: string;
+  /** which profile tab a tap opens */
+  tab: 'stats' | 'quotes';
+  aria: string;
+}
+export const IG_STATS: IgStat[] = [
+  { n: '23', l: 'books', tab: 'stats', aria: '23 books read — open stats' },
+  { n: '84h', l: 'reading time', tab: 'stats', aria: '84 hours reading time — open stats' },
+  { n: '132', l: 'highlights', tab: 'quotes', aria: '132 highlights — open quotes' },
+];
+
 /* ---------- profile header: weekly streak dots ---------- */
 export interface WeekDot {
   on?: boolean;

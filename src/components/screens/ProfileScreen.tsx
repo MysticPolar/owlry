@@ -14,6 +14,8 @@ import {
   CDAYS,
   RECS,
   QUOTES,
+  DEFAULT_BIO,
+  IG_STATS,
 } from '../../content/profile';
 import { Icon } from '../Icon';
 import { Cover } from '../Cover';
@@ -26,7 +28,7 @@ type ProfileTab = 'stats' | 'cal' | 'quotes' | 'mem';
 /* ---------- stats tab ---------- */
 function StatsTab({ radarKey }: { radarKey: number }) {
   return (
-    <div className="tpanel on swap" id="tab-stats" role="tabpanel">
+    <div className="tpanel on swap" id="tab-stats" role="tabpanel" aria-labelledby="tabbtn-stats">
       <div className="pcard radar go" id="radarCard">
         <div className="chart-head">
           <div className="d">reading balance</div>
@@ -77,7 +79,7 @@ function CalendarTab() {
   const rec = RECS[selDay];
   const bk = BOOKS[rec.book];
   return (
-    <div className="tpanel on swap" id="tab-cal" role="tabpanel">
+    <div className="tpanel on swap" id="tab-cal" role="tabpanel" aria-labelledby="tabbtn-cal">
       <div className="pcard">
         <div className="chart-head">
           <div className="d">{CMONTH}</div>
@@ -183,7 +185,7 @@ function QuoteCard({ index }: { index: number }) {
 
 function QuotesTab() {
   return (
-    <div className="tpanel on swap" id="tab-quotes" role="tabpanel">
+    <div className="tpanel on swap" id="tab-quotes" role="tabpanel" aria-labelledby="tabbtn-quotes">
       <div className="sec">
         <div className="sec-head">
           <div className="qhead">
@@ -205,9 +207,68 @@ function QuotesTab() {
 /* ---------- memory tab ---------- */
 function MemTab() {
   return (
-    <div className="tpanel on swap" id="tab-mem" role="tabpanel">
+    <div className="tpanel on swap" id="tab-mem" role="tabpanel" aria-labelledby="tabbtn-mem">
       <MemoryCard />
     </div>
+  );
+}
+
+/* ---------- bio line — instagram-benched: tap to edit in place, tap done to keep it ---------- */
+function BioRow() {
+  const bio = useStore((s) => s.prefs.bio ?? DEFAULT_BIO);
+  const setPref = useStore((s) => s.setPref);
+  const showToast = useStore((s) => s.showToast);
+  const [editing, setEditing] = useState(false);
+  const bioRef = useRef<HTMLParagraphElement>(null);
+
+  // entering edit mode: focus the line and park the caret at the end
+  useEffect(() => {
+    if (!editing) return;
+    const el = bioRef.current;
+    if (!el) return;
+    el.focus();
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    range.collapse(false);
+    const sel = window.getSelection();
+    sel?.removeAllRanges();
+    sel?.addRange(range);
+  }, [editing]);
+
+  const toggle = () => {
+    if (editing) {
+      setPref('bio', bioRef.current?.textContent?.trim() ?? '');
+      setEditing(false);
+      showToast('ti-check', 'bio kept');
+    } else {
+      setEditing(true);
+    }
+  };
+
+  return (
+    <>
+      {/* keyed remount on toggle keeps React's text child in sync with the user's edits */}
+      <p
+        key={editing ? 'editing' : 'kept'}
+        className="bio"
+        ref={bioRef}
+        contentEditable={editing}
+        suppressContentEditableWarning
+        onKeyDown={(e) => {
+          // enter = done, like a caption field
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            toggle();
+          }
+        }}
+      >
+        {bio}
+      </p>
+      <button className="editbio" onClick={toggle}>
+        <Icon name={editing ? 'ti-check' : 'ti-pencil'} />
+        <span>{editing ? 'done' : 'edit bio'}</span>
+      </button>
+    </>
   );
 }
 
@@ -271,19 +332,32 @@ export function ProfileScreen() {
         </button>
       </div>
 
-      <div className="pcard">
-        <div className="prof">
-          <div className="avatar lg d">
+      <div className="prof-top">
+        <div className="ig">
+          <div className="ig-ava d" aria-hidden="true">
             {(prefName?.[0] ?? authUser?.avatar ?? 'M').toUpperCase()}
           </div>
-          <div>
+          <div className="ig-main">
             <div className="pname d">{prefName ?? authUser?.name ?? 'Mira'}</div>
             <div className="psub">
               LV {lv} BIBLIOPHILE · {coins} COINS
             </div>
+            <div className="ig-stats">
+              {IG_STATS.map((s) => (
+                <button
+                  key={s.l}
+                  className={`ig-stat ${profileTab === s.tab ? 'on' : ''}`}
+                  aria-label={s.aria}
+                  onClick={() => switchTab(s.tab)}
+                >
+                  <b className="d">{s.n}</b>
+                  <span>{s.l}</span>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
-        <div className="pdiv" />
+        <BioRow />
         <div className="streak">
           <div className="flamebox">
             <Icon name="ti-flame" />
@@ -300,15 +374,17 @@ export function ProfileScreen() {
         </div>
       </div>
 
-      <div className="seg" role="tablist" aria-label="Profile sections">
+      <div className="ptabs" role="tablist" aria-label="Profile sections">
         {tabs.map(([key, icon, label]) => {
           const on = profileTab === key;
           return (
             <button
               key={key}
-              className={`chip grow ${on ? 'on' : ''}`}
+              id={`tabbtn-${key}`}
+              className={`ptab ${on ? 'on' : ''}`}
               role="tab"
               aria-selected={on}
+              aria-controls={`tab-${key}`}
               onClick={() => switchTab(key)}
             >
               <Icon name={icon} />
