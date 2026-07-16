@@ -16,8 +16,9 @@ import { subscribeWithSelector } from 'zustand/middleware';
 import { shallow } from 'zustand/shallow';
 
 import { PICKS } from '../content/picks';
-import { WX } from '../content/weather';
+import { WX, wxLabel } from '../content/weather';
 import { SAL, FLAVOR, START_CHIPS, dayPart } from '../content/owl';
+import { tOf, setActiveLang, syncDocumentLang } from '../i18n';
 import { newSession } from '../lib/owlBrain';
 import type { OwlMessage } from '../lib/owlBrain';
 import { fetchOwlTurn, fetchLetter } from '../lib/owlClient';
@@ -243,6 +244,9 @@ function extractPersisted(s: Store): PersistedState {
   };
 }
 
+/** the store's strings in the reader's language (call inside actions only) */
+const L = (prefs: Prefs) => tOf(prefs.lang ?? 'en').store;
+
 export const useStore = create<Store>()(
   subscribeWithSelector((set, get) => ({
     ...SEED,
@@ -388,7 +392,7 @@ export const useStore = create<Store>()(
         const finishedIds = get().finishedIds.includes(id) ? get().finishedIds : [id, ...get().finishedIds];
         const readingIds = get().readingIds.filter((x) => x !== id);
         set({ finishedIds, readingIds, pagesRead: { ...get().pagesRead, [id]: n } });
-        get().showToast('ti-trophy', 'finished — counted twice. +40 XP', 'keeper');
+        get().showToast('ti-trophy', L(get().prefs).finishedTwice, 'keeper');
         get().addXP(40);
       }
     },
@@ -484,7 +488,7 @@ export const useStore = create<Store>()(
     saveQuote: () => {
       // scribe reveals herself the first time a line is kept; after that, a quiet toast
       if (!(get().prefs.introsSeen ?? []).includes('scribe')) get().showIntro('scribe');
-      else get().showToast('ti-quote', 'line saved — scribe has it', 'scribe');
+      else get().showToast('ti-quote', L(get().prefs).lineSaved, 'scribe');
     },
     startAsk: (id) => {
       const b = getBook(id);
@@ -501,7 +505,7 @@ export const useStore = create<Store>()(
     cycleWeather: () => {
       const wxIndex = (get().wxIndex + 1) % WX.length;
       set({ wxIndex });
-      get().showToast(WX[wxIndex].i, WX[wxIndex].l);
+      get().showToast(WX[wxIndex].i, wxLabel(WX[wxIndex], get().prefs.lang ?? 'en'));
     },
 
     setPick: (i) => set({ pickIndex: ((i % PICKS.length) + PICKS.length) % PICKS.length }),
@@ -510,10 +514,10 @@ export const useStore = create<Store>()(
       const { savedIds } = get();
       if (savedIds.includes(id)) {
         set({ savedIds: savedIds.filter((x) => x !== id) });
-        get().showToast('ti-heart-broken', 'unshelved. keeper noticed.', 'keeper');
+        get().showToast('ti-heart-broken', L(get().prefs).unshelved, 'keeper');
       } else {
         set({ savedIds: [...savedIds, id] });
-        get().showToast('ti-heart', 'shelved · +5 XP', 'keeper');
+        get().showToast('ti-heart', L(get().prefs).shelved, 'keeper');
         get().addXP(5);
       }
     },
@@ -531,7 +535,7 @@ export const useStore = create<Store>()(
       }
       set({ xp, lv });
       if (leveled) {
-        get().showToast('ti-sparkles', 'level up! LV ' + lv);
+        get().showToast('ti-sparkles', L(get().prefs).levelUp(lv));
         get().triggerBurst();
       }
       // the two gates open on their level crossings
@@ -548,7 +552,7 @@ export const useStore = create<Store>()(
       const next = Math.min(ink + n, inkMax);
       if (next >= inkMax && !inkDone) {
         set({ ink: next, inkDone: true, coins: coins + 50 });
-        get().showToast('ti-coin', 'daily ink full · +50 coins');
+        get().showToast('ti-coin', L(get().prefs).inkFull);
       } else {
         set({ ink: next });
       }
@@ -612,7 +616,7 @@ export const useStore = create<Store>()(
       const readingIds = s.readingIds.filter((x) => x !== id);
       const finishedIds = s.finishedIds.includes(id) ? s.finishedIds : [id, ...s.finishedIds];
       set({ pagesRead, readingIds, finishedIds, reader: { open: false, id: null, p: 1 } });
-      get().showToast('ti-trophy', 'finished — counted twice. +40 XP', 'keeper');
+      get().showToast('ti-trophy', L(get().prefs).finishedTwice, 'keeper');
       get().addXP(40);
     },
 
@@ -635,7 +639,7 @@ export const useStore = create<Store>()(
       const { openedLetters } = get();
       if (!openedLetters.includes(id)) {
         set({ openedLetters: [...openedLetters, id] });
-        get().showToast('ti-mail-opened', 'a peek, opened · +5 XP', 'peek');
+        get().showToast('ti-mail-opened', L(get().prefs).peekOpened, 'peek');
         get().addXP(5);
       }
 
@@ -645,7 +649,7 @@ export const useStore = create<Store>()(
       // holds the letter until reading a few pages refills it.
       const willGenerate = liveOwlEnabled(get().prefs);
       if (willGenerate && get().ink < 2) {
-        get().showToast('ti-pencil', 'the inkwell is dry — a few pages will refill it', 'scout');
+        get().showToast('ti-pencil', L(get().prefs).inkwellDry, 'scout');
         if (get().letterId === id) set({ letterStatus: 'idle' });
         return;
       }
@@ -680,7 +684,7 @@ export const useStore = create<Store>()(
     toggleMode: () => {
       const mode = get().prefs.mode === 'night' ? 'day' : 'night';
       set((s) => ({ prefs: { ...s.prefs, mode } }));
-      get().showToast(mode === 'night' ? 'ti-moon-stars' : 'ti-sun', mode === 'night' ? 'the evening show' : 'the matinée');
+      get().showToast(mode === 'night' ? 'ti-moon-stars' : 'ti-sun', mode === 'night' ? L(get().prefs).eveningShow : L(get().prefs).matinee);
     },
     // A true first-run reset — NOT the SEED demo state (level 7 with books
     // already shelved). Level 1, empty shelves, every gate re-locked, the owl
@@ -719,13 +723,14 @@ export const useStore = create<Store>()(
       if (get().owl.started) return;
       const dp = dayPart();
       const wxKey = WX[get().wxIndex].k;
+      const lang = get().prefs.lang ?? 'en';
 
       // the greeting is local + instant (Scout's canned welcome, zero tokens) —
       // the live pipeline answers real asks, but the door always opens the same way.
       const greeting: OwlMessage = [
         {
           t: 'text',
-          v: `${SAL[dp]} ${FLAVOR[wxKey]}. scout here, at the post desk — tell me what's going on, and i'll sort you a peek.`,
+          v: L(get().prefs).greeting(SAL[lang][dp], FLAVOR[lang][wxKey]),
         },
       ];
       console.info('[owlry] owl engine →', liveOwlEnabled(get().prefs) ? 'LIVE (Scout + memory)' : 'mockup (offline)');
@@ -734,7 +739,7 @@ export const useStore = create<Store>()(
           ...s.owl,
           started: true,
           messages: [{ kind: 'msg', id: nextId(), who: 'owl', nodes: greeting }],
-          chips: START_CHIPS[dp],
+          chips: START_CHIPS[lang][dp],
           session: { ...s.owl.session, wxKey },
         },
       }));
@@ -911,7 +916,7 @@ export const useStore = create<Store>()(
         // offline brain answers instead (never charged), so chat never breaks.
         const canLive = liveOwlEnabled(get().prefs);
         const spend = canLive && get().ink >= 1;
-        if (canLive && !spend) get().showToast('ti-pencil', 'the inkwell is dry — a few pages will refill it', 'scout');
+        if (canLive && !spend) get().showToast('ti-pencil', L(get().prefs).inkwellDry, 'scout');
 
         const { reply, session, live } = await fetchOwlTurn(
           text,
@@ -1033,6 +1038,15 @@ function scheduleCloudPush(slice: PersistedState) {
       .catch(() => useStore.setState({ syncStatus: 'error' }));
   }, 1400);
 }
+
+/* ── mirror prefs.lang into the i18n module so non-React code (book registry,
+   owl brain, owl client) always resolves content in the reader's language ── */
+useStore.subscribe(
+  (s) => s.prefs.lang ?? 'en',
+  (lang) => setActiveLang(lang),
+);
+setActiveLang(useStore.getState().prefs.lang ?? 'en');
+syncDocumentLang();
 
 useStore.subscribe(
   (s) => extractPersisted(s),

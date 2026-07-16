@@ -10,7 +10,10 @@
    byte-identically to before; this is purely additive.
    ============================================================ */
 import { BOOKS } from '../content/books';
+import { BOOKS_ZH } from '../content/books.zh';
 import { GUIDES } from '../content/guides';
+import { GUIDES_ZH } from '../content/guides.zh';
+import { getActiveLang } from '../i18n';
 import type { Book, BookId, BookRef, Guide, GuideId } from '../content/types';
 
 /** session-scoped open-world books/guides (not persisted in v1) */
@@ -25,15 +28,25 @@ export function registerGuide(ref: BookRef, g: Guide): void {
   if (!(ref in GUIDES)) dynGuides[ref] = g;
 }
 
-/** resolve a book by ref — catalog first, then session-registered open-world */
+/** resolve a book by ref — catalog first, then session-registered open-world.
+    In 简体中文 the catalog entry is overlaid with its translated fields. */
 export function getBook(ref: BookRef | null | undefined): Book | undefined {
   if (!ref) return undefined;
-  return BOOKS[ref as BookId] ?? dynBooks[ref];
+  const base = BOOKS[ref as BookId] ?? dynBooks[ref];
+  if (base && getActiveLang() === 'zh') {
+    const z = BOOKS_ZH[ref as BookId];
+    if (z) return { ...base, ...z };
+  }
+  return base;
 }
 
 /** resolve a reading letter by ref — catalog first, then session-registered */
 export function getGuide(ref: BookRef | null | undefined): Guide | undefined {
   if (!ref) return undefined;
+  if (getActiveLang() === 'zh') {
+    const z = GUIDES_ZH[ref as GuideId];
+    if (z) return z;
+  }
   return GUIDES[ref as GuideId] ?? dynGuides[ref];
 }
 

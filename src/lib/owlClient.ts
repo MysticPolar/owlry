@@ -21,6 +21,7 @@ import type { OwlReply, OwlSession } from './owlBrain';
 import type { BookRef, Guide } from '../content/types';
 import type { WeatherKey } from '../content/weather';
 import { getBook, getGuide } from './bookRegistry';
+import { getActiveLang } from '../i18n';
 import { validateLetter, registerLetter } from './owlContract';
 import { validateChatV2, mapChatV2 } from './owlWireV2';
 import { supabase } from './supabase';
@@ -63,7 +64,7 @@ function offlineTurn(text: string, ctx: TurnContext): TurnResult {
 
 async function liveTurn(text: string, ctx: TurnContext): Promise<TurnResult> {
   const { data, error } = await supabase!.functions.invoke('owl-chat', {
-    body: { message: text, client_day: localDay(), desk: ctx.desk },
+    body: { message: text, client_day: localDay(), desk: ctx.desk, lang: getActiveLang() },
   });
   if (error) throw error;
   const v = validateChatV2(data);
@@ -91,7 +92,7 @@ export async function fetchOwlTurn(text: string, ctx: TurnContext, opts?: { offl
 async function liveLetter(ref: BookRef): Promise<Guide | undefined> {
   const b = getBook(ref); // title/author let the backend rebuild context on a cold cache miss
   const { data, error } = await supabase!.functions.invoke('owl-peek', {
-    body: { slug: ref, title: b?.t, author: b?.a },
+    body: { slug: ref, title: b?.t, author: b?.a, lang: getActiveLang() },
   });
   if (error) throw error;
   const v = validateLetter((data as { letter?: unknown } | null)?.letter);

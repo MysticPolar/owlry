@@ -43,6 +43,8 @@ export interface Prefs {
   name?: string;
   /** the profile bio line — a sentence about your reading self */
   bio?: string;
+  /** UI language — 'en' (default) or 'zh' (简体中文) */
+  lang?: 'en' | 'zh';
   /** first-use owl intros already shown (peek/scribe/keeper/…), fired once */
   introsSeen?: string[];
 }
