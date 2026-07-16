@@ -235,54 +235,54 @@ export function MemoryCard() {
         </button>
       </div>
 
-      <div className="sh-sec">BOOKS YOU'VE REACTED TO</div>
+      <div className="sh-sec">{t.profile.mem.booksReacted}</div>
       {longTerm.books.length ? (
         longTerm.books.map((b, i) => (
           <div className="mem-book" key={`${b.t}-${b.ts}`}>
             <span>
               <strong>{b.t}</strong> — {b.reaction}
             </span>
-            <button className="iconbtn lite" aria-label={`Remove ${b.t}`} onClick={() => removeBook(i)}>
+            <button className="iconbtn lite" aria-label={t.profile.mem.removeAria(b.t)} onClick={() => removeBook(i)}>
               <Icon name="ti-x" />
             </button>
           </div>
         ))
       ) : (
-        <p className="mem-empty">nothing yet</p>
+        <p className="mem-empty">{t.profile.mem.empty}</p>
       )}
 
-      <div className="sh-sec">THINGS YOU'VE MENTIONED</div>
+      <div className="sh-sec">{t.profile.mem.mentioned}</div>
       {topics.length ? (
-        topics.map((t, i) => (
-          <div className="mem-topic" key={`${t.d}-${t.topic}`}>
-            <span className="mem-topic-date">{t.d}</span>
+        topics.map((tp, i) => (
+          <div className="mem-topic" key={`${tp.d}-${tp.topic}`}>
+            <span className="mem-topic-date">{tp.d}</span>
             <span className="mem-topic-gist">
-              <strong>{t.topic}</strong> — {t.gist}
+              <strong>{tp.topic}</strong> — {tp.gist}
             </span>
-            <button className="iconbtn lite" aria-label={`Remove ${t.topic}`} onClick={() => removeTopic(i)}>
+            <button className="iconbtn lite" aria-label={t.profile.mem.removeAria(tp.topic)} onClick={() => removeTopic(i)}>
               <Icon name="ti-x" />
             </button>
           </div>
         ))
       ) : (
-        <p className="mem-empty">nothing yet</p>
+        <p className="mem-empty">{t.profile.mem.empty}</p>
       )}
 
       <div className="mem-forget">
         {!confirmingForget ? (
           <button className="btn ghost" onClick={() => setConfirmingForget(true)}>
-            <Icon name="ti-eraser" /> forget everything
+            <Icon name="ti-eraser" /> {t.profile.mem.forget}
           </button>
         ) : (
           <div className="mem-row" style={{ alignItems: 'center' }}>
             <span className="gate-err" style={{ margin: 0 }}>
-              really forget everything the owl knows about you?
+              {t.profile.mem.forgetConfirm}
             </span>
             <button className="btn" onClick={forgetEverything}>
-              yes, forget it
+              {t.profile.mem.forgetYes}
             </button>
             <button className="gate-switch" style={{ margin: 0 }} onClick={() => setConfirmingForget(false)}>
-              never mind
+              {t.profile.mem.forgetNo}
             </button>
           </div>
         )}

@@ -568,37 +568,12 @@ interface Ask {
   guide: BookRef;
   why: string; // peek's note — why this book, for this ask
 }
-const ASKS: Ask[] = [
-  {
-    k: 'focus',
-    label: "can't focus lately",
-    guide: 'deep',
-    why: "you said you can't hold a thought lately. this one argues your attention is a muscle the world keeps poking — and shows how to guard it.",
-  },
-  {
-    k: 'habit',
-    label: 'new manager, no manual',
-    guide: 'atomic',
-    why: "new role, no handbook — so build the systems that do the managing. clear's case: you don't rise to your goals, you fall to your habits.",
-  },
-  {
-    k: 'heart',
-    label: 'heartbreak',
-    guide: 'pema',
-    why: "heartbreak. this one won't rush you past it — pema's advice is to stop running and let the ground be gone a while. gentler than it sounds.",
-  },
-  {
-    k: 'rest',
-    label: 'rainy sunday',
-    guide: 'wws',
-    why: 'a rainy sunday earns a slow read. walker on why the sleeping third of your life quietly runs the waking two — and how to get it back.',
-  },
-  {
-    k: 'decide',
-    label: 'before a big decision',
-    guide: 'frankl',
-    why: "before a big decision, the biggest question: what's it for? frankl found the one thing that survives when everything else is taken.",
-  },
+const buildAsks = (t: OnbT): Ask[] => [
+  { k: 'focus', label: t.flight.asks.focus.label, guide: 'deep', why: t.flight.asks.focus.why },
+  { k: 'habit', label: t.flight.asks.habit.label, guide: 'atomic', why: t.flight.asks.habit.why },
+  { k: 'heart', label: t.flight.asks.heart.label, guide: 'pema', why: t.flight.asks.heart.why },
+  { k: 'rest', label: t.flight.asks.rest.label, guide: 'wws', why: t.flight.asks.rest.why },
+  { k: 'decide', label: t.flight.asks.decide.label, guide: 'frankl', why: t.flight.asks.decide.why },
 ];
 
 interface Step {
@@ -607,37 +582,47 @@ interface Step {
   fx?: 'ink' | 'level';
   last?: boolean;
 }
-const buildSteps = (name: string): Step[] => [
-  { text: `dear ${name} — you made it in.`, node: <>dear <em>{name}</em> — you made it in.</> },
-  {
-    text: `this hall was a theatre once. red curtains, full houses.`,
-    node: <>this hall was a theatre once. red curtains, full houses.</>,
-  },
-  {
-    text: `now it's a mailroom — owls, carrying the right words to readers all over the world.`,
-    node: <>now it&rsquo;s a mailroom — owls, carrying the right words to readers all over the world.</>,
-  },
-  { text: `you'll want to know two things.`, node: <>you&rsquo;ll want to know two things.</> },
-  {
-    text: `we write with ink. every ask, every peek costs a drop. here — one drop, on me.`,
-    node: (
-      <>
-        we write with <em>ink</em>. every ask, every peek costs a drop. here — one drop, on me.
-      </>
-    ),
-    fx: 'ink',
-  },
-  {
-    text: `and you? you grow. every ask, every page — level up, and more of the owlery opens.`,
-    node: (
-      <>
-        and you? you grow. every ask, every page — <em>level up</em>, and more of the owlery opens.
-      </>
-    ),
-    fx: 'level',
-  },
-  { text: `right — your turn. what's going on?`, node: <>right — your turn. what&rsquo;s going on?</>, last: true },
-];
+const buildSteps = (name: string, t: OnbT): Step[] => {
+  const S = t.flight.steps;
+  return [
+    {
+      text: S.s1.pre + name + S.s1.post,
+      node: (
+        <>
+          {S.s1.pre}
+          <em>{name}</em>
+          {S.s1.post}
+        </>
+      ),
+    },
+    { text: S.s2, node: <>{S.s2}</> },
+    { text: S.s3.text, node: <>{S.s3.node}</> },
+    { text: S.s4.text, node: <>{S.s4.node}</> },
+    {
+      text: S.s5.pre + S.s5.em + S.s5.post,
+      node: (
+        <>
+          {S.s5.pre}
+          <em>{S.s5.em}</em>
+          {S.s5.post}
+        </>
+      ),
+      fx: 'ink',
+    },
+    {
+      text: S.s6.pre + S.s6.em + S.s6.post,
+      node: (
+        <>
+          {S.s6.pre}
+          <em>{S.s6.em}</em>
+          {S.s6.post}
+        </>
+      ),
+      fx: 'level',
+    },
+    { text: S.s7.text, node: <>{S.s7.node}</>, last: true },
+  ];
+};
 
 function Typed({ step, revealKey, onDone }: { step: Step; revealKey: number; onDone: () => void }) {
   const [n, setN] = useState(0);
@@ -673,7 +658,10 @@ function Typed({ step, revealKey, onDone }: { step: Step; revealKey: number; onD
 }
 
 function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void }) {
-  const steps = useRef(buildSteps(name || 'friend')).current;
+  const t = useT();
+  const o = t.onboarding;
+  const steps = useRef(buildSteps(name || o.flight.friend, o)).current;
+  const asks = buildAsks(o);
   const [step, setStep] = useState(0);
   const [reveal, setReveal] = useState(0); // bump → finish the current line early
   const [typed, setTyped] = useState(false);
@@ -729,7 +717,8 @@ function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void
     setMode('delivering');
     setLine(
       <>
-        <em>{ask.label}</em> — say no more.
+        <em>{ask.label}</em>
+        {o.flight.sayNoMore}
       </>,
     );
     // the ink spends itself: a drop leaves the vial and arcs down (WAAPI, 1:1)
@@ -757,7 +746,7 @@ function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void
     setTimeout(() => setInk(0), reduced() ? 1 : 650);
     // scout dashes off to the shelves…
     setTimeout(() => {
-      setLine(<em>…off to the shelves…</em>);
+      setLine(<em>{o.flight.offToShelves}</em>);
       setScoutDash(true);
     }, reduced() ? 1 : 1050);
     // …then hops back, and the letter lands + the celebration begins
@@ -867,21 +856,25 @@ function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void
         <Icon name="ti-inkdrop" />
       </span>
       <span className="ob-xpfly" ref={xpflyRef} aria-hidden="true">
-        +20 xp
+        {o.flight.xpFly}
       </span>
       <Confetti ref={confettiRef} />
 
 
       {/* the two HUDs — ink (right) and level (left) */}
-      <div className={`ob-hud ob-lvhud${lvOn ? ' on' : ''}${banner ? ' flash' : ''}`} aria-label="Level" ref={lvHudRef}>
-        <span className="ob-lv d">lv {lv}</span>
+      <div
+        className={`ob-hud ob-lvhud${lvOn ? ' on' : ''}${banner ? ' flash' : ''}`}
+        aria-label={o.flight.levelAria}
+        ref={lvHudRef}
+      >
+        <span className="ob-lv d">{o.flight.lv(lv)}</span>
         <span className="ob-track">
           <span className="ob-fill" style={{ width: `${xp}%` }} />
         </span>
       </div>
       <div
         className={`ob-hud ob-inkhud${inkOn ? ' on' : ''}${ink === 0 && inkOn ? ' empty' : ''}`}
-        aria-label="Ink"
+        aria-label={o.flight.inkAria}
         ref={inkHudRef}
       >
         <Icon name="ti-inkdrop" />
@@ -890,7 +883,7 @@ function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void
 
       {mode === 'story' && !onLast && (
         <button className="ob-skipper" onClick={skip}>
-          skip intro ›
+          {o.flight.skip}
         </button>
       )}
 
@@ -913,19 +906,19 @@ function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void
             }
           }}
         >
-          <div className="ob-who">scout · the finder</div>
+          <div className="ob-who">{o.flight.who}</div>
           <div className="ob-say">
             {line ?? <Typed step={s} revealKey={reveal} onDone={() => setTyped(true)} />}
           </div>
           {mode === 'story' && onLast && typed ? null : (
-            <div className="ob-tapnote">{mode === 'story' ? 'tap to continue' : ''}</div>
+            <div className="ob-tapnote">{mode === 'story' ? o.flight.tapNote : ''}</div>
           )}
         </div>
       )}
 
       {mode === 'story' && onLast && typed && (
         <div className="ob-askchips">
-          {ASKS.map((a) => (
+          {asks.map((a) => (
             <button key={a.k} className="ob-chip" onClick={() => pick(a)}>
               {a.label}
             </button>
@@ -935,28 +928,28 @@ function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void
 
       {mode === 'done' && picked && (
         <div className="ob-letter on" ref={letterRef}>
-          <span className={`ob-stamp${stamp ? ' on' : ''}`}>first ask</span>
-          <div className="ob-pk">owl post · nº 1 · for {(name || 'you').toLowerCase()}</div>
-          <div className="ob-lt">{BOOKS[picked.guide as keyof typeof BOOKS]?.t ?? 'your first book'}</div>
-          <div className="ob-la">{BOOKS[picked.guide as keyof typeof BOOKS]?.a ?? ''}</div>
+          <span className={`ob-stamp${stamp ? ' on' : ''}`}>{o.flight.stamp}</span>
+          <div className="ob-pk">{o.flight.postLine((name || o.flight.you).toLowerCase())}</div>
+          <div className="ob-lt">{getBook(picked.guide)?.t ?? o.flight.firstBookFallback}</div>
+          <div className="ob-la">{getBook(picked.guide)?.a ?? ''}</div>
           <p className="ob-lw">{picked.why}</p>
-          <div className="ob-lsign">— scout, first post</div>
+          <div className="ob-lsign">{o.flight.sign}</div>
         </div>
       )}
 
       {/* the level-up + welcome bundle banner */}
       {banner > 0 && (
         <div className={`ob-banner${banner >= 1 ? ' on' : ''}${banner >= 2 ? ' stage2' : ''}`} role="status">
-          <div className="ob-blv d">level 2</div>
-          <div className="ob-bsub">the owlery stirs</div>
+          <div className="ob-blv d">{o.flight.bannerLevel}</div>
+          <div className="ob-bsub">{o.flight.bannerSub}</div>
           <div className="ob-bbundle">
-            <div className="ob-bbig">welcome bundle — your first ten questions are on us.</div>
+            <div className="ob-bbig">{o.flight.bundleLine}</div>
             <div className="ob-bink d">
-              <Icon name="ti-inkdrop" /> +10 ink
+              <Icon name="ti-inkdrop" /> {o.flight.bundleInk}
             </div>
             <br />
             <button className="ob-bcont" onClick={() => picked && onFinish(picked)}>
-              continue
+              {o.flight.cont}
             </button>
           </div>
         </div>
@@ -969,6 +962,7 @@ function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void
 type Phase = 'landing' | 'playbill' | 'gate' | 'name' | 'curtain' | 'flight';
 
 export function Onboarding() {
+  const t = useT();
   const show = useStore((s) => s.showOnboarding);
   const onboarded = useStore((s) => !!s.prefs.onboarded);
   const name = useStore((s) => s.prefs.name ?? '');
@@ -1005,7 +999,7 @@ export function Onboarding() {
       data-onbnight={day ? undefined : '1'}
       role="dialog"
       aria-modal="true"
-      aria-label="Opening night"
+      aria-label={t.onboarding.dialogAria}
     >
       {phase === 'landing' && <Splash onEnter={() => setPhase('playbill')} />}
       {phase === 'playbill' && <Playbill onDone={afterDeck} />}
