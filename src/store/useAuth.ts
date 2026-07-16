@@ -18,29 +18,44 @@ import {
   type AuthProfile,
   type SignupReason,
 } from '../lib/auth/api';
+import { getActiveLang } from '../i18n';
 
 export type AuthStatus = 'loading' | 'guest' | 'authed';
 export type AuthMode = 'login' | 'signup';
 
 /** map raw sign-in errors + function reasons to the owl's voice (lowercase, kind) */
-const SIGNUP_VOICE: Record<SignupReason, string> = {
-  ok: '',
-  'bad-input': 'fill in the code, an email, and a password.',
-  'bad-email': "that doesn't look like an email.",
-  'weak-password': 'the password needs at least 8 characters.',
-  'bad-code': "keeper here — that code isn't in the ledger.",
-  'email-taken': "that email's already in the book — try logging in.",
-  server: 'the ledger is quiet for a moment. try again soon.',
-  'no-backend': 'accounts need a backend — you can still come in as a guest.',
+const SIGNUP_VOICES: Record<'en' | 'zh', Record<SignupReason, string>> = {
+  en: {
+    ok: '',
+    'bad-input': 'fill in the code, an email, and a password.',
+    'bad-email': "that doesn't look like an email.",
+    'weak-password': 'the password needs at least 8 characters.',
+    'bad-code': "keeper here — that code isn't in the ledger.",
+    'email-taken': "that email's already in the book — try logging in.",
+    server: 'the ledger is quiet for a moment. try again soon.',
+    'no-backend': 'accounts need a backend — you can still come in as a guest.',
+  },
+  zh: {
+    ok: '',
+    'bad-input': '请把邀请码、邮箱和密码都填上。',
+    'bad-email': '这个看起来不太像邮箱地址。',
+    'weak-password': '密码至少需要 8 个字符。',
+    'bad-code': 'Keeper 说 — 台账里没有这个邀请码。',
+    'email-taken': '这个邮箱已经登记在册了 — 试试直接登录。',
+    server: '台账暂时没有回应。稍后再试试。',
+    'no-backend': '账户需要先配置后端 — 你仍然可以以游客身份进来。',
+  },
 };
+const SIGNUP_VOICE = () => SIGNUP_VOICES[getActiveLang()];
 
 function signInVoice(err: unknown): string {
   const msg = (err instanceof Error ? err.message : String(err)).toLowerCase();
-  if (msg === 'no-backend') return SIGNUP_VOICE['no-backend'];
+  const zh = getActiveLang() === 'zh';
+  if (msg === 'no-backend') return SIGNUP_VOICE()['no-backend'];
   if (msg.includes('invalid') || msg.includes('credentials'))
-    return "that email and password don't match the ledger. try again?";
-  if (msg.includes('confirm')) return 'this account still needs confirming — check your email.';
-  return 'the desk couldn’t sign you in just now. try again?';
+    return zh ? '这对邮箱和密码在台账里对不上。再试一次？' : "that email and password don't match the ledger. try again?";
+  if (msg.includes('confirm')) return zh ? '这个账户还需要确认 — 去邮箱里看看。' : 'this account still needs confirming — check your email.';
+  return zh ? '前台这会儿没能让你登录。再试一次？' : 'the desk couldn’t sign you in just now. try again?';
 }
 
 interface AuthStore {
@@ -121,7 +136,7 @@ export const useAuth = create<AuthStore>((set, get) => ({
     set({ busy: true, error: null });
     const { ok, reason } = await signUp(code, email, password);
     if (!ok) {
-      set({ busy: false, error: SIGNUP_VOICE[reason] ?? SIGNUP_VOICE.server });
+      set({ busy: false, error: SIGNUP_VOICE()[reason] ?? SIGNUP_VOICE().server });
       return false;
     }
     // account created — sign straight in with the same credentials

@@ -206,8 +206,8 @@ export function Letter() {
 
             {shown >= at() && <div className="l-sec">{t.reader.secClosing}</div>}
             <p className="l-p">{type(g.close)}</p>
-            {g.take.map((t, i) => {
-              const v = type(t);
+            {g.take.map((line, i) => {
+              const v = type(line);
               return v ? (
                 <p className="l-p l-note" key={i}>
                   <span className="l-tag">{t.reader.tagTake}</span>
@@ -215,8 +215,8 @@ export function Letter() {
                 </p>
               ) : null;
             })}
-            {g.ask.map((t, i) => {
-              const v = type(t);
+            {g.ask.map((line, i) => {
+              const v = type(line);
               return v ? (
                 <p className="l-p l-note it" key={i}>
                   <span className="l-tag">{t.reader.tagSit}</span>

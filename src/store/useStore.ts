@@ -17,7 +17,7 @@ import { shallow } from 'zustand/shallow';
 
 import { PICKS } from '../content/picks';
 import { WX, wxLabel } from '../content/weather';
-import { SAL, FLAVOR, START_CHIPS, dayPart } from '../content/owl';
+import { SAL, FLAVOR, START_CHIPS, AFTER_CHIPS, dayPart } from '../content/owl';
 import { tOf, setActiveLang, syncDocumentLang } from '../i18n';
 import { newSession } from '../lib/owlBrain';
 import type { OwlMessage } from '../lib/owlBrain';
@@ -829,8 +829,8 @@ export const useStore = create<Store>()(
       if (!firstAsk) return;
       const meNodes: OwlMessage = [{ t: 'text', v: firstAsk.label }];
       const owlNodes: OwlMessage = [
-        { t: 'text', v: `sorted. and since you're new — peek pulled the pages that matter. ` },
-        { t: 'em', v: `first taste is free.` },
+        { t: 'text', v: L(get().prefs).firstSorted },
+        { t: 'em', v: L(get().prefs).firstTaste },
       ];
       set((st) => ({
         owl: {
@@ -843,7 +843,7 @@ export const useStore = create<Store>()(
             { kind: 'letter', id: nextId(), book: firstAsk.guide },
           ],
           // the shelf stays empty until the reader peeks this first letter
-          chips: ['go deeper', 'something lighter', 'more like this', 'new vibe'],
+          chips: AFTER_CHIPS[get().prefs.lang ?? 'en'],
         },
       }));
       // the welcome bundle, made real — a few drops in the well to start
@@ -866,10 +866,7 @@ export const useStore = create<Store>()(
       const ack: OwlMessage = [
         {
           t: 'text',
-          v:
-            mode === 'pro'
-              ? 'right — office hours. what are we solving?'
-              : 'off the clock — the whole desk is open. where shall we wander?',
+          v: mode === 'pro' ? L(get().prefs).deskPro : L(get().prefs).deskAll,
         },
       ];
       // the desk-switch ack is a reply context — keep it to three quiet chips

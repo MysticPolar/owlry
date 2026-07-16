@@ -12,6 +12,10 @@ const en = {
   matinee: 'the matinée',
   greeting: (sal: string, flavor: string) =>
     `${sal} ${flavor}. scout here, at the post desk — tell me what's going on, and i'll sort you a peek.`,
+  firstSorted: `sorted. and since you're new — peek pulled the pages that matter. `,
+  firstTaste: `first taste is free.`,
+  deskPro: 'right — office hours. what are we solving?',
+  deskAll: 'off the clock — the whole desk is open. where shall we wander?',
 };
 
 const zh: typeof en = {
@@ -27,6 +31,10 @@ const zh: typeof en = {
   matinee: '日场开演',
   greeting: (sal: string, flavor: string) =>
     `${sal}${flavor}。我是 Scout，坐镇邮务台 — 说说你最近的状态，我来给你分拣一封试读。`,
+  firstSorted: `分拣好了。你是新来的 — Peek 已经把最要紧的那几页抽了出来。`,
+  firstTaste: `第一口，免费尝。`,
+  deskPro: '好 — 办公时间到。我们来解决什么？',
+  deskAll: '下班啦 — 整张书桌都敞开着。想去哪儿逛逛？',
 };
 
 export const store = { en, zh };
