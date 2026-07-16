@@ -15,6 +15,8 @@ import type { OwlMessage } from '../../lib/owlBrain';
 import type { ChatItem } from '../../store/types';
 import { getBook, hasGuide } from '../../lib/bookRegistry';
 import { isConfigured } from '../../lib/supabase';
+import { getActiveLang, tOf } from '../../i18n';
+import { useT } from '../../i18n/react';
 import { useStore } from '../../store/useStore';
 import { Icon } from '../Icon';
 import { Cover } from '../Cover';
@@ -102,6 +104,7 @@ export function letterNumbers(messages: ChatItem[]): Map<number, number> {
 
 /* ---------- the letter (.gletter): the one paper object per turn ---------- */
 export function GLetter({ id, no, mid }: { id: BookRef; no: number; mid?: number }) {
+  const t = useT();
   const b = getBook(id);
   const saved = useStore((s) => s.savedIds.includes(id));
   const toggleSave = useStore((s) => s.toggleSave);
@@ -125,7 +128,7 @@ export function GLetter({ id, no, mid }: { id: BookRef; no: number; mid?: number
     <div
       className={`gletter${peekable ? '' : ' plain'}`}
       role="group"
-      aria-label={`Reading letter: ${b.t}`}
+      aria-label={t.discover.letterAria(b.t)}
       data-mid={mid}
       data-book={id}
       onClick={(e) => {
@@ -135,11 +138,11 @@ export function GLetter({ id, no, mid }: { id: BookRef; no: number; mid?: number
       }}
     >
       <div className="gl-top">
-        <span className="gl-kick">owl post · nº {no}</span>
+        <span className="gl-kick">{t.discover.letterKick(no)}</span>
         <button
           className={`gl-heart save${saved ? ' on' : ''}`}
           data-save={id}
-          aria-label="Save to library"
+          aria-label={t.discover.saveAria}
           aria-pressed={saved}
           onClick={() => toggleSave(id)}
         >
@@ -151,13 +154,13 @@ export function GLetter({ id, no, mid }: { id: BookRef; no: number; mid?: number
         <div className="gl-info">
           <div className="gl-t d">{b.t}</div>
           <div className="gl-a">
-            {b.a} · {b.n} pages
+            {b.a} · {t.discover.pages(b.n)}
           </div>
         </div>
       </div>
       <div className="gl-act">
         <span className="gl-about" data-sheet={id} role="button" tabIndex={0} onClick={() => openSheet(id)} onKeyDown={key(() => openSheet(id))}>
-          about
+          {t.discover.about}
         </span>
         <span
           className="gl-go"
@@ -167,7 +170,7 @@ export function GLetter({ id, no, mid }: { id: BookRef; no: number; mid?: number
           onClick={go}
           onKeyDown={key(go)}
         >
-          {peekable ? 'peek inside' : 'open the book'}
+          {peekable ? t.discover.peekInside : t.discover.openBook}
           <Icon name="ti-arrow-right" />
         </span>
       </div>
@@ -192,7 +195,7 @@ export function renderChatItem(
           <span />
           <span />
         </span>
-        <span className="sr-only">the owl is typing…</span>
+        <span className="sr-only">{tOf(getActiveLang()).discover.typing}</span>
       </div>
     );
   }

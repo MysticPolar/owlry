@@ -8,11 +8,15 @@
    React and a live model could later replace `respond()` without
    the UI noticing.
    ============================================================ */
-import { BOOKS } from '../content/books';
 import { GUIDES } from '../content/guides';
 import { INTENTS, FPOOL, FNOTE, AFTER_CHIPS } from '../content/owl';
-import type { BookId, BookRef, GuideId } from '../content/types';
+import { getActiveLang, tOf } from '../i18n';
+import { getBook, getGuide } from './bookRegistry';
+import type { BookRef, GuideId } from '../content/types';
 import type { WeatherKey } from '../content/weather';
+
+/** the brain's canned lines, in the reader's language */
+const say = () => tOf(getActiveLang()).discover.brain;
 
 /** A renderable fragment of an owl message. */
 export type MsgNode =
@@ -55,11 +59,11 @@ export const newSession = (wxKey: WeatherKey): OwlSession => ({
 });
 
 const text = (v: string): MsgNode => ({ t: 'text', v });
-const book = (id: BookRef): MsgNode => ({ t: 'book', id, v: BOOKS[id as BookId]?.t ?? id });
+const book = (id: BookRef): MsgNode => ({ t: 'book', id, v: getBook(id)?.t ?? id });
 const em = (v: string): MsgNode => ({ t: 'em', v });
 
 function guideReply(k: GuideId, s: OwlSession): OwlReply {
-  const g = GUIDES[k];
+  const g = getGuide(k) ?? GUIDES[k];
   s.lastGuide = k;
   s.lastKind = 'guide';
   if (!s.usedGuides.includes(k)) s.usedGuides.push(k);
@@ -68,11 +72,13 @@ function guideReply(k: GuideId, s: OwlSession): OwlReply {
     msgs: [[text(pre), book(k), text(post)]],
     letter: k,
     batch: { main: k, also: g.fr.map((f) => f.id) },
-    chips: AFTER_CHIPS,
+    chips: AFTER_CHIPS[getActiveLang()],
   };
 }
 
 function fictionReply(s: OwlSession): OwlReply {
+  const d = say();
+  const note = FNOTE[getActiveLang()];
   const pool = FPOOL[s.wxKey];
   const a = pool[s.fIdx % pool.length];
   const b2 = pool[(s.fIdx + 1) % pool.length];
@@ -82,52 +88,47 @@ function fictionReply(s: OwlSession): OwlReply {
   return {
     msgs: [
       [
-        text('easy does it — no homework, just pages. try '),
+        text(d.fictionLead),
         book(a),
-        text(` (${FNOTE[a]}), or `),
+        text(d.fictionNote1(note[a] ?? '')),
         book(b2),
-        text(` (${FNOTE[b2]}).`),
+        text(d.fictionNote2(note[b2] ?? '')),
       ],
     ],
     batch: { main: a, also: [b2] },
-    chips: ['more like this', 'new vibe', 'surprise me'],
+    chips: [...d.fictionChips],
   };
 }
 
 function deeperReply(s: OwlSession): OwlReply {
-  const g = GUIDES[s.lastGuide as GuideId];
+  const d = say();
+  const g = getGuide(s.lastGuide) ?? GUIDES[s.lastGuide as GuideId];
   return {
-    msgs: [[text('from the same peek, something to sit with: '), em(`“${g.ask[0]}”`), text(' — no rush.')]],
-    chips: AFTER_CHIPS,
+    msgs: [[text(d.deeperLead), em(d.deeperQuote(g.ask[0])), text(d.deeperTail)]],
+    chips: AFTER_CHIPS[getActiveLang()],
   };
 }
 
 function moreReply(s: OwlSession): OwlReply {
   if (s.lastKind === 'fiction' || !s.lastGuide) return fictionReply(s);
-  const fr = GUIDES[s.lastGuide].fr;
-  const nodes: MsgNode[] = [text('from the same desk: ')];
+  const d = say();
+  const fr = (getGuide(s.lastGuide) ?? GUIDES[s.lastGuide]).fr;
+  const nodes: MsgNode[] = [text(d.moreLead)];
   fr.forEach((f, i) => {
-    nodes.push(book(f.id), text(` — ${f.why}`), text(i < fr.length - 1 ? '; ' : '.'));
+    nodes.push(book(f.id), text(d.moreWhy(f.why)), text(i < fr.length - 1 ? d.moreSep : d.moreEnd));
   });
   return {
     msgs: [nodes],
     batch: { main: fr[0].id, also: fr.slice(1).map((f) => f.id) },
-    chips: AFTER_CHIPS,
+    chips: AFTER_CHIPS[getActiveLang()],
   };
 }
 
 function fallbackReply(fresh: boolean): OwlReply {
+  const d = say();
   return {
-    msgs: [
-      [
-        text(
-          fresh
-            ? `clean slate, then. what's the weather inside — rest, focus, heartache, or escape?`
-            : `tell me a little more — what's the shape of it: rest, focus, heartache, or escape?`,
-        ),
-      ],
-    ],
-    chips: ['rest', 'need focus', 'feeling blue', 'cozy escape'],
+    msgs: [[text(fresh ? d.fallbackFresh : d.fallbackMore)]],
+    chips: [...d.fallbackChips],
   };
 }
 
@@ -145,9 +146,11 @@ function pickSurprise(s: OwlSession): GuideId {
  */
 export function respond(input: string, s: OwlSession): OwlReply {
   const t = input.toLowerCase();
-  if (t.includes('go deeper') && s.lastGuide) return deeperReply(s);
-  if (t.includes('more like this')) return moreReply(s);
-  if (t.includes('new vibe')) return fallbackReply(true);
+  // the conversational follow-ups match both languages' chip phrasings
+  // (the zh strings mirror AFTER_CHIPS zh in content/owl.ts)
+  if ((t.includes('go deeper') || t.includes('再深入')) && s.lastGuide) return deeperReply(s);
+  if (t.includes('more like this') || t.includes('多来点这类')) return moreReply(s);
+  if (t.includes('new vibe') || t.includes('换个风格')) return fallbackReply(true);
   for (const it of INTENTS) {
     if (it.re.test(t)) {
       if (it.k === '__surprise') return guideReply(pickSurprise(s), s);

@@ -13,6 +13,7 @@ import {
 } from '../chat/ChatItems';
 import type { BookRef } from '../../content/types';
 import type { ChatItem } from '../../store/types';
+import { useT } from '../../i18n/react';
 import { Icon } from '../Icon';
 import { CastOwl } from '../CastOwl';
 
@@ -218,6 +219,7 @@ function Chat({ reduce }: { reduce: boolean }) {
    its letter and flies onto the rail, then the count announces it.
    ============================================================ */
 function ShelfRail({ reduce }: { reduce: boolean }) {
+  const t = useT();
   const collected = useStore((s) => s.owl.collected);
   const shelfFly = useStore((s) => s.shelfFly);
   const collectBooks = useStore((s) => s.collectBooks);
@@ -319,7 +321,7 @@ function ShelfRail({ reduce }: { reduce: boolean }) {
   }, [collected.length]);
 
   const on = collected.length > 0 || flightVisible;
-  const countText = announce ?? `${collected.length} ${collected.length === 1 ? 'book' : 'books'}`;
+  const countText = announce ?? t.discover.shelfCount(collected.length);
 
   return (
     <div className={`shelfrail${on ? ' on' : ''}${expanded ? ' expanded' : ''}${glow ? ' glow' : ''}`} aria-hidden={!on}>
@@ -343,7 +345,7 @@ function ShelfRail({ reduce }: { reduce: boolean }) {
       <button
         className={`sr-count${announce ? ' flash' : ''}`}
         id="srCount"
-        aria-label="Your shelf"
+        aria-label={t.discover.shelfAria}
         onClick={() => setExpanded((v) => !v)}
       >
         {countText}
@@ -354,6 +356,7 @@ function ShelfRail({ reduce }: { reduce: boolean }) {
 
 /* ---------- chips ---------- */
 function Chips() {
+  const t = useT();
   const chips = useStore((s) => s.owl.chips);
   const send = useStore((s) => s.sendToOwl);
   // cold start (no question asked yet) → the starter prompts read as prominent,
@@ -364,10 +367,10 @@ function Chips() {
     <>
       {starter && (
         <div className="chip-hint" aria-hidden="true">
-          not sure where to start? tap a prompt
+          {t.discover.chipHint}
         </div>
       )}
-      <div className={`chips cz${starter ? ' starter' : ''}`} id="chiprow" aria-label={starter ? 'Starter prompts' : undefined}>
+      <div className={`chips cz${starter ? ' starter' : ''}`} id="chiprow" aria-label={starter ? t.discover.starterPromptsAria : undefined}>
         {chips.map((c, i) => (
           <button key={i} className="chip" data-say={c} onClick={() => send(c)}>
             {c.toUpperCase()}
@@ -380,6 +383,7 @@ function Chips() {
 
 /* ---------- composer ---------- */
 function Composer({ onTyping }: { onTyping: (v: boolean) => void }) {
+  const t = useT();
   const send = useStore((s) => s.sendToOwl);
   const busy = useStore((s) => s.owl.busy);
   const desk = useStore((s) => s.deskMode);
@@ -413,8 +417,8 @@ function Composer({ onTyping }: { onTyping: (v: boolean) => void }) {
           ref={inputRef}
           id="qIn"
           type="text"
-          placeholder={desk === 'pro' ? 'tell scout what you’re solving…' : 'tell scout what’s going on…'}
-          aria-label="Message scout"
+          placeholder={desk === 'pro' ? t.discover.composerPlaceholderPro : t.discover.composerPlaceholder}
+          aria-label={t.discover.composerAria}
           autoCapitalize="none"
           autoComplete="off"
           enterKeyHint="send"
@@ -427,7 +431,7 @@ function Composer({ onTyping }: { onTyping: (v: boolean) => void }) {
           }}
         />
       </div>
-      <button className="iconbtn" id="sendBtn" aria-label="Send" onClick={submit}>
+      <button className="iconbtn" id="sendBtn" aria-label={t.discover.sendAria} onClick={submit}>
         <Icon name="ti-send" />
       </button>
     </div>
@@ -437,13 +441,14 @@ function Composer({ onTyping }: { onTyping: (v: boolean) => void }) {
 /* guest-only preview: walk the level ladder from Scout's desk. Docked in the
    header (never floating over the stream — the app.owlry.ai overlap bug). */
 function GuestDeskLevel() {
+  const t = useT();
   const authed = useAuth((s) => s.status === 'authed');
   const lv = useStore((s) => s.lv);
   const addXP = useStore((s) => s.addXP);
   const xpMax = useStore((s) => s.xpMax);
   if (authed) return null;
   return (
-    <button className="desk-lvl" onClick={() => addXP(xpMax)} aria-label={`Gain a level — guest preview (level ${lv})`}>
+    <button className="desk-lvl" onClick={() => addXP(xpMax)} aria-label={t.discover.guestLevelAria(lv)}>
       <Icon name="ti-sparkles" />
       <b className="d">LV {lv}</b>
     </button>
@@ -451,6 +456,7 @@ function GuestDeskLevel() {
 }
 
 export function DiscoverScreen() {
+  const t = useT();
   const active = useStore((s) => s.activeTab === 'discover');
   const desk = useStore((s) => s.deskMode);
   const setDeskMode = useStore((s) => s.setDeskMode);
@@ -474,25 +480,25 @@ export function DiscoverScreen() {
         <h1 className="hl sm d">
           <span className="u" />
           <span className="t">
-            discover<span className="gdot">.</span>
+            {t.discover.title}<span className="gdot">.</span>
           </span>
         </h1>
 
         {/* scout's two desks: the whole desk, or office hours (non-fiction only) */}
-        <div className="deskrow" role="tablist" aria-label="Scout's desk">
+        <div className="deskrow" role="tablist" aria-label={t.discover.deskAria}>
           <button
             className={`deskchip ${desk === 'all' ? 'on' : ''}`}
             role="tab"
             aria-selected={desk === 'all'}
             onClick={() => setDeskMode('all')}
           >
-            EVERYTHING
+            {t.discover.deskAll}
           </button>
           <button
             className={`deskchip ${desk === 'pro' ? 'on' : ''}${lv < 3 ? ' oh-locked' : ''}`}
             role="tab"
             aria-selected={desk === 'pro'}
-            aria-label={lv < 3 ? 'Office hour — opens at level 3' : 'Non-fiction'}
+            aria-label={lv < 3 ? t.discover.officeHourLockedAria : t.discover.nonFictionAria}
             onClick={() => setDeskMode('pro')}
           >
             {lv < 3 ? (
@@ -503,10 +509,10 @@ export function DiscoverScreen() {
                     <path d="M8.5 11V8a3.5 3.5 0 0 1 7 0v3" />
                   </svg>
                 </span>
-                OFFICE HOUR
+                {t.discover.deskOfficeHour}
               </>
             ) : (
-              'NON-FICTION'
+              t.discover.deskNonFiction
             )}
           </button>
         </div>
@@ -516,7 +522,7 @@ export function DiscoverScreen() {
         <div className="disc-head-right">
           <CastOwl owl="scout" cls="mini" variant={desk === 'pro' ? 'pro' : undefined} />
           {isConfigured && (
-            <button className="iconbtn lite" aria-label="Chat history" onClick={openHistory}>
+            <button className="iconbtn lite" aria-label={t.discover.historyAria} onClick={openHistory}>
               <Icon name="ti-history" />
             </button>
           )}
