@@ -29,8 +29,8 @@ function ReadingList() {
                 <span className="mini-pct">{p}%</span>
               </div>
             </div>
-            <button className="iconbtn" aria-label={`Resume ${b.t}`} onClick={() => openBook(id)}>
-              <Icon name="ti-player-play" />
+            <button className="iconbtn lite" aria-label={`Resume ${b.t}`} onClick={() => openBook(id)}>
+              <Icon name="ti-arrow-right" />
             </button>
           </div>
         );
@@ -58,9 +58,6 @@ function SavedGrid() {
         if (!b) return null;
         return (
           <button key={id} className="g-item" onClick={() => openSheet(id)}>
-            <span className="g-heart">
-              <Icon name="ti-heart" />
-            </span>
             <Cover id={id} cls="cover-g" />
             <div className="g-title d">{b.t}</div>
             <div className="g-auth">{b.a.toUpperCase()}</div>
@@ -86,10 +83,8 @@ function FinishedList() {
               <div className="rtitle d">{b.t}</div>
               <div className="rauth">{b.a}</div>
               <div className="fin">
-                <span className="done-badge">
-                  <Icon name="ti-check" />
-                </span>
-                FINISHED
+                <Icon name="ti-check" />
+                finished
               </div>
             </div>
             <button
