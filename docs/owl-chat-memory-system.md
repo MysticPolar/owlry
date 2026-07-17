@@ -93,5 +93,5 @@ server's port), `memory-merge-smoke` (imports the real `_shared/memory.ts`),
 
 Everything above ships in this repo; deploying it to the live Supabase project
 is a separate, explicitly-gated step (schema migration, edge function deploy,
-`ANTHROPIC_API_KEY` secret, a test invite code) — see the PR/handover notes for
+`GEMINI_API_KEY` secret, a test invite code) — see the PR/handover notes for
 the exact order.

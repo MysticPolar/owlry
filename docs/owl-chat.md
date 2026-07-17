@@ -5,11 +5,11 @@ chat log don't care which one is answering.
 
 | | **Live owl** | **Classic owl (the mockup)** |
 |---|---|---|
-| Brain | Claude Sonnet 4.6, in the `owl-chat` edge function | `respond()` in `src/lib/owlBrain.ts` — pure, offline, regex intent matching |
+| Brain | Gemini 3.5 Flash, in the `owl-chat` edge function | `respond()` in `src/lib/owlBrain.ts` — pure, offline, regex intent matching |
 | Books | open-world — any real, well-loved book; chosen by the model | the fixed 24-book catalog (`content/books.ts`) |
 | Peeks | spoken framing in voice, then a full peek generated on tap | the 7 hand-written `GUIDES` peeks, fully rendered |
 | Greeting | the visitor's **real** local weather + time (geolocation → Open-Meteo) | the faked weather cycle (tap the glyph) |
-| Needs | a Supabase backend + `ANTHROPIC_API_KEY` secret | nothing — always available |
+| Needs | a Supabase backend + `GEMINI_API_KEY` secret | nothing — always available |
 
 ## How the engine is chosen
 
@@ -39,8 +39,8 @@ that turn**, so the chat never leaves the visitor hanging.
 ## Deploying the live owl
 
 ```sh
-# 1. the Anthropic key is a server-side secret (never in the browser bundle)
-supabase secrets set ANTHROPIC_API_KEY=sk-ant-...
+# 1. the Gemini key is a server-side secret (never in the browser bundle)
+supabase secrets set GEMINI_API_KEY=AIza...   # https://aistudio.google.com/apikey
 
 # 2. deploy the function
 supabase functions deploy owl-chat
@@ -50,23 +50,32 @@ VITE_SUPABASE_URL=https://YOUR-PROJECT.supabase.co
 VITE_SUPABASE_ANON_KEY=YOUR-ANON-PUBLIC-KEY
 ```
 
-**Switching model vendor (Claude ⇄ Gemini).** The function supports both,
-chosen by the `OWL_PROVIDER` secret — the `OWL_SYSTEM` prompt and the
-`{say,letter,picks,chips}` contract are shared, so the client never changes:
+**The model vendor.** Gemini, via `generateContent`. There is no vendor
+switch: an earlier revision of this doc described an `OWL_PROVIDER` secret
+and an `owl-system.ts` that no longer exist (and the Gemini half of which
+never did) — the v2 rewrite replaced them with the four-call Scout/Peek
+split, and the swap off Anthropic removed the second path outright.
 
-```sh
-# Claude (default)
-supabase secrets set OWL_PROVIDER=anthropic ANTHROPIC_API_KEY=sk-ant-...
-# Gemini  (get a key at https://aistudio.google.com/apikey — free tier available)
-supabase secrets set OWL_PROVIDER=gemini    GEMINI_API_KEY=AIza...
-supabase functions deploy owl-chat
-```
+Models live in `supabase/functions/_shared/gemini.ts`:
 
-Keep both keys set and you can flip vendor just by changing `OWL_PROVIDER`.
-Models live in `supabase/functions/owl-chat/owl-system.ts`
-(`OWL_MODEL = claude-sonnet-4-6`; `OWL_GEMINI_MODEL = gemini-2.5-flash` —
-swap to `gemini-2.5-flash-lite` for the cheapest tier). Both run with
-thinking disabled for low latency on the short reply. The function returns
+| Call | Model | thinking_level |
+|---|---|---|
+| A — digest | `gemini-3.1-flash-lite` | `minimal` |
+| B — Scout | `gemini-3.5-flash` | `low` |
+| C — Peek | `gemini-3.5-flash` | `medium` |
+| memory merge | `gemini-3.1-flash-lite` | `minimal` |
+
+**⚠ The free tier trains on reader content.** Google marks free-tier usage
+"content used to improve our products: Yes"; the paid tier is explicitly
+the inverse. On a free key, reader chat and stored memory — including asks
+the digest tags `note_domain: crisis / addiction / grief / medical` — become
+training data. The free tier also caps the *whole app* at roughly 10 req/min
+and ~1,500 req/day: a chat turn spends 3 (digest + Scout + merge) and a
+letter tap a 4th, so ~500 turns/day across all readers, against the 120/day
+*per reader* that `owl-chat` itself allows. Fine for dev; revisit before
+real readers arrive.
+
+The function returns
 
 ```json
 { "say": "...", "letter": {"title","author"}|null,

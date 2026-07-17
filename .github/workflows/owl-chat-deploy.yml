@@ -8,7 +8,7 @@ name: Deploy edge functions (owl-chat + owl-peek + book-proxy + signup-with-invi
 #   • Secret   SUPABASE_ACCESS_TOKEN   (Supabase dashboard → Account → Access Tokens)
 #   • Variable SUPABASE_PROJECT_REF    (the <ref> in https://<ref>.supabase.co)
 #
-# ANTHROPIC_API_KEY is NOT set here — set it once in the Supabase dashboard
+# GEMINI_API_KEY is NOT set here — set it once in the Supabase dashboard
 # (Edge Functions → Secrets), so the key lives only in Supabase, never in
 # GitHub. Supabase injects SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY /
 # SUPABASE_ANON_KEY into every function automatically.

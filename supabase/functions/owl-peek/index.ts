@@ -6,13 +6,13 @@
 // re-open, even from another device, is instant); on a miss it loads
 // the peek context Scout stashed (or rebuilds a minimal one from the
 // client's title/author fallback + the reader's taste/topics) and
-// fires Call C (Sonnet 4.6) to write the letter.
+// fires Call C (3.5 Flash) to write the letter.
 //
 // Deploy:  supabase functions deploy owl-peek
-// Secrets: same as owl-chat (ANTHROPIC_API_KEY; SUPABASE_* provided automatically)
+// Secrets: same as owl-chat (GEMINI_API_KEY; SUPABASE_* provided automatically)
 // ============================================================
-import Anthropic from 'npm:@anthropic-ai/sdk';
 import { createClient } from 'npm:@supabase/supabase-js@2';
+import { callGeminiJson, geminiClient, MODEL_VOICE } from '../_shared/gemini.ts';
 import { corsHeaders, jsonResponse } from '../_shared/cors.ts';
 import { formatTopic, EMPTY_LONG_TERM } from '../_shared/memory.ts';
 import { PEEK_SYSTEM, peekUser } from '../_shared/prompts/peek.ts';
@@ -37,14 +37,6 @@ function hourStart(): Date {
   return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), d.getUTCHours()));
 }
 
-function textOf(res: Anthropic.Message): string {
-  return res.content
-    .filter((b): b is Anthropic.TextBlock => b.type === 'text')
-    .map((b) => b.text)
-    .join('')
-    .trim();
-}
-
 /** a cached_responses row is stale once its ttl_hours has elapsed since created_at */
 function isFresh(createdAt: string, ttlHours: number): boolean {
   return Date.now() - new Date(createdAt).getTime() < ttlHours * 3600_000;
@@ -54,7 +46,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
   if (req.method !== 'POST') return jsonResponse({ error: 'method not allowed' }, 405);
 
-  const apiKey = Deno.env.get('ANTHROPIC_API_KEY');
+  const apiKey = Deno.env.get('GEMINI_API_KEY');
   if (!apiKey) return jsonResponse({ error: 'owl-peek is not configured' }, 503);
 
   const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
@@ -118,24 +110,22 @@ Deno.serve(async (req: Request): Promise<Response> => {
     ctx = { book: { title, author }, query: { themes: [], intent: `revisit ${title}`, language: 'en' }, selectedMemory };
   }
 
-  const anthropic = new Anthropic({ apiKey });
+  const ai = geminiClient(apiKey);
 
-  // ── Call C — Peek (Sonnet): the reading letter, on tap ──
+  // ── Call C — Peek (3.5 Flash): the reading letter, on tap ──
   let letter: unknown;
   try {
-    const res = await anthropic.messages.create({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 1600,
+    letter = await callGeminiJson(ai, {
+      model: MODEL_VOICE,
+      system: PEEK_SYSTEM,
+      user: peekUser(ctx.book, JSON.stringify(ctx.query), ctx.selectedMemory),
+      schema: LETTER_SCHEMA,
       temperature: 0.8, // same warmth clamp as Scout — literary, but anchored to the real book
-      thinking: { type: 'disabled' },
-      system: [{ type: 'text', text: PEEK_SYSTEM, cache_control: { type: 'ephemeral', ttl: '1h' } }],
-      messages: [{ role: 'user', content: peekUser(ctx.book, JSON.stringify(ctx.query), ctx.selectedMemory) }],
-      output_config: { effort: 'medium', format: { type: 'json_schema', schema: LETTER_SCHEMA } },
-      // deno-lint-ignore no-explicit-any
-    } as any);
-    if (res.stop_reason === 'refusal') return jsonResponse({ error: 'generation_failed' }, 502);
-    letter = JSON.parse(textOf(res));
+      maxOutputTokens: 3000,
+      thinkingLevel: 'MEDIUM',
+    });
   } catch (err) {
+    // includes GeminiBlocked — a letter that stopped short is never half-shipped.
     console.error('[owl-peek] Peek call failed', err);
     return jsonResponse({ error: 'generation_failed' }, 502);
   }
