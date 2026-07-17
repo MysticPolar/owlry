@@ -157,8 +157,8 @@ Three currencies drive the loop. Values are exact to the current build; the loop
 
 The live owl runs **server-side** so no API key ever reaches the browser.
 
-- **Model:** Claude `claude-sonnet-4-6` powers both Scout's chat and the peeks, inside the **`owl-chat` Supabase Edge Function** (Deno). A **Gemini `gemini-2.5-flash`** parity path is selectable via a server secret; both share one system prompt and one `{say, letter, picks, chips}` JSON contract.
-- **Structured outputs:** replies and peeks are validated JSON — schema-enforced on the Claude path, and JSON mode plus a client-side guard on the Gemini path — so the UI renders reliably.
+- **Model:** Gemini `gemini-3.5-flash` powers both Scout's chat (**`owl-chat` Edge Function**) and the peeks (**`owl-peek`**), with `gemini-3.1-flash-lite` on the two extraction calls (the intake digest and the memory merge). All four run on `generateContent`, Deno-side. There is no second vendor path.
+- **Structured outputs:** replies and peeks are validated JSON — schema-enforced via `responseSchema`, then re-checked in code (`_shared/validators.ts`) for the rules a schema can't state — so the UI renders reliably.
 - **Zero-token peek cards → generate-on-tap:** every book Scout names spawns a "your peek has arrived" card **for free** (straight from the reply payload). The full peek is generated **only when the card is tapped**, always written fresh to *this reader's* ask, then cached for the session.
 - **Grounding ("the law of the peek"):** real books only; never invent a title, author, rating, chapter, statistic, page number, or scene; **at most one verbatim quote** in a peek, and only when the wording is certain — otherwise none.
 - **Two-desk steering** via a `desk` parameter (see §8).

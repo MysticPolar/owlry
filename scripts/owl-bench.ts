@@ -1,7 +1,7 @@
 /* ============================================================
    owlry — owl chat style bench.
 
-   Puts the LIVE owl (Claude via the owl-chat edge function) next to
+   Puts the LIVE owl (Gemini via the owl-chat edge function) next to
    the MOCKUP owl (the offline respond() brain) for the canonical
    response types, so we can confirm the live output style matches
    the mockup's exactly — voice, brevity, and chip sets.

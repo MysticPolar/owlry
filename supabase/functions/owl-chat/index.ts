@@ -3,16 +3,16 @@
 //
 // Scout: the reader's turn, in three model calls (docs/owl-chat-revision.md
 // + the memory/history plan). The browser sends only the current message —
-// history and memory are loaded server-side, so the ANTHROPIC_API_KEY and
+// history and memory are loaded server-side, so the GEMINI_API_KEY and
 // the reader's memory never touch the client.
 //
-//   A  Haiku 4.5   digest   → semantic_query + memory selection
-//   B  Sonnet 4.6  Scout    → {say, main, picks, note?, chips}  (NO letter)
+//   A  3.1 Flash-Lite  digest   → semantic_query + memory selection
+//   B  3.5 Flash       Scout    → {say, main, picks, note?, chips}  (NO letter)
 //
 // The user's turn is persisted immediately (survives even if generation
 // fails); the owl's reply is persisted after. Peek context (book + query +
 // selected memory) is stashed in `cached_responses` so a cold instance can
-// still serve Peek later. The memory-merge job (Haiku) runs AFTER the
+// still serve Peek later. The memory-merge job (Flash-Lite) runs AFTER the
 // response, non-blocking (EdgeRuntime.waitUntil) — it never delays the reply.
 //
 // If this function is missing, errors, or the reader is offline, the client
@@ -20,12 +20,13 @@
 // never breaks.
 //
 // Deploy:   supabase functions deploy owl-chat
-// Secrets:  supabase secrets set ANTHROPIC_API_KEY=sk-ant-...
+// Secrets:  supabase secrets set GEMINI_API_KEY=AIza...
 //           (SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY / SUPABASE_ANON_KEY
 //            are provided automatically to every edge function)
 // ============================================================
-import Anthropic from 'npm:@anthropic-ai/sdk';
 import { createClient } from 'npm:@supabase/supabase-js@2';
+import type { GoogleGenAI } from 'npm:@google/genai@2';
+import { callGeminiJson, geminiClient, GeminiBlocked, MODEL_FAST, MODEL_VOICE } from '../_shared/gemini.ts';
 import { corsHeaders, jsonResponse } from '../_shared/cors.ts';
 import { slugify } from '../_shared/slug.ts';
 import { capSelectedMemory, EMPTY_LONG_TERM, mergeTopic, sanitizeLongTerm } from '../_shared/memory.ts';
@@ -65,14 +66,6 @@ function today(): string {
   return new Date().toISOString().slice(0, 10);
 }
 
-function textOf(res: Anthropic.Message): string {
-  return res.content
-    .filter((b): b is Anthropic.TextBlock => b.type === 'text')
-    .map((b) => b.text)
-    .join('')
-    .trim();
-}
-
 function hourStart(): Date {
   const d = new Date();
   return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), d.getUTCHours()));
@@ -85,7 +78,7 @@ function dayStart(): Date {
 
 /** background job: merge this exchange into the reader's memory. Never blocks the reply. */
 async function runMemoryMerge(
-  anthropic: Anthropic,
+  ai: GoogleGenAI,
   admin: ReturnType<typeof createClient>,
   uid: string,
   currentLongTerm: unknown,
@@ -96,23 +89,15 @@ async function runMemoryMerge(
   clientDay: string,
 ): Promise<void> {
   try {
-    const res = await anthropic.messages.create({
-      model: 'claude-haiku-4-5',
-      max_tokens: 700,
+    const parsed = (await callGeminiJson(ai, {
+      model: MODEL_FAST,
+      system: MEMORY_MERGE_SYSTEM,
+      user: memoryMergeUser(JSON.stringify(currentLongTerm ?? {}), JSON.stringify(currentTopics ?? []), message, say, mainTitle, clientDay),
+      schema: MEMORY_PATCH_SCHEMA,
       temperature: 0.2, // extraction job — stay close to the evidence, never embellish
-      system: [{ type: 'text', text: MEMORY_MERGE_SYSTEM, cache_control: { type: 'ephemeral', ttl: '1h' } }],
-      messages: [
-        {
-          role: 'user',
-          content: memoryMergeUser(JSON.stringify(currentLongTerm ?? {}), JSON.stringify(currentTopics ?? []), message, say, mainTitle, clientDay),
-        },
-      ],
-      output_config: { format: { type: 'json_schema', schema: MEMORY_PATCH_SCHEMA } },
-      // deno-lint-ignore no-explicit-any
-    } as any);
-    if (res.stop_reason === 'refusal') return;
-
-    const parsed = JSON.parse(textOf(res)) as MemoryPatch;
+      maxOutputTokens: 1200,
+      thinkingLevel: 'MINIMAL',
+    })) as MemoryPatch;
     if (!parsed.change) return;
 
     const longTerm = sanitizeLongTerm(parsed.long_term);
@@ -127,7 +112,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
   if (req.method !== 'POST') return jsonResponse({ error: 'method not allowed' }, 405);
 
-  const apiKey = Deno.env.get('ANTHROPIC_API_KEY');
+  const apiKey = Deno.env.get('GEMINI_API_KEY');
   if (!apiKey) return jsonResponse({ error: 'owl-chat is not configured' }, 503);
 
   const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
@@ -190,49 +175,47 @@ Deno.serve(async (req: Request): Promise<Response> => {
     .insert({ user_id: uid, who: 'me', kind: 'msg', payload: { text: message } });
   if (persistUserErr) console.error('[owl-chat] failed to persist user turn', persistUserErr);
 
-  const anthropic = new Anthropic({ apiKey });
+  const ai = geminiClient(apiKey);
 
-  // ── Call A — digest (Haiku): semantic_query + memory selection ──
+  // ── Call A — digest (Flash-Lite): semantic_query + memory selection ──
   let query: SemanticQuery;
   try {
-    const digestRes = await anthropic.messages.create({
-      model: 'claude-haiku-4-5',
-      max_tokens: 500,
+    const parsed = (await callGeminiJson(ai, {
+      model: MODEL_FAST,
+      system: DIGEST_SYSTEM,
+      user: digestUser(message, history, JSON.stringify(longTerm), JSON.stringify(topics), clientDay),
+      schema: SEMANTIC_QUERY_SCHEMA,
       temperature: 0.2, // intake distillation — near-deterministic, no invented themes
-      system: [{ type: 'text', text: DIGEST_SYSTEM, cache_control: { type: 'ephemeral', ttl: '1h' } }],
-      messages: [{ role: 'user', content: digestUser(message, history, JSON.stringify(longTerm), JSON.stringify(topics), clientDay) }],
-      output_config: { format: { type: 'json_schema', schema: SEMANTIC_QUERY_SCHEMA } },
-      // deno-lint-ignore no-explicit-any
-    } as any);
-    if (digestRes.stop_reason === 'refusal') throw new Error('digest refused');
-    const parsed = JSON.parse(textOf(digestRes)) as SemanticQuery;
+      maxOutputTokens: 1000,
+      thinkingLevel: 'MINIMAL',
+    })) as SemanticQuery;
     query = { ...parsed, selected_memory: capSelectedMemory(parsed.selected_memory) };
   } catch (err) {
     console.error('[owl-chat] digest failed, using thin fallback query', err);
     query = { themes: [message], intent: message, ...FALLBACK_QUERY };
   }
 
-  // ── Call B — Scout (Sonnet): pick + bubble, no letter ──
+  // ── Call B — Scout (3.5 Flash): pick + bubble, no letter ──
   let scout: ScoutReply;
   try {
-    const scoutRes = await anthropic.messages.create({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 900,
+    scout = (await callGeminiJson(ai, {
+      model: MODEL_VOICE,
+      system: SCOUT_SYSTEM,
+      user: scoutUser(JSON.stringify(query)),
+      schema: SCOUT_SCHEMA,
       temperature: 0.8, // warmth without drift (founder spec) — steadier book picks than the 1.0 default
-      thinking: { type: 'disabled' },
-      system: [{ type: 'text', text: SCOUT_SYSTEM, cache_control: { type: 'ephemeral', ttl: '1h' } }],
-      messages: [{ role: 'user', content: scoutUser(JSON.stringify(query)) }],
-      output_config: { effort: 'low', format: { type: 'json_schema', schema: SCOUT_SCHEMA } },
-      // deno-lint-ignore no-explicit-any
-    } as any);
-    if (scoutRes.stop_reason === 'refusal') {
+      maxOutputTokens: 2000,
+      thinkingLevel: 'LOW',
+    })) as ScoutReply;
+  } catch (err) {
+    // a blocked reply still deserves a turn at the desk; a broken one is a 502.
+    if (err instanceof GeminiBlocked) {
+      console.error('[owl-chat] Scout blocked, serving the quiet-desk fallback', err.reason);
       scout = FALLBACK;
     } else {
-      scout = JSON.parse(textOf(scoutRes)) as ScoutReply;
+      console.error('[owl-chat] Scout call failed', err);
+      return jsonResponse({ error: 'generation_failed' }, 502);
     }
-  } catch (err) {
-    console.error('[owl-chat] Scout call failed', err);
-    return jsonResponse({ error: 'generation_failed' }, 502);
   }
 
   // ── slug + persistence + peek context (survives cold instances) ──
@@ -260,7 +243,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
   }
 
   // ── memory merge: fire-and-forget, never blocks the reply ──
-  const mergeJob = runMemoryMerge(anthropic, admin, uid, longTerm, topics, message, scout.say, scout.main?.title ?? null, clientDay);
+  const mergeJob = runMemoryMerge(ai, admin, uid, longTerm, topics, message, scout.say, scout.main?.title ?? null, clientDay);
   // deno-lint-ignore no-explicit-any
   const waitUntil = (globalThis as any).EdgeRuntime?.waitUntil as ((p: Promise<unknown>) => void) | undefined;
   if (waitUntil) waitUntil(mergeJob);

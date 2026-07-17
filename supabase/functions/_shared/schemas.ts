@@ -1,9 +1,15 @@
 // ============================================================
-// owlry — JSON Schemas for every structured-output call (Anthropic
-// output_config.format). Every object sets additionalProperties:false
-// and lists all its properties as required; optional fields are
-// modelled as an anyOf-with-null union (the supported subset for
-// structured outputs — no minLength/maxLength/numeric constraints).
+// owlry — JSON Schemas for every structured-output call (Gemini
+// generationConfig.responseSchema). Every object sets
+// additionalProperties:false and lists all its properties as required;
+// optional fields are modelled as an anyOf-with-null union.
+//
+// Gemini's structured-output subset accepts all of the above plus the
+// array-length constraints Anthropic's did not (minItems/maxItems), so
+// LETTER_SCHEMA now enforces "at least 3 insights" and "exactly 3
+// further reads" at the schema level rather than only catching the
+// violation afterwards. _shared/validators.ts stays as the backstop —
+// belt and braces on the one payload the reader actually reads.
 //
 // These schemas are the source of truth for the TypeScript interfaces
 // beside them; keep both in lockstep by hand (there is no codegen here).
@@ -162,6 +168,7 @@ export const LETTER_SCHEMA = {
     core: { type: 'string' },
     ins: {
       type: 'array',
+      minItems: 3,
       items: {
         type: 'object',
         additionalProperties: false,
@@ -185,10 +192,12 @@ export const LETTER_SCHEMA = {
       },
     },
     close: { type: 'string' },
-    take: { type: 'array', items: { type: 'string' } },
-    ask: { type: 'array', items: { type: 'string' } },
+    take: { type: 'array', minItems: 1, items: { type: 'string' } },
+    ask: { type: 'array', minItems: 1, items: { type: 'string' } },
     fr: {
       type: 'array',
+      minItems: 3,
+      maxItems: 3,
       items: {
         type: 'object',
         additionalProperties: false,

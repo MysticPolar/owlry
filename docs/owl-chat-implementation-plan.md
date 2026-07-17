@@ -137,7 +137,7 @@ type DynBook = { slug:string; title:string; author:string;
 - `components/Cover.tsx` — accept a `DynBook` (use derived `c/tc/s`).
 - `components/overlays/Sheet.tsx` — about-sheet for dynamic books.
 
-**Config:** `ANTHROPIC_API_KEY`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE`
+**Config:** `GEMINI_API_KEY`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE`
 (server only), `SUPABASE_ANON_KEY` (client auth).
 
 ---

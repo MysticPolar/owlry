@@ -64,12 +64,16 @@ index plugs in later (its only job today is to structure intent + select memory)
 
 ## Models
 
-| Call | Model | Why |
-| --- | --- | --- |
-| A digest | `claude-haiku-4-5` | light extraction + memory selection |
-| B pick + bubble | `claude-sonnet-4-6`, temp 0.8 | judgment + mockup tonality |
-| C letter | `claude-sonnet-4-6` | the literary centerpiece (Opus optional) |
-| memory prose / structured | Sonnet / Haiku | unchanged |
+| Call | Model | thinking_level | Why |
+| --- | --- | --- | --- |
+| A digest | `gemini-3.1-flash-lite`, temp 0.2 | `minimal` | light extraction + memory selection |
+| B pick + bubble | `gemini-3.5-flash`, temp 0.8 | `low` | judgment + mockup tonality |
+| C letter | `gemini-3.5-flash`, temp 0.8 | `medium` | the literary centerpiece |
+| memory merge | `gemini-3.1-flash-lite`, temp 0.2 | `minimal` | post-reply extraction, non-blocking |
+
+`thinking_level` carries over what `output_config.effort` used to say on the
+Anthropic path (Scout `low`, Peek `medium`); the extraction calls ask for
+`minimal`, which is the closest thing to the old `thinking: disabled`.
 
 ## Client seam changes
 

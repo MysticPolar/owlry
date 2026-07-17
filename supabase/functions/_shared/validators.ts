@@ -1,13 +1,13 @@
 // ============================================================
 // owlry — post-parse business-rule validation.
 //
-// Anthropic's structured-output JSON Schema subset can't express array
-// length constraints (no minItems/maxItems), so schema-forced output can
-// still violate "at least 3 insights" or "exactly 3 further reads" — this
-// module is the code-side check that runs after JSON.parse, mirroring
-// src/lib/owlContract.ts's validateLetter on the client. A malformed
-// reply here is treated the same as a generation failure (502) — it is
-// never cached or persisted.
+// LETTER_SCHEMA now states the array-length rules ("at least 3 insights",
+// "exactly 3 further reads") to Gemini directly, but schema conformance
+// is not a guarantee and says nothing about the rules a schema can't
+// express — that a string is non-empty rather than "". So this stays as
+// the code-side check after JSON.parse, mirroring src/lib/owlContract.ts's
+// validateLetter on the client. A malformed reply here is treated the
+// same as a generation failure (502) — it is never cached or persisted.
 // ============================================================
 import type { LetterWire } from './schemas.ts';
 
