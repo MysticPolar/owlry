@@ -121,8 +121,14 @@ Deno.serve(async (req: Request): Promise<Response> => {
       user: peekUser(ctx.book, JSON.stringify(ctx.query), ctx.selectedMemory),
       schema: LETTER_SCHEMA,
       temperature: 0.8, // same warmth clamp as Scout — literary, but anchored to the real book
-      maxOutputTokens: 3000,
-      thinkingLevel: 'MEDIUM',
+      // Gemini counts thinking tokens against maxOutputTokens. MEDIUM here spent
+      // ~1.3–1.7k tokens thinking and rode right up against a 3000 cap, so a
+      // slightly longer think intermittently tripped MAX_TOKENS and 502'd the
+      // letter. LOW matches the original "thinking disabled for low latency"
+      // intent, produces an equivalent letter (real quotes, 3 further-reads) at
+      // ~120 thinking tokens and ~2.5× faster; 6000 is generous headroom.
+      maxOutputTokens: 6000,
+      thinkingLevel: 'LOW',
     });
   } catch (err) {
     // includes GeminiBlocked — a letter that stopped short is never half-shipped.
