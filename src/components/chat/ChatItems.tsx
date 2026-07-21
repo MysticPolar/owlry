@@ -178,7 +178,7 @@ export function GLetter({ id, no, mid }: { id: BookRef; no: number; mid?: number
   );
 }
 
-/* ---------- the dealt hand: up to three cards fanned after the reply ---------- */
+/* ---------- the dealt hand: wide cards stacked after the reply ---------- */
 function DealCard({ id }: { id: BookRef }) {
   const t = useT();
   const b = getBook(id);
@@ -186,22 +186,28 @@ function DealCard({ id }: { id: BookRef }) {
   const openLetter = useStore((s) => s.openLetter);
   if (!b) return null;
 
-  // the hand always offers About + Peek — openLetter handles the offline/
-  // non-guide fallback (the letter overlay offers "open the book" there)
+  // one wide card per book — cover on the left, then title / author · pages /
+  // why-scout-picked-it, and the About + Peek actions. openLetter handles the
+  // offline/non-guide fallback (the letter overlay offers "open the book" there).
   return (
     <div className="pb-dealcard" role="group" aria-label={t.discover.letterAria(b.t)} data-book={id}>
-      <Cover id={id} cls="pb-cover" />
-      <div className="pb-dc-body">
+      <button type="button" className="pb-dc-cover-btn" data-sheet={id} aria-label={b.t} onClick={() => openSheet(id)}>
+        <Cover id={id} cls="pb-cover pb-dc-cover" />
+      </button>
+      <div className="pb-dc-main">
         <div className="pb-dc-t" title={b.t}>{b.t}</div>
-        <div className="pb-dc-a">{b.a}</div>
-      </div>
-      <div className="pb-dc-cta">
-        <button type="button" className="pb-dc-about" data-sheet={id} onClick={() => openSheet(id)}>
-          {t.discover.about}
-        </button>
-        <button type="button" className="pb-dc-go" data-letter={id} onClick={() => openLetter(id)}>
-          {t.discover.peek}
-        </button>
+        <div className="pb-dc-a">
+          {b.a} · {t.discover.pages(b.n)}
+        </div>
+        <div className="pb-dc-why">{b.q}</div>
+        <div className="pb-dc-cta">
+          <button type="button" className="pb-dc-about" data-sheet={id} onClick={() => openSheet(id)}>
+            {t.discover.about}
+          </button>
+          <button type="button" className="pb-dc-go" data-letter={id} onClick={() => openLetter(id)}>
+            {t.discover.peek}
+          </button>
+        </div>
       </div>
     </div>
   );

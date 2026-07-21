@@ -120,7 +120,9 @@ export function SelectionBar() {
           {t.saveQuote}
         </button>
         <button type="button" onClick={ask}>
-          <Icon name="ti-feather" />
+          <svg className="owl pb-sel-owl" viewBox="0 0 120 130" aria-hidden="true">
+            <use href="#owl-scout" />
+          </svg>
           {t.ask}
         </button>
       </div>

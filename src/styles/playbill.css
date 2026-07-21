@@ -122,12 +122,6 @@
 .pb-valance { display: block; width: 100%; height: auto; transition: margin-top .35s ease, opacity .3s ease; }
 .pb-hem { display: none; width: 100%; height: auto; }
 
-/* Keeper perched on the curtain — the house's presence; rides the collapse down
-   to a small figure on the hem beside the compact strip */
-.pb-perch { position: absolute; top: 40px; right: 22px; z-index: 3; transform-origin: top right; transition: transform .35s ease; pointer-events: none; }
-.pb-perch .owl.mini { width: 66px; height: 71px; pointer-events: auto; filter: none; }
-.pb-home.collapsed .pb-perch { transform: translate(12px, -48px) scale(.4); }
-
 .pb-marquee {
   text-align: center; font-family: 'Anton', sans-serif; font-weight: 400; font-size: 17px;
   letter-spacing: 1px; color: var(--pb-cream);
@@ -227,6 +221,13 @@
   content: ''; position: absolute; inset: 0; border: 1px solid var(--pb-paper-line);
   border-radius: inherit; pointer-events: none;
 }
+/* a bespoke flat jacket (content/covers.ts) fills the frame edge-to-edge, over
+   the spine + the cover's own padding; its own inset border is the plate edge */
+.cover-art { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; }
+.cover-art svg { display: block; width: 100%; height: 100%; }
+/* the about-sheet cover takes the jacket's 150:205 ratio so the flat art fills
+   it without letterboxing (photos there just crop a hair, as object-fit covers) */
+.pb-sheet .cover-md { height: auto; aspect-ratio: 150 / 205; }
 .pb-card .body { display: block; padding: 9px 10px 0; }
 .pb-cap { display: block; font-family: 'Fraunces', Georgia, serif; font-style: italic; font-size: 13.5px; line-height: 1.45; color: var(--pb-cap-ink); }
 .pb-foot { display: flex; align-items: center; gap: 4px; padding: 3px 10px 9px; font-size: 11px; font-weight: 600; color: var(--pb-like); }
@@ -392,7 +393,7 @@
    ============================================================ */
 .pb-stagehead { flex-shrink: 0; position: relative; z-index: 2; }
 .pb-stagebar { position: relative; display: flex; align-items: center; justify-content: center; padding: 13px 16px 8px; }
-.pb-stagebar-wm { font-family: 'Anton', sans-serif; font-size: 15px; letter-spacing: 1px; color: var(--pb-cream); }
+.pb-stagebar-wm { font-family: 'Anton', sans-serif; font-size: 15px; letter-spacing: 1px; color: var(--pb-cream); transition: color .35s ease, opacity .35s ease, text-shadow .35s ease; }
 .pb-stagebar-wm .dot { color: var(--pb-brass); }
 
 /* ============================================================
@@ -409,6 +410,20 @@
 #screen-discover .desk-lvl { background: var(--pb-chip-bg); border: 1px solid var(--pb-brass-deep); color: var(--pb-brass); box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
 #screen-discover .desk-lvl .ti { color: var(--pb-brass); }
 #screen-discover .disc-head-right .iconbtn.lite { background: var(--pb-chip-bg); border: 1px solid var(--pb-tag-line); box-shadow: none; color: var(--pb-brass); }
+
+/* ---- header states: full welcome on cold start, quiet stage once engaged ----
+   Intro (no question yet, composer idle) keeps the whole welcome: owlry. + the
+   scout owl + the faint "Scout" watermark + the starter prompts. Once the reader
+   asks (.chatting) or focuses the composer (.typing), the decorative scout owl
+   and the guest level pill step away and the owlry wordmark dims back into the
+   stage like a printed watermark — "only owlry" remains. */
+#screen-discover.chatting .disc-head-right .owl.mini,
+#screen-discover.chatting .desk-lvl { display: none; }
+#screen-discover.chatting .disc-head { padding-top: 6px !important; padding-bottom: 2px !important; }
+#screen-discover.chatting .pb-stagebar-wm,
+#screen-discover.typing .pb-stagebar-wm {
+  color: var(--pb-cream-mute); opacity: .5; text-shadow: 0 1px 5px rgba(0,0,0,.55);
+}
 
 /* chat: Scout speaks plainly on the stage — the app's calm editorial layout +
    colours are re-tinted at their (!important) source in global.css; these are
@@ -487,6 +502,8 @@
 }
 .pb-selbar button:active { background: rgba(217,169,79,.16); }
 .pb-selbar button .ti { font-size: 13px; color: var(--pb-brass); }
+/* scout rides the Ask button, like peek's owl on the about-sheet CTA */
+.pb-selbar .pb-sel-owl { width: 19px; height: 20px; margin: -4px -1px; filter: none; }
 
 /* ---------- the ask panel: a line handed to scout, awaiting the question ---------- */
 .pb-askq-scrim {
@@ -537,27 +554,37 @@
 .pb-askq-send:active { transform: scale(.97); }
 .pb-askq-send .ti { font-size: 15px; }
 
-/* ---------- the dealt hand: three cards fanned after scout's reply ---------- */
+/* ---------- the dealt hand: wide cards stacked after scout's reply ---------- */
 .pb-dealrow {
-  display: flex; gap: 10px; margin: 6px -18px 14px; padding: 2px 18px 4px;
+  display: flex; flex-direction: column; gap: 9px; margin: 8px 0 14px;
   flex: 0 0 auto; /* the chat log is a flex column — never let the hand squash */
-  overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: none;
   animation: pbDealIn .35s ease both;
 }
-.pb-dealrow::-webkit-scrollbar { display: none; }
 @keyframes pbDealIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 .pb-dealcard {
-  flex: 0 0 156px; scroll-snap-align: start;
-  background: var(--pb-paper); border-radius: 12px; padding: 8px 8px 9px;
+  display: flex; gap: 12px; align-items: stretch;
+  background: var(--pb-paper); border-radius: 14px; padding: 10px;
 }
-.pb-dealcard .pb-cover { border-radius: 4px; }
-.pb-dc-body { padding: 7px 2px 8px; }
+.pb-dc-cover-btn {
+  flex: 0 0 auto; display: flex; align-items: center;
+  padding: 0; border: 0; background: none; cursor: pointer; touch-action: manipulation;
+  transition: transform .15s ease;
+}
+.pb-dc-cover-btn:active { transform: scale(.97); }
+.pb-dealcard .pb-dc-cover { width: 68px; border-radius: 5px; }
+.pb-dc-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 .pb-dc-t {
-  font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 13px; line-height: 1.3;
-  color: var(--pb-ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 14px; line-height: 1.25;
+  color: var(--pb-ink);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
-.pb-dc-a { font-size: 10.5px; color: var(--pb-ink-mute); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.pb-dc-cta { display: flex; gap: 6px; }
+.pb-dc-a { font-size: 11px; color: var(--pb-ink-mute); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pb-dc-why {
+  font-family: 'Fraunces', Georgia, serif; font-style: italic; font-size: 11.5px; line-height: 1.35;
+  color: var(--pb-ink-soft); margin-top: 5px;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.pb-dc-cta { display: flex; gap: 6px; margin-top: auto; padding-top: 9px; }
 .pb-dc-about, .pb-dc-go {
   flex: 1; min-width: 0; border-radius: 999px; padding: 7px 4px;
   font: 600 10px 'Inter Tight', sans-serif; letter-spacing: .5px; text-transform: uppercase;
@@ -735,5 +762,5 @@
 .settings .set-foot { color: var(--pb-cream-mute); }
 
 @media (prefers-reduced-motion: reduce) {
-  .pb-valance, .pb-marquee, .pb-chips, .pb-compact, .pb-card, .pb-keeper, .pb-tag, .pb-nv, .pb-iconbtn, .pb-perch { transition: none !important; }
+  .pb-valance, .pb-marquee, .pb-chips, .pb-compact, .pb-card, .pb-keeper, .pb-tag, .pb-nv, .pb-iconbtn { transition: none !important; }
 }

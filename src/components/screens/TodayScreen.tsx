@@ -6,7 +6,6 @@ import type { BookId, Genre } from '../../content/types';
 import { useT } from '../../i18n/react';
 import { Icon } from '../Icon';
 import { Cover } from '../Cover';
-import { CastOwl } from '../CastOwl';
 import { CurtainValance, CurtainHem } from '../stage';
 
 type Filter = 'all' | Genre;
@@ -174,9 +173,6 @@ export function TodayScreen() {
       <div className="pb-head">
         <CurtainValance />
         <CurtainHem />
-        <div className="pb-perch">
-          <CastOwl owl="keeper" cls="mini" />
-        </div>
         <h1 className="pb-marquee" aria-label={t.marqueeAria}>
           owlry<span className="dot">.</span>
         </h1>
