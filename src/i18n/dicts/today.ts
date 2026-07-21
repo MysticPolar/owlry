@@ -59,9 +59,9 @@ const en = {
   chrome: {
     navAria: 'Primary',
     nav: {
-      today: 'home',
-      discover: 'ask',
-      profile: 'profile',
+      today: 'Home',
+      discover: 'Ask',
+      profile: 'Profile',
     },
     profileChainedAria: 'Profile — chained until level 5',
     gainLevel: 'gain a level',

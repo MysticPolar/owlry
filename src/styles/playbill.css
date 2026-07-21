@@ -136,9 +136,9 @@
 }
 .pb-marquee .dot { color: var(--pb-brass); }
 
-/* stat chips */
+/* stat chips — spread across the stage like the prototype (crown / XP / ink) */
 .pb-chips {
-  display: flex; align-items: center; justify-content: center; gap: 8px;
+  display: flex; align-items: center; justify-content: space-between;
   padding: 0 16px; margin-bottom: 12px;
   overflow: hidden; max-height: 36px;
   transition: max-height .35s ease, opacity .25s ease, margin .35s ease;
@@ -207,24 +207,28 @@
   overflow: hidden; margin-bottom: 12px; transition: transform .18s ease;
 }
 .pb-card:active { transform: scale(.97); }
-/* the open action — cover + caption; a plain-looking button, no chrome */
+/* the open action — cover + caption; a plain-looking button, no chrome.
+   The padding is the MAT: cream paper frames the cover like a plate in a
+   printed programme, which is what lets mismatched real photos cohere */
 .pb-open {
-  display: block; width: 100%; background: none; border: 0; padding: 0;
+  display: block; width: 100%; background: none; border: 0; padding: 10px 10px 0;
   text-align: left; cursor: pointer; font: inherit; color: inherit;
   touch-action: manipulation;
 }
-/* the real cover (spine + optional photo), full-bleed at the card top and FLAT
+/* the real cover (spine + optional photo), matted on the card and FLAT
    — strip the legacy border/shadow so the surface stays print-flat */
-.pb-cover { width: 100%; height: auto; aspect-ratio: 150 / 205; border: 0; border-radius: 0; box-shadow: none; padding: 11px; font-size: 12px; }
+.pb-cover { width: 100%; height: auto; aspect-ratio: 150 / 205; border: 0; border-radius: 4px; box-shadow: none; padding: 11px; font-size: 12px; }
+/* photos take a warm "printed on cream stock" tone (spine fallbacks stay pure) */
+.pb-cover .cover-img, .pb-cover-xs .cover-img { filter: sepia(.14) saturate(.92) contrast(.97); }
 /* matte hairline over the artwork so mismatched real covers read as plates in a
    programme — a flat 1px border via generated content, NOT an inset shadow */
 .pb-cover::after, .pb-cover-xs::after {
   content: ''; position: absolute; inset: 0; border: 1px solid var(--pb-paper-line);
   border-radius: inherit; pointer-events: none;
 }
-.pb-card .body { display: block; padding: 9px 11px 0; }
+.pb-card .body { display: block; padding: 9px 10px 0; }
 .pb-cap { display: block; font-family: 'Fraunces', Georgia, serif; font-style: italic; font-size: 13.5px; line-height: 1.45; color: var(--pb-cap-ink); }
-.pb-foot { display: flex; align-items: center; gap: 4px; padding: 3px 11px 9px; font-size: 11px; font-weight: 600; color: var(--pb-like); }
+.pb-foot { display: flex; align-items: center; gap: 4px; padding: 3px 10px 9px; font-size: 11px; font-weight: 600; color: var(--pb-like); }
 .pb-foot .sp { flex: 1; }
 /* generous hit target (>=40px) with the padding pulled back out so the visual
    footprint is unchanged */
@@ -450,34 +454,40 @@
    it beats the night-mode `.app[data-mode="night"] .owl.mini` glow) */
 #screen-discover .owl, #screen-profile .owl { filter: none; }
 
-/* header on the stage */
-#screen-profile .pad-h .ghost { color: rgba(245,233,210,.05); }
-#screen-profile .hl .t { color: var(--pb-cream); }
-#screen-profile .hl .u { background: var(--pb-brass); }
-#screen-profile .gdot { color: var(--pb-brass); }
-#screen-profile .set-gear.iconbtn.lite { background: var(--pb-chip-bg); border: 1px solid var(--pb-tag-line); box-shadow: none; color: var(--pb-brass); }
+/* gear in the StageBar (the pad-h headline retired — the wordmark carries the brand) */
+.pb-stagebar .pb-gear {
+  position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+  width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
+  border-radius: 999px; background: var(--pb-chip-bg); border: 1px solid var(--pb-tag-line);
+  color: var(--pb-brass); cursor: pointer; touch-action: manipulation;
+}
+.pb-gear .ti { font-size: 16px; }
 
-/* identity block */
+/* identity row — avatar, name, reader title; Mirror keeps watch at the end */
 #screen-profile .ig-ava { background: var(--pb-owl-violet); box-shadow: 0 0 0 2px var(--pb-stage), 0 0 0 4px var(--pb-brass); color: var(--pb-cream); }
 #screen-profile .pname { color: var(--pb-cream); }
-#screen-profile .psub { color: var(--pb-cream-mute); }
-#screen-profile .ig-stat span { color: var(--pb-cream-mute); }
-#screen-profile .ig-stat b { color: var(--pb-cream); }
-#screen-profile .ig-stat.on b { color: var(--pb-brass); }
+#screen-profile .psub { color: var(--pb-cream-mute); letter-spacing: 1.5px; }
+/* Mirror joins the identity row in-flow (base .owl.mini is absolute) */
+#screen-profile .ig .owl.mini { position: static; margin-left: auto; width: 44px; height: 48px; flex: 0 0 auto; }
 #screen-profile .bio { color: var(--pb-cream); }
 #screen-profile .bio:empty::before { color: var(--pb-cream-mute); }
 #screen-profile .bio[contenteditable="true"] { outline-color: var(--pb-brass); }
 #screen-profile .editbio { background: var(--pb-chip-bg); border: 1px solid var(--pb-tag-line); box-shadow: none; color: var(--pb-cream-mute); }
 
-/* streak on the stage — flat, candy only in the flame glyph */
-#screen-profile .prof-top .streak { border-top: 1px dashed var(--pb-rule-gold); }
-#screen-profile .flamebox { background: var(--pb-chip-bg); box-shadow: none; }
-#screen-profile .flamebox .ti { color: #E06A3A; }
-#screen-profile .stk-t { color: var(--pb-cream); }
-#screen-profile .stk-s { color: var(--pb-cream-mute); }
-#screen-profile .wd { background: var(--pb-track); }
-#screen-profile .wd.on { background: var(--pb-brass); }
-#screen-profile .wd.today { background: var(--pb-owl-violet); box-shadow: 0 0 0 2px var(--pb-stage), 0 0 0 3px var(--pb-owl-violet); }
+/* the level moment — crown, the big XP bar, the countdown caption */
+.pb-plvl { margin-top: 16px; }
+.pb-plvl-row { display: flex; align-items: center; gap: 8px; }
+.pb-plvl-row .crown { font-size: 18px; color: var(--pb-candy-crown); }
+.pb-plvl-t { font-family: 'Inter Tight', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 2px; color: var(--pb-cream); }
+.pb-bigxp { height: 10px; border-radius: 999px; background: var(--pb-track); margin-top: 10px; overflow: hidden; }
+.pb-bigxp b { display: block; height: 100%; border-radius: 999px; background: var(--pb-candy-bolt); }
+.pb-xpcap { font-size: 11px; color: var(--pb-cream-mute); margin-top: 6px; }
+
+/* the purse — ink, coins, streak (candy in glyphs + numbers only) */
+.pb-pchips { display: flex; gap: 8px; margin-top: 14px; }
+.pb-chip .coin { color: var(--pb-candy-crown); }
+.pb-chip .flame { color: #E06A3A; }
+#screen-profile .prof-top .editbio { margin-top: 12px; }
 
 /* tab row on the stage */
 #screen-profile .ptabs { border-bottom: 1px solid var(--pb-rule-gold); }

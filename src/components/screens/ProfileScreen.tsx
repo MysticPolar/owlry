@@ -9,14 +9,12 @@ import {
   WEEK7,
   WEEK_TIME,
   ACHIEVEMENTS,
-  WK_DOTS,
   CMONTH,
   CTODAY,
   CDAYS,
   RECS,
   QUOTES,
   DEFAULT_BIO,
-  IG_STATS,
 } from '../../content/profile';
 import { Icon } from '../Icon';
 import { Cover } from '../Cover';
@@ -299,9 +297,11 @@ const MEM_TAB: [ProfileTab, string] = ['mem', 'ti-feather'];
 
 export function ProfileScreen() {
   const t = useT();
-  const lang = useLang();
   const active = useStore((s) => s.activeTab === 'profile');
   const lv = useStore((s) => s.lv);
+  const xp = useStore((s) => s.xp);
+  const xpMax = useStore((s) => s.xpMax);
+  const ink = useStore((s) => s.ink);
   const coins = useStore((s) => s.coins);
   const streak = useStore((s) => s.streak);
   const openSettings = useStore((s) => s.openSettings);
@@ -335,23 +335,13 @@ export function ProfileScreen() {
 
   return (
     <section className={`screen ${active ? 'on' : ''}`} id="screen-profile" ref={sectionRef}>
-      <StageBar />
-      <div className="pad-h">
-        <span className="ghost" aria-hidden="true">
-          Mirror
-        </span>
-        <h1 className="hl sm d">
-          <span className="u" />
-          <span className="t">
-            profile<span className="gdot">.</span>
-          </span>
-        </h1>
-        <CastOwl owl="mirror" cls="mini" />
-        <button className="iconbtn lite set-gear" aria-label={t.profile.settingsAria} onClick={openSettings}>
+      <StageBar>
+        <button className="pb-gear" aria-label={t.profile.settingsAria} onClick={openSettings}>
           <Icon name="ti-settings" />
         </button>
-      </div>
+      </StageBar>
 
+      {/* the mockup's three-beat top: who you are → the level moment → the purse */}
       <div className="prof-top">
         <div className="ig">
           <div className="ig-ava d" aria-hidden="true">
@@ -359,37 +349,45 @@ export function ProfileScreen() {
           </div>
           <div className="ig-main">
             <div className="pname d">{prefName ?? authUser?.name ?? 'Mira'}</div>
-            <div className="psub">{t.profile.psub(lv, coins)}</div>
-            <div className="ig-stats">
-              {IG_STATS[lang].map((s) => (
-                <button
-                  key={s.l}
-                  className={`ig-stat ${profileTab === s.tab ? 'on' : ''}`}
-                  aria-label={s.aria}
-                  onClick={() => switchTab(s.tab)}
-                >
-                  <b className="d">{s.n}</b>
-                  <span>{s.l}</span>
-                </button>
-              ))}
-            </div>
+            <div className="psub">{t.profile.readerTitle}</div>
+          </div>
+          <CastOwl owl="mirror" cls="mini" />
+        </div>
+
+        <div className="pb-plvl">
+          <div className="pb-plvl-row">
+            <Icon name="ti-crown" className="crown" />
+            <span className="pb-plvl-t">{t.profile.levelLabel(lv)}</span>
+          </div>
+          <div
+            className="pb-bigxp"
+            role="progressbar"
+            aria-label={t.profile.levelLabel(lv)}
+            aria-valuemin={0}
+            aria-valuemax={xpMax}
+            aria-valuenow={xp}
+          >
+            <b style={{ width: `${Math.min(100, Math.max(0, (xp / Math.max(1, xpMax)) * 100))}%` }} />
+          </div>
+          <div className="pb-xpcap">{t.profile.xpToNext(xp, xpMax, lv + 1)}</div>
+        </div>
+
+        <div className="pb-pchips">
+          <div className="pb-chip" aria-label={t.profile.inkAria(ink)}>
+            <Icon name="ti-inkdrop" className="drop" />
+            <span className="n">{ink}</span>
+          </div>
+          <div className="pb-chip" aria-label={t.profile.coinsAria(coins)}>
+            <Icon name="ti-coin" className="coin" />
+            <span className="n">{coins.toLocaleString()}</span>
+          </div>
+          <div className="pb-chip" aria-label={t.profile.streakAria(streak)}>
+            <Icon name="ti-flame" className="flame" />
+            <span className="n">{t.profile.streakChip(streak)}</span>
           </div>
         </div>
+
         <BioRow />
-        <div className="streak">
-          <div className="flamebox">
-            <Icon name="ti-flame" />
-          </div>
-          <div>
-            <div className="stk-t d">{t.profile.streakDays(streak)}</div>
-            <div className="stk-s">{t.profile.keepKindled}</div>
-          </div>
-          <div className="wkdots" aria-label={t.profile.wkdotsAria(WK_DOTS.length)}>
-            {WK_DOTS.map((d, i) => (
-              <span key={i} className={`wd ${d.today ? 'today' : d.on ? 'on' : ''}`} />
-            ))}
-          </div>
-        </div>
       </div>
 
       <div className="ptabs" role="tablist" aria-label={t.profile.sectionsAria}>

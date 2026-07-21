@@ -12,13 +12,16 @@
 const en = {
   /* ---------- header / identity ---------- */
   settingsAria: 'Settings',
-  psub: (lv: number, coins: number) => `LV ${lv} BIBLIOPHILE · ${coins} COINS`,
+  readerTitle: 'BIBLIOPHILE',
+  levelLabel: (lv: number) => `LEVEL ${lv}`,
+  xpToNext: (xp: number, max: number, next: number) => `${xp} / ${max} XP to Level ${next}`,
+  streakChip: (n: number) => `${n}-day`,
+  streakAria: (n: number) => `${n}-day reading streak`,
+  inkAria: (ink: number) => `${ink} ink`,
+  coinsAria: (coins: number) => `${coins} coins`,
   bioEdit: 'edit bio',
   bioDone: 'done',
   bioKept: 'bio kept',
-  streakDays: (n: number) => `${n}-day streak`,
-  keepKindled: 'keep it kindled',
-  wkdotsAria: (n: number) => `Reading streak, ${n} days this week`,
 
   /* ---------- tab bar ---------- */
   sectionsAria: 'Profile sections',
@@ -86,13 +89,16 @@ const en = {
 const zh: typeof en = {
   /* ---------- 页首 / 身份 ---------- */
   settingsAria: '设置',
-  psub: (lv: number, coins: number) => `LV ${lv} 藏书家 · ${coins} 金币`,
+  readerTitle: '藏书家',
+  levelLabel: (lv: number) => `等级 ${lv}`,
+  xpToNext: (xp: number, max: number, next: number) => `${xp} / ${max} 经验，升到等级 ${next}`,
+  streakChip: (n: number) => `${n} 天`,
+  streakAria: (n: number) => `连读 ${n} 天`,
+  inkAria: (ink: number) => `${ink} 墨水`,
+  coinsAria: (coins: number) => `${coins} 枚金币`,
   bioEdit: '编辑简介',
   bioDone: '完成',
   bioKept: '简介已收好',
-  streakDays: (n: number) => `连读 ${n} 天`,
-  keepKindled: '让火苗一直亮着',
-  wkdotsAria: (n: number) => `阅读连续记录，本周 ${n} 天`,
 
   /* ---------- 分栏 ---------- */
   sectionsAria: '个人主页栏目',
