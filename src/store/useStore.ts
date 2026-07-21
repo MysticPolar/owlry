@@ -1028,6 +1028,8 @@ export const useStore = create<Store>()(
               messages: appendNote([...st.owl.messages, { kind: 'deal', id: nextId(), books }]),
             },
           }));
+          // the whole recommended hand rises onto the shelf a beat after it's dealt
+          setTimeout(() => get().collectBooks(books), 480);
           // the rail flight (component-side) rides on top; chips arrive at +700
           setTimeout(finish, 700);
         }, skipped ? 40 : 170);

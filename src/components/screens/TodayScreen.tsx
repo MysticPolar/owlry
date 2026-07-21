@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState, type ReactNode } from 'react';
+import { useMemo, useRef, useState, type ReactNode } from 'react';
 import { useStore } from '../../store/useStore';
 import { getBook } from '../../lib/bookRegistry';
 import { FEED, FEED_GENRES, feedLikes } from '../../content/feed';
@@ -57,7 +57,7 @@ function CompactStrip() {
 }
 
 /* ---------- one book post ---------- */
-function BookCard({ id, liked, onLike }: { id: BookId; liked: boolean; onLike: (id: BookId) => void }) {
+function BookCard({ id }: { id: BookId }) {
   const b = getBook(id);
   const openSheet = useStore((s) => s.openSheet);
   const toggleSave = useStore((s) => s.toggleSave);
@@ -66,6 +66,7 @@ function BookCard({ id, liked, onLike }: { id: BookId; liked: boolean; onLike: (
   if (!b) return null;
 
   const open = () => openSheet(id);
+  // the heart IS the save — a hearted book lands in the reader's library
   return (
     <article className="pb-card">
       <button type="button" className="pb-open" aria-label={t.openAria(b.t)} onClick={open}>
@@ -77,23 +78,13 @@ function BookCard({ id, liked, onLike }: { id: BookId; liked: boolean; onLike: (
       <div className="pb-foot">
         <button
           type="button"
-          className={`pb-iconbtn pb-like ${liked ? 'on' : ''}`}
-          aria-label={t.likeAria(b.t)}
-          aria-pressed={liked}
-          onClick={() => onLike(id)}
-        >
-          <Icon name={liked ? 'ti-heart-filled' : 'ti-heart'} />
-          <span>{fmtCount(feedLikes(id) + (liked ? 1 : 0))}</span>
-        </button>
-        <span className="sp" />
-        <button
-          type="button"
-          className={`pb-iconbtn pb-mark ${saved ? 'on' : ''}`}
+          className={`pb-iconbtn pb-like ${saved ? 'on' : ''}`}
           aria-label={t.saveAria(b.t)}
           aria-pressed={saved}
           onClick={() => toggleSave(id)}
         >
-          <Icon name={saved ? 'ti-bookmark-filled' : 'ti-bookmark'} />
+          <Icon name={saved ? 'ti-heart-filled' : 'ti-heart'} />
+          <span>{fmtCount(feedLikes(id) + (saved ? 1 : 0))}</span>
         </button>
       </div>
     </article>
@@ -132,11 +123,8 @@ export function TodayScreen() {
   const t = useT().today.home;
 
   const [filter, setFilter] = useState<Filter>('all');
-  const [liked, setLiked] = useState<Record<string, boolean>>({});
   const [collapsed, setCollapsed] = useState(false);
   const feedRef = useRef<HTMLDivElement>(null);
-
-  const toggleLike = useCallback((id: BookId) => setLiked((m) => ({ ...m, [id]: !m[id] })), []);
 
   // scroll collapse with hysteresis: collapse past 42, expand back under 8
   const onScroll = () => {
@@ -151,9 +139,7 @@ export function TodayScreen() {
   // then split even→left / odd→right for the waterfall
   const [colL, colR] = useMemo(() => {
     const ids = FEED.filter((id) => filter === 'all' || getBook(id)?.g === filter);
-    const cells: ReactNode[] = ids.map((id) => (
-      <BookCard key={id} id={id} liked={!!liked[id]} onLike={toggleLike} />
-    ));
+    const cells: ReactNode[] = ids.map((id) => <BookCard key={id} id={id} />);
     if (filter === 'all' && latestSave) {
       cells.splice(Math.min(2, cells.length), 0, <KeeperCard key={`keeper-${latestSave}`} id={latestSave} />);
     }
@@ -161,7 +147,7 @@ export function TodayScreen() {
     const R: ReactNode[] = [];
     cells.forEach((node, i) => (i % 2 ? R : L).push(node));
     return [L, R];
-  }, [filter, liked, latestSave, toggleLike]);
+  }, [filter, latestSave]);
 
   const empty = colL.length === 0 && colR.length === 0;
 

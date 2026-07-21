@@ -116,7 +116,9 @@ export function SelectionBar() {
           {t.copy}
         </button>
         <button type="button" onClick={keep}>
-          <Icon name="ti-quote" />
+          <svg className="owl pb-sel-owl" viewBox="0 0 120 130" aria-hidden="true">
+            <use href="#owl-scribe" />
+          </svg>
           {t.saveQuote}
         </button>
         <button type="button" onClick={ask}>

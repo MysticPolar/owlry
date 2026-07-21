@@ -205,6 +205,9 @@ function DealCard({ id }: { id: BookRef }) {
             {t.discover.about}
           </button>
           <button type="button" className="pb-dc-go" data-letter={id} onClick={() => openLetter(id)}>
+            <svg className="owl pb-dc-owl" viewBox="0 0 120 130" aria-hidden="true">
+              <use href="#owl-peek" />
+            </svg>
             {t.discover.peek}
           </button>
         </div>

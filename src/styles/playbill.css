@@ -243,8 +243,6 @@
 .pb-iconbtn .ti { font-size: 14px; }
 .pb-like { color: var(--pb-like); }
 .pb-like.on { color: var(--pb-like-on); }
-.pb-mark { color: var(--pb-ink-mute); }
-.pb-mark.on { color: var(--pb-brass-deep); }
 
 /* ---------- Keeper card (conditional) ---------- */
 .pb-keeper {
@@ -597,7 +595,8 @@
 }
 .pb-dc-about:active, .pb-dc-go:active { transform: scale(.95); }
 .pb-dc-about { background: none; border: 1px solid var(--pb-brass-deep); color: var(--pb-brass-deep); }
-.pb-dc-go { background: var(--pb-brass); border: 1px solid var(--pb-brass); color: var(--pb-brass-ink); }
+.pb-dc-go { background: var(--pb-brass); border: 1px solid var(--pb-brass); color: var(--pb-brass-ink); display: inline-flex; align-items: center; justify-content: center; gap: 5px; }
+.pb-dc-owl { width: 18px; height: 19px; flex: 0 0 auto; filter: none; margin: -4px 0; }
 
 /* ============================================================
    PROFILE (Mirror's room) — identity on the stage, panels on paper
@@ -758,6 +757,24 @@
 .pb-psheet .mem-forget .btn:not(.ghost) { background: #8C2431; color: #FBF3E2; box-shadow: none; }
 .pb-psheet .gate-err { color: #8C2431; }
 .pb-psheet .gate-switch { color: var(--pb-brass-deep); }
+
+/* ---------- history overlay → a cream ledger ----------
+   It slides up on a cream ground but its text/rows inherited the dark-theme
+   colours, so the "HISTORY" title and row text read invisible. Retint to ink
+   on cream (scoped .history, so nothing else moves). */
+.history { background: var(--pb-paper); color: var(--pb-ink); }
+.history .l-top { border-bottom: 1px solid var(--pb-paper-line); }
+.history .l-top .d { color: var(--pb-ink); }
+.history .l-top .iconbtn.lite { background: var(--pb-paper-dim); border: 1px solid var(--pb-paper-line); box-shadow: none; color: var(--pb-ink-mute); }
+.history .hist-empty { color: var(--pb-ink-mute); }
+.history .hist-row { background: var(--pb-paper-dim); border: 1px solid var(--pb-paper-line); box-shadow: none; color: var(--pb-ink); }
+.history .hist-row-day { color: var(--pb-ink); }
+.history .hist-row-ask { color: var(--pb-ink-mute); }
+.history .hist-row-count { background: var(--pb-paper); color: var(--pb-ink-mute); }
+/* a historical transcript reuses the chat bubbles — cream owl, espresso reader */
+.history .msg.owl { background: var(--pb-paper-dim); border-color: var(--pb-paper-line); box-shadow: none; color: var(--pb-ink); }
+.history .msg.me { background: var(--pb-stage); color: var(--pb-cream); border-color: transparent; }
+.history .msg .bk, .history .chat-excerpt { color: var(--pb-brass-deep); }
 
 /* ============================================================
    SETTINGS — house management, backstage on the espresso stage
