@@ -143,6 +143,12 @@ export interface Store extends PersistedState {
   setTab: (t: Tab) => void;
   startAsk: (id: BookRef) => void;
   askText: (text: string) => void;
+  /** the line pulled from the selection bar, waiting for the reader's question */
+  askQuote: string | null;
+  beginAskQuote: (text: string) => void;
+  cancelAskQuote: () => void;
+  /** compose the held quote + the reader's question and send it straight to scout */
+  submitAskQuote: (question: string) => void;
   clearScoutDraft: () => void;
   setLibTab: (t: LibTab) => void;
   toggleSave: (id: BookRef) => void;
@@ -288,6 +294,7 @@ export const useStore = create<Store>()(
     introAfter: null,
     mirrorRoomOpen: false,
     scoutDraft: '',
+    askQuote: null,
     showOnboarding: false,
     openedLetters: [],
     shelfFly: null,
@@ -511,6 +518,23 @@ export const useStore = create<Store>()(
       const q = text.trim().slice(0, 240);
       if (!q) return;
       set({ activeTab: 'discover', scoutDraft: q });
+    },
+    // selection → "Ask": hold the line while the reader writes their question
+    beginAskQuote: (text) => {
+      const q = text.trim().slice(0, 240);
+      if (!q) return;
+      set({ askQuote: q });
+    },
+    cancelAskQuote: () => set({ askQuote: null }),
+    // the reader's question lands: quote + question compose into one line that
+    // goes straight to scout's desk (the “…” renders as an excerpt in the pill)
+    submitAskQuote: (question) => {
+      const quote = get().askQuote;
+      if (!quote) return;
+      const q = question.trim();
+      const composed = q ? `“${quote}” — ${q}` : `“${quote}”`;
+      set({ askQuote: null, activeTab: 'discover', deskMode: 'all' });
+      get().sendToOwl(composed);
     },
     clearScoutDraft: () => set({ scoutDraft: '' }),
     setLibTab: (t) => set({ libTab: t }),

@@ -73,6 +73,11 @@ const en = {
       saveQuote: 'Save quote',
       ask: 'Ask',
       copied: 'copied',
+      askAria: 'Ask scout about this line',
+      askTitle: 'ASK SCOUT',
+      askPlaceholder: 'what do you want to ask about this line?',
+      askSend: 'ASK',
+      askCancelAria: 'Cancel',
     },
   },
 
@@ -201,6 +206,11 @@ const zh: typeof en = {
       saveQuote: '存下这句',
       ask: '问一问',
       copied: '已复制',
+      askAria: '就这一句问问 scout',
+      askTitle: '问问 SCOUT',
+      askPlaceholder: '关于这一句，你想问什么？',
+      askSend: '发问',
+      askCancelAria: '取消',
     },
   },
 

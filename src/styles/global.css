@@ -211,10 +211,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .letter .btn.ghost,.reader .btn.ghost{color:var(--letter-ink);border-color:rgba(60,44,16,.3)}
 .btn:active,.save:active,.iconbtn:active,.chip:active{transform:translateY(2px);box-shadow:none}
 
-/* ---------- dots ---------- */
-.dots{position:relative;z-index:1;display:flex;align-items:center;justify-content:flex-end;gap:7px;padding:16px 26px 0}
-.dot{width:14px;height:3px;border:0;padding:0;background:var(--line2);border-radius:2px;cursor:pointer;transition:width .25s,height .25s,background .25s,border-radius .25s}
-.dot.on{width:7px;height:7px;border-radius:50%;background:var(--yellow);box-shadow:0 0 8px rgba(255,192,23,.5)}
+/* (the pagination-.dots carousel retired with the old pick carousel — the bare
+   `.dot` selector was bleeding a --line2 box behind the wordmark period) */
 
 /* ---------- sections & shelf ---------- */
 .sec{padding:24px 0 0;position:relative;z-index:1}

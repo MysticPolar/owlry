@@ -7,6 +7,7 @@
 const en = {
   /* ---- shared chrome ---- */
   saveAria: 'Save to library',
+  closeAria: 'Close',
   pages: (n: number) => `${n} pages`,
   pageOf: (p: number, n: number) => `p. ${p} of ${n}`,
   prevPageAria: 'Previous page',
@@ -99,6 +100,7 @@ const en = {
 const zh: typeof en = {
   /* ---- shared chrome ---- */
   saveAria: '收进书房',
+  closeAria: '关闭',
   pages: (n: number) => `${n} 页`,
   pageOf: (p: number, n: number) => `第 ${p} 页 · 共 ${n} 页`,
   prevPageAria: '上一页',

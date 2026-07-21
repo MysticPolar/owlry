@@ -20,6 +20,7 @@ function StatChips() {
   const xp = useStore((s) => s.xp);
   const xpMax = useStore((s) => s.xpMax);
   const ink = useStore((s) => s.ink);
+  const inkMax = useStore((s) => s.inkMax);
   const t = useT().today.home;
   const xpPct = Math.min(100, Math.max(0, (xp / Math.max(1, xpMax)) * 100));
   return (
@@ -35,7 +36,7 @@ function StatChips() {
       </div>
       <div className="pb-chip" aria-label={t.statInk(ink)}>
         <Icon name="ti-inkdrop" className="drop" />
-        <span className="n">{ink}</span>
+        <span className="n">{ink}<span className="pb-chip-max">/{inkMax}</span></span>
       </div>
     </div>
   );

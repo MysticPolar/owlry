@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useStore } from '../../store/useStore';
 import { useT } from '../../i18n/react';
-import { getBook, hasGuide } from '../../lib/bookRegistry';
+import { getBook } from '../../lib/bookRegistry';
 import { useBookMeta } from '../../hooks/useBookMeta';
 import { Icon } from '../Icon';
 import { Cover } from '../Cover';
@@ -12,7 +12,6 @@ export function Sheet() {
   const sheetId = useStore((s) => s.sheetId);
   const openLetter = useStore((s) => s.openLetter);
   const openBook = useStore((s) => s.openBook);
-  const startAsk = useStore((s) => s.startAsk);
   const closeSheet = useStore((s) => s.closeSheet);
   const toggleSave = useStore((s) => s.toggleSave);
   const showToast = useStore((s) => s.showToast);
@@ -21,7 +20,6 @@ export function Sheet() {
 
   const id = sheetId;
   const b = id ? getBook(id) : null;
-  const guide = id ? hasGuide(id) : false;
   const meta = useBookMeta(id);
 
   // Esc closes the sheet (listener lives only while the sheet is open). openBook
@@ -48,6 +46,9 @@ export function Sheet() {
       aria-modal="true"
       aria-label={t.reader.sheetAria}
     >
+      <button className="pb-sh-close" aria-label={t.reader.closeAria} onClick={closeSheet}>
+        <Icon name="ti-x" />
+      </button>
       <button
         className={`pb-sh-save ${saved ? 'on' : ''}`}
         aria-label={t.reader.saveAria}
@@ -98,14 +99,10 @@ export function Sheet() {
         {b.i ?? meta?.description ?? b.q}
       </ClampText>
       <div className="pb-cta-row">
-        <button className="pb-cta" onClick={() => { closeSheet(); startAsk(id); }}>
-          <Icon name="ti-message-circle" /><span className="pb-cta-t">{t.reader.askBtn}</span>
+        <button className="pb-cta" onClick={() => openLetter(id)}>
+          <svg className="owl pb-cta-owl" viewBox="0 0 120 130" aria-hidden="true"><use href="#owl-peek" /></svg>
+          <span className="pb-cta-t">{t.reader.peekBtn}</span>
         </button>
-        {guide && (
-          <button className="pb-cta" onClick={() => hasGuide(id) && openLetter(id)}>
-            <Icon name="ti-eye" /><span className="pb-cta-t">{t.reader.peekBtn}</span>
-          </button>
-        )}
         <button className="pb-cta fill" onClick={() => openBook(id)}>
           <Icon name="ti-mail" /><span className="pb-cta-t">{resuming ? t.reader.resumeBtn : t.reader.openBtn}</span>
         </button>

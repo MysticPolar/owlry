@@ -15,12 +15,16 @@ interface Anchor {
  * The selection action bar — select any text in the house (a title, an author,
  * a line of chat, a summary) and a small glass rail appears above it:
  * Copy · Save quote · Ask. One Playbill glass object, anchored to the words.
+ *
+ * "Ask" hands the line to a small question panel (AskQuotePanel below) — the
+ * reader writes what they want to know, and the quote + question go straight
+ * to scout's desk.
  */
 export function SelectionBar() {
   const t = useT().today.chrome.selection;
   const showToast = useStore((s) => s.showToast);
   const saveQuote = useStore((s) => s.saveQuote);
-  const askText = useStore((s) => s.askText);
+  const beginAskQuote = useStore((s) => s.beginAskQuote);
   const [anchor, setAnchor] = useState<Anchor | null>(null);
   const barRef = useRef<HTMLDivElement>(null);
   const debounce = useRef<number>(0);
@@ -69,7 +73,7 @@ export function SelectionBar() {
     };
   }, []);
 
-  if (!anchor) return null;
+  if (!anchor) return <AskQuotePanel />;
 
   const dismiss = () => {
     window.getSelection()?.removeAllRanges();
@@ -92,32 +96,112 @@ export function SelectionBar() {
   };
 
   const ask = () => {
-    askText(anchor.text);
+    beginAskQuote(anchor.text);
     dismiss();
   };
 
   return (
-    <div
-      ref={barRef}
-      className="pb-selbar"
-      role="toolbar"
-      aria-label={t.aria}
-      style={{ left: anchor.x, top: anchor.y }}
-      // keep the selection alive while tapping the bar
-      onMouseDown={(e) => e.preventDefault()}
-    >
-      <button type="button" onClick={copy}>
-        <Icon name="ti-copy" />
-        {t.copy}
-      </button>
-      <button type="button" onClick={keep}>
-        <Icon name="ti-quote" />
-        {t.saveQuote}
-      </button>
-      <button type="button" onClick={ask}>
-        <Icon name="ti-feather" />
-        {t.ask}
-      </button>
+    <>
+      <div
+        ref={barRef}
+        className="pb-selbar"
+        role="toolbar"
+        aria-label={t.aria}
+        style={{ left: anchor.x, top: anchor.y }}
+        // keep the selection alive while tapping the bar
+        onMouseDown={(e) => e.preventDefault()}
+      >
+        <button type="button" onClick={copy}>
+          <Icon name="ti-copy" />
+          {t.copy}
+        </button>
+        <button type="button" onClick={keep}>
+          <Icon name="ti-quote" />
+          {t.saveQuote}
+        </button>
+        <button type="button" onClick={ask}>
+          <Icon name="ti-feather" />
+          {t.ask}
+        </button>
+      </div>
+      <AskQuotePanel />
+    </>
+  );
+}
+
+/**
+ * The question panel — raised once the reader taps "Ask" on a selected line.
+ * The quote is shown as an excerpt; the reader writes their question; on send
+ * the two compose into one line dispatched straight to scout (the store handles
+ * switching to the Ask tab and streaming the reply).
+ */
+function AskQuotePanel() {
+  const t = useT().today.chrome.selection;
+  const quote = useStore((s) => s.askQuote);
+  const cancel = useStore((s) => s.cancelAskQuote);
+  const submit = useStore((s) => s.submitAskQuote);
+  const [q, setQ] = useState('');
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  // fresh field each time a new line is picked up; focus once it opens
+  useEffect(() => {
+    if (quote) {
+      setQ('');
+      const id = window.setTimeout(() => inputRef.current?.focus(), 60);
+      return () => window.clearTimeout(id);
+    }
+  }, [quote]);
+
+  useEffect(() => {
+    if (!quote) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') cancel();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [quote, cancel]);
+
+  if (!quote) return null;
+
+  const send = () => submit(q);
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    // Enter sends; Shift+Enter keeps a newline for longer questions
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      send();
+    }
+  };
+
+  return (
+    <div className="pb-askq-scrim" onClick={cancel} role="presentation">
+      <div
+        className="pb-askq"
+        role="dialog"
+        aria-modal="true"
+        aria-label={t.askAria}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="pb-askq-top">
+          <span className="pb-askq-kick">{t.askTitle}</span>
+          <button type="button" className="pb-askq-x" aria-label={t.askCancelAria} onClick={cancel}>
+            <Icon name="ti-x" />
+          </button>
+        </div>
+        <blockquote className="pb-askq-quote">{quote}</blockquote>
+        <textarea
+          ref={inputRef}
+          className="pb-askq-input"
+          rows={2}
+          placeholder={t.askPlaceholder}
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+          onKeyDown={onKeyDown}
+        />
+        <button type="button" className="pb-askq-send" onClick={send}>
+          <Icon name="ti-feather" />
+          {t.askSend}
+        </button>
+      </div>
     </div>
   );
 }

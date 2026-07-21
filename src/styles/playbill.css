@@ -148,6 +148,7 @@
   background: var(--pb-chip-bg); border-radius: 999px; padding: 6px 12px;
 }
 .pb-chip .n { font-size: 14px; font-weight: 600; color: var(--pb-cream); font-family: 'Inter Tight', sans-serif; }
+.pb-chip-max { color: var(--pb-cream-mute); font-weight: 500; }
 .pb-chip .ti { font-size: 17px; }
 .pb-chip .crown { color: var(--pb-candy-crown); }
 .pb-chip .bolt { color: var(--pb-candy-bolt); }
@@ -325,18 +326,20 @@
 .pb-sheet.on { animation: pbSheetUp .42s cubic-bezier(.32,.72,.28,1); }
 @keyframes pbSheetUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 
-/* save heart, top-right */
-.pb-sh-save {
-  position: absolute; top: 16px; right: 16px; z-index: 3;
+/* close (top-left) + save (top-right) — floating paper discs over the header */
+.pb-sh-save, .pb-sh-close {
+  position: absolute; top: 16px; z-index: 3;
   width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
   background: var(--pb-paper-dim); border: 1px solid var(--pb-paper-line); border-radius: 999px;
   cursor: pointer; color: var(--pb-ink-mute); box-shadow: none; touch-action: manipulation;
 }
-.pb-sh-save .ti { font-size: 18px; }
+.pb-sh-save { right: 16px; }
+.pb-sh-close { left: 16px; }
+.pb-sh-save .ti, .pb-sh-close .ti { font-size: 18px; }
 .pb-sh-save.on { color: var(--pb-like-on); border-color: var(--pb-like-on); }
 
-/* header: cover + info */
-.pb-sh-flex { display: flex; gap: 14px; padding-right: 44px; }
+/* header: cover + info — pushed below the floating close/save discs */
+.pb-sh-flex { display: flex; gap: 14px; padding: 40px 0 0; }
 .pb-sheet .cover { box-shadow: none; border: 1px solid var(--pb-paper-line); }
 .pb-sh-info { flex: 1; min-width: 0; }
 .pb-sh-ttl { font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 22px; line-height: 1.1; color: var(--pb-ink); }
@@ -351,16 +354,17 @@
 .pb-sh-intro { margin: 14px 0 0; font-family: 'Fraunces', Georgia, serif; font-size: 14px; line-height: 1.55; color: var(--pb-cap-ink); }
 .pb-sheet .more-btn { font-family: 'Inter Tight', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: .5px; color: var(--pb-brass-deep); background: none; border: 0; padding: 4px 0 0; cursor: pointer; }
 
-/* CTA trio — ghost ASK/PEEK + brass-fill OPEN */
+/* CTA pair — ghost PEEK (peek's owl) + brass-fill OPEN */
 .pb-cta-row { display: flex; gap: 8px; margin-top: 16px; }
 .pb-cta {
   display: flex; align-items: center; justify-content: center; gap: 7px; flex: 1;
-  border-radius: 999px; padding: 11px 6px; cursor: pointer; background: none;
+  border-radius: 999px; padding: 10px 6px; cursor: pointer; background: none;
   border: 1.5px solid var(--pb-brass-deep); color: var(--pb-brass-deep);
   transition: transform .15s ease; touch-action: manipulation;
 }
 .pb-cta:active { transform: scale(.96); }
 .pb-cta .ti { font-size: 15px; }
+.pb-cta-owl { width: 22px; height: 24px; filter: none; flex: 0 0 auto; margin: -4px 0; }
 .pb-cta-t { font-family: 'Anton', sans-serif; font-weight: 400; font-size: 13px; letter-spacing: 2.5px; }
 .pb-cta.fill { background: var(--pb-brass); border-color: var(--pb-brass); color: var(--pb-brass-ink); }
 
@@ -484,6 +488,55 @@
 .pb-selbar button:active { background: rgba(217,169,79,.16); }
 .pb-selbar button .ti { font-size: 13px; color: var(--pb-brass); }
 
+/* ---------- the ask panel: a line handed to scout, awaiting the question ---------- */
+.pb-askq-scrim {
+  position: absolute; inset: 0; z-index: 40;
+  display: flex; align-items: flex-end; justify-content: center;
+  padding: 0 12px calc(14px + env(safe-area-inset-bottom));
+  background: rgba(12,8,5,.5); -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px);
+  animation: pbAskFade .18s ease both;
+}
+@keyframes pbAskFade { from { opacity: 0; } to { opacity: 1; } }
+.pb-askq {
+  width: 100%; max-width: 380px;
+  background: var(--pb-paper); border: 1px solid var(--pb-paper-line); border-radius: 20px;
+  box-shadow: 0 18px 40px rgba(0,0,0,.4); padding: 16px 16px 14px;
+  animation: pbAskUp .24s cubic-bezier(.2,.9,.25,1) both;
+}
+@keyframes pbAskUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+.pb-askq-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.pb-askq-kick { font-family: 'Anton', sans-serif; font-weight: 400; font-size: 12px; letter-spacing: 2.5px; color: var(--pb-brass-deep); }
+.pb-askq-x {
+  width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
+  background: var(--pb-paper-dim); border: 1px solid var(--pb-paper-line); border-radius: 999px;
+  color: var(--pb-ink-mute); cursor: pointer; touch-action: manipulation;
+}
+.pb-askq-x .ti { font-size: 16px; }
+.pb-askq-quote {
+  margin: 0 0 12px; padding: 9px 12px; border-left: 3px solid var(--pb-brass);
+  background: var(--pb-paper-dim); border-radius: 0 8px 8px 0;
+  font-family: 'Fraunces', Georgia, serif; font-style: italic; font-size: 14px; line-height: 1.45;
+  color: var(--pb-ink);
+  display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
+}
+.pb-askq-input {
+  width: 100%; box-sizing: border-box; resize: none;
+  background: none; border: 1px solid var(--pb-paper-line); border-radius: 12px;
+  padding: 10px 12px; color: var(--pb-ink);
+  font: 400 14px 'Inter Tight', sans-serif; line-height: 1.4;
+}
+.pb-askq-input::placeholder { color: var(--pb-ink-mute); }
+.pb-askq-input:focus { outline: none; border-color: var(--pb-brass); }
+.pb-askq-send {
+  display: flex; align-items: center; justify-content: center; gap: 7px; width: 100%;
+  margin-top: 12px; padding: 11px 6px; border-radius: 999px; cursor: pointer;
+  background: var(--pb-brass); border: 1.5px solid var(--pb-brass); color: var(--pb-brass-ink);
+  font-family: 'Anton', sans-serif; font-weight: 400; font-size: 13px; letter-spacing: 2.5px;
+  transition: transform .15s ease; touch-action: manipulation;
+}
+.pb-askq-send:active { transform: scale(.97); }
+.pb-askq-send .ti { font-size: 15px; }
+
 /* ---------- the dealt hand: three cards fanned after scout's reply ---------- */
 .pb-dealrow {
   display: flex; gap: 10px; margin: 6px -18px 14px; padding: 2px 18px 4px;
@@ -500,9 +553,8 @@
 .pb-dealcard .pb-cover { border-radius: 4px; }
 .pb-dc-body { padding: 7px 2px 8px; }
 .pb-dc-t {
-  font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 13px; line-height: 1.25;
-  color: var(--pb-ink); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-  overflow: hidden; min-height: 2.5em;
+  font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 13px; line-height: 1.3;
+  color: var(--pb-ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .pb-dc-a { font-size: 10.5px; color: var(--pb-ink-mute); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .pb-dc-cta { display: flex; gap: 6px; }
@@ -513,7 +565,7 @@
   cursor: pointer; touch-action: manipulation; transition: transform .15s ease;
 }
 .pb-dc-about:active, .pb-dc-go:active { transform: scale(.95); }
-.pb-dc-about { flex: 0 0 auto; padding: 7px 11px; background: none; border: 1px solid var(--pb-brass-deep); color: var(--pb-brass-deep); }
+.pb-dc-about { background: none; border: 1px solid var(--pb-brass-deep); color: var(--pb-brass-deep); }
 .pb-dc-go { background: var(--pb-brass); border: 1px solid var(--pb-brass); color: var(--pb-brass-ink); }
 
 /* ============================================================
