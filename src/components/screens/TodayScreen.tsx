@@ -62,13 +62,15 @@ function BookCard({ id }: { id: BookId }) {
   const openSheet = useStore((s) => s.openSheet);
   const toggleSave = useStore((s) => s.toggleSave);
   const saved = useStore((s) => s.savedIds.includes(id));
+  const [disliked, setDisliked] = useState(false);
   const t = useT().today.home;
   if (!b) return null;
 
   const open = () => openSheet(id);
-  // the heart IS the save — a hearted book lands in the reader's library
+  // the heart IS the save (a hearted book lands in the library); the down-vote
+  // is a quiet "not for me" — it fades the post so scout learns the taste
   return (
-    <article className="pb-card">
+    <article className={`pb-card ${disliked ? 'disliked' : ''}`}>
       <button type="button" className="pb-open" aria-label={t.openAria(b.t)} onClick={open}>
         <Cover id={id} cls="pb-cover" />
         <span className="body">
@@ -85,6 +87,16 @@ function BookCard({ id }: { id: BookId }) {
         >
           <Icon name={saved ? 'ti-heart-filled' : 'ti-heart'} />
           <span>{fmtCount(feedLikes(id) + (saved ? 1 : 0))}</span>
+        </button>
+        <span className="sp" />
+        <button
+          type="button"
+          className={`pb-iconbtn pb-down ${disliked ? 'on' : ''}`}
+          aria-label={t.dislikeAria(b.t)}
+          aria-pressed={disliked}
+          onClick={() => setDisliked((v) => !v)}
+        >
+          <Icon name={disliked ? 'ti-arrow-big-down-filled' : 'ti-arrow-big-down'} />
         </button>
       </div>
     </article>

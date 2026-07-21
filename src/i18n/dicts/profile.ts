@@ -63,6 +63,7 @@ const en = {
   mem: {
     fetching: 'fetching what the owl remembers…',
     title: 'WHAT THE OWL REMEMBERS',
+    subtitle: 'the owl’s notes on you — yours to edit or erase.',
     emptyAll: 'nothing yet — a few conversations and this fills in.',
     whoYouAre: 'who you are',
     workingThrough: "what you're working through lately",
@@ -140,6 +141,7 @@ const zh: typeof en = {
   mem: {
     fetching: '正在取回猫头鹰的记忆…',
     title: '猫头鹰记得的事',
+    subtitle: '猫头鹰为你记下的笔记 — 你可以修改，也可以清空。',
     emptyAll: '暂时还没有 — 聊上几回，这里会慢慢填满。',
     whoYouAre: '你是谁',
     workingThrough: '你最近在经历什么',

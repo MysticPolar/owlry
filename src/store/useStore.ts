@@ -97,6 +97,8 @@ export interface Store extends PersistedState {
   burstNonce: number;
   owl: OwlState;
   deskMode: DeskMode;
+  /** bumped on every successful desk switch → the centered avatar hint replays */
+  deskSwitchNonce: number;
   /** the first-use owl intro card on screen, or null; introAfter opens after peek's */
   introCard: IntroKey | null;
   introAfter: BookRef | null;
@@ -290,6 +292,7 @@ export const useStore = create<Store>()(
       pending: null,
     },
     deskMode: 'all',
+    deskSwitchNonce: 0,
     introCard: null,
     introAfter: null,
     mirrorRoomOpen: false,
@@ -903,6 +906,7 @@ export const useStore = create<Store>()(
           messages: [...st.owl.messages, { kind: 'msg', id: nextId(), who: 'owl', nodes: ack }],
         },
         owlReact: { owl: 'scout', nonce: (st.owlReact?.nonce ?? 0) + 1 },
+        deskSwitchNonce: st.deskSwitchNonce + 1,
       }));
     },
 

@@ -12,6 +12,7 @@ import { useStore } from '../../store/useStore';
 import { supabase } from '../../lib/supabase';
 import { useT } from '../../i18n/react';
 import { Icon } from '../Icon';
+import { CastOwl } from '../CastOwl';
 
 interface LongTerm {
   profile: string;
@@ -127,35 +128,43 @@ export function MemoryCard() {
     !longTerm.goals.length && !longTerm.books.length && !topics.length;
 
   return (
-    <div className="pcard">
-      <div className="sh-sec" style={{ marginTop: 0 }}>{t.profile.mem.title}</div>
+    <div className="pcard pb-mem">
+      <div className="pb-mem-head">
+        <CastOwl owl="mirror" cls="mini" />
+        <div className="pb-mem-head-txt">
+          <div className="pb-mem-head-t">{t.profile.mem.title}</div>
+          <div className="pb-mem-head-sub">{t.profile.mem.subtitle}</div>
+        </div>
+      </div>
       {nothingYet && <p className="mem-empty">{t.profile.mem.emptyAll}</p>}
 
-      <label className="gate-label" htmlFor="memProfile">{t.profile.mem.whoYouAre}</label>
-      <input
-        id="memProfile"
-        className="gate-input"
-        style={{ marginTop: 4 }}
-        maxLength={CAPS.profile}
-        value={profileDraft}
-        onChange={(e) => setProfileDraft(e.target.value)}
-        onBlur={saveProfileFocus}
-        placeholder={t.profile.mem.notLearned}
-      />
+      <div className="pb-mem-portrait">
+        <label className="gate-label" htmlFor="memProfile">{t.profile.mem.whoYouAre}</label>
+        <input
+          id="memProfile"
+          className="gate-input"
+          style={{ marginTop: 4 }}
+          maxLength={CAPS.profile}
+          value={profileDraft}
+          onChange={(e) => setProfileDraft(e.target.value)}
+          onBlur={saveProfileFocus}
+          placeholder={t.profile.mem.notLearned}
+        />
 
-      <label className="gate-label" htmlFor="memFocus" style={{ marginTop: 12, display: 'block' }}>
-        {t.profile.mem.workingThrough}
-      </label>
-      <input
-        id="memFocus"
-        className="gate-input"
-        style={{ marginTop: 4 }}
-        maxLength={CAPS.focus}
-        value={focusDraft}
-        onChange={(e) => setFocusDraft(e.target.value)}
-        onBlur={saveProfileFocus}
-        placeholder={t.profile.mem.notLearned}
-      />
+        <label className="gate-label" htmlFor="memFocus" style={{ marginTop: 12, display: 'block' }}>
+          {t.profile.mem.workingThrough}
+        </label>
+        <input
+          id="memFocus"
+          className="gate-input"
+          style={{ marginTop: 4 }}
+          maxLength={CAPS.focus}
+          value={focusDraft}
+          onChange={(e) => setFocusDraft(e.target.value)}
+          onBlur={saveProfileFocus}
+          placeholder={t.profile.mem.notLearned}
+        />
+      </div>
 
       <div className="sh-sec">{t.profile.mem.love}</div>
       <div className="mem-row">

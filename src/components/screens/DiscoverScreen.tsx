@@ -474,6 +474,34 @@ function GuestDeskLevel() {
   );
 }
 
+/* a big centered owl flashes on a successful desk switch — scout for the whole
+   desk, scout pro for office hours — so the mode change is felt, not just read */
+function DeskSwitchHint() {
+  const t = useT();
+  const nonce = useStore((s) => s.deskSwitchNonce);
+  const pro = useStore((s) => s.deskMode === 'pro');
+  const [visible, setVisible] = useState(false);
+  const first = useRef(true);
+  useEffect(() => {
+    if (first.current) {
+      first.current = false;
+      return;
+    }
+    setVisible(true);
+    const id = setTimeout(() => setVisible(false), 1150);
+    return () => clearTimeout(id);
+  }, [nonce]);
+  if (!visible) return null;
+  return (
+    <div className="pb-deskhint" key={nonce} aria-hidden="true">
+      <svg className="owl" viewBox="0 0 120 130">
+        <use href={`#owl-scout${pro ? '-pro' : ''}`} />
+      </svg>
+      <span className="pb-deskhint-lbl">{pro ? t.discover.deskNonFiction : t.discover.deskAll}</span>
+    </div>
+  );
+}
+
 export function DiscoverScreen() {
   const t = useT();
   const active = useStore((s) => s.activeTab === 'discover');
@@ -519,6 +547,7 @@ export function DiscoverScreen() {
       <Chat reduce={reduce} />
       <Chips />
       <Composer onTyping={setTyping} />
+      <DeskSwitchHint />
     </section>
   );
 }

@@ -243,6 +243,10 @@
 .pb-iconbtn .ti { font-size: 14px; }
 .pb-like { color: var(--pb-like); }
 .pb-like.on { color: var(--pb-like-on); }
+/* down-vote lives in the post's bottom-right — a quiet "not for me" */
+.pb-down { color: var(--pb-ink-mute); }
+.pb-down.on { color: var(--pb-ink-soft); }
+.pb-card.disliked .pb-open { opacity: .4; transition: opacity .2s ease; }
 
 /* ---------- Keeper card (conditional) ---------- */
 .pb-keeper {
@@ -426,6 +430,29 @@
 #screen-discover.typing .pb-stagebar-wm {
   color: var(--pb-cream-mute); opacity: .5; text-shadow: 0 1px 5px rgba(0,0,0,.55);
 }
+
+/* the desk-switch hint: a big owl (scout / scout pro) flashes centre-stage to
+   confirm the mode change, then fades — pointer-transparent, replays per switch */
+.pb-deskhint {
+  position: absolute; inset: 0; z-index: 22; pointer-events: none;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
+  animation: pbDeskHint 1.15s ease both;
+}
+.pb-deskhint .owl { width: 130px; height: 141px; filter: drop-shadow(0 14px 26px rgba(0,0,0,.55)); }
+.pb-deskhint-lbl {
+  font-family: 'Anton', sans-serif; font-size: 15px; letter-spacing: 3px; color: var(--pb-brass);
+  background: rgba(20,13,10,.72); border: 1px solid var(--pb-brass-deep); border-radius: 999px;
+  padding: 7px 18px; -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+}
+@keyframes pbDeskHint {
+  0% { opacity: 0; transform: scale(.72); }
+  16% { opacity: 1; transform: scale(1.06); }
+  28% { transform: scale(1); }
+  72% { opacity: 1; }
+  100% { opacity: 0; transform: scale(.97); }
+}
+@media (prefers-reduced-motion: reduce) { .pb-deskhint { animation: pbDeskFade 1.15s ease both; } }
+@keyframes pbDeskFade { 0% { opacity: 0; } 15% { opacity: 1; } 75% { opacity: 1; } 100% { opacity: 0; } }
 
 /* chat: Scout speaks plainly on the stage — the app's calm editorial layout +
    colours are re-tinted at their (!important) source in global.css; these are
@@ -705,6 +732,8 @@
 .pb-psheet .mini-fill { background: var(--pb-brass); }
 .pb-psheet .g-heart { background: var(--pb-brass); box-shadow: none; }
 .pb-psheet .g-heart .ti { color: var(--pb-brass-ink); }
+/* saved-grid titles inherited the light night-ink; make them read on the cream */
+.pb-psheet .g-item, .pb-psheet .g-title { color: var(--pb-ink); }
 .pb-psheet .g-auth { color: var(--pb-ink-mute); }
 .pb-psheet .fin { color: var(--pb-owl-moss-ink); }
 .pb-psheet .done-badge { background: var(--pb-owl-moss); }
@@ -757,6 +786,15 @@
 .pb-psheet .mem-forget .btn:not(.ghost) { background: #8C2431; color: #FBF3E2; box-shadow: none; }
 .pb-psheet .gate-err { color: #8C2431; }
 .pb-psheet .gate-switch { color: var(--pb-brass-deep); }
+/* memory header — the mirror owl introduces the owl's private notes on you */
+.pb-mem-head { display: flex; align-items: center; gap: 12px; }
+.pb-mem-head .owl.mini { position: static; width: 46px; height: 50px; flex: 0 0 46px; filter: none; }
+.pb-mem-head-t { font-family: 'Anton', sans-serif; font-size: 15px; letter-spacing: 1.5px; color: var(--pb-velvet); }
+.pb-mem-head-sub { font-family: 'Fraunces', Georgia, serif; font-style: italic; font-size: 12.5px; line-height: 1.35; color: var(--pb-ink-mute); margin-top: 3px; }
+/* the "who you are" portrait — the two free-text notes grouped on their own card */
+.pb-mem-portrait { margin-top: 14px; padding: 14px; background: var(--pb-paper-dim); border: 1px solid var(--pb-paper-line); border-radius: 14px; }
+.pb-mem-portrait .gate-input { background: var(--pb-paper); }
+.pb-mem .sh-sec { font-family: 'Inter Tight', sans-serif; font-size: 10px; }
 
 /* ---------- history overlay → a cream ledger ----------
    It slides up on a cream ground but its text/rows inherited the dark-theme
