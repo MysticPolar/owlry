@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useStore } from '../store/useStore';
 import { getActiveLang, type Lang } from '../i18n';
+import { useT } from '../i18n/react';
 import type { OwlName } from '../store/types';
 
 /* ============================================================
@@ -53,14 +54,6 @@ const VOICE: Record<Lang, Record<CastOwlName | 'scout-pro', string[]>> = {
   },
 };
 
-const JOB: Record<CastOwlName, string> = {
-  scout: 'the postmaster',
-  peek: 'first chapters',
-  scribe: 'the archive',
-  mirror: 'the radar',
-  keeper: 'the shelves',
-};
-
 /* each owl cycles through its lines across taps, anywhere in the app */
 const counters: Record<string, number> = { scout: 0, 'scout-pro': 0, peek: 0, scribe: 0, mirror: 0, keeper: 0 };
 
@@ -70,6 +63,7 @@ export function owlLine(owl: CastOwlName | 'scout-pro'): string {
 }
 
 export function CastOwl({ owl, cls, variant }: { owl: CastOwlName; cls: 'hero' | 'mini'; variant?: 'pro' }) {
+  const t = useT().settings.settings;
   const showToast = useStore((s) => s.showToast);
   const react = useStore((s) => s.owlReact);
   const [nonce, setNonce] = useState(0);
@@ -88,7 +82,7 @@ export function CastOwl({ owl, cls, variant }: { owl: CastOwlName; cls: 'hero' |
       viewBox="0 0 120 130"
       role="button"
       tabIndex={0}
-      aria-label={`${owl}, ${JOB[owl]} — tap for a word`}
+      aria-label={t.castTapAria(owl, t.castJobs[owl])}
       onClick={(e) => {
         speak();
         // pointer taps shouldn't leave a focus ring on a tabindex'd svg

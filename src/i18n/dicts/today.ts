@@ -59,6 +59,7 @@ const en = {
   /* ---------- app chrome ---------- */
   chrome: {
     navAria: 'Primary',
+    caption: 'browse the shelf · tap a post · ask scout · flip the profile tabs',
     nav: {
       today: 'Home',
       discover: 'Ask',
@@ -193,6 +194,7 @@ const zh: typeof en = {
   /* ---------- 界面 ---------- */
   chrome: {
     navAria: '主导航',
+    caption: '逛逛书架 · 点开一帖 · 问问 scout · 翻翻个人页',
     nav: {
       today: '首页',
       discover: '问一问',

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { useStore } from './store/useStore';
+import { useT } from './i18n/react';
 import { useAuth } from './store/useAuth';
 import { useKeyboardInset } from './hooks/useKeyboardInset';
 import { BottomNav, Toast, BurstLayer, Backdrop, GuestLevelButton } from './components/chrome';
@@ -42,6 +43,7 @@ function PlaybillCurtain() {
 }
 
 export default function App() {
+  const t = useT();
   const hydrated = useStore((s) => s.hydrated);
   const bootstrap = useStore((s) => s.bootstrap);
   const reduceMotion = useStore((s) => s.prefs.reduceMotion);
@@ -85,6 +87,9 @@ export default function App() {
 
   const appStyle = {
     ...(kb > 0 ? { paddingBottom: kb } : {}),
+    // exposed so absolute-positioned overlays (ask panel, auth) can lift their
+    // own inputs above the on-screen keyboard, which the .app padding can't reach
+    '--kb': `${kb}px`,
   } as CSSProperties;
 
   // Guest-first: the app is always usable without an account (the offline owl
@@ -132,7 +137,7 @@ export default function App() {
           )}
         </div>
       </div>
-      <p className="caption">browse the shelf · tap a post · ask scout · flip the profile tabs</p>
+      <p className="caption">{t.today.chrome.caption}</p>
     </div>
   );
 }

@@ -38,7 +38,8 @@ function useReduceMotion(): boolean {
    the tops sit unevenly (it reads as a shelf, not a bar chart) */
 const spineThickness = (id: BookRef): number => {
   const b = getBook(id);
-  return Math.max(9, Math.min(19, Math.round(9 + (b?.n || 250) / 78)));
+  // floor raised 9→14 so a thin-book spine is still a fingertip-sized tap target
+  return Math.max(14, Math.min(20, Math.round(9 + (b?.n || 250) / 78)));
 };
 const spineHeight = (id: BookRef): number => 20 + (id.charCodeAt(0) % 5);
 

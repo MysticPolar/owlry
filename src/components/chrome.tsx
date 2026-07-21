@@ -182,7 +182,7 @@ export function BurstLayer() {
       s.className = 'spark';
       s.style.left = cx + 'px';
       s.style.top = cy + 'px';
-      s.style.background = i % 2 ? 'var(--green)' : 'var(--yellow)';
+      s.style.background = i % 2 ? 'var(--pb-brass)' : 'var(--pb-cream)';
       s.style.setProperty('--dx', (Math.random() * 68 - 34).toFixed(0) + 'px');
       s.style.setProperty('--dy', (-10 - Math.random() * 34).toFixed(0) + 'px');
       layer.appendChild(s);

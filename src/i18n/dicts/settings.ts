@@ -71,6 +71,7 @@ const en = {
       mirror: 'the radar',
     },
     castAria: (name: string, job: string) => `${name} — ${job}`,
+    castTapAria: (owl: string, job: string) => `${owl}, ${job} — tap for a word`,
     castSub: "the owlery's company — found by scout, in this order.",
 
     secAbout: 'ABOUT',
@@ -152,6 +153,7 @@ const en = {
     empty: "no earlier days yet — today's conversation lives in discover.",
     messages: (n: number) => `${n} messages`,
     emptyDay: 'nothing was saved for this day.',
+    error: 'the ledger is out of reach right now — try again in a moment.',
   },
 
   upload: {
@@ -234,6 +236,7 @@ const zh: typeof en = {
       mirror: '雷达',
     },
     castAria: (name: string, job: string) => `${name} — ${job}`,
+    castTapAria: (owl: string, job: string) => `${owl}，${job} — 点一下听一句`,
     castSub: '猫头鹰邮局的剧团——由 scout 依此次序寻得。',
 
     secAbout: '关于',
@@ -315,6 +318,7 @@ const zh: typeof en = {
     empty: '还没有更早的日子——今天的对话住在「发现」里。',
     messages: (n: number) => `${n} 条消息`,
     emptyDay: '这一天没有留下任何记录。',
+    error: '账本暂时够不着——过一会儿再试试。',
   },
 
   upload: {

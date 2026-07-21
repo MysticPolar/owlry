@@ -33,6 +33,7 @@ export function History() {
   const [selected, setSelected] = useState<HistoryDay | null>(null);
   const [transcript, setTranscript] = useState<HydratedChat | null>(null);
   const [loading, setLoading] = useState(false);
+  const [failed, setFailed] = useState(false);
   const t = useT().settings.history;
 
   // fetch the day list fresh every time the overlay opens; reset to the list view on close
@@ -41,22 +42,25 @@ export function History() {
       setSelected(null);
       setTranscript(null);
       setDays(null);
+      setFailed(false);
       return;
     }
     setLoading(true);
-    void listDays(todayLocal()).then((d) => {
-      setDays(d);
-      setLoading(false);
-    });
+    setFailed(false);
+    void listDays(todayLocal())
+      .then((d) => setDays(d))
+      .catch(() => setFailed(true))
+      .finally(() => setLoading(false));
   }, [open]);
 
   const openDay = (day: HistoryDay) => {
     setSelected(day);
     setLoading(true);
-    void loadDay(day.day).then((t) => {
-      setTranscript(t);
-      setLoading(false);
-    });
+    setFailed(false);
+    void loadDay(day.day)
+      .then((tr) => setTranscript(tr))
+      .catch(() => setFailed(true))
+      .finally(() => setLoading(false));
   };
 
   if (!open) return null;
@@ -78,7 +82,11 @@ export function History() {
       <div className="l-body hist-body">
         {loading && <div className="hist-empty">{t.loading}</div>}
 
-        {!loading && !selected && days?.length === 0 && (
+        {!loading && failed && (
+          <div className="hist-empty" role="alert">{t.error}</div>
+        )}
+
+        {!loading && !failed && !selected && days?.length === 0 && (
           <div className="hist-empty">{t.empty}</div>
         )}
 

@@ -27,7 +27,7 @@
   --pb-ink:        #241C14;
   --pb-ink-soft:   #4A3F30;
   --pb-ink-faint:  #6A5C4A;
-  --pb-ink-mute:   #8A7A62;
+  --pb-ink-mute:   #726149;  /* darkened from #8A7A62 → AA (4.8:1) on paper-dim at 11–12px */
   --pb-cap-ink:    #2A2018;
 
   /* velvet + brass */
@@ -92,13 +92,14 @@
 @keyframes pbCurtainL { to { transform: translateX(-102%); } }
 @keyframes pbCurtainR { to { transform: translateX(102%); } }
 
-/* Playbill toast — espresso glass pill above the nav, on every Playbill screen */
-.app:is([data-tab="today"], [data-tab="discover"], [data-tab="profile"]) .toast {
+/* Playbill toast — espresso glass pill above the nav; unscoped so it stays
+   on-theme even when fired over an overlay (Settings/Auth/Letter) */
+.app .toast {
   background: rgba(20,13,10,.85); border: 1px solid rgba(217,169,79,.4);
   color: var(--pb-cream); box-shadow: none;
   bottom: calc(100px + env(safe-area-inset-bottom));
 }
-.app:is([data-tab="today"], [data-tab="discover"], [data-tab="profile"]) .toast .ti { color: var(--pb-brass); }
+.app .toast .ti { color: var(--pb-brass); }
 
 /* guest "gain a level" pill goes flat on the stage (no blur/glow — glass is nav-only) */
 .app[data-tab="today"] .guest-lvl {
@@ -867,3 +868,61 @@
 @media (prefers-reduced-motion: reduce) {
   .pb-valance, .pb-marquee, .pb-chips, .pb-compact, .pb-card, .pb-keeper, .pb-tag, .pb-nv, .pb-iconbtn { transition: none !important; }
 }
+
+/* ============================================================
+   MOBILE ERGONOMICS — audit remediation, Phase 1
+   Appended last: wins at equal specificity over global.css.
+   ============================================================ */
+
+/* --- 1.3 platform hygiene --- */
+:root { color-scheme: dark; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body { overscroll-behavior: none; }
+.app { -webkit-tap-highlight-color: transparent; }
+/* cream input-bearing surfaces render native controls/autofill in light */
+.auth-card, .pb-askq, .pb-psheet { color-scheme: light; }
+.btn, .ptab, .iconbtn, .tgl, .langsel { touch-action: manipulation; }
+
+/* --- 1.1 iOS auto-zoom: every focusable text field ≥16px (composer trims padding to hold height) --- */
+.pb-composer input { font-size: 16px; padding: 2px 4px 8px; }
+.pb-askq-input { font-size: 16px; }
+.gate-input { font-size: 16px; }
+.auth-field input { font-size: 16px; }
+.langsel { font-size: 16px; }
+.bio { font-size: 16px; }
+
+/* --- 1.5 touch targets — real size bumps --- */
+.pb-nav { padding: 12px 28px; }
+.pb-nv { padding: 5px 6px; }
+.pb-send { width: 42px; height: 42px; }
+.pb-stagebar .pb-gear { width: 40px; height: 40px; }
+#screen-discover .disc-head-right .iconbtn.lite { width: 40px; height: 40px; flex: 0 0 40px; }
+.pb-askq-x { width: 36px; height: 36px; }
+.pb-psheet .mem-chip button { width: 24px; height: 24px; flex: 0 0 24px; }
+.pb-psheet .mem-chip button .ti { font-size: 12px; }
+.pb-psheet .mem-topic .iconbtn, .pb-psheet .mem-book .iconbtn { width: 28px; height: 28px; flex: 0 0 28px; }
+.pb-psheet .q-copy { width: 34px; height: 34px; }
+.pb-tag { padding-top: 9px; padding-bottom: 9px; }
+.pb-deskpill { padding-top: 9px; padding-bottom: 9px; }
+.pb-selbar button { padding-top: 9px; padding-bottom: 9px; }
+.pb-dc-about, .pb-dc-go { padding-top: 9px; padding-bottom: 9px; }
+
+/* --- 1.5 touch targets — invisible hit-area extensions into KNOWN-EMPTY space only
+   (vertical-only for row-packed controls so a transparent ::after never steals a sibling's tap;
+   all-sides only for standalone pills; skipped inside overflow scrollers like .pb-tags) --- */
+.pb-deskpill, .pb-selbar button, .pb-dc-about, .pb-dc-go,
+.guest-lvl, .desk-lvl, .tgl, .ptab { position: relative; }
+.pb-selbar button::after, .pb-dc-about::after, .pb-dc-go::after { content: ""; position: absolute; inset: -7px 0; }
+.ptab::before { content: ""; position: absolute; inset: -6px 0; }
+.pb-deskpill::after, .guest-lvl::after, .desk-lvl::after { content: ""; position: absolute; inset: -7px; }
+.tgl::after { content: ""; position: absolute; inset: -9px -8px; }
+
+/* --- 1.6 shelf spines: wider gap + vertical hit reach (thickness floor set in DiscoverScreen.tsx) --- */
+.sr-books { gap: 5px; }
+.sr-spine { position: relative; }
+.sr-spine::after { content: ""; position: absolute; inset: -6px -3px; }
+
+/* --- 1.7 keyboard: hide the floating nav, lift bottom-anchored inputs (--kb set in App.tsx) --- */
+.app[data-kb="open"] .pb-nav { opacity: 0; pointer-events: none; }
+.pb-askq-scrim { padding-bottom: calc(14px + env(safe-area-inset-bottom) + var(--kb, 0px)); }
+.auth { padding-bottom: var(--kb, 0px); }
