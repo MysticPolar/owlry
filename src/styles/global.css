@@ -207,7 +207,10 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
   padding:10px 16px 9px;font-family:'Anton',sans-serif;font-size:12.5px;font-weight:400;letter-spacing:.12em;cursor:pointer;
 }
 .btn .ti{font-size:14px}
-.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line2);box-shadow:none}
+/* the ghost BUTTON modifier collides with the watermark `.ghost` (position:absolute +
+   pointer-events:none); higher specificity here undoes that so ghost buttons stay
+   in-flow and clickable (affects Settings/Letter/UploadModal/MemoryCard) */
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line2);box-shadow:none;position:static;pointer-events:auto}
 .letter .btn.ghost,.reader .btn.ghost{color:var(--letter-ink);border-color:rgba(60,44,16,.3)}
 .btn:active,.save:active,.iconbtn:active,.chip:active{transform:translateY(2px);box-shadow:none}
 

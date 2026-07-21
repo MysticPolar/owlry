@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'r
 import { useStore } from '../../store/useStore';
 import { useAuth } from '../../store/useAuth';
 import { useKeyboardInset } from '../../hooks/useKeyboardInset';
-import { isConfigured } from '../../lib/supabase';
 import { getBook } from '../../lib/bookRegistry';
 import {
   renderChatItem,
@@ -508,11 +507,11 @@ export function DiscoverScreen() {
 
         <div className="disc-head-right">
           <CastOwl owl="scout" cls="mini" variant={desk === 'pro' ? 'pro' : undefined} />
-          {isConfigured && (
-            <button className="iconbtn lite" aria-label={t.discover.historyAria} onClick={openHistory}>
-              <Icon name="ti-history" />
-            </button>
-          )}
+          {/* the reader's way back into past chats — always reachable from the
+              desk (with a backend it lists past days; offline it opens empty) */}
+          <button className="iconbtn lite" aria-label={t.discover.historyAria} onClick={openHistory}>
+            <Icon name="ti-history" />
+          </button>
         </div>
       </div>
 

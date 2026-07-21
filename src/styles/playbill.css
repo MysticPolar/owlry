@@ -410,6 +410,10 @@
 #screen-discover .desk-lvl { background: var(--pb-chip-bg); border: 1px solid var(--pb-brass-deep); color: var(--pb-brass); box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
 #screen-discover .desk-lvl .ti { color: var(--pb-brass); }
 #screen-discover .disc-head-right .iconbtn.lite { background: var(--pb-chip-bg); border: 1px solid var(--pb-tag-line); box-shadow: none; color: var(--pb-brass); }
+/* scout owl + history button share the corner — pull the owl into the flow so
+   flex lays the two out side-by-side instead of the owl floating over the icon */
+#screen-discover .disc-head-right { position: relative; gap: 6px; margin-left: auto; }
+#screen-discover .disc-head-right .owl.mini { position: static; right: auto; top: auto; width: 46px; height: 50px; }
 
 /* ---- header states: full welcome on cold start, quiet stage once engaged ----
    Intro (no question yet, composer idle) keeps the whole welcome: owlry. + the
@@ -710,6 +714,50 @@
 .pb-psheet .empty { color: var(--pb-ink-mute); }
 .pb-psheet .empty .ti { color: var(--pb-brass-deep); }
 .pb-psheet .empty .d { color: var(--pb-ink); }
+
+/* ---------- memory tab → the program-sheet language ----------
+   MemoryCard still wears the legacy gate- and mem- classes; retint them to the
+   cream sheet here (all MemoryCard-only, so nothing else is touched). Section
+   headers already get velvet above — just trade the dashed gold rule for a
+   thin paper one, and drop the rule above the very first (title) header. */
+.pb-psheet .sh-sec { border-top: 1px solid var(--pb-paper-line); }
+.pb-psheet .pcard > .sh-sec:first-child { border-top: 0; padding-top: 0; margin-top: 0; }
+.pb-psheet .mem-empty { color: var(--pb-ink-faint); }
+.pb-psheet .gate-label { color: var(--pb-ink-mute); }
+.pb-psheet .gate-input {
+  background: var(--pb-paper-dim); border: 1px solid var(--pb-paper-line);
+  box-shadow: none; border-radius: 12px; color: var(--pb-ink);
+}
+.pb-psheet .gate-input::placeholder { color: var(--pb-ink-mute); font-weight: 500; }
+.pb-psheet .gate-input:focus { border-color: var(--pb-brass); box-shadow: none; }
+.pb-psheet .mem-chip {
+  background: var(--pb-paper-dim); border: 1px solid var(--pb-brass-deep);
+  color: var(--pb-ink); font-weight: 600;
+}
+.pb-psheet .mem-chip button { background: var(--pb-paper); border: 1px solid var(--pb-paper-line); color: var(--pb-ink-mute); }
+.pb-psheet .mem-chip button .ti { color: var(--pb-ink-mute); }
+.pb-psheet .mem-add .iconbtn {
+  background: var(--pb-paper-dim); border: 1px solid var(--pb-paper-line);
+  border-radius: 12px; color: var(--pb-brass-deep); box-shadow: none;
+}
+.pb-psheet .mem-book { border-bottom: 1px solid var(--pb-paper-line); color: var(--pb-ink); }
+.pb-psheet .mem-book strong { color: var(--pb-ink); }
+.pb-psheet .mem-book .iconbtn, .pb-psheet .mem-topic .iconbtn {
+  background: var(--pb-paper-dim); border: 1px solid var(--pb-paper-line);
+  box-shadow: none; color: var(--pb-ink-mute); border-radius: 999px;
+}
+.pb-psheet .mem-topic {
+  background: var(--pb-paper-dim); border: 1px solid var(--pb-paper-line);
+  border-radius: 12px; color: var(--pb-ink);
+}
+.pb-psheet .mem-topic-date { color: var(--pb-ink-mute); }
+.pb-psheet .mem-topic-gist, .pb-psheet .mem-topic-gist strong { color: var(--pb-ink); }
+/* forget zone — destructive, so it reads in the playbill red on the cream */
+.pb-psheet .mem-forget { border-top: 1px solid var(--pb-paper-line); }
+.pb-psheet .mem-forget .btn.ghost { background: none; border: 1px solid #8C2431; color: #8C2431; box-shadow: none; }
+.pb-psheet .mem-forget .btn:not(.ghost) { background: #8C2431; color: #FBF3E2; box-shadow: none; }
+.pb-psheet .gate-err { color: #8C2431; }
+.pb-psheet .gate-switch { color: var(--pb-brass-deep); }
 
 /* ============================================================
    SETTINGS — house management, backstage on the espresso stage
