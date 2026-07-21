@@ -399,10 +399,7 @@
 /* the section title hides in desk-head mode; the StageBar wordmark carries the brand */
 
 /* desk-mode chips → pill tags (active = brass fill) */
-#screen-discover .deskchip { background: none; border: 1px solid var(--pb-tag-line); color: var(--pb-tag-ink); box-shadow: none; }
-#screen-discover .deskchip.on { background: var(--pb-brass); border-color: var(--pb-brass); color: var(--pb-brass-ink); font-weight: 600; }
-#screen-discover .deskchip.on .ohlock svg { stroke: var(--pb-brass-ink); }
-#screen-discover .deskchip .ohlock { color: var(--pb-brass); }
+/* (the header desk chips retired — the desk switch lives in the composer pill) */
 
 /* guest desk-level pill + history button → flat brass on the stage */
 #screen-discover .desk-lvl { background: var(--pb-chip-bg); border: 1px solid var(--pb-brass-deep); color: var(--pb-brass); box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
@@ -437,14 +434,87 @@
 #screen-discover .sr-count { color: var(--pb-cream-mute); }
 #screen-discover .sr-count.flash { color: var(--pb-brass); }
 
-/* composer → chip-bg pill + brass send circle */
-#screen-discover .search.cz { background: var(--pb-chip-bg); border: 1px solid var(--pb-tag-line); box-shadow: none; }
-#screen-discover .search.cz:focus-within { border-color: var(--pb-brass); }
-#screen-discover .search.cz input { color: var(--pb-cream); }
-#screen-discover .search.cz input::placeholder { color: #8A7863; font-family: 'Fraunces', Georgia, serif; font-style: italic; }
-#screen-discover .search .ti { color: var(--pb-brass); }
-#screen-discover .composer .iconbtn { background: var(--pb-brass); box-shadow: none; }
-#screen-discover .composer .iconbtn .ti { color: var(--pb-brass-ink); }
+/* composer — one Claude-style paper block: the ask on top, the desk pill +
+   brass send below (the desk switch moved here from the header) */
+.composer.pb-composer {
+  display: block; background: var(--pb-chip-bg); border: 1px solid var(--pb-tag-line);
+  border-radius: 18px; padding: 10px 12px 9px;
+}
+.composer.pb-composer:focus-within { border-color: var(--pb-brass); }
+.pb-composer input {
+  width: 100%; background: none; border: 0; outline: none;
+  color: var(--pb-cream); font: 500 13.5px 'Inter Tight', sans-serif; padding: 2px 4px 10px;
+}
+.pb-composer input::placeholder { color: #8A7863; font-family: 'Fraunces', Georgia, serif; font-style: italic; }
+.pb-composer-row { display: flex; align-items: center; gap: 8px; }
+.pb-composer-row .sp { flex: 1; }
+.pb-deskpill {
+  display: inline-flex; align-items: center; gap: 6px; padding: 7px 13px;
+  border-radius: 999px; background: none; border: 1px solid var(--pb-tag-line);
+  color: var(--pb-tag-ink); font: 600 10.5px 'Inter Tight', sans-serif;
+  letter-spacing: 1px; text-transform: uppercase; cursor: pointer;
+  transition: background .2s, color .2s, border-color .2s; touch-action: manipulation;
+}
+.pb-deskpill .ti { font-size: 13px; }
+.pb-deskpill.pro { background: var(--pb-brass); border-color: var(--pb-brass); color: var(--pb-brass-ink); }
+.pb-send {
+  width: 36px; height: 36px; border-radius: 50%; border: 0; flex: 0 0 auto;
+  background: var(--pb-brass); color: var(--pb-brass-ink);
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  transition: transform .15s ease; touch-action: manipulation;
+}
+.pb-send:active { transform: scale(.92); }
+.pb-send .ti { font-size: 16px; }
+
+/* ---------- the selection bar: one glass rail over highlighted words ---------- */
+.pb-selbar {
+  position: absolute; z-index: 30; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 2px; padding: 4px;
+  border-radius: 999px; background: rgba(20,13,10,.92);
+  border: 1px solid rgba(217,169,79,.4);
+  animation: pbSelIn .16s ease both;
+}
+@keyframes pbSelIn { from { opacity: 0; transform: translateX(-50%) translateY(4px); } to { opacity: 1; transform: translateX(-50%); } }
+.pb-selbar button {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: none; border: 0; border-radius: 999px; padding: 7px 11px;
+  color: var(--pb-cream); font: 600 11px 'Inter Tight', sans-serif; letter-spacing: .4px;
+  cursor: pointer; white-space: nowrap; touch-action: manipulation;
+}
+.pb-selbar button:active { background: rgba(217,169,79,.16); }
+.pb-selbar button .ti { font-size: 13px; color: var(--pb-brass); }
+
+/* ---------- the dealt hand: three cards fanned after scout's reply ---------- */
+.pb-dealrow {
+  display: flex; gap: 10px; margin: 6px -18px 14px; padding: 2px 18px 4px;
+  flex: 0 0 auto; /* the chat log is a flex column — never let the hand squash */
+  overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: none;
+  animation: pbDealIn .35s ease both;
+}
+.pb-dealrow::-webkit-scrollbar { display: none; }
+@keyframes pbDealIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+.pb-dealcard {
+  flex: 0 0 156px; scroll-snap-align: start;
+  background: var(--pb-paper); border-radius: 12px; padding: 8px 8px 9px;
+}
+.pb-dealcard .pb-cover { border-radius: 4px; }
+.pb-dc-body { padding: 7px 2px 8px; }
+.pb-dc-t {
+  font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 13px; line-height: 1.25;
+  color: var(--pb-ink); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden; min-height: 2.5em;
+}
+.pb-dc-a { font-size: 10.5px; color: var(--pb-ink-mute); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pb-dc-cta { display: flex; gap: 6px; }
+.pb-dc-about, .pb-dc-go {
+  flex: 1; min-width: 0; border-radius: 999px; padding: 7px 4px;
+  font: 600 10px 'Inter Tight', sans-serif; letter-spacing: .5px; text-transform: uppercase;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  cursor: pointer; touch-action: manipulation; transition: transform .15s ease;
+}
+.pb-dc-about:active, .pb-dc-go:active { transform: scale(.95); }
+.pb-dc-about { flex: 0 0 auto; padding: 7px 11px; background: none; border: 1px solid var(--pb-brass-deep); color: var(--pb-brass-deep); }
+.pb-dc-go { background: var(--pb-brass); border: 1px solid var(--pb-brass); color: var(--pb-brass-ink); }
 
 /* ============================================================
    PROFILE (Mirror's room) — identity on the stage, panels on paper
@@ -561,6 +631,56 @@
 .pb-psheet .empty { color: var(--pb-ink-mute); }
 .pb-psheet .empty .ti { color: var(--pb-brass-deep); }
 .pb-psheet .empty .d { color: var(--pb-ink); }
+
+/* ============================================================
+   SETTINGS — house management, backstage on the espresso stage
+   (every rule scoped .settings; shared classes stay untouched elsewhere)
+   ============================================================ */
+.settings { background: var(--pb-stage); color: var(--pb-cream); }
+.settings .l-top .iconbtn.lite { background: var(--pb-chip-bg); border: 1px solid var(--pb-tag-line); box-shadow: none; color: var(--pb-brass); }
+.settings .hl { text-shadow: none; }
+.settings .hl .t { color: var(--pb-cream); }
+.settings .hl .u { background: var(--pb-brass); }
+.settings .gdot { color: var(--pb-brass); }
+.settings .sh-sec { color: var(--pb-brass); border-top-color: var(--pb-tag-line); }
+
+/* rows + link rows — flat hairline plates on the stage */
+.settings .set-row,
+.settings .link-row { background: none; border: 1px solid var(--pb-tag-line); border-radius: 12px; box-shadow: none; color: var(--pb-cream); }
+.settings .set-lab { color: var(--pb-cream); }
+.settings .set-sub { color: var(--pb-cream-mute); }
+.settings .link-row .ti:first-child { color: var(--pb-brass); }
+.settings .link-row .ext { color: var(--pb-brass-deep); }
+.settings .link-row.danger { border-color: rgba(192,57,43,.45); color: #E06A5A; }
+.settings .link-row.danger .ti:first-child { color: #E06A5A; }
+
+/* the switch — brass when lit, flat always */
+.settings .tgl { background: var(--pb-track); border: 0; box-shadow: none; }
+.settings .tgl.on { background: var(--pb-brass); }
+.settings .tgl-knob { background: var(--pb-cream); box-shadow: none; }
+.settings .tgl.on .tgl-knob { background: var(--pb-brass-ink); }
+
+/* language select */
+.settings .langsel { background: var(--pb-chip-bg); border: 1px solid var(--pb-tag-line); color: var(--pb-cream); box-shadow: none; }
+
+/* account card */
+.settings .set-card { background: var(--pb-chip-bg); border: 1px solid var(--pb-tag-line); box-shadow: none; }
+.settings .avatar { background: var(--pb-owl-violet); box-shadow: 0 0 0 2px var(--pb-stage), 0 0 0 4px var(--pb-brass); color: var(--pb-cream); }
+.settings .pname { color: var(--pb-cream); }
+.settings .psub { color: var(--pb-cream-mute); }
+
+/* buttons (reset confirm etc.) */
+.settings .btn { background: var(--pb-brass); color: var(--pb-brass-ink); box-shadow: none; border: 0; }
+.settings .btn.ghost { background: none; border: 1px solid var(--pb-tag-line); color: var(--pb-cream); }
+.settings .btn.danger { background: var(--pb-like-on); color: var(--pb-paper); }
+
+/* soon pill + the cast + footer */
+.settings .soon { background: #E9D9A8; color: #5C4715; }
+.settings .cast-name { color: var(--pb-cream); }
+.settings .cast-job { color: var(--pb-cream-mute); }
+.settings .cast-sub { color: var(--pb-cream-mute); }
+.settings .owl { filter: none; }
+.settings .set-foot { color: var(--pb-cream-mute); }
 
 @media (prefers-reduced-motion: reduce) {
   .pb-valance, .pb-marquee, .pb-chips, .pb-compact, .pb-card, .pb-keeper, .pb-tag, .pb-nv, .pb-iconbtn, .pb-perch { transition: none !important; }

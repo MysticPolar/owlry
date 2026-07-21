@@ -79,23 +79,23 @@ check(
 await new Promise((r) => setTimeout(r, 750));
 const streamed = g().owl.messages;
 check(
-  'reply streamed: me pill + owl reply flagged, letter still pending',
+  'reply streamed: me pill + owl reply flagged, deal still pending',
   streamed.some((m) => m.kind === 'msg' && m.who === 'me') &&
     streamed.filter((m) => m.kind === 'msg' && m.who === 'owl').length >= 2 &&
     streamed.some((m) => m.kind === 'msg' && m.who === 'owl' && m.stream) &&
-    !streamed.some((m) => m.kind === 'letter') &&
+    !streamed.some((m) => m.kind === 'deal') &&
     g().owl.busy &&
-    g().owl.pending?.mainId === 'wws',
+    g().owl.pending?.bookIds[0] === 'wws',
 );
 check('tray batch perched on wws', g().owl.lastBatch?.main === 'wws');
 
-// the stream finished → play the after-text beat (letter → flight → chips)
+// the stream finished → play the after-text beat (the dealt hand → flight → chips)
 g().revealAfterText(false);
-await new Promise((r) => setTimeout(r, 1000)); // letter (+170) then chips (+700)
+await new Promise((r) => setTimeout(r, 1000)); // deal (+170) then chips (+700)
 const items = g().owl.messages;
 check(
-  'letter landed after the reply, its own beat (wws)',
-  items.some((m) => m.kind === 'letter' && m.book === 'wws'),
+  'the hand landed after the reply, wws leading, filled to 3',
+  items.some((m) => m.kind === 'deal' && m.books[0] === 'wws' && m.books.length === 3),
 );
 check(
   'typing cleared, busy false, after-chips offered (≤3)',
@@ -104,9 +104,9 @@ check(
     g().owl.chips.includes('go deeper') &&
     g().owl.chips.length <= 3,
 );
-const letterIdx = items.findIndex((m) => m.kind === 'letter');
+const dealIdx = items.findIndex((m) => m.kind === 'deal');
 const lastOwlIdx = items.map((m) => m.kind === 'msg' && m.who === 'owl').lastIndexOf(true);
-check('letter arrives after the reply (its own beat)', lastOwlIdx > 0 && letterIdx > lastOwlIdx);
+check('the hand arrives after the reply (its own beat)', lastOwlIdx > 0 && dealIdx > lastOwlIdx);
 
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

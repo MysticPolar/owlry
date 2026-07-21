@@ -178,7 +178,55 @@ export function GLetter({ id, no, mid }: { id: BookRef; no: number; mid?: number
   );
 }
 
-/** render one chat item (typing dots / letter / message) — the unit both
+/* ---------- the dealt hand: up to three cards fanned after the reply ---------- */
+function DealCard({ id }: { id: BookRef }) {
+  const t = useT();
+  const b = getBook(id);
+  const openSheet = useStore((s) => s.openSheet);
+  const openLetter = useStore((s) => s.openLetter);
+  const openBook = useStore((s) => s.openBook);
+  if (!b) return null;
+
+  // same peek gate as the letter: catalog guides are instant; with a backend any
+  // book peeks (written on tap); offline non-guides open the book directly
+  const peekable = hasGuide(id) || isConfigured;
+  const go = () => (peekable ? openLetter(id) : void openBook(id));
+
+  return (
+    <div className="pb-dealcard" role="group" aria-label={t.discover.letterAria(b.t)} data-book={id}>
+      <Cover id={id} cls="pb-cover" />
+      <div className="pb-dc-body">
+        <div className="pb-dc-t">{b.t}</div>
+        <div className="pb-dc-a">{b.a}</div>
+      </div>
+      <div className="pb-dc-cta">
+        <button type="button" className="pb-dc-about" data-sheet={id} onClick={() => openSheet(id)}>
+          {t.discover.about}
+        </button>
+        <button
+          type="button"
+          className="pb-dc-go"
+          {...(peekable ? { 'data-letter': id } : { 'data-open': id })}
+          onClick={go}
+        >
+          {peekable ? t.discover.peekInside : t.discover.openBook}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+export function DealRow({ books, mid }: { books: BookRef[]; mid?: number }) {
+  return (
+    <div className="pb-dealrow" data-mid={mid}>
+      {books.map((id) => (
+        <DealCard key={id} id={id} />
+      ))}
+    </div>
+  );
+}
+
+/** render one chat item (typing dots / letter / deal / message) — the unit both
     Discover (static parts) and History share. `no` is the letter's session
     number; the live Discover stream renders owl lines itself (with the caret). */
 export function renderChatItem(
@@ -201,6 +249,9 @@ export function renderChatItem(
   }
   if (m.kind === 'letter') {
     return <GLetter key={m.id} id={m.book} no={no} mid={m.id} />;
+  }
+  if (m.kind === 'deal') {
+    return <DealRow key={m.id} books={m.books} mid={m.id} />;
   }
   return (
     <div key={m.id} className={`msg ${m.who}${m.tone === 'note' ? ' note' : ''}`}>

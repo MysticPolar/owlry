@@ -309,7 +309,7 @@ function ShelfRail({ reduce }: { reduce: boolean }) {
       return;
     }
     const t = setTimeout(() => {
-      const cards = document.querySelectorAll(`.gletter[data-book="${id}"]`);
+      const cards = document.querySelectorAll(`.gletter[data-book="${id}"], .pb-dealcard[data-book="${id}"]`);
       flyToShelf(id, cards.length ? cards[cards.length - 1] : null);
     }, 340);
     return () => clearTimeout(t);
@@ -388,6 +388,8 @@ function Composer({ onTyping }: { onTyping: (v: boolean) => void }) {
   const send = useStore((s) => s.sendToOwl);
   const busy = useStore((s) => s.owl.busy);
   const desk = useStore((s) => s.deskMode);
+  const setDeskMode = useStore((s) => s.setDeskMode);
+  const lv = useStore((s) => s.lv);
   const scoutDraft = useStore((s) => s.scoutDraft);
   const clearScoutDraft = useStore((s) => s.clearScoutDraft);
   const [val, setVal] = useState('');
@@ -410,31 +412,48 @@ function Composer({ onTyping }: { onTyping: (v: boolean) => void }) {
     // blur lets the chrome return so the flight plays (matches the mockup).
     inputRef.current?.blur();
   };
+
+  // the desk switch lives in the composer (Claude-style pill): tap flips between
+  // the whole desk and office hours. setDeskMode owns the rules (busy guard,
+  // the level-3 lock intro, the canned ack line).
+  const pro = desk === 'pro';
+  const ohLocked = !pro && lv < 3;
   return (
-    <div className="composer">
-      <div className="search cz">
-        <Icon name="ti-feather" />
-        <input
-          ref={inputRef}
-          id="qIn"
-          type="text"
-          placeholder={desk === 'pro' ? t.discover.composerPlaceholderPro : t.discover.composerPlaceholder}
-          aria-label={t.discover.composerAria}
-          autoCapitalize="none"
-          autoComplete="off"
-          enterKeyHint="send"
-          value={val}
-          onFocus={() => onTyping(true)}
-          onBlur={() => onTyping(false)}
-          onChange={(e) => setVal(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') submit();
-          }}
-        />
+    <div className="composer pb-composer">
+      <input
+        ref={inputRef}
+        id="qIn"
+        type="text"
+        placeholder={pro ? t.discover.composerPlaceholderPro : t.discover.composerPlaceholder}
+        aria-label={t.discover.composerAria}
+        autoCapitalize="none"
+        autoComplete="off"
+        enterKeyHint="send"
+        value={val}
+        onFocus={() => onTyping(true)}
+        onBlur={() => onTyping(false)}
+        onChange={(e) => setVal(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') submit();
+        }}
+      />
+      <div className="pb-composer-row">
+        <button
+          type="button"
+          className={`pb-deskpill${pro ? ' pro' : ''}`}
+          role="switch"
+          aria-checked={pro}
+          aria-label={ohLocked ? t.discover.officeHourLockedAria : t.discover.deskAria}
+          onClick={() => setDeskMode(pro ? 'all' : 'pro')}
+        >
+          <Icon name={ohLocked ? 'ti-lock' : 'ti-feather'} />
+          {pro ? t.discover.deskNonFiction : t.discover.deskAll}
+        </button>
+        <span className="sp" />
+        <button className="pb-send" id="sendBtn" aria-label={t.discover.sendAria} onClick={submit}>
+          <Icon name="ti-send" />
+        </button>
       </div>
-      <button className="iconbtn" id="sendBtn" aria-label={t.discover.sendAria} onClick={submit}>
-        <Icon name="ti-send" />
-      </button>
     </div>
   );
 }
@@ -460,8 +479,6 @@ export function DiscoverScreen() {
   const t = useT();
   const active = useStore((s) => s.activeTab === 'discover');
   const desk = useStore((s) => s.deskMode);
-  const setDeskMode = useStore((s) => s.setDeskMode);
-  const lv = useStore((s) => s.lv);
   const openHistory = useStore((s) => s.openHistory);
   const chatting = useStore((s) => s.owl.messages.some((m) => m.kind === 'msg' && m.who === 'me'));
   const reduce = useReduceMotion();
@@ -486,39 +503,7 @@ export function DiscoverScreen() {
           </span>
         </h1>
 
-        {/* scout's two desks: the whole desk, or office hours (non-fiction only) */}
-        <div className="deskrow" role="tablist" aria-label={t.discover.deskAria}>
-          <button
-            className={`deskchip ${desk === 'all' ? 'on' : ''}`}
-            role="tab"
-            aria-selected={desk === 'all'}
-            onClick={() => setDeskMode('all')}
-          >
-            {t.discover.deskAll}
-          </button>
-          <button
-            className={`deskchip ${desk === 'pro' ? 'on' : ''}${lv < 3 ? ' oh-locked' : ''}`}
-            role="tab"
-            aria-selected={desk === 'pro'}
-            aria-label={lv < 3 ? t.discover.officeHourLockedAria : t.discover.nonFictionAria}
-            onClick={() => setDeskMode('pro')}
-          >
-            {lv < 3 ? (
-              <>
-                <span className="ohlock">
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <rect x="5.5" y="11" width="13" height="8.5" rx="2" />
-                    <path d="M8.5 11V8a3.5 3.5 0 0 1 7 0v3" />
-                  </svg>
-                </span>
-                {t.discover.deskOfficeHour}
-              </>
-            ) : (
-              t.discover.deskNonFiction
-            )}
-          </button>
-        </div>
-
+        {/* the desk switch now rides in the composer pill; the header stays lean */}
         <GuestDeskLevel />
 
         <div className="disc-head-right">

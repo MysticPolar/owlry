@@ -22,6 +22,7 @@ import { newSession } from '../lib/owlBrain';
 import type { OwlMessage } from '../lib/owlBrain';
 import { fetchOwlTurn, fetchLetter } from '../lib/owlClient';
 import { getBook, getGuide } from '../lib/bookRegistry';
+import { FEED } from '../content/feed';
 import { supabase, isBackendConfigured } from '../lib/supabase';
 import { getLocalWeather } from '../lib/weather';
 import { rowsToChat } from '../lib/chatHydrate';
@@ -141,6 +142,7 @@ export interface Store extends PersistedState {
   bootstrap: () => Promise<void>;
   setTab: (t: Tab) => void;
   startAsk: (id: BookRef) => void;
+  askText: (text: string) => void;
   clearScoutDraft: () => void;
   setLibTab: (t: LibTab) => void;
   toggleSave: (id: BookRef) => void;
@@ -185,6 +187,21 @@ export interface Store extends PersistedState {
 
 let chatId = 0;
 const nextId = () => ++chatId;
+
+/* fill scout's hand to three cards: the turn's own picks lead, then catalog
+   neighbours of the lead book's genre (feed order), never repeating. Keeps a
+   thin live/offline reply from dealing a lonely card. */
+const dealHand = (ids: BookRef[]): BookRef[] => {
+  const hand = [...new Set(ids)].slice(0, 3);
+  if (hand.length >= 3 || !hand.length) return hand;
+  const lead = getBook(hand[0]);
+  const pool = [...FEED.filter((id) => lead && getBook(id)?.g === lead.g), ...FEED];
+  for (const id of pool) {
+    if (hand.length >= 3) break;
+    if (!hand.includes(id)) hand.push(id);
+  }
+  return hand;
+};
 
 /* a monotonic "conversation generation" — bumped whenever the conversation is
    wiped or reloaded (restart, reset, hydrate, sign-out). A turn's deferred work
@@ -488,6 +505,12 @@ export const useStore = create<Store>()(
         deskMode: 'all',
         scoutDraft: `I'm thinking about this line from ${b.t} by ${b.a}: “${b.q}” — what should I notice?`,
       });
+    },
+    // selection → composer: carry any highlighted text to scout's desk as a draft
+    askText: (text) => {
+      const q = text.trim().slice(0, 240);
+      if (!q) return;
+      set({ activeTab: 'discover', scoutDraft: q });
     },
     clearScoutDraft: () => set({ scoutDraft: '' }),
     setLibTab: (t) => set({ libTab: t }),
@@ -817,7 +840,7 @@ export const useStore = create<Store>()(
             ...st.owl.messages,
             { kind: 'msg', id: nextId(), who: 'me', nodes: meNodes },
             { kind: 'msg', id: nextId(), who: 'owl', nodes: owlNodes },
-            { kind: 'letter', id: nextId(), book: firstAsk.guide },
+            { kind: 'deal', id: nextId(), books: dealHand([firstAsk.guide]) },
           ],
           // the shelf stays empty until the reader peeks this first letter
           chips: AFTER_CHIPS[get().prefs.lang ?? 'en'],
@@ -906,10 +929,15 @@ export const useStore = create<Store>()(
         // in — but never longer, so a slow live turn doesn't double-wait
         const wait = Math.max(0, 620 - (Date.now() - t0));
 
-        // which book (if any) becomes the letter card — the shelf only records
-        // books the reader actually peeks (see openLetter/closeLetter), never
-        // the whole batch, so nothing is auto-collected here
-        const mainId = reply.batch ? reply.batch.main : reply.letter ?? null;
+        // which books (if any) get dealt as cards — main first, then the rest of
+        // the batch. The shelf only records books the reader actually peeks (see
+        // openLetter/closeLetter), never the whole hand, so nothing is
+        // auto-collected here
+        const bookIds = reply.batch
+          ? [reply.batch.main, ...reply.batch.also]
+          : reply.letter
+            ? [reply.letter]
+            : [];
         const speaker: 'scout' | 'scout pro' = get().deskMode === 'pro' ? 'scout pro' : 'scout';
 
         setTimeout(() => {
@@ -929,7 +957,7 @@ export const useStore = create<Store>()(
           });
 
           const pending: PendingTurn = {
-            mainId,
+            bookIds,
             chips: reply.chips,
             note: reply.note,
           };
@@ -951,8 +979,8 @@ export const useStore = create<Store>()(
       })();
     },
 
-    // the typewriter finished — bring in the letter, then (via the rail flight)
-    // the spine, then the chips. One paper object, one gold action, in sequence.
+    // the typewriter finished — deal the hand, then (via the rail flight)
+    // the spine, then the chips. One paper moment, one gold action, in sequence.
     revealAfterText: (skipped) => {
       const pending = get().owl.pending;
       if (!pending) return; // already played (guards double-fire across stream lines)
@@ -966,14 +994,14 @@ export const useStore = create<Store>()(
       const finish = () =>
         set((st) => ({ owl: { ...st.owl, busy: false, chips: pending.chips.slice(0, 3) } }));
 
-      if (pending.mainId) {
-        const book = pending.mainId;
-        // the letter slides in a beat after the words settle (sooner if skipped)
+      if (pending.bookIds.length) {
+        const books = dealHand(pending.bookIds);
+        // the hand is dealt a beat after the words settle (sooner if skipped)
         setTimeout(() => {
           set((st) => ({
             owl: {
               ...st.owl,
-              messages: appendNote([...st.owl.messages, { kind: 'letter', id: nextId(), book }]),
+              messages: appendNote([...st.owl.messages, { kind: 'deal', id: nextId(), books }]),
             },
           }));
           // the rail flight (component-side) rides on top; chips arrive at +700

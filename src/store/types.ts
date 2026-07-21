@@ -81,8 +81,12 @@ export type ChatItem =
   | { kind: 'typing'; id: number }
   /** the unified lazy reading-letter card — the book (catalog id OR open-world
       slug) is registered in bookRegistry before the card is shown; the letter
-      itself is generated on tap via owl-peek and cached in the registry. */
-  | { kind: 'letter'; id: number; book: BookRef };
+      itself is generated on tap via owl-peek and cached in the registry.
+      Kept for hydrated history rows; new turns deal a 'deal' instead. */
+  | { kind: 'letter'; id: number; book: BookRef }
+  /** scout's dealt hand — up to three book cards fanned after the reply text
+      (the turn's picks, backfilled from the catalog to a full hand of 3) */
+  | { kind: 'deal'; id: number; books: BookRef[] };
 
 /** The cast (docs/story-bible.md). */
 export type OwlName = 'scout' | 'peek' | 'scribe' | 'mirror' | 'keeper';
@@ -113,8 +117,9 @@ export interface OwlReact {
     Consumed by `revealAfterText` once the typewriter finishes so the letter
     and the chips arrive one-at-a-time (never mid-stream). */
 export interface PendingTurn {
-  /** the card book (batch.main or letter), or null when the turn has no card */
-  mainId: BookRef | null;
+  /** the turn's pick(s), main first (batch.main + batch.also, or the letter);
+      empty when the turn deals no cards */
+  bookIds: BookRef[];
   chips: string[];
   note?: string;
 }

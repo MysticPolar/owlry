@@ -66,6 +66,14 @@ const en = {
     profileChainedAria: 'Profile — chained until level 5',
     gainLevel: 'gain a level',
     gainLevelAria: (lv: number) => `Gain a level — guest preview (level ${lv})`,
+    /* the text-selection action bar */
+    selection: {
+      aria: 'Text actions',
+      copy: 'Copy',
+      saveQuote: 'Save quote',
+      ask: 'Ask',
+      copied: 'copied',
+    },
   },
 
   /* ---------- first-use owl intro cards ---------- */
@@ -186,6 +194,14 @@ const zh: typeof en = {
     profileChainedAria: '我的 — 锁链缠绕，等级 5 解开',
     gainLevel: '升一级',
     gainLevelAria: (lv: number) => `升一级 — 游客预览（等级 ${lv}）`,
+    /* 划词操作条 */
+    selection: {
+      aria: '文字操作',
+      copy: '复制',
+      saveQuote: '存下这句',
+      ask: '问一问',
+      copied: '已复制',
+    },
   },
 
   /* ---------- 猫头鹰初次登场 ---------- */

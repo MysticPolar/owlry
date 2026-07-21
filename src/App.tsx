@@ -3,6 +3,7 @@ import { useStore } from './store/useStore';
 import { useAuth } from './store/useAuth';
 import { useKeyboardInset } from './hooks/useKeyboardInset';
 import { BottomNav, Toast, BurstLayer, Backdrop, GuestLevelButton } from './components/chrome';
+import { SelectionBar } from './components/SelectionBar';
 import { TodayScreen } from './components/screens/TodayScreen';
 import { DiscoverScreen } from './components/screens/DiscoverScreen';
 import { ProfileScreen } from './components/screens/ProfileScreen';
@@ -124,6 +125,7 @@ export default function App() {
               <Auth />
               <IntroCard />
               {onboarded && !showOnboarding && !curtainDone && !reduceMotion && <PlaybillCurtain />}
+              <SelectionBar />
               <Toast />
               <BurstLayer />
             </>

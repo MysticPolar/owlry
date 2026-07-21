@@ -165,10 +165,20 @@ export function mapChatV2(res: ChatV2Response): OwlReply {
   if (res.main) {
     const slug = res.slug ?? slugify(res.main.title);
     registerBook(slug, recToBook(res.main));
+    // the sidelong picks ride along as the rest of the dealt hand (the UI deals
+    // up to three cards per turn; the letter stays the lead)
+    const also: BookRef[] = res.picks
+      .map((p) => {
+        const s = slugify(p.title);
+        if (s === slug) return null;
+        registerBook(s, recToBookLite(p));
+        return s;
+      })
+      .filter((s): s is BookRef => !!s);
     return {
       msgs: [bubble],
       letter: slug,
-      batch: { main: slug, also: [] },
+      batch: { main: slug, also },
       note,
       chips: res.chips,
     };
