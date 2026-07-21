@@ -22,6 +22,3 @@ export const WX: WeatherMode[] = [
   { k: 'snow', i: 'ti-snowflake', l: 'snow-day stack', lZh: '落雪读书日' },
   { k: 'night', i: 'ti-moon-stars', l: 'night owl hours', lZh: '夜猫子时间' },
 ];
-
-/** the toast/aria label in the given language */
-export const wxLabel = (w: WeatherMode, lang: 'en' | 'zh'): string => (lang === 'zh' ? w.lZh : w.l);

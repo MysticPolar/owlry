@@ -4,6 +4,7 @@ import { registerSW } from 'virtual:pwa-register';
 
 import './styles/tokens.css';
 import './styles/global.css';
+import './styles/playbill.css';
 import App from './App';
 import { useStore } from './store/useStore';
 

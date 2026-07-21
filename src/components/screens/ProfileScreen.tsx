@@ -23,6 +23,8 @@ import { Cover } from '../Cover';
 import { CastOwl } from '../CastOwl';
 import { RadarChart } from '../profile/RadarChart';
 import { MemoryCard } from '../profile/MemoryCard';
+import { ShelfSection } from '../profile/ShelfSection';
+import { StageBar } from '../stage';
 
 type ProfileTab = 'stats' | 'cal' | 'quotes' | 'mem';
 
@@ -333,6 +335,7 @@ export function ProfileScreen() {
 
   return (
     <section className={`screen ${active ? 'on' : ''}`} id="screen-profile" ref={sectionRef}>
+      <StageBar />
       <div className="pad-h">
         <span className="ghost" aria-hidden="true">
           Mirror
@@ -409,10 +412,15 @@ export function ProfileScreen() {
         })}
       </div>
 
-      {profileTab === 'stats' && <StatsTab radarKey={radarKey} />}
-      {profileTab === 'cal' && <CalendarTab />}
-      {profileTab === 'quotes' && <QuotesTab />}
-      {profileTab === 'mem' && <MemTab />}
+      <div className="pb-psheet">
+        {profileTab === 'stats' && <StatsTab radarKey={radarKey} />}
+        {profileTab === 'cal' && <CalendarTab />}
+        {profileTab === 'quotes' && <QuotesTab />}
+        {profileTab === 'mem' && <MemTab />}
+
+        {/* the Keeper's shelves — the old Library tab, folded in at the profile's foot */}
+        <ShelfSection />
+      </div>
     </section>
   );
 }

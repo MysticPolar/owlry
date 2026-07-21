@@ -1,248 +1,227 @@
-import { useRef } from 'react';
+import { useCallback, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useStore } from '../../store/useStore';
-import { PICKS } from '../../content/picks';
-import { WX, wxLabel } from '../../content/weather';
 import { getBook } from '../../lib/bookRegistry';
-import { useClock } from '../../hooks/useClock';
-import { useT, useLang } from '../../i18n/react';
-import { pct } from '../../lib/format';
+import { FEED, FEED_GENRES, feedLikes } from '../../content/feed';
+import type { BookId, Genre } from '../../content/types';
+import { useT } from '../../i18n/react';
 import { Icon } from '../Icon';
 import { Cover } from '../Cover';
 import { CastOwl } from '../CastOwl';
+import { CurtainValance, CurtainHem } from '../stage';
 
-/* ---------- weather-reactive masthead ---------- */
-function Masthead() {
-  const wxIndex = useStore((s) => s.wxIndex);
-  const cycleWeather = useStore((s) => s.cycleWeather);
-  const toggleMode = useStore((s) => s.toggleMode);
-  const mode = useStore((s) => s.prefs.mode);
-  const t = useT().today.today;
-  const lang = useLang();
-  const { dt } = useClock(lang);
-  const w = WX[wxIndex];
-  return (
-    <div className="mast">
-      <div className="logo d">
-        <span>
-          owlry<span className="gdot">.</span>
-        </span>
-        <button className="wx" id="wxBtn" aria-label={t.wxAria(wxLabel(w, lang))} onClick={cycleWeather}>
-          <Icon name={w.i} />
-          <span className="wx-fx" aria-hidden="true">
-            <span className="drop" />
-            <span className="drop" />
-            <span className="drop" />
-            <span className="flake" />
-            <span className="flake" />
-            <span className="flake" />
-            <span className="star" />
-            <span className="star" />
-          </span>
-        </button>
-        <button className="wx mode" id="modeBtn" aria-label={t.lightingAria} onClick={toggleMode}>
-          <Icon name={mode === 'night' ? 'ti-sun' : 'ti-moon-stars'} />
-        </button>
-      </div>
-      <span className="dt" id="dt">
-        {dt}
-      </span>
-    </div>
-  );
-}
+type Filter = 'all' | Genre;
 
-/* ---------- stats row ---------- */
-function StatsRow() {
+const fmtCount = (n: number): string =>
+  n >= 1000 ? (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k' : String(n);
+
+/* ---------- stat chips (candy in glyphs + numbers only) ---------- */
+function StatChips() {
+  const lv = useStore((s) => s.lv);
   const xp = useStore((s) => s.xp);
   const xpMax = useStore((s) => s.xpMax);
   const ink = useStore((s) => s.ink);
-  const inkMax = useStore((s) => s.inkMax);
-  const coins = useStore((s) => s.coins);
-  const lv = useStore((s) => s.lv);
-  const name = useStore((s) => s.prefs.name);
-  const t = useT().today.today;
-  const readerName = name?.trim() || 'Mira';
-  const xpPercent = Math.min(100, Math.max(0, (xp / Math.max(1, xpMax)) * 100));
-  const inkPercent = Math.min(100, Math.max(0, (ink / Math.max(1, inkMax)) * 100));
-
+  const t = useT().today.home;
+  const xpPct = Math.min(100, Math.max(0, (xp / Math.max(1, xpMax)) * 100));
   return (
-    <section className="today-player" aria-label={t.playerAria}>
-      <div className="today-player-portrait" role="img" aria-label={t.portraitAria(readerName)}>
-        <img className="today-player-portrait-art" src="/user-bar-v3/portrait.png" alt="" aria-hidden="true" />
+    <div className="pb-chips" role="group" aria-label={t.statsAria}>
+      <div className="pb-chip" aria-label={t.statLevel(lv)}>
+        <Icon name="ti-crown" className="crown" />
+        <span className="n">{lv}</span>
       </div>
-
-      <div className="today-player-level-badge" role="img" aria-label={t.levelAria(lv)}>
-        <img src="/user-bar-v3/level-badge.png" alt="" aria-hidden="true" />
-        <span className="d" aria-hidden="true">
-          LV <strong>{lv}</strong>
-        </span>
+      <div className="pb-chip" aria-label={t.statXp(xp, xpMax)}>
+        <Icon name="ti-bolt" className="bolt" />
+        <span className="pb-xpbar"><b style={{ width: `${xpPct}%` }} /></span>
+        <span className="n">{xp}</span>
       </div>
-
-      <div className="today-player-progress">
-        <div className="today-player-meter today-player-meter-xp">
-          <img className="today-player-emblem" src="/user-bar-v3/xp.png" alt="" aria-hidden="true" />
-          <span className="today-player-meter-label d">{xp} XP</span>
-          <div
-            className="today-player-track"
-            role="progressbar"
-            aria-label={t.xpBarAria(lv)}
-            aria-valuemin={0}
-            aria-valuemax={xpMax}
-            aria-valuenow={xp}
-          >
-            <span className="today-player-fill" style={{ width: `${xpPercent}%` }} />
-          </div>
-        </div>
-
-        <div className="today-player-meter today-player-meter-ink">
-          <img className="today-player-emblem" src="/user-bar-v3/ink.png" alt="" aria-hidden="true" />
-          <span className="today-player-meter-label d">INK</span>
-          <div
-            className="today-player-track"
-            role="progressbar"
-            aria-label={t.inkBarAria}
-            aria-valuemin={0}
-            aria-valuemax={inkMax}
-            aria-valuenow={ink}
-          >
-            <span className="today-player-fill" style={{ width: `${inkPercent}%` }} />
-          </div>
-          <span className="today-player-meter-value d">
-            {ink}/{inkMax}
-          </span>
-        </div>
+      <div className="pb-chip" aria-label={t.statInk(ink)}>
+        <Icon name="ti-inkdrop" className="drop" />
+        <span className="n">{ink}</span>
       </div>
-
-      <div className="today-player-coins" role="group" aria-label={t.coinsAria(coins)}>
-        <img className="today-player-coin" src="/user-bar-v3/coin.png" alt="" aria-hidden="true" />
-        <strong className="d">{coins}</strong>
-      </div>
-    </section>
-  );
-}
-
-/* ---------- today's pick carousel — the quote is the hero, no cover ---------- */
-function PickCard() {
-  const pickIndex = useStore((s) => s.pickIndex);
-  const setPick = useStore((s) => s.setPick);
-  const openSheet = useStore((s) => s.openSheet);
-  const startAsk = useStore((s) => s.startAsk);
-  const t = useT().today.today;
-
-  const id = PICKS[pickIndex];
-  const b = getBook(id);
-  const swipeX = useRef<number | null>(null);
-  if (!b) return null;
-
-  return (
-    <div className="pick-wrap">
-      <article
-        className="quote-post swap"
-        key={pickIndex}
-        aria-label={t.postAria(pickIndex + 1, PICKS.length)}
-        aria-roledescription="carousel"
-        onPointerDown={(e) => {
-          swipeX.current = e.clientX;
-        }}
-        onPointerUp={(e) => {
-          if (swipeX.current === null) return;
-          const dx = e.clientX - swipeX.current;
-          swipeX.current = null;
-          if (Math.abs(dx) > 40) setPick(pickIndex + (dx < 0 ? 1 : -1));
-        }}
-      >
-        <blockquote className="quote-hero">
-          {b.q}
-        </blockquote>
-
-        <div className="quote-source">
-          <button
-            type="button"
-            className="quote-title d"
-            onClick={() => openSheet(id)}
-            aria-label={t.aboutAria(b.t)}
-            aria-haspopup="dialog"
-          >
-            {b.t}
-          </button>
-          <span className="quote-author">{b.a}</span>
-        </div>
-
-        <div className="quote-actions">
-          <button
-            type="button"
-            className="btn ask-btn"
-            onClick={() => startAsk(id)}
-            aria-label={t.askAria(b.t)}
-          >
-            {t.ask} <Icon name="ti-arrow-right" />
-          </button>
-        </div>
-      </article>
     </div>
   );
 }
 
-/* ---------- pick up where you left off ---------- */
-function Shelf() {
-  const readingIds = useStore((s) => s.readingIds);
-  const pagesRead = useStore((s) => s.pagesRead);
-  const openBook = useStore((s) => s.openBook);
-  const setTab = useStore((s) => s.setTab);
-  const t = useT().today.today;
+function CompactStrip() {
+  const lv = useStore((s) => s.lv);
+  const xp = useStore((s) => s.xp);
+  const ink = useStore((s) => s.ink);
   return (
-    <section className="sec resume-sec" aria-labelledby="resume-title">
-      <div className="sec-head">
-        <h2 className="sec-title d" id="resume-title">{t.resumeTitle}</h2>
-        <button className="all" data-tab="library" onClick={() => setTab('library')}>
-          {t.all} &rarr;
+    <div className="pb-compact" aria-hidden="true">
+      <span className="wm">owlry<span className="dot">.</span></span>
+      <span className="sp" />
+      <span className="pb-mini"><Icon name="ti-crown" className="crown" />{lv}</span>
+      <span className="pb-mini"><Icon name="ti-bolt" className="bolt" />{xp}</span>
+      <span className="pb-mini"><Icon name="ti-inkdrop" className="drop" />{ink}</span>
+    </div>
+  );
+}
+
+/* ---------- one book post ---------- */
+function BookCard({ id, liked, onLike }: { id: BookId; liked: boolean; onLike: (id: BookId) => void }) {
+  const b = getBook(id);
+  const openSheet = useStore((s) => s.openSheet);
+  const toggleSave = useStore((s) => s.toggleSave);
+  const saved = useStore((s) => s.savedIds.includes(id));
+  const t = useT().today.home;
+  if (!b) return null;
+
+  const open = () => openSheet(id);
+  return (
+    <article className="pb-card">
+      <button type="button" className="pb-open" aria-label={t.openAria(b.t)} onClick={open}>
+        <Cover id={id} cls="pb-cover" />
+        <span className="body">
+          <span className="pb-cap">{b.q}</span>
+        </span>
+      </button>
+      <div className="pb-foot">
+        <button
+          type="button"
+          className={`pb-iconbtn pb-like ${liked ? 'on' : ''}`}
+          aria-label={t.likeAria(b.t)}
+          aria-pressed={liked}
+          onClick={() => onLike(id)}
+        >
+          <Icon name={liked ? 'ti-heart-filled' : 'ti-heart'} />
+          <span>{fmtCount(feedLikes(id) + (liked ? 1 : 0))}</span>
+        </button>
+        <span className="sp" />
+        <button
+          type="button"
+          className={`pb-iconbtn pb-mark ${saved ? 'on' : ''}`}
+          aria-label={t.saveAria(b.t)}
+          aria-pressed={saved}
+          onClick={() => toggleSave(id)}
+        >
+          <Icon name={saved ? 'ti-bookmark-filled' : 'ti-bookmark'} />
         </button>
       </div>
-      <div className="shelf" id="shelf">
-        {readingIds.map((id) => {
-          const b = getBook(id);
-          if (!b) return null;
-          const p = pct(pagesRead[id] ?? 0, b.n);
-          return (
-            <button
-              key={id}
-              className="sh-item"
-              onClick={() => openBook(id)}
-              aria-label={t.continueAria(b.t, p)}
-            >
-              <div className="sh-cover-wrap">
-                <Cover id={id} cls="cover-home" />
-                <span className="sh-badge">{p}%</span>
-              </div>
-              <div className="sh-title d">{b.t}</div>
-              <div className="sh-author">{b.a}</div>
-              <div className="mini-track">
-                <div className="mini-fill" style={{ width: `${p}%` }} />
-              </div>
-            </button>
-          );
-        })}
-      </div>
-    </section>
+    </article>
+  );
+}
+
+/* ---------- Keeper card: the reader's most recent save resurfaced ---------- */
+function KeeperCard({ id }: { id: BookId }) {
+  const b = getBook(id);
+  const openSheet = useStore((s) => s.openSheet);
+  const t = useT().today.home;
+  if (!b) return null;
+  const open = () => openSheet(id);
+  return (
+    <button type="button" className="pb-keeper" aria-label={t.keeperAria(b.t)} onClick={open}>
+      <span className="pb-klbl">
+        <span className="pb-kdot pb-kdot-owl" aria-hidden="true">
+          <svg className="owl" viewBox="0 0 120 130"><use href="#owl-keeper" /></svg>
+        </span>
+        {t.keeperLabel}
+      </span>
+      <span className="pb-krow">
+        <span className="pb-kthumb"><Cover id={id} cls="pb-cover-xs" /></span>
+        <span>
+          <span className="pb-kt">{b.t}</span>
+          <span className="pb-kq">{t.keeperLine}</span>
+        </span>
+      </span>
+    </button>
   );
 }
 
 export function TodayScreen() {
   const active = useStore((s) => s.activeTab === 'today');
-  const t = useT().today.today;
+  const savedIds = useStore((s) => s.savedIds);
+  const t = useT().today.home;
+
+  const [filter, setFilter] = useState<Filter>('all');
+  const [liked, setLiked] = useState<Record<string, boolean>>({});
+  const [collapsed, setCollapsed] = useState(false);
+  const feedRef = useRef<HTMLDivElement>(null);
+
+  const toggleLike = useCallback((id: BookId) => setLiked((m) => ({ ...m, [id]: !m[id] })), []);
+
+  // scroll collapse with hysteresis: collapse past 42, expand back under 8
+  const onScroll = () => {
+    const y = feedRef.current?.scrollTop ?? 0;
+    if (y > 42) setCollapsed(true);
+    else if (y < 8) setCollapsed(false);
+  };
+
+  const latestSave = savedIds.length ? (savedIds[savedIds.length - 1] as BookId) : null;
+
+  // build the cell list, splice in the Keeper card (For you + non-empty shelf),
+  // then split even→left / odd→right for the waterfall
+  const [colL, colR] = useMemo(() => {
+    const ids = FEED.filter((id) => filter === 'all' || getBook(id)?.g === filter);
+    const cells: ReactNode[] = ids.map((id) => (
+      <BookCard key={id} id={id} liked={!!liked[id]} onLike={toggleLike} />
+    ));
+    if (filter === 'all' && latestSave) {
+      cells.splice(Math.min(2, cells.length), 0, <KeeperCard key={`keeper-${latestSave}`} id={latestSave} />);
+    }
+    const L: ReactNode[] = [];
+    const R: ReactNode[] = [];
+    cells.forEach((node, i) => (i % 2 ? R : L).push(node));
+    return [L, R];
+  }, [filter, liked, latestSave, toggleLike]);
+
+  const empty = colL.length === 0 && colR.length === 0;
+
   return (
-    <section className={`screen ${active ? 'on' : ''}`} id="screen-today">
-      <Masthead />
-      <StatsRow />
-      <div className="marquee">
-        <h2 className="mq" aria-label={t.marqueeAria}>
-          <span>{t.mq1}</span>
-          <span>{t.mq2}<span className="gdot">.</span></span>
-        </h2>
-        <div className="mq-sub it">{t.mqSub}</div>
-        <CastOwl owl="scout" cls="hero" />
+    <section
+      className={`screen pb-home ${active ? 'on' : ''} ${collapsed ? 'collapsed' : ''}`}
+      id="screen-today"
+    >
+      <div className="pb-head">
+        <CurtainValance />
+        <CurtainHem />
+        <div className="pb-perch">
+          <CastOwl owl="keeper" cls="mini" />
+        </div>
+        <h1 className="pb-marquee" aria-label={t.marqueeAria}>
+          owlry<span className="dot">.</span>
+        </h1>
+        <StatChips />
+        <CompactStrip />
+        <div className="pb-tags" role="group" aria-label={t.filterAria}>
+          <button
+            className="pb-tag"
+            aria-pressed={filter === 'all'}
+            onClick={(e) => {
+              setFilter('all');
+              e.currentTarget.scrollIntoView({ inline: 'nearest', block: 'nearest' });
+            }}
+          >
+            {t.tags.all}
+          </button>
+          {FEED_GENRES.map((g) => (
+            <button
+              key={g}
+              className="pb-tag"
+              aria-pressed={filter === g}
+              onClick={(e) => {
+                setFilter(g);
+                e.currentTarget.scrollIntoView({ inline: 'nearest', block: 'nearest' });
+              }}
+            >
+              {t.tags[g]}
+            </button>
+          ))}
+        </div>
+        <div className="pb-rule" />
       </div>
-      <PickCard />
-      <Shelf />
+
+      <div className="pb-feed" ref={feedRef} onScroll={onScroll}>
+        {empty ? (
+          <div className="pb-empty">
+            <Icon name="ti-feather" />
+            <p>{t.emptyLine}</p>
+          </div>
+        ) : (
+          <div className="pb-cols">
+            <div className="pb-col">{colL}</div>
+            <div className="pb-col r">{colR}</div>
+          </div>
+        )}
+      </div>
     </section>
   );
 }

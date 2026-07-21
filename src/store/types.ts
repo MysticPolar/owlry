@@ -7,7 +7,7 @@
 import type { BookRef } from '../content/types';
 import type { OwlMessage, OwlBatch, OwlSession } from '../lib/owlBrain';
 
-export type Tab = 'today' | 'discover' | 'library' | 'profile';
+export type Tab = 'today' | 'discover' | 'profile';
 export type LibTab = 'reading' | 'saved' | 'finished';
 
 export type ReaderFont = 'literata' | 'fraunces' | 'system';

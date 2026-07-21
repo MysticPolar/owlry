@@ -40,6 +40,7 @@ const en = {
   /* ---- Sheet — the book about-sheet ---- */
   sheetAria: 'Book details',
   goodreads: 'GOODREADS',
+  askBtn: 'ASK',
   peekBtn: 'PEEK',
   resumeBtn: 'RESUME',
   secAuthor: 'THE AUTHOR',
@@ -131,6 +132,7 @@ const zh: typeof en = {
   /* ---- Sheet — the book about-sheet ---- */
   sheetAria: '书籍详情',
   goodreads: 'GOODREADS',
+  askBtn: '问一问',
   peekBtn: 'PEEK 来信',
   resumeBtn: '接着读',
   secAuthor: '作者其人',

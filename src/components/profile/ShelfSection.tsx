@@ -7,6 +7,10 @@ import { Icon } from '../Icon';
 import { Cover } from '../Cover';
 import { CastOwl } from '../CastOwl';
 
+/* The reading/saved/finished shelves — the old Library tab, folded into the
+   lower end of the profile (its own Flat Playbill pass comes with the profile
+   rework; for now it keeps the legacy shelf styling). */
+
 function ReadingList() {
   const readingIds = useStore((s) => s.readingIds);
   const pagesRead = useStore((s) => s.pagesRead);
@@ -110,8 +114,7 @@ function FinishedList() {
   );
 }
 
-export function LibraryScreen() {
-  const active = useStore((s) => s.activeTab === 'library');
+export function ShelfSection() {
   const libTab = useStore((s) => s.libTab);
   const setLibTab = useStore((s) => s.setLibTab);
   const readingCount = useStore((s) => s.readingIds.length);
@@ -126,18 +129,12 @@ export function LibraryScreen() {
   ];
 
   return (
-    <section className={`screen ${active ? 'on' : ''}`} id="screen-library">
-      <div className="pad-h">
-        <span className="ghost" aria-hidden="true">
-          Keeper
-        </span>
-        <h1 className="hl sm d">
-          <span className="u" />
-          <span className="t">
-            {t.title}<span className="gdot">.</span>
-          </span>
-        </h1>
-        <CastOwl owl="keeper" cls="mini" />
+    <section className="sec prof-shelf" aria-label={t.yourShelf}>
+      <div className="sec-head">
+        <div className="qhead">
+          <CastOwl owl="keeper" cls="mini" />
+          <div className="sec-title d">{t.yourShelf}</div>
+        </div>
       </div>
       <div className="seg" id="segRow">
         {segs.map(([k, l]) => (

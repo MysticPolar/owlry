@@ -130,9 +130,6 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
   transition:background .45s ease,color .45s ease;
 }
 
-/* ---------- status bar ---------- */
-.status{position:relative;z-index:9;display:flex;justify-content:space-between;align-items:center;padding:14px 26px 2px;font-size:13px;font-weight:700}
-.status .icons{display:flex;gap:6px;align-items:center}
 
 /* ---------- screens ---------- */
 .screens{position:relative;flex:1;min-height:0}
@@ -150,112 +147,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 }
 .pad-h .ghost{font-size:94px;right:-30px;top:0}
 
-/* ---------- masthead ---------- */
-.mast{position:relative;z-index:2;padding:14px 22px 0;display:flex;align-items:center;justify-content:space-between}
-.logo{font-size:25px;display:inline-flex;align-items:baseline;transform:skewX(-8deg);letter-spacing:.03em}
-.wx{position:relative;display:inline-flex;margin-left:10px;transform:translateY(-6px) skewX(8deg);padding:2px;background:none;border:0;cursor:pointer;border-radius:6px;color:var(--wxc)}
-.wx .ti{font-size:17px;display:inline-block}
-.wx.mode{margin-left:4px;color:var(--gold)}
-.wx-fx{position:absolute;left:-6px;right:-8px;top:-4px;bottom:-6px;pointer-events:none}
-.dt{font-size:10px;color:var(--fade);font-weight:800;letter-spacing:1.45px;white-space:nowrap}
 
-/* weather micro-animations */
-.drop{position:absolute;top:0;width:2px;height:6px;border-radius:2px;background:var(--wxc);opacity:0}
-.drop:nth-child(1){left:4px}
-.drop:nth-child(2){left:13px;animation-delay:.35s !important}
-.drop:nth-child(3){left:22px;animation-delay:.7s !important}
-[data-wx="rain"] .drop{animation:drop 1.1s linear infinite}
-@keyframes drop{0%{transform:translateY(0);opacity:0}15%{opacity:.85}80%{opacity:.85}100%{transform:translateY(22px);opacity:0}}
-.flake{position:absolute;top:0;width:3px;height:3px;border-radius:50%;background:var(--wxc);opacity:0}
-.flake:nth-child(4){left:5px}
-.flake:nth-child(5){left:14px;animation-delay:.6s !important}
-.flake:nth-child(6){left:23px;animation-delay:1.2s !important}
-[data-wx="snow"] .flake{animation:flake 1.9s ease-in infinite}
-@keyframes flake{0%{transform:translate(0,0);opacity:0}20%{opacity:.85}55%{transform:translate(-3px,12px)}100%{transform:translate(2px,22px);opacity:0}}
-.star{position:absolute;width:3px;height:3px;background:var(--starc);transform:rotate(45deg);opacity:0}
-.star:nth-child(7){left:-2px;top:4px}
-.star:nth-child(8){left:26px;top:-1px;animation-delay:.8s !important}
-[data-wx="night"] .star{animation:twinkle 1.6s ease-in-out infinite}
-@keyframes twinkle{0%,100%{opacity:0;transform:rotate(45deg) scale(.6)}50%{opacity:.95;transform:rotate(45deg) scale(1)}}
-[data-wx="sun"] .wx .ti{animation:spin 16s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-[data-wx="cloud"] .wx .ti{animation:drift 3.6s ease-in-out infinite}
-@keyframes drift{0%,100%{transform:translateX(0)}50%{transform:translateX(3px)}}
-
-/* ---------- supplied navy player frame (today) ---------- */
-.today-player{
-  --player-ink:#F6EEDB;
-  position:relative;z-index:2;isolation:isolate;
-  height:auto;aspect-ratio:431/145;margin:8px 4.15% 0;
-  color:var(--player-ink);background:transparent;border:0;
-}
-.today-player::before{
-  content:"";position:absolute;z-index:0;inset:0;pointer-events:none;
-  background:url('/user-bar-v3/frame.png') center/100% auto no-repeat;
-  transform:translateY(-4px) scale(1.06);transform-origin:center;
-  filter:drop-shadow(0 8px 7px rgba(50,32,7,.24));
-}
-.today-player-portrait{
-  position:absolute;z-index:2;left:2.5%;top:14.5%;width:21.3%;height:auto;aspect-ratio:1;
-  overflow:hidden;border-radius:50%;
-}
-.today-player-portrait-art{display:block;width:100%;height:100%;object-fit:cover;border-radius:50%}
-.today-player-level-badge{
-  position:absolute;z-index:4;left:8.8%;top:66%;width:9.2%;height:auto;aspect-ratio:113/145;
-  filter:drop-shadow(0 4px 4px rgba(35,23,6,.28));
-}
-.today-player-level-badge img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
-.today-player-level-badge span{
-  position:absolute;z-index:1;inset:13% 8% 12%;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  color:#F8F0DC;font-size:11px;line-height:.94;letter-spacing:.07em;text-shadow:0 1px 2px rgba(0,0,0,.8);
-}
-.today-player-level-badge strong{font-size:18px;font-weight:400;letter-spacing:0;margin-top:2px}
-.today-player-progress{
-  position:absolute;z-index:2;left:28%;right:17.8%;top:13.5%;height:58%;
-  display:grid;grid-template-rows:1fr 1fr;min-width:0;
-}
-.today-player-meter{display:grid;align-items:center;min-width:0;color:var(--player-ink)}
-.today-player-meter-xp{grid-template-columns:34px 54px minmax(0,1fr);gap:5px}
-.today-player-meter-ink{grid-template-columns:34px 38px minmax(0,1fr) 48px;gap:4px}
-.today-player-emblem{
-  width:34px;height:35px;display:block;object-fit:contain;
-  filter:drop-shadow(0 3px 3px rgba(0,0,0,.34));
-}
-.today-player-meter-label{
-  font-size:14px;line-height:1;letter-spacing:.045em;white-space:nowrap;text-shadow:0 1px 2px rgba(0,0,0,.65);
-}
-.today-player-track{
-  position:relative;height:15px;min-width:0;overflow:hidden;border-radius:999px;
-  background:url('/user-bar-v3/track.png') center/100% 100% no-repeat;
-}
-.today-player-fill{
-  position:absolute;inset:0 auto 0 0;display:block;border-radius:inherit;
-  background:url('/user-bar-v3/xp-fill.png') left center/100% 100% no-repeat;
-  transition:width .5s cubic-bezier(.2,.8,.2,1);
-}
-.today-player-meter-ink .today-player-fill{background-image:url('/user-bar-v3/ink-fill.png')}
-.today-player-meter-value{
-  font-size:13px;line-height:1;letter-spacing:.025em;text-align:right;white-space:nowrap;text-shadow:0 1px 2px rgba(0,0,0,.65);
-}
-.today-player-coins{
-  position:absolute;z-index:2;right:1.1%;top:14%;width:15.7%;height:65%;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;color:#FFF4D8;
-}
-.today-player-coin{width:39px;height:40px;display:block;object-fit:contain;filter:drop-shadow(0 4px 4px rgba(0,0,0,.35))}
-.today-player-coins strong{font-size:24px;line-height:.95;letter-spacing:.04em;text-shadow:0 2px 3px rgba(0,0,0,.55)}
-.app[data-mode="night"] .today-player::before{filter:drop-shadow(0 9px 9px rgba(0,0,0,.55))}
-
-@media (max-width:350px){
-  .today-player{aspect-ratio:431/145;margin-inline:12px}
-  .today-player-progress{left:28%;right:17.6%;top:13%;height:59%}
-  .today-player-meter-xp{grid-template-columns:21px 39px minmax(0,1fr);gap:4px}
-  .today-player-meter-ink{grid-template-columns:21px 27px minmax(0,1fr) 34px;gap:3px}
-  .today-player-emblem{width:21px;height:23px}
-  .today-player-meter-label{font-size:8.8px}.today-player-meter-value{font-size:8px}
-  .today-player-track{height:10px}
-  .today-player-level-badge span{font-size:8px}.today-player-level-badge strong{font-size:13px;margin-top:1px}
-  .today-player-coin{width:27px;height:28px}.today-player-coins strong{font-size:16px}
-}
 
 /* legacy avatar + meter primitives shared by profile and reader surfaces */
 .avatar{flex:0 0 50px;width:50px;height:50px;border-radius:50%;background:linear-gradient(145deg,#FFD34E,var(--yellow));color:#241B0E;display:flex;align-items:center;justify-content:center;font-size:21px;box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 8px 20px -12px rgba(255,192,23,.8)}
@@ -264,20 +156,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .fill.xp{background:linear-gradient(90deg,var(--yellow),#FFD866)}
 .fill.ink{background:var(--quill)}
 
-/* ============================================================
-   the delivery desk (today) — quiet enough for the quote to lead
-   ============================================================ */
-.marquee{position:relative;z-index:3;min-height:131px;padding:20px 22px 0;flex:0 0 auto}
-.mq{
-  position:relative;z-index:1;margin:0;
-  font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;
-  display:flex;flex-direction:column;align-items:flex-start;
-  font-size:52px;line-height:.86;letter-spacing:.015em;color:var(--ink);
-  text-shadow:var(--glowT);
-  animation:mqIn .5s cubic-bezier(.18,.9,.24,1.04) both;
-}
 @keyframes mqIn{from{opacity:0;transform:translateY(20px) skewX(-9deg)}to{opacity:1;transform:none}}
-.mq-sub{position:relative;z-index:1;margin-top:13px;font-size:15px;color:var(--mut);animation:mqIn .55s .08s cubic-bezier(.18,.9,.24,1.04) both}
 
 /* the hero owl — perched on the incoming letter */
 .owl{display:block;pointer-events:none}
@@ -301,41 +180,6 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .screen.on .hl{animation:mqIn .5s cubic-bezier(.18,.9,.24,1.04) both}
 
 
-/* ============================================================
-   today's pick — a cover-led post from the old theatre desk
-   ============================================================ */
-.pick-wrap{position:relative;z-index:1;padding:16px 27px 0}
-.quote-post{
-  position:relative;min-height:304px;padding:20px 30px 12px;color:var(--ink);overflow:hidden;
-  background:
-    radial-gradient(120% 72% at 50% 12%,rgba(255,192,23,.055),transparent 58%),
-    var(--surface);
-  border:1px solid var(--line);border-radius:26px;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.045),var(--shadow);
-}
-.quote-post::before{
-  content:"“";position:absolute;left:30px;top:22px;height:auto;
-  background:none;color:var(--yellow);opacity:1;
-  font-family:'Fraunces',Georgia,serif;font-size:56px;line-height:1;font-weight:700;
-}
-.quote-post.swap{animation:swapIn .26s ease}
-.quote-hero{
-  max-width:310px;margin:38px auto 0;padding:0;text-align:center;
-  font-family:'Fraunces',Georgia,serif;font-size:clamp(26px,7.2vw,31px);font-weight:400;
-  font-style:normal;line-height:1.08;letter-spacing:-.025em;text-wrap:balance;
-}
-.quote-source{display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:20px;text-align:center}
-.quote-source::before{content:"";width:28px;height:2px;margin-bottom:6px;background:var(--yellow);border-radius:2px}
-.quote-title{display:inline;padding:0;background:none;border:0;color:inherit;font-size:16px;font-style:normal;font-weight:800;line-height:1.2;letter-spacing:.01em;cursor:pointer}
-.quote-title:hover{text-decoration:underline;text-decoration-color:var(--yellow);text-decoration-thickness:2px;text-underline-offset:3px}
-.quote-author{font-family:'Fraunces',Georgia,serif;font-size:13px;color:var(--mut);font-weight:500;font-style:italic}
-.quote-actions{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
-.quote-actions .btn{min-height:40px;margin-top:0}
-.quote-actions .save{width:44px;height:44px;flex-basis:44px}
-.ask-btn{justify-content:center;flex:0 0 135px;min-width:135px;max-width:135px;padding-inline:20px}
-.quote-title:focus-visible{outline:2px solid var(--yellow);outline-offset:4px;border-radius:4px}
-.ask-btn .ti{transition:transform .2s ease}
-.ask-btn:hover .ti{transform:translateX(3px)}
 @keyframes swapIn{from{opacity:0;transform:translateX(var(--fx,18px))}to{opacity:1;transform:none}}
 .lk{font-size:8.5px;font-weight:800;letter-spacing:2.2px;color:var(--gold);text-transform:uppercase;margin-bottom:5px}
 .save{width:32px;height:32px;flex:0 0 32px;display:flex;align-items:center;justify-content:center;background:var(--surface2);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow-sm);padding:0;cursor:pointer;color:var(--ink)}
@@ -807,21 +651,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
   color:var(--mut);cursor:pointer;transition:background .25s ease,color .25s ease}
 .deskchip.on{background:var(--ember);border-color:transparent;color:#FFF6E8}
 
-#screen-discover{transition:background .45s ease}
-#screen-discover[data-desk="pro"]{
-  background:linear-gradient(180deg,#171A23 0%,#10131B 100%);
-  color:var(--ink); /* re-resolve inherited text against the scoped tokens */
-  --surface:#20242F;
-  --surface2:#272C3A;
-  --ink:#E9E7E0;
-  --mut:#9BA1AE;
-  --fade:#6E7480;
-  --line:rgba(150,165,200,.14);
-  --line2:rgba(150,165,200,.30);
-  --track:#262B37;
-  --ghost:rgba(233,231,224,.045);
-  --shadow-sm:0 8px 18px -10px rgba(0,0,0,.55);
-}
+/* (the pro-desk dark rig was retired with the Playbill restyle — the espresso
+   stage is dark for both desks; pro differs via chip state + placeholder only) */
 
 /* ============================================================
    OPENING NIGHT — the playbill onboarding + the standing curtain.
@@ -880,16 +711,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
   animation:obRise .6s cubic-bezier(.18,.9,.24,1.04) 2.1s backwards;
   box-shadow:0 4px 0 rgba(90,62,6,.4), 0 0 26px rgba(255,192,23,.35)}
 @keyframes obRise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
-.ob-curtain{position:absolute;inset:0;z-index:2;animation:curtainRise 1.5s cubic-bezier(.6,.05,.35,1) .55s forwards}
-.ob-velvet{position:absolute;inset:0;background:
-  repeating-linear-gradient(90deg,#6E1620 0 26px,#8A2230 26px 54px,#5C1119 54px 80px)}
-.ob-fringe{position:absolute;left:0;right:0;bottom:-14px;height:16px;
-  background:repeating-linear-gradient(90deg,#FFC017 0 5px,#A8730A 5px 10px);border-radius:0 0 4px 4px}
-@keyframes curtainRise{to{transform:translateY(-104%)}}
-
-/* the standing entrance: a brief curtain on every app open */
-.curtain-brief{position:absolute;inset:0;z-index:15;pointer-events:none;
-  animation:curtainRise .9s cubic-bezier(.6,.05,.35,1) .15s forwards}
+/* (legacy .ob-curtain / .ob-velvet / .ob-fringe / .curtain-brief + @keyframes curtainRise
+   removed — the home's brief entrance is now the Playbill parting curtain in playbill.css) */
 
 /* act 2 — the playbill deck: five swipe slides, one owl each */
 .ob-playbill{position:relative;flex:1;min-height:0;display:flex;flex-direction:column;animation:obFade .45s ease}
@@ -1749,14 +1572,14 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 
 /* the user's question: a quiet pill, not a headline */
 .calm .msg.me{align-self:flex-end !important;max-width:78% !important;margin:20px 0 16px !important;
-  padding:9px 13px !important;background:var(--surface) !important;color:var(--ink) !important;
-  border:1px solid var(--line) !important;border-radius:15px 15px 4px 15px !important;box-shadow:none !important;
+  padding:9px 13px !important;background:var(--pb-track) !important;color:var(--pb-cream) !important;
+  border:0 !important;border-radius:15px 15px 4px 15px !important;box-shadow:none !important;
   font-size:13.5px !important;font-weight:600 !important;line-height:1.45 !important}
 
 /* scout speaks in plain text — no bubble, no border, no shadow */
 .calm .msg.owl{align-self:flex-start !important;max-width:34ch !important;margin:0 0 2px !important;padding:0 !important;
   background:none !important;border:0 !important;box-shadow:none !important;border-radius:0 !important;
-  font-size:15.5px !important;line-height:1.62 !important;color:var(--ink) !important;font-weight:500}
+  font-size:15.5px !important;line-height:1.62 !important;color:var(--pb-cream) !important;font-weight:500}
 .calm .msg.owl.note{opacity:.72}
 .calm .msg.owl .bk{color:var(--ink);border-bottom:1.5px solid var(--yellow);background:none;padding:0;font-weight:700}
 .calm .msg.owl .it{font-family:'Fraunces',Georgia,serif;font-style:italic;color:var(--mut)}
@@ -1805,9 +1628,9 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
   padding:12px 18px 2px !important;overflow:visible !important;border:0 !important}
 .calm #chiprow .chip{background:none !important;border:0 !important;box-shadow:none !important;
   padding:3px 0 !important;border-radius:0 !important;font-size:10px !important;font-weight:800 !important;
-  letter-spacing:1.5px !important;text-transform:uppercase !important;color:var(--mut) !important;
-  border-bottom:1px solid var(--line2) !important;min-height:0 !important}
-.calm #chiprow .chip:active{color:var(--ink) !important;border-bottom-color:var(--yellow) !important;transform:none !important}
+  letter-spacing:1.5px !important;text-transform:uppercase !important;color:var(--pb-cream-mute) !important;
+  border-bottom:1px solid var(--pb-tag-line) !important;min-height:0 !important}
+.calm #chiprow .chip:active{color:var(--pb-cream) !important;border-bottom-color:var(--pb-brass) !important;transform:none !important}
 
 /* cold-start: the starter prompts stand out as tappable suggestions (the quiet
    underlined treatment is for post-reply chips, where the letter is the point) */
@@ -1815,13 +1638,13 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
   text-transform:uppercase;color:var(--fade)}
 .calm #chiprow.starter{gap:8px !important;padding:8px 18px 4px !important}
 .calm #chiprow.starter .chip{
-  background:var(--surface) !important;border:1px solid var(--line2) !important;
+  background:var(--pb-chip-bg) !important;border:1px solid var(--pb-tag-line) !important;
   border-radius:999px !important;padding:8px 14px !important;
   font-size:11px !important;font-weight:800 !important;letter-spacing:.9px !important;
-  color:var(--ink) !important;box-shadow:var(--shadow-sm) !important}
+  color:var(--pb-cream) !important;box-shadow:none !important}
 .calm #chiprow.starter .chip:active{
-  background:rgba(255,192,23,.12) !important;border-color:var(--yellow) !important;
-  color:var(--ink) !important;transform:translateY(1px) !important}
+  background:rgba(217,169,79,.14) !important;border-color:var(--pb-brass) !important;
+  color:var(--pb-cream) !important;transform:translateY(1px) !important}
 
 /* -- phaseh: the shelf rail -- */
 .shelfrail{position:relative;display:none;align-items:flex-end;gap:9px;margin:2px 0 0;padding:0 18px 7px}

@@ -2,11 +2,9 @@ import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { useStore } from './store/useStore';
 import { useAuth } from './store/useAuth';
 import { useKeyboardInset } from './hooks/useKeyboardInset';
-import { WX } from './content/weather';
-import { StatusBar, BottomNav, Toast, BurstLayer, Backdrop, GuestLevelButton } from './components/chrome';
+import { BottomNav, Toast, BurstLayer, Backdrop, GuestLevelButton } from './components/chrome';
 import { TodayScreen } from './components/screens/TodayScreen';
 import { DiscoverScreen } from './components/screens/DiscoverScreen';
-import { LibraryScreen } from './components/screens/LibraryScreen';
 import { ProfileScreen } from './components/screens/ProfileScreen';
 import { Sheet } from './components/overlays/Sheet';
 import { EbookReader } from './components/overlays/EbookReader';
@@ -22,32 +20,31 @@ import { MirrorRoom } from './components/overlays/MirrorRoom';
 /* the standing entrance: a brief curtain-rise on every app open (skipped on
    opening night, which plays the long one, and under reduced motion) */
 let curtainDone = false;
-function CurtainBrief() {
-  const [gone, setGone] = useState(false);
+function PlaybillCurtain() {
+  // start "gone" if the OS asks for reduced motion (no flash of frozen panels);
+  // the app-level reduceMotion toggle is handled at the render site
+  const [gone, setGone] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   useEffect(() => {
     curtainDone = true;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setGone(true);
-      return;
-    }
-    const t = setTimeout(() => setGone(true), 1300);
+    if (gone) return;
+    // panels part over ~1.57s (420ms hold + 1150ms slide); retire the nodes after
+    const t = setTimeout(() => setGone(true), 1900);
     return () => clearTimeout(t);
-  }, []);
+  }, [gone]);
   if (gone) return null;
   return (
-    <div className="curtain-brief" aria-hidden="true">
-      <div className="ob-velvet" />
-      <div className="ob-fringe" />
+    <div className="pb-curtain" aria-hidden="true">
+      <div className="pb-curtain-panel l" />
+      <div className="pb-curtain-panel r" />
     </div>
   );
 }
 
 export default function App() {
-  const wxIndex = useStore((s) => s.wxIndex);
   const hydrated = useStore((s) => s.hydrated);
   const bootstrap = useStore((s) => s.bootstrap);
   const reduceMotion = useStore((s) => s.prefs.reduceMotion);
-  const mode = useStore((s) => s.prefs.mode ?? 'night');
+  const activeTab = useStore((s) => s.activeTab);
   const onboarded = useStore((s) => s.prefs.onboarded);
   const showOnboarding = useStore((s) => s.showOnboarding);
   const initAuth = useAuth((s) => s.init);
@@ -101,18 +98,16 @@ export default function App() {
         <div
           className={`app b${reduceMotion ? ' no-motion' : ''}`}
           id="app"
-          data-wx={WX[wxIndex].k}
-          data-mode={mode}
+          data-mode="night"
+          data-tab={activeTab}
           data-kb={kb > 0 ? 'open' : 'closed'}
           style={appStyle}
         >
           {ready && (
             <>
-              <StatusBar />
               <main className="screens">
                 <TodayScreen />
                 <DiscoverScreen />
-                <LibraryScreen />
                 <ProfileScreen />
               </main>
               <BottomNav />
@@ -128,14 +123,14 @@ export default function App() {
               <Onboarding />
               <Auth />
               <IntroCard />
-              {onboarded && !showOnboarding && !curtainDone && <CurtainBrief />}
+              {onboarded && !showOnboarding && !curtainDone && !reduceMotion && <PlaybillCurtain />}
               <Toast />
               <BurstLayer />
             </>
           )}
         </div>
       </div>
-      <p className="caption">tap the sun for the matinée · swipe the post · ask scout · flip the profile tabs</p>
+      <p className="caption">browse the shelf · tap a post · ask scout · flip the profile tabs</p>
     </div>
   );
 }

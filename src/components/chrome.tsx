@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import { useStore } from '../store/useStore';
 import { useAuth } from '../store/useAuth';
 import type { Tab } from '../store/types';
-import { useClock } from '../hooks/useClock';
 import { useT } from '../i18n/react';
 import { Icon } from './Icon';
 import { chainsInner } from '../lib/chains';
@@ -23,7 +22,8 @@ export function GuestLevelButton() {
   // the locked profile (mirror's room) leaves activeTab where it was, so guard
   // on it too — that page gets its own settings gear, not this pill
   if (roomOpen) return null;
-  if (tab !== 'today' && tab !== 'library') return null;
+  // library folded into profile, so the home stage is the only guest-preview surface
+  if (tab !== 'today') return null;
   return (
     <button
       className="guest-lvl"
@@ -83,7 +83,7 @@ function ProfilePill({ icon }: { icon: string }) {
   }, [locked]);
 
   return (
-    <span className={`pill${wiggle ? ' nv-wiggle' : ''}`}>
+    <span className={`pb-nvpill${wiggle ? ' nv-wiggle' : ''}`}>
       <Icon name={icon} />
       {!gone && (
         <svg
@@ -97,25 +97,10 @@ function ProfilePill({ icon }: { icon: string }) {
   );
 }
 
-/* ---------- status bar ---------- */
-export function StatusBar() {
-  const { time } = useClock();
-  return (
-    <div className="status">
-      <span id="stime">{time}</span>
-      <span className="icons">
-        <Icon name="ti-wifi" style={{ fontSize: 15 }} />
-        <Icon name="ti-battery-3" style={{ fontSize: 17 }} />
-      </span>
-    </div>
-  );
-}
-
-/* ---------- bottom nav ---------- */
+/* ---------- glass nav — Home / Ask / Profile (the one glass object) ---------- */
 const NAV: { tab: Tab; icon: string }[] = [
-  { tab: 'today', icon: 'ti-book-2' },
-  { tab: 'discover', icon: 'ti-compass' },
-  { tab: 'library', icon: 'ti-books' },
+  { tab: 'today', icon: 'ti-home' },
+  { tab: 'discover', icon: 'ti-message-circle' },
   { tab: 'profile', icon: 'ti-user' },
 ];
 
@@ -125,14 +110,14 @@ export function BottomNav() {
   const lv = useStore((s) => s.lv);
   const t = useT().today.chrome;
   return (
-    <nav className="nav" aria-label={t.navAria}>
+    <nav className="pb-nav" aria-label={t.navAria}>
       {NAV.map((n) => {
         const on = activeTab === n.tab;
         const chained = n.tab === 'profile' && lv < 5;
         return (
           <button
             key={n.tab}
-            className={`nv ${on ? 'on' : ''}`}
+            className={`pb-nv ${on ? 'on' : ''}`}
             data-tab={n.tab}
             aria-current={on ? 'page' : undefined}
             aria-label={chained ? t.profileChainedAria : undefined}
@@ -141,7 +126,7 @@ export function BottomNav() {
             {n.tab === 'profile' ? (
               <ProfilePill icon={n.icon} />
             ) : (
-              <span className="pill">
+              <span className="pb-nvpill">
                 <Icon name={n.icon} />
               </span>
             )}

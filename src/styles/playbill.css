@@ -1,0 +1,557 @@
+/* ============================================================
+   owlry — FLAT PLAYBILL (home + nav renovation)
+   An evening at a small theatre: house lights down (espresso stage,
+   never pure black), book posts as cream program cards under warm
+   light, the chrome as the building itself — velvet, brass, one
+   smoked-glass lobby fixture (the nav).
+
+   Additive + scoped: the palette lives under --pb-* names (zero
+   collision with the legacy rig), and every new class is pb-*.
+   Discover / Library / Profile keep the old rig until their own
+   pass. Five rules: print palette only · flat construction (no
+   gradients/shadows/glows except the glass blur) · editorial type
+   roles · gold hairlines are the structure · ornament only at the
+   stage frame.
+   ============================================================ */
+:root {
+  /* grounds */
+  --pb-stage:      #1A110D;  /* home ground, house dark */
+  --pb-bezel:      #0D0806;
+
+  /* paper */
+  --pb-paper:      #FBF3E2;
+  --pb-paper-dim:  #EFE6D0;
+  --pb-paper-line: #D8C6A2;
+
+  /* ink (on paper) */
+  --pb-ink:        #241C14;
+  --pb-ink-soft:   #4A3F30;
+  --pb-ink-faint:  #6A5C4A;
+  --pb-ink-mute:   #8A7A62;
+  --pb-cap-ink:    #2A2018;
+
+  /* velvet + brass */
+  --pb-velvet:      #8C2431;
+  --pb-velvet-deep: #671A24;
+  --pb-brass:       #D9A94F;
+  --pb-brass-rod:   #B08437;
+  --pb-brass-deep:  #8A6A33;
+  --pb-brass-ink:   #241505;
+  --pb-rule-gold:   #8A6A33;
+
+  /* cream (on stage) */
+  --pb-cream:       #F5E9D2;
+  --pb-cream-mute:  #B8A88E;
+
+  /* candy (icon glyphs + numbers ONLY, never surfaces) */
+  --pb-candy-crown: #F2B93B;  /* level */
+  --pb-candy-bolt:  #6FCF3F;  /* XP */
+  --pb-candy-drop:  #5BA8F5;  /* ink */
+
+  /* stage-side UI chrome */
+  --pb-chip-bg:  #2A1A12;
+  --pb-track:    #33221A;
+  --pb-tag-line: #4A3728;
+  --pb-tag-ink:  #C4B196;
+
+  /* feed feedback */
+  --pb-like:      #8A5A4A;
+  --pb-like-on:   #C0392B;
+
+  /* owls (Keeper card) */
+  --pb-owl-ember:      #C6552E;  /* Scout */
+  --pb-owl-teal:       #2E7D74;  /* Peek */
+  --pb-owl-quill:      #3E5F8A;  /* Scribe */
+  --pb-owl-moss:       #5B7A52;  /* Keeper */
+  --pb-owl-moss-ink:   #3E5A38;
+  --pb-owl-violet:     #7B5EA7;  /* Mirror */
+  --pb-owl-violet-ink: #5C4482;  /* violet text on paper */
+  --pb-radar-fill:     rgba(123,94,167,.16);
+
+  /* glass (the one exception) */
+  --pb-glass-bg:   rgba(20,13,10,.74);
+  --pb-glass-line: rgba(217,169,79,.4);
+  --pb-nav-gold:   #E8C270;
+}
+
+/* the stage lighting fills the shared chrome (nav gutter) on every Playbill
+   screen, so the espresso runs edge to edge behind the curtain */
+.app:is([data-tab="today"], [data-tab="discover"], [data-tab="profile"]) { background: var(--pb-stage); }
+
+/* ============================================================
+   BRAND MOMENTS — M1 curtain intro, Playbill toast, flat guest pill
+   ============================================================ */
+/* M1: two striped velvet panels part left/right, once per session */
+.pb-curtain { position: absolute; inset: 0; z-index: 15; display: flex; pointer-events: none; }
+.pb-curtain-panel {
+  flex: 1; height: 100%;
+  background: repeating-linear-gradient(90deg, #8C2431 0 26px, #671A24 26px 52px);
+}
+.pb-curtain-panel.l { border-right: 4px solid #D9A94F; animation: pbCurtainL 1150ms cubic-bezier(.65,0,.25,1) 420ms forwards; }
+.pb-curtain-panel.r { border-left: 4px solid #D9A94F; animation: pbCurtainR 1150ms cubic-bezier(.65,0,.25,1) 420ms forwards; }
+@keyframes pbCurtainL { to { transform: translateX(-102%); } }
+@keyframes pbCurtainR { to { transform: translateX(102%); } }
+
+/* Playbill toast — espresso glass pill above the nav, on every Playbill screen */
+.app:is([data-tab="today"], [data-tab="discover"], [data-tab="profile"]) .toast {
+  background: rgba(20,13,10,.85); border: 1px solid rgba(217,169,79,.4);
+  color: var(--pb-cream); box-shadow: none;
+  bottom: calc(100px + env(safe-area-inset-bottom));
+}
+.app:is([data-tab="today"], [data-tab="discover"], [data-tab="profile"]) .toast .ti { color: var(--pb-brass); }
+
+/* guest "gain a level" pill goes flat on the stage (no blur/glow — glass is nav-only) */
+.app[data-tab="today"] .guest-lvl {
+  background: var(--pb-chip-bg); border: 1px solid var(--pb-brass-deep); color: var(--pb-brass);
+  -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: none; touch-action: manipulation;
+}
+.app[data-tab="today"] .guest-lvl .ti { color: var(--pb-brass); }
+
+/* ============================================================
+   HOME SCREEN — the stage
+   ============================================================ */
+#screen-today {
+  background: var(--pb-stage);
+  color: var(--pb-cream);
+  overflow: hidden;          /* the screen holds still; only the feed scrolls */
+  padding-bottom: 0;
+}
+
+/* ---------- stage head ---------- */
+.pb-head { flex-shrink: 0; position: relative; z-index: 2; }
+.pb-valance { display: block; width: 100%; height: auto; transition: margin-top .35s ease, opacity .3s ease; }
+.pb-hem { display: none; width: 100%; height: auto; }
+
+/* Keeper perched on the curtain — the house's presence; rides the collapse down
+   to a small figure on the hem beside the compact strip */
+.pb-perch { position: absolute; top: 40px; right: 22px; z-index: 3; transform-origin: top right; transition: transform .35s ease; pointer-events: none; }
+.pb-perch .owl.mini { width: 66px; height: 71px; pointer-events: auto; filter: none; }
+.pb-home.collapsed .pb-perch { transform: translate(12px, -48px) scale(.4); }
+
+.pb-marquee {
+  text-align: center; font-family: 'Anton', sans-serif; font-weight: 400; font-size: 17px;
+  letter-spacing: 1px; color: var(--pb-cream);
+  margin: 2px 0 10px; overflow: hidden; max-height: 28px;
+  transition: max-height .35s ease, opacity .25s ease, margin .35s ease;
+}
+.pb-marquee .dot { color: var(--pb-brass); }
+
+/* stat chips */
+.pb-chips {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 0 16px; margin-bottom: 12px;
+  overflow: hidden; max-height: 36px;
+  transition: max-height .35s ease, opacity .25s ease, margin .35s ease;
+}
+.pb-chip {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--pb-chip-bg); border-radius: 999px; padding: 6px 12px;
+}
+.pb-chip .n { font-size: 14px; font-weight: 600; color: var(--pb-cream); font-family: 'Inter Tight', sans-serif; }
+.pb-chip .ti { font-size: 17px; }
+.pb-chip .crown { color: var(--pb-candy-crown); }
+.pb-chip .bolt { color: var(--pb-candy-bolt); }
+.pb-chip .drop { color: var(--pb-candy-drop); }
+.pb-xpbar { width: 46px; height: 6px; border-radius: 999px; background: var(--pb-track); overflow: hidden; }
+.pb-xpbar b { display: block; height: 100%; border-radius: 999px; background: var(--pb-candy-bolt); }
+
+/* compact strip (collapsed state twin) */
+.pb-compact {
+  display: flex; align-items: center; gap: 12px; padding: 0 16px;
+  max-height: 0; opacity: 0; overflow: hidden;
+  transition: max-height .35s ease, opacity .3s ease, padding .35s ease;
+}
+.pb-compact .wm { font-family: 'Anton', sans-serif; font-size: 14px; letter-spacing: .5px; color: var(--pb-cream); }
+.pb-compact .wm .dot { color: var(--pb-brass); }
+.pb-compact .sp { flex: 1; }
+.pb-mini { display: flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; color: var(--pb-cream); }
+.pb-mini .ti { font-size: 14px; }
+.pb-mini .crown { color: var(--pb-candy-crown); }
+.pb-mini .bolt { color: var(--pb-candy-bolt); }
+.pb-mini .drop { color: var(--pb-candy-drop); }
+
+/* tag row + gold rule */
+.pb-tags {
+  display: flex; gap: 8px; padding: 0 16px 12px; overflow-x: auto;
+  flex-shrink: 0; scrollbar-width: none;
+}
+.pb-tags::-webkit-scrollbar { display: none; }
+.pb-tag {
+  flex-shrink: 0; font-family: 'Inter Tight', sans-serif; font-size: 12px; font-weight: 500;
+  padding: 6px 14px; border-radius: 999px; border: 1px solid var(--pb-tag-line);
+  color: var(--pb-tag-ink); white-space: nowrap; background: none; cursor: pointer;
+  transition: background .2s, color .2s, border-color .2s; touch-action: manipulation;
+}
+.pb-tag[aria-pressed="true"] { background: var(--pb-cream); border-color: var(--pb-cream); color: var(--pb-stage); font-weight: 600; }
+.pb-rule { height: 1px; background: var(--pb-rule-gold); flex-shrink: 0; }
+
+/* collapsed state (M2) — tag row + rule never move */
+.pb-home.collapsed .pb-valance { margin-top: -112px; opacity: 0; }
+.pb-home.collapsed .pb-hem { display: block; }
+.pb-home.collapsed .pb-marquee { max-height: 0; opacity: 0; margin: 0; }
+.pb-home.collapsed .pb-chips { max-height: 0; opacity: 0; margin: 0; }
+.pb-home.collapsed .pb-compact { max-height: 34px; opacity: 1; padding: 7px 16px 6px; }
+
+/* ---------- feed (2-col waterfall) ---------- */
+.pb-feed {
+  flex: 1; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain;
+  padding: 14px 12px calc(124px + env(safe-area-inset-bottom)); scrollbar-width: none;
+}
+.pb-feed::-webkit-scrollbar { display: none; }
+.pb-cols { display: flex; gap: 11px; align-items: flex-start; }
+.pb-col { flex: 1; min-width: 0; }
+.pb-col.r { padding-top: 26px; }
+
+.pb-card {
+  display: block; width: 100%; background: var(--pb-paper); border-radius: 14px;
+  overflow: hidden; margin-bottom: 12px; transition: transform .18s ease;
+}
+.pb-card:active { transform: scale(.97); }
+/* the open action — cover + caption; a plain-looking button, no chrome */
+.pb-open {
+  display: block; width: 100%; background: none; border: 0; padding: 0;
+  text-align: left; cursor: pointer; font: inherit; color: inherit;
+  touch-action: manipulation;
+}
+/* the real cover (spine + optional photo), full-bleed at the card top and FLAT
+   — strip the legacy border/shadow so the surface stays print-flat */
+.pb-cover { width: 100%; height: auto; aspect-ratio: 150 / 205; border: 0; border-radius: 0; box-shadow: none; padding: 11px; font-size: 12px; }
+/* matte hairline over the artwork so mismatched real covers read as plates in a
+   programme — a flat 1px border via generated content, NOT an inset shadow */
+.pb-cover::after, .pb-cover-xs::after {
+  content: ''; position: absolute; inset: 0; border: 1px solid var(--pb-paper-line);
+  border-radius: inherit; pointer-events: none;
+}
+.pb-card .body { display: block; padding: 9px 11px 0; }
+.pb-cap { display: block; font-family: 'Fraunces', Georgia, serif; font-style: italic; font-size: 13.5px; line-height: 1.45; color: var(--pb-cap-ink); }
+.pb-foot { display: flex; align-items: center; gap: 4px; padding: 3px 11px 9px; font-size: 11px; font-weight: 600; color: var(--pb-like); }
+.pb-foot .sp { flex: 1; }
+/* generous hit target (>=40px) with the padding pulled back out so the visual
+   footprint is unchanged */
+.pb-iconbtn {
+  display: inline-flex; align-items: center; gap: 4px; padding: 13px; margin: -11px; border-radius: 6px;
+  background: none; border: 0; cursor: pointer; color: inherit;
+  transition: transform .15s ease; touch-action: manipulation;
+}
+.pb-iconbtn:active { transform: scale(1.25); }
+.pb-iconbtn .ti { font-size: 14px; }
+.pb-like { color: var(--pb-like); }
+.pb-like.on { color: var(--pb-like-on); }
+.pb-mark { color: var(--pb-ink-mute); }
+.pb-mark.on { color: var(--pb-brass-deep); }
+
+/* ---------- Keeper card (conditional) ---------- */
+.pb-keeper {
+  display: block; width: 100%; background: var(--pb-paper);
+  border: 1.5px solid var(--pb-owl-moss); border-radius: 14px; padding: 11px;
+  margin-bottom: 12px; text-align: left; cursor: pointer; font: inherit; color: inherit;
+  transition: transform .18s ease; touch-action: manipulation;
+}
+.pb-keeper:active { transform: scale(.97); }
+.pb-klbl { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; color: var(--pb-owl-moss-ink); }
+.pb-kdot { width: 18px; height: 18px; border-radius: 50%; background: var(--pb-owl-moss); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.pb-kdot .ti { font-size: 11px; color: var(--pb-cream); }
+/* Keeper himself stands in for the label dot — the sprite, not a moss disc */
+.pb-kdot-owl { background: none; width: 24px; height: 26px; }
+.pb-kdot-owl .owl { width: 100%; height: 100%; display: block; }
+.pb-krow { display: flex; gap: 10px; margin-top: 9px; align-items: center; }
+.pb-kthumb { width: 40px; flex-shrink: 0; border-radius: 5px; overflow: hidden; }
+.pb-cover-xs { width: 40px; height: auto; aspect-ratio: 150 / 205; border: 0; border-radius: 5px; box-shadow: none; padding: 5px; font-size: 8px; }
+.pb-kt { display: block; font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 13.5px; color: var(--pb-ink); }
+.pb-kq { display: block; font-family: 'Fraunces', Georgia, serif; font-style: italic; font-size: 12.5px; color: var(--pb-ink-faint); margin-top: 2px; line-height: 1.4; }
+
+/* ---------- empty category ---------- */
+.pb-empty { text-align: center; padding: 60px 30px; color: var(--pb-cream-mute); }
+.pb-empty .ti { font-size: 26px; color: var(--pb-brass-deep); }
+.pb-empty p { font-family: 'Fraunces', Georgia, serif; font-style: italic; font-size: 14px; margin-top: 10px; line-height: 1.5; }
+
+/* ============================================================
+   GLASS NAV — the one glass object
+   ============================================================ */
+.pb-nav {
+  position: absolute; bottom: calc(18px + env(safe-area-inset-bottom)); left: 50%;
+  transform: translateX(-50%); z-index: 8;
+  display: flex; gap: 34px; align-items: center; padding: 10px 28px;
+  border-radius: 999px;
+  background: var(--pb-glass-bg);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  border: 1px solid var(--pb-glass-line);
+}
+.pb-nv {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  background: none; border: 0; padding: 0; cursor: pointer;
+  font-family: 'Inter Tight', sans-serif; font-size: 11px; font-weight: 600;
+  color: var(--pb-cream-mute); transition: color .2s ease; touch-action: manipulation;
+}
+.pb-nv .pb-nvpill { position: relative; display: flex; align-items: center; justify-content: center; }
+.pb-nv .ti { font-size: 20px; }
+.pb-nv.on { color: var(--pb-nav-gold); }
+.pb-nv .lab { letter-spacing: .2px; }
+
+/* profile pill chains (kept from the legacy nav — locked until level 5) */
+.pb-nv .nv-chains { position: absolute; inset: -4px -2px; width: calc(100% + 4px); height: calc(100% + 8px); pointer-events: none; }
+
+/* the Library shelves folded into the profile foot — a quiet divider above them
+   (still on the legacy rig until the profile's own pass) */
+.prof-shelf { margin-top: 8px; padding-top: 14px; border-top: 1px solid var(--line); }
+
+/* ---------- focus ring (brass on stage, deeper brass on paper for contrast) ---------- */
+.app:is([data-tab="today"], [data-tab="discover"], [data-tab="profile"]) :is(button, [tabindex]):focus-visible {
+  outline: 2px solid var(--pb-brass); outline-offset: 2px; border-radius: 6px;
+}
+/* on paper surfaces (feed cards, About sheet, program sheet) the deeper brass reads */
+#screen-today :is(.pb-open, .pb-iconbtn, .pb-keeper):focus-visible,
+.pb-sheet :is(button, [tabindex]):focus-visible,
+.pb-psheet :is(button, [tabindex]):focus-visible {
+  outline: 2px solid var(--pb-brass-deep); outline-offset: 2px;
+}
+
+/* ============================================================
+   ABOUT SHEET — cream program sheet (Playbill), on both rigs
+   ============================================================ */
+.pb-sheet {
+  left: 0; right: 0; bottom: 0; top: auto;
+  background: var(--pb-paper); color: var(--pb-ink);
+  border: 1px solid var(--pb-paper-line); border-bottom: 0;
+  border-radius: 22px 22px 0 0; box-shadow: none;
+  padding: 20px 18px calc(24px + env(safe-area-inset-bottom));
+  max-height: calc(100% - 24px); overflow-y: auto; scrollbar-width: none;
+}
+.pb-sheet::-webkit-scrollbar { display: none; }
+.pb-sheet.on { animation: pbSheetUp .42s cubic-bezier(.32,.72,.28,1); }
+@keyframes pbSheetUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+/* save heart, top-right */
+.pb-sh-save {
+  position: absolute; top: 16px; right: 16px; z-index: 3;
+  width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+  background: var(--pb-paper-dim); border: 1px solid var(--pb-paper-line); border-radius: 999px;
+  cursor: pointer; color: var(--pb-ink-mute); box-shadow: none; touch-action: manipulation;
+}
+.pb-sh-save .ti { font-size: 18px; }
+.pb-sh-save.on { color: var(--pb-like-on); border-color: var(--pb-like-on); }
+
+/* header: cover + info */
+.pb-sh-flex { display: flex; gap: 14px; padding-right: 44px; }
+.pb-sheet .cover { box-shadow: none; border: 1px solid var(--pb-paper-line); }
+.pb-sh-info { flex: 1; min-width: 0; }
+.pb-sh-ttl { font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 22px; line-height: 1.1; color: var(--pb-ink); }
+.pb-sh-sub { margin-top: 4px; font-family: 'Fraunces', Georgia, serif; font-style: italic; font-size: 13px; color: var(--pb-ink-faint); }
+.pb-sh-auth { margin-top: 6px; font-size: 12.5px; font-weight: 600; color: var(--pb-ink-soft); }
+.pb-sh-pub { margin-top: 4px; font-size: 11px; font-weight: 600; letter-spacing: .2px; color: var(--pb-ink-mute); }
+.pb-sh-rate { display: flex; align-items: center; gap: 5px; margin-top: 8px; font-size: 13px; font-weight: 700; color: var(--pb-ink); }
+.pb-sh-rate .ti { font-size: 14px; color: #A8791F; }
+.pb-sh-rate small { font-size: 10px; font-weight: 700; color: var(--pb-ink-mute); letter-spacing: .8px; }
+.pb-sh-rate .rcount { font-weight: 600; color: var(--pb-ink-mute); }
+
+.pb-sh-intro { margin: 14px 0 0; font-family: 'Fraunces', Georgia, serif; font-size: 14px; line-height: 1.55; color: var(--pb-cap-ink); }
+.pb-sheet .more-btn { font-family: 'Inter Tight', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: .5px; color: var(--pb-brass-deep); background: none; border: 0; padding: 4px 0 0; cursor: pointer; }
+
+/* CTA trio — ghost ASK/PEEK + brass-fill OPEN */
+.pb-cta-row { display: flex; gap: 8px; margin-top: 16px; }
+.pb-cta {
+  display: flex; align-items: center; justify-content: center; gap: 7px; flex: 1;
+  border-radius: 999px; padding: 11px 6px; cursor: pointer; background: none;
+  border: 1.5px solid var(--pb-brass-deep); color: var(--pb-brass-deep);
+  transition: transform .15s ease; touch-action: manipulation;
+}
+.pb-cta:active { transform: scale(.96); }
+.pb-cta .ti { font-size: 15px; }
+.pb-cta-t { font-family: 'Anton', sans-serif; font-weight: 400; font-size: 13px; letter-spacing: 2.5px; }
+.pb-cta.fill { background: var(--pb-brass); border-color: var(--pb-brass); color: var(--pb-brass-ink); }
+
+/* sections + hairline dividers */
+.pb-sh-sec {
+  display: flex; align-items: center; gap: 8px; margin: 18px 0 8px; padding-top: 14px;
+  border-top: 1px solid var(--pb-paper-line);
+  font-size: 11px; font-weight: 600; letter-spacing: 2px; color: var(--pb-velvet);
+}
+.pb-sh-authname { font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 19px; letter-spacing: 1px; text-transform: uppercase; color: var(--pb-ink); }
+.pb-sh-bio { margin: 6px 0 12px; font-size: 13px; line-height: 1.5; color: var(--pb-ink-soft); }
+.pb-sh-link {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  background: none; border: 1px solid var(--pb-paper-line); border-radius: 12px;
+  padding: 11px 14px; margin-bottom: 8px; text-align: left; cursor: pointer;
+  font-size: 13px; font-weight: 600; color: var(--pb-ink); touch-action: manipulation;
+}
+.pb-sh-link .ti:first-child { font-size: 15px; color: var(--pb-brass-deep); }
+.pb-sh-link .ext { margin-left: auto; font-size: 14px; color: var(--pb-brass-deep); }
+.pb-sh-soon { background: #E9D9A8; border-radius: 999px; padding: 3px 10px; font-size: 11px; font-weight: 600; letter-spacing: 1px; color: #5C4715; }
+.pb-sh-note { font-family: 'Fraunces', Georgia, serif; font-style: italic; font-size: 13px; line-height: 1.5; color: var(--pb-ink-faint); }
+
+/* ============================================================
+   STAGEBAR — the per-view header (wordmark over a gathered hem)
+   ============================================================ */
+.pb-stagehead { flex-shrink: 0; position: relative; z-index: 2; }
+.pb-stagebar { position: relative; display: flex; align-items: center; justify-content: center; padding: 13px 16px 8px; }
+.pb-stagebar-wm { font-family: 'Anton', sans-serif; font-size: 15px; letter-spacing: 1px; color: var(--pb-cream); }
+.pb-stagebar-wm .dot { color: var(--pb-brass); }
+
+/* ============================================================
+   ASK (Discover) — Scout's desk on the stage
+   ============================================================ */
+#screen-discover { background: var(--pb-stage); color: var(--pb-cream); }
+#screen-discover .ghost { color: rgba(245,233,210,.05); }
+/* the section title hides in desk-head mode; the StageBar wordmark carries the brand */
+
+/* desk-mode chips → pill tags (active = brass fill) */
+#screen-discover .deskchip { background: none; border: 1px solid var(--pb-tag-line); color: var(--pb-tag-ink); box-shadow: none; }
+#screen-discover .deskchip.on { background: var(--pb-brass); border-color: var(--pb-brass); color: var(--pb-brass-ink); font-weight: 600; }
+#screen-discover .deskchip.on .ohlock svg { stroke: var(--pb-brass-ink); }
+#screen-discover .deskchip .ohlock { color: var(--pb-brass); }
+
+/* guest desk-level pill + history button → flat brass on the stage */
+#screen-discover .desk-lvl { background: var(--pb-chip-bg); border: 1px solid var(--pb-brass-deep); color: var(--pb-brass); box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+#screen-discover .desk-lvl .ti { color: var(--pb-brass); }
+#screen-discover .disc-head-right .iconbtn.lite { background: var(--pb-chip-bg); border: 1px solid var(--pb-tag-line); box-shadow: none; color: var(--pb-brass); }
+
+/* chat: Scout speaks plainly on the stage — the app's calm editorial layout +
+   colours are re-tinted at their (!important) source in global.css; these are
+   the non-!important accents that layer cleanly on top */
+.calm .msg.owl .who { color: var(--pb-owl-ember); }
+.calm .msg.owl .it { color: var(--pb-cream-mute); }
+.calm .msg.owl .bk { color: var(--pb-brass); border-bottom-color: var(--pb-brass); background: none; }
+.calm .chat-excerpt { border-color: var(--pb-brass); background: none; color: var(--pb-cream); }
+.calm .tw-cur { background: var(--pb-brass); }
+
+/* the reading-letter card → flat cream program card */
+.calm .gletter { background: var(--pb-paper); background-image: none; border: 1px solid var(--pb-paper-line); box-shadow: none; }
+.calm .gl-kick, .calm .gl-go { color: var(--pb-brass-deep); }
+.calm .gl-t { font-family: 'Fraunces', Georgia, serif; font-weight: 600; color: var(--pb-ink); }
+.calm .gl-a { color: var(--pb-ink-mute); }
+.calm .gl-heart.on { color: var(--pb-like-on); }
+.calm .gl-act { border-top-color: var(--pb-paper-line); }
+.calm .gl-body .cover-xs { box-shadow: none; }
+
+/* prompt chips are retinted at their (!important) source in global.css */
+#screen-discover .chip-hint { color: var(--pb-cream-mute); }
+
+/* shelf rail → brass hairline, no glow */
+#screen-discover .shelfrail::after { background: var(--pb-rule-gold); }
+#screen-discover .shelfrail.glow::after { background: var(--pb-brass); box-shadow: none; }
+#screen-discover .sr-fly { box-shadow: none; }
+#screen-discover .sr-count { color: var(--pb-cream-mute); }
+#screen-discover .sr-count.flash { color: var(--pb-brass); }
+
+/* composer → chip-bg pill + brass send circle */
+#screen-discover .search.cz { background: var(--pb-chip-bg); border: 1px solid var(--pb-tag-line); box-shadow: none; }
+#screen-discover .search.cz:focus-within { border-color: var(--pb-brass); }
+#screen-discover .search.cz input { color: var(--pb-cream); }
+#screen-discover .search.cz input::placeholder { color: #8A7863; font-family: 'Fraunces', Georgia, serif; font-style: italic; }
+#screen-discover .search .ti { color: var(--pb-brass); }
+#screen-discover .composer .iconbtn { background: var(--pb-brass); box-shadow: none; }
+#screen-discover .composer .iconbtn .ti { color: var(--pb-brass-ink); }
+
+/* ============================================================
+   PROFILE (Mirror's room) — identity on the stage, panels on paper
+   ============================================================ */
+#screen-profile { background: var(--pb-stage); color: var(--pb-cream); }
+/* cast owls sit flat on the stage (drop the drop-shadow halo — id specificity so
+   it beats the night-mode `.app[data-mode="night"] .owl.mini` glow) */
+#screen-discover .owl, #screen-profile .owl { filter: none; }
+
+/* header on the stage */
+#screen-profile .pad-h .ghost { color: rgba(245,233,210,.05); }
+#screen-profile .hl .t { color: var(--pb-cream); }
+#screen-profile .hl .u { background: var(--pb-brass); }
+#screen-profile .gdot { color: var(--pb-brass); }
+#screen-profile .set-gear.iconbtn.lite { background: var(--pb-chip-bg); border: 1px solid var(--pb-tag-line); box-shadow: none; color: var(--pb-brass); }
+
+/* identity block */
+#screen-profile .ig-ava { background: var(--pb-owl-violet); box-shadow: 0 0 0 2px var(--pb-stage), 0 0 0 4px var(--pb-brass); color: var(--pb-cream); }
+#screen-profile .pname { color: var(--pb-cream); }
+#screen-profile .psub { color: var(--pb-cream-mute); }
+#screen-profile .ig-stat span { color: var(--pb-cream-mute); }
+#screen-profile .ig-stat b { color: var(--pb-cream); }
+#screen-profile .ig-stat.on b { color: var(--pb-brass); }
+#screen-profile .bio { color: var(--pb-cream); }
+#screen-profile .bio:empty::before { color: var(--pb-cream-mute); }
+#screen-profile .bio[contenteditable="true"] { outline-color: var(--pb-brass); }
+#screen-profile .editbio { background: var(--pb-chip-bg); border: 1px solid var(--pb-tag-line); box-shadow: none; color: var(--pb-cream-mute); }
+
+/* streak on the stage — flat, candy only in the flame glyph */
+#screen-profile .prof-top .streak { border-top: 1px dashed var(--pb-rule-gold); }
+#screen-profile .flamebox { background: var(--pb-chip-bg); box-shadow: none; }
+#screen-profile .flamebox .ti { color: #E06A3A; }
+#screen-profile .stk-t { color: var(--pb-cream); }
+#screen-profile .stk-s { color: var(--pb-cream-mute); }
+#screen-profile .wd { background: var(--pb-track); }
+#screen-profile .wd.on { background: var(--pb-brass); }
+#screen-profile .wd.today { background: var(--pb-owl-violet); box-shadow: 0 0 0 2px var(--pb-stage), 0 0 0 3px var(--pb-owl-violet); }
+
+/* tab row on the stage */
+#screen-profile .ptabs { border-bottom: 1px solid var(--pb-rule-gold); }
+#screen-profile .ptab { color: var(--pb-cream-mute); }
+#screen-profile .ptab.on { color: var(--pb-cream); }
+#screen-profile .ptab.on::after { background: var(--pb-brass); }
+
+/* ---------- the program sheet (cream paper under the tabs) ---------- */
+.pb-psheet { background: var(--pb-paper); color: var(--pb-ink); border-radius: 22px 22px 0 0; margin-top: 12px; padding: 18px 16px calc(120px + env(safe-area-inset-bottom)); }
+.pb-psheet .pcard { background: none; border: 0; box-shadow: none; }
+.pb-psheet .pdiv, .pb-psheet .rcell, .pb-psheet .dbl, .pb-psheet .dbl2 { border-color: var(--pb-paper-line); }
+.pb-psheet .chart-head .d { color: var(--pb-ink); }
+.pb-psheet .chart-head span { color: var(--pb-ink-mute); }
+.pb-psheet .radar-note { color: var(--pb-ink-faint); }
+.pb-psheet .snum { color: var(--pb-ink); }
+.pb-psheet .slab { color: var(--pb-ink-mute); }
+/* weekly bars */
+.pb-psheet .vtrack { background: var(--pb-paper-dim); }
+.pb-psheet .vfill { background: var(--pb-brass); }
+.pb-psheet .vfill.today { background: var(--pb-owl-violet); }
+.pb-psheet .dlet { color: var(--pb-ink-mute); }
+/* achievements */
+.pb-psheet .ach { background: none; border: 1px solid var(--pb-paper-line); box-shadow: none; }
+.pb-psheet .ach .ti { color: var(--pb-brass-deep); }
+.pb-psheet .ach .al { color: var(--pb-ink-mute); }
+.pb-psheet .ach.lock { border-style: dashed; }
+/* calendar */
+.pb-psheet .cal-week span { color: var(--pb-ink-mute); }
+.pb-psheet .cd { color: var(--pb-ink); }
+.pb-psheet .cd.rec { background: var(--pb-paper-dim); border: 1px solid var(--pb-paper-line); box-shadow: none; }
+.pb-psheet .cd.rec::after { background: var(--pb-owl-violet); }
+.pb-psheet .cd.today { outline: 1.5px solid var(--pb-owl-violet); }
+.pb-psheet .cd.sel { background: var(--pb-owl-violet); color: var(--pb-paper); }
+.pb-psheet .cd.sel::after { background: var(--pb-brass); }
+.pb-psheet .cal-foot { color: var(--pb-ink-mute); }
+.pb-psheet .cal-foot i { background: var(--pb-owl-violet); }
+.pb-psheet .rec-kick .k { color: var(--pb-ink-mute); }
+.pb-psheet .stamp { background: var(--pb-brass); box-shadow: none; }
+.pb-psheet .stamp .ti { color: var(--pb-brass-ink); }
+.pb-psheet .rec-lab { color: var(--pb-owl-violet-ink); }
+.pb-psheet .ask { background: var(--pb-track); color: var(--pb-cream); box-shadow: none; }
+.pb-psheet .prev-auth { color: var(--pb-ink-mute); }
+.pb-psheet .prev-note { color: var(--pb-brass-deep); }
+/* quotes */
+.pb-psheet .qcard { background: none; border: 1px solid var(--pb-paper-line); box-shadow: none; }
+.pb-psheet .q-text { color: var(--pb-cap-ink); }
+.pb-psheet .q-copy { background: var(--pb-paper-dim); border: 1px solid var(--pb-paper-line); }
+.pb-psheet .q-copy.done .ti { color: var(--pb-owl-moss-ink); }
+.pb-psheet .q-by { color: var(--pb-ink-faint); }
+.pb-psheet .q-date { color: var(--pb-ink-mute); }
+.pb-psheet .q-meta { border-top-color: var(--pb-paper-line); }
+/* section headers (memory + quotes) — scoped so Settings' .sh-sec is untouched */
+.pb-psheet .sh-sec, .pb-psheet .sec-title { color: var(--pb-velvet); }
+.pb-psheet .sec-title { font-family: 'Fraunces', Georgia, serif; }
+/* folded shelves */
+.pb-psheet .prof-shelf { border-top: 1px solid var(--pb-paper-line); }
+.pb-psheet .prof-shelf .chip { background: none; border: 1px solid var(--pb-paper-line); color: var(--pb-ink-soft); box-shadow: none; }
+.pb-psheet .prof-shelf .chip.on { background: var(--pb-owl-moss); border-color: var(--pb-owl-moss); color: var(--pb-paper); }
+.pb-psheet .rowc { background: none; border: 1px solid var(--pb-paper-line); box-shadow: none; }
+.pb-psheet .rtitle { color: var(--pb-ink); }
+.pb-psheet .rauth { color: var(--pb-ink-mute); }
+.pb-psheet .mini-track { background: var(--pb-paper-dim); }
+.pb-psheet .mini-fill { background: var(--pb-brass); }
+.pb-psheet .g-heart { background: var(--pb-brass); box-shadow: none; }
+.pb-psheet .g-heart .ti { color: var(--pb-brass-ink); }
+.pb-psheet .g-auth { color: var(--pb-ink-mute); }
+.pb-psheet .fin { color: var(--pb-owl-moss-ink); }
+.pb-psheet .done-badge { background: var(--pb-owl-moss); }
+.pb-psheet .prof-shelf .iconbtn { background: var(--pb-brass); box-shadow: none; color: var(--pb-brass-ink); }
+.pb-psheet .prof-shelf .iconbtn.lite { background: none; border: 1px solid var(--pb-paper-line); color: var(--pb-brass-deep); }
+.pb-psheet .empty { color: var(--pb-ink-mute); }
+.pb-psheet .empty .ti { color: var(--pb-brass-deep); }
+.pb-psheet .empty .d { color: var(--pb-ink); }
+
+@media (prefers-reduced-motion: reduce) {
+  .pb-valance, .pb-marquee, .pb-chips, .pb-compact, .pb-card, .pb-keeper, .pb-tag, .pb-nv, .pb-iconbtn, .pb-perch { transition: none !important; }
+}

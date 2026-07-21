@@ -16,6 +16,7 @@ import type { ChatItem } from '../../store/types';
 import { useT } from '../../i18n/react';
 import { Icon } from '../Icon';
 import { CastOwl } from '../CastOwl';
+import { StageBar } from '../stage';
 
 /* honour both the OS setting and the in-app "reduce motion" toggle, and react
    live when the OS setting flips mid-session (not only on the next re-render) */
@@ -473,6 +474,7 @@ export function DiscoverScreen() {
 
   return (
     <section className={cls.join(' ')} id="screen-discover" data-desk={desk}>
+      <StageBar />
       <div className="pad-h disc-head">
         <span className="ghost" aria-hidden="true">
           Scout

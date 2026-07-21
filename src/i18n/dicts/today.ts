@@ -15,27 +15,30 @@ const s = (t: string): IntroSeg => ({ t });
 const e = (t: string): IntroSeg => ({ t, em: true });
 
 const en = {
-  /* ---------- today screen ---------- */
-  today: {
-    wxAria: (label: string) => `Weather: ${label}. Tap to change`,
-    lightingAria: 'Lighting',
-    playerAria: 'Your reading progress',
-    portraitAria: (name: string) => `${name}'s reader portrait`,
-    levelAria: (lv: number) => `Level ${lv}`,
-    xpBarAria: (lv: number) => `Level ${lv} experience`,
-    inkBarAria: 'Ink',
-    coinsAria: (coins: number) => `${coins} coins`,
-    postAria: (i: number, total: number) => `Owl post ${i} of ${total}`,
-    aboutAria: (title: string) => `About ${title}`,
-    askAria: (title: string) => `Ask Scout about ${title}`,
-    ask: 'ASK',
-    resumeTitle: 'pick up where you left off',
-    all: 'ALL',
-    continueAria: (title: string, p: number) => `Continue ${title}, ${p}% complete`,
-    marqueeAria: "Today's post",
-    mq1: 'today’s',
-    mq2: 'post',
-    mqSub: 'delivered while you slept.',
+  /* ---------- home stage (Flat Playbill) ---------- */
+  home: {
+    statsAria: 'Your stats',
+    statLevel: (lv: number) => `Level ${lv}`,
+    statXp: (xp: number, max: number) => `${xp} of ${max} XP`,
+    statInk: (ink: number) => `${ink} ink`,
+    marqueeAria: 'owlry',
+    filterAria: 'Filter the feed',
+    openAria: (title: string) => `Open ${title}`,
+    likeAria: (title: string) => `Like ${title}`,
+    saveAria: (title: string) => `Save ${title} to your shelf`,
+    keeperLabel: 'FROM YOUR SHELF',
+    keeperLine: 'You shelved this one — still the right moment?',
+    keeperAria: (title: string) => `From your shelf: ${title}`,
+    emptyLine: 'Nothing on this shelf yet — Scout is still reading.',
+    tags: {
+      all: 'For you',
+      fiction: 'Fiction',
+      life: 'Living',
+      scifi: 'Sci-Fi',
+      mystery: 'Mystery',
+      history: 'History',
+      romance: 'Romance',
+    },
   },
 
   /* ---------- library shelves ---------- */
@@ -49,15 +52,15 @@ const en = {
     emptySavedBody: 'tap the ♥ on any book to keep it here.',
     finished: 'FINISHED',
     readAgainAria: (title: string) => `Read ${title} again`,
+    yourShelf: 'your shelf',
   },
 
   /* ---------- app chrome ---------- */
   chrome: {
     navAria: 'Primary',
     nav: {
-      today: 'today',
-      discover: 'discover',
-      library: 'library',
+      today: 'home',
+      discover: 'ask',
       profile: 'profile',
     },
     profileChainedAria: 'Profile — chained until level 5',
@@ -132,27 +135,30 @@ const en = {
 };
 
 const zh: typeof en = {
-  /* ---------- 今日 ---------- */
-  today: {
-    wxAria: (label: string) => `天气：${label}。点按切换`,
-    lightingAria: '灯光',
-    playerAria: '你的阅读进度',
-    portraitAria: (name: string) => `${name} 的读者画像`,
-    levelAria: (lv: number) => `等级 ${lv}`,
-    xpBarAria: (lv: number) => `等级 ${lv} 经验`,
-    inkBarAria: '墨水',
-    coinsAria: (coins: number) => `${coins} 枚金币`,
-    postAria: (i: number, total: number) => `第 ${i} 封猫头鹰来信，共 ${total} 封`,
-    aboutAria: (title: string) => `关于《${title}》`,
-    askAria: (title: string) => `向 Scout 请教《${title}》`,
-    ask: '问一问',
-    resumeTitle: '接着上次读下去',
-    all: '全部',
-    continueAria: (title: string, p: number) => `继续《${title}》，已读 ${p}%`,
-    marqueeAria: '今日邮报',
-    mq1: '今日',
-    mq2: '邮报',
-    mqSub: '趁你睡着时，悄悄送达。',
+  /* ---------- 主舞台 ---------- */
+  home: {
+    statsAria: '你的进度',
+    statLevel: (lv: number) => `等级 ${lv}`,
+    statXp: (xp: number, max: number) => `${xp} / ${max} 经验`,
+    statInk: (ink: number) => `${ink} 墨水`,
+    marqueeAria: 'owlry',
+    filterAria: '筛选书目',
+    openAria: (title: string) => `打开《${title}》`,
+    likeAria: (title: string) => `喜欢《${title}》`,
+    saveAria: (title: string) => `把《${title}》收进书架`,
+    keeperLabel: '来自你的书架',
+    keeperLine: '这本是你收下的 — 现在正合适吗？',
+    keeperAria: (title: string) => `来自你的书架：《${title}》`,
+    emptyLine: '这层书架还空着 — Scout 还在读。',
+    tags: {
+      all: '为你',
+      fiction: '小说',
+      life: '生活',
+      scifi: '科幻',
+      mystery: '推理',
+      history: '历史',
+      romance: '言情',
+    },
   },
 
   /* ---------- 书架 ---------- */
@@ -166,15 +172,15 @@ const zh: typeof en = {
     emptySavedBody: '点一下书上的 ♥，就把它留在这里。',
     finished: '已读完',
     readAgainAria: (title: string) => `再读一遍《${title}》`,
+    yourShelf: '你的书架',
   },
 
   /* ---------- 界面 ---------- */
   chrome: {
     navAria: '主导航',
     nav: {
-      today: '今天',
-      discover: '发现',
-      library: '书架',
+      today: '首页',
+      discover: '问一问',
       profile: '我的',
     },
     profileChainedAria: '我的 — 锁链缠绕，等级 5 解开',

@@ -15,8 +15,7 @@ import { create } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
 import { shallow } from 'zustand/shallow';
 
-import { PICKS } from '../content/picks';
-import { WX, wxLabel } from '../content/weather';
+import { WX } from '../content/weather';
 import { SAL, FLAVOR, START_CHIPS, AFTER_CHIPS, dayPart } from '../content/owl';
 import { tOf, setActiveLang, syncDocumentLang } from '../i18n';
 import { newSession } from '../lib/owlBrain';
@@ -88,7 +87,6 @@ export interface Store extends PersistedState {
   activeTab: Tab;
   libTab: LibTab;
   wxIndex: number;
-  pickIndex: number;
   reader: ReaderState;
   sheetId: BookRef | null;
   letterId: BookRef | null;
@@ -145,8 +143,6 @@ export interface Store extends PersistedState {
   startAsk: (id: BookRef) => void;
   clearScoutDraft: () => void;
   setLibTab: (t: LibTab) => void;
-  cycleWeather: () => void;
-  setPick: (i: number) => void;
   toggleSave: (id: BookRef) => void;
   addXP: (n: number) => void;
   addInk: (n: number) => void;
@@ -164,7 +160,6 @@ export interface Store extends PersistedState {
   openSettings: () => void;
   closeSettings: () => void;
   setPref: <K extends keyof Prefs>(key: K, value: Prefs[K]) => void;
-  toggleMode: () => void;
   resetProgress: () => void;
   initChat: () => void;
   /** wipe the conversation and greet fresh (user-initiated "new chat") */
@@ -254,7 +249,6 @@ export const useStore = create<Store>()(
     activeTab: 'today',
     libTab: 'reading',
     wxIndex: 0,
-    pickIndex: 0,
     reader: { open: false, id: null, p: 1 },
     sheetId: null,
     letterId: null,
@@ -462,10 +456,6 @@ export const useStore = create<Store>()(
         return;
       }
       set({ activeTab: t, mirrorRoomOpen: false });
-      // keeper introduces the shelves on the first library visit (a beat later)
-      if (t === 'library' && !(get().prefs.introsSeen ?? []).includes('keeper')) {
-        setTimeout(() => get().showIntro('keeper'), 420);
-      }
     },
     closeMirrorRoom: () => set({ mirrorRoomOpen: false }),
 
@@ -501,14 +491,6 @@ export const useStore = create<Store>()(
     },
     clearScoutDraft: () => set({ scoutDraft: '' }),
     setLibTab: (t) => set({ libTab: t }),
-
-    cycleWeather: () => {
-      const wxIndex = (get().wxIndex + 1) % WX.length;
-      set({ wxIndex });
-      get().showToast(WX[wxIndex].i, wxLabel(WX[wxIndex], get().prefs.lang ?? 'en'));
-    },
-
-    setPick: (i) => set({ pickIndex: ((i % PICKS.length) + PICKS.length) % PICKS.length }),
 
     toggleSave: (id) => {
       const { savedIds } = get();
@@ -681,11 +663,6 @@ export const useStore = create<Store>()(
     openSettings: () => set({ settingsOpen: true }),
     closeSettings: () => set({ settingsOpen: false }),
     setPref: (key, value) => set((s) => ({ prefs: { ...s.prefs, [key]: value } })),
-    toggleMode: () => {
-      const mode = get().prefs.mode === 'night' ? 'day' : 'night';
-      set((s) => ({ prefs: { ...s.prefs, mode } }));
-      get().showToast(mode === 'night' ? 'ti-moon-stars' : 'ti-sun', mode === 'night' ? L(get().prefs).eveningShow : L(get().prefs).matinee);
-    },
     // A true first-run reset — NOT the SEED demo state (level 7 with books
     // already shelved). Level 1, empty shelves, every gate re-locked, the owl
     // intros re-armed, and the ENTIRE opening night replays as if this were a
