@@ -1,6 +1,8 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useStore } from '../../store/useStore';
 import { chainsInner } from '../../lib/chains';
+import { useReduceMotion } from '../../hooks/useReduceMotion';
+import { useModalFocus } from '../../hooks/useModalFocus';
 import { useT } from '../../i18n/react';
 import { Icon } from '../Icon';
 
@@ -48,7 +50,7 @@ function Room({ freed }: { freed: boolean }) {
   const openSettings = useStore((s) => s.openSettings);
   const lv = useStore((s) => s.lv);
   const t = useT().settings.mirrorRoom;
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reduce = useReduceMotion();
   const say = useMemo(() => chars(freed ? t.freedSay : t.lockedSay), [t, freed]);
   const [n, setN] = useState(reduce ? say.length : 0);
 
@@ -69,9 +71,20 @@ function Room({ freed }: { freed: boolean }) {
   }, [freed, setTab, reduce]);
 
   const diamonds = [0, 1, 2, 3, 4];
+  const roomRef = useRef<HTMLElement>(null);
+  // a level-lock takeover — focus moves in and stays until it's earned away
+  // (no Esc; the only way out is the gear or levelling up)
+  useModalFocus(true, null, roomRef);
 
   return (
-    <section className={`mroom on${freed ? ' freed' : ''}`} aria-label={t.ariaRoom}>
+    <section
+      className={`mroom on${freed ? ' freed' : ''}`}
+      aria-label={t.ariaRoom}
+      role="dialog"
+      aria-modal="true"
+      ref={roomRef}
+      tabIndex={-1}
+    >
       <button className="iconbtn lite mr-gear" aria-label={t.ariaSettings} onClick={openSettings}>
         <Icon name="ti-settings" />
       </button>

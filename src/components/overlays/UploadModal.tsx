@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { useStore } from '../../store/useStore';
+import { useModalFocus } from '../../hooks/useModalFocus';
 import { getBook } from '../../lib/bookRegistry';
 import { inspectFile, ACCEPT_ATTR } from '../../lib/ebook/inspect';
 import { saveUpload } from '../../lib/ebook/storage';
@@ -19,9 +20,12 @@ export function UploadModal() {
   const setSource = useStore((s) => s.setUploadedSource);
 
   const inputRef = useRef<HTMLInputElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const t = useT().settings.upload;
+
+  useModalFocus(open && !!bookId, close, dialogRef);
 
   if (!open || !bookId) return null;
   const b = getBook(bookId);
@@ -59,6 +63,8 @@ export function UploadModal() {
       aria-modal="true"
       aria-label={t.ariaDialog}
       onClick={close}
+      ref={dialogRef}
+      tabIndex={-1}
       style={{
         position: 'absolute',
         inset: 0,

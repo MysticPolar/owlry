@@ -3,6 +3,7 @@ import { useStore } from '../../store/useStore';
 import { useT } from '../../i18n/react';
 import { getBook, getGuide } from '../../lib/bookRegistry';
 import { useTypewriter } from '../../hooks/useTypewriter';
+import { useModalFocus } from '../../hooks/useModalFocus';
 import { Icon } from '../Icon';
 import { Cover } from '../Cover';
 import { CastOwl } from '../CastOwl';
@@ -47,6 +48,8 @@ export function Letter() {
   const g = id && letterStatus === 'ready' ? getGuide(id) : null;
   const b = id ? getBook(id) : null;
   const open = Boolean(id);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  useModalFocus(open, closeLetter, dialogRef);
   const bodyRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -88,7 +91,7 @@ export function Letter() {
   if (!open) return null;
 
   return (
-    <div className="letter on" id="letter" role="dialog" aria-modal="true" aria-label={t.reader.letterAria}>
+    <div className="letter on" id="letter" role="dialog" aria-modal="true" aria-label={t.reader.letterAria} ref={dialogRef} tabIndex={-1}>
       <div className="l-top">
         <button className="iconbtn lite" aria-label={t.reader.closePeekAria} onClick={closeLetter}>
           <Icon name="ti-arrow-left" />

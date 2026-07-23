@@ -9,8 +9,9 @@
    Tapping a historical letter card opens the shared Letter overlay
    (cache-first via owl-peek, so it's instant if already generated).
    ============================================================ */
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useStore } from '../../store/useStore';
+import { useModalFocus } from '../../hooks/useModalFocus';
 import { listDays, loadDay } from '../../lib/history';
 import type { HistoryDay } from '../../lib/history';
 import type { HydratedChat } from '../../lib/chatHydrate';
@@ -34,6 +35,7 @@ export function History() {
   const [transcript, setTranscript] = useState<HydratedChat | null>(null);
   const [loading, setLoading] = useState(false);
   const [failed, setFailed] = useState(false);
+  const dialogRef = useRef<HTMLDivElement>(null);
   const t = useT().settings.history;
 
   // fetch the day list fresh every time the overlay opens; reset to the list view on close
@@ -63,10 +65,13 @@ export function History() {
       .finally(() => setLoading(false));
   };
 
+  // back-arrow drills out of a day view first, else closes the overlay
+  useModalFocus(open, () => (selected ? setSelected(null) : closeHistory()), dialogRef);
+
   if (!open) return null;
 
   return (
-    <div className="history on" id="history" role="dialog" aria-modal="true" aria-label={t.ariaDialog}>
+    <div className="history on" id="history" role="dialog" aria-modal="true" aria-label={t.ariaDialog} ref={dialogRef} tabIndex={-1}>
       <div className="l-top">
         <button
           className="iconbtn lite"

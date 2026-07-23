@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useStore } from '../../store/useStore';
 import { useAuth } from '../../store/useAuth';
+import { useModalFocus } from '../../hooks/useModalFocus';
 import type { OwlEngine } from '../../store/types';
 import { isBackendConfigured } from '../../lib/supabase';
 import { useLang, useT } from '../../i18n/react';
@@ -62,10 +63,13 @@ export function Settings() {
     showToast('ti-feather', next === 'live' ? t.toastLiveOwl : t.toastClassicOwl);
   };
 
+  const dialogRef = useRef<HTMLDivElement>(null);
+  useModalFocus(open, close, dialogRef);
+
   if (!open) return null;
 
   return (
-    <div className="settings on" id="settings" role="dialog" aria-modal="true" aria-label={t.ariaDialog}>
+    <div className="settings on" id="settings" role="dialog" aria-modal="true" aria-label={t.ariaDialog} ref={dialogRef} tabIndex={-1}>
       <div className="l-top">
         <button className="iconbtn lite" aria-label={t.ariaClose} onClick={close}>
           <Icon name="ti-arrow-left" />

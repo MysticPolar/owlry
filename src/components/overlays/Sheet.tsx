@@ -1,8 +1,9 @@
-import { useEffect } from 'react';
+import { useRef } from 'react';
 import { useStore } from '../../store/useStore';
 import { useT } from '../../i18n/react';
 import { getBook } from '../../lib/bookRegistry';
 import { useBookMeta } from '../../hooks/useBookMeta';
+import { useModalFocus } from '../../hooks/useModalFocus';
 import { Icon } from '../Icon';
 import { Cover } from '../Cover';
 import { ClampText } from '../ClampText';
@@ -21,17 +22,11 @@ export function Sheet() {
   const id = sheetId;
   const b = id ? getBook(id) : null;
   const meta = useBookMeta(id);
+  const dialogRef = useRef<HTMLDivElement>(null);
 
-  // Esc closes the sheet (listener lives only while the sheet is open). openBook
-  // clears sheetId, so this never conflicts with the reader's own Esc handler.
-  useEffect(() => {
-    if (!id) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') closeSheet();
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [id, closeSheet]);
+  // focus trap + Esc + focus restore (openBook clears sheetId, so Esc here never
+  // conflicts with the reader's own handler)
+  useModalFocus(!!id, closeSheet, dialogRef);
 
   if (!id || !b) return null;
 
@@ -45,6 +40,8 @@ export function Sheet() {
       role="dialog"
       aria-modal="true"
       aria-label={t.reader.sheetAria}
+      ref={dialogRef}
+      tabIndex={-1}
     >
       <button className="pb-sh-close" aria-label={t.reader.closeAria} onClick={closeSheet}>
         <Icon name="ti-x" />

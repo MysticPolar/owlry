@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useStore } from '../../store/useStore';
+import { useReduceMotion } from '../../hooks/useReduceMotion';
 import { useT } from '../../i18n/react';
 import type { IntroSeg } from '../../i18n/dicts/today';
 import type { IntroKey } from '../../store/types';
@@ -65,7 +66,7 @@ function Card({ intro }: { intro: IntroKey }) {
   const def = CARDS[intro];
   const txt = useT().today.intro[intro];
   const seq = useMemo(() => chars(txt.say), [txt]);
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reduce = useReduceMotion();
   const [n, setN] = useState(reduce ? seq.length : 0);
   const [on, setOn] = useState(false);
   const typing = n < seq.length;

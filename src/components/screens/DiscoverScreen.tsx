@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'r
 import { useStore } from '../../store/useStore';
 import { useAuth } from '../../store/useAuth';
 import { useKeyboardInset } from '../../hooks/useKeyboardInset';
+import { useReduceMotion } from '../../hooks/useReduceMotion';
 import { getBook } from '../../lib/bookRegistry';
 import {
   renderChatItem,
@@ -17,22 +18,6 @@ import { Icon } from '../Icon';
 import { CastOwl } from '../CastOwl';
 import { StageBar } from '../stage';
 
-/* honour both the OS setting and the in-app "reduce motion" toggle, and react
-   live when the OS setting flips mid-session (not only on the next re-render) */
-function useReduceMotion(): boolean {
-  const pref = useStore((s) => s.prefs.reduceMotion);
-  const [osReduce, setOsReduce] = useState(
-    () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches,
-  );
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const on = () => setOsReduce(mq.matches);
-    mq.addEventListener('change', on);
-    return () => mq.removeEventListener('change', on);
-  }, []);
-  return pref || osReduce;
-}
 
 /* spine geometry — thickness reads the page count, height jitters by id so
    the tops sit unevenly (it reads as a shelf, not a bar chart) */
@@ -129,6 +114,7 @@ function StreamMsg({ item, active, reduce, skipRef, onDone, onScroll, openSheet 
 
 /* ---------- the calm stream ---------- */
 function Chat({ reduce }: { reduce: boolean }) {
+  const t = useT();
   const messages = useStore((s) => s.owl.messages);
   const onDiscover = useStore((s) => s.activeTab === 'discover');
   const openSheet = useStore((s) => s.openSheet);
@@ -209,6 +195,11 @@ function Chat({ reduce }: { reduce: boolean }) {
         ) : (
           renderChatItem(m, openSheet, openLetter, nos.get(m.id))
         ),
+      )}
+      {activeStreamId != null && !reduce && (
+        <button type="button" className="pb-skip" onClick={() => { skipRef.current = true; bump(); }}>
+          {t.discover.skip}
+        </button>
       )}
     </div>
   );
@@ -346,11 +337,15 @@ function ShelfRail({ reduce }: { reduce: boolean }) {
       <button
         className={`sr-count${announce ? ' flash' : ''}`}
         id="srCount"
-        aria-label={t.discover.shelfAria}
+        aria-label={`${t.discover.shelfAria}: ${t.discover.shelfCount(collected.length)}`}
         onClick={() => setExpanded((v) => !v)}
       >
         {countText}
       </button>
+      {/* announce each landing / the running count to assistive tech */}
+      <span className="sr-only" role="status" aria-live="polite">
+        {announce ?? ''}
+      </span>
     </div>
   );
 }
@@ -481,6 +476,7 @@ function DeskSwitchHint() {
   const t = useT();
   const nonce = useStore((s) => s.deskSwitchNonce);
   const pro = useStore((s) => s.deskMode === 'pro');
+  const reduce = useReduceMotion();
   const [visible, setVisible] = useState(false);
   const first = useRef(true);
   useEffect(() => {
@@ -488,10 +484,11 @@ function DeskSwitchHint() {
       first.current = false;
       return;
     }
+    if (reduce) return; // the flash is decorative — skip it entirely under reduced motion
     setVisible(true);
     const id = setTimeout(() => setVisible(false), 1150);
     return () => clearTimeout(id);
-  }, [nonce]);
+  }, [nonce, reduce]);
   if (!visible) return null;
   return (
     <div className="pb-deskhint" key={nonce} aria-hidden="true">

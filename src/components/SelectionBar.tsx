@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useStore } from '../store/useStore';
+import { useAuth } from '../store/useAuth';
 import { useT } from '../i18n/react';
 import { Icon } from './Icon';
 
@@ -25,6 +26,11 @@ export function SelectionBar() {
   const showToast = useStore((s) => s.showToast);
   const saveQuote = useStore((s) => s.saveQuote);
   const beginAskQuote = useStore((s) => s.beginAskQuote);
+  // don't float the glass bar over a full-screen modal (Letter/History/Sheet keep
+  // it — selecting a line there to Save quote is intended)
+  const settingsOpen = useStore((s) => s.settingsOpen);
+  const onboarding = useStore((s) => s.showOnboarding);
+  const authOpen = useAuth((s) => s.authOpen);
   const [anchor, setAnchor] = useState<Anchor | null>(null);
   const barRef = useRef<HTMLDivElement>(null);
   const debounce = useRef<number>(0);
@@ -73,7 +79,7 @@ export function SelectionBar() {
     };
   }, []);
 
-  if (!anchor) return <AskQuotePanel />;
+  if (!anchor || settingsOpen || onboarding || authOpen) return <AskQuotePanel />;
 
   const dismiss = () => {
     window.getSelection()?.removeAllRanges();

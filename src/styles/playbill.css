@@ -453,8 +453,8 @@
   72% { opacity: 1; }
   100% { opacity: 0; transform: scale(.97); }
 }
-@media (prefers-reduced-motion: reduce) { .pb-deskhint { animation: pbDeskFade 1.15s ease both; } }
-@keyframes pbDeskFade { 0% { opacity: 0; } 15% { opacity: 1; } 75% { opacity: 1; } 100% { opacity: 0; } }
+/* (no reduced-motion fallback animation — the global !important reset would kill
+   it anyway; the hint is JS-gated off entirely under reduced motion instead) */
 
 /* chat: Scout speaks plainly on the stage — the app's calm editorial layout +
    colours are re-tinted at their (!important) source in global.css; these are
@@ -971,3 +971,20 @@ body { overscroll-behavior: none; }
 /* --- 2.4 Letter: brass CTAs (were the legacy yellow .btn — open-book + try-again) --- */
 .letter .btn:not(.ghost) { background: var(--pb-brass); color: var(--pb-brass-ink); box-shadow: none; }
 .letter .btn.ghost { border-color: var(--pb-brass-deep); color: var(--pb-brass-deep); }
+
+/* ============================================================
+   ACCESSIBILITY — audit remediation, Phase 3
+   ============================================================ */
+
+/* --- 3.6 scroll containment: no scroll-chaining to the page behind a modal
+   (pairs with body { overscroll-behavior:none } from Phase 1) --- */
+.chat, .hist-body, .set-body, .l-body, .sheet, .pb-sheet, .auth { overscroll-behavior: contain; }
+
+/* --- 3.7 the visible, keyboard-focusable "skip the typewriter" control --- */
+.pb-skip {
+  align-self: center; position: sticky; bottom: 6px; margin: 6px 0 2px; padding: 6px 16px; border-radius: 999px;
+  background: var(--pb-chip-bg); border: 1px solid var(--pb-tag-line); color: var(--pb-cream-mute);
+  font: 600 10px 'Inter Tight', sans-serif; letter-spacing: 1.4px; text-transform: uppercase;
+  cursor: pointer; touch-action: manipulation;
+}
+.pb-skip:active { transform: translateY(1px); }

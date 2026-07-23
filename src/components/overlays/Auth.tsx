@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { useAuth } from '../../store/useAuth';
+import { useModalFocus } from '../../hooks/useModalFocus';
 import { useT } from '../../i18n/react';
 import { Icon } from '../Icon';
 import { CastOwl } from '../CastOwl';
@@ -27,6 +28,7 @@ export function Auth() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const firstRef = useRef<HTMLInputElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
   const t = useT().settings.auth;
 
   const signup = mode === 'signup';
@@ -48,6 +50,8 @@ export function Auth() {
     else void login(email, password);
   };
 
+  useModalFocus(open, closeAuth, dialogRef);
+
   return (
     <div
       className={`auth ${open ? 'on' : ''}`}
@@ -55,6 +59,8 @@ export function Auth() {
       role="dialog"
       aria-modal="true"
       aria-label={t.ariaDialog}
+      ref={dialogRef}
+      tabIndex={-1}
     >
       <div className="auth-glow" aria-hidden="true" />
       <button className="auth-close" aria-label={t.ariaClose} onClick={closeAuth}>
@@ -98,6 +104,7 @@ export function Auth() {
                 </span>
                 <input
                   ref={firstRef}
+                  data-autofocus
                   value={code}
                   onChange={(e) => setCode(e.target.value)}
                   placeholder={t.invitePlaceholder}
@@ -114,6 +121,7 @@ export function Auth() {
               </span>
               <input
                 ref={signup ? undefined : firstRef}
+                data-autofocus
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}

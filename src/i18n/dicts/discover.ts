@@ -26,6 +26,7 @@ const en = {
   composerPlaceholder: 'tell scout what’s going on…',
   composerAria: 'Message scout',
   sendAria: 'Send',
+  skip: 'skip',
 
   /* ---- chat items (letter card, typing dots) ---- */
   typing: 'the owl is typing…',
@@ -80,6 +81,7 @@ const zh: typeof en = {
   composerPlaceholder: '跟 Scout 说说，最近怎么了…',
   composerAria: '给 Scout 留言',
   sendAria: '发送',
+  skip: '跳过',
 
   /* ---- chat items (letter card, typing dots) ---- */
   typing: '猫头鹰正在打字…',
