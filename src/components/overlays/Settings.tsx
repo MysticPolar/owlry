@@ -2,6 +2,8 @@ import { useRef, useState } from 'react';
 import { useStore } from '../../store/useStore';
 import { useAuth } from '../../store/useAuth';
 import { useModalFocus } from '../../hooks/useModalFocus';
+import { usePullDismiss } from '../../hooks/usePullDismiss';
+import { useReduceMotion } from '../../hooks/useReduceMotion';
 import type { OwlEngine } from '../../store/types';
 import { isBackendConfigured } from '../../lib/supabase';
 import { useLang, useT } from '../../i18n/react';
@@ -64,13 +66,17 @@ export function Settings() {
   };
 
   const dialogRef = useRef<HTMLDivElement>(null);
+  const grabRef = useRef<HTMLDivElement>(null);
+  const bodyRef = useRef<HTMLDivElement>(null);
+  const reduce = useReduceMotion();
   useModalFocus(open, close, dialogRef);
+  usePullDismiss({ enabled: open, onClose: close, cardRef: dialogRef, grabRef, scrollRef: bodyRef, reduce });
 
   if (!open) return null;
 
   return (
     <div className="settings on" id="settings" role="dialog" aria-modal="true" aria-label={t.ariaDialog} ref={dialogRef} tabIndex={-1}>
-      <div className="l-top">
+      <div className="l-top pb-pull-grab" ref={grabRef}>
         <button className="iconbtn lite" aria-label={t.ariaClose} onClick={close}>
           <Icon name="ti-arrow-left" />
         </button>
@@ -78,7 +84,7 @@ export function Settings() {
         <span style={{ flex: '0 0 32px' }} aria-hidden="true" />
       </div>
 
-      <div className="set-body">
+      <div className="set-body" ref={bodyRef}>
         <h1 className="hl sm d" style={{ marginTop: 4 }}>
           <span className="u" />
           <span className="t">

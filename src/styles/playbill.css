@@ -988,3 +988,22 @@ body { overscroll-behavior: none; }
   cursor: pointer; touch-action: manipulation;
 }
 .pb-skip:active { transform: translateY(1px); }
+
+/* ============================================================
+   INTERACTION — audit remediation, Phase 4
+   ============================================================ */
+
+/* --- 4.1 long-press on chrome shouldn't raise the iOS native callout or select
+   junk; CONTENT surfaces (chat text, sheet copy, letters) stay selectable so
+   the custom Save-quote / Ask bar still works there --- */
+button, .owl, .pb-nav, .pb-stagehead, .disc-head, .pb-head, .pb-tags, .pb-chips,
+.ptabs, .l-top, .pb-selbar, .pb-marquee, .pb-stagebar {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* --- 4.2 swipe-to-dismiss: the header is the drag handle (usePullDismiss drives
+   the card's inline transform; the overlay's own transform-transition eases the
+   spring-back / slide-out). pan-y keeps the drag from being stolen by scroll. --- */
+.pb-pull-grab { touch-action: pan-y; }

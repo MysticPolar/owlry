@@ -1200,7 +1200,9 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
    no bezel, no desk, the theatre fills the real screen (100dvh,
    safe-area aware). Desktop keeps the staged phone-on-a-desk.
    ============================================================ */
-@media (max-width: 560px){
+/* full-bleed app on real phones: narrow screens OR short ones (landscape phones,
+   which exceed 560px wide but can't show the 380×800 desk frame) */
+@media (max-width: 560px), (max-height: 600px){
   /* the desk centres its children; on a real phone the app must fill the
      width instead of shrink-wrapping — stretch the cross axis */
   body{padding:0;background:#07070C;align-items:stretch;justify-content:flex-start}

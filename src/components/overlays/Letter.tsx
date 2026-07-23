@@ -4,6 +4,8 @@ import { useT } from '../../i18n/react';
 import { getBook, getGuide } from '../../lib/bookRegistry';
 import { useTypewriter } from '../../hooks/useTypewriter';
 import { useModalFocus } from '../../hooks/useModalFocus';
+import { usePullDismiss } from '../../hooks/usePullDismiss';
+import { useReduceMotion } from '../../hooks/useReduceMotion';
 import { Icon } from '../Icon';
 import { Cover } from '../Cover';
 import { CastOwl } from '../CastOwl';
@@ -49,8 +51,11 @@ export function Letter() {
   const b = id ? getBook(id) : null;
   const open = Boolean(id);
   const dialogRef = useRef<HTMLDivElement>(null);
-  useModalFocus(open, closeLetter, dialogRef);
+  const grabRef = useRef<HTMLDivElement>(null);
   const bodyRef = useRef<HTMLDivElement>(null);
+  const reduce = useReduceMotion();
+  useModalFocus(open, closeLetter, dialogRef);
+  usePullDismiss({ enabled: open, onClose: closeLetter, cardRef: dialogRef, grabRef, scrollRef: bodyRef, reduce });
 
   useEffect(() => {
     if (id && bodyRef.current) bodyRef.current.scrollTop = 0;
@@ -92,7 +97,7 @@ export function Letter() {
 
   return (
     <div className="letter on" id="letter" role="dialog" aria-modal="true" aria-label={t.reader.letterAria} ref={dialogRef} tabIndex={-1}>
-      <div className="l-top">
+      <div className="l-top pb-pull-grab" ref={grabRef}>
         <button className="iconbtn lite" aria-label={t.reader.closePeekAria} onClick={closeLetter}>
           <Icon name="ti-arrow-left" />
         </button>

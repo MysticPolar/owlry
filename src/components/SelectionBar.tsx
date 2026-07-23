@@ -34,6 +34,7 @@ export function SelectionBar() {
   const [anchor, setAnchor] = useState<Anchor | null>(null);
   const barRef = useRef<HTMLDivElement>(null);
   const debounce = useRef<number>(0);
+  const scrollTimer = useRef<number>(0);
 
   useEffect(() => {
     const clear = () => setAnchor(null);
@@ -56,9 +57,15 @@ export function SelectionBar() {
       const rect = sel.getRangeAt(0).getBoundingClientRect();
       if (!rect.width && !rect.height) return clear();
       const box = app.getBoundingClientRect();
-      const below = rect.top - box.top < 56;
+      // on touch, the OS callout draws ABOVE the selection — put ours below to
+      // avoid stacking on it; on desktop keep the flip-when-near-top behaviour
+      const coarse = window.matchMedia('(pointer: coarse)').matches;
+      const below = coarse || rect.top - box.top < 56;
+      // clamp with the bar's real half-width (measured once shown) so longer
+      // localized labels never overflow the screen edge
+      const half = barRef.current ? barRef.current.offsetWidth / 2 + 10 : 130;
       setAnchor({
-        x: Math.min(Math.max(rect.left - box.left + rect.width / 2, 124), box.width - 124),
+        x: Math.min(Math.max(rect.left - box.left + rect.width / 2, half), box.width - half),
         y: below ? rect.bottom - box.top + 10 : rect.top - box.top - 46,
         below,
         text,
@@ -69,12 +76,19 @@ export function SelectionBar() {
       window.clearTimeout(debounce.current);
       debounce.current = window.setTimeout(read, 180);
     };
+    // a scroll would strand the bar — hide it, then re-anchor once scrolling
+    // settles (the selection persists, so it returns at the new position)
+    const onScroll = () => {
+      clear();
+      window.clearTimeout(scrollTimer.current);
+      scrollTimer.current = window.setTimeout(read, 220);
+    };
     document.addEventListener('selectionchange', onSelection);
-    // any scroll under the bar would strand it — stand down instead of chasing
-    document.addEventListener('scroll', clear, { capture: true, passive: true });
+    document.addEventListener('scroll', onScroll, { capture: true, passive: true });
     return () => {
       document.removeEventListener('selectionchange', onSelection);
-      document.removeEventListener('scroll', clear, { capture: true });
+      document.removeEventListener('scroll', onScroll, { capture: true });
+      window.clearTimeout(scrollTimer.current);
       window.clearTimeout(debounce.current);
     };
   }, []);
