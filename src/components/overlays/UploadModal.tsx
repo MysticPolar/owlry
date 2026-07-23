@@ -70,7 +70,7 @@ export function UploadModal() {
       }}
     >
       <div
-        className="pcard"
+        className="pcard pb-upload"
         style={{ width: '88%', maxWidth: 360 }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -94,7 +94,7 @@ export function UploadModal() {
           </button>
         </div>
         {error && (
-          <p className="l-p" role="status" aria-live="polite" style={{ color: '#b23', fontWeight: 600 }}>
+          <p className="l-p pb-upload-err" role="status" aria-live="polite" style={{ fontWeight: 600 }}>
             {error}
           </p>
         )}

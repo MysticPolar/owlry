@@ -144,9 +144,14 @@ export function Letter() {
             </div>
             <div className="l-writing">
               <span className="it">{t.reader.inkRan}</span>
-              <button className="btn xs" onClick={() => id && openLetter(id)}>
-                {t.reader.tryAgain} <Icon name="ti-refresh" />
-              </button>
+              <div className="l-btnrow">
+                <button className="btn xs" onClick={() => id && openLetter(id)}>
+                  {t.reader.tryAgain} <Icon name="ti-refresh" />
+                </button>
+                <button className="btn xs ghost" onClick={() => id && openBook(id)}>
+                  {t.discover.openBook}
+                </button>
+              </div>
             </div>
           </>
         )}
