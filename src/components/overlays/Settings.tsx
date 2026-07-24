@@ -73,7 +73,7 @@ export function Settings() {
   // stays mounted while the CSS exit plays, so the close slides like the open
   const { mounted, shown, dismissedRef } = useOverlayPresence(open, { ref: dialogRef });
   useModalFocus(open && mounted, close, dialogRef);
-  usePullDismiss({ enabled: open, onClose: close, cardRef: dialogRef, grabRef, scrollRef: bodyRef, reduce, dismissedRef });
+  usePullDismiss({ enabled: open && mounted, onClose: close, cardRef: dialogRef, grabRef, scrollRef: bodyRef, reduce, dismissedRef });
 
   if (!mounted) return null;
 

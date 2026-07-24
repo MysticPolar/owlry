@@ -73,7 +73,7 @@ export function History() {
   const { mounted, shown, dismissedRef } = useOverlayPresence(open, { ref: dialogRef });
   // back-arrow drills out of a day view first, else closes the overlay
   useModalFocus(open && mounted, () => (selected ? setSelected(null) : closeHistory()), dialogRef);
-  usePullDismiss({ enabled: open, onClose: closeHistory, cardRef: dialogRef, grabRef, scrollRef: bodyRef, reduce, dismissedRef });
+  usePullDismiss({ enabled: open && mounted, onClose: closeHistory, cardRef: dialogRef, grabRef, scrollRef: bodyRef, reduce, dismissedRef });
 
   if (!mounted) return null;
 

@@ -61,7 +61,7 @@ export function Letter() {
   const g = id && letterStatus === 'ready' ? getGuide(id) : null;
   const b = id ? getBook(id) : null;
   useModalFocus(open && mounted, closeLetter, dialogRef);
-  usePullDismiss({ enabled: open, onClose: closeLetter, cardRef: dialogRef, grabRef, scrollRef: bodyRef, reduce, dismissedRef });
+  usePullDismiss({ enabled: open && mounted, onClose: closeLetter, cardRef: dialogRef, grabRef, scrollRef: bodyRef, reduce, dismissedRef });
 
   useEffect(() => {
     if (id && bodyRef.current) bodyRef.current.scrollTop = 0;
