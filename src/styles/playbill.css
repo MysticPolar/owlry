@@ -1070,3 +1070,28 @@ button, .owl, .pb-nav, .pb-stagehead, .disc-head, .pb-head, .pb-tags, .pb-chips,
 .app.no-motion .auth { transition: opacity .32s ease, visibility 0s linear .32s !important; }
 .app.no-motion .auth.on { transition: opacity .32s ease !important; }
 .app.no-motion .auth-stage { transform: none !important; }
+
+/* --- W5 platform prefs: frosted surfaces go solid when the user asks for less
+   transparency; glass gets defined borders when they ask for more contrast --- */
+@media (prefers-reduced-transparency: reduce) {
+  .pb-nav { background: #140D0A; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .nav { background: var(--navbg-solid, #141A2E); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .pintro-card, .ob-plaque, .ob-say-plaque, .ob-banner, .ob-hud {
+    background: rgb(12,7,5); -webkit-backdrop-filter: none; backdrop-filter: none;
+  }
+  .mr-card { background: rgb(16,12,24); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .pb-deskhint-lbl { background: rgb(20,13,10); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .pb-askq-scrim { -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .sh-badge { background: rgb(13,17,31); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .guest-lvl { background: #3A2C10; -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
+@media (prefers-contrast: more) {
+  .pb-nav { border-color: var(--pb-brass); }
+  .nav { border-color: var(--line2); }
+  .pintro-card, .ob-plaque, .ob-say-plaque, .ob-banner { border-color: rgba(232,180,58,.9); }
+  .pb-tag, .pb-deskpill, .chip { border-color: currentColor; }
+}
+
+/* --- W6 type: let Fraunces use its optical-size axis everywhere (Anton and
+   Inter Tight carry no opsz axis and simply ignore this) --- */
+body { font-optical-sizing: auto; }
