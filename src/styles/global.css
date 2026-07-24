@@ -1581,7 +1581,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
   background:linear-gradient(180deg,rgba(255,255,255,.5),rgba(255,255,255,0) 30%),var(--letter);
   color:var(--letter-ink,#241B0E);border:1px solid rgba(60,44,16,.24);border-radius:14px;
   box-shadow:var(--letterGlow),0 8px 22px -12px rgba(0,0,0,.4);
-  animation:glIn .5s cubic-bezier(.2,.9,.25,1.05) both;transition:transform .15s ease}
+  animation:glIn .5s cubic-bezier(.2,.9,.25,1.05) backwards;transition:transform .15s ease}
 .gletter:active{transform:translateY(1px)}
 @keyframes glIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 .gl-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
@@ -1641,7 +1641,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .sr-books::-webkit-scrollbar{display:none}
 .sr-spine{flex:0 0 auto;padding:0;border-radius:1.5px;cursor:pointer;border:1px solid rgba(0,0,0,.32);
   box-shadow:1px 2px 5px rgba(0,0,0,.3);transition:transform .18s ease;
-  animation:srSettle .45s cubic-bezier(.3,1.5,.5,1) both}
+  animation:srSettle .45s cubic-bezier(.3,1.5,.5,1) backwards}
 .sr-spine:hover{transform:translateY(-3px)}
 @keyframes srSettle{from{transform:translateY(-5px) rotate(-4deg)}to{transform:none}}
 .sr-count{flex:0 0 auto;background:none;border:0;padding:2px 0 3px;cursor:pointer;

@@ -1007,3 +1007,30 @@ button, .owl, .pb-nav, .pb-stagehead, .disc-head, .pb-head, .pb-tags, .pb-chips,
    the card's inline transform; the overlay's own transform-transition eases the
    spring-back / slide-out). pan-y keeps the drag from being stolen by scroll. --- */
 .pb-pull-grab { touch-action: pan-y; }
+
+/* ============================================================
+   FLUID INTERFACES — Phase 5 (Apple-design pass)
+   ============================================================ */
+
+/* --- W3.1 instant press-in: the pressed state lands on the same frame as
+   touch-down; releasing restores the element's base transition, so only the
+   RETURN eases. (Their base rules carry transition: transform .15–.2s, which
+   otherwise fades the press in — feedback must be instant on down.) --- */
+.pb-card:active, .pb-keeper:active, .pb-iconbtn:active, .pb-cta:active,
+.pb-send:active, .pb-askq-send:active, .pb-dc-cover-btn:active,
+.pb-dc-about:active, .pb-dc-go:active, .gletter:active, .gl-heart:active {
+  transition-duration: 0s;
+}
+
+/* --- W3.2 presses compress: the object yields under the finger (the old
+   scale(1.25) grow was hidden by the fingertip and contradicted .gl-heart) --- */
+.pb-iconbtn:active { transform: scale(.9); }
+
+/* --- W3.3 touch equivalents for the hover-only affordances --- */
+.sr-spine:active { transform: translateY(-3px); transition-duration: 0s; }
+.sh-item:active .cover-home {
+  transform: translateY(-3px);
+  box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.08), 0 10px 18px -10px rgba(0,0,0,.65);
+  transition-duration: 0s;
+}
+.sr-count:active { color: var(--mut); }
