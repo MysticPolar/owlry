@@ -4,6 +4,7 @@ import { useT } from '../../i18n/react';
 import { getBook, getGuide } from '../../lib/bookRegistry';
 import { useTypewriter } from '../../hooks/useTypewriter';
 import { useModalFocus } from '../../hooks/useModalFocus';
+import { useOverlayPresence } from '../../hooks/useOverlayPresence';
 import { usePullDismiss } from '../../hooks/usePullDismiss';
 import { useReduceMotion } from '../../hooks/useReduceMotion';
 import { Icon } from '../Icon';
@@ -46,16 +47,21 @@ export function Letter() {
   const saved = useStore((s) => (s.letterId ? s.savedIds.includes(s.letterId) : false));
   const reduceMotion = useStore((s) => s.prefs.reduceMotion);
 
-  const id = letterId;
-  const g = id && letterStatus === 'ready' ? getGuide(id) : null;
-  const b = id ? getBook(id) : null;
-  const open = Boolean(id);
+  const open = Boolean(letterId);
   const dialogRef = useRef<HTMLDivElement>(null);
   const grabRef = useRef<HTMLDivElement>(null);
   const bodyRef = useRef<HTMLDivElement>(null);
   const reduce = useReduceMotion();
-  useModalFocus(open, closeLetter, dialogRef);
-  usePullDismiss({ enabled: open, onClose: closeLetter, cardRef: dialogRef, grabRef, scrollRef: bodyRef, reduce });
+  // stays mounted while the exit slide plays; the id is latched so the letter's
+  // content doesn't blank the moment the store clears letterId
+  const { mounted, shown: present, dismissedRef } = useOverlayPresence(open, { ref: dialogRef });
+  const heldId = useRef(letterId);
+  if (letterId) heldId.current = letterId;
+  const id = letterId ?? (mounted ? heldId.current : null);
+  const g = id && letterStatus === 'ready' ? getGuide(id) : null;
+  const b = id ? getBook(id) : null;
+  useModalFocus(open && mounted, closeLetter, dialogRef);
+  usePullDismiss({ enabled: open, onClose: closeLetter, cardRef: dialogRef, grabRef, scrollRef: bodyRef, reduce, dismissedRef });
 
   useEffect(() => {
     if (id && bodyRef.current) bodyRef.current.scrollTop = 0;
@@ -93,10 +99,10 @@ export function Letter() {
   // generation failed — offer a retry rather than an endless "writing…"
   const failed = !!id && !g && letterStatus === 'idle';
 
-  if (!open) return null;
+  if (!mounted) return null;
 
   return (
-    <div className="letter on" id="letter" role="dialog" aria-modal="true" aria-label={t.reader.letterAria} ref={dialogRef} tabIndex={-1}>
+    <div className={`letter${present ? ' on' : ''}`} id="letter" role="dialog" aria-modal="true" aria-label={t.reader.letterAria} ref={dialogRef} tabIndex={-1}>
       <div className="l-top pb-pull-grab" ref={grabRef}>
         <button className="iconbtn lite" aria-label={t.reader.closePeekAria} onClick={closeLetter}>
           <Icon name="ti-arrow-left" />
