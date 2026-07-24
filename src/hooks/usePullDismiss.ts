@@ -1,4 +1,4 @@
-import { useEffect, type RefObject } from 'react';
+import { useEffect, type MutableRefObject, type RefObject } from 'react';
 
 /* ============================================================
    Swipe-down-to-dismiss for a slide-up overlay.
@@ -19,8 +19,11 @@ export function usePullDismiss(opts: {
   grabRef: RefObject<HTMLElement | null>;
   scrollRef?: RefObject<HTMLElement | null>;
   reduce?: boolean;
+  /** presence handshake: set before onClose so useOverlayPresence knows the
+      card is already off-screen and unmounts next frame (no double exit) */
+  dismissedRef?: MutableRefObject<boolean>;
 }) {
-  const { enabled, onClose, cardRef, grabRef, scrollRef, reduce } = opts;
+  const { enabled, onClose, cardRef, grabRef, scrollRef, reduce, dismissedRef } = opts;
 
   useEffect(() => {
     if (!enabled || reduce) return;
@@ -61,10 +64,11 @@ export function usePullDismiss(opts: {
       // clearing the inline transition restores the card's CSS transform-transition
       card.style.transition = '';
       if (dy > THRESHOLD) {
-        // continue the dismiss the rest of the way down, then unmount — no bounce
+        // continue the dismiss the rest of the way down; the card stays parked
+        // off-screen (masking the .on removal) and presence unmounts next frame
         card.style.transform = 'translateY(100%)';
         closeTimer = window.setTimeout(() => {
-          card.style.transform = '';
+          if (dismissedRef) dismissedRef.current = true;
           onClose();
         }, 260);
       } else {

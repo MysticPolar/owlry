@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { useStore } from '../../store/useStore';
 import { useAuth } from '../../store/useAuth';
 import { useModalFocus } from '../../hooks/useModalFocus';
+import { useOverlayPresence } from '../../hooks/useOverlayPresence';
 import { usePullDismiss } from '../../hooks/usePullDismiss';
 import { useReduceMotion } from '../../hooks/useReduceMotion';
 import type { OwlEngine } from '../../store/types';
@@ -69,13 +70,15 @@ export function Settings() {
   const grabRef = useRef<HTMLDivElement>(null);
   const bodyRef = useRef<HTMLDivElement>(null);
   const reduce = useReduceMotion();
-  useModalFocus(open, close, dialogRef);
-  usePullDismiss({ enabled: open, onClose: close, cardRef: dialogRef, grabRef, scrollRef: bodyRef, reduce });
+  // stays mounted while the CSS exit plays, so the close slides like the open
+  const { mounted, shown, dismissedRef } = useOverlayPresence(open, { ref: dialogRef });
+  useModalFocus(open && mounted, close, dialogRef);
+  usePullDismiss({ enabled: open, onClose: close, cardRef: dialogRef, grabRef, scrollRef: bodyRef, reduce, dismissedRef });
 
-  if (!open) return null;
+  if (!mounted) return null;
 
   return (
-    <div className="settings on" id="settings" role="dialog" aria-modal="true" aria-label={t.ariaDialog} ref={dialogRef} tabIndex={-1}>
+    <div className={`settings${shown ? ' on' : ''}`} id="settings" role="dialog" aria-modal="true" aria-label={t.ariaDialog} ref={dialogRef} tabIndex={-1}>
       <div className="l-top pb-pull-grab" ref={grabRef}>
         <button className="iconbtn lite" aria-label={t.ariaClose} onClick={close}>
           <Icon name="ti-arrow-left" />

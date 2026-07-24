@@ -12,6 +12,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useStore } from '../../store/useStore';
 import { useModalFocus } from '../../hooks/useModalFocus';
+import { useOverlayPresence } from '../../hooks/useOverlayPresence';
 import { usePullDismiss } from '../../hooks/usePullDismiss';
 import { useReduceMotion } from '../../hooks/useReduceMotion';
 import { listDays, loadDay } from '../../lib/history';
@@ -43,15 +44,13 @@ export function History() {
   const reduce = useReduceMotion();
   const t = useT().settings.history;
 
-  // fetch the day list fresh every time the overlay opens; reset to the list view on close
+  // fetch the day list fresh every time the overlay opens. Stale content is
+  // deliberately KEPT on close so the card doesn't blank mid-exit-slide —
+  // reopening resets to the list view and refetches anyway.
   useEffect(() => {
-    if (!open) {
-      setSelected(null);
-      setTranscript(null);
-      setDays(null);
-      setFailed(false);
-      return;
-    }
+    if (!open) return;
+    setSelected(null);
+    setTranscript(null);
     setLoading(true);
     setFailed(false);
     void listDays(todayLocal())
@@ -70,14 +69,16 @@ export function History() {
       .finally(() => setLoading(false));
   };
 
+  // stays mounted while the CSS exit plays, so the close slides like the open
+  const { mounted, shown, dismissedRef } = useOverlayPresence(open, { ref: dialogRef });
   // back-arrow drills out of a day view first, else closes the overlay
-  useModalFocus(open, () => (selected ? setSelected(null) : closeHistory()), dialogRef);
-  usePullDismiss({ enabled: open, onClose: closeHistory, cardRef: dialogRef, grabRef, scrollRef: bodyRef, reduce });
+  useModalFocus(open && mounted, () => (selected ? setSelected(null) : closeHistory()), dialogRef);
+  usePullDismiss({ enabled: open, onClose: closeHistory, cardRef: dialogRef, grabRef, scrollRef: bodyRef, reduce, dismissedRef });
 
-  if (!open) return null;
+  if (!mounted) return null;
 
   return (
-    <div className="history on" id="history" role="dialog" aria-modal="true" aria-label={t.ariaDialog} ref={dialogRef} tabIndex={-1}>
+    <div className={`history${shown ? ' on' : ''}`} id="history" role="dialog" aria-modal="true" aria-label={t.ariaDialog} ref={dialogRef} tabIndex={-1}>
       <div className="l-top pb-pull-grab" ref={grabRef}>
         <button
           className="iconbtn lite"
