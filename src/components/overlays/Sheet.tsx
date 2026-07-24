@@ -4,6 +4,7 @@ import { useT } from '../../i18n/react';
 import { getBook } from '../../lib/bookRegistry';
 import { useBookMeta } from '../../hooks/useBookMeta';
 import { useModalFocus } from '../../hooks/useModalFocus';
+import { useOverlayPresence } from '../../hooks/useOverlayPresence';
 import { Icon } from '../Icon';
 import { Cover } from '../Cover';
 import { ClampText } from '../ClampText';
@@ -19,23 +20,28 @@ export function Sheet() {
   const saved = useStore((s) => (s.sheetId ? s.savedIds.includes(s.sheetId) : false));
   const resuming = useStore((s) => (s.sheetId ? !!s.pagesRead[s.sheetId] : false));
 
-  const id = sheetId;
+  const dialogRef = useRef<HTMLDivElement>(null);
+  // stays mounted while the slide-down plays; the id is latched so the sheet's
+  // content doesn't blank the moment the store clears sheetId
+  const { mounted, shown } = useOverlayPresence(Boolean(sheetId), { ref: dialogRef });
+  const heldId = useRef(sheetId);
+  if (sheetId) heldId.current = sheetId;
+  const id = sheetId ?? (mounted ? heldId.current : null);
   const b = id ? getBook(id) : null;
   const meta = useBookMeta(id);
-  const dialogRef = useRef<HTMLDivElement>(null);
 
   // focus trap + Esc + focus restore (openBook clears sheetId, so Esc here never
   // conflicts with the reader's own handler)
-  useModalFocus(!!id, closeSheet, dialogRef);
+  useModalFocus(Boolean(sheetId) && mounted, closeSheet, dialogRef);
 
-  if (!id || !b) return null;
+  if (!mounted || !id || !b) return null;
 
   // catalog page count wins; the live lookup fills the gap for open-world books
   const pageCount = b.n || meta?.pageCount;
 
   return (
     <div
-      className="sheet pb-sheet on"
+      className={`sheet pb-sheet${shown ? ' on' : ''}`}
       id="sheet"
       role="dialog"
       aria-modal="true"

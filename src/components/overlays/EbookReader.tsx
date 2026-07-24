@@ -2,6 +2,7 @@ import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState, type
 import { useStore } from '../../store/useStore';
 import { useT } from '../../i18n/react';
 import { getBook } from '../../lib/bookRegistry';
+import { useOverlayPresence } from '../../hooks/useOverlayPresence';
 import { loadPosition, savePosition } from '../../lib/ebook/storage';
 import type { ReadingPosition } from '../../lib/ebook/types';
 import type { ReaderFont, ReaderPrefs } from '../../store/types';
@@ -122,7 +123,15 @@ export function EbookReader() {
   const openUpload = useStore((s) => s.openUpload);
   const report = useStore((s) => s.reportProgress);
 
-  const { open, bookId, status, source, percent } = ebook;
+  const { open, status, source, percent } = ebook;
+  // scale-fade both ways; latch the id so the fade-out isn't a blank unmount
+  // (closeBook resets ebook wholesale — the engine may briefly show the
+  // resolving note under the fading surface, invisible at 240ms)
+  const rootRef = useRef<HTMLDivElement>(null);
+  const { mounted, shown } = useOverlayPresence(open, { ref: rootRef, duration: 260 });
+  const heldId = useRef(ebook.bookId);
+  if (ebook.bookId) heldId.current = ebook.bookId;
+  const bookId = ebook.bookId ?? (mounted ? heldId.current : null);
   const b = bookId ? getBook(bookId) : null;
   const pdf = source?.format === 'pdf';
   const pageMode = pdf || prefs.flow === 'page';
@@ -240,13 +249,13 @@ export function EbookReader() {
     [prefs],
   );
 
-  if (!open || !b || !bookId) return null;
+  if (!mounted || !b || !bookId) return null;
 
   const pageLabel = pdf && location.page && location.pageTotal
     ? t.reader.pageOf(location.page, location.pageTotal)
     : `${Math.round(percent)}%`;
   return (
-    <div className="reader reader-live" style={readerStyle} role="dialog" aria-modal="true" aria-label={t.reader.readingAria(b.t)}>
+    <div className={`reader reader-live${shown ? ' on' : ''}`} style={readerStyle} role="dialog" aria-modal="true" aria-label={t.reader.readingAria(b.t)} ref={rootRef}>
       <div
         className="reader-stage"
         onPointerDown={(event) => { tapStart.current = { x: event.clientX, y: event.clientY }; }}

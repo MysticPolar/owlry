@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { useStore } from '../../store/useStore';
 import { useModalFocus } from '../../hooks/useModalFocus';
+import { useOverlayPresence } from '../../hooks/useOverlayPresence';
 import { getBook } from '../../lib/bookRegistry';
 import { inspectFile, ACCEPT_ATTR } from '../../lib/ebook/inspect';
 import { saveUpload } from '../../lib/ebook/storage';
@@ -25,10 +26,16 @@ export function UploadModal() {
   const [busy, setBusy] = useState(false);
   const t = useT().settings.upload;
 
-  useModalFocus(open && !!bookId, close, dialogRef);
+  // fade both ways (centered dialog — a fade is its natural path); latch the id
+  const { mounted, shown } = useOverlayPresence(open && !!bookId, { ref: dialogRef, duration: 220 });
+  const heldId = useRef(bookId);
+  if (bookId) heldId.current = bookId;
+  const effectiveId = bookId ?? (mounted ? heldId.current : null);
 
-  if (!open || !bookId) return null;
-  const b = getBook(bookId);
+  useModalFocus(open && !!bookId && mounted, close, dialogRef);
+
+  if (!mounted || !effectiveId) return null;
+  const b = getBook(effectiveId);
   if (!b) return null;
 
   const onFile = async (file?: File) => {
@@ -48,8 +55,8 @@ export function UploadModal() {
         author: b.a,
         sourceLabel: t.sourceLabel,
       };
-      await saveUpload(bookId, file, source);
-      setSource(bookId, source);
+      await saveUpload(effectiveId, file, source);
+      setSource(effectiveId, source);
     } catch {
       setError(t.errGeneric);
     } finally {
@@ -65,6 +72,7 @@ export function UploadModal() {
       onClick={close}
       ref={dialogRef}
       tabIndex={-1}
+      className={`pb-upload-scrim${shown ? ' on' : ''}`}
       style={{
         position: 'absolute',
         inset: 0,

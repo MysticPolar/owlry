@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useStore } from '../../store/useStore';
+import { useOverlayPresence } from '../../hooks/useOverlayPresence';
 import { useReduceMotion } from '../../hooks/useReduceMotion';
 import { useT } from '../../i18n/react';
 import type { IntroSeg } from '../../i18n/dicts/today';
@@ -61,21 +62,14 @@ function Typed({ seq, n }: { seq: { ch: string; em: boolean }[]; n: number }) {
   return <>{nodes}</>;
 }
 
-function Card({ intro }: { intro: IntroKey }) {
+function Card({ intro, on }: { intro: IntroKey; on: boolean }) {
   const dismiss = useStore((st) => st.dismissIntro);
   const def = CARDS[intro];
   const txt = useT().today.intro[intro];
   const seq = useMemo(() => chars(txt.say), [txt]);
   const reduce = useReduceMotion();
   const [n, setN] = useState(reduce ? seq.length : 0);
-  const [on, setOn] = useState(false);
   const typing = n < seq.length;
-
-  // trigger the entrance transition on next frame
-  useEffect(() => {
-    const r = requestAnimationFrame(() => setOn(true));
-    return () => cancelAnimationFrame(r);
-  }, []);
 
   // typewriter — starts a beat after the card lands (matches the standalone)
   useEffect(() => {
@@ -120,6 +114,12 @@ function Card({ intro }: { intro: IntroKey }) {
 
 export function IntroCard() {
   const intro = useStore((st) => st.introCard);
-  if (!intro) return null;
-  return <Card key={intro} intro={intro} />;
+  // timer-mode presence (the transitioned .pintro-card is a child, no ref):
+  // the card now plays its reverse transitions out instead of blinking away
+  const { mounted, shown } = useOverlayPresence(Boolean(intro), { duration: 420 });
+  const held = useRef(intro);
+  if (intro) held.current = intro;
+  const key = intro ?? (mounted ? held.current : null);
+  if (!mounted || !key) return null;
+  return <Card key={key} intro={key} on={shown} />;
 }

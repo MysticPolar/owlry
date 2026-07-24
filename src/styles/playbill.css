@@ -328,8 +328,8 @@
   max-height: calc(100% - 24px); overflow-y: auto; scrollbar-width: none;
 }
 .pb-sheet::-webkit-scrollbar { display: none; }
-.pb-sheet.on { animation: pbSheetUp .42s cubic-bezier(.32,.72,.28,1); }
-@keyframes pbSheetUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+/* (the enter-only pbSheetUp keyframe retired — the base .sheet translateY
+   transition in global.css drives the slide BOTH ways via useOverlayPresence) */
 
 /* close (top-left) + save (top-right) — floating paper discs over the header */
 .pb-sh-save, .pb-sh-close {
@@ -1034,3 +1034,11 @@ button, .owl, .pb-nav, .pb-stagehead, .disc-head, .pb-head, .pb-tags, .pb-chips,
   transition-duration: 0s;
 }
 .sr-count:active { color: var(--mut); }
+
+/* --- W1 symmetric exits: two-way fades for the surfaces that had enter-only
+   keyframes (driven by useOverlayPresence toggling .on both directions) --- */
+.pb-upload-scrim { opacity: 0; transition: opacity .2s ease; }
+.pb-upload-scrim.on { opacity: 1; }
+/* real ebook reader: scale-fade both ways (replaces the enter-only readerOpen) */
+.reader-live { opacity: 0; transform: scale(.985); transition: opacity .24s ease, transform .24s ease; animation: none; }
+.reader-live.on { opacity: 1; transform: none; }

@@ -1410,8 +1410,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
   color:#241B0E;font:italic 430 15px/1.55 'Fraunces',Georgia,serif}
 
 /* Peek: editorial structure with explicit owl/book registers. */
-.sheet.on{animation:paperRise .32s cubic-bezier(.2,.9,.25,1)}
-@keyframes paperRise{from{transform:translateY(22px);opacity:.65}to{transform:none;opacity:1}}
+/* (paperRise retired — overlay slides now play symmetrically both ways via
+   useOverlayPresence + each surface's own translateY transition) */
 .l-top{padding-inline:12px;min-height:54px}
 .l-top .iconbtn{width:44px;height:44px;flex-basis:44px}
 .l-top .save{min-width:44px;min-height:44px}
