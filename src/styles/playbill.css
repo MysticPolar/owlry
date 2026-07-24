@@ -1042,3 +1042,31 @@ button, .owl, .pb-nav, .pb-stagehead, .disc-head, .pb-head, .pb-tags, .pb-chips,
 /* real ebook reader: scale-fade both ways (replaces the enter-only readerOpen) */
 .reader-live { opacity: 0; transform: scale(.985); transition: opacity .24s ease, transform .24s ease; animation: none; }
 .reader-live.on { opacity: 1; transform: none; }
+
+/* --- W4 reduced motion = gentle cross-fades, not teleports. The global resets
+   (global.css:548, :1503) nuke every transition with `* !important`; these
+   higher-specificity overlay selectors win among !important rules, re-allowing
+   ONLY a 200ms opacity fade (transforms stay pinned — no slides). Two mirrored
+   scopes: the OS media query and the in-app "reduce motion" toggle. --- */
+@media (prefers-reduced-motion: reduce) {
+  .letter, .history, .sheet { transform: none !important; opacity: 0; pointer-events: none; transition: opacity .2s ease !important; }
+  .letter.on, .history.on, .sheet.on { opacity: 1; pointer-events: auto; }
+  .settings { transform: none !important; transition: opacity .2s ease !important; }
+  .reader-live { transform: none !important; transition: opacity .24s ease !important; }
+  .pintro-scrim, .pintro-card, .backdrop, .pb-upload-scrim { transition: opacity .2s ease !important; }
+  .pintro-card { transform: none !important; }
+  .toast { transition: opacity .25s ease !important; transform: translate(-50%, 0) !important; }
+  .auth { transition: opacity .32s ease, visibility 0s linear .32s !important; }
+  .auth.on { transition: opacity .32s ease !important; }
+  .auth-stage { transform: none !important; }
+}
+.app.no-motion .letter, .app.no-motion .history, .app.no-motion .sheet { transform: none !important; opacity: 0; pointer-events: none; transition: opacity .2s ease !important; }
+.app.no-motion .letter.on, .app.no-motion .history.on, .app.no-motion .sheet.on { opacity: 1; pointer-events: auto; }
+.app.no-motion .settings { transform: none !important; transition: opacity .2s ease !important; }
+.app.no-motion .reader-live { transform: none !important; transition: opacity .24s ease !important; }
+.app.no-motion .pintro-scrim, .app.no-motion .pintro-card, .app.no-motion .backdrop, .app.no-motion .pb-upload-scrim { transition: opacity .2s ease !important; }
+.app.no-motion .pintro-card { transform: none !important; }
+.app.no-motion .toast { transition: opacity .25s ease !important; transform: translate(-50%, 0) !important; }
+.app.no-motion .auth { transition: opacity .32s ease, visibility 0s linear .32s !important; }
+.app.no-motion .auth.on { transition: opacity .32s ease !important; }
+.app.no-motion .auth-stage { transform: none !important; }
