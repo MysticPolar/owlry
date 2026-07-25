@@ -26,3 +26,11 @@ export interface EngineHandle {
   next: () => void;
   prev: () => void;
 }
+
+/** The reader's "Sans" option. Mirrors --font-chrome in src/styles/type.css —
+    it has to be a literal because CSS custom properties do not cross into the
+    epub's blob: iframe. Keep the two in sync. */
+export const SYSTEM_STACK =
+  "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, " +
+  "'Helvetica Neue', Arial, 'PingFang SC', 'Hiragino Sans GB', " +
+  "'Microsoft YaHei', 'Noto Sans SC', sans-serif";

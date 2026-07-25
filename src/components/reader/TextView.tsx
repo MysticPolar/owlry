@@ -1,6 +1,7 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState, type CSSProperties } from 'react';
 import { loadUpload } from '../../lib/ebook/storage';
 import { useStore } from '../../store/useStore';
+import { SYSTEM_STACK } from './shared';
 import type { EngineHandle, EngineProps } from './shared';
 
 function txtToParas(text: string): string[] {
@@ -9,7 +10,7 @@ function txtToParas(text: string): string[] {
 
 const stack = (font: EngineProps['prefs']['font']): string => {
   if (font === 'fraunces') return "'Fraunces', Georgia, serif";
-  if (font === 'system') return "ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+  if (font === 'system') return SYSTEM_STACK;
   return "'Literata', Georgia, serif";
 };
 

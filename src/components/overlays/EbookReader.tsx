@@ -6,6 +6,7 @@ import { useOverlayPresence } from '../../hooks/useOverlayPresence';
 import { loadPosition, savePosition } from '../../lib/ebook/storage';
 import type { ReadingPosition } from '../../lib/ebook/types';
 import type { ReaderFont, ReaderPrefs } from '../../store/types';
+import { SYSTEM_STACK } from '../reader/shared';
 import type { EngineHandle, ProgressUpdate } from '../reader/shared';
 import { Icon } from '../Icon';
 import { CastOwl } from '../CastOwl';
@@ -23,7 +24,7 @@ const FONT_LABELS: { key: ReaderFont; label: string }[] = [
 
 const fontStack = (font: ReaderFont): string => {
   if (font === 'fraunces') return "'Fraunces', Georgia, serif";
-  if (font === 'system') return "ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+  if (font === 'system') return SYSTEM_STACK;
   return "'Literata', Georgia, serif";
 };
 

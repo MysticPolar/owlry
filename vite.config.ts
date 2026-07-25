@@ -40,28 +40,10 @@ export default defineConfig({
       workbox: {
         // precache modern web fonts only; legacy ttf/eot fallbacks are served
         // on demand and would blow past the precache size limit
+        // Fonts are self-hosted now, so they are precached by this glob rather
+        // than runtime-cached from a third party — offline type comes for free.
         globPatterns: ['**/*.{js,css,html,svg,png,woff,woff2}'],
-        // Runtime-cache the Google Fonts CSS + font files so type renders offline
-        // (Capacitor/native shells keep network, but the PWA should survive offline).
         runtimeCaching: [
-          {
-            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'google-fonts-stylesheets',
-              expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 365 },
-              cacheableResponse: { statuses: [0, 200] },
-            },
-          },
-          {
-            urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'google-fonts-webfonts',
-              expiration: { maxEntries: 30, maxAgeSeconds: 60 * 60 * 24 * 365 },
-              cacheableResponse: { statuses: [0, 200] },
-            },
-          },
           {
             // Book cover art (Google Books + Open Library) — cache so covers
             // render offline. statuses includes 0 (opaque cross-origin images).

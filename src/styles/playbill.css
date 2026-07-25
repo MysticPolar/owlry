@@ -125,7 +125,7 @@
 .pb-hem { display: none; width: 100%; height: auto; }
 
 .pb-marquee {
-  text-align: center; font-family: 'Anton', sans-serif; font-weight: 400; font-size: 17px;
+  text-align: center; font-weight: 400; font-size: 17px;
   letter-spacing: 1px; color: var(--pb-cream);
   margin: 2px 0 10px; overflow: hidden; max-height: 28px;
   transition: max-height .35s ease, opacity .25s ease, margin .35s ease;
@@ -143,7 +143,7 @@
   display: flex; align-items: center; gap: 6px;
   background: var(--pb-chip-bg); border-radius: 999px; padding: 6px 12px;
 }
-.pb-chip .n { font-size: 14px; font-weight: 600; color: var(--pb-cream); font-family: 'Inter Tight', sans-serif; }
+.pb-chip .n { font-size: 14px; font-weight: 600; color: var(--pb-cream); font-family: var(--font-chrome); }
 .pb-chip-max { color: var(--pb-cream-mute); font-weight: 500; }
 .pb-chip .ti { font-size: 17px; }
 .pb-chip .crown { color: var(--pb-candy-crown); }
@@ -158,7 +158,7 @@
   max-height: 0; opacity: 0; overflow: hidden;
   transition: max-height .35s ease, opacity .3s ease, padding .35s ease;
 }
-.pb-compact .wm { font-family: 'Anton', sans-serif; font-size: 14px; letter-spacing: .5px; color: var(--pb-cream); }
+.pb-compact .wm { font-size: 14px; letter-spacing: .5px; color: var(--pb-cream); }
 .pb-compact .sp { flex: 1; }
 .pb-mini { display: flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; color: var(--pb-cream); }
 .pb-mini .ti { font-size: 14px; }
@@ -173,7 +173,7 @@
 }
 .pb-tags::-webkit-scrollbar { display: none; }
 .pb-tag {
-  flex-shrink: 0; font-family: 'Inter Tight', sans-serif; font-size: 12px; font-weight: 500;
+  flex-shrink: 0; font-family: var(--font-chrome); font-size: 12px; font-weight: 500;
   padding: 6px 14px; border-radius: 999px; border: 1px solid var(--pb-tag-line);
   color: var(--pb-tag-ink); white-space: nowrap; background: none; cursor: pointer;
   transition: background .2s, color .2s, border-color .2s; touch-action: manipulation;
@@ -230,7 +230,7 @@
    it without letterboxing (photos there just crop a hair, as object-fit covers) */
 .pb-sheet .cover-md { height: auto; aspect-ratio: 150 / 205; }
 .pb-card .body { display: block; padding: 9px 10px 0; }
-.pb-cap { display: block; font-family: 'Fraunces', Georgia, serif; font-style: italic; font-size: 13.5px; line-height: 1.45; color: var(--pb-cap-ink); }
+.pb-cap { display: block; font-family: var(--font-display); font-style: italic; font-size: 13.5px; line-height: 1.45; color: var(--pb-cap-ink); }
 .pb-foot { display: flex; align-items: center; gap: 4px; padding: 3px 10px 9px; font-size: 11px; font-weight: 600; color: var(--pb-like); }
 .pb-foot .sp { flex: 1; }
 /* generous hit target (>=40px) with the padding pulled back out so the visual
@@ -266,13 +266,13 @@
 .pb-krow { display: flex; gap: 10px; margin-top: 9px; align-items: center; }
 .pb-kthumb { width: 40px; flex-shrink: 0; border-radius: 5px; overflow: hidden; }
 .pb-cover-xs { width: 40px; height: auto; aspect-ratio: 150 / 205; border: 0; border-radius: 5px; box-shadow: none; padding: 5px; font-size: 8px; }
-.pb-kt { display: block; font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 13.5px; color: var(--pb-ink); }
-.pb-kq { display: block; font-family: 'Fraunces', Georgia, serif; font-style: italic; font-size: 12.5px; color: var(--pb-ink-faint); margin-top: 2px; line-height: 1.4; }
+.pb-kt { display: block; font-family: var(--font-display); font-weight: 600; font-size: 13.5px; color: var(--pb-ink); }
+.pb-kq { display: block; font-family: var(--font-display); font-style: italic; font-size: 12.5px; color: var(--pb-ink-faint); margin-top: 2px; line-height: 1.4; }
 
 /* ---------- empty category ---------- */
 .pb-empty { text-align: center; padding: 60px 30px; color: var(--pb-cream-mute); }
 .pb-empty .ti { font-size: 26px; color: var(--pb-brass-deep); }
-.pb-empty p { font-family: 'Fraunces', Georgia, serif; font-style: italic; font-size: 14px; margin-top: 10px; line-height: 1.5; }
+.pb-empty p { font-family: var(--font-display); font-style: italic; font-size: 14px; margin-top: 10px; line-height: 1.5; }
 
 /* ============================================================
    GLASS NAV — the one glass object
@@ -289,7 +289,7 @@
 .pb-nv {
   display: flex; flex-direction: column; align-items: center; gap: 3px;
   background: none; border: 0; padding: 0; cursor: pointer;
-  font-family: 'Inter Tight', sans-serif; font-size: 11px; font-weight: 600;
+  font-family: var(--font-chrome); font-size: 11px; font-weight: 600;
   color: var(--pb-cream-mute); transition: color .2s ease; touch-action: manipulation;
 }
 .pb-nv .pb-nvpill { position: relative; display: flex; align-items: center; justify-content: center; }
@@ -346,8 +346,8 @@
 .pb-sh-flex { display: flex; gap: 14px; padding: 40px 0 0; }
 .pb-sheet .cover { box-shadow: none; border: 1px solid var(--pb-paper-line); }
 .pb-sh-info { flex: 1; min-width: 0; }
-.pb-sh-ttl { font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 22px; line-height: 1.1; color: var(--pb-ink); }
-.pb-sh-sub { margin-top: 4px; font-family: 'Fraunces', Georgia, serif; font-style: italic; font-size: 13px; color: var(--pb-ink-faint); }
+.pb-sh-ttl { font-family: var(--font-display); font-weight: 600; font-size: 22px; line-height: 1.1; color: var(--pb-ink); }
+.pb-sh-sub { margin-top: 4px; font-family: var(--font-display); font-style: italic; font-size: 13px; color: var(--pb-ink-faint); }
 .pb-sh-auth { margin-top: 6px; font-size: 12.5px; font-weight: 600; color: var(--pb-ink-soft); }
 .pb-sh-pub { margin-top: 4px; font-size: 11px; font-weight: 600; letter-spacing: .2px; color: var(--pb-ink-mute); }
 .pb-sh-rate { display: flex; align-items: center; gap: 5px; margin-top: 8px; font-size: 13px; font-weight: 700; color: var(--pb-ink); }
@@ -355,8 +355,8 @@
 .pb-sh-rate small { font-size: 10px; font-weight: 700; color: var(--pb-ink-mute); letter-spacing: .8px; }
 .pb-sh-rate .rcount { font-weight: 600; color: var(--pb-ink-mute); }
 
-.pb-sh-intro { margin: 14px 0 0; font-family: 'Fraunces', Georgia, serif; font-size: 14px; line-height: 1.55; color: var(--pb-cap-ink); }
-.pb-sheet .more-btn { font-family: 'Inter Tight', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: .5px; color: var(--pb-brass-deep); background: none; border: 0; padding: 4px 0 0; cursor: pointer; }
+.pb-sh-intro { margin: 14px 0 0; font-family: var(--font-display); font-size: 14px; line-height: 1.55; color: var(--pb-cap-ink); }
+.pb-sheet .more-btn { font-family: var(--font-chrome); font-size: 12px; font-weight: 600; letter-spacing: .5px; color: var(--pb-brass-deep); background: none; border: 0; padding: 4px 0 0; cursor: pointer; }
 
 /* CTA pair — ghost PEEK (peek's owl) + brass-fill OPEN */
 .pb-cta-row { display: flex; gap: 8px; margin-top: 16px; }
@@ -369,7 +369,7 @@
 .pb-cta:active { transform: scale(.96); }
 .pb-cta .ti { font-size: 15px; }
 .pb-cta-owl { width: 22px; height: 24px; filter: none; flex: 0 0 auto; margin: -4px 0; }
-.pb-cta-t { font-family: 'Anton', sans-serif; font-weight: 400; font-size: 13px; letter-spacing: 2.5px; }
+.pb-cta-t { font-family: var(--font-chrome); font-weight: 400; font-size: 13px; letter-spacing: 2.5px; }
 .pb-cta.fill { background: var(--pb-brass); border-color: var(--pb-brass); color: var(--pb-brass-ink); }
 
 /* sections + hairline dividers */
@@ -378,7 +378,7 @@
   border-top: 1px solid var(--pb-paper-line);
   font-size: 11px; font-weight: 600; letter-spacing: 2px; color: var(--pb-velvet);
 }
-.pb-sh-authname { font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 19px; letter-spacing: 1px; text-transform: uppercase; color: var(--pb-ink); }
+.pb-sh-authname { font-family: var(--font-display); font-weight: 600; font-size: 19px; letter-spacing: 1px; text-transform: uppercase; color: var(--pb-ink); }
 .pb-sh-bio { margin: 6px 0 12px; font-size: 13px; line-height: 1.5; color: var(--pb-ink-soft); }
 .pb-sh-link {
   display: flex; align-items: center; gap: 10px; width: 100%;
@@ -389,14 +389,14 @@
 .pb-sh-link .ti:first-child { font-size: 15px; color: var(--pb-brass-deep); }
 .pb-sh-link .ext { margin-left: auto; font-size: 14px; color: var(--pb-brass-deep); }
 .pb-sh-soon { background: #E9D9A8; border-radius: 999px; padding: 3px 10px; font-size: 11px; font-weight: 600; letter-spacing: 1px; color: #5C4715; }
-.pb-sh-note { font-family: 'Fraunces', Georgia, serif; font-style: italic; font-size: 13px; line-height: 1.5; color: var(--pb-ink-faint); }
+.pb-sh-note { font-family: var(--font-display); font-style: italic; font-size: 13px; line-height: 1.5; color: var(--pb-ink-faint); }
 
 /* ============================================================
    STAGEBAR — the per-view header (wordmark over a gathered hem)
    ============================================================ */
 .pb-stagehead { flex-shrink: 0; position: relative; z-index: 2; }
 .pb-stagebar { position: relative; display: flex; align-items: center; justify-content: center; padding: 13px 16px 8px; }
-.pb-stagebar-wm { font-family: 'Anton', sans-serif; font-size: 15px; letter-spacing: 1px; color: var(--pb-cream); transition: color .35s ease, opacity .35s ease, text-shadow .35s ease; }
+.pb-stagebar-wm { font-size: 15px; letter-spacing: 1px; color: var(--pb-cream); transition: color .35s ease, opacity .35s ease, text-shadow .35s ease; }
 
 /* ============================================================
    ASK (Discover) — Scout's desk on the stage
@@ -449,7 +449,7 @@
 }
 .pb-deskhint .owl { width: 130px; height: 141px; filter: drop-shadow(0 14px 26px rgba(0,0,0,.55)); }
 .pb-deskhint-lbl {
-  font-family: 'Anton', sans-serif; font-size: 15px; letter-spacing: 3px; color: var(--pb-brass);
+  font-family: var(--font-chrome); font-size: 15px; letter-spacing: 3px; color: var(--pb-brass);
   background: rgba(20,13,10,.72); border: 1px solid var(--pb-brass-deep); border-radius: 999px;
   padding: 7px 18px; -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
 }
@@ -475,7 +475,7 @@
 /* the reading-letter card → flat cream program card */
 .calm .gletter { background: var(--pb-paper); background-image: none; border: 1px solid var(--pb-paper-line); box-shadow: none; }
 .calm .gl-kick, .calm .gl-go { color: var(--pb-brass-deep); }
-.calm .gl-t { font-family: 'Fraunces', Georgia, serif; font-weight: 600; color: var(--pb-ink); }
+.calm .gl-t { font-family: var(--font-reading); font-weight: 600; color: var(--pb-ink); }
 .calm .gl-a { color: var(--pb-ink-mute); }
 .calm .gl-heart.on { color: var(--pb-like-on); }
 .calm .gl-act { border-top-color: var(--pb-paper-line); }
@@ -500,15 +500,15 @@
 .composer.pb-composer:focus-within { border-color: var(--pb-brass); }
 .pb-composer input {
   width: 100%; background: none; border: 0; outline: none;
-  color: var(--pb-cream); font: 500 13.5px 'Inter Tight', sans-serif; padding: 2px 4px 7px;
+  color: var(--pb-cream); font: 500 13.5px var(--font-chrome); padding: 2px 4px 7px;
 }
-.pb-composer input::placeholder { color: #8A7863; font-family: 'Fraunces', Georgia, serif; font-style: italic; }
+.pb-composer input::placeholder { color: #8A7863; font-family: var(--font-display); font-style: italic; }
 .pb-composer-row { display: flex; align-items: center; gap: 8px; }
 .pb-composer-row .sp { flex: 1; }
 .pb-deskpill {
   display: inline-flex; align-items: center; gap: 6px; padding: 7px 13px;
   border-radius: 999px; background: none; border: 1px solid var(--pb-tag-line);
-  color: var(--pb-tag-ink); font: 600 10.5px 'Inter Tight', sans-serif;
+  color: var(--pb-tag-ink); font: 600 10.5px var(--font-chrome);
   letter-spacing: 1px; text-transform: uppercase; cursor: pointer;
   transition: background .2s, color .2s, border-color .2s; touch-action: manipulation;
 }
@@ -535,7 +535,7 @@
 .pb-selbar button {
   display: inline-flex; align-items: center; gap: 5px;
   background: none; border: 0; border-radius: 999px; padding: 7px 11px;
-  color: var(--pb-cream); font: 600 11px 'Inter Tight', sans-serif; letter-spacing: .4px;
+  color: var(--pb-cream); font: 600 11px var(--font-chrome); letter-spacing: .4px;
   cursor: pointer; white-space: nowrap; touch-action: manipulation;
 }
 .pb-selbar button:active { background: rgba(217,169,79,.16); }
@@ -560,7 +560,7 @@
 }
 @keyframes pbAskUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
 .pb-askq-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-.pb-askq-kick { font-family: 'Anton', sans-serif; font-weight: 400; font-size: 12px; letter-spacing: 2.5px; color: var(--pb-brass-deep); }
+.pb-askq-kick { font-family: var(--font-chrome); font-weight: 400; font-size: 12px; letter-spacing: 2.5px; color: var(--pb-brass-deep); }
 .pb-askq-x {
   width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
   background: var(--pb-paper-dim); border: 1px solid var(--pb-paper-line); border-radius: 999px;
@@ -570,7 +570,7 @@
 .pb-askq-quote {
   margin: 0 0 12px; padding: 9px 12px; border-left: 3px solid var(--pb-brass);
   background: var(--pb-paper-dim); border-radius: 0 8px 8px 0;
-  font-family: 'Fraunces', Georgia, serif; font-style: italic; font-size: 14px; line-height: 1.45;
+  font-family: var(--font-display); font-style: italic; font-size: 14px; line-height: 1.45;
   color: var(--pb-ink);
   display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
 }
@@ -578,7 +578,7 @@
   width: 100%; box-sizing: border-box; resize: none;
   background: none; border: 1px solid var(--pb-paper-line); border-radius: 12px;
   padding: 10px 12px; color: var(--pb-ink);
-  font: 400 14px 'Inter Tight', sans-serif; line-height: 1.4;
+  font: 400 14px var(--font-chrome); line-height: 1.4;
 }
 .pb-askq-input::placeholder { color: var(--pb-ink-mute); }
 .pb-askq-input:focus { outline: none; border-color: var(--pb-brass); }
@@ -586,7 +586,7 @@
   display: flex; align-items: center; justify-content: center; gap: 7px; width: 100%;
   margin-top: 12px; padding: 11px 6px; border-radius: 999px; cursor: pointer;
   background: var(--pb-brass); border: 1.5px solid var(--pb-brass); color: var(--pb-brass-ink);
-  font-family: 'Anton', sans-serif; font-weight: 400; font-size: 13px; letter-spacing: 2.5px;
+  font-family: var(--font-chrome); font-weight: 400; font-size: 13px; letter-spacing: 2.5px;
   transition: transform .15s ease; touch-action: manipulation;
 }
 .pb-askq-send:active { transform: scale(.97); }
@@ -612,20 +612,20 @@
 .pb-dealcard .pb-dc-cover { width: 56px; border-radius: 5px; }
 .pb-dc-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 .pb-dc-t {
-  font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 14px; line-height: 1.25;
+  font-family: var(--font-display); font-weight: 600; font-size: 14px; line-height: 1.25;
   color: var(--pb-ink);
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
 .pb-dc-a { font-size: 11px; color: var(--pb-ink-mute); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .pb-dc-why {
-  font-family: 'Fraunces', Georgia, serif; font-style: italic; font-size: 11.5px; line-height: 1.35;
+  font-family: var(--font-display); font-style: italic; font-size: 11.5px; line-height: 1.35;
   color: var(--pb-ink-soft); margin-top: 3px;
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
 .pb-dc-cta { display: flex; gap: 6px; margin-top: auto; padding-top: 5px; }
 .pb-dc-about, .pb-dc-go {
   flex: 1; min-width: 0; border-radius: 999px; padding: 7px 4px;
-  font: 600 10px 'Inter Tight', sans-serif; letter-spacing: .5px; text-transform: uppercase;
+  font: 600 10px var(--font-chrome); letter-spacing: .5px; text-transform: uppercase;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   cursor: pointer; touch-action: manipulation; transition: transform .15s ease;
 }
@@ -666,7 +666,7 @@
 .pb-plvl { margin-top: 16px; }
 .pb-plvl-row { display: flex; align-items: center; gap: 8px; }
 .pb-plvl-row .crown { font-size: 18px; color: var(--pb-candy-crown); }
-.pb-plvl-t { font-family: 'Inter Tight', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 2px; color: var(--pb-cream); }
+.pb-plvl-t { font-family: var(--font-chrome); font-size: 11px; font-weight: 600; letter-spacing: 2px; color: var(--pb-cream); }
 .pb-bigxp { height: 10px; border-radius: 999px; background: var(--pb-track); margin-top: 10px; overflow: hidden; }
 .pb-bigxp b { display: block; height: 100%; border-radius: 999px; background: var(--pb-candy-bolt); }
 .pb-xpcap { font-size: 11px; color: var(--pb-cream-mute); margin-top: 6px; }
@@ -729,7 +729,7 @@
 .pb-psheet .q-meta { border-top-color: var(--pb-paper-line); }
 /* section headers (memory + quotes) — scoped so Settings' .sh-sec is untouched */
 .pb-psheet .sh-sec, .pb-psheet .sec-title { color: var(--pb-velvet); }
-.pb-psheet .sec-title { font-family: 'Fraunces', Georgia, serif; }
+.pb-psheet .sec-title { font-family: var(--font-display); }
 /* folded shelves */
 .pb-psheet .prof-shelf { border-top: 1px solid var(--pb-paper-line); }
 .pb-psheet .prof-shelf .chip { background: none; border: 1px solid var(--pb-paper-line); color: var(--pb-ink-soft); box-shadow: none; }
@@ -798,12 +798,12 @@
 /* memory header — the mirror owl introduces the owl's private notes on you */
 .pb-mem-head { display: flex; align-items: center; gap: 12px; }
 .pb-mem-head .owl.mini { position: static; width: 46px; height: 50px; flex: 0 0 46px; filter: none; }
-.pb-mem-head-t { font-family: 'Anton', sans-serif; font-size: 15px; letter-spacing: 1.5px; color: var(--pb-velvet); }
-.pb-mem-head-sub { font-family: 'Fraunces', Georgia, serif; font-style: italic; font-size: 12.5px; line-height: 1.35; color: var(--pb-ink-mute); margin-top: 3px; }
+.pb-mem-head-t { font-family: var(--font-chrome); font-size: 15px; letter-spacing: 1.5px; color: var(--pb-velvet); }
+.pb-mem-head-sub { font-family: var(--font-display); font-style: italic; font-size: 12.5px; line-height: 1.35; color: var(--pb-ink-mute); margin-top: 3px; }
 /* the "who you are" portrait — the two free-text notes grouped on their own card */
 .pb-mem-portrait { margin-top: 14px; padding: 14px; background: var(--pb-paper-dim); border: 1px solid var(--pb-paper-line); border-radius: 14px; }
 .pb-mem-portrait .gate-input { background: var(--pb-paper); }
-.pb-mem .sh-sec { font-family: 'Inter Tight', sans-serif; font-size: 10px; }
+.pb-mem .sh-sec { font-family: var(--font-chrome); font-size: 10px; }
 
 /* ---------- history overlay → a cream ledger ----------
    It slides up on a cream ground but its text/rows inherited the dark-theme
@@ -994,7 +994,7 @@ body { overscroll-behavior: none; }
 .pb-skip {
   align-self: center; position: sticky; bottom: 6px; margin: 6px 0 2px; padding: 6px 16px; border-radius: 999px;
   background: var(--pb-chip-bg); border: 1px solid var(--pb-tag-line); color: var(--pb-cream-mute);
-  font: 600 10px 'Inter Tight', sans-serif; letter-spacing: 1.4px; text-transform: uppercase;
+  font: 600 10px var(--font-chrome); letter-spacing: 1.4px; text-transform: uppercase;
   cursor: pointer; touch-action: manipulation;
 }
 .pb-skip:active { transform: translateY(1px); }

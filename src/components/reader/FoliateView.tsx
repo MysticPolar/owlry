@@ -11,7 +11,11 @@ import '../../vendor/foliate-js/view.js'; // side effect: registers <foliate-vie
 import { loadUpload } from '../../lib/ebook/storage';
 import { fetchRemoteBook } from '../../lib/ebook/remote';
 import type { ReaderPrefs } from '../../store/types';
+import { SYSTEM_STACK } from './shared';
 import type { EngineHandle, EngineProps } from './shared';
+import literataUrl from '../../assets/fonts/literata-var-latin.woff2';
+import frauncesUrl from '../../assets/fonts/fraunces-var-latin.woff2';
+import frauncesItalicUrl from '../../assets/fonts/fraunces-italic-latin.woff2';
 
 type FoliateRenderer = HTMLElement & {
   destroy?: () => void;
@@ -35,14 +39,30 @@ const paper = (amount: number): string => {
   return `rgb(${channel(0)} ${channel(1)} ${channel(2)})`;
 };
 
+/* The ebook renders inside an iframe served from a blob: URL, whose base is
+   opaque — new URL('/fonts/x.woff2', 'blob:…') throws, and a relative href
+   cannot resolve either. That is why this sheet used to @import from Google:
+   an absolute URL was the only form that worked. Now that the fonts are
+   self-hosted we build absolute URLs ourselves, from Vite's fingerprinted
+   asset paths, and inline the @font-face rules into the injected stylesheet.
+   (paginator.js re-expands on document.fonts.ready, so a late load reflows.) */
+const abs = (u: string) => new URL(u, document.baseURI).href;
+const READER_FACES = `
+    @font-face { font-family:'Literata'; src:url('${abs(literataUrl)}') format('woff2');
+                 font-weight:400 600; font-style:normal; font-display:swap; }
+    @font-face { font-family:'Fraunces'; src:url('${abs(frauncesUrl)}') format('woff2');
+                 font-weight:400 700; font-style:normal; font-display:swap; }
+    @font-face { font-family:'Fraunces'; src:url('${abs(frauncesItalicUrl)}') format('woff2');
+                 font-weight:400; font-style:italic; font-display:swap; }`;
+
 const readerStyles = (prefs: ReaderPrefs): string => {
   const family = prefs.font === 'fraunces'
     ? "'Fraunces', Georgia, serif"
     : prefs.font === 'system'
-      ? "ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+      ? SYSTEM_STACK
       : "'Literata', Georgia, serif";
   return `
-    @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=Literata:opsz,wght@7..72,400..700&display=swap');
+    ${READER_FACES}
     :root { color-scheme: light !important; background: ${paper(prefs.dimmer)} !important; color: #241B0E !important; font-optical-sizing: auto; }
     html, body { background: ${paper(prefs.dimmer)} !important; color: #241B0E !important; }
     body { box-sizing: border-box; max-width: 42em; margin: 0 auto !important; padding: 24px !important; font-family: ${family} !important; font-size: ${prefs.size}px !important; font-weight: 430; line-height: 1.6 !important; text-align: left !important; hyphens: none !important; -webkit-hyphens: none !important; }
