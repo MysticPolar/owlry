@@ -346,16 +346,18 @@
 .pb-sh-flex { display: flex; gap: 14px; padding: 40px 0 0; }
 .pb-sheet .cover { box-shadow: none; border: 1px solid var(--pb-paper-line); }
 .pb-sh-info { flex: 1; min-width: 0; }
-.pb-sh-ttl { font-family: var(--font-display); font-weight: 600; font-size: 22px; line-height: 1.1; color: var(--pb-ink); }
-.pb-sh-sub { margin-top: 4px; font-family: var(--font-display); font-style: italic; font-size: 13px; color: var(--pb-ink-faint); }
-.pb-sh-auth { margin-top: 6px; font-size: 12.5px; font-weight: 600; color: var(--pb-ink-soft); }
-.pb-sh-pub { margin-top: 4px; font-size: 11px; font-weight: 600; letter-spacing: .2px; color: var(--pb-ink-mute); }
-.pb-sh-rate { display: flex; align-items: center; gap: 5px; margin-top: 8px; font-size: 13px; font-weight: 700; color: var(--pb-ink); }
-.pb-sh-rate .ti { font-size: 14px; color: #A8791F; }
-.pb-sh-rate small { font-size: 10px; font-weight: 700; color: var(--pb-ink-mute); letter-spacing: .8px; }
-.pb-sh-rate .rcount { font-weight: 600; color: var(--pb-ink-mute); }
+/* the book's own title carries the display serif at the title step */
+.pb-sh-ttl { font-family: var(--font-display); font-weight: var(--fw-serif-strong); font-size: var(--t-title); line-height: var(--lh-display); letter-spacing: var(--track-title); color: var(--pb-ink); }
+.pb-sh-sub { margin-top: 4px; font-family: var(--font-display); font-style: italic; font-size: var(--t-callout); color: var(--pb-ink-faint); }
+.pb-sh-auth { margin-top: 6px; font-size: var(--t-micro); font-weight: var(--fw-ui-semibold); color: var(--pb-ink-soft); }
+.pb-sh-pub { margin-top: 4px; font-size: var(--t-micro); font-weight: var(--fw-ui-semibold); letter-spacing: 0; color: var(--pb-ink-mute); }
+.pb-sh-rate { display: flex; align-items: center; gap: 5px; margin-top: 8px; font-size: var(--t-label); font-weight: var(--fw-ui-bold); color: var(--pb-ink); font-variant-numeric: tabular-nums; }
+.pb-sh-rate .ti { font-size: var(--t-callout); color: #A8791F; }
+.pb-sh-rate small { font-size: var(--t-micro); font-weight: var(--fw-ui-semibold); color: var(--pb-ink-mute); letter-spacing: var(--track-label); }
+.pb-sh-rate .rcount { font-weight: var(--fw-ui-semibold); color: var(--pb-ink-mute); }
 
-.pb-sh-intro { margin: 14px 0 0; font-family: var(--font-display); font-size: 14px; line-height: 1.55; color: var(--pb-cap-ink); }
+/* the blurb is prose — Literata, not the display serif */
+.pb-sh-intro { margin: 14px 0 0; font-family: var(--font-reading); font-size: var(--t-callout); line-height: var(--lh-body); color: var(--pb-cap-ink); }
 .pb-sheet .more-btn { font-family: var(--font-chrome); font-size: 12px; font-weight: 600; letter-spacing: .5px; color: var(--pb-brass-deep); background: none; border: 0; padding: 4px 0 0; cursor: pointer; }
 
 /* CTA pair — ghost PEEK (peek's owl) + brass-fill OPEN */
@@ -376,20 +378,21 @@
 .pb-sh-sec {
   display: flex; align-items: center; gap: 8px; margin: 18px 0 8px; padding-top: 14px;
   border-top: 1px solid var(--pb-paper-line);
-  font-size: 11px; font-weight: 600; letter-spacing: 2px; color: var(--pb-velvet);
+  font-size: var(--t-micro); font-weight: var(--fw-ui-semibold); letter-spacing: var(--track-label); color: var(--pb-velvet);
 }
-.pb-sh-authname { font-family: var(--font-display); font-weight: 600; font-size: 19px; letter-spacing: 1px; text-transform: uppercase; color: var(--pb-ink); }
-.pb-sh-bio { margin: 6px 0 12px; font-size: 13px; line-height: 1.5; color: var(--pb-ink-soft); }
+/* an author billed on the programme page — serif and uppercase, at heading size */
+.pb-sh-authname { font-family: var(--font-reading); font-weight: var(--fw-serif-strong); font-size: var(--t-heading); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--pb-ink); }
+.pb-sh-bio { margin: 6px 0 12px; font-family: var(--font-reading); font-size: var(--t-callout); line-height: var(--lh-body); color: var(--pb-ink-soft); }
 .pb-sh-link {
   display: flex; align-items: center; gap: 10px; width: 100%;
   background: none; border: 1px solid var(--pb-paper-line); border-radius: 12px;
   padding: 11px 14px; margin-bottom: 8px; text-align: left; cursor: pointer;
-  font-size: 13px; font-weight: 600; color: var(--pb-ink); touch-action: manipulation;
+  font-size: var(--t-callout); font-weight: var(--fw-ui-semibold); color: var(--pb-ink); touch-action: manipulation;
 }
-.pb-sh-link .ti:first-child { font-size: 15px; color: var(--pb-brass-deep); }
-.pb-sh-link .ext { margin-left: auto; font-size: 14px; color: var(--pb-brass-deep); }
-.pb-sh-soon { background: #E9D9A8; border-radius: 999px; padding: 3px 10px; font-size: 11px; font-weight: 600; letter-spacing: 1px; color: #5C4715; }
-.pb-sh-note { font-family: var(--font-display); font-style: italic; font-size: 13px; line-height: 1.5; color: var(--pb-ink-faint); }
+.pb-sh-link .ti:first-child { font-size: var(--t-body); color: var(--pb-brass-deep); }
+.pb-sh-link .ext { margin-left: auto; font-size: var(--t-callout); color: var(--pb-brass-deep); }
+.pb-sh-soon { background: #E9D9A8; border-radius: 999px; padding: 3px 10px; font-size: var(--t-micro); font-weight: var(--fw-ui-semibold); letter-spacing: var(--track-label); color: #5C4715; }
+.pb-sh-note { font-family: var(--font-display); font-style: italic; font-size: var(--t-callout); line-height: var(--lh-body); color: var(--pb-ink-faint); }
 
 /* ============================================================
    STAGEBAR — the per-view header (wordmark over a gathered hem)
