@@ -143,8 +143,11 @@
   display: flex; align-items: center; gap: 6px;
   background: var(--pb-chip-bg); border-radius: 999px; padding: 6px 12px;
 }
-.pb-chip .n { font-size: 14px; font-weight: 600; color: var(--pb-cream); font-family: var(--font-chrome); }
-.pb-chip-max { color: var(--pb-cream-mute); font-weight: 500; }
+/* these numbers animate upward. Without tabular figures the chip resizes on
+   every tick and the whole stat bar jitters — this is the difference between
+   the bar feeling built and feeling cheap. */
+.pb-chip .n { font-size: var(--t-callout); font-weight: var(--fw-ui-semibold); color: var(--pb-cream); font-family: var(--font-chrome); font-variant-numeric: tabular-nums; }
+.pb-chip-max { color: var(--pb-cream-mute); font-weight: var(--fw-ui-medium); }
 .pb-chip .ti { font-size: 17px; }
 .pb-chip .crown { color: var(--pb-candy-crown); }
 .pb-chip .bolt { color: var(--pb-candy-bolt); }
@@ -160,8 +163,8 @@
 }
 .pb-compact .wm { font-size: 14px; letter-spacing: .5px; color: var(--pb-cream); }
 .pb-compact .sp { flex: 1; }
-.pb-mini { display: flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; color: var(--pb-cream); }
-.pb-mini .ti { font-size: 14px; }
+.pb-mini { display: flex; align-items: center; gap: 4px; font-size: var(--t-micro); font-weight: var(--fw-ui-semibold); color: var(--pb-cream); font-variant-numeric: tabular-nums; }
+.pb-mini .ti { font-size: var(--t-callout); }
 .pb-mini .crown { color: var(--pb-candy-crown); }
 .pb-mini .bolt { color: var(--pb-candy-bolt); }
 .pb-mini .drop { color: var(--pb-candy-drop); }
@@ -173,12 +176,12 @@
 }
 .pb-tags::-webkit-scrollbar { display: none; }
 .pb-tag {
-  flex-shrink: 0; font-family: var(--font-chrome); font-size: 12px; font-weight: 500;
+  flex-shrink: 0; font-family: var(--font-chrome); font-size: var(--t-callout); font-weight: var(--fw-ui-medium);
   padding: 6px 14px; border-radius: 999px; border: 1px solid var(--pb-tag-line);
   color: var(--pb-tag-ink); white-space: nowrap; background: none; cursor: pointer;
   transition: background .2s, color .2s, border-color .2s; touch-action: manipulation;
 }
-.pb-tag[aria-pressed="true"] { background: var(--pb-cream); border-color: var(--pb-cream); color: var(--pb-stage); font-weight: 600; }
+.pb-tag[aria-pressed="true"] { background: var(--pb-cream); border-color: var(--pb-cream); color: var(--pb-stage); font-weight: var(--fw-ui-semibold); }
 .pb-rule { height: 1px; background: var(--pb-rule-gold); flex-shrink: 0; }
 
 /* collapsed state (M2) — tag row + rule never move */
@@ -230,8 +233,9 @@
    it without letterboxing (photos there just crop a hair, as object-fit covers) */
 .pb-sheet .cover-md { height: auto; aspect-ratio: 150 / 205; }
 .pb-card .body { display: block; padding: 9px 10px 0; }
-.pb-cap { display: block; font-family: var(--font-display); font-style: italic; font-size: 13.5px; line-height: 1.45; color: var(--pb-cap-ink); }
-.pb-foot { display: flex; align-items: center; gap: 4px; padding: 3px 10px 9px; font-size: 11px; font-weight: 600; color: var(--pb-like); }
+/* the pull-quote under each jacket — the brand's italic accent, at callout */
+.pb-cap { display: block; font-family: var(--font-display); font-style: italic; font-size: var(--t-callout); line-height: var(--lh-ui); color: var(--pb-cap-ink); }
+.pb-foot { display: flex; align-items: center; gap: 4px; padding: 3px 10px 9px; font-size: var(--t-micro); font-weight: var(--fw-ui-semibold); color: var(--pb-like); font-variant-numeric: tabular-nums; }
 .pb-foot .sp { flex: 1; }
 /* generous hit target (>=40px) with the padding pulled back out so the visual
    footprint is unchanged */
@@ -257,7 +261,7 @@
   transition: transform .18s ease; touch-action: manipulation;
 }
 .pb-keeper:active { transform: scale(.97); }
-.pb-klbl { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; color: var(--pb-owl-moss-ink); }
+.pb-klbl { display: flex; align-items: center; gap: 6px; font-family: var(--font-chrome); font-size: var(--t-micro); font-weight: var(--fw-ui-semibold); letter-spacing: var(--track-label); color: var(--pb-owl-moss-ink); }
 .pb-kdot { width: 18px; height: 18px; border-radius: 50%; background: var(--pb-owl-moss); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .pb-kdot .ti { font-size: 11px; color: var(--pb-cream); }
 /* Keeper himself stands in for the label dot — the sprite, not a moss disc */
@@ -266,8 +270,9 @@
 .pb-krow { display: flex; gap: 10px; margin-top: 9px; align-items: center; }
 .pb-kthumb { width: 40px; flex-shrink: 0; border-radius: 5px; overflow: hidden; }
 .pb-cover-xs { width: 40px; height: auto; aspect-ratio: 150 / 205; border: 0; border-radius: 5px; box-shadow: none; padding: 5px; font-size: 8px; }
-.pb-kt { display: block; font-family: var(--font-display); font-weight: 600; font-size: 13.5px; color: var(--pb-ink); }
-.pb-kq { display: block; font-family: var(--font-display); font-style: italic; font-size: 12.5px; color: var(--pb-ink-faint); margin-top: 2px; line-height: 1.4; }
+/* a book title at text size is Literata's job; the line under it stays italic Fraunces */
+.pb-kt { display: block; font-family: var(--font-reading); font-weight: var(--fw-serif-strong); font-size: var(--t-callout); color: var(--pb-ink); }
+.pb-kq { display: block; font-family: var(--font-display); font-style: italic; font-size: var(--t-micro); color: var(--pb-ink-faint); margin-top: 2px; line-height: var(--lh-ui); }
 
 /* ---------- empty category ---------- */
 .pb-empty { text-align: center; padding: 60px 30px; color: var(--pb-cream-mute); }
