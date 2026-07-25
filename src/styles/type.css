@@ -1,0 +1,85 @@
+/* ============================================================
+   OWLRY TYPE — the three voices.
+
+   This is the ONLY file allowed to name a typeface or declare @font-face.
+   Everywhere else uses var(--font-display / --font-reading / --font-chrome).
+
+   Self-hosted, subset to Latin + punctuation, ~168 KB total — down from
+   606 KB of Google-hosted families (Google ships one file per discrete
+   weight: 5× Inter Tight, 2+2 Fraunces).
+
+   Files live in src/assets/fonts/ rather than public/ on purpose: CI builds
+   with BASE_PATH=./ so the app also works at github.io/owlry/, and Vite only
+   rewrites asset URLs it owns. A literal url(/fonts/…) would 404 there.
+   ============================================================ */
+
+/* --- Chrome: Inter (variable opsz 14–32, wght 400–700).
+   Replaces Inter Tight — the opsz axis does the size-dependent tracking that
+   Inter Tight was faking with a permanently condensed cut. --- */
+@font-face {
+  font-family: 'Inter';
+  src: url('../assets/fonts/inter-var-latin.woff2') format('woff2');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* --- Reading: Literata (variable opsz 7–72, wght 400–600).
+   Carries every paragraph, from 12px captions to the reader's 24px setting.
+   Its optical axis is the most valuable 38 KB in the budget — keep it. --- */
+@font-face {
+  font-family: 'Literata';
+  src: url('../assets/fonts/literata-var-latin.woff2') format('woff2');
+  font-weight: 400 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* --- Display: Fraunces (wght 400–700; opsz pinned at 32, the centre of the
+   24/32/40px display steps — the axis earns little across so narrow a range
+   and pinning it saved 28 KB). wght stays variable because the SVG book
+   jackets use both 400 (bylines) and 600 (titles). --- */
+@font-face {
+  font-family: 'Fraunces';
+  src: url('../assets/fonts/fraunces-var-latin.woff2') format('woff2');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* --- The editorial accent: Fraunces italic, one pinned instance.
+   Deliberately exempt from the "no Fraunces below 24px" rule — the italic
+   captions and pull-quotes are the brand's signature gesture, and one static
+   instance is cheaper than adding a whole Literata italic face. --- */
+@font-face {
+  font-family: 'Fraunces';
+  src: url('../assets/fonts/fraunces-italic-latin.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* ============================================================
+   Family tokens.
+
+   The '… fallback' faces are metric-matched stand-ins generated at build
+   time by fontaine (vite.config.ts) — it reads each woff2's real metrics and
+   emits size-adjust/ascent-override so the page does not shift when the
+   webfont swaps in. The names below match fontaine's output exactly.
+
+   The CJK tail is deliberate, not accidental: every face here is Latin-only,
+   and the app ships Simplified Chinese. syncDocumentLang() stamps
+   <html lang="zh-CN">, and these chains name exactly which platform face
+   takes over rather than leaving it to chance. The wordmark is SVG, so the
+   logotype is identical in both languages.
+   ============================================================ */
+:root {
+  --font-display: 'Fraunces', 'Fraunces fallback', Georgia,
+                  'Songti SC', 'Noto Serif SC', serif;
+  --font-reading: 'Literata', 'Literata fallback', Georgia,
+                  'Songti SC', 'Noto Serif SC', serif;
+  --font-chrome:  'Inter', 'Inter fallback', -apple-system, BlinkMacSystemFont,
+                  'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+                  'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+                  'Noto Sans SC', sans-serif;
+}

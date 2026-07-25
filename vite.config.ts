@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
+import { FontaineTransform } from 'fontaine'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -8,6 +9,14 @@ export default defineConfig({
   base: process.env.BASE_PATH || '/',
   plugins: [
     react(),
+    // Metric-matched fallback faces for the self-hosted fonts (src/styles/type.css).
+    // Reads each woff2's real metrics and emits an '<X> Fallback' family with
+    // size-adjust/ascent-override, so the page does not shift when the webfont
+    // swaps in. The tokens in type.css already name these families.
+    FontaineTransform.vite({
+      fallbacks: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial'],
+      resolvePath: (id) => new URL(`./src/styles/${id}`, import.meta.url),
+    }),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['owl.svg', 'apple-touch-icon.png'],

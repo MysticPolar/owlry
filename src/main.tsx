@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { registerSW } from 'virtual:pwa-register';
 
 import './styles/tokens.css';
+import './styles/type.css';
 import './styles/global.css';
 import './styles/playbill.css';
 import App from './App';
