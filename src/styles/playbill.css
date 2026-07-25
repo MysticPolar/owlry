@@ -130,7 +130,7 @@
   margin: 2px 0 10px; overflow: hidden; max-height: 28px;
   transition: max-height .35s ease, opacity .25s ease, margin .35s ease;
 }
-.pb-marquee .dot { color: var(--pb-brass); }
+/* (the wordmark period is now part of <Wordmark/>; --wm-dot colours it) */
 
 /* stat chips — spread across the stage like the prototype (crown / XP / ink) */
 .pb-chips {
@@ -159,7 +159,6 @@
   transition: max-height .35s ease, opacity .3s ease, padding .35s ease;
 }
 .pb-compact .wm { font-family: 'Anton', sans-serif; font-size: 14px; letter-spacing: .5px; color: var(--pb-cream); }
-.pb-compact .wm .dot { color: var(--pb-brass); }
 .pb-compact .sp { flex: 1; }
 .pb-mini { display: flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; color: var(--pb-cream); }
 .pb-mini .ti { font-size: 14px; }
@@ -398,7 +397,6 @@
 .pb-stagehead { flex-shrink: 0; position: relative; z-index: 2; }
 .pb-stagebar { position: relative; display: flex; align-items: center; justify-content: center; padding: 13px 16px 8px; }
 .pb-stagebar-wm { font-family: 'Anton', sans-serif; font-size: 15px; letter-spacing: 1px; color: var(--pb-cream); transition: color .35s ease, opacity .35s ease, text-shadow .35s ease; }
-.pb-stagebar-wm .dot { color: var(--pb-brass); }
 
 /* ============================================================
    ASK (Discover) — Scout's desk on the stage
@@ -1107,3 +1105,17 @@ button, .owl, .pb-nav, .pb-stagehead, .disc-head, .pb-head, .pb-tags, .pb-chips,
 /* --- W6 type: let Fraunces use its optical-size axis everywhere (Anton and
    Inter Tight carry no opsz axis and simply ignore this) --- */
 body { font-optical-sizing: auto; }
+
+/* ============================================================
+   THE WORDMARK (see src/components/Wordmark.tsx)
+   Outlined Anton. Sizing is inherited: drop <Wordmark/> inside the element
+   that already carries the font-size and it renders at exactly the size the
+   Anton text did — so every existing per-surface rule keeps working.
+   ============================================================ */
+.owl-wm {
+  display: inline-block;
+  height: .9814em;          /* ink height in em — matches Anton at 1em */
+  width: auto;
+  vertical-align: -.1221em; /* seats the glyph baseline on the text baseline */
+}
+.owl-wm-dot { fill: var(--wm-dot, var(--pb-brass)); }

@@ -672,8 +672,13 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .ob-splash{position:relative;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;
   justify-content:center;gap:14px;background:none;border:0;cursor:pointer;color:var(--ink);animation:obFade .4s ease}
 .ob-sp-mark{font-size:44px;letter-spacing:.03em;transform:skewX(-8deg)}
-.ob-sp-mark .gdot{display:inline-block;animation:dotPulse 1.2s ease-in-out infinite}
-@keyframes dotPulse{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+/* the wordmark's period keeps its bounce — now a path inside the outlined mark,
+   so the travel is in viewBox units (279/2048 em ≈ the old 6px at 44px) and it
+   scales with the mark instead of being pinned to one size */
+.ob-sp-mark .owl-wm-dot{animation:dotPulse 1.2s ease-in-out infinite}
+@keyframes dotPulse{0%,100%{transform:translateY(0)}50%{transform:translateY(-279px)}}
+/* onboarding wears the yellow period; Playbill surfaces default to brass */
+.ob-sp-mark,.ob-mark,.ob-at,.ob-house-mark,.ob-crest{--wm-dot:var(--yellow)}
 .ob-sp-sub{font-size:9px;font-weight:800;letter-spacing:.34em;text-transform:uppercase;color:var(--fade)}
 .ob-glow{position:absolute;left:50%;top:-90px;width:340px;height:280px;transform:translateX(-50%);
   background:radial-gradient(50% 60% at 50% 40%, rgba(255,192,23,.22) 0%, transparent 70%);pointer-events:none}

@@ -7,6 +7,7 @@ import { useT } from '../../i18n/react';
 import { Icon } from '../Icon';
 import { Cover } from '../Cover';
 import { CurtainValance, CurtainHem } from '../stage';
+import { Wordmark } from '../Wordmark';
 
 type Filter = 'all' | Genre;
 
@@ -47,7 +48,7 @@ function CompactStrip() {
   const ink = useStore((s) => s.ink);
   return (
     <div className="pb-compact" aria-hidden="true">
-      <span className="wm">owlry<span className="dot">.</span></span>
+      <span className="wm"><Wordmark decorative /></span>
       <span className="sp" />
       <span className="pb-mini"><Icon name="ti-crown" className="crown" />{lv}</span>
       <span className="pb-mini"><Icon name="ti-bolt" className="bolt" />{xp}</span>
@@ -172,7 +173,7 @@ export function TodayScreen() {
         <CurtainValance />
         <CurtainHem />
         <h1 className="pb-marquee" aria-label={t.marqueeAria}>
-          owlry<span className="dot">.</span>
+          <Wordmark decorative />
         </h1>
         <StatChips />
         <CompactStrip />

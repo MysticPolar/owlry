@@ -6,6 +6,7 @@ import { type CastOwlName } from '../CastOwl';
 import { CurtainCloth, type CurtainHandle } from './CurtainCloth';
 import { Confetti, type ConfettiHandle } from './Confetti';
 import { getBook } from '../../lib/bookRegistry';
+import { Wordmark } from '../Wordmark';
 import { useT } from '../../i18n/react';
 import type { Dict } from '../../i18n/react';
 import type { BookRef } from '../../content/types';
@@ -142,7 +143,7 @@ function Splash({ onEnter }: { onEnter: () => void }) {
   return (
     <button className="ob-splash" onClick={onEnter} aria-label={t.onboarding.splash.aria}>
       <div className="ob-sp-mark d">
-        owlry<span className="gdot">.</span>
+        <Wordmark decorative />
       </div>
       <div className="ob-sp-sub">{t.onboarding.splash.sub}</div>
     </button>
@@ -217,7 +218,7 @@ function Playbill({ onDone }: { onDone: () => void }) {
     <div className="ob-playbill">
       <div className="ob-topbar">
         <span className="ob-mark d">
-          owlry<span className="gdot">.</span>
+          <Wordmark />
         </span>
       </div>
 
@@ -510,7 +511,7 @@ function CurtainReveal({ onEnter }: { onEnter: () => void }) {
           <span>{rv.marq2}</span>
         </h1>
         <div className="ob-at">
-          <em>{rv.at}</em> owlry<span className="gdot">.</span>
+          <em>{rv.at}</em> <Wordmark />
         </div>
       </div>
       <div className="ob-aura" aria-hidden="true" />
@@ -551,7 +552,7 @@ function CurtainReveal({ onEnter }: { onEnter: () => void }) {
       >
         <span className="ob-house-txt">
           <span className="ob-house-mark d">
-            owlry<span className="gdot">.</span>
+            <Wordmark />
           </span>
           <span className="ob-house-show">{rv.eveningShow}</span>
           <span className="ob-house-seat">{rv.seat}</span>
@@ -1011,7 +1012,7 @@ export function Onboarding() {
           <div className="ob-valance" aria-hidden="true" />
           <div className="ob-plaquewrap">
             <div className="ob-crest d">
-              owlry<span className="gdot">.</span>
+              <Wordmark />
             </div>
             {phase === 'gate' && (
               <InvitePlaque onEnter={() => setPhase('name')} onPeek={peekAsGuest} clothRef={gateCloth} />

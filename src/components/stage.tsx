@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { Wordmark } from './Wordmark';
 
 /* ============================================================
    Shared stage frame (Flat Playbill). The curtain valance/hem and
@@ -44,7 +45,7 @@ export function StageBar({ children }: { children?: ReactNode }) {
     <div className="pb-stagehead">
       <div className="pb-stagebar">
         <span className="pb-stagebar-wm">
-          owlry<span className="dot">.</span>
+          <Wordmark />
         </span>
         {children}
       </div>
