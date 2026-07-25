@@ -18,8 +18,24 @@ if (import.meta.env.VITE_EXPOSE_STORE === '1') {
   (window as unknown as { __owlry: typeof useStore }).__owlry = useStore;
 }
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-);
+const root = createRoot(document.getElementById('root')!);
+
+// the type specimen, at #type. Dev-only twice over: the env check lets the
+// bundler drop the branch, and the dynamic import keeps the component out of
+// the production graph entirely. There is no router here — the app is a
+// zustand tab machine — so a hash is the whole mechanism.
+if (import.meta.env.DEV && window.location.hash === '#type') {
+  void import('./dev/TypeSpecimen').then(({ default: TypeSpecimen }) => {
+    root.render(
+      <StrictMode>
+        <TypeSpecimen />
+      </StrictMode>,
+    );
+  });
+} else {
+  root.render(
+    <StrictMode>
+      <App />
+    </StrictMode>,
+  );
+}

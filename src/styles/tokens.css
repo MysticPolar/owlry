@@ -87,4 +87,19 @@
   --track-title: -0.015em;
   --track-label: 0.06em;     /* ALL-CAPS ticket-stub labels               */
   --track-wide: 0.3em;       /* ceremonial: onboarding/auth credit lines  */
+
+  /* ---- icon sizes ----
+     Icons are drawn with font-size (Tabler's glyphs and our inline SVG both
+     scale off it) but they are NOT text: nobody reads them, so they answer to
+     optical balance beside a label rather than to the reading floor. Their own
+     scale keeps them out of the type ramp — and lets the lint rule mean
+     exactly one thing: "text sizes come from the ramp". */
+  --icon-xs: 11px;
+  --icon-sm: 12px;
+  --icon-md: 13px;
+  --icon-lg: 14px;
+  --icon-xl: 16px;
+  --icon-2xl: 19px;
+  --icon-3xl: 26px;
+  --icon-4xl: 36px;
 }

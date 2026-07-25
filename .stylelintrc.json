@@ -1,0 +1,25 @@
+{
+  "rules": {
+    "declaration-property-value-disallowed-list": {
+      "font-size": ["/px$/"]
+    },
+    "declaration-property-value-allowed-list": {
+      "font-family": [
+        "/^var\\(--font-/",
+        "/^var\\(--(text-)?reader-font\\)/",
+        "inherit"
+      ]
+    }
+  },
+  "overrides": [
+    {
+      "comment": "type.css is the one file allowed to name a typeface and declare @font-face.",
+      "files": ["src/styles/type.css"],
+      "rules": {
+        "declaration-property-value-allowed-list": null,
+        "declaration-property-value-disallowed-list": null
+      }
+    }
+  ],
+  "ignoreFiles": ["dist/**", "node_modules/**", "src/vendor/**"]
+}

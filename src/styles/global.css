@@ -148,6 +148,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
   color:var(--ghost);line-height:1;letter-spacing:.01em;
   transition:color .45s ease;
 }
+/* stylelint-disable-next-line declaration-property-value-disallowed-list -- a giant decorative watermark, not read */
 .pad-h .ghost{font-size:94px;right:-30px;top:0}
 
 
@@ -186,7 +187,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 @keyframes swapIn{from{opacity:0;transform:translateX(var(--fx,18px))}to{opacity:1;transform:none}}
 .lk{font-size:var(--t-micro);font-weight:600;letter-spacing:2.2px;color:var(--gold);text-transform:uppercase;margin-bottom:5px}
 .save{width:32px;height:32px;flex:0 0 32px;display:flex;align-items:center;justify-content:center;background:var(--surface2);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow-sm);padding:0;cursor:pointer;color:var(--ink)}
-.save .ti{font-size:16px}
+.save .ti{font-size:var(--icon-xl)}
 .save.on .ti{color:var(--ember);animation:pop .35s ease}
 @keyframes pop{50%{transform:scale(1.4)}}
 .sheet .save{position:absolute;top:12px;right:12px;z-index:3}
@@ -196,10 +197,15 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 /* real cover art (Google Books) fades in over the CSS spine; falls back to it */
 .cover-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:inherit;opacity:0;transition:opacity .3s ease}
 .cover-img.on{opacity:1}
+/* stylelint-disable-next-line declaration-property-value-disallowed-list -- miniature book-jacket art (see covers.ts) */
 .cover-lg{width:100px;height:148px;flex:0 0 100px;padding:10px;font-size:12px}
+/* stylelint-disable-next-line declaration-property-value-disallowed-list -- miniature book-jacket art */
 .cover-md{width:84px;height:124px;flex:0 0 84px;padding:9px;font-size:11px}
+/* stylelint-disable-next-line declaration-property-value-disallowed-list -- miniature book-jacket art */
 .cover-sm{width:82px;height:118px;padding:9px;font-size:11px}
+/* stylelint-disable-next-line declaration-property-value-disallowed-list -- miniature book-jacket art */
 .cover-xs{width:44px;height:64px;flex:0 0 44px;padding:5px;font-size:8px}
+/* stylelint-disable-next-line declaration-property-value-disallowed-list -- miniature book-jacket art */
 .cover-g{width:100%;aspect-ratio:5/7.2;padding:9px;font-size:11px}
 .ttl{margin:0;font-size:var(--t-title);line-height:1.04;letter-spacing:.02em}
 .auth{font-size:var(--t-micro);color:var(--mut);margin-top:4px;font-weight:600}
@@ -209,7 +215,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
   box-shadow:0 3px 0 rgba(90,62,6,.35), var(--shadow-sm);
   padding:10px 16px 9px;font-family:var(--font-chrome);font-size:var(--t-micro);font-weight:400;letter-spacing:.12em;cursor:pointer;
 }
-.btn .ti{font-size:14px}
+.btn .ti{font-size:var(--icon-lg)}
 /* the ghost BUTTON modifier collides with the watermark `.ghost` (position:absolute +
    pointer-events:none); higher specificity here undoes that so ghost buttons stay
    in-flow and clickable (affects Settings/Letter/UploadModal/MemoryCard) */
@@ -230,6 +236,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .shelf::-webkit-scrollbar{display:none}
 .sh-item{flex:0 0 102px;scroll-snap-align:start;background:none;border:0;padding:0 0 6px;text-align:left;cursor:pointer;color:var(--ink)}
 .sh-cover-wrap{position:relative;width:102px}
+/* stylelint-disable-next-line declaration-property-value-disallowed-list -- miniature book-jacket art */
 .cover-home{width:102px;height:144px;padding:11px;font-size:12px;border-radius:8px;transition:transform .22s ease,box-shadow .22s ease}
 .sh-item:hover .cover-home{transform:translateY(-3px);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.08),0 10px 18px -10px rgba(0,0,0,.65)}
 .sh-badge{position:absolute;right:7px;bottom:7px;display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:22px;padding:0 7px;border-radius:999px;background:rgba(13,17,31,.86);border:1px solid rgba(255,255,255,.12);color:#F7F0DE;font-size:var(--t-micro);font-weight:600;letter-spacing:.3px;box-shadow:0 4px 10px rgba(0,0,0,.22);backdrop-filter:blur(8px)}
@@ -240,7 +247,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 
 /* ---------- discover (scout's desk) ---------- */
 .search{display:flex;align-items:center;gap:9px;margin-top:16px;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow-sm);padding:11px 13px}
-.search .ti{font-size:16px;color:var(--ember)}
+.search .ti{font-size:var(--icon-xl);color:var(--ember)}
 .search input{flex:1;min-width:0;border:0;outline:0;background:transparent;font:600 var(--t-body) var(--font-chrome);color:var(--ink)}
 .search input::placeholder{color:var(--fade)}
 .chips{display:flex;gap:8px;overflow-x:auto;padding:14px 22px 0;scrollbar-width:none}
@@ -254,9 +261,9 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .g-title{font-family:var(--font-reading);font-size:var(--t-micro);margin-top:7px;line-height:1.2;letter-spacing:.03em}
 .g-auth{font-size:var(--t-micro);color:var(--fade);font-weight:700;margin-top:2px;letter-spacing:.4px}
 .g-heart{position:absolute;top:6px;right:6px;z-index:2;width:20px;height:20px;display:flex;align-items:center;justify-content:center;background:var(--yellow);color:#241B0E;border-radius:7px;animation:pop .35s ease;box-shadow:0 2px 5px rgba(0,0,0,.3)}
-.g-heart .ti{font-size:11px}
+.g-heart .ti{font-size:var(--icon-xs)}
 .empty{padding:44px 22px;text-align:center;color:var(--mut)}
-.empty .ti{font-size:36px;color:var(--fade);opacity:.5}
+.empty .ti{font-size:var(--icon-4xl);color:var(--fade);opacity:.5}
 .empty .d{font-family:var(--font-chrome);font-weight:var(--fw-ui-semibold);font-size:var(--t-body);margin-top:10px;color:var(--ink);letter-spacing:.05em;text-transform:uppercase}
 .empty p{font-size:var(--t-micro);line-height:1.5;max-width:210px;margin:6px auto 0}
 
@@ -289,7 +296,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
   padding:10px 12px;cursor:pointer;text-align:left;
 }
 .stamp{width:30px;height:30px;flex:0 0 30px;display:flex;align-items:center;justify-content:center;background:var(--yellow);color:#241B0E;border:0;border-radius:8px;box-shadow:inset -1px -2px 2px rgba(0,0,0,.18)}
-.stamp .ti{font-size:15px}
+.stamp .ti{font-size:var(--icon-lg)}
 .lc-t{font-size:var(--t-micro);letter-spacing:.03em}
 .lc-s{font-size:var(--t-micro);color:#6E6250;font-weight:600}
 .tdots{display:inline-flex;gap:3px;padding:3px 2px}
@@ -349,9 +356,9 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .rbar .mini-pct{margin:0;min-width:32px;text-align:right}
 .fin{display:flex;align-items:center;gap:7px;margin-top:8px;font-size:var(--t-micro);font-weight:600;letter-spacing:.8px;color:var(--moss)}
 .done-badge{width:22px;height:22px;flex:0 0 22px;display:flex;align-items:center;justify-content:center;background:var(--moss);color:#F4EFDF;border:0;border-radius:7px}
-.done-badge .ti{font-size:12px;color:#F4EFDF}
+.done-badge .ti{font-size:var(--icon-sm);color:#F4EFDF}
 .iconbtn{width:34px;height:34px;flex:0 0 34px;display:flex;align-items:center;justify-content:center;background:var(--yellow);color:#241B0E;border:0;border-radius:10px;box-shadow:0 2px 0 rgba(90,62,6,.3);cursor:pointer;padding:0}
-.iconbtn .ti{font-size:15px}
+.iconbtn .ti{font-size:var(--icon-lg)}
 .iconbtn.lite{background:var(--surface2);color:var(--ink);border:1px solid var(--line);box-shadow:none}
 .letter .iconbtn.lite,.reader .iconbtn.lite{background:#F1E7CB;color:#3A2C14;border-color:rgba(60,44,16,.2)}
 .iconbtn[disabled]{opacity:.35;pointer-events:none}
@@ -373,7 +380,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .bio[contenteditable="true"]{outline:2px dashed var(--violet);outline-offset:5px;border-radius:3px}
 .bio:empty::before{content:'write a line about your reading self\2026';color:var(--fade)}
 .editbio{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;margin-top:13px;background:var(--surface2);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow-sm);padding:8px;font:var(--fw-ui-semibold) var(--t-micro) var(--font-chrome);letter-spacing:var(--track-label);text-transform:uppercase;color:var(--ink);cursor:pointer}
-.editbio .ti{font-size:12px}
+.editbio .ti{font-size:var(--icon-sm)}
 .editbio:active{transform:translateY(2px);box-shadow:none}
 /* the tab strip — one flat row, the underline marks the act */
 .ptabs{position:relative;z-index:1;display:flex;margin-top:20px;border-bottom:1px solid var(--line)}
@@ -399,7 +406,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .dlet{font-size:var(--t-micro);font-weight:var(--fw-ui-semibold);color:var(--fade);letter-spacing:var(--track-label)}
 .achgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:14px 22px 0;position:relative;z-index:1}
 .ach{display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow-sm);padding:12px 4px;text-align:center}
-.ach .ti{font-size:18px;color:var(--yellow)}
+.ach .ti{font-size:var(--icon-2xl);color:var(--yellow)}
 .ach .al{font-size:var(--t-micro);font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--mut)}
 .ach.lock{border-style:dashed;box-shadow:none;opacity:.5}
 .ach.lock .ti{color:var(--mut)}
@@ -444,10 +451,10 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .qcard{position:relative;background:var(--letter);color:var(--letter-ink);border:1px solid rgba(60,44,16,.18);border-radius:13px;box-shadow:var(--letterGlow);padding:12px}
 .q-top{display:flex;gap:10px}
 .q-stamp{width:30px;height:30px;flex:0 0 30px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(0,0,0,.25);border-radius:8px;color:#EFE6C2}
-.q-stamp .ti{font-size:14px}
+.q-stamp .ti{font-size:var(--icon-lg)}
 .q-text{flex:1;min-width:0;padding-right:30px;font-size:var(--t-label);line-height:1.55;font-family:var(--font-display);font-weight:430}
 .q-copy{position:absolute;top:10px;right:10px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:#F1E7CB;border:1px solid rgba(60,44,16,.22);border-radius:8px;padding:0;cursor:pointer;color:#3A2C14}
-.q-copy .ti{font-size:13px}
+.q-copy .ti{font-size:var(--icon-md)}
 .q-copy.done .ti{color:var(--moss);animation:pop .35s ease}
 .q-meta{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-top:10px;padding-top:8px;border-top:1px dashed rgba(60,44,16,.3)}
 .q-by{font-size:var(--t-micro);font-weight:600;letter-spacing:.8px;color:#6E6250;text-transform:uppercase}
@@ -460,7 +467,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .tray-intro{margin-top:6px;font-size:var(--t-micro);line-height:1.45;color:var(--mut);font-weight:500;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .bk-intro{margin:12px 0 0;font-size:var(--t-label);line-height:1.6;font-family:var(--font-display);font-weight:430;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
 .rate{display:flex;align-items:center;gap:5px;margin-top:8px;font-size:var(--t-micro);font-weight:600}
-.rate .ti{font-size:14px;color:var(--yellow)}
+.rate .ti{font-size:var(--icon-lg);color:var(--yellow)}
 .rate small{font-size:var(--t-micro);font-weight:700;color:var(--fade);letter-spacing:.8px}
 .rate .rcount{font-weight:600;color:var(--mut)}
 /* about-sheet subtitle + publisher (Google Books) */
@@ -472,7 +479,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .auth-name{font-size:var(--t-body);letter-spacing:.04em;text-transform:uppercase}
 .bk-bio{margin:5px 0 10px;font-size:var(--t-micro);line-height:1.5;color:var(--mut);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .link-row{display:flex;align-items:center;gap:9px;width:100%;background:var(--surface2);border:1px solid var(--line);border-radius:11px;box-shadow:none;padding:10px 12px;font-size:var(--t-micro);font-weight:600;letter-spacing:.4px;margin-bottom:8px;text-align:left;cursor:pointer;color:var(--ink)}
-.link-row .ti{font-size:14px}
+.link-row .ti{font-size:var(--icon-lg)}
 .link-row .ext{margin-left:auto;color:var(--mut)}
 .link-row:active{transform:translateY(2px)}
 .sv-note{font-size:var(--t-micro);color:var(--fade);font-weight:600;line-height:1.5}
@@ -489,10 +496,10 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 }
 .nv{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:0;padding:0;cursor:pointer;color:var(--mut)}
 .pill{width:44px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:999px;transition:background .25s}
-.nv .ti{font-size:19px}
+.nv .ti{font-size:var(--icon-2xl)}
 .nv .lab{font-size:var(--t-micro);font-weight:700;letter-spacing:.8px}
 .nv.on{color:var(--ink)}
-.nv.on .pill .ti{font-size:16px;color:#241B0E}
+.nv.on .pill .ti{font-size:var(--icon-xl);color:#241B0E}
 .nv.on[data-tab="today"] .pill{background:var(--yellow);box-shadow:0 0 12px rgba(255,192,23,.45)}
 .nv.on[data-tab="discover"] .pill{background:var(--ember);box-shadow:0 0 12px rgba(224,84,38,.4)}
 .nv.on[data-tab="discover"] .pill .ti,.nv.on[data-tab="library"] .pill .ti,.nv.on[data-tab="profile"] .pill .ti{color:#FFF6E4}
@@ -508,7 +515,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
   -webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);
   box-shadow:0 8px 20px -8px rgba(0,0,0,.55), 0 0 16px -6px rgba(255,192,23,.4)}
 .guest-lvl:active{transform:translateY(1px)}
-.guest-lvl .ti{font-size:14px}
+.guest-lvl .ti{font-size:var(--icon-lg)}
 .guest-lvl b{font-family:var(--font-chrome);font-size:var(--t-micro);letter-spacing:.08em;opacity:.85}
 
 /* ---------- backdrop, sheet, reader, toast, burst ---------- */
@@ -529,6 +536,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .r-body.swap{animation:swapIn .22s ease}
 .r-chap{font-size:var(--t-micro);font-weight:600;letter-spacing:2.4px;color:var(--gold);margin-bottom:14px}
 .r-body p{margin:0 0 17px;font-family:var(--font-display);font-weight:430;font-size:calc(16px * var(--reader-scale,1));line-height:1.82}
+/* stylelint-disable-next-line declaration-property-value-disallowed-list -- drop cap — sized to the paragraph, not the ramp */
 .r-body p:first-of-type::first-letter{float:left;margin:6px 9px 0 0;font-family:var(--font-display);font-weight:400;font-size:42px;line-height:.82;color:var(--ember)}
 .r-foot{display:flex;align-items:center;gap:12px;background:#FFFCF0;border-top:1px solid rgba(60,44,16,.2);padding:12px 16px 18px}
 .r-prog{flex:1}
@@ -543,7 +551,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
   opacity:0;pointer-events:none;transform:translate(-50%,14px);transition:opacity .25s,transform .25s;
 }
 .toast.on{opacity:1;transform:translate(-50%,0)}
-.toast .ti{font-size:15px;color:var(--yellow)}
+.toast .ti{font-size:var(--icon-lg);color:var(--yellow)}
 .burst-layer{position:absolute;inset:0;z-index:46;pointer-events:none}
 .spark{position:absolute;width:6px;height:6px;border-radius:1px;background:var(--yellow);box-shadow:0 0 6px rgba(255,192,23,.6);animation:fly .7s ease-out forwards}
 @keyframes fly{to{transform:translate(var(--dx),var(--dy)) rotate(160deg);opacity:0}}
@@ -668,6 +676,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 /* act 1a — the splash (matinée): the wordmark + the credit */
 .ob-splash{position:relative;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;
   justify-content:center;gap:14px;background:none;border:0;cursor:pointer;color:var(--ink);animation:obFade .4s ease}
+/* stylelint-disable-next-line declaration-property-value-disallowed-list -- wordmark container: drives <Wordmark/> em sizing */
 .ob-sp-mark{font-size:44px;letter-spacing:.03em;transform:skewX(-8deg)}
 /* the wordmark's period keeps its bounce — now a path inside the outlined mark,
    so the travel is in viewBox units (279/2048 em ≈ the old 6px at 44px) and it
@@ -760,7 +769,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .ob-next .lbl{display:none;white-space:nowrap}
 .ob-next.last{padding:0 22px}
 .ob-next.last .lbl{display:inline}
-.ob-next .ti{font-size:19px}
+.ob-next .ti{font-size:var(--icon-2xl)}
 
 @media (prefers-reduced-motion: reduce){
   .ob-perch{opacity:1;transform:rotate(var(--rot,0deg))}
@@ -806,7 +815,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
   background:transparent;border:1px solid rgba(60,44,16,.32);border-radius:999px;padding:5px 12px;
   font:800 var(--t-micro) var(--font-chrome);letter-spacing:1.3px;text-transform:uppercase;
   color:#3A55B4;cursor:pointer}
-.lq-save .ti{font-size:11px}
+.lq-save .ti{font-size:var(--icon-xs)}
 .lq-save.on{background:#3A55B4;border-color:transparent;color:#F3F5FF;cursor:default}
 .lq-save:not(.on):active{transform:translateY(1px)}
 @media (prefers-reduced-motion:reduce){
@@ -916,6 +925,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
   box-shadow:0 26px 54px -18px rgba(0,0,0,.85), inset 0 1px 0 rgba(255,230,170,.08);
   transition:border-color .5s ease, box-shadow .5s ease;
   animation:obRise .5s cubic-bezier(.2,.9,.25,1.05) both}
+/* stylelint-disable-next-line declaration-property-value-disallowed-list -- wordmark container */
 .ob-crest{font-size:22px;letter-spacing:.02em;transform:skewX(-8deg);color:#F2EBD7;margin-bottom:16px}
 /* the door — invite only (act 3a) */
 .ob-pline{margin:0 0 18px;font-family:var(--font-chrome);font-weight:400;font-size:var(--t-body);line-height:1.55;
@@ -1020,6 +1030,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .ob-reveal.open .ob-marq span:nth-child(1){animation-delay:1.05s}
 .ob-reveal.open .ob-marq span:nth-child(2){animation-delay:1.18s}
 @keyframes obMqIn{to{opacity:1;transform:none}}
+/* stylelint-disable-next-line declaration-property-value-disallowed-list -- wordmark container */
 .ob-at{margin-top:12px;font-family:var(--font-display);font-size:22px;letter-spacing:.02em;color:#F2EBD7;
   opacity:0;transform:skewX(-6deg) translateY(12px)}
 .ob-reveal.open .ob-at{transition:opacity .7s ease 1.7s,transform .7s cubic-bezier(.18,.9,.24,1.04) 1.7s;
@@ -1082,6 +1093,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .ob-reveal.open .ob-house{opacity:0;pointer-events:none}
 .ob-house-txt{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:6px;
   text-shadow:0 2px 14px rgba(0,0,0,.7)}
+/* stylelint-disable-next-line declaration-property-value-disallowed-list -- wordmark container */
 .ob-house-mark{font-size:30px;letter-spacing:.02em;transform:skewX(-8deg)}
 .ob-house-show{font-size:var(--t-micro);font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:rgba(242,235,215,.7)}
 .ob-house-seat{margin-top:6px;font-family:var(--font-display);font-style:italic;font-size:var(--t-label);color:var(--yellow);
@@ -1106,7 +1118,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .ob-track{width:52px;height:5px;background:rgba(255,246,220,.14);border-radius:3px;overflow:hidden}
 .ob-fill{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--quill-d),var(--quill-l));border-radius:3px;
   box-shadow:0 0 10px rgba(138,160,242,.5);transition:width .7s cubic-bezier(.2,.8,.2,1)}
-.ob-inkhud .ti{font-size:15px;color:var(--quill-l)}
+.ob-inkhud .ti{font-size:var(--icon-lg);color:var(--quill-l)}
 .ob-inkn{font-family:var(--font-chrome);font-size:var(--t-label);letter-spacing:.06em;min-width:14px;text-align:center;color:#F2EBD7}
 .ob-inkhud.empty .ti{opacity:.4}
 .ob-inkhud.empty .ob-inkn{color:var(--fade)}
@@ -1179,7 +1191,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .ob-banner.stage2 .ob-bbundle{opacity:1;transform:none}
 .ob-bbig{font-family:var(--font-display);font-style:italic;font-size:var(--t-callout);color:#F2E8CE}
 .ob-bink{font-family:var(--font-chrome);display:inline-flex;align-items:center;gap:7px;margin-top:9px;font-size:var(--t-body);letter-spacing:.06em;color:var(--yellow)}
-.ob-bink .ti{font-size:16px;color:var(--quill-l)}
+.ob-bink .ti{font-size:var(--icon-xl);color:var(--quill-l)}
 .ob-bcont{display:inline-flex;margin-top:14px;background:var(--yellow);color:#241B0E;border:0;border-radius:9px;
   box-shadow:0 3px 0 rgba(90,62,6,.4), 0 0 22px -4px rgba(255,192,23,.5);padding:11px 26px 10px;
   font-family:var(--font-chrome);font-weight:var(--fw-ui-semibold);font-size:var(--t-micro);letter-spacing:.2em;text-transform:uppercase;cursor:pointer;
@@ -1188,7 +1200,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .ob-bcont:active{transform:translateY(2px);box-shadow:none}
 /* the ink drop that leaves the vial, the xp that flies to the bar, the confetti */
 .ob-drop{position:absolute;z-index:15;width:14px;height:14px;color:var(--quill-l,#8AA0F2);pointer-events:none;display:none}
-.ob-drop .ti{font-size:14px}
+.ob-drop .ti{font-size:var(--icon-lg)}
 .ob-xpfly{position:absolute;z-index:16;font-family:var(--font-chrome);font-size:var(--t-body);letter-spacing:.04em;
   color:var(--yellow);text-shadow:0 0 12px rgba(255,192,23,.7);pointer-events:none;display:none}
 .ob-cel{position:absolute;inset:0;width:100%;height:100%;z-index:16;pointer-events:none}
@@ -1214,6 +1226,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
   .screen{padding-bottom:calc(104px + env(safe-area-inset-bottom))}
   #screen-discover{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
   /* fluid display type so nothing clips on narrow screens */
+/* stylelint-disable-next-line declaration-property-value-disallowed-list -- a giant decorative watermark, not read */
   .pad-h .ghost{font-size:clamp(64px, 25vw, 94px)}
 }
 
@@ -1260,7 +1273,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .auth-field{display:flex;flex-direction:column;gap:5px}
 .auth-lab{display:flex;align-items:center;gap:6px;font-size:var(--t-micro);font-weight:600;letter-spacing:.14em;
   text-transform:uppercase;color:var(--mut)}
-.auth-lab .ti{font-size:13px;color:var(--ember)}
+.auth-lab .ti{font-size:var(--icon-md);color:var(--ember)}
 .auth-field input{width:100%;border:1px solid var(--line2);border-radius:10px;background:var(--surface);
   padding:11px 12px;font:600 var(--t-callout) var(--font-chrome);color:var(--ink)}
 .auth-field input::placeholder{color:var(--fade);font-weight:500}
@@ -1277,7 +1290,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 
 .auth-guest{display:inline-flex;align-items:center;gap:6px;background:none;border:0;cursor:pointer;
   color:#F2EBD7;font-size:var(--t-micro);font-weight:600;letter-spacing:.02em;opacity:.92}
-.auth-guest .ti{font-size:14px;color:#FFC017}
+.auth-guest .ti{font-size:var(--icon-lg);color:#FFC017}
 .auth-guest:active{transform:translateY(1px)}
 .auth-note{font-size:var(--t-micro);color:var(--mut);text-align:center;max-width:264px;line-height:1.5}
 
@@ -1311,6 +1324,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
   .r-chap{font-size:var(--t-micro)}
   .r-body{padding:22px 22px 26px}
   .r-body p{font-size:calc(clamp(16.5px, 4.6vw, 19px) * var(--reader-scale,1));line-height:1.85}
+/* stylelint-disable-next-line declaration-property-value-disallowed-list -- drop cap — sized to the paragraph, not the ramp */
   .r-body p:first-of-type::first-letter{font-size:clamp(44px, 12vw, 52px)}
   .r-page{font-size:var(--t-micro)}
   .r-auth{font-size:var(--t-micro)}
@@ -1349,7 +1363,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .mem-row { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 8px; margin-top: 8px; }
 .mem-chip { display: inline-flex; align-items: center; gap: 6px; background: #fff; border: 2px solid var(--ink); border-radius: 999px; padding: 5px 6px 5px 12px; font-size: var(--t-micro); font-weight: 700; }
 .mem-chip button { display: flex; align-items: center; justify-content: center; width: 16px; height: 16px; flex: 0 0 16px; background: var(--paper); border-radius: 50%; border: 0; padding: 0; cursor: pointer; }
-.mem-chip button .ti { font-size: 10px; }
+.mem-chip button .ti { font-size: var(--icon-xs); }
 .mem-add { display: flex; gap: 6px; margin-top: 10px; }
 .mem-add input { flex: 1; min-width: 0; }
 .mem-add .iconbtn { width: 40px; height: 40px; flex: 0 0 40px; }
@@ -1444,7 +1458,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .reader-icon{width:44px;height:44px;flex:0 0 44px;display:flex;align-items:center;justify-content:center;padding:0;
   border:1px solid rgba(255,213,105,.22);border-radius:12px;background:rgba(255,255,255,.06);color:#F4ECD8;cursor:pointer}
 .reader-icon:disabled{opacity:.35}
-.reader-icon .ti{font-size:18px}
+.reader-icon .ti{font-size:var(--icon-2xl)}
 .reader-heading{flex:1;min-width:0;text-align:center}
 .reader-book-title{font-family:var(--font-reading);font-size:var(--t-body);letter-spacing:.06em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .reader-book-author{margin-top:2px;font-size:var(--t-micro);font-weight:600;letter-spacing:1.3px;color:#C5BDAA;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -1534,7 +1548,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
   padding:7px 10px;border-radius:999px;background:rgba(255,192,23,.16);
   border:1px solid rgba(255,192,23,.45);color:var(--yellow);
   font-size:var(--t-micro);font-weight:600;letter-spacing:.06em;text-transform:lowercase}
-.desk-lvl .ti{font-size:13px}
+.desk-lvl .ti{font-size:var(--icon-md)}
 .desk-lvl b{font-family:var(--font-chrome);font-size:var(--t-micro);letter-spacing:.08em;opacity:.9}
 .desk-lvl:active{transform:translateY(1px)}
 
@@ -1589,7 +1603,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .gl-kick{font-family:var(--font-chrome);font-size:var(--t-micro);font-weight:var(--fw-ui-semibold);letter-spacing:var(--track-label);text-transform:uppercase;color:#A8730A}
 .gl-heart{width:28px;height:28px;display:flex;align-items:center;justify-content:center;padding:0;
   background:transparent;border:0;border-radius:8px;cursor:pointer;color:#9F927A;transition:color .2s,transform .2s}
-.gl-heart .ti{font-size:15px}
+.gl-heart .ti{font-size:var(--icon-lg)}
 .gl-heart.on{color:var(--ember,#D8481E)}
 .gl-heart.on .ti{fill:currentColor}
 .gl-heart:active{transform:scale(.9)}
@@ -1604,7 +1618,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .gl-about:active{color:#6E6250}
 .gl-go{position:relative;display:inline-flex;align-items:center;gap:6px;cursor:pointer;
   font-family:var(--font-chrome);font-size:var(--t-label);font-weight:var(--fw-ui-semibold);letter-spacing:var(--track-label);text-transform:uppercase;color:#A8730A}
-.gl-go .ti{font-size:13px}
+.gl-go .ti{font-size:var(--icon-md)}
 .gletter:active .gl-go{color:#7E5406}
 /* pad the quiet footer words to ≥44px hit targets without changing the visual */
 .gl-about::after, .gl-go::after{content:"";position:absolute;left:-10px;right:-10px;top:50%;transform:translateY(-50%);height:44px}

@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Owlry — a gamified reading app. Small, warm, tactile.",
+  "description": "Owlry \u2014 a gamified reading app. Small, warm, tactile.",
   "scripts": {
     "dev": "vite",
     "dev:host": "vite --host",
@@ -13,7 +13,8 @@
     "typecheck": "tsc -b",
     "test": "tsx scripts/owl-smoke.ts && tsx scripts/owl-contract-smoke.ts && tsx scripts/owl-wire-v2-smoke.ts && tsx scripts/memory-merge-smoke.ts && tsx scripts/chat-hydrate-smoke.ts && tsx scripts/store-smoke.ts && tsx scripts/sync-smoke.ts && tsx scripts/book-proxy-smoke.ts && tsx scripts/gbooks-smoke.ts",
     "books:enrich": "tsx scripts/enrich-books.ts",
-    "bench": "tsx scripts/owl-bench.ts"
+    "bench": "tsx scripts/owl-bench.ts",
+    "lint:css": "stylelint \"src/styles/*.css\""
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.110.1",
@@ -30,6 +31,8 @@
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
     "fontaine": "^0.8.0",
+    "stylelint": "^17.14.1",
+    "stylelint-config-standard": "^40.0.0",
     "tsx": "^4.19.2",
     "typescript": "^5.6.3",
     "vite": "^5.4.11",

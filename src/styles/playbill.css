@@ -148,7 +148,7 @@
    the bar feeling built and feeling cheap. */
 .pb-chip .n { font-size: var(--t-callout); font-weight: var(--fw-ui-semibold); color: var(--pb-cream); font-family: var(--font-chrome); font-variant-numeric: tabular-nums; }
 .pb-chip-max { color: var(--pb-cream-mute); font-weight: var(--fw-ui-medium); }
-.pb-chip .ti { font-size: 17px; }
+.pb-chip .ti { font-size: var(--icon-xl); }
 .pb-chip .crown { color: var(--pb-candy-crown); }
 .pb-chip .bolt { color: var(--pb-candy-bolt); }
 .pb-chip .drop { color: var(--pb-candy-drop); }
@@ -245,7 +245,7 @@
   transition: transform .15s ease; touch-action: manipulation;
 }
 .pb-iconbtn:active { transform: scale(1.25); }
-.pb-iconbtn .ti { font-size: 14px; }
+.pb-iconbtn .ti { font-size: var(--icon-lg); }
 .pb-like { color: var(--pb-like); }
 .pb-like.on { color: var(--pb-like-on); }
 /* down-vote lives in the post's bottom-right — a quiet "not for me" */
@@ -263,12 +263,13 @@
 .pb-keeper:active { transform: scale(.97); }
 .pb-klbl { display: flex; align-items: center; gap: 6px; font-family: var(--font-chrome); font-size: var(--t-micro); font-weight: var(--fw-ui-semibold); letter-spacing: var(--track-label); color: var(--pb-owl-moss-ink); }
 .pb-kdot { width: 18px; height: 18px; border-radius: 50%; background: var(--pb-owl-moss); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.pb-kdot .ti { font-size: 11px; color: var(--pb-cream); }
+.pb-kdot .ti { font-size: var(--icon-xs); color: var(--pb-cream); }
 /* Keeper himself stands in for the label dot — the sprite, not a moss disc */
 .pb-kdot-owl { background: none; width: 24px; height: 26px; }
 .pb-kdot-owl .owl { width: 100%; height: 100%; display: block; }
 .pb-krow { display: flex; gap: 10px; margin-top: 9px; align-items: center; }
 .pb-kthumb { width: 40px; flex-shrink: 0; border-radius: 5px; overflow: hidden; }
+/* stylelint-disable-next-line declaration-property-value-disallowed-list -- miniature book-jacket art */
 .pb-cover-xs { width: 40px; height: auto; aspect-ratio: 150 / 205; border: 0; border-radius: 5px; box-shadow: none; padding: 5px; font-size: 8px; }
 /* a book title at text size is Literata's job; the line under it stays italic Fraunces */
 .pb-kt { display: block; font-family: var(--font-reading); font-weight: var(--fw-serif-strong); font-size: var(--t-callout); color: var(--pb-ink); }
@@ -276,7 +277,7 @@
 
 /* ---------- empty category ---------- */
 .pb-empty { text-align: center; padding: 60px 30px; color: var(--pb-cream-mute); }
-.pb-empty .ti { font-size: 26px; color: var(--pb-brass-deep); }
+.pb-empty .ti { font-size: var(--icon-3xl); color: var(--pb-brass-deep); }
 .pb-empty p { font-family: var(--font-display); font-style: italic; font-size: var(--t-callout); margin-top: 10px; line-height: 1.5; }
 
 /* ============================================================
@@ -298,7 +299,7 @@
   color: var(--pb-cream-mute); transition: color .2s ease; touch-action: manipulation;
 }
 .pb-nv .pb-nvpill { position: relative; display: flex; align-items: center; justify-content: center; }
-.pb-nv .ti { font-size: 20px; }
+.pb-nv .ti { font-size: var(--icon-2xl); }
 .pb-nv.on { color: var(--pb-nav-gold); }
 .pb-nv .lab { letter-spacing: .2px; }
 
@@ -344,7 +345,7 @@
 }
 .pb-sh-save { right: 16px; }
 .pb-sh-close { left: 16px; }
-.pb-sh-save .ti, .pb-sh-close .ti { font-size: 18px; }
+.pb-sh-save .ti, .pb-sh-close .ti { font-size: var(--icon-2xl); }
 .pb-sh-save.on { color: var(--pb-like-on); border-color: var(--pb-like-on); }
 
 /* header: cover + info — pushed below the floating close/save discs */
@@ -374,7 +375,7 @@
   transition: transform .15s ease; touch-action: manipulation;
 }
 .pb-cta:active { transform: scale(.96); }
-.pb-cta .ti { font-size: 15px; }
+.pb-cta .ti { font-size: var(--icon-lg); }
 .pb-cta-owl { width: 22px; height: 24px; filter: none; flex: 0 0 auto; margin: -4px 0; }
 .pb-cta-t { font-family: var(--font-chrome); font-weight: 400; font-size: var(--t-label); letter-spacing: 2.5px; }
 .pb-cta.fill { background: var(--pb-brass); border-color: var(--pb-brass); color: var(--pb-brass-ink); }
@@ -522,7 +523,7 @@
   letter-spacing: var(--track-label); text-transform: uppercase; cursor: pointer;
   transition: background .2s, color .2s, border-color .2s; touch-action: manipulation;
 }
-.pb-deskpill .ti { font-size: 13px; }
+.pb-deskpill .ti { font-size: var(--icon-md); }
 .pb-deskpill.pro { background: var(--pb-brass); border-color: var(--pb-brass); color: var(--pb-brass-ink); }
 .pb-send {
   width: 36px; height: 36px; border-radius: 50%; border: 0; flex: 0 0 auto;
@@ -531,7 +532,7 @@
   transition: transform .15s ease; touch-action: manipulation;
 }
 .pb-send:active { transform: scale(.92); }
-.pb-send .ti { font-size: 16px; }
+.pb-send .ti { font-size: var(--icon-xl); }
 
 /* ---------- the selection bar: one glass rail over highlighted words ---------- */
 .pb-selbar {
@@ -549,7 +550,7 @@
   cursor: pointer; white-space: nowrap; touch-action: manipulation;
 }
 .pb-selbar button:active { background: rgba(217,169,79,.16); }
-.pb-selbar button .ti { font-size: 13px; color: var(--pb-brass); }
+.pb-selbar button .ti { font-size: var(--icon-md); color: var(--pb-brass); }
 /* scout rides the Ask button, like peek's owl on the about-sheet CTA */
 .pb-selbar .pb-sel-owl { width: 19px; height: 20px; margin: -4px -1px; filter: none; }
 
@@ -576,7 +577,7 @@
   background: var(--pb-paper-dim); border: 1px solid var(--pb-paper-line); border-radius: 999px;
   color: var(--pb-ink-mute); cursor: pointer; touch-action: manipulation;
 }
-.pb-askq-x .ti { font-size: 16px; }
+.pb-askq-x .ti { font-size: var(--icon-xl); }
 .pb-askq-quote {
   margin: 0 0 12px; padding: 9px 12px; border-left: 3px solid var(--pb-brass);
   background: var(--pb-paper-dim); border-radius: 0 8px 8px 0;
@@ -600,7 +601,7 @@
   transition: transform .15s ease; touch-action: manipulation;
 }
 .pb-askq-send:active { transform: scale(.97); }
-.pb-askq-send .ti { font-size: 15px; }
+.pb-askq-send .ti { font-size: var(--icon-lg); }
 
 /* ---------- the dealt hand: wide cards stacked after scout's reply ---------- */
 .pb-dealrow {
@@ -663,7 +664,7 @@
   border-radius: 999px; background: var(--pb-chip-bg); border: 1px solid var(--pb-tag-line);
   color: var(--pb-brass); cursor: pointer; touch-action: manipulation;
 }
-.pb-gear .ti { font-size: 16px; }
+.pb-gear .ti { font-size: var(--icon-xl); }
 
 /* identity row — avatar, name, reader title; Mirror keeps watch at the end */
 #screen-profile .ig-ava { background: var(--pb-owl-violet); box-shadow: 0 0 0 2px var(--pb-stage), 0 0 0 4px var(--pb-brass); color: var(--pb-cream); }
@@ -924,7 +925,7 @@ body { overscroll-behavior: none; }
 #screen-discover .disc-head-right .iconbtn.lite { width: 40px; height: 40px; flex: 0 0 40px; }
 .pb-askq-x { width: 36px; height: 36px; }
 .pb-psheet .mem-chip button { width: 24px; height: 24px; flex: 0 0 24px; }
-.pb-psheet .mem-chip button .ti { font-size: 12px; }
+.pb-psheet .mem-chip button .ti { font-size: var(--icon-sm); }
 .pb-psheet .mem-topic .iconbtn, .pb-psheet .mem-book .iconbtn { width: 28px; height: 28px; flex: 0 0 28px; }
 .pb-psheet .q-copy { width: 34px; height: 34px; }
 .pb-tag { padding-top: 9px; padding-bottom: 9px; }
