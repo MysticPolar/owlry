@@ -1120,8 +1120,9 @@ button, .owl, .pb-nav, .pb-stagehead, .disc-head, .pb-head, .pb-tags, .pb-chips,
   .pb-tag, .pb-deskpill, .chip { border-color: currentColor; }
 }
 
-/* --- W6 type: let Fraunces use its optical-size axis everywhere (Anton and
-   Inter Tight carry no opsz axis and simply ignore this) --- */
+/* --- let the optical-size axes actually do their job. Literata carries opsz
+   7–72 and Inter 14–32, so every size step gets letterforms drawn for it;
+   Fraunces is pinned (display-only) and simply ignores this. --- */
 body { font-optical-sizing: auto; }
 
 /* ============================================================

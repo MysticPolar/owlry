@@ -95,7 +95,11 @@ export function RadarChart({ replayKey }: { replayKey: number }) {
               y={+ny.toFixed(1)}
               textAnchor={ANCH[i]}
               fill="var(--pb-ink-mute)"
-              style={{ font: '800 8.5px "Inter Tight",sans-serif', letterSpacing: '1px', textTransform: 'uppercase' }}
+              /* 13 viewBox units: the chart is capped at 300px against a 352
+                 viewBox, so this renders at ~11px — the axis labels sit just
+                 under the text floor because they are chart furniture, read
+                 alongside the shape rather than as running text. */
+              style={{ font: '600 13px var(--font-chrome)', letterSpacing: 'var(--track-label)', textTransform: 'uppercase' }}
             >
               {name.toUpperCase()}
             </text>
@@ -104,7 +108,7 @@ export function RadarChart({ replayKey }: { replayKey: number }) {
               y={+vy.toFixed(1)}
               textAnchor={ANCH[i]}
               fill="var(--pb-ink)"
-              style={{ font: '400 14px "Anton",sans-serif' }}
+              style={{ font: '600 17px var(--font-display)' }}
             >
               {v}
             </text>
