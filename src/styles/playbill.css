@@ -125,7 +125,7 @@
 .pb-hem { display: none; width: 100%; height: auto; }
 
 .pb-marquee {
-  text-align: center; font-weight: 400; font-size: 17px;
+  text-align: center; font-weight: 400; font-size: var(--t-heading);
   letter-spacing: 1px; color: var(--pb-cream);
   margin: 2px 0 10px; overflow: hidden; max-height: 28px;
   transition: max-height .35s ease, opacity .25s ease, margin .35s ease;
@@ -161,7 +161,7 @@
   max-height: 0; opacity: 0; overflow: hidden;
   transition: max-height .35s ease, opacity .3s ease, padding .35s ease;
 }
-.pb-compact .wm { font-size: 14px; letter-spacing: .5px; color: var(--pb-cream); }
+.pb-compact .wm { font-size: var(--t-callout); letter-spacing: .5px; color: var(--pb-cream); }
 .pb-compact .sp { flex: 1; }
 .pb-mini { display: flex; align-items: center; gap: 4px; font-size: var(--t-micro); font-weight: var(--fw-ui-semibold); color: var(--pb-cream); font-variant-numeric: tabular-nums; }
 .pb-mini .ti { font-size: var(--t-callout); }
@@ -216,7 +216,7 @@
 }
 /* the real cover (spine + optional photo), matted on the card and FLAT
    — strip the legacy border/shadow so the surface stays print-flat */
-.pb-cover { width: 100%; height: auto; aspect-ratio: 150 / 205; border: 0; border-radius: 4px; box-shadow: none; padding: 11px; font-size: 12px; }
+.pb-cover { width: 100%; height: auto; aspect-ratio: 150 / 205; border: 0; border-radius: 4px; box-shadow: none; padding: 11px; font-size: var(--t-micro); }
 /* photos take a warm "printed on cream stock" tone (spine fallbacks stay pure) */
 .pb-cover .cover-img, .pb-cover-xs .cover-img { filter: sepia(.14) saturate(.92) contrast(.97); }
 /* matte hairline over the artwork so mismatched real covers read as plates in a
@@ -277,7 +277,7 @@
 /* ---------- empty category ---------- */
 .pb-empty { text-align: center; padding: 60px 30px; color: var(--pb-cream-mute); }
 .pb-empty .ti { font-size: 26px; color: var(--pb-brass-deep); }
-.pb-empty p { font-family: var(--font-display); font-style: italic; font-size: 14px; margin-top: 10px; line-height: 1.5; }
+.pb-empty p { font-family: var(--font-display); font-style: italic; font-size: var(--t-callout); margin-top: 10px; line-height: 1.5; }
 
 /* ============================================================
    GLASS NAV — the one glass object
@@ -294,7 +294,7 @@
 .pb-nv {
   display: flex; flex-direction: column; align-items: center; gap: 3px;
   background: none; border: 0; padding: 0; cursor: pointer;
-  font-family: var(--font-chrome); font-size: 11px; font-weight: 600;
+  font-family: var(--font-chrome); font-size: var(--t-micro); font-weight: 600;
   color: var(--pb-cream-mute); transition: color .2s ease; touch-action: manipulation;
 }
 .pb-nv .pb-nvpill { position: relative; display: flex; align-items: center; justify-content: center; }
@@ -363,7 +363,7 @@
 
 /* the blurb is prose — Literata, not the display serif */
 .pb-sh-intro { margin: 14px 0 0; font-family: var(--font-reading); font-size: var(--t-callout); line-height: var(--lh-body); color: var(--pb-cap-ink); }
-.pb-sheet .more-btn { font-family: var(--font-chrome); font-size: 12px; font-weight: 600; letter-spacing: .5px; color: var(--pb-brass-deep); background: none; border: 0; padding: 4px 0 0; cursor: pointer; }
+.pb-sheet .more-btn { font-family: var(--font-chrome); font-size: var(--t-micro); font-weight: 600; letter-spacing: .5px; color: var(--pb-brass-deep); background: none; border: 0; padding: 4px 0 0; cursor: pointer; }
 
 /* CTA pair — ghost PEEK (peek's owl) + brass-fill OPEN */
 .pb-cta-row { display: flex; gap: 8px; margin-top: 16px; }
@@ -376,7 +376,7 @@
 .pb-cta:active { transform: scale(.96); }
 .pb-cta .ti { font-size: 15px; }
 .pb-cta-owl { width: 22px; height: 24px; filter: none; flex: 0 0 auto; margin: -4px 0; }
-.pb-cta-t { font-family: var(--font-chrome); font-weight: 400; font-size: 13px; letter-spacing: 2.5px; }
+.pb-cta-t { font-family: var(--font-chrome); font-weight: 400; font-size: var(--t-label); letter-spacing: 2.5px; }
 .pb-cta.fill { background: var(--pb-brass); border-color: var(--pb-brass); color: var(--pb-brass-ink); }
 
 /* sections + hairline dividers */
@@ -404,7 +404,7 @@
    ============================================================ */
 .pb-stagehead { flex-shrink: 0; position: relative; z-index: 2; }
 .pb-stagebar { position: relative; display: flex; align-items: center; justify-content: center; padding: 13px 16px 8px; }
-.pb-stagebar-wm { font-size: 15px; letter-spacing: 1px; color: var(--pb-cream); transition: color .35s ease, opacity .35s ease, text-shadow .35s ease; }
+.pb-stagebar-wm { font-size: var(--t-body); letter-spacing: 1px; color: var(--pb-cream); transition: color .35s ease, opacity .35s ease, text-shadow .35s ease; }
 
 /* ============================================================
    ASK (Discover) — Scout's desk on the stage
@@ -457,7 +457,7 @@
 }
 .pb-deskhint .owl { width: 130px; height: 141px; filter: drop-shadow(0 14px 26px rgba(0,0,0,.55)); }
 .pb-deskhint-lbl {
-  font-family: var(--font-chrome); font-size: 15px; letter-spacing: 3px; color: var(--pb-brass);
+  font-family: var(--font-chrome); font-size: var(--t-body); letter-spacing: 3px; color: var(--pb-brass);
   background: rgba(20,13,10,.72); border: 1px solid var(--pb-brass-deep); border-radius: 999px;
   padding: 7px 18px; -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
 }
@@ -545,7 +545,7 @@
 .pb-selbar button {
   display: inline-flex; align-items: center; gap: 5px;
   background: none; border: 0; border-radius: 999px; padding: 7px 11px;
-  color: var(--pb-cream); font: 600 11px var(--font-chrome); letter-spacing: .4px;
+  color: var(--pb-cream); font: 600 var(--t-micro) var(--font-chrome); letter-spacing: .4px;
   cursor: pointer; white-space: nowrap; touch-action: manipulation;
 }
 .pb-selbar button:active { background: rgba(217,169,79,.16); }
@@ -570,7 +570,7 @@
 }
 @keyframes pbAskUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
 .pb-askq-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-.pb-askq-kick { font-family: var(--font-chrome); font-weight: 400; font-size: 12px; letter-spacing: 2.5px; color: var(--pb-brass-deep); }
+.pb-askq-kick { font-family: var(--font-chrome); font-weight: 400; font-size: var(--t-micro); letter-spacing: 2.5px; color: var(--pb-brass-deep); }
 .pb-askq-x {
   width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
   background: var(--pb-paper-dim); border: 1px solid var(--pb-paper-line); border-radius: 999px;
@@ -580,7 +580,7 @@
 .pb-askq-quote {
   margin: 0 0 12px; padding: 9px 12px; border-left: 3px solid var(--pb-brass);
   background: var(--pb-paper-dim); border-radius: 0 8px 8px 0;
-  font-family: var(--font-display); font-style: italic; font-size: 14px; line-height: 1.45;
+  font-family: var(--font-display); font-style: italic; font-size: var(--t-callout); line-height: 1.45;
   color: var(--pb-ink);
   display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
 }
@@ -588,7 +588,7 @@
   width: 100%; box-sizing: border-box; resize: none;
   background: none; border: 1px solid var(--pb-paper-line); border-radius: 12px;
   padding: 10px 12px; color: var(--pb-ink);
-  font: 400 14px var(--font-chrome); line-height: 1.4;
+  font: 400 var(--t-callout) var(--font-chrome); line-height: 1.4;
 }
 .pb-askq-input::placeholder { color: var(--pb-ink-mute); }
 .pb-askq-input:focus { outline: none; border-color: var(--pb-brass); }
@@ -596,7 +596,7 @@
   display: flex; align-items: center; justify-content: center; gap: 7px; width: 100%;
   margin-top: 12px; padding: 11px 6px; border-radius: 999px; cursor: pointer;
   background: var(--pb-brass); border: 1.5px solid var(--pb-brass); color: var(--pb-brass-ink);
-  font-family: var(--font-chrome); font-weight: 400; font-size: 13px; letter-spacing: 2.5px;
+  font-family: var(--font-chrome); font-weight: 400; font-size: var(--t-label); letter-spacing: 2.5px;
   transition: transform .15s ease; touch-action: manipulation;
 }
 .pb-askq-send:active { transform: scale(.97); }
@@ -679,11 +679,11 @@
 /* the level moment — crown, the big XP bar, the countdown caption */
 .pb-plvl { margin-top: 16px; }
 .pb-plvl-row { display: flex; align-items: center; gap: 8px; }
-.pb-plvl-row .crown { font-size: 18px; color: var(--pb-candy-crown); }
-.pb-plvl-t { font-family: var(--font-chrome); font-size: 11px; font-weight: 600; letter-spacing: 2px; color: var(--pb-cream); }
+.pb-plvl-row .crown { font-size: var(--t-heading); color: var(--pb-candy-crown); }
+.pb-plvl-t { font-family: var(--font-chrome); font-size: var(--t-micro); font-weight: 600; letter-spacing: 2px; color: var(--pb-cream); }
 .pb-bigxp { height: 10px; border-radius: 999px; background: var(--pb-track); margin-top: 10px; overflow: hidden; }
 .pb-bigxp b { display: block; height: 100%; border-radius: 999px; background: var(--pb-candy-bolt); }
-.pb-xpcap { font-size: 11px; color: var(--pb-cream-mute); margin-top: 6px; }
+.pb-xpcap { font-size: var(--t-micro); color: var(--pb-cream-mute); margin-top: 6px; }
 
 /* the purse — ink, coins, streak (candy in glyphs + numbers only) */
 .pb-pchips { display: flex; gap: 8px; margin-top: 14px; }
@@ -812,12 +812,12 @@
 /* memory header — the mirror owl introduces the owl's private notes on you */
 .pb-mem-head { display: flex; align-items: center; gap: 12px; }
 .pb-mem-head .owl.mini { position: static; width: 46px; height: 50px; flex: 0 0 46px; filter: none; }
-.pb-mem-head-t { font-family: var(--font-chrome); font-size: 15px; letter-spacing: 1.5px; color: var(--pb-velvet); }
-.pb-mem-head-sub { font-family: var(--font-display); font-style: italic; font-size: 12.5px; line-height: 1.35; color: var(--pb-ink-mute); margin-top: 3px; }
+.pb-mem-head-t { font-family: var(--font-chrome); font-size: var(--t-body); letter-spacing: 1.5px; color: var(--pb-velvet); }
+.pb-mem-head-sub { font-family: var(--font-display); font-style: italic; font-size: var(--t-micro); line-height: 1.35; color: var(--pb-ink-mute); margin-top: 3px; }
 /* the "who you are" portrait — the two free-text notes grouped on their own card */
 .pb-mem-portrait { margin-top: 14px; padding: 14px; background: var(--pb-paper-dim); border: 1px solid var(--pb-paper-line); border-radius: 14px; }
 .pb-mem-portrait .gate-input { background: var(--pb-paper); }
-.pb-mem .sh-sec { font-family: var(--font-chrome); font-size: 10px; }
+.pb-mem .sh-sec { font-family: var(--font-chrome); font-size: var(--t-micro); }
 
 /* ---------- history overlay → a cream ledger ----------
    It slides up on a cream ground but its text/rows inherited the dark-theme
@@ -1011,7 +1011,7 @@ body { overscroll-behavior: none; }
 .pb-skip {
   align-self: center; position: sticky; bottom: 6px; margin: 6px 0 2px; padding: 6px 16px; border-radius: 999px;
   background: var(--pb-chip-bg); border: 1px solid var(--pb-tag-line); color: var(--pb-cream-mute);
-  font: 600 10px var(--font-chrome); letter-spacing: 1.4px; text-transform: uppercase;
+  font: 600 var(--t-micro) var(--font-chrome); letter-spacing: 1.4px; text-transform: uppercase;
   cursor: pointer; touch-action: manipulation;
 }
 .pb-skip:active { transform: translateY(1px); }
