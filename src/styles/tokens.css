@@ -24,22 +24,59 @@
   --sal: env(safe-area-inset-left, 0px);
   --sar: env(safe-area-inset-right, 0px);
 
-  /* ---- fluid scale ----
-     vw-based clamps that grow from a 320px phone up to ~440px, then hold.
-     On desktop the app is capped at --app-max, so vw saturates at the max —
-     type and spacing settle at their ceiling rather than ballooning. */
-  --gutter: max(clamp(16px, 5.2vw, 22px), var(--sal), var(--sar));
-
-  --fs-meta: clamp(11px, 3vw, 12px);    /* labels, captions, meta      */
-  --fs-body: clamp(13px, 3.5vw, 14px);  /* chat, list copy             */
-  --fs-lead: clamp(14px, 3.8vw, 15px);  /* card titles, intros         */
-  --fs-read: clamp(15px, 4.2vw, 16px);  /* reader / letter prose       */
-  --fs-hero: clamp(31px, 9.6vw, 40px);  /* today's pick headline       */
-  --fs-hero-sm: clamp(23px, 7vw, 28px); /* secondary screen headlines  */
-
   /* content column cap for tablet / desktop (centered phone-width column) */
   --app-max: 440px;
 
   /* app viewport height (mobile fills the device; desktop caps + centers) */
   --app-h: 100dvh;
+
+  /* ============================================================
+     THE TYPE RAMP
+
+     Ten roles, in rem, root 16px. Replaces ~50 ad-hoc px sizes and ~45
+     letter-spacing values that had drifted across three stylesheets.
+     Families come from type.css (--font-display / -reading / -chrome).
+
+     Two rules worth keeping in mind when extending this:
+       · small text gets OPEN tracking, display gets TIGHT tracking
+         (most systems do this backwards, or skip it);
+       · 0.75rem/12px is the floor for anything a person reads. Book-jacket
+         artwork is the only exemption.
+     ============================================================ */
+
+  /* sizes */
+  --t-display-xl: 2.5rem;    /* 40px — hero / onboarding marquees        */
+  --t-display:    2rem;      /* 32px — hub screen titles                 */
+  --t-title:      1.5rem;    /* 24px — overlay titles, book titles ≥24   */
+  --t-heading:    1.125rem;  /* 18px — section heads, card titles        */
+  --t-reading:    1.125rem;  /* 18px — prose                             */
+  --t-body:       1rem;      /* 16px — UI body, rows, inputs (see below) */
+  --t-callout:    0.875rem;  /* 14px — secondary UI copy, pull-quotes    */
+  --t-label:      0.8125rem; /* 13px — chips, buttons, tabs (uppercase)  */
+  --t-micro:      0.75rem;   /* 12px — metadata only. THE FLOOR.         */
+
+  /* --t-body is exactly 1rem/16px on purpose: 16px is the threshold below
+     which iOS auto-zooms a focused input. Inputs can now just take the body
+     token instead of carrying a magic number. */
+
+  /* weights — one scale, ending the 800-vs-600 split between the two sheets */
+  --fw-serif: 430;         /* Fraunces/Literata text weight */
+  --fw-serif-strong: 600;
+  --fw-ui: 400;
+  --fw-ui-medium: 500;
+  --fw-ui-semibold: 600;   /* THE label weight — replaces legacy 800 at small sizes */
+  --fw-ui-bold: 700;       /* scarce: ≥13px true bold, numerals */
+
+  /* line-heights */
+  --lh-display: 1.05;
+  --lh-tight: 1.25;
+  --lh-ui: 1.45;
+  --lh-body: 1.5;
+  --lh-read: 1.65;
+
+  /* tracking — 45 scattered values collapse to four, in em so they scale */
+  --track-display: -0.02em;  /* large display type wants to close up      */
+  --track-title: -0.015em;
+  --track-label: 0.06em;     /* ALL-CAPS ticket-stub labels               */
+  --track-wide: 0.3em;       /* ceremonial: onboarding/auth credit lines  */
 }
