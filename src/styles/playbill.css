@@ -850,9 +850,15 @@
 .settings .gdot { color: var(--pb-brass); }
 .settings .sh-sec { color: var(--pb-brass); border-top-color: var(--pb-tag-line); }
 
-/* rows + link rows — flat hairline plates on the stage */
+/* rows + link rows — flat hairline plates on the stage. Each is its own
+   bordered plate, so they need air between them: butted together their rounded
+   corners collide and the group reads as one broken box. */
 .settings .set-row,
 .settings .link-row { background: none; border: 1px solid var(--pb-tag-line); border-radius: 12px; box-shadow: none; color: var(--pb-cream); }
+.settings .set-row + .set-row,
+.settings .link-row + .link-row,
+.settings .set-row + .link-row,
+.settings .link-row + .set-row { margin-top: 8px; }
 .settings .set-lab { color: var(--pb-cream); }
 .settings .set-sub { color: var(--pb-cream-mute); }
 .settings .link-row .ti:first-child { color: var(--pb-brass); }

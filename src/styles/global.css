@@ -177,7 +177,11 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 
 /* ---------- section marquees ---------- */
 .headline{padding:26px 22px 0}
-.hl{position:relative;z-index:1;display:inline-flex;align-items:flex-start;font-size:var(--t-display-xl);line-height:.95;text-transform:uppercase;text-shadow:var(--glowT)}
+/* line-height .95 was tuned for Anton — condensed, with almost no overshoot.
+   Fraunces has classical proportions and taller caps, so that box clipped the
+   letterforms against the scroll container's top edge. --lh-tight matches the
+   face's natural line box exactly, which is what it takes to contain them. */
+.hl{position:relative;z-index:1;display:inline-flex;align-items:flex-start;font-size:var(--t-display-xl);line-height:var(--lh-tight);text-transform:uppercase;text-shadow:var(--glowT)}
 .hl .u{position:absolute;left:1px;top:-9px;width:30px;height:5px;background:var(--yellow);transform:skewX(-24deg);border-radius:1px}
 .hl .t{position:relative}
 .hl.sm{font-size:var(--t-display)}
@@ -578,7 +582,9 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .set-row{display:flex;align-items:center;gap:14px;padding:14px 2px;border-bottom:1px solid var(--line)}
 .set-info{flex:1;min-width:0}
 .set-lab{font-family:var(--font-chrome);font-size:var(--t-callout);letter-spacing:.01em}
-.set-sub{font-size:var(--t-micro);color:var(--mut);margin-top:2px;line-height:1.4}
+/* the description under a control label. 2px read as one blob with the label;
+   4px lets them separate without breaking the pair. */
+.set-sub{font-size:var(--t-micro);color:var(--mut);margin-top:4px;line-height:var(--lh-ui)}
 .tgl{flex:0 0 auto;width:44px;height:26px;border-radius:999px;border:1px solid var(--line2);
   background:var(--track);position:relative;cursor:pointer;padding:0;
   transition:background .2s ease,border-color .2s ease}
