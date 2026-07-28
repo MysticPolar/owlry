@@ -17,3 +17,6 @@ dev-dist
 
 # typescript incremental build info
 *.tsbuildinfo
+
+# claude worktrees (never commit these)
+.claude/worktrees/
