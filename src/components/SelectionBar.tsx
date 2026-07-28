@@ -111,7 +111,7 @@ export function SelectionBar() {
   };
 
   const keep = () => {
-    saveQuote();
+    saveQuote(anchor.text);
     dismiss();
   };
 

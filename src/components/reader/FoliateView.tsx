@@ -121,7 +121,12 @@ export const FoliateView = forwardRef<EngineHandle, EngineProps>(function Foliat
         if (source.kind === 'local') {
           const up = await loadUpload(bookId);
           if (!up) return fail('Your uploaded file is missing — please upload it again.');
-          input = up.blob;
+          // foliate sniffs format from file.name — a raw Blob (or a platform
+          // that degrades File → Blob in IndexedDB) would crash makeBook, so
+          // re-wrap with a name carrying the stored format's extension
+          input = up.blob instanceof File && up.blob.name
+            ? up.blob
+            : new File([up.blob], `book.${up.source.format}`, { type: up.blob.type || 'application/octet-stream' });
         } else {
           // remote public-domain EPUB — routed through book-proxy (the host sends
           // no CORS header, so the browser can't fetch it directly)
@@ -149,7 +154,8 @@ export const FoliateView = forwardRef<EngineHandle, EngineProps>(function Foliat
 
         clearTimeout(watchdog);
         settled = true;
-      } catch {
+      } catch (e) {
+        console.error('[reader] foliate open failed:', e);
         fail('We couldn’t open this book. Try a different DRM-free file.');
       }
     })();

@@ -5,6 +5,7 @@ import { useOverlayPresence } from '../../hooks/useOverlayPresence';
 import { getBook } from '../../lib/bookRegistry';
 import { inspectFile, ACCEPT_ATTR } from '../../lib/ebook/inspect';
 import { saveUpload } from '../../lib/ebook/storage';
+import { pushCopy } from '../../lib/ebook/cloudCopy';
 import type { ReadingSource } from '../../lib/ebook/types';
 import { useT } from '../../i18n/react';
 import { Icon } from '../Icon';
@@ -57,6 +58,9 @@ export function UploadModal() {
       };
       await saveUpload(effectiveId, file, source);
       setSource(effectiveId, source);
+      // signed in, the copy also lands on the account's private cloud shelf so
+      // other devices can open it — best-effort, never blocks the reader
+      void pushCopy(effectiveId, file, check.format).catch(() => {});
     } catch {
       setError(t.errGeneric);
     } finally {

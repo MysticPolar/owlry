@@ -1,6 +1,6 @@
 /* Typed wrappers over the three owlry_* RPC entry points. */
 import { supabase } from '../supabase';
-import type { BookId } from '../../content/types';
+import type { BookId, BookRef } from '../../content/types';
 import type { ActionResult, EconomyAction, Snapshot } from './types';
 
 function client() {
@@ -38,7 +38,8 @@ export async function performAction(
   return data as ActionResult;
 }
 
-export async function saveQuote(bookId: BookId, text: string): Promise<Snapshot> {
+// registry key, not the catalog union — open-world (live-owl) books keep quotes too
+export async function saveQuote(bookId: BookRef, text: string): Promise<Snapshot> {
   const { data, error } = await client().rpc('owlry_save_quote', { p_book_id: bookId, p_text: text });
   if (error) throw error;
   return data as Snapshot;

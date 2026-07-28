@@ -32,9 +32,12 @@ export function normalizePersisted(raw: unknown): PersistedState {
           : SEED.prefs.reader.font,
         size: Math.min(24, Math.max(16, size)),
         dimmer: Math.min(1, Math.max(0, dimmer)),
-        flow: READER_FLOWS.has(incomingReader.flow as ReaderFlow)
+        // an inherited flow only sticks if the reader chose it in settings —
+        // profiles that never touched the toggle migrate to the seed default
+        flow: incomingReader.flowSetByUser && READER_FLOWS.has(incomingReader.flow as ReaderFlow)
           ? (incomingReader.flow as ReaderFlow)
           : SEED.prefs.reader.flow,
+        flowSetByUser: incomingReader.flowSetByUser === true,
       },
     },
   };

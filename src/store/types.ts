@@ -18,6 +18,9 @@ export interface ReaderPrefs {
   size: number;
   dimmer: number;
   flow: ReaderFlow;
+  /** true once the reader has explicitly picked a flow in settings — without it,
+      a persisted flow is treated as the old default and re-seeded (page) */
+  flowSetByUser?: boolean;
 }
 
 /** Which owl answers the chat: the live LLM, or the offline mockup brain. */

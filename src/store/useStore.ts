@@ -24,11 +24,13 @@ import { fetchOwlTurn, fetchLetter } from '../lib/owlClient';
 import { getBook, getGuide } from '../lib/bookRegistry';
 import { FEED } from '../content/feed';
 import { supabase, isBackendConfigured } from '../lib/supabase';
+import { saveQuote as persistQuote } from '../lib/economy/api';
 import { getLocalWeather } from '../lib/weather';
 import { rowsToChat } from '../lib/chatHydrate';
 import type { ChatRow } from '../lib/chatHydrate';
 import { resolvePublicDomain } from '../lib/ebook/resolve';
-import { loadUpload } from '../lib/ebook/storage';
+import { loadUpload, saveUpload } from '../lib/ebook/storage';
+import { pullCopy } from '../lib/ebook/cloudCopy';
 import type { ReadingSource } from '../lib/ebook/types';
 import type { BookRef } from '../content/types';
 
@@ -104,7 +106,7 @@ export interface Store extends PersistedState {
   introAfter: BookRef | null;
   showIntro: (key: IntroKey, afterLetter?: BookRef) => void;
   dismissIntro: () => void;
-  saveQuote: () => void;
+  saveQuote: (text: string, bookId?: BookRef) => void;
   /** the profile section is chained until level 5 — the pill opens this instead */
   mirrorRoomOpen: boolean;
   closeMirrorRoom: () => void;
@@ -355,7 +357,22 @@ export const useStore = create<Store>()(
         /* ignore storage errors */
       }
 
-      // 2) resolve a public-domain EPUB by title + author (Gutendex)
+      // 2) signed in: another device may have shelved this copy on the
+      //    account's private cloud folder — pull it and cache it locally
+      try {
+        const label = tOf(get().prefs.lang ?? 'en').settings.upload.sourceLabel;
+        const cloud = await pullCopy(id, label);
+        if (get().ebook.bookId !== id) return;
+        if (cloud) {
+          await saveUpload(id, cloud.blob, cloud.source);
+          set({ ebook: { ...get().ebook, status: 'reading', source: cloud.source } });
+          return;
+        }
+      } catch {
+        /* offline / signed out / bucket absent — fall through */
+      }
+
+      // 3) resolve a public-domain EPUB by title + author (Gutendex)
       const source = await resolvePublicDomain(b.t, b.a);
       if (get().ebook.bookId !== id) return;
       set({
@@ -502,10 +519,20 @@ export const useStore = create<Store>()(
       if (after) get().openLetter(after); // 'peek' is now seen → the letter opens for real
     },
 
-    saveQuote: () => {
+    saveQuote: (text, bookId) => {
       // scribe reveals herself the first time a line is kept; after that, a quiet toast
       if (!(get().prefs.introsSeen ?? []).includes('scribe')) get().showIntro('scribe');
       else get().showToast('ti-quote', L(get().prefs).lineSaved, 'scribe');
+      // signed in, the line really lands in owlry_quotes; guests keep the ritual only.
+      // owlry_save_quote needs a book — explicit id first, else whichever book
+      // surface the line was lifted from. The sheet outranks the letter: they only
+      // coexist when a sheet opens OVER a letter (openLetter clears sheetId), and
+      // then the sheet is the surface being quoted.
+      const st = get();
+      const book = bookId ?? (st.ebook.open ? st.ebook.bookId : null) ?? st.sheetId ?? st.letterId;
+      const line = text.trim().slice(0, 1000); // a kept line, not a kept chapter
+      if (!line || !book || !st.authUser || !isBackendConfigured()) return;
+      void persistQuote(book, line).catch(() => {});
     },
     startAsk: (id) => {
       const b = getBook(id);

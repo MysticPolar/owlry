@@ -159,7 +159,7 @@ const en = {
   upload: {
     ariaDialog: 'Upload your ebook',
     title: 'BRING YOUR OWN COPY',
-    body: 'your file stays on this device — keeper shelves it, but the book itself never leaves; only your progress syncs. accepted: epub, kindle (mobi/azw3), fb2, pdf, txt — DRM-free.',
+    body: 'signed in, keeper mirrors your copy to your private shelf so your other devices can open it; as a guest it stays on this device. accepted: epub, kindle (mobi/azw3), fb2, pdf, txt — DRM-free.',
     errUnreadable: 'We couldn’t read that file.',
     errGeneric: 'Something went wrong reading that file.',
     sourceLabel: 'Your upload',
@@ -324,7 +324,7 @@ const zh: typeof en = {
   upload: {
     ariaDialog: '上传你的电子书',
     title: '带上你自己的藏本',
-    body: '文件只留在这台设备上——keeper 会替它上架，但书本身从不离开；同步的只有你的进度。支持：epub、kindle（mobi/azw3）、fb2、pdf、txt——须无 DRM。',
+    body: '登录后，keeper 会把你的副本收进你的私人书架，其他设备也能打开；游客模式下文件只留在这台设备上。支持：epub、kindle（mobi/azw3）、fb2、pdf、txt——须无 DRM。',
     errUnreadable: '我们读不了这个文件。',
     errGeneric: '读取这个文件时出了点问题。',
     sourceLabel: '你的上传',

@@ -1456,6 +1456,9 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 }
 @keyframes readerOpen{from{opacity:.4;transform:scale(.985)}to{opacity:1;transform:none}}
 .reader-stage{position:absolute;inset:0;overflow:hidden;background:var(--reader-paper);color:#241B0E}
+/* parent-owned gesture surface over the epub iframe (taps/swipes/wheel can't
+   cross the sandboxed frame boundary) — sits under the chrome (z 3) */
+.reader-gestures{position:absolute;inset:0;z-index:1;touch-action:none;cursor:default}
 .reader-chrome{position:absolute;z-index:3;left:0;right:0;display:flex;align-items:center;gap:10px;color:#F4ECD8;
   background:linear-gradient(180deg,rgba(13,17,31,.96),rgba(13,17,31,.82));animation:chromeIn .16s ease}
 @keyframes chromeIn{from{opacity:0}to{opacity:1}}

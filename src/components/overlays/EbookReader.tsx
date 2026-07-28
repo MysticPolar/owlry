@@ -107,8 +107,8 @@ function ReaderSettings({
       <div className="reader-control reader-flow-row">
         <div className="reader-control-label"><span>{t.reader.flowLabel}</span>{pdf && <small>{t.reader.pagesOnly}</small>}</div>
         <div className="reader-flow" role="group" aria-label={t.reader.flowGroupAria}>
-          <button className={!pdf && prefs.flow === 'scroll' ? 'on' : ''} aria-pressed={!pdf && prefs.flow === 'scroll'} disabled={pdf} onClick={() => onChange({ flow: 'scroll' })}>{t.reader.flowScroll}</button>
-          <button className={pdf || prefs.flow === 'page' ? 'on' : ''} aria-pressed={pdf || prefs.flow === 'page'} disabled={pdf} onClick={() => onChange({ flow: 'page' })}>{t.reader.flowPage}</button>
+          <button className={!pdf && prefs.flow === 'scroll' ? 'on' : ''} aria-pressed={!pdf && prefs.flow === 'scroll'} disabled={pdf} onClick={() => onChange({ flow: 'scroll', flowSetByUser: true })}>{t.reader.flowScroll}</button>
+          <button className={pdf || prefs.flow === 'page' ? 'on' : ''} aria-pressed={pdf || prefs.flow === 'page'} disabled={pdf} onClick={() => onChange({ flow: 'page', flowSetByUser: true })}>{t.reader.flowPage}</button>
         </div>
       </div>
     </section>
@@ -136,6 +136,9 @@ export function EbookReader() {
   const b = bookId ? getBook(bookId) : null;
   const pdf = source?.format === 'pdf';
   const pageMode = pdf || prefs.flow === 'page';
+  // formats rendered by FoliateView, i.e. inside a sandboxed iframe (mirrors
+  // the engine switch below: everything that isn't pdf/txt)
+  const foliate = !!source && source.format !== 'pdf' && source.format !== 'txt';
 
   const engineRef = useRef<EngineHandle>(null);
   const [initial, setInitial] = useState<ReadingPosition | null>(null);
@@ -148,6 +151,8 @@ export function EbookReader() {
   const saveTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const chromeTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const tapStart = useRef<{ x: number; y: number } | null>(null);
+  const gestureStart = useRef<{ x: number; y: number } | null>(null);
+  const wheelGate = useRef(0);
 
   const revealChrome = useCallback(() => {
     clearTimeout(chromeTimer.current);
@@ -205,17 +210,17 @@ export function EbookReader() {
         event.preventDefault();
         if (settingsOpen) setSettingsOpen(false);
         else close();
-      } else if (pageMode && event.key === 'ArrowLeft') {
+      } else if ((pageMode || foliate) && event.key === 'ArrowLeft') {
         event.preventDefault();
         engineRef.current?.prev();
-      } else if (pageMode && event.key === 'ArrowRight') {
+      } else if ((pageMode || foliate) && event.key === 'ArrowRight') {
         event.preventDefault();
         engineRef.current?.next();
       }
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [open, settingsOpen, pageMode, close]);
+  }, [open, settingsOpen, pageMode, foliate, close]);
 
   const onProgress = (update: ProgressUpdate) => {
     posRef.current = update;
@@ -295,6 +300,48 @@ export function EbookReader() {
               <FoliateView ref={engineRef} bookId={bookId} source={source} initial={initial} prefs={prefs} onProgress={onProgress} onError={onError} />
             )}
           </Suspense>
+        )}
+        {status === 'reading' && source && positionReady && foliate && (
+          /* The book renders inside a sandboxed iframe: real taps, swipes, and
+             wheel spins over it never reach this document, and scroll-chaining
+             out of a sandboxed frame is unreliable (notably on iOS) — the book
+             would freeze on its first page. This parent-owned layer captures
+             input instead and drives the engine directly, in both flows.
+             Trade-off: in-book link taps and text selection inside the epub are
+             blocked — being able to turn the page wins. */
+          <div
+            className="reader-gestures"
+            onPointerDown={(event) => { event.stopPropagation(); gestureStart.current = { x: event.clientX, y: event.clientY }; }}
+            onPointerUp={(event) => {
+              event.stopPropagation(); // the stage's own tap zones must not double-handle
+              const start = gestureStart.current;
+              gestureStart.current = null;
+              if (!start) return;
+              const dx = event.clientX - start.x;
+              const dy = event.clientY - start.y;
+              if (Math.hypot(dx, dy) <= 10) {
+                const rect = event.currentTarget.getBoundingClientRect();
+                const x = (event.clientX - rect.left) / rect.width;
+                if (x < 0.24) engineRef.current?.prev();
+                else if (x > 0.76) engineRef.current?.next();
+                else chromeVisible ? setChromeVisible(false) : revealChrome();
+                return;
+              }
+              // swipe: dominant axis decides; left/up = forward, right/down = back
+              const d = Math.abs(dx) >= Math.abs(dy) ? dx : dy;
+              if (d <= -40) engineRef.current?.next();
+              else if (d >= 40) engineRef.current?.prev();
+            }}
+            onWheel={(event) => {
+              const now = performance.now();
+              if (now - wheelGate.current < 250) return;
+              const d = Math.abs(event.deltaY) >= Math.abs(event.deltaX) ? event.deltaY : event.deltaX;
+              if (Math.abs(d) < 12) return;
+              wheelGate.current = now;
+              if (d > 0) engineRef.current?.next();
+              else engineRef.current?.prev();
+            }}
+          />
         )}
       </div>
 

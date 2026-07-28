@@ -15,7 +15,7 @@ import { CastOwl } from '../CastOwl';
 const typedOnce = new Set<string>();
 
 /** the "save line" chip — keeping a line is scribe's trigger */
-function SaveLine() {
+function SaveLine({ quote, bookId }: { quote: string; bookId: string | null }) {
   const t = useT();
   const saveQuote = useStore((s) => s.saveQuote);
   const [saved, setSaved] = useState(false);
@@ -26,7 +26,8 @@ function SaveLine() {
       onClick={() => {
         if (saved) return;
         setSaved(true);
-        saveQuote();
+        // explicit id: the store's letterId is already null during the exit slide
+        saveQuote(quote, bookId ?? undefined);
       }}
     >
       <Icon name={saved ? 'ti-check' : 'ti-quote'} />
@@ -216,7 +217,8 @@ export function Letter() {
                   {n.q && q && (
                     <div className="l-q it">
                       &ldquo;{q}&rdquo;<small>{by}</small>
-                      <SaveLine />
+                      {/* the full line, not the typed-so-far slice */}
+                      <SaveLine quote={n.q.t} bookId={id} />
                     </div>
                   )}
                 </div>
