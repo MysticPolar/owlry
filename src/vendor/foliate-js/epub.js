@@ -1,4 +1,5 @@
 import * as CFI from './epubcfi.js'
+import { injectContentSecurityPolicy } from './security.js'
 
 const NS = {
     CONTAINER: 'urn:oasis:names:tc:opendocument:xmlns:container',
@@ -108,6 +109,10 @@ const resolveURL = (url, relativeTo) => {
 
 const isExternal = uri => /^(?!blob)\w+:/i.test(uri)
 
+// EPUB spine documents are loaded from blob URLs. Restrict those documents to
+// data already materialized by the loader, plus Owlry's same-origin reader
+// fonts. Top-level navigation is intentionally not restricted: View intercepts
+// explicit anchor clicks and opens external links from the parent document.
 // like `path.relative()` in Node.js
 const pathRelative = (from, to) => {
     if (!from) return to
@@ -784,10 +789,15 @@ class Loader {
         return this.createURL(href, tryLoadBlob, mediaType, parent)
     }
     async loadHref(href, base, parents = []) {
-        if (isExternal(href)) return href
+        if (!href || href.startsWith('#')
+        || /^(?:blob|data):/i.test(href)) return href
+        // This method is used only for embedded resources, not ordinary
+        // <a href> navigation. Never leave a network-capable or unmanifested
+        // URL in an uploaded book document.
+        if (isExternal(href)) return ''
         const path = resolveURL(href, base)
         const item = this.manifest.find(item => item.href === path)
-        if (!item) return href
+        if (!item) return ''
         return this.loadItem(item, parents.concat(base))
     }
     async loadReplaced(item, parents = []) {
@@ -840,12 +850,20 @@ class Loader {
             const replace = async (el, attr) => el.setAttribute(attr,
                 await this.loadHref(el.getAttribute(attr), href, parents))
             for (const el of doc.querySelectorAll('link[href]')) await replace(el, 'href')
+            for (const el of doc.querySelectorAll('[href]:not(a):not(link)'))
+                await replace(el, 'href')
             for (const el of doc.querySelectorAll('[src]')) await replace(el, 'src')
             for (const el of doc.querySelectorAll('[poster]')) await replace(el, 'poster')
             for (const el of doc.querySelectorAll('object[data]')) await replace(el, 'data')
-            for (const el of doc.querySelectorAll('[*|href]:not([href])'))
-                el.setAttributeNS(NS.XLINK, 'href', await this.loadHref(
-                    el.getAttributeNS(NS.XLINK, 'href'), href, parents))
+            for (const el of doc.querySelectorAll('[*|href]:not([href])')) {
+                const target = el.getAttributeNS(NS.XLINK, 'href')
+                // Preserve explicit SVG/XHTML links; View intercepts their
+                // clicks. Other xlink references are embedded resources.
+                if (el.localName === 'a') el.setAttribute('href', target)
+                else
+                    el.setAttributeNS(NS.XLINK, 'href',
+                        await this.loadHref(target, href, parents))
+            }
             for (const el of doc.querySelectorAll('[srcset]'))
                 el.setAttribute('srcset', await replaceSeries(el.getAttribute('srcset'),
                     /(\s*)(.+?)\s*((?:\s[\d.]+[wx])+\s*(?:,|$)|,\s+|$)/g,
@@ -858,7 +876,14 @@ class Loader {
             for (const el of doc.querySelectorAll('[style]'))
                 el.setAttribute('style',
                     await this.replaceCSS(el.getAttribute('style'), href, parents))
+            // A refresh is navigation rather than a subresource load and is not
+            // covered by default-src. It must never run without a user click.
+            for (const el of doc.querySelectorAll('meta[http-equiv]'))
+                if (el.getAttribute('http-equiv')?.toLowerCase() === 'refresh')
+                    el.remove()
             // TODO: replace inline scripts? probably not worth the trouble
+            if ([MIME.XHTML, MIME.HTML].includes(item.mediaType))
+                injectContentSecurityPolicy(doc)
             const result = new XMLSerializer().serializeToString(doc)
             return this.createURL(href, result, item.mediaType, parent)
         }

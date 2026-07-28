@@ -5,6 +5,7 @@
    mockup, whose chat + carousel reset on refresh).
    ============================================================ */
 import type { BookRef } from '../content/types';
+import type { ReadingPosition } from '../lib/ebook/types';
 import type { OwlMessage, OwlBatch, OwlSession } from '../lib/owlBrain';
 
 export type Tab = 'today' | 'discover' | 'profile';
@@ -66,7 +67,12 @@ export interface PersistedState {
   readingIds: BookRef[];
   finishedIds: BookRef[];
   pagesRead: Record<string, number>;
+  /** Exact, reflow-safe resume anchors synced for signed-in readers.
+      Guests keep the same shape in memory only for the current tab. */
+  readingPositions: Record<string, ReadingPosition>;
   prefs: Prefs;
+  /** Monotonic last-write marker for settings, independent of XP/progress. */
+  prefsUpdatedAt: number;
 }
 
 export type ChatItem =

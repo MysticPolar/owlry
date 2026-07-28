@@ -17,6 +17,10 @@ export interface EngineProps {
   initial: ReadingPosition | null;
   prefs: ReaderPrefs;
   onProgress: (u: ProgressUpdate) => void;
+  /** Lets an engine reserve safe space only while the overlay chrome is visible. */
+  chromeVisible?: boolean;
+  /** A non-interactive tap in an embedded book can toggle the parent chrome. */
+  onToggleChrome?: () => void;
   /** report a hard failure; fallbackEmpty=true asks the shell to offer upload instead */
   onError: (msg: string, fallbackEmpty?: boolean) => void;
 }
@@ -26,6 +30,9 @@ export interface EngineHandle {
   next: () => void;
   prev: () => void;
 }
+
+/** Internal engine signal: another tab atomically replaced this exact copy. */
+export const COPY_REPLACED_ERROR = '__owlry_copy_replaced__';
 
 /** The reader's "Sans" option. Mirrors --font-chrome in src/styles/type.css —
     it has to be a literal because CSS custom properties do not cross into the

@@ -62,7 +62,9 @@ export async function currentProfile(): Promise<AuthProfile | null> {
   const { data } = await supabase.auth.getSession();
   const user = data.session?.user;
   if (!user) return null;
-  return fetchProfile(user.id, user.email ?? '');
+  const profile = await fetchProfile(user.id, user.email ?? '');
+  const latest = await supabase.auth.getSession();
+  return latest.data.session?.user.id === user.id ? profile : null;
 }
 
 /** log in with email + password; resolves the profile or throws the raw error */
@@ -73,7 +75,12 @@ export async function signIn(email: string, password: string): Promise<AuthProfi
     password,
   });
   if (error || !data.user) throw error ?? new Error('sign-in failed');
-  return fetchProfile(data.user.id, data.user.email ?? email);
+  const profile = await fetchProfile(data.user.id, data.user.email ?? email);
+  const latest = await supabase.auth.getSession();
+  if (latest.data.session?.user.id !== data.user.id) {
+    throw new Error('auth-session-changed');
+  }
+  return profile;
 }
 
 /** map a signup-with-invite error string to a voice reason (order matters:
@@ -127,9 +134,22 @@ export async function signOut(): Promise<void> {
 /** subscribe to session changes (login/logout in another tab, token refresh) */
 export function onAuthChange(cb: (profile: AuthProfile | null) => void): () => void {
   if (!supabase) return () => {};
-  const { data } = supabase.auth.onAuthStateChange(async (_event, session) => {
+  let active = true;
+  let generation = 0;
+  const { data } = supabase.auth.onAuthStateChange((_event, session) => {
+    const eventGeneration = ++generation;
     const user = session?.user;
-    cb(user ? await fetchProfile(user.id, user.email ?? '') : null);
+    if (!user) {
+      cb(null);
+      return;
+    }
+    void fetchProfile(user.id, user.email ?? '').then((profile) => {
+      if (active && generation === eventGeneration) cb(profile);
+    });
   });
-  return () => data.subscription.unsubscribe();
+  return () => {
+    active = false;
+    generation += 1;
+    data.subscription.unsubscribe();
+  };
 }

@@ -1,3 +1,5 @@
+import { CONTENT_SECURITY_POLICY } from './security.js'
+
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 const debounce = (f, wait, immediate) => {
@@ -212,6 +214,7 @@ class View {
     #element = document.createElement('div')
     #iframe = document.createElement('iframe')
     #contentRange = document.createRange()
+    #destroyed = false
     #overlayer
     #vertical = false
     #rtl = false
@@ -242,6 +245,8 @@ class View {
         // `allow-scripts` is needed for events because of WebKit bug
         // https://bugs.webkit.org/show_bug.cgi?id=218086
         this.#iframe.setAttribute('sandbox', 'allow-same-origin')
+        this.#iframe.setAttribute('csp', CONTENT_SECURITY_POLICY)
+        this.#iframe.setAttribute('referrerpolicy', 'no-referrer')
         this.#iframe.setAttribute('scrolling', 'no')
     }
     get element() {
@@ -255,7 +260,15 @@ class View {
         return new Promise(resolve => {
             this.#iframe.addEventListener('load', () => {
                 const doc = this.document
+                if (this.#destroyed || !doc) {
+                    resolve()
+                    return
+                }
                 afterLoad?.(doc)
+                if (this.#destroyed || this.document !== doc) {
+                    resolve()
+                    return
+                }
 
                 // it needs to be visible for Firefox to get computed style
                 this.#iframe.style.display = 'block'
@@ -275,7 +288,10 @@ class View {
                 // the resize observer above doesn't work in Firefox
                 // (see https://bugzilla.mozilla.org/show_bug.cgi?id=1832939)
                 // until the bug is fixed we can at least account for font load
-                doc.fonts.ready.then(() => this.expand())
+                doc.fonts?.ready?.then(() => {
+                    if (this.#destroyed || this.document !== doc) return
+                    this.expand()
+                })
 
                 resolve()
             }, { once: true })
@@ -283,15 +299,17 @@ class View {
         })
     }
     render(layout) {
-        if (!layout) return
+        if (this.#destroyed || !layout) return
         this.#column = layout.flow !== 'scrolled'
         this.#layout = layout
         if (this.#column) this.columnize(layout)
         else this.scrolled(layout)
     }
     scrolled({ gap, columnWidth }) {
+        if (this.#destroyed) return
         const vertical = this.#vertical
         const doc = this.document
+        if (!doc) return
         setStylesImportant(doc.documentElement, {
             'box-sizing': 'border-box',
             'padding': vertical ? `${gap}px 0` : `0 ${gap}px`,
@@ -307,10 +325,12 @@ class View {
         this.expand()
     }
     columnize({ width, height, gap, columnWidth }) {
+        if (this.#destroyed) return
         const vertical = this.#vertical
         this.#size = vertical ? height : width
 
         const doc = this.document
+        if (!doc) return
         setStylesImportant(doc.documentElement, {
             'box-sizing': 'border-box',
             'column-width': `${Math.trunc(columnWidth)}px`,
@@ -339,9 +359,11 @@ class View {
         this.expand()
     }
     setImageSize() {
+        if (this.#destroyed) return
         const { width, height, margin } = this.#layout
         const vertical = this.#vertical
         const doc = this.document
+        if (!doc) return
         for (const el of doc.body.querySelectorAll('img, svg, video')) {
             // preserve max size if they are already set
             const { maxHeight, maxWidth } = doc.defaultView.getComputedStyle(el)
@@ -360,7 +382,10 @@ class View {
         }
     }
     expand() {
-        const { documentElement } = this.document
+        if (this.#destroyed) return
+        const doc = this.document
+        if (!doc) return
+        const { documentElement } = doc
         if (this.#column) {
             const side = this.#vertical ? 'height' : 'width'
             const otherSide = this.#vertical ? 'width' : 'height'
@@ -406,7 +431,7 @@ class View {
                 this.#overlayer.redraw()
             }
         }
-        this.onExpand()
+        this.onExpand?.()
     }
     set overlayer(overlayer) {
         this.#overlayer = overlayer
@@ -416,7 +441,11 @@ class View {
         return this.#overlayer
     }
     destroy() {
-        if (this.document) this.#observer.unobserve(this.document.body)
+        if (this.#destroyed) return
+        this.#destroyed = true
+        this.#observer.disconnect()
+        this.onExpand = null
+        this.container = null
     }
 }
 
@@ -449,6 +478,21 @@ export class Paginator extends HTMLElement {
     #touchState
     #touchScrolled
     #lastVisibleRange
+    #destroyed = false
+    #runNavigation(task) {
+        Promise.resolve()
+            .then(task)
+            .catch(error => {
+                if (this.#destroyed) return
+                const detail = error instanceof Error
+                    ? error : new Error(String(error))
+                this.dispatchEvent(new CustomEvent('error', {
+                    detail,
+                    bubbles: true,
+                    composed: true,
+                }))
+            })
+    }
     constructor() {
         super()
         this.#root.innerHTML = `<style>
@@ -558,6 +602,7 @@ export class Paginator extends HTMLElement {
         this.#observer.observe(this.#container)
         this.#container.addEventListener('scroll', () => this.dispatchEvent(new Event('scroll')))
         this.#container.addEventListener('scroll', debounce(() => {
+            if (this.#destroyed) return
             if (this.scrolled) {
                 if (this.#justAnchored) this.#justAnchored = false
                 else this.#afterScroll('scroll')
@@ -583,16 +628,21 @@ export class Paginator extends HTMLElement {
                 else setSelectionTo(this.#anchor, -1)
             }
         })
-        const checkPointerSelection = debounce((range, sel) => {
+        const checkPointerSelection = debounce((range, sel, view, doc) => {
+            if (this.#destroyed
+                || this.#view !== view
+                || view.document !== doc) return
             if (!sel.rangeCount) return
             const selRange = sel.getRangeAt(0)
             const backward = selectionIsBackward(sel)
             if (backward && selRange.compareBoundaryPoints(Range.START_TO_START, range) < 0)
-                this.prev()
+                this.#runNavigation(() => this.prev())
             else if (!backward && selRange.compareBoundaryPoints(Range.END_TO_END, range) > 0)
-                this.next()
+                this.#runNavigation(() => this.next())
         }, 700)
         this.addEventListener('load', ({ detail: { doc } }) => {
+            const view = this.#view
+            if (!view || view.document !== doc) return
             let isPointerSelecting = false
             doc.addEventListener('pointerdown', () => isPointerSelecting = true)
             doc.addEventListener('pointerup', () => isPointerSelecting = false)
@@ -600,23 +650,34 @@ export class Paginator extends HTMLElement {
             doc.addEventListener('keydown', () => isKeyboardSelecting = true)
             doc.addEventListener('keyup', () => isKeyboardSelecting = false)
             doc.addEventListener('selectionchange', () => {
-                if (this.scrolled) return
+                if (this.#destroyed
+                    || this.#view !== view
+                    || view.document !== doc
+                    || this.scrolled) return
                 const range = this.#lastVisibleRange
                 if (!range) return
                 const sel = doc.getSelection()
                 if (!sel.rangeCount) return
                 if (isPointerSelecting && sel.type === 'Range')
-                    checkPointerSelection(range, sel)
+                    checkPointerSelection(range, sel, view, doc)
                 else if (isKeyboardSelecting) {
                     const selRange = sel.getRangeAt(0).cloneRange()
                     const backward = selectionIsBackward(sel)
                     if (!backward) selRange.collapse()
-                    this.#scrollToAnchor(selRange)
+                    this.#runNavigation(() => this.#scrollToAnchor(selRange))
                 }
             })
-            doc.addEventListener('focusin', e => this.scrolled ? null :
+            doc.addEventListener('focusin', e => {
+                if (this.scrolled) return
+                const target = e.target
                 // NOTE: `requestAnimationFrame` is needed in WebKit
-                requestAnimationFrame(() => this.#scrollToAnchor(e.target)))
+                requestAnimationFrame(() => {
+                    if (this.#destroyed
+                        || this.#view !== view
+                        || view.document !== doc) return
+                    this.#runNavigation(() => this.#scrollToAnchor(target))
+                })
+            })
         })
 
         this.#mediaQueryListener = () => {
@@ -664,9 +725,12 @@ export class Paginator extends HTMLElement {
         })
     }
     #createView() {
-        if (this.#view) {
-            this.#view.destroy()
-            this.#container.removeChild(this.#view.element)
+        if (this.#destroyed) return null
+        const oldView = this.#view
+        this.#view = null
+        if (oldView) {
+            oldView.destroy()
+            oldView.element.remove()
         }
         this.#view = new View({
             container: this,
@@ -752,7 +816,7 @@ export class Paginator extends HTMLElement {
         return { height, width, margin, gap, columnWidth }
     }
     render() {
-        if (!this.#view) return
+        if (this.#destroyed || !this.#view) return
         this.#view.render(this.#beforeRender({
             vertical: this.#vertical,
             rtl: this.#rtl,
@@ -802,6 +866,7 @@ export class Paginator extends HTMLElement {
             element[scrollProp] + delta))
     }
     snap(vx, vy) {
+        if (this.#destroyed || !this.#view) return
         const velocity = this.#vertical ? vy : vx
         const [offset, a, b] = this.#scrollBounds
         const { start, end, pages, size } = this
@@ -812,15 +877,18 @@ export class Paginator extends HTMLElement {
             Math.max(min, Math.min(max, (start + end) / 2
                 + (isNaN(d) ? 0 : d))) / size)
 
-        this.#scrollToPage(page, 'snap').then(() => {
+        return this.#scrollToPage(page, 'snap').then(() => {
+            if (this.#destroyed || !this.#view) return
             const dir = page <= 0 ? -1 : page >= pages - 1 ? 1 : null
-            if (dir) return this.#goTo({
-                index: this.#adjacentIndex(dir),
+            const index = dir ? this.#adjacentIndex(dir) : null
+            if (index != null) return this.#goTo({
+                index,
                 anchor: dir < 0 ? () => 1 : () => 0,
             })
         })
     }
     #onTouchStart(e) {
+        if (this.#destroyed) return
         const touch = e.changedTouches[0]
         this.#touchState = {
             x: touch?.screenX, y: touch?.screenY,
@@ -829,6 +897,7 @@ export class Paginator extends HTMLElement {
         }
     }
     #onTouchMove(e) {
+        if (this.#destroyed || !this.#touchState) return
         const state = this.#touchState
         if (state.pinched) return
         state.pinched = globalThis.visualViewport.scale > 1
@@ -851,6 +920,9 @@ export class Paginator extends HTMLElement {
         this.scrollBy(dx, dy)
     }
     #onTouchEnd() {
+        const view = this.#view
+        const state = this.#touchState
+        if (this.#destroyed || !view || !state) return
         this.#touchScrolled = false
         if (this.scrolled) return
 
@@ -858,8 +930,11 @@ export class Paginator extends HTMLElement {
         // at this point I'm basically throwing `requestAnimationFrame` at
         // anything that doesn't work
         requestAnimationFrame(() => {
+            if (this.#destroyed
+                || this.#view !== view
+                || this.#touchState !== state) return
             if (globalThis.visualViewport.scale === 1)
-                this.snap(this.#touchState.vx, this.#touchState.vy)
+                this.#runNavigation(() => this.snap(state.vx, state.vy))
         })
     }
     // allows one to process rects as if they were LTR and horizontal
@@ -889,6 +964,8 @@ export class Paginator extends HTMLElement {
         return this.#scrollToPage(Math.floor(offset / this.size) + (this.#rtl ? -1 : 1), reason)
     }
     async #scrollTo(offset, reason, smooth) {
+        if (this.#destroyed || !this.#view) return
+        const view = this.#view
         const element = this.#container
         const { scrollProp, size } = this
         if (element[scrollProp] === offset) {
@@ -900,8 +977,11 @@ export class Paginator extends HTMLElement {
         if (this.scrolled && this.#vertical) offset = -offset
         if ((reason === 'snap' || smooth) && this.hasAttribute('animated')) return animate(
             element[scrollProp], offset, 300, easeOutQuad,
-            x => element[scrollProp] = x,
+            x => {
+                if (!this.#destroyed && this.#view === view) element[scrollProp] = x
+            },
         ).then(() => {
+            if (this.#destroyed || this.#view !== view) return
             this.#scrollBounds = [offset, this.atStart ? 0 : size, this.atEnd ? 0 : size]
             this.#afterScroll(reason)
         })
@@ -919,6 +999,7 @@ export class Paginator extends HTMLElement {
         return this.#scrollToAnchor(anchor, select ? 'selection' : 'navigation')
     }
     async #scrollToAnchor(anchor, reason = 'anchor') {
+        if (this.#destroyed || !this.#view) return
         this.#anchor = anchor
         const rects = uncollapse(anchor)?.getClientRects?.()
         // if anchor is an element or a range
@@ -950,6 +1031,7 @@ export class Paginator extends HTMLElement {
             this.start - size, this.end - size, this.#getRectMapper())
     }
     #afterScroll(reason) {
+        if (this.#destroyed || !this.#view) return
         const range = this.#getVisibleRange()
         this.#lastVisibleRange = range
         // don't set new anchor if relocation was to scroll to anchor
@@ -974,6 +1056,7 @@ export class Paginator extends HTMLElement {
         const hasFocus = this.#view?.document?.hasFocus()
         if (src) {
             const view = this.#createView()
+            if (!view) return
             const afterLoad = doc => {
                 if (doc.head) {
                     const $styleBefore = doc.createElement('style')
@@ -986,14 +1069,15 @@ export class Paginator extends HTMLElement {
             }
             const beforeRender = this.#beforeRender.bind(this)
             await view.load(src, afterLoad, beforeRender)
+            if (this.#destroyed || this.#view !== view) return
             this.dispatchEvent(new CustomEvent('create-overlayer', {
                 detail: {
                     doc: view.document, index,
                     attach: overlayer => view.overlayer = overlayer,
                 },
             }))
-            this.#view = view
         }
+        if (!this.#view) return
         await this.scrollToAnchor((typeof anchor === 'function'
             ? anchor(this.#view.document) : anchor) ?? 0, select)
         if (hasFocus) this.focusView()
@@ -1002,6 +1086,7 @@ export class Paginator extends HTMLElement {
         return index >= 0 && index <= this.sections.length - 1
     }
     async #goTo({ index, anchor, select}) {
+        if (this.#destroyed || !this.#canGoToIndex(index)) return
         if (index === this.#index) await this.#display({ index, anchor, select })
         else {
             const oldIndex = this.#index
@@ -1013,15 +1098,16 @@ export class Paginator extends HTMLElement {
             await this.#display(Promise.resolve(this.sections[index].load())
                 .then(src => ({ index, src, anchor, onLoad, select }))
                 .catch(e => {
-                    console.warn(e)
-                    console.warn(new Error(`Failed to load section ${index}`))
-                    return {}
+                    throw new Error(`Failed to load section ${index}`, {
+                        cause: e,
+                    })
                 }))
         }
     }
     async goTo(target) {
-        if (this.#locked) return
+        if (this.#destroyed || this.#locked) return
         const resolved = await target
+        if (this.#destroyed || !resolved) return
         if (this.#canGoToIndex(resolved.index)) return this.#goTo(resolved)
     }
     #scrollPrev(distance) {
@@ -1058,16 +1144,21 @@ export class Paginator extends HTMLElement {
             if (this.sections[index]?.linear !== 'no') return index
     }
     async #turnPage(dir, distance) {
-        if (this.#locked) return
+        if (this.#destroyed || this.#locked) return
         this.#locked = true
-        const prev = dir === -1
-        const shouldGo = await (prev ? this.#scrollPrev(distance) : this.#scrollNext(distance))
-        if (shouldGo) await this.#goTo({
-            index: this.#adjacentIndex(dir),
-            anchor: prev ? () => 1 : () => 0,
-        })
-        if (shouldGo || !this.hasAttribute('animated')) await wait(100)
-        this.#locked = false
+        try {
+            const prev = dir === -1
+            const shouldGo = await (prev ? this.#scrollPrev(distance) : this.#scrollNext(distance))
+            if (this.#destroyed) return
+            if (shouldGo) await this.#goTo({
+                index: this.#adjacentIndex(dir),
+                anchor: prev ? () => 1 : () => 0,
+            })
+            if (this.#destroyed) return
+            if (shouldGo || !this.hasAttribute('animated')) await wait(100)
+        } finally {
+            this.#locked = false
+        }
     }
     prev(distance) {
         return this.#turnPage(-1, distance)
@@ -1099,7 +1190,10 @@ export class Paginator extends HTMLElement {
     }
     setStyles(styles) {
         this.#styles = styles
-        const $$styles = this.#styleMap.get(this.#view?.document)
+        const view = this.#view
+        const doc = view?.document
+        if (!view || !doc) return
+        const $$styles = this.#styleMap.get(doc)
         if (!$$styles) return
         const [$beforeStyle, $style] = $$styles
         if (Array.isArray(styles)) {
@@ -1109,21 +1203,31 @@ export class Paginator extends HTMLElement {
         } else $style.textContent = styles
 
         // NOTE: needs `requestAnimationFrame` in Chromium
-        requestAnimationFrame(() =>
-            this.#background.style.background = getBackground(this.#view.document))
+        requestAnimationFrame(() => {
+            if (this.#view !== view || view.document !== doc) return
+            this.#background.style.background = getBackground(doc)
+        })
 
         // needed because the resize observer doesn't work in Firefox
-        this.#view?.document?.fonts?.ready?.then(() => this.#view.expand())
+        doc.fonts?.ready?.then(() => {
+            if (this.#view !== view || view.document !== doc) return
+            view.expand()
+        })
     }
     focusView() {
-        this.#view.document.defaultView.focus()
+        this.#view?.document?.defaultView?.focus()
     }
     destroy() {
-        this.#observer.unobserve(this)
-        this.#view.destroy()
+        if (this.#destroyed) return
+        this.#destroyed = true
+        this.#observer.disconnect()
+        const view = this.#view
         this.#view = null
-        this.sections[this.#index]?.unload?.()
-        this.#mediaQuery.removeEventListener('change', this.#mediaQueryListener)
+        view?.destroy()
+        view?.element.remove()
+        this.sections?.[this.#index]?.unload?.()
+        if (this.#mediaQueryListener)
+            this.#mediaQuery.removeEventListener('change', this.#mediaQueryListener)
     }
 }
 

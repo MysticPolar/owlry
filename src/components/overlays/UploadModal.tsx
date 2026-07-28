@@ -3,23 +3,33 @@ import { useStore } from '../../store/useStore';
 import { useModalFocus } from '../../hooks/useModalFocus';
 import { useOverlayPresence } from '../../hooks/useOverlayPresence';
 import { getBook } from '../../lib/bookRegistry';
-import { inspectFile, ACCEPT_ATTR } from '../../lib/ebook/inspect';
-import { saveUpload } from '../../lib/ebook/storage';
-import { pushCopy } from '../../lib/ebook/cloudCopy';
+import { inspectFile, preflightFile, ACCEPT_ATTR } from '../../lib/ebook/inspect';
+import {
+  createEbookCopyVersion,
+  getPendingUploadSync,
+  getEbookStorageOwner,
+  saveUpload,
+} from '../../lib/ebook/storage';
+import {
+  schedulePendingCopyRetry,
+  syncPendingCopy,
+} from '../../lib/ebook/uploadSync';
+import { flushActiveReadingPosition } from '../../lib/ebook/activePosition';
 import type { ReadingSource } from '../../lib/ebook/types';
 import { useT } from '../../i18n/react';
 import { Icon } from '../Icon';
 
 /**
- * File-picker modal. Inspects the file client-side (format + DRM), stores the
- * bytes in IndexedDB on THIS device, and hands the reader a local source. The
- * file itself is never uploaded to our server.
+ * File-picker modal. Inspects the file client-side (format + DRM) and hands the
+ * reader a local source. Signed-in readers get an account-scoped offline cache
+ * plus a private cloud copy; guest bytes stay in memory for this tab only.
  */
 export function UploadModal() {
   const open = useStore((s) => s.ebook.uploadOpen);
   const bookId = useStore((s) => s.ebook.bookId);
   const close = useStore((s) => s.closeUpload);
   const setSource = useStore((s) => s.setUploadedSource);
+  const showToast = useStore((s) => s.showToast);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -33,7 +43,11 @@ export function UploadModal() {
   if (bookId) heldId.current = bookId;
   const effectiveId = bookId ?? (mounted ? heldId.current : null);
 
-  useModalFocus(open && !!bookId && mounted, close, dialogRef);
+  const closeWhenIdle = () => {
+    if (!busy) close();
+  };
+
+  useModalFocus(open && !!bookId && mounted, closeWhenIdle, dialogRef);
 
   if (!mounted || !effectiveId) return null;
   const b = getBook(effectiveId);
@@ -41,10 +55,49 @@ export function UploadModal() {
 
   const onFile = async (file?: File) => {
     if (!file) return;
+    // Capture intent when the reader chooses the file, not after a slow EPUB/PDF
+    // inspection. This preserves same-device replacement order.
+    const copySelectedAt = Date.now();
+    const storageOwner = getEbookStorageOwner();
+    const authOwner = useStore.getState().authUser?.id ?? null;
+    const ownerIsStable = (
+      (storageOwner === 'guest' && authOwner === null)
+      || (storageOwner !== 'guest' && storageOwner === authOwner)
+    );
+    if (!ownerIsStable) {
+      setError(t.errAccountChanged);
+      return;
+    }
+    const signedOwner = storageOwner === 'guest' ? null : storageOwner;
+    const accountIsCurrent = () => (
+      getEbookStorageOwner() === storageOwner
+      && (useStore.getState().authUser?.id ?? null) === authOwner
+    );
+    const operationIsCurrent = () => (
+      accountIsCurrent()
+      && useStore.getState().ebook.bookId === effectiveId
+    );
+    const stopIfAccountChanged = () => {
+      if (operationIsCurrent()) return false;
+      if (useStore.getState().ebook.uploadOpen) setError(t.errAccountChanged);
+      return true;
+    };
+
     setBusy(true);
     setError(null);
     try {
+      const preflight = preflightFile(file);
+      if (preflight === 'empty') {
+        setError(t.errEmpty);
+        return;
+      }
+      if (preflight === 'too-large') {
+        setError(t.errTooLarge);
+        return;
+      }
+
       const check = await inspectFile(file);
+      if (stopIfAccountChanged()) return;
       if (!check.ok || !check.format) {
         setError(check.reason ?? t.errUnreadable);
         return;
@@ -55,12 +108,48 @@ export function UploadModal() {
         title: b.t,
         author: b.a,
         sourceLabel: t.sourceLabel,
+        copyVersion: createEbookCopyVersion(copySelectedAt),
+        copySelectedAt,
       };
-      await saveUpload(effectiveId, file, source);
+      // The old copy may have a position waiting in the 500ms debounce. Commit
+      // that exact anchor before the atomic replacement changes the version
+      // fence, otherwise the old reader's final turn can be discarded.
+      await flushActiveReadingPosition(storageOwner);
+      if (stopIfAccountChanged()) return;
+      await saveUpload(effectiveId, file, source, {
+        owner: storageOwner,
+        queueCloudSync: !!signedOwner,
+        resetPosition: true,
+      });
+      if (stopIfAccountChanged()) return;
+      // Local success is the reading gate. Start immediately; cloud work
+      // continues after the modal closes and reports its own outcome.
       setSource(effectiveId, source);
-      // signed in, the copy also lands on the account's private cloud shelf so
-      // other devices can open it — best-effort, never blocks the reader
-      void pushCopy(effectiveId, file, check.format).catch(() => {});
+      showToast('ti-book-2', t.localReady, 'keeper');
+
+      if (!signedOwner) {
+        showToast('ti-lock', t.localOnly, 'keeper');
+        return;
+      }
+
+      try {
+        const cloud = await syncPendingCopy(signedOwner, effectiveId);
+        const stillPending = await getPendingUploadSync(effectiveId, signedOwner);
+        // Retry belongs to the captured account, not to this modal. Closing or
+        // switching books must not strand an otherwise valid pending copy.
+        if (!accountIsCurrent()) return;
+        if (!cloud || cloud.status === 'skipped' || stillPending) {
+          schedulePendingCopyRetry(signedOwner);
+          if (operationIsCurrent()) showToast('ti-lock', t.cloudFailed, 'keeper');
+        } else if (operationIsCurrent()) {
+          showToast('ti-cloud', t.cloudSynced, 'keeper');
+        }
+      } catch {
+        if (accountIsCurrent()) {
+          schedulePendingCopyRetry(signedOwner);
+          if (operationIsCurrent()) showToast('ti-wifi', t.cloudFailed, 'keeper');
+        }
+      }
     } catch {
       setError(t.errGeneric);
     } finally {
@@ -73,7 +162,8 @@ export function UploadModal() {
       role="dialog"
       aria-modal="true"
       aria-label={t.ariaDialog}
-      onClick={close}
+      aria-busy={busy}
+      onClick={closeWhenIdle}
       ref={dialogRef}
       tabIndex={-1}
       className={`pb-upload-scrim${shown ? ' on' : ''}`}
@@ -100,14 +190,24 @@ export function UploadModal() {
           ref={inputRef}
           type="file"
           accept={ACCEPT_ATTR}
+          disabled={busy}
           style={{ display: 'none' }}
-          onChange={(e) => void onFile(e.target.files?.[0])}
+          onChange={(e) => {
+            const file = e.currentTarget.files?.[0];
+            e.currentTarget.value = '';
+            void onFile(file);
+          }}
         />
         <div className="l-btnrow">
-          <button className="btn" disabled={busy} onClick={() => inputRef.current?.click()}>
+          <button
+            type="button"
+            className="btn"
+            disabled={busy}
+            onClick={() => inputRef.current?.click()}
+          >
             {busy ? t.busy : t.choose} <Icon name="ti-upload" />
           </button>
-          <button className="btn ghost" onClick={close}>
+          <button type="button" className="btn ghost" disabled={busy} onClick={closeWhenIdle}>
             {t.cancel}
           </button>
         </div>

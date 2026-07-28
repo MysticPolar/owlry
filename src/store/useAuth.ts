@@ -13,12 +13,12 @@ import {
   currentProfile,
   onAuthChange,
   signIn,
-  signOut,
   signUp,
   type AuthProfile,
   type SignupReason,
 } from '../lib/auth/api';
 import { getActiveLang } from '../i18n';
+import { useStore } from './useStore';
 
 export type AuthStatus = 'loading' | 'guest' | 'authed';
 export type AuthMode = 'login' | 'signup';
@@ -152,7 +152,7 @@ export const useAuth = create<AuthStore>((set, get) => ({
   },
 
   logout: async () => {
-    await signOut();
+    await useStore.getState().signOut();
     set({ user: null, status: 'guest' });
   },
 

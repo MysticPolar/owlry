@@ -1,3 +1,5 @@
+import { injectContentSecurityPolicy } from './security.js'
+
 const unescapeHTML = str => {
     if (!str) return ''
     const textarea = document.createElement('textarea')
@@ -849,6 +851,7 @@ class MOBI6 {
     async loadSection(section) {
         if (this.#cache.has(section)) return this.#cache.get(section)
         const doc = await this.createDocument(section)
+        injectContentSecurityPolicy(doc)
 
         // inject default stylesheet
         const style = doc.createElement('style')
@@ -1184,6 +1187,7 @@ class KF8 {
             for (const el of doc.querySelectorAll(`img[src="${url}"]`))
                 el.replaceWith(node)
         }
+        injectContentSecurityPolicy(doc)
         const url = URL.createObjectURL(
             new Blob([this.serializer.serializeToString(doc)], { type: this.#type }))
         this.#cache.set(section, url)

@@ -3,6 +3,7 @@ import { useStore } from './store/useStore';
 import { useT } from './i18n/react';
 import { useAuth } from './store/useAuth';
 import { useKeyboardInset } from './hooks/useKeyboardInset';
+import { useModalFocus } from './hooks/useModalFocus';
 import { BottomNav, Toast, BurstLayer, Backdrop, GuestLevelButton } from './components/chrome';
 import { SelectionBar } from './components/SelectionBar';
 import { TodayScreen } from './components/screens/TodayScreen';
@@ -55,13 +56,18 @@ export default function App() {
   const authUserId = useAuth((s) => s.user?.id ?? null);
   const adoptAccount = useStore((s) => s.adoptAccount);
   const revertToGuest = useStore((s) => s.revertToGuest);
+  const signOut = useStore((s) => s.signOut);
+  const accountStorageBlocked = useStore((s) => s.accountStorageBlocked);
   const syncOwner = useRef<string>('guest');
+  const storageGateRef = useRef<HTMLDivElement>(null);
   const kb = useKeyboardInset();
+  useModalFocus(accountStorageBlocked, null, storageGateRef);
 
-  // route progress to the account (pull + merge + push) on sign-in, and back to
-  // the local guest cache on sign-out — once the local bootstrap has hydrated.
-  // This is the SINGLE owner of sync-adoption (useStore's own auth listener owns
-  // only the chat side), so a login never adopts twice.
+  // Route progress to the account (pull + merge + push) on sign-in, and back to
+  // the local guest cache on sign-out once bootstrap has hydrated. The store's
+  // raw-session listener may begin the same transition earlier for immediate
+  // privacy revocation; its target/ready guards make this profile-backed call
+  // idempotent.
   useEffect(() => {
     if (!hydrated) return;
     if (authStatus === 'authed' && authUserId) {
@@ -133,6 +139,36 @@ export default function App() {
               <SelectionBar />
               <Toast />
               <BurstLayer />
+              {accountStorageBlocked && (
+                <div
+                  className="account-storage-gate"
+                  role="dialog"
+                  aria-modal="true"
+                  aria-labelledby="account-storage-title"
+                  aria-describedby="account-storage-body"
+                  tabIndex={-1}
+                  ref={storageGateRef}
+                >
+                  <div className="account-storage-card">
+                    <div className="account-storage-spinner" aria-hidden="true" />
+                    <div id="account-storage-title" className="account-storage-title d">
+                      {t.settings.settings.storageWaitTitle}
+                    </div>
+                    <p id="account-storage-body">{t.settings.settings.storageWaitBody}</p>
+                    <div className="account-storage-actions">
+                      <button
+                        className="account-storage-primary"
+                        onClick={() => {
+                          if (authUserId) void adoptAccount(authUserId);
+                        }}
+                      >
+                        {t.settings.settings.storageRetry}
+                      </button>
+                      <button onClick={() => void signOut()}>{t.settings.settings.signOut}</button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </>
           )}
         </div>

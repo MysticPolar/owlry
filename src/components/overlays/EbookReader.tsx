@@ -1,12 +1,21 @@
 import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
-import { useStore } from '../../store/useStore';
+import { commitStagedReaderCloudRefresh, useStore } from '../../store/useStore';
 import { useT } from '../../i18n/react';
 import { getBook } from '../../lib/bookRegistry';
 import { useOverlayPresence } from '../../hooks/useOverlayPresence';
-import { loadPosition, savePosition } from '../../lib/ebook/storage';
+import { useModalFocus } from '../../hooks/useModalFocus';
+import {
+  getEbookStorageOwner,
+  loadUpload,
+  loadPosition,
+  savePosition,
+  type EbookOwner,
+} from '../../lib/ebook/storage';
 import type { ReadingPosition } from '../../lib/ebook/types';
+import { registerActiveReadingPosition } from '../../lib/ebook/activePosition';
+import { getReadingPosition } from '../../lib/ebook/positionKey';
 import type { ReaderFont, ReaderPrefs } from '../../store/types';
-import { SYSTEM_STACK } from '../reader/shared';
+import { COPY_REPLACED_ERROR, SYSTEM_STACK } from '../reader/shared';
 import type { EngineHandle, ProgressUpdate } from '../reader/shared';
 import { Icon } from '../Icon';
 import { CastOwl } from '../CastOwl';
@@ -121,6 +130,7 @@ export function EbookReader() {
   const prefs = useStore((s) => s.prefs.reader);
   const setPref = useStore((s) => s.setPref);
   const close = useStore((s) => s.closeBook);
+  const retryBook = useStore((s) => s.openBook);
   const openUpload = useStore((s) => s.openUpload);
   const report = useStore((s) => s.reportProgress);
 
@@ -130,6 +140,7 @@ export function EbookReader() {
   // resolving note under the fading surface, invisible at 240ms)
   const rootRef = useRef<HTMLDivElement>(null);
   const { mounted, shown } = useOverlayPresence(open, { ref: rootRef, duration: 260 });
+  useModalFocus(open && mounted, null, rootRef);
   const heldId = useRef(ebook.bookId);
   if (ebook.bookId) heldId.current = ebook.bookId;
   const bookId = ebook.bookId ?? (mounted ? heldId.current : null);
@@ -149,31 +160,91 @@ export function EbookReader() {
   const secondsRef = useRef(0);
   const posRef = useRef<ProgressUpdate>({ percent: 0 });
   const saveTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
-  const chromeTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const positionFlushTaskRef = useRef<Promise<void> | null>(null);
+  const pendingPositionRef = useRef<ReadingPosition | null>(null);
+  const latestPositionRef = useRef<ReadingPosition | null>(null);
+  const positionOwnerRef = useRef<EbookOwner>('guest');
   const tapStart = useRef<{ x: number; y: number } | null>(null);
-  const gestureStart = useRef<{ x: number; y: number } | null>(null);
-  const wheelGate = useRef(0);
 
   const revealChrome = useCallback(() => {
-    clearTimeout(chromeTimer.current);
     setChromeVisible(true);
-    if (!settingsOpen) chromeTimer.current = setTimeout(() => setChromeVisible(false), 2000);
-  }, [settingsOpen]);
+  }, []);
+  const toggleChrome = useCallback(() => setChromeVisible((visible) => !visible), []);
 
   useEffect(() => {
     if (!open) return;
     setChromeVisible(true);
     setSettingsOpen(false);
-    const timer = setTimeout(() => setChromeVisible(false), 2000);
-    return () => clearTimeout(timer);
   }, [open, bookId]);
 
   useEffect(() => {
-    clearTimeout(chromeTimer.current);
     if (settingsOpen) setChromeVisible(true);
-    else if (open) chromeTimer.current = setTimeout(() => setChromeVisible(false), 2000);
-    return () => clearTimeout(chromeTimer.current);
-  }, [settingsOpen, open]);
+  }, [settingsOpen]);
+
+  const flushPosition = useCallback((): Promise<void> => {
+    clearTimeout(saveTimer.current);
+    const pending = pendingPositionRef.current;
+    if (!pending) return positionFlushTaskRef.current ?? Promise.resolve();
+    pendingPositionRef.current = null;
+    const positionOwner = positionOwnerRef.current;
+    const previous = positionFlushTaskRef.current ?? Promise.resolve();
+    const task = previous.then(async () => {
+      if (
+        positionOwner !== 'guest'
+        && getEbookStorageOwner() === positionOwner
+      ) {
+        // Cloud progress is the durable fallback for the exact old-copy anchor.
+        // Record it before touching IDB so a local storage exception cannot make
+        // a staged metadata swap forget where this edition was closed.
+        useStore.getState().setReadingPosition(pending);
+      }
+      try {
+        const saved = await savePosition(pending, positionOwner);
+        if (
+          positionOwner !== 'guest'
+          && getEbookStorageOwner() === positionOwner
+        ) {
+          if (!saved) {
+            const replacement = await loadUpload(pending.bookId, positionOwner);
+            const state = useStore.getState();
+            if (
+              replacement
+              && replacement.source.copyVersion !== pending.copyVersion
+              && state.ebook.bookId === pending.bookId
+              && state.ebook.source?.copyVersion === pending.copyVersion
+              && getEbookStorageOwner() === positionOwner
+            ) {
+              useStore.setState({
+                ebook: {
+                  ...state.ebook,
+                  status: 'reading',
+                  source: replacement.source,
+                  percent: 0,
+                  error: null,
+                },
+              });
+            }
+          }
+        }
+      } catch (error) {
+        if (
+          !pendingPositionRef.current
+          || pendingPositionRef.current.updatedAt <= pending.updatedAt
+        ) pendingPositionRef.current = pending;
+        console.warn('[reader] could not save local position:', error);
+        // A cloud replacement must remain staged when the old-copy anchor did
+        // not reach its version-fenced cache. Callers use this rejection as the
+        // promotion barrier; the durable stage can be retried on a later close.
+        throw error;
+      }
+    });
+    positionFlushTaskRef.current = task;
+    const clearTask = () => {
+      if (positionFlushTaskRef.current === task) positionFlushTaskRef.current = null;
+    };
+    void task.then(clearTask, clearTask);
+    return task;
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -181,17 +252,80 @@ export function EbookReader() {
     posRef.current = { percent: 0 };
     setLocation({ percent: 0 });
     setPositionReady(false);
-    if (open && bookId) {
-      void loadPosition(bookId).then((position) => {
+    clearTimeout(saveTimer.current);
+    pendingPositionRef.current = null;
+    latestPositionRef.current = null;
+    if (open && bookId && source) {
+      const positionOwner = getEbookStorageOwner();
+      positionOwnerRef.current = positionOwner;
+      const synced = getReadingPosition(
+        useStore.getState().readingPositions,
+        bookId,
+        source.copyVersion,
+      );
+      const settle = (local: ReadingPosition | null) => {
         if (cancelled) return;
+        const position = [local, synced]
+          .filter((candidate): candidate is ReadingPosition => (
+            candidate?.format === source.format
+            && candidate.copyVersion === source.copyVersion
+          ))
+          .sort((a, b) => b.updatedAt - a.updatedAt)[0] ?? null;
+        const update: ProgressUpdate = position
+          ? {
+              percent: position.percent,
+              cfi: position.cfi,
+              page: position.page,
+              scroll: position.scroll,
+            }
+          : { percent: 0 };
+        posRef.current = update;
+        setLocation(update);
         setInitial(position);
         setPositionReady(true);
-      });
+      };
+      void loadPosition(bookId, positionOwner).then(settle).catch(() => settle(null));
     } else {
       setInitial(null);
     }
     return () => { cancelled = true; };
-  }, [open, bookId]);
+  }, [open, bookId, source]);
+
+  useEffect(() => {
+    if (!open || !bookId || !source) return;
+    const positionOwner = positionOwnerRef.current;
+    return registerActiveReadingPosition(
+      positionOwner,
+      () => latestPositionRef.current,
+      flushPosition,
+    );
+  }, [open, bookId, source, flushPosition]);
+
+  useEffect(() => {
+    if (!open) return;
+    const flushAndCommit = () => {
+      const positionOwner = positionOwnerRef.current;
+      void flushPosition()
+        .then(() => {
+          if (positionOwner === 'guest' || !bookId) return;
+          return commitStagedReaderCloudRefresh(positionOwner, bookId);
+        })
+        .catch((error: unknown) => {
+          console.warn('[reader] could not finish hidden-tab storage:', error);
+        });
+    };
+    const onVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') flushAndCommit();
+    };
+    const onPageHide = () => flushAndCommit();
+    document.addEventListener('visibilitychange', onVisibilityChange);
+    window.addEventListener('pagehide', onPageHide);
+    return () => {
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+      window.removeEventListener('pagehide', onPageHide);
+      flushAndCommit();
+    };
+  }, [open, bookId, flushPosition]);
 
   useEffect(() => {
     if (!open || status !== 'reading') return;
@@ -206,10 +340,15 @@ export function EbookReader() {
   useEffect(() => {
     if (!open) return;
     const onKeyDown = (event: KeyboardEvent) => {
+      // A nested modal (notably the busy upload picker) owns Escape first.
+      if (event.defaultPrevented) return;
       if (event.key === 'Escape') {
         event.preventDefault();
         if (settingsOpen) setSettingsOpen(false);
-        else close();
+        else {
+          void flushPosition().catch(() => {});
+          close();
+        }
       } else if ((pageMode || foliate) && event.key === 'ArrowLeft') {
         event.preventDefault();
         engineRef.current?.prev();
@@ -220,31 +359,77 @@ export function EbookReader() {
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [open, settingsOpen, pageMode, foliate, close]);
+  }, [open, settingsOpen, pageMode, foliate, close, flushPosition]);
 
-  const onProgress = (update: ProgressUpdate) => {
+  const onProgress = useCallback((update: ProgressUpdate) => {
     posRef.current = update;
     setLocation(update);
     report(update.percent, secondsRef.current);
     if (!bookId || !source) return;
     clearTimeout(saveTimer.current);
+    const position: ReadingPosition = {
+      bookId,
+      percent: update.percent,
+      cfi: update.cfi,
+      page: update.page,
+      scroll: update.scroll,
+      secondsRead: secondsRef.current,
+      format: source.format,
+      copyVersion: source.copyVersion,
+      updatedAt: Date.now(),
+    };
+    latestPositionRef.current = position;
+    pendingPositionRef.current = position;
     saveTimer.current = setTimeout(() => {
-      void savePosition({
-        bookId,
-        percent: update.percent,
-        cfi: update.cfi,
-        page: update.page,
-        scroll: update.scroll,
-        secondsRead: secondsRef.current,
-        format: source.format,
-        updatedAt: Date.now(),
-      });
-    }, 600);
-  };
+      void flushPosition().catch(() => {});
+    }, 500);
+  }, [bookId, source, report, flushPosition]);
 
-  const onError = (msg: string, fallbackEmpty?: boolean) => {
+  const onError = useCallback((msg: string, fallbackEmpty?: boolean) => {
+    if (msg === COPY_REPLACED_ERROR && bookId && source) {
+      const expectedVersion = source.copyVersion;
+      const readingOwner = getEbookStorageOwner();
+      const lastOldCopyPosition = latestPositionRef.current;
+      if (
+        readingOwner !== 'guest'
+        && lastOldCopyPosition
+        && lastOldCopyPosition.copyVersion === expectedVersion
+      ) {
+        // Another tab already advanced the local metadata fence, so the normal
+        // IDB save will (correctly) refuse this old-copy anchor. Its cloud key is
+        // versioned, though, so preserve the final location there before the UI
+        // adopts the replacement.
+        useStore.getState().setReadingPosition(lastOldCopyPosition);
+      }
+      void loadUpload(bookId, readingOwner)
+        .then((replacement) => {
+          const state = useStore.getState();
+          if (
+            !replacement
+            || state.ebook.bookId !== bookId
+            || state.ebook.source?.copyVersion !== expectedVersion
+            || getEbookStorageOwner() !== readingOwner
+          ) return;
+          useStore.setState({
+            ebook: {
+              ...state.ebook,
+              status: 'reading',
+              source: replacement.source,
+              percent: 0,
+              error: null,
+            },
+          });
+        })
+        .catch(() => {});
+      return;
+    }
     useStore.setState((s) => ({ ebook: { ...s.ebook, status: fallbackEmpty ? 'empty' : 'error', error: msg } }));
-  };
+  }, [bookId, source]);
+
+  const closeReader = useCallback(() => {
+    void flushPosition().catch(() => {});
+    close();
+  }, [close, flushPosition]);
 
   const readerStyle = useMemo(
     () => ({
@@ -257,11 +442,19 @@ export function EbookReader() {
 
   if (!mounted || !b || !bookId) return null;
 
-  const pageLabel = pdf && location.page && location.pageTotal
+  const pageLabel = location.page && location.pageTotal
     ? t.reader.pageOf(location.page, location.pageTotal)
     : `${Math.round(percent)}%`;
   return (
-    <div className={`reader reader-live${shown ? ' on' : ''}`} style={readerStyle} role="dialog" aria-modal="true" aria-label={t.reader.readingAria(b.t)} ref={rootRef}>
+    <div
+      className={`reader reader-live${shown ? ' on' : ''}${chromeVisible ? ' chrome-on' : ''}`}
+      style={readerStyle}
+      role="dialog"
+      aria-modal="true"
+      aria-label={t.reader.readingAria(b.t)}
+      ref={rootRef}
+      tabIndex={-1}
+    >
       <div
         className="reader-stage"
         onPointerDown={(event) => { tapStart.current = { x: event.clientX, y: event.clientY }; }}
@@ -275,16 +468,30 @@ export function EbookReader() {
           const x = (event.clientX - rect.left) / rect.width;
           if (pageMode && x < 0.24) engineRef.current?.prev();
           else if (pageMode && x > 0.76) engineRef.current?.next();
-          else chromeVisible ? setChromeVisible(false) : revealChrome();
+          else toggleChrome();
         }}
       >
         {status === 'resolving' && <div className="ebook-center it" role="status">{t.reader.resolving}</div>}
-        {status === 'error' && <div className="ebook-center" role="alert">{ebook.error ?? t.reader.errorFallback}</div>}
+        {status === 'error' && (
+          <div className="ebook-center ebook-empty" role="alert">
+            <CastOwl owl="keeper" cls="mini" />
+            <div className="d ebook-empty-title">{t.reader.errorTitle}</div>
+            <p>{ebook.error ?? t.reader.errorFallback}</p>
+            <div className="ebook-recovery-actions">
+              <button className="btn" onClick={() => void retryBook(bookId)}>
+                {t.reader.retryBtn} <Icon name="ti-refresh" />
+              </button>
+              <button className="btn ghost" onClick={openUpload}>
+                {t.reader.chooseAnotherBtn} <Icon name="ti-upload" />
+              </button>
+            </div>
+          </div>
+        )}
         {status === 'empty' && (
           <div className="ebook-center ebook-empty">
             <CastOwl owl="keeper" cls="mini" />
-            <div className="d ebook-empty-title">{t.reader.emptyTitle}</div>
-            <p>{t.reader.emptyBody}</p>
+            <div className="d ebook-empty-title">{ebook.error ? t.reader.errorTitle : t.reader.emptyTitle}</div>
+            <p>{ebook.error ?? t.reader.emptyBody}</p>
             <button className="btn" onClick={openUpload}>{t.reader.uploadBtn} <Icon name="ti-upload" /></button>
             <button className="gate-switch" onClick={close}>{t.reader.keepLooking}</button>
           </div>
@@ -297,74 +504,71 @@ export function EbookReader() {
             ) : source.format === 'txt' ? (
               <TextView ref={engineRef} bookId={bookId} source={source} initial={initial} prefs={prefs} onProgress={onProgress} onError={onError} />
             ) : (
-              <FoliateView ref={engineRef} bookId={bookId} source={source} initial={initial} prefs={prefs} onProgress={onProgress} onError={onError} />
+              <FoliateView
+                ref={engineRef}
+                bookId={bookId}
+                source={source}
+                initial={initial}
+                prefs={prefs}
+                chromeVisible={chromeVisible}
+                onProgress={onProgress}
+                onToggleChrome={toggleChrome}
+                onError={onError}
+              />
             )}
           </Suspense>
         )}
-        {status === 'reading' && source && positionReady && foliate && (
-          /* The book renders inside a sandboxed iframe: real taps, swipes, and
-             wheel spins over it never reach this document, and scroll-chaining
-             out of a sandboxed frame is unreliable (notably on iOS) — the book
-             would freeze on its first page. This parent-owned layer captures
-             input instead and drives the engine directly, in both flows.
-             Trade-off: in-book link taps and text selection inside the epub are
-             blocked — being able to turn the page wins. */
-          <div
-            className="reader-gestures"
-            onPointerDown={(event) => { event.stopPropagation(); gestureStart.current = { x: event.clientX, y: event.clientY }; }}
-            onPointerUp={(event) => {
-              event.stopPropagation(); // the stage's own tap zones must not double-handle
-              const start = gestureStart.current;
-              gestureStart.current = null;
-              if (!start) return;
-              const dx = event.clientX - start.x;
-              const dy = event.clientY - start.y;
-              if (Math.hypot(dx, dy) <= 10) {
-                const rect = event.currentTarget.getBoundingClientRect();
-                const x = (event.clientX - rect.left) / rect.width;
-                if (x < 0.24) engineRef.current?.prev();
-                else if (x > 0.76) engineRef.current?.next();
-                else chromeVisible ? setChromeVisible(false) : revealChrome();
-                return;
-              }
-              // swipe: dominant axis decides; left/up = forward, right/down = back
-              const d = Math.abs(dx) >= Math.abs(dy) ? dx : dy;
-              if (d <= -40) engineRef.current?.next();
-              else if (d >= 40) engineRef.current?.prev();
-            }}
-            onWheel={(event) => {
-              const now = performance.now();
-              if (now - wheelGate.current < 250) return;
-              const d = Math.abs(event.deltaY) >= Math.abs(event.deltaX) ? event.deltaY : event.deltaX;
-              if (Math.abs(d) < 12) return;
-              wheelGate.current = now;
-              if (d > 0) engineRef.current?.next();
-              else engineRef.current?.prev();
-            }}
-          />
-        )}
       </div>
 
-      {chromeVisible && (
-        <>
-          <header className="reader-chrome reader-chrome-top">
-            <button className="reader-icon" aria-label={t.reader.backAria} onClick={close}><Icon name="ti-arrow-left" /></button>
-            <div className="reader-heading">
-              <div className="reader-book-title d">{b.t}</div>
-              <div className="reader-book-author">{(source?.sourceLabel ?? b.a).toUpperCase()}</div>
-            </div>
-            <button className="reader-icon" aria-label={t.reader.settingsAria} onClick={() => setSettingsOpen(true)}><Icon name="ti-settings" /></button>
-          </header>
-          <footer className="reader-chrome reader-chrome-bottom">
-            {pageMode && <button className="reader-icon reader-page-button" aria-label={t.reader.prevPageAria} disabled={status !== 'reading'} onClick={() => { revealChrome(); engineRef.current?.prev(); }}><Icon name="ti-chevron-left" /></button>}
-            <div className="reader-progress">
-              <div className="reader-location">{pageLabel}</div>
-              <div className="reader-thread"><span style={{ width: `${Math.round(percent)}%` }} /></div>
-            </div>
-            {pageMode && <button className="reader-icon reader-page-button" aria-label={t.reader.nextPageAria} disabled={status !== 'reading'} onClick={() => { revealChrome(); engineRef.current?.next(); }}><Icon name="ti-chevron-right" /></button>}
-          </footer>
-        </>
-      )}
+      <header
+        className={`reader-chrome reader-chrome-top${chromeVisible ? ' is-visible' : ''}`}
+        aria-hidden={!chromeVisible}
+      >
+        <button tabIndex={chromeVisible ? 0 : -1} className="reader-icon" aria-label={t.reader.backAria} onClick={closeReader}><Icon name="ti-arrow-left" /></button>
+        <div className="reader-heading">
+          <div className="reader-book-title d">{b.t}</div>
+          <div className="reader-book-author">{(source?.sourceLabel ?? b.a).toUpperCase()}</div>
+        </div>
+        <button
+          tabIndex={chromeVisible ? 0 : -1}
+          className="reader-icon"
+          aria-label={t.reader.settingsAria}
+          onClick={() => setSettingsOpen(true)}
+        >
+          <Icon name="ti-settings" />
+        </button>
+      </header>
+      <footer
+        className={`reader-chrome reader-chrome-bottom${chromeVisible ? ' is-visible' : ''}`}
+        aria-hidden={!chromeVisible}
+      >
+        {pageMode && (
+          <button
+            tabIndex={chromeVisible ? 0 : -1}
+            className="reader-icon reader-page-button"
+            aria-label={t.reader.prevPageAria}
+            disabled={status !== 'reading'}
+            onClick={() => { revealChrome(); engineRef.current?.prev(); }}
+          >
+            <Icon name="ti-chevron-left" />
+          </button>
+        )}
+        <div className="reader-progress">
+          <div className="reader-location">{pageLabel}</div>
+          <div className="reader-thread"><span style={{ width: `${Math.round(percent)}%` }} /></div>
+        </div>
+        {pageMode && (
+          <button
+            tabIndex={chromeVisible ? 0 : -1}
+            className="reader-icon reader-page-button"
+            aria-label={t.reader.nextPageAria}
+            disabled={status !== 'reading'}
+            onClick={() => { revealChrome(); engineRef.current?.next(); }}
+          >
+            <Icon name="ti-chevron-right" />
+          </button>
+        )}
+      </footer>
 
       {settingsOpen && (
         <ReaderSettings

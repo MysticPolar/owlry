@@ -6,8 +6,9 @@ import type { BookRef } from '../../content/types';
 
 export type EbookFormat = 'epub' | 'pdf' | 'txt' | 'fb2' | 'mobi' | 'azw3';
 
-/** Where the reader gets its bytes. Remote = a legal public-domain EPUB URL;
- *  local = a user-uploaded file kept in IndexedDB (never sent to our server). */
+/** Where the reader gets its bytes. Remote = a legal public-domain EPUB URL.
+ *  Local uploads stay in memory for guests; signed-in uploads use an
+ *  account-scoped offline cache plus the user's private cloud copy. */
 export interface ReadingSource {
   kind: 'remote-epub' | 'local';
   format: EbookFormat;
@@ -17,6 +18,12 @@ export interface ReadingSource {
   url?: string;
   /** human label, e.g. "Project Gutenberg" / "Your upload" */
   sourceLabel: string;
+  /** Stable identity for one exact uploaded copy (local + cloud). */
+  copyVersion?: string;
+  /** User-selection order for concurrent/offline copies across devices. */
+  copySelectedAt?: number;
+  /** Server timestamp retained as ordering fallback for legacy cloud copies. */
+  cloudUpdatedAt?: string;
 }
 
 /** Reading position — percent is the stable unit (pages drift in reflowable EPUB).
@@ -29,6 +36,8 @@ export interface ReadingPosition {
   scroll?: number; // txt/fb2 (0..1 fraction)
   secondsRead: number;
   format: EbookFormat;
+  /** Prevents an anchor from one file reopening in a same-format replacement. */
+  copyVersion?: string;
   updatedAt: number;
 }
 

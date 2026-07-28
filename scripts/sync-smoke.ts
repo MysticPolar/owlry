@@ -2,6 +2,7 @@
 import { mergeProgress } from '../src/lib/sync/mergeProgress';
 import { SEED } from '../src/store/seed';
 import type { PersistedState } from '../src/store/types';
+import { readingPositionKey } from '../src/lib/ebook/positionKey';
 
 let pass = 0;
 let fail = 0;
@@ -50,6 +51,99 @@ const make = (o: Partial<PersistedState> = {}): PersistedState => ({
   check('pagesRead per-book max', m.pagesRead.goldfinch === 250 && m.pagesRead.pachinko === 40, JSON.stringify(m.pagesRead));
 }
 
+// exact resume anchors: newest write wins even when it moves backward
+{
+  const older = {
+    bookId: 'goldfinch' as never,
+    percent: 72,
+    cfi: 'epubcfi(/6/20)',
+    secondsRead: 400,
+    format: 'epub' as const,
+    updatedAt: 100,
+  };
+  const newer = {
+    ...older,
+    percent: 41,
+    cfi: 'epubcfi(/6/12)',
+    updatedAt: 200,
+  };
+  const positionKey = readingPositionKey(older.bookId, older.copyVersion);
+  const a = make({ readingPositions: { [positionKey]: older } });
+  const b = make({ readingPositions: { [positionKey]: newer } });
+  const m = mergeProgress(a, b);
+  check(
+    'newest exact position wins after reading backward',
+    m.readingPositions[positionKey]?.percent === 41
+      && m.readingPositions[positionKey]?.cfi === newer.cfi,
+    JSON.stringify(m.readingPositions[positionKey]),
+  );
+}
+
+// exact positions from different copies of the same book remain independent
+{
+  const copyA = {
+    bookId: 'goldfinch' as never,
+    percent: 68,
+    cfi: 'epubcfi(/6/18)',
+    secondsRead: 120,
+    format: 'epub' as const,
+    copyVersion: 'copy-a',
+    updatedAt: 300,
+  };
+  const copyB = {
+    ...copyA,
+    percent: 22,
+    cfi: 'epubcfi(/6/8)',
+    copyVersion: 'copy-b',
+    updatedAt: 400,
+  };
+  const keyA = readingPositionKey(copyA.bookId, copyA.copyVersion);
+  const keyB = readingPositionKey(copyB.bookId, copyB.copyVersion);
+  const merged = mergeProgress(
+    make({ readingPositions: { [keyA]: copyA } }),
+    make({ readingPositions: { [keyB]: copyB } }),
+  );
+  check(
+    'exact positions remain isolated per book copy',
+    merged.readingPositions[keyA]?.percent === 68
+      && merged.readingPositions[keyB]?.percent === 22,
+    JSON.stringify(merged.readingPositions),
+  );
+}
+
+// exact positions from different books are unioned
+{
+  const a = make({
+    readingPositions: {
+      [readingPositionKey('goldfinch' as never)]: {
+        bookId: 'goldfinch' as never,
+        percent: 12,
+        secondsRead: 10,
+        format: 'epub',
+        updatedAt: 10,
+      },
+    },
+  });
+  const b = make({
+    readingPositions: {
+      [readingPositionKey('pachinko' as never)]: {
+        bookId: 'pachinko' as never,
+        percent: 34,
+        secondsRead: 20,
+        format: 'pdf',
+        updatedAt: 20,
+      },
+    },
+  });
+  const m = mergeProgress(a, b);
+  check(
+    'exact positions union by book',
+    m.readingPositions[readingPositionKey('goldfinch' as never)]?.percent === 12
+      && m.readingPositions[readingPositionKey('pachinko' as never)]?.percent === 34,
+    JSON.stringify(m.readingPositions),
+  );
+}
+
 // scalars follow the further-along side (level dominates)
 {
   const a = make({ lv: 8, xp: 5 });
@@ -74,13 +168,41 @@ const make = (o: Partial<PersistedState> = {}): PersistedState => ({
   check('coins/ink/streak take max', m.coins === 500 && m.ink === 80 && m.streak === 12, `${m.coins}/${m.ink}/${m.streak}`);
 }
 
-// onboarding is sticky; prefs otherwise follow the leader
+// onboarding is sticky; legacy prefs without a timestamp follow advancement
 {
   const a = make({ lv: 9, prefs: { ...SEED.prefs, onboarded: false, mode: 'night' } });
   const b = make({ lv: 2, prefs: { ...SEED.prefs, onboarded: true, mode: 'day' } });
   const m = mergeProgress(a, b);
   check('onboarded is sticky', m.prefs.onboarded === true);
   check('prefs follow the leader', m.prefs.mode === 'night', m.prefs.mode);
+}
+
+// reader settings have their own write order, independent of XP
+{
+  const older = make({
+    lv: 9,
+    prefsUpdatedAt: 100,
+    prefs: {
+      ...SEED.prefs,
+      reader: { ...SEED.prefs.reader, font: 'literata', size: 18 },
+    },
+  });
+  const newer = make({
+    lv: 2,
+    prefsUpdatedAt: 200,
+    prefs: {
+      ...SEED.prefs,
+      reader: { ...SEED.prefs.reader, font: 'system', size: 22 },
+    },
+  });
+  const merged = mergeProgress(older, newer);
+  check(
+    'newest reader settings win without XP',
+    merged.prefs.reader.font === 'system'
+      && merged.prefs.reader.size === 22
+      && merged.prefsUpdatedAt === 200,
+    JSON.stringify(merged.prefs.reader),
+  );
 }
 
 // union is order-independent for shelves
@@ -90,6 +212,95 @@ const make = (o: Partial<PersistedState> = {}): PersistedState => ({
   const ab = mergeProgress(a, b).savedIds.slice().sort().join(',');
   const ba = mergeProgress(b, a).savedIds.slice().sort().join(',');
   check('shelf union order-independent', ab === ba, `${ab} vs ${ba}`);
+  const ordered = make({ savedIds: ['circe', 'atomic'] as never });
+  check(
+    'same-device shelf recency order survives sync',
+    mergeProgress(ordered, ordered).savedIds.join(',') === 'circe,atomic',
+  );
+}
+
+// same-millisecond writes still converge regardless of merge direction
+{
+  const a = make({
+    prefsUpdatedAt: 100,
+    prefs: {
+      ...SEED.prefs,
+      reader: { ...SEED.prefs.reader, size: 17 },
+    },
+    readingPositions: {
+      'goldfinch::copy': {
+        bookId: 'goldfinch',
+        format: 'epub',
+        copyVersion: 'copy',
+        percent: 10,
+        secondsRead: 10,
+        updatedAt: 100,
+      },
+    },
+  });
+  const b = make({
+    prefsUpdatedAt: 100,
+    prefs: {
+      ...SEED.prefs,
+      reader: { ...SEED.prefs.reader, size: 23 },
+    },
+    readingPositions: {
+      'goldfinch::copy': {
+        bookId: 'goldfinch',
+        format: 'epub',
+        copyVersion: 'copy',
+        percent: 90,
+        secondsRead: 90,
+        updatedAt: 100,
+      },
+    },
+  });
+  const ab = mergeProgress(a, b);
+  const ba = mergeProgress(b, a);
+  check(
+    'equal-timestamp anchors converge',
+    ab.readingPositions['goldfinch::copy']?.percent
+      === ba.readingPositions['goldfinch::copy']?.percent,
+  );
+  check(
+    'equal-timestamp prefs converge',
+    ab.prefs.reader.size === ba.prefs.reader.size,
+  );
+  const absorbed = mergeProgress(a, ab);
+  check(
+    'equal-timestamp anchor merge is absorbing',
+    absorbed.readingPositions['goldfinch::copy']?.percent
+      === ab.readingPositions['goldfinch::copy']?.percent,
+  );
+  check(
+    'equal-timestamp prefs merge is absorbing',
+    absorbed.prefs.reader.size === ab.prefs.reader.size,
+  );
+  const c = make({
+    prefsUpdatedAt: 100,
+    prefs: {
+      ...SEED.prefs,
+      reader: { ...SEED.prefs.reader, size: 19 },
+    },
+    readingPositions: {
+      'goldfinch::copy': {
+        bookId: 'goldfinch',
+        format: 'epub',
+        copyVersion: 'copy',
+        percent: 50,
+        secondsRead: 50,
+        updatedAt: 100,
+      },
+    },
+  });
+  const left = mergeProgress(mergeProgress(a, b), c);
+  const right = mergeProgress(a, mergeProgress(b, c));
+  check(
+    'equal-timestamp merge is associative',
+    left.readingPositions['goldfinch::copy']?.percent
+      === right.readingPositions['goldfinch::copy']?.percent
+      && left.prefs.reader.size === right.prefs.reader.size,
+  );
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);

@@ -351,17 +351,30 @@ export class View extends HTMLElement {
     #handleLinks(doc, index) {
         const { book } = this
         const section = book.sections[index]
+        const safeExternalURL = href => {
+            try {
+                const url = new URL(href, globalThis.location.href)
+                return ['http:', 'https:', 'mailto:', 'tel:'].includes(url.protocol)
+                    ? url.href : null
+            } catch {
+                return null
+            }
+        }
         doc.addEventListener('click', e => {
             const a = e.target.closest('a[href]')
             if (!a) return
             e.preventDefault()
             const href_ = a.getAttribute('href')
             const href = section?.resolveHref?.(href_) ?? href_
-            if (book?.isExternal?.(href))
+            if (book?.isExternal?.(href)) {
+                const externalURL = safeExternalURL(href_)
+                if (!externalURL) return
                 Promise.resolve(this.#emit('external-link', { a, href_ }, true))
-                    .then(x => x ? globalThis.open(href_, '_blank') : null)
+                    .then(x => x
+                        ? globalThis.open(externalURL, '_blank',
+                            'noopener,noreferrer') : null)
                     .catch(e => console.error(e))
-            else Promise.resolve(this.#emit('link', { a, href }, true))
+            } else Promise.resolve(this.#emit('link', { a, href }, true))
                 .then(x => x ? this.goTo(href) : null)
                 .catch(e => console.error(e))
         })

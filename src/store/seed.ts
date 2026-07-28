@@ -16,6 +16,7 @@ export const SEED: PersistedState = {
   readingIds: ['goldfinch', 'pachinko', 'tranq'],
   finishedIds: ['oldman', 'none'],
   pagesRead: { goldfinch: 463, pachinko: 118, tranq: 224 },
+  readingPositions: {},
   prefs: {
     reader: { font: 'literata', size: 18, dimmer: 0, flow: 'page' },
     reduceMotion: false,
@@ -25,4 +26,5 @@ export const SEED: PersistedState = {
     mode: 'night',
     onboarded: false,
   },
+  prefsUpdatedAt: 0,
 };

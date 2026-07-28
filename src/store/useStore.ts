@@ -29,9 +29,29 @@ import { getLocalWeather } from '../lib/weather';
 import { rowsToChat } from '../lib/chatHydrate';
 import type { ChatRow } from '../lib/chatHydrate';
 import { resolvePublicDomain } from '../lib/ebook/resolve';
-import { loadUpload, saveUpload } from '../lib/ebook/storage';
-import { pullCopy } from '../lib/ebook/cloudCopy';
-import type { ReadingSource } from '../lib/ebook/types';
+import {
+  clearGuestEbookSession,
+  getEbookStorageOwner,
+  getPendingUploadSync,
+  loadUpload,
+  markStagedCloudRefreshReady,
+  promoteReadyCloudRefresh,
+  purgeLegacyEbookStorage,
+  saveCloudRefreshIfCurrent,
+  setEbookStorageOwner,
+  stageCloudRefreshIfCurrent,
+} from '../lib/ebook/storage';
+import { compareCopySelection, pullCopy } from '../lib/ebook/cloudCopy';
+import { retryPendingCopiesNow } from '../lib/ebook/uploadSync';
+import {
+  flushActiveReadingPosition,
+  peekActiveReadingPosition,
+} from '../lib/ebook/activePosition';
+import type { ReadingPosition, ReadingSource } from '../lib/ebook/types';
+import {
+  maxReadingPercent,
+  readingPositionKey,
+} from '../lib/ebook/positionKey';
 import type { BookRef } from '../content/types';
 
 import { loadLocal, saveLocal, type Owner } from './persistence';
@@ -121,6 +141,8 @@ export interface Store extends PersistedState {
   settingsOpen: boolean;
   /** cross-device sync: 'off' as guest, else the live push state */
   syncStatus: 'off' | 'syncing' | 'synced' | 'error';
+  /** Prevents edits while the first private-state pull is still ambiguous. */
+  accountStorageBlocked: boolean;
 
   /* auth — null user + authReady:true whenever no backend is configured, so the
      app never gates on login unless VITE_SUPABASE_URL/ANON_KEY are set */
@@ -140,6 +162,7 @@ export interface Store extends PersistedState {
   openUpload: () => void;
   closeUpload: () => void;
   setUploadedSource: (id: BookRef, source: ReadingSource) => void;
+  setReadingPosition: (position: ReadingPosition) => void;
   reportProgress: (percent: number, secondsRead: number) => void;
 
   /* actions */
@@ -247,6 +270,71 @@ let cloudTimer: ReturnType<typeof setTimeout> | undefined;
 /* who owns the local cache + whether changes push to the cloud. 'guest' →
    local only (offline-first, as before); a user id → local + cloud sync. */
 let owner: Owner = 'guest';
+let ownerReady = true;
+let ownerTransitionNonce = 0;
+let ebookResolutionNonce = 0;
+let bootstrapTask: Promise<void> | null = null;
+let ownerTransitionSnapshot: { owner: Owner; state: PersistedState } | null = null;
+let ownerTransitionTarget: Owner | null = null;
+let cloudHydrationPending: {
+  owner: Exclude<Owner, 'guest'>;
+  /** Guest progress is adopted only after a successful pull proves no row exists. */
+  freshAccountState: PersistedState;
+} | null = null;
+let cloudHydrationRetryTimer: ReturnType<typeof setTimeout> | undefined;
+const cloudRefreshCommits = new Map<string, Promise<void>>();
+const readerCloseBarriers = new Map<string, Promise<void>>();
+
+const clearCloudHydrationRetry = () => {
+  clearTimeout(cloudHydrationRetryTimer);
+  cloudHydrationRetryTimer = undefined;
+};
+
+const stagedCloudKey = (refreshOwner: Exclude<Owner, 'guest'>, bookId: BookRef) =>
+  `${refreshOwner}\n${bookId}`;
+
+const queueCloudRefreshWork = (
+  refreshOwner: Exclude<Owner, 'guest'>,
+  bookId: BookRef,
+  work: () => Promise<unknown>,
+): Promise<void> => {
+  const key = stagedCloudKey(refreshOwner, bookId);
+  const previous = cloudRefreshCommits.get(key) ?? Promise.resolve();
+  let task: Promise<void>;
+  task = previous
+    .catch(() => {})
+    .then(async () => { await work(); })
+    .finally(() => {
+      if (cloudRefreshCommits.get(key) === task) cloudRefreshCommits.delete(key);
+    });
+  cloudRefreshCommits.set(key, task);
+  return task;
+};
+
+/** On open, recover a page-hidden stage only when its old-copy anchor was
+    durably fenced before the previous page ended. */
+const promoteStagedCloudRefresh = (
+  refreshOwner: Exclude<Owner, 'guest'>,
+  bookId: BookRef,
+): Promise<void> => queueCloudRefreshWork(
+  refreshOwner,
+  bookId,
+  () => promoteReadyCloudRefresh(bookId, refreshOwner),
+);
+
+/** Finish a reader's durable cloud stage only after its final anchor succeeds. */
+export const commitStagedReaderCloudRefresh = (
+  refreshOwner: Exclude<Owner, 'guest'>,
+  bookId: BookRef,
+): Promise<void> => queueCloudRefreshWork(
+  refreshOwner,
+  bookId,
+  async () => {
+    if (await markStagedCloudRefreshReady(bookId, refreshOwner)) {
+      await promoteReadyCloudRefresh(bookId, refreshOwner);
+    }
+  },
+);
 
 function extractPersisted(s: Store): PersistedState {
   return {
@@ -262,9 +350,33 @@ function extractPersisted(s: Store): PersistedState {
     readingIds: s.readingIds,
     finishedIds: s.finishedIds,
     pagesRead: s.pagesRead,
+    readingPositions: s.readingPositions,
     prefs: s.prefs,
+    prefsUpdatedAt: s.prefsUpdatedAt,
   };
 }
+
+const nextPrefsUpdatedAt = (current: number): number =>
+  Math.max(Date.now(), current + 1);
+
+const withPendingReadingPosition = (
+  state: PersistedState,
+  stateOwner: Owner,
+): PersistedState => {
+  if (stateOwner === 'guest') return state;
+  const pending = peekActiveReadingPosition(stateOwner);
+  if (!pending) return state;
+  const key = readingPositionKey(pending.bookId, pending.copyVersion);
+  const existing = state.readingPositions[key];
+  if (existing && existing.updatedAt > pending.updatedAt) return state;
+  return {
+    ...state,
+    readingPositions: {
+      ...state.readingPositions,
+      [key]: pending,
+    },
+  };
+};
 
 /** the store's strings in the reader's language (call inside actions only) */
 const L = (prefs: Prefs) => tOf(prefs.lang ?? 'en').store;
@@ -306,6 +418,7 @@ export const useStore = create<Store>()(
     hydrated: false,
     settingsOpen: false,
     syncStatus: 'off',
+    accountStorageBlocked: false,
 
     // no backend configured → already "ready", with no user; the app never gates on login
     authUser: null,
@@ -313,6 +426,25 @@ export const useStore = create<Store>()(
 
     signOut: async () => {
       if (!supabase) return;
+      const signingOutOwner = owner;
+      if (
+        ownerReady
+        && signingOutOwner !== 'guest'
+        && getEbookStorageOwner() === signingOutOwner
+        && get().authUser?.id === signingOutOwner
+        && cloudHydrationPending?.owner !== signingOutOwner
+      ) {
+        // Give an explicit sign-out the exact last CFI/page, then push it while
+        // the old account's token is still valid. External session replacement
+        // cannot be delayed, so the raw listener separately folds the pending
+        // anchor into that owner's local snapshot for its next sync.
+        // Storage failure must not trap someone in their account. The exact
+        // anchor is already folded into PersistedState before the IDB attempt.
+        await flushActiveReadingPosition(signingOutOwner).catch(() => {});
+        const latest = extractPersisted(get());
+        await saveLocal(signingOutOwner, latest).catch(() => {});
+        await cloudPush(latest, signingOutOwner).catch(() => {});
+      }
       await supabase.auth.signOut();
       // the module-level onAuthStateChange listener below clears authUser + resets the chat
     },
@@ -325,63 +457,205 @@ export const useStore = create<Store>()(
     ebook: EBOOK_IDLE,
 
     openBook: async (id) => {
+      const authOwner = get().authUser?.id ?? null;
+      if (
+        !ownerReady
+        || getEbookStorageOwner() !== owner
+        || (owner === 'guest' ? authOwner !== null : authOwner !== owner)
+      ) return;
       const b = getBook(id);
       if (!b) return;
+      const readingOwner = getEbookStorageOwner();
+      // Reserve this request before any close/refresh await. A later tap on a
+      // different book must win even if this request was first in the queue.
+      const resolutionNonce = ++ebookResolutionNonce;
+      const requestIsCurrent = () => (
+        ebookResolutionNonce === resolutionNonce
+        && getEbookStorageOwner() === readingOwner
+        && (
+          readingOwner === 'guest'
+            ? get().authUser === null
+            : get().authUser?.id === readingOwner
+        )
+      );
+      if (readingOwner !== 'guest') {
+        const closeBarrier = readerCloseBarriers.get(
+          stagedCloudKey(readingOwner, id),
+        );
+        if (closeBarrier) await closeBarrier.catch(() => {});
+        // A cloud replacement downloaded during the previous session commits
+        // only after that session's final position flush. Reopening waits for
+        // the same commit so metadata and bytes start in lockstep.
+        await promoteStagedCloudRefresh(readingOwner, id).catch(() => {});
+        if (!requestIsCurrent()) return;
+      }
+      const resolutionIsCurrent = () => (
+        requestIsCurrent()
+        && get().ebook.bookId === id
+      );
       const current = get();
       const returnTo = current.letterId
         ? { kind: 'letter' as const, bookId: current.letterId }
         : current.sheetId
           ? { kind: 'sheet' as const, bookId: current.sheetId }
           : null;
-      const readingIds = get().readingIds.includes(id) ? get().readingIds : [id, ...get().readingIds];
-      progressMark.delete(id);
-      secondsMark.delete(id);
-      finishedMark.delete(id);
+      const readingIds = current.readingIds.includes(id) ? current.readingIds : [id, ...current.readingIds];
+      const totalPages = b.n ?? 1;
+      const milestonePercent = Math.max(
+        maxReadingPercent(current.readingPositions, id),
+        ((current.pagesRead[id] ?? 0) / totalPages) * 100,
+      );
+      progressMark.set(id, Math.floor(milestonePercent / 5) * 5);
+      secondsMark.set(id, 0);
+      if (current.finishedIds.includes(id)) finishedMark.add(id);
+      else finishedMark.delete(id);
       set({
         readingIds,
         letterId: null,
         letterStatus: 'idle',
         sheetId: null,
-        ebook: { ...EBOOK_IDLE, open: true, bookId: id, status: 'resolving', returnTo },
+        ebook: {
+          ...EBOOK_IDLE,
+          open: true,
+          bookId: id,
+          status: 'resolving',
+          percent: milestonePercent,
+          returnTo,
+        },
       });
 
       // 1) a copy already uploaded on this device wins — instant + offline
       try {
-        const up = await loadUpload(id);
-        if (get().ebook.bookId !== id) return; // the reader moved on
+        const up = await loadUpload(id, readingOwner);
+        if (!resolutionIsCurrent()) return;
         if (up) {
           set({ ebook: { ...get().ebook, status: 'reading', source: up.source } });
+          if (readingOwner !== 'guest') {
+            // Keep the offline cache as the instant path, then quietly compare
+            // it with the newest immutable cloud version. A local pending upload
+            // always wins until its own retry publishes successfully.
+            void (async () => {
+              try {
+                if (await getPendingUploadSync(id, readingOwner)) return;
+                const label = tOf(get().prefs.lang ?? 'en').settings.upload.sourceLabel;
+                const cloud = await pullCopy(id, label, readingOwner);
+                if (!cloud || !resolutionIsCurrent()) return;
+                const sameVersion = (
+                  !!up.source.copyVersion
+                  && up.source.copyVersion === cloud.source.copyVersion
+                );
+                const remoteNewer = (
+                  !sameVersion
+                  && compareCopySelection(cloud.source, up.source) > 0
+                );
+                if (sameVersion || !remoteNewer) return;
+                // Do not replace bytes/metadata underneath a live rendering
+                // engine. Hold the immutable download in memory; closeBook
+                // flushes the old exact anchor before committing this cache swap.
+                const staged = await stageCloudRefreshIfCurrent(
+                  id,
+                  cloud.blob,
+                  cloud.source,
+                  readingOwner,
+                  up.source.copyVersion,
+                );
+                if (!staged) return;
+                // A background pull can finish after the tab has already emitted
+                // its visibility event. Finish the active anchor and commit the
+                // stage here too, rather than stranding it until another open.
+                if (document.visibilityState === 'hidden') {
+                  void flushActiveReadingPosition(readingOwner)
+                    .then(() => commitStagedReaderCloudRefresh(readingOwner, id))
+                    .catch(() => {});
+                }
+              } catch {
+                /* offline / signed out / bucket absent — cached reading continues */
+              }
+            })();
+          }
           return;
         }
       } catch {
         /* ignore storage errors */
       }
+      if (!resolutionIsCurrent()) return;
 
       // 2) signed in: another device may have shelved this copy on the
       //    account's private cloud folder — pull it and cache it locally
-      try {
-        const label = tOf(get().prefs.lang ?? 'en').settings.upload.sourceLabel;
-        const cloud = await pullCopy(id, label);
-        if (get().ebook.bookId !== id) return;
-        if (cloud) {
-          await saveUpload(id, cloud.blob, cloud.source);
-          set({ ebook: { ...get().ebook, status: 'reading', source: cloud.source } });
-          return;
+      if (readingOwner !== 'guest') {
+        try {
+          const label = tOf(get().prefs.lang ?? 'en').settings.upload.sourceLabel;
+          const cloud = await pullCopy(id, label, readingOwner);
+          if (!resolutionIsCurrent()) return;
+          if (cloud) {
+            await saveCloudRefreshIfCurrent(
+              id,
+              cloud.blob,
+              cloud.source,
+              readingOwner,
+              undefined,
+            );
+            const currentCache = await loadUpload(id, readingOwner);
+            if (!resolutionIsCurrent()) return;
+            if (currentCache) {
+              set({
+                ebook: {
+                  ...get().ebook,
+                  status: 'reading',
+                  source: currentCache.source,
+                },
+              });
+              return;
+            }
+            // If a cross-tab deletion landed before the confirming read, fall
+            // through to the public-domain/upload-empty resolution below.
+          }
+        } catch {
+          /* offline / signed out / bucket absent — fall through */
         }
-      } catch {
-        /* offline / signed out / bucket absent — fall through */
+        if (!resolutionIsCurrent()) return;
       }
 
       // 3) resolve a public-domain EPUB by title + author (Gutendex)
       const source = await resolvePublicDomain(b.t, b.a);
-      if (get().ebook.bookId !== id) return;
+      if (!resolutionIsCurrent()) return;
       set({
         ebook: source ? { ...get().ebook, status: 'reading', source } : { ...get().ebook, status: 'empty' },
       });
     },
 
     closeBook: () => {
-      const { returnTo } = get().ebook;
+      ebookResolutionNonce += 1;
+      const closing = get().ebook;
+      const { returnTo } = closing;
+      const closingOwner = getEbookStorageOwner();
+      // Capture the active flush promise before the React reader unregisters.
+      // Any staged cloud replacement waits behind this exact old-copy anchor.
+      const flushTask = (
+        closingOwner !== 'guest'
+        && closing.bookId
+        && closing.source
+      ) ? flushActiveReadingPosition(closingOwner) : Promise.resolve();
+      if (closingOwner !== 'guest' && closing.bookId) {
+        const key = stagedCloudKey(closingOwner, closing.bookId);
+        const previousBarrier = readerCloseBarriers.get(key) ?? Promise.resolve();
+        let barrier: Promise<void>;
+        barrier = previousBarrier
+          .catch(() => {})
+          .then(() => flushTask)
+          .then(() => commitStagedReaderCloudRefresh(closingOwner, closing.bookId as BookRef))
+          .finally(() => {
+            if (readerCloseBarriers.get(key) === barrier) {
+              readerCloseBarriers.delete(key);
+            }
+          });
+        // Register synchronously before clearing ebook so an immediate reopen
+        // cannot overtake the final anchor or its staged metadata swap.
+        readerCloseBarriers.set(key, barrier);
+        // Preserve rejection for callers (so promotion stays fenced), while
+        // observing it here to avoid an unhandled Promise on a close-and-leave.
+        void barrier.catch(() => {});
+      }
       set({
         ebook: EBOOK_IDLE,
         letterId: returnTo?.kind === 'letter' ? returnTo.bookId : null,
@@ -395,14 +669,30 @@ export const useStore = create<Store>()(
     setUploadedSource: (id, source) => {
       const e = get().ebook;
       if (e.bookId !== id) return;
+      ebookResolutionNonce += 1;
       set({ ebook: { ...e, source, status: 'reading', uploadOpen: false, error: null } });
+    },
+
+    setReadingPosition: (position) => {
+      // Guest anchors live only in storage.ts's in-memory session map. Keeping
+      // them out of PersistedState prevents upload metadata entering durable
+      // guest browser storage while still allowing signed-in cloud resume.
+      if (!ownerReady || owner === 'guest' || getEbookStorageOwner() !== owner) return;
+      const key = readingPositionKey(position.bookId, position.copyVersion);
+      const existing = get().readingPositions[key];
+      if (existing && existing.updatedAt > position.updatedAt) return;
+      set({ readingPositions: { ...get().readingPositions, [key]: position } });
     },
 
     reportProgress: (percent, secondsRead) => {
       const e = get().ebook;
       const id = e.bookId;
       if (!id) return;
-      set({ ebook: { ...e, percent, secondsRead } });
+      // The active-reading timer reports every second. Only change React state
+      // when the visible progress changed; seconds remain in the engine ref.
+      if (Math.abs(e.percent - percent) >= 0.01) {
+        set({ ebook: { ...e, percent, secondsRead } });
+      }
 
       // bridge percent → pagesRead so the library bars, the RESUME label, and
       // cross-device sync (owlry_progress persists pagesRead, not the ephemeral
@@ -435,22 +725,61 @@ export const useStore = create<Store>()(
       }
     },
 
-    bootstrap: async () => {
-      const [loaded, session] = await Promise.all([
-        loadLocal('guest'),
-        supabase ? supabase.auth.getSession().then((r) => r.data.session) : Promise.resolve(null),
-      ]);
-      if (loaded) set({ ...loaded, hydrated: true });
-      else set({ hydrated: true });
-      // opening night, once — the curtain waits for first-timers
-      if (!get().prefs.onboarded) set({ showOnboarding: true });
-      if (supabase) {
-        set({
-          authUser: session?.user ? { id: session.user.id, email: session.user.email ?? null } : null,
-          authReady: true,
-        });
-      }
-      await get().hydrateChat();
+    bootstrap: () => {
+      // React StrictMode runs mount effects twice in development. Share one
+      // bootstrap so a late duplicate cannot reset an already-adopted account
+      // back to the guest ebook namespace.
+      if (bootstrapTask) return bootstrapTask;
+      bootstrapTask = (async () => {
+        const [loaded, session] = await Promise.all([
+          loadLocal('guest'),
+          supabase ? supabase.auth.getSession().then((r) => r.data.session) : Promise.resolve(null),
+          // Unscoped v1 ebook keys may contain old guest-uploaded bytes. They
+          // cannot be assigned safely to any account, so remove only those exact
+          // legacy prefixes before the app becomes interactive.
+          purgeLegacyEbookStorage().catch(() => 0),
+        ]);
+        // Progress hydrates guest-first. App.tsx then adopts an authenticated
+        // account as one guarded transition; keeping ebook storage guest-owned
+        // until that point avoids a split-brain owner window.
+        owner = 'guest';
+        setEbookStorageOwner('guest');
+        const guestState = loaded ?? SEED;
+        if (session?.user) {
+          // A raw Supabase session is known before the profile-backed auth store
+          // finishes loading. Keep the guest state available for a legitimate
+          // first-account carry, but show a neutral shell and block all owner
+          // reads until App adopts that exact user.
+          ownerReady = false;
+          ownerTransitionSnapshot = {
+            owner: 'guest',
+            state: { ...guestState, readingPositions: {} },
+          };
+          set({
+            ...SEED,
+            readingPositions: {},
+            ebook: EBOOK_IDLE,
+            hydrated: true,
+            showOnboarding: false,
+            syncStatus: 'syncing',
+            accountStorageBlocked: true,
+          });
+        } else {
+          ownerReady = true;
+          ownerTransitionSnapshot = null;
+          set({ ...guestState, readingPositions: {}, hydrated: true });
+        }
+        // opening night, once — the curtain waits for first-timers
+        if (!session?.user && !get().prefs.onboarded) set({ showOnboarding: true });
+        if (supabase) {
+          set({
+            authUser: session?.user ? { id: session.user.id, email: session.user.email ?? null } : null,
+            authReady: true,
+          });
+        }
+        await get().hydrateChat();
+      })();
+      return bootstrapTask;
     },
 
     hydrateChat: async () => {
@@ -508,6 +837,7 @@ export const useStore = create<Store>()(
       if (seen.includes(key) || get().introCard) return; // once, ever; one at a time
       set((s) => ({
         prefs: { ...s.prefs, introsSeen: [...seen, key] },
+        prefsUpdatedAt: nextPrefsUpdatedAt(s.prefsUpdatedAt),
         introCard: key,
         introAfter: afterLetter ?? null,
       }));
@@ -739,7 +1069,10 @@ export const useStore = create<Store>()(
 
     openSettings: () => set({ settingsOpen: true }),
     closeSettings: () => set({ settingsOpen: false }),
-    setPref: (key, value) => set((s) => ({ prefs: { ...s.prefs, [key]: value } })),
+    setPref: (key, value) => set((s) => ({
+      prefs: { ...s.prefs, [key]: value },
+      prefsUpdatedAt: nextPrefsUpdatedAt(s.prefsUpdatedAt),
+    })),
     // A true first-run reset — NOT the SEED demo state (level 7 with books
     // already shelved). Level 1, empty shelves, every gate re-locked, the owl
     // intros re-armed, and the ENTIRE opening night replays as if this were a
@@ -761,7 +1094,9 @@ export const useStore = create<Store>()(
         readingIds: [],
         finishedIds: [],
         pagesRead: {},
+        readingPositions: {},
         prefs: { ...s.prefs, introsSeen: [], onboarded: false, name: undefined },
+        prefsUpdatedAt: nextPrefsUpdatedAt(s.prefsUpdatedAt),
         showOnboarding: true,
         activeTab: 'today',
         deskMode: 'all',
@@ -832,43 +1167,239 @@ export const useStore = create<Store>()(
     openOnboarding: () => set({ showOnboarding: true, settingsOpen: false }),
 
     adoptAccount: async (userId) => {
-      owner = userId;
-      set({ syncStatus: 'syncing' });
-      // what's on screen right now (a guest's play, waiting to carry over)
-      const current = extractPersisted(get());
-      const [userLocal, cloud] = await Promise.all([
-        loadLocal(userId),
-        cloudPull().catch(() => null), // offline → treat as no cloud
-      ]);
+      if (get().authUser?.id !== userId) return;
+      const pendingCloudHydration = cloudHydrationPending?.owner === userId
+        ? cloudHydrationPending
+        : null;
+      const recoveringCloudHydration = !!pendingCloudHydration;
+      if (
+        ownerReady
+        && owner === userId
+        && getEbookStorageOwner() === userId
+        && !recoveringCloudHydration
+      ) return;
+      if (ownerTransitionTarget === userId) return;
+      const transitionNonce = ++ownerTransitionNonce;
+      ownerTransitionTarget = userId;
+      const previousOwner = owner;
+      const previousOwnerWasReady = ownerReady;
+      const freshAccountState = recoveringCloudHydration
+        ? pendingCloudHydration.freshAccountState
+        : previousOwner === 'guest'
+          ? (ownerTransitionSnapshot?.owner === previousOwner
+              ? ownerTransitionSnapshot.state
+              : extractPersisted(get()))
+          : SEED;
+      const current = ownerTransitionSnapshot?.owner === previousOwner
+        ? ownerTransitionSnapshot.state
+        : extractPersisted(get());
+      ownerTransitionSnapshot = null;
+      const transitionIsCurrent = () => (
+        ownerTransitionNonce === transitionNonce
+        && owner === userId
+        && getEbookStorageOwner() === userId
+        && get().authUser?.id === userId
+      );
 
-      // brand-new account on a fresh device (nothing local, nothing in the
-      // cloud) → carry over the current guest progress as its starting point.
-      // Otherwise adopt the account's own data (this device's cache merged with
-      // the cloud), never folding in the transient guest/demo state.
-      let next: PersistedState;
-      if (!userLocal && !cloud) next = current;
-      else {
-        const base = userLocal ?? (cloud as PersistedState);
-        next = cloud ? mergeProgress(base, cloud) : base;
-      }
-
-      set({ ...next });
-      await saveLocal(userId, next);
       try {
-        await cloudPush(next);
-        set({ syncStatus: 'synced' });
-      } catch {
-        set({ syncStatus: 'error' });
+        clearTimeout(saveTimer);
+        clearTimeout(cloudTimer);
+        ebookResolutionNonce += 1;
+        ownerReady = false;
+        // Preserve the departing owner's latest local state under its explicit
+        // namespace. If another owner transition is already loading, the visible
+        // slice still belongs to that transition's predecessor (or is the neutral
+        // seed), so never write it into the provisional owner's namespace.
+        if (previousOwnerWasReady && !recoveringCloudHydration) {
+          void saveLocal(previousOwner, current);
+        }
+        if (previousOwner !== 'guest' && previousOwner !== userId) {
+          // Do not leave account A's library/profile visible while account B is
+          // loading on a shared device.
+          set({
+            ...SEED,
+            ebook: EBOOK_IDLE,
+            syncStatus: 'syncing',
+            accountStorageBlocked: true,
+          });
+        } else {
+          set({
+            ebook: EBOOK_IDLE,
+            syncStatus: 'syncing',
+            accountStorageBlocked: true,
+          });
+        }
+        if (previousOwner === 'guest') clearGuestEbookSession();
+        owner = userId;
+        setEbookStorageOwner(userId);
+        const [userLocal, cloudResult] = await Promise.all([
+          loadLocal(userId),
+          cloudPull(userId).then(
+            (state) => ({ state, error: null }),
+            (error: unknown) => ({ state: null, error }),
+          ),
+        ]);
+        if (!transitionIsCurrent()) return;
+        const cloud = cloudResult.state;
+
+        // With no trusted account-local cache, a failed pull cannot prove that
+        // the cloud row is absent. Never seed/push guest demo state in that
+        // ambiguous case. Keep a private in-memory candidate and retry the pull;
+        // only a successful null result may establish a genuinely fresh account.
+        if (cloudResult.error && !userLocal) {
+          cloudHydrationPending = {
+            owner: userId,
+            freshAccountState,
+          };
+          set({
+            ...SEED,
+            ebook: EBOOK_IDLE,
+            showOnboarding: false,
+            syncStatus: 'error',
+            accountStorageBlocked: true,
+          });
+          ownerReady = false;
+          clearCloudHydrationRetry();
+          cloudHydrationRetryTimer = setTimeout(() => {
+            cloudHydrationRetryTimer = undefined;
+            if (
+              cloudHydrationPending?.owner === userId
+              && get().authUser?.id === userId
+            ) void get().adoptAccount(userId);
+          }, 3_000);
+          console.warn('[sync] cloud progress is unavailable; account adoption will retry:', cloudResult.error);
+          return;
+        }
+
+        // brand-new account on a fresh device (nothing local, nothing in the
+        // cloud) → carry over the current guest progress as its starting point.
+        // Otherwise adopt the account's own data (this device's cache merged with
+        // the cloud), never folding in the transient guest/demo state.
+        let next: PersistedState;
+        if (recoveringCloudHydration) {
+          next = cloud ?? userLocal ?? freshAccountState;
+          if (cloud && userLocal) next = mergeProgress(userLocal, cloud);
+        } else if (previousOwner === userId) {
+          next = mergeProgress(current, userLocal ?? SEED);
+          if (cloud) next = mergeProgress(next, cloud);
+        } else if (!userLocal && !cloud) {
+          next = previousOwner === 'guest' ? current : SEED;
+        } else {
+          const base = userLocal ?? (cloud as PersistedState);
+          next = cloud ? mergeProgress(base, cloud) : base;
+        }
+
+        cloudHydrationPending = null;
+        clearCloudHydrationRetry();
+        ownerReady = true;
+        set({
+          ...next,
+          showOnboarding: !next.prefs.onboarded,
+          accountStorageBlocked: false,
+        });
+        await saveLocal(userId, next);
+        if (!transitionIsCurrent()) return;
+        // A failed pull is not the same as an empty account. cloudPush performs
+        // its own revision-fenced read/merge, so it is safe to reconcile after
+        // a transient download failure without replacing an existing row.
+        try {
+          const committed = await cloudPush(next, userId);
+          if (transitionIsCurrent()) {
+            // The CAS write may have met another device after our initial pull.
+            // Reconcile the exact committed union back into this device instead
+            // of displaying a stale local slice with a misleading "synced".
+            const reconciled = committed
+              ? mergeProgress(extractPersisted(get()), committed)
+              : extractPersisted(get());
+            set({ ...reconciled, syncStatus: 'synced' });
+            await saveLocal(userId, reconciled);
+          }
+        } catch {
+          if (transitionIsCurrent()) set({ syncStatus: 'error' });
+        }
+        if (cloudResult.error) {
+          console.warn('[sync] initial cloud progress download failed; revision-fenced retry used:', cloudResult.error);
+        }
+        if (transitionIsCurrent()) void retryPendingCopiesNow(userId);
+      } catch (error) {
+        if (transitionIsCurrent()) {
+          // Keep the state-changing surface covered when account ownership is
+          // still untrusted. The gate always offers retry and sign-out.
+          set({ syncStatus: 'error', accountStorageBlocked: true });
+        }
+        console.warn('[sync] could not adopt account storage:', error);
+      } finally {
+        if (
+          ownerTransitionNonce === transitionNonce
+          && ownerTransitionTarget === userId
+        ) ownerTransitionTarget = null;
       }
     },
 
     revertToGuest: async () => {
-      owner = 'guest';
-      set({ syncStatus: 'off' });
-      const guest = await loadLocal('guest');
-      // show the guest cache again (or the fresh seed) so an account's data
-      // doesn't linger on screen after signing out
-      set({ ...(guest ?? SEED) });
+      if (get().authUser !== null) return;
+      if (
+        ownerReady
+        && owner === 'guest'
+        && getEbookStorageOwner() === 'guest'
+      ) return;
+      if (ownerTransitionTarget === 'guest') return;
+      const transitionNonce = ++ownerTransitionNonce;
+      ownerTransitionTarget = 'guest';
+      const previousCloudHydrationWasPending =
+        cloudHydrationPending?.owner === owner;
+      cloudHydrationPending = null;
+      clearCloudHydrationRetry();
+      const previousOwner = owner;
+      const previousOwnerWasReady = ownerReady;
+      const current = ownerTransitionSnapshot?.owner === previousOwner
+        ? ownerTransitionSnapshot.state
+        : extractPersisted(get());
+      ownerTransitionSnapshot = null;
+      try {
+        clearTimeout(saveTimer);
+        clearTimeout(cloudTimer);
+        ebookResolutionNonce += 1;
+        ownerReady = false;
+        if (
+          previousOwnerWasReady
+          && !previousCloudHydrationWasPending
+        ) void saveLocal(previousOwner, current);
+        // Block access to the departing account's ebook namespace immediately,
+        // but do not label its still-visible progress state as guest-owned until
+        // the guest cache has actually loaded.
+        setEbookStorageOwner('guest');
+        set({
+          ebook: EBOOK_IDLE,
+          syncStatus: 'off',
+          accountStorageBlocked: true,
+        });
+        const guest = await loadLocal('guest');
+        if (
+          ownerTransitionNonce !== transitionNonce
+          || owner !== previousOwner
+          || getEbookStorageOwner() !== 'guest'
+          || get().authUser !== null
+        ) return;
+        owner = 'guest';
+        ownerReady = true;
+        clearGuestEbookSession();
+        // show the guest cache again (or the fresh seed) so an account's data
+        // doesn't linger on screen after signing out
+        set({
+          ...(guest ?? SEED),
+          readingPositions: {},
+          accountStorageBlocked: false,
+        });
+      } catch (error) {
+        if (get().authUser === null) set({ syncStatus: 'error' });
+        console.warn('[sync] could not restore guest storage:', error);
+      } finally {
+        if (
+          ownerTransitionNonce === transitionNonce
+          && ownerTransitionTarget === 'guest'
+        ) ownerTransitionTarget = null;
+      }
     },
 
     finishOnboarding: (firstAsk) => {
@@ -879,6 +1410,7 @@ export const useStore = create<Store>()(
         showOnboarding: false,
         activeTab: 'discover',
         prefs: { ...s.prefs, onboarded: true },
+        prefsUpdatedAt: nextPrefsUpdatedAt(s.prefsUpdatedAt),
       }));
       if (!firstAsk) return;
       const meNodes: OwlMessage = [{ t: 'text', v: firstAsk.label }];
@@ -1088,13 +1620,29 @@ export const useStore = create<Store>()(
 /* ── persist the durable slice (debounced) whenever it changes ── */
 /* local cache always (offline-first); a longer-debounced cloud push too when
    signed in, so progress follows the account across devices */
-function scheduleCloudPush(slice: PersistedState) {
+function scheduleCloudPush(slice: PersistedState, scheduledOwner: Exclude<Owner, 'guest'>) {
   clearTimeout(cloudTimer);
   cloudTimer = setTimeout(() => {
+    if (owner !== scheduledOwner || getEbookStorageOwner() !== scheduledOwner) return;
     useStore.setState({ syncStatus: 'syncing' });
-    void cloudPush(slice)
-      .then(() => useStore.setState({ syncStatus: 'synced' }))
-      .catch(() => useStore.setState({ syncStatus: 'error' }));
+    void cloudPush(slice, scheduledOwner)
+      .then((committed) => {
+        if (owner === scheduledOwner && getEbookStorageOwner() === scheduledOwner) {
+          const live = extractPersisted(useStore.getState());
+          const reconciled = committed ? mergeProgress(live, committed) : live;
+          if (JSON.stringify(reconciled) === JSON.stringify(live)) {
+            useStore.setState({ syncStatus: 'synced' });
+          } else {
+            useStore.setState({ ...reconciled, syncStatus: 'synced' });
+            void saveLocal(scheduledOwner, reconciled);
+          }
+        }
+      })
+      .catch(() => {
+        if (owner === scheduledOwner && getEbookStorageOwner() === scheduledOwner) {
+          useStore.setState({ syncStatus: 'error' });
+        }
+      });
   }, 1400);
 }
 
@@ -1110,26 +1658,92 @@ syncDocumentLang();
 useStore.subscribe(
   (s) => extractPersisted(s),
   (slice) => {
-    if (!useStore.getState().hydrated) return;
+    if (!useStore.getState().hydrated || !ownerReady) return;
+    const scheduledOwner = owner;
+    // While the first cloud read is ambiguous, even a local write would turn
+    // the neutral placeholder into "trusted" account data on the next retry.
+    // Keep it ephemeral until a successful pull establishes cloud-vs-fresh.
+    if (cloudHydrationPending?.owner === scheduledOwner) return;
     clearTimeout(saveTimer);
     saveTimer = setTimeout(() => {
-      void saveLocal(owner, slice);
+      void saveLocal(scheduledOwner, slice);
     }, 250);
-    if (owner !== 'guest') scheduleCloudPush(slice);
+    if (scheduledOwner !== 'guest') scheduleCloudPush(slice, scheduledOwner);
   },
   { equalityFn: shallow },
 );
 
-/* ── keep authUser + the chat in sync with Supabase's own session lifecycle
-   (sign in/out, token refresh) — set up ONCE at module scope. This listener owns
-   only the CHAT side (authUser + hydrateChat + reset); cloud-sync adoption is
-   owned solely by App.tsx's effect (driven by useAuth), so a login never adopts
-   twice. A redundant hydrateChat() right after bootstrap's own is harmless (it
-   replaces owl.messages wholesale). No-op when no backend is configured. ── */
+/* ── keep authUser + the chat in sync with Supabase's own session lifecycle.
+   The raw session is the immediate privacy boundary: it revokes a departing
+   owner's visible/cache state before the profile-backed auth store finishes.
+   Once hydration exists it also starts the matching owner transition in a
+   microtask; App.tsx may request the same transition later, but the transition
+   target/ready guards make that call an idempotent no-op. ── */
 if (supabase) {
   supabase.auth.onAuthStateChange((_event, session) => {
     const user = session?.user ? { id: session.user.id, email: session.user.email ?? null } : null;
-    useStore.setState({ authUser: user, authReady: true });
+    const sessionOwner = user?.id ?? null;
+    const activeOwner = owner === 'guest' ? null : owner;
+    if (sessionOwner !== activeOwner) {
+      // Supabase exposes the raw auth ID before the profile-backed auth store
+      // finishes its network lookup. Revoke the departing namespace and visible
+      // progress immediately so account B can never browse account A's cached
+      // library or keep A's reader open during that delay.
+      const visibleState = useStore.getState();
+      const departing = withPendingReadingPosition(
+        extractPersisted(visibleState),
+        owner,
+      );
+      if (
+        visibleState.hydrated
+        && ownerReady
+        && cloudHydrationPending?.owner !== owner
+      ) {
+        ownerTransitionSnapshot = { owner, state: departing };
+        void saveLocal(owner, departing);
+      }
+      clearTimeout(saveTimer);
+      clearTimeout(cloudTimer);
+      cloudHydrationPending = null;
+      clearCloudHydrationRetry();
+      ownerTransitionNonce += 1;
+      ownerTransitionTarget = null;
+      ebookResolutionNonce += 1;
+      ownerReady = false;
+      setEbookStorageOwner('guest');
+      if (owner === 'guest') clearGuestEbookSession();
+      useStore.setState({
+        ...SEED,
+        readingPositions: {},
+        ebook: EBOOK_IDLE,
+        showOnboarding: false,
+        syncStatus: user ? 'syncing' : 'off',
+        accountStorageBlocked: !!user,
+        authUser: user,
+        authReady: true,
+      });
+    } else {
+      useStore.setState({ authUser: user, authReady: true });
+    }
+
+    const storageOwner = getEbookStorageOwner();
+    const needsOwnerRecovery = useStore.getState().hydrated && (
+      user
+        ? (!ownerReady || owner !== user.id || storageOwner !== user.id)
+        : (!ownerReady || owner !== 'guest' || storageOwner !== 'guest')
+    );
+    if (needsOwnerRecovery) {
+      // Leave Supabase's auth callback before starting IndexedDB/network work.
+      queueMicrotask(() => {
+        const store = useStore.getState();
+        if (user) {
+          if (store.authUser?.id === user.id) void store.adoptAccount(user.id);
+        } else if (store.authUser === null) {
+          void store.revertToGuest();
+        }
+      });
+    }
+
     if (user) {
       void useStore.getState().hydrateChat();
     } else {
@@ -1141,5 +1755,12 @@ if (supabase) {
       }));
       useStore.getState().initChat();
     }
+  });
+}
+
+if (typeof window !== 'undefined') {
+  window.addEventListener('online', () => {
+    const ebookOwner = getEbookStorageOwner();
+    if (ebookOwner !== 'guest') void retryPendingCopiesNow(ebookOwner);
   });
 }

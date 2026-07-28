@@ -3,7 +3,8 @@
 --
 -- Signed-in readers get a personal folder in the `owlry-uploads`
 -- bucket; the client mirrors uploads to it and other devices pull
--- from it. Object paths are `<user_id>/<book_id>.<format>`, and
+-- from it. Immutable object paths are
+-- `<user_id>/<book_id>/<copy_version>.<format>`, and
 -- every policy pins the first path segment to auth.uid(), so a
 -- reader can only ever see or touch their own copies. The bucket
 -- is private (no public URLs); downloads ride the authed API.
