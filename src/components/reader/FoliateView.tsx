@@ -30,6 +30,7 @@ type FoliateViewEl = HTMLElement & {
   next(distance?: number): Promise<void>;
   prev(distance?: number): Promise<void>;
   goToFraction(frac: number): Promise<void>;
+  isFixedLayout?: boolean;
   lastLocation?: { cfi?: string };
   resolveNavigation?: (target: string) => unknown;
   renderer?: FoliateRenderer;
@@ -57,6 +58,101 @@ const READER_FACES = `
                  font-weight:400 700; font-style:normal; font-display:swap; }
     @font-face { font-family:'Fraunces'; src:url('${abs(frauncesItalicUrl)}') format('woff2');
                  font-weight:400; font-style:italic; font-display:swap; }`;
+
+const EMPTY_BLOCK_ATTRIBUTE = 'data-owlry-empty-block';
+const SEMANTIC_BREAK_ATTRIBUTE = 'data-owlry-semantic-break';
+const PRESERVE_LAYOUT_ATTRIBUTE = 'data-owlry-preserve-layout';
+const EMPTY_BLOCK_WHITESPACE = /[\s\u00a0\u00ad\u200b-\u200d\u2060\ufeff]+/gu;
+const MEANINGFUL_EMPTY_BLOCK_CONTENT = [
+  'img',
+  'picture',
+  'svg',
+  'math',
+  'video',
+  'audio',
+  'canvas',
+  'object',
+  'embed',
+  'iframe',
+  'table',
+  'hr',
+  'a[href]',
+  'button',
+  'input',
+  'select',
+  'textarea',
+  '[role="img"]',
+  '[role="separator"]',
+].join(',');
+const SEMANTIC_BREAK_HINT = [
+  '[role="separator"]',
+  '[epub\\:type~="separator"]',
+  '[class*="scene" i]',
+  '[class*="break" i]',
+  '[class*="ornament" i]',
+  '[class*="asterism" i]',
+].join(',');
+const PRESERVED_PARAGRAPH_LAYOUT = [
+  '[epub\\:type~="poem"]',
+  '[epub\\:type~="verse"]',
+  '[epub\\:type~="stanza"]',
+  '[epub\\:type~="z3998:poem"]',
+  '[epub\\:type~="z3998:verse"]',
+  '[epub\\:type~="z3998:stanza"]',
+  '[role="doc-poem"]',
+  '[class*="poem" i]',
+  '[class*="poetry" i]',
+  '[class*="verse" i]',
+  '[class*="stanza" i]',
+].join(',');
+
+const hasGeneratedContent = (element: Element, doc: Document): boolean => {
+  const win = doc.defaultView;
+  if (!win) return false;
+  try {
+    return ['::before', '::after'].some((pseudo) => {
+      const content = win.getComputedStyle(element, pseudo).content;
+      return Boolean(content && content !== 'none' && content !== 'normal' && content !== '""');
+    });
+  } catch {
+    return false;
+  }
+};
+
+const hasGeneratedDescendantContent = (element: Element, doc: Document): boolean =>
+  hasGeneratedContent(element, doc)
+  || [...element.querySelectorAll('*')].some((descendant) =>
+    hasGeneratedContent(descendant, doc));
+
+/** Collapse presentation-only spacer paragraphs without rewriting the ebook.
+    Cocoa/Word-style exports often put a `<p><br></p>` between every real
+    paragraph. Once the app applies its own line height, each of those becomes a
+    second paragraph-sized gap. The marker keeps anchor geometry in the document
+    while the injected sheet removes only blocks with no readable/visual content. */
+const normalizeDocumentTypography = (doc: Document): void => {
+  for (const paragraph of doc.querySelectorAll('p')) {
+    const preservesLayout = Boolean(paragraph.closest(PRESERVED_PARAGRAPH_LAYOUT));
+    if (preservesLayout) {
+      paragraph.setAttribute(PRESERVE_LAYOUT_ATTRIBUTE, '');
+    }
+    const readableText = (paragraph.textContent ?? '').replace(EMPTY_BLOCK_WHITESPACE, '');
+    if (
+      readableText.length === 0
+      && (
+        Boolean(paragraph.closest(SEMANTIC_BREAK_HINT))
+        || Boolean(paragraph.querySelector(SEMANTIC_BREAK_HINT))
+      )
+    ) {
+      paragraph.setAttribute(SEMANTIC_BREAK_ATTRIBUTE, '');
+      continue;
+    }
+    const shouldPreserve = preservesLayout
+      || readableText.length > 0
+      || Boolean(paragraph.querySelector(MEANINGFUL_EMPTY_BLOCK_CONTENT))
+      || hasGeneratedDescendantContent(paragraph, doc);
+    if (!shouldPreserve) paragraph.setAttribute(EMPTY_BLOCK_ATTRIBUTE, '');
+  }
+};
 
 const readerStyles = (prefs: ReaderPrefs, chromeVisible: boolean): string => {
   const family = prefs.font === 'fraunces'
@@ -113,14 +209,50 @@ const readerStyles = (prefs: ReaderPrefs, chromeVisible: boolean): string => {
     :where(pre, code, samp, kbd) {
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace !important;
     }
-    p {
+    p:not([${PRESERVE_LAYOUT_ATTRIBUTE}]) {
+      line-height: 1.65 !important;
+      overflow-wrap: break-word !important;
+      text-wrap: pretty;
+      break-inside: auto !important;
+      page-break-inside: auto !important;
+      orphans: 2;
+      widows: 2;
       margin-block: 0 .62em !important;
-      text-indent: 0;
-      text-align: start !important;
-      orphans: 3;
-      widows: 3;
+      margin-inline: 0 !important;
+      padding: 0 !important;
+      block-size: auto !important;
+      min-block-size: 0 !important;
+      inline-size: auto !important;
+      max-inline-size: 100% !important;
+      text-indent: 0 !important;
     }
-    p + p { text-indent: 1.05em; }
+    p[${EMPTY_BLOCK_ATTRIBUTE}] {
+      display: block !important;
+      block-size: 0 !important;
+      min-block-size: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      border: 0 !important;
+      overflow: hidden !important;
+      font-size: 0 !important;
+      line-height: 0 !important;
+      break-before: auto !important;
+      break-after: auto !important;
+    }
+    p[${EMPTY_BLOCK_ATTRIBUTE}] br {
+      display: none !important;
+    }
+    p[${SEMANTIC_BREAK_ATTRIBUTE}] {
+      block-size: auto !important;
+      min-block-size: 0 !important;
+      margin: .9em 0 !important;
+      padding: 0 !important;
+      line-height: 1 !important;
+      text-align: center !important;
+    }
+    p[${SEMANTIC_BREAK_ATTRIBUTE}] > br {
+      display: none !important;
+    }
     :is(h1, h2, h3, h4, h5, h6, hr, figure, table, pre, blockquote, ul, ol) + p,
     :where(blockquote, li, figure, figcaption, table, th, td, header, footer, nav, aside,
       [role="doc-footnote"], [role="doc-endnote"], [epub\\:type~="footnote"],
@@ -132,7 +264,6 @@ const readerStyles = (prefs: ReaderPrefs, chromeVisible: boolean): string => {
       font-family: ${family};
       font-weight: 650;
       line-height: 1.2 !important;
-      text-align: start !important;
       text-wrap: balance;
       overflow-wrap: normal !important;
       word-break: normal !important;
@@ -467,6 +598,11 @@ export const FoliateView = forwardRef<EngineHandle, EngineProps>(function Foliat
       const doc = (event as CustomEvent<{ doc?: Document }>).detail?.doc;
       if (cancelled || viewRef.current !== view || !doc || wiredDocuments.has(doc)) return;
       wiredDocuments.add(doc);
+
+      // Fixed-layout books are authored canvases. Reflowable books get a
+      // predictable paragraph rhythm even when their source uses empty
+      // paragraphs and large fixed indents for visual spacing.
+      if (!view?.isFixedLayout) normalizeDocumentTypography(doc);
 
       // Reflowable books have one live document; fixed-layout spreads can have
       // two. Weak references cover both without retaining every visited spine.
