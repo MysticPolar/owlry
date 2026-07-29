@@ -29,6 +29,8 @@ on:
       # no database password for `supabase db push`.
       - "supabase/migrations/20260728150000_owlry_uploads_bucket.sql"
       - "supabase/migrations/20260728170000_owlry_progress_revision.sql"
+      - "supabase/migrations/20260728170000_owlry_season_ledger.sql"
+      - "supabase/migrations/20260728170100_owlry_migrate_balance.sql"
 
 concurrency:
   group: supabase-backend
@@ -48,9 +50,17 @@ jobs:
           SUPABASE_PROJECT_REF: ${{ vars.SUPABASE_PROJECT_REF }}
         run: |
           set -euo pipefail
+          # Order matters: the season ledger defines the config rows and the
+          # profile columns that owlry_migrate_balance reads, so it goes first.
+          # The three 2026-06 migrations are deliberately NOT here — each says
+          # "RECONSTRUCTED FROM LIVE AUDIT" in its header, i.e. it documents
+          # what the live DB already has. Replaying v2_economy_defaults would
+          # be actively wrong: the season ledger supersedes it.
           migrations=(
             supabase/migrations/20260728150000_owlry_uploads_bucket.sql
             supabase/migrations/20260728170000_owlry_progress_revision.sql
+            supabase/migrations/20260728170000_owlry_season_ledger.sql
+            supabase/migrations/20260728170100_owlry_migrate_balance.sql
           )
           for migration in "${migrations[@]}"; do
             payload="$RUNNER_TEMP/$(basename "$migration").json"
