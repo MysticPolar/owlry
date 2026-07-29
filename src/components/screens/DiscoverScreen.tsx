@@ -17,6 +17,7 @@ import { useT } from '../../i18n/react';
 import { Icon } from '../Icon';
 import { CastOwl } from '../CastOwl';
 import { StageBar } from '../stage';
+import { Wordmark } from '../Wordmark';
 
 
 /* spine geometry — thickness reads the page count, height jitters by id so
@@ -113,7 +114,7 @@ function StreamMsg({ item, active, reduce, skipRef, onDone, onScroll, openSheet 
 }
 
 /* ---------- the calm stream ---------- */
-function Chat({ reduce }: { reduce: boolean }) {
+function Chat({ reduce, introLabel }: { reduce: boolean; introLabel?: string }) {
   const t = useT();
   const messages = useStore((s) => s.owl.messages);
   const onDiscover = useStore((s) => s.activeTab === 'discover');
@@ -180,6 +181,11 @@ function Chat({ reduce }: { reduce: boolean }) {
 
   return (
     <div className="chat" id="chat" role="log" aria-live="polite" ref={ref} onClick={onTapSkip}>
+      {introLabel && (
+        <div className="ask-intro-kicker" aria-hidden="true">
+          {introLabel}
+        </div>
+      )}
       {messages.map((m) =>
         m.kind === 'msg' && m.who === 'owl' ? (
           <StreamMsg
@@ -193,7 +199,7 @@ function Chat({ reduce }: { reduce: boolean }) {
             openSheet={openSheet}
           />
         ) : (
-          renderChatItem(m, openSheet, openLetter, nos.get(m.id))
+          renderChatItem(m, openSheet, openLetter, nos.get(m.id), true)
         ),
       )}
       {activeStreamId != null && !reduce && (
@@ -300,7 +306,9 @@ function ShelfRail({ reduce }: { reduce: boolean }) {
       return;
     }
     const t = setTimeout(() => {
-      const cards = document.querySelectorAll(`.gletter[data-book="${id}"], .pb-dealcard[data-book="${id}"]`);
+      const cards = document.querySelectorAll(
+        `.gletter[data-book="${id}"], .pb-dealcard[data-book="${id}"], .pb-short-card[data-book="${id}"]`,
+      );
       flyToShelf(id, cards.length ? cards[cards.length - 1] : null);
     }, 340);
     return () => clearTimeout(t);
@@ -355,30 +363,133 @@ function Chips() {
   const t = useT();
   const chips = useStore((s) => s.owl.chips);
   const send = useStore((s) => s.sendToOwl);
+  const rowRef = useRef<HTMLDivElement>(null);
+  const overflowRef = useRef(false);
+  const [rail, setRail] = useState({ overflow: false, back: false, forward: false });
   // cold start (no question asked yet) → the starter prompts read as prominent,
   // tappable suggestions to ease opening a chat; post-reply chips stay quiet
   const started = useStore((s) => s.owl.messages.some((m) => m.kind === 'msg' && m.who === 'me'));
   const starter = !started && chips.length > 0;
+
+  useEffect(() => {
+    const row = rowRef.current;
+    if (!row || starter) {
+      overflowRef.current = false;
+      setRail({ overflow: false, back: false, forward: false });
+      return;
+    }
+
+    overflowRef.current = false;
+    row.scrollLeft = 0;
+    const measure = () => {
+      // The overflowed state adds trailing breathing room so the final prompt
+      // clears the edge cue. Exclude that decorative space from the decision,
+      // otherwise the carousel can remain latched after the prompts begin fitting.
+      const trailingSpace = Number.parseFloat(getComputedStyle(row).paddingInlineEnd) || 0;
+      const max = Math.max(0, row.scrollWidth - row.clientWidth - trailingSpace);
+      const overflow = max > 2;
+      // When a resize turns a previously fitting row into a carousel, begin at
+      // the first prompt instead of inheriting the browser's right-edge anchor.
+      if (overflow && !overflowRef.current) row.scrollLeft = 0;
+      if (!overflow && row.scrollLeft) row.scrollLeft = 0;
+      const next = {
+        overflow,
+        back: row.scrollLeft > 2,
+        forward: max - row.scrollLeft > 2,
+      };
+      overflowRef.current = overflow;
+      setRail((current) => (
+        current.overflow === next.overflow
+        && current.back === next.back
+        && current.forward === next.forward
+          ? current
+          : next
+      ));
+    };
+
+    measure();
+    row.addEventListener('scroll', measure, { passive: true });
+    window.addEventListener('resize', measure);
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(measure);
+    observer?.observe(row);
+    Array.from(row.children).forEach((child) => observer?.observe(child));
+    let active = true;
+    void document.fonts?.ready.then(() => {
+      if (active) measure();
+    });
+
+    return () => {
+      active = false;
+      row.removeEventListener('scroll', measure);
+      window.removeEventListener('resize', measure);
+      observer?.disconnect();
+    };
+  }, [chips, starter]);
+
+  if (!chips.length) return null;
+
+  const row = (
+    <div
+      ref={rowRef}
+      className={`chips cz ${starter ? 'starter' : 'followup'}`}
+      id="chiprow"
+      role="group"
+      aria-label={starter ? t.discover.starterPromptsAria : t.discover.followupPromptsAria}
+      aria-roledescription={!starter && rail.overflow ? t.discover.followupCarouselRole : undefined}
+      aria-describedby={!starter && rail.overflow ? 'followupSwipeHint' : undefined}
+    >
+      {chips.map((c, i) => (
+        <button key={i} className="chip" data-say={c} onClick={() => send(c)}>
+          <span>{c}</span>
+          {starter && <Icon name="ti-arrow-right" />}
+        </button>
+      ))}
+    </div>
+  );
+
+  if (!starter) {
+    return (
+      <div
+        className={`followup-carousel${rail.overflow ? ' overflowing' : ''}${rail.back ? ' can-back' : ''}${rail.forward ? ' can-forward' : ''}`}
+      >
+        {row}
+        {rail.back && (
+          <span className="followup-edge back" aria-hidden="true">
+            <Icon name="ti-arrow-left" />
+          </span>
+        )}
+        {rail.forward && (
+          <span className="followup-edge forward" aria-hidden="true">
+            <Icon name="ti-arrow-right" />
+          </span>
+        )}
+        {rail.overflow && (
+          <span className="sr-only" id="followupSwipeHint">
+            {t.discover.followupCarouselHint}
+          </span>
+        )}
+      </div>
+    );
+  }
+
   return (
     <>
-      {starter && (
-        <div className="chip-hint" aria-hidden="true">
-          {t.discover.chipHint}
-        </div>
-      )}
-      <div className={`chips cz${starter ? ' starter' : ''}`} id="chiprow" aria-label={starter ? t.discover.starterPromptsAria : undefined}>
-        {chips.map((c, i) => (
-          <button key={i} className="chip" data-say={c} onClick={() => send(c)}>
-            {c.toUpperCase()}
-          </button>
-        ))}
+      <div className="chip-hint" aria-hidden="true">
+        {t.discover.chipHint}
       </div>
+      {row}
     </>
   );
 }
 
 /* ---------- composer ---------- */
-function Composer({ onTyping }: { onTyping: (v: boolean) => void }) {
+function Composer({
+  onTyping,
+  onDraftChange,
+}: {
+  onTyping: (v: boolean) => void;
+  onDraftChange: (v: boolean) => void;
+}) {
   const t = useT();
   const send = useStore((s) => s.sendToOwl);
   const busy = useStore((s) => s.owl.busy);
@@ -393,15 +504,17 @@ function Composer({ onTyping }: { onTyping: (v: boolean) => void }) {
   useEffect(() => {
     if (!scoutDraft) return;
     setVal(scoutDraft);
+    onDraftChange(!!scoutDraft.trim());
     clearScoutDraft();
     inputRef.current?.focus({ preventScroll: true });
-  }, [scoutDraft, clearScoutDraft]);
+  }, [scoutDraft, clearScoutDraft, onDraftChange]);
 
   const submit = () => {
     const t = val.trim();
     if (!t || busy) return;
     send(t);
     setVal('');
+    onDraftChange(false);
     // do NOT refocus: keeping focus holds the .typing state, which hides the
     // header + shelf rail and suppresses the spine flight. Letting the composer
     // blur lets the chrome return so the flight plays (matches the mockup).
@@ -413,8 +526,20 @@ function Composer({ onTyping }: { onTyping: (v: boolean) => void }) {
   // the level-3 lock intro, the canned ack line).
   const pro = desk === 'pro';
   const ohLocked = !pro && lv < 3;
+  const deskLabel = pro ? t.discover.deskNonFictionShort : t.discover.deskAllShort;
   return (
     <div className="composer pb-composer">
+      <button
+        type="button"
+        className={`pb-deskpill${pro ? ' pro' : ''}`}
+        role="switch"
+        aria-checked={pro}
+        aria-label={`${deskLabel}: ${ohLocked ? t.discover.officeHourLockedAria : t.discover.deskAria}`}
+        onClick={() => setDeskMode(pro ? 'all' : 'pro')}
+      >
+        <Icon name={ohLocked ? 'ti-lock' : 'ti-feather'} />
+        <span className="pb-deskpill-label">{deskLabel}</span>
+      </button>
       <input
         ref={inputRef}
         id="qIn"
@@ -427,28 +552,23 @@ function Composer({ onTyping }: { onTyping: (v: boolean) => void }) {
         value={val}
         onFocus={() => onTyping(true)}
         onBlur={() => onTyping(false)}
-        onChange={(e) => setVal(e.target.value)}
+        onChange={(e) => {
+          setVal(e.target.value);
+          onDraftChange(!!e.target.value.trim());
+        }}
         onKeyDown={(e) => {
           if (e.key === 'Enter') submit();
         }}
       />
-      <div className="pb-composer-row">
-        <button
-          type="button"
-          className={`pb-deskpill${pro ? ' pro' : ''}`}
-          role="switch"
-          aria-checked={pro}
-          aria-label={ohLocked ? t.discover.officeHourLockedAria : t.discover.deskAria}
-          onClick={() => setDeskMode(pro ? 'all' : 'pro')}
-        >
-          <Icon name={ohLocked ? 'ti-lock' : 'ti-feather'} />
-          {pro ? t.discover.deskNonFiction : t.discover.deskAll}
-        </button>
-        <span className="sp" />
-        <button className="pb-send" id="sendBtn" aria-label={t.discover.sendAria} onClick={submit}>
-          <Icon name="ti-send" />
-        </button>
-      </div>
+      <button
+        className="pb-send"
+        id="sendBtn"
+        aria-label={t.discover.sendAria}
+        disabled={!val.trim() || busy}
+        onClick={submit}
+      >
+        <Icon name="ti-send" />
+      </button>
     </div>
   );
 }
@@ -505,31 +625,43 @@ export function DiscoverScreen() {
   const active = useStore((s) => s.activeTab === 'discover');
   const desk = useStore((s) => s.deskMode);
   const openHistory = useStore((s) => s.openHistory);
-  const chatting = useStore((s) => s.owl.messages.some((m) => m.kind === 'msg' && m.who === 'me'));
+  const messages = useStore((s) => s.owl.messages);
+  const chatting = messages.some((m) => m.kind === 'msg' && m.who === 'me');
   const reduce = useReduceMotion();
   const [typing, setTyping] = useState(false);
+  const [hasDraft, setHasDraft] = useState(false);
+  const pristine =
+    messages.length === 0
+    || (
+      messages.length === 1
+      && messages[0].kind === 'msg'
+      && messages[0].who === 'owl'
+    );
+  const beforeAsk = !chatting;
+  const opening = beforeAsk && !typing && !hasDraft;
+  const coldStart = pristine && opening;
 
   const cls = ['screen', 'calm', 'one-letter', 'desk-head'];
   if (active) cls.push('on');
   if (chatting) cls.push('chatting');
   if (typing) cls.push('typing');
+  if (beforeAsk) cls.push('before-ask');
+  if (hasDraft) cls.push('drafting');
+  if (opening) cls.push('opening');
+  if (coldStart) cls.push('cold-start');
 
   return (
     <section className={cls.join(' ')} id="screen-discover" data-desk={desk}>
       <StageBar />
       <div className="pad-h disc-head">
-        <span className="ghost" aria-hidden="true">
-          Scout
-        </span>
-        <h1 className="hl sm d">
-          <span className="u" />
-          <span className="t">
-            {t.discover.title}<span className="gdot">.</span>
-          </span>
-        </h1>
+        <h1 className="sr-only">{t.discover.title}</h1>
 
         {/* the desk switch now rides in the composer pill; the header stays lean */}
         <GuestDeskLevel />
+
+        <span className="disc-wordmark" aria-hidden="true">
+          <Wordmark decorative />
+        </span>
 
         <div className="disc-head-right">
           <CastOwl owl="scout" cls="mini" variant={desk === 'pro' ? 'pro' : undefined} />
@@ -541,10 +673,12 @@ export function DiscoverScreen() {
         </div>
       </div>
 
-      <ShelfRail reduce={reduce} />
-      <Chat reduce={reduce} />
-      <Chips />
-      <Composer onTyping={setTyping} />
+      <div className="pb-ask-body">
+        <ShelfRail reduce={reduce} />
+        <Chat reduce={reduce} introLabel={coldStart ? t.discover.introKicker : undefined} />
+        <Chips />
+        <Composer onTyping={setTyping} onDraftChange={setHasDraft} />
+      </div>
       <DeskSwitchHint />
     </section>
   );

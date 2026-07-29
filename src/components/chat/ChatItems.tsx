@@ -216,7 +216,64 @@ function DealCard({ id }: { id: BookRef }) {
   );
 }
 
-export function DealRow({ books, mid }: { books: BookRef[]; mid?: number }) {
+function EditorialDealCard({ id }: { id: BookRef }) {
+  const t = useT();
+  const b = getBook(id);
+  const openSheet = useStore((s) => s.openSheet);
+  const openLetter = useStore((s) => s.openLetter);
+  if (!b) return null;
+
+  // Ask reads as an editorial sequence: a compact card introduces the book,
+  // then Scout's reason follows as its own sentence on the stage.
+  return (
+    <article className="pb-short-card" role="listitem" data-book={id}>
+      <div className="pb-short-shell">
+        <div className="pb-short-cover-wrap" aria-hidden="true">
+          <Cover id={id} cls="pb-cover pb-short-cover" />
+        </div>
+        <button
+          type="button"
+          className="pb-short-copy"
+          data-sheet={id}
+          onClick={() => openSheet(id)}
+        >
+          <span className="sr-only">{t.discover.about}: </span>
+          <span className="pb-short-title">{b.t}</span>
+          <span className="pb-short-meta">
+            {b.a} · {t.discover.pages(b.n)}
+          </span>
+        </button>
+        <button
+          type="button"
+          className="pb-short-peek"
+          data-letter={id}
+          aria-label={`${t.discover.peek}: ${b.t}`}
+          onClick={() => openLetter(id)}
+        >
+          <span>{t.discover.peek}</span>
+          <Icon name="ti-arrow-right" />
+        </button>
+      </div>
+      <p className="pb-short-reason">
+        <span className="sr-only">{t.discover.reasonAria(b.t)}: </span>
+        {b.q}
+      </p>
+    </article>
+  );
+}
+
+export function DealRow({ books, mid, editorial = false }: { books: BookRef[]; mid?: number; editorial?: boolean }) {
+  const t = useT();
+  if (editorial) {
+    return (
+      <div className="pb-shortlist" data-mid={mid} role="list" aria-label={t.discover.shortlist}>
+        {books.map((id) => (
+          <EditorialDealCard key={id} id={id} />
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div className="pb-dealrow" data-mid={mid}>
       {books.map((id) => (
@@ -234,6 +291,7 @@ export function renderChatItem(
   openSheet: (id: BookRef) => void,
   _openLetter: (id: BookRef) => void,
   no = 1,
+  editorialDeals = false,
 ) {
   if (m.kind === 'typing') {
     return (
@@ -251,7 +309,7 @@ export function renderChatItem(
     return <GLetter key={m.id} id={m.book} no={no} mid={m.id} />;
   }
   if (m.kind === 'deal') {
-    return <DealRow key={m.id} books={m.books} mid={m.id} />;
+    return <DealRow key={m.id} books={m.books} mid={m.id} editorial={editorialDeals} />;
   }
   return (
     <div key={m.id} className={`msg ${m.who}${m.tone === 'note' ? ' note' : ''}`}>

@@ -271,7 +271,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .empty .d{font-family:var(--font-chrome);font-weight:var(--fw-ui-semibold);font-size:var(--t-body);margin-top:10px;color:var(--ink);letter-spacing:.05em;text-transform:uppercase}
 .empty p{font-size:var(--t-micro);line-height:1.5;max-width:210px;margin:6px auto 0}
 
-#screen-discover{overflow:hidden;padding-bottom:88px}
+#screen-discover{overflow:hidden;padding-bottom:104px}
 .tray{position:relative;z-index:1;padding:12px 22px 0}
 .tray-card{position:relative;display:flex;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow-sm);padding:12px}
 .tray-card .save{position:absolute;top:10px;right:10px}
@@ -1760,7 +1760,7 @@ button.reader-sync-status:focus-visible{outline-color:#8A6A33}
 .calm.typing .deskrow{opacity:.35}
 
 /* -- the stream container -- */
-.calm #chat{padding:10px 18px 6px !important;gap:0 !important}
+.calm #chat{padding:12px var(--ask-gutter) 8px !important;gap:0 !important}
 
 /* the user's question: a quiet pill, not a headline.
    (this whole block is !important-locked, so the ramp lands in place) */
@@ -1768,7 +1768,7 @@ button.reader-sync-status:focus-visible{outline-color:#8A6A33}
   padding:9px 13px !important;background:var(--pb-track) !important;color:var(--pb-cream) !important;
   border:0 !important;border-radius:15px 15px 4px 15px !important;box-shadow:none !important;
   font-family:var(--font-chrome) !important;
-  font-size:var(--t-callout) !important;font-weight:var(--fw-ui-semibold) !important;line-height:var(--lh-ui) !important}
+  font-size:var(--t-label) !important;font-weight:var(--fw-ui-medium) !important;line-height:var(--lh-ui) !important}
 
 /* scout speaks in plain text — no bubble, no border, no shadow. This is the
    longest prose on the screen, so it reads in Literata like every other
@@ -1776,10 +1776,12 @@ button.reader-sync-status:focus-visible{outline-color:#8A6A33}
 .calm .msg.owl{align-self:flex-start !important;max-width:38ch !important;margin:0 0 2px !important;padding:0 !important;
   background:none !important;border:0 !important;box-shadow:none !important;border-radius:0 !important;
   font-family:var(--font-reading) !important;
-  font-size:var(--t-reading) !important;line-height:var(--lh-read) !important;color:var(--pb-cream) !important;font-weight:var(--fw-ui-medium)}
+  font-size:var(--ask-response-size,var(--t-reading)) !important;
+  line-height:var(--ask-response-leading,1.6) !important;
+  color:var(--pb-cream) !important;font-weight:var(--ask-response-weight,var(--fw-serif))}
 .calm .msg.owl.note{opacity:.72}
-.calm .msg.owl .bk{color:var(--ink);border-bottom:1.5px solid var(--yellow);background:none;padding:0;font-weight:700}
-.calm .msg.owl .it{font-family:var(--font-display);font-style:italic;color:var(--mut)}
+.calm .msg.owl .bk{color:inherit;border-bottom:1px solid var(--yellow);background:none;padding:0;font-weight:var(--fw-serif-strong)}
+.calm .msg.owl .it{font-family:inherit;font-style:normal;color:inherit}
 
 /* a whisper of identity per turn — at the floor, kept quiet by colour and
    opacity rather than by being too small to read */
@@ -1824,7 +1826,7 @@ button.reader-sync-status:focus-visible{outline-color:#8A6A33}
 
 /* chips: quiet text, three at most */
 .calm #chiprow{display:flex !important;flex-wrap:wrap !important;gap:4px 16px !important;
-  padding:12px 18px 2px !important;overflow:visible !important;border:0 !important}
+  padding:12px var(--ask-gutter) 2px !important;overflow:visible !important;border:0 !important}
 .calm #chiprow .chip{background:none !important;border:0 !important;box-shadow:none !important;
   padding:3px 0 !important;border-radius:0 !important;font-family:var(--font-chrome) !important;
   font-size:var(--t-micro) !important;font-weight:var(--fw-ui-semibold) !important;
@@ -1832,15 +1834,53 @@ button.reader-sync-status:focus-visible{outline-color:#8A6A33}
   border-bottom:1px solid var(--pb-tag-line) !important;min-height:0 !important}
 .calm #chiprow .chip:active{color:var(--pb-cream) !important;border-bottom-color:var(--pb-brass) !important;transform:none !important}
 
+/* Once Scout has answered, suggestions are part of the conversation—not a
+   second filter bar. The wrapper only shows edge cues when JS confirms there
+   is off-screen content; otherwise this remains an ordinary single row. */
+.calm .followup-carousel{
+  position:relative;margin:5px var(--ask-gutter) 0;border-top:1px solid var(--pb-tag-line)
+}
+.calm #chiprow.followup{
+  flex-wrap:nowrap !important;gap:18px !important;margin:0;
+  padding:8px 0 3px !important;overflow-x:auto !important;border:0 !important;
+  scroll-snap-type:inline proximity;scroll-padding-inline:0 34px;
+  overscroll-behavior-x:contain;touch-action:pan-x pan-y;-webkit-overflow-scrolling:touch;
+  overflow-anchor:none;scrollbar-width:none
+}
+.calm .followup-carousel.overflowing #chiprow.followup{padding-right:34px !important}
+.calm #chiprow.followup::-webkit-scrollbar{display:none}
+.calm #chiprow.followup .chip{
+  flex:0 0 auto !important;min-height:44px !important;padding:10px 0 !important;
+  border:0 !important;font-family:var(--font-reading) !important;
+  font-size:var(--t-callout) !important;font-weight:var(--fw-serif) !important;
+  line-height:1.55 !important;letter-spacing:0 !important;
+  text-transform:none !important;color:var(--pb-cream-mute) !important;
+  white-space:nowrap !important;scroll-snap-align:start
+}
+.calm #chiprow.followup .chip:active{color:var(--pb-brass) !important}
+.followup-edge{
+  position:absolute;z-index:2;top:8px;bottom:3px;width:34px;
+  display:flex;align-items:center;pointer-events:none;color:var(--pb-brass);
+}
+.followup-edge .ti{font-size:var(--icon-md)}
+.followup-edge.back{
+  left:0;justify-content:flex-start;
+  background:linear-gradient(90deg,var(--pb-stage) 38%,transparent)
+}
+.followup-edge.forward{
+  right:0;justify-content:flex-end;
+  background:linear-gradient(270deg,var(--pb-stage) 38%,transparent)
+}
+
 /* cold-start: the starter prompts stand out as tappable suggestions (the quiet
    underlined treatment is for post-reply chips, where the letter is the point) */
-.chip-hint{padding:8px 18px 0;font-family:var(--font-chrome);font-size:var(--t-micro);
+.chip-hint{padding:8px var(--ask-gutter) 0;font-family:var(--font-chrome);font-size:var(--t-micro);
   font-weight:var(--fw-ui-semibold);letter-spacing:var(--track-label);
   text-transform:uppercase;color:var(--fade)}
-.calm #chiprow.starter{gap:8px !important;padding:8px 18px 4px !important}
+.calm #chiprow.starter{gap:8px !important;padding:8px var(--ask-gutter) 4px !important}
 .calm #chiprow.starter .chip{
   background:var(--pb-chip-bg) !important;border:1px solid var(--pb-tag-line) !important;
-  border-radius:999px !important;padding:8px 14px !important;font-family:var(--font-chrome) !important;
+  border-radius:999px !important;min-height:44px !important;padding:10px 14px !important;font-family:var(--font-chrome) !important;
   font-size:var(--t-micro) !important;font-weight:var(--fw-ui-semibold) !important;letter-spacing:.02em !important;
   color:var(--pb-cream) !important;box-shadow:none !important}
 .calm #chiprow.starter .chip:active{
@@ -1848,9 +1888,9 @@ button.reader-sync-status:focus-visible{outline-color:#8A6A33}
   color:var(--pb-cream) !important;transform:translateY(1px) !important}
 
 /* -- phaseh: the shelf rail -- */
-.shelfrail{position:relative;display:none;align-items:flex-end;gap:9px;margin:2px 0 0;padding:0 18px 7px}
+.shelfrail{position:relative;display:none;align-items:flex-end;gap:9px;margin:2px 0 0;padding:0 var(--ask-gutter) 7px}
 .shelfrail.on{display:flex}
-.shelfrail::after{content:"";position:absolute;left:18px;right:18px;bottom:2px;height:2px;border-radius:2px;
+.shelfrail::after{content:"";position:absolute;left:var(--ask-gutter);right:var(--ask-gutter);bottom:2px;height:2px;border-radius:2px;
   background:linear-gradient(90deg,transparent,var(--line2) 8%,var(--line2) 92%,transparent);
   transition:background .4s ease,box-shadow .4s ease}
 .sr-books{display:flex;align-items:flex-end;gap:3px;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none;padding-bottom:1px}

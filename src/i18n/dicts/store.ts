@@ -27,7 +27,7 @@ const en = {
   eveningShow: 'the evening show',
   matinee: 'the matinée',
   greeting: (sal: string, flavor: string) =>
-    `${sal} ${flavor}. scout here, at the post desk — tell me what's going on, and i'll sort you a peek.`,
+    `${sal} ${flavor}. tell me what's on your mind, and i'll find a good place to begin.`,
   firstSorted: `sorted. and since you're new — peek pulled the pages that matter. `,
   firstTaste: `first taste is free.`,
   deskPro: 'right — office hours. what are we solving?',
@@ -62,7 +62,7 @@ const zh: typeof en = {
   eveningShow: '夜场开演',
   matinee: '日场开演',
   greeting: (sal: string, flavor: string) =>
-    `${sal}${flavor}。我是 Scout，坐镇邮务台 — 说说你最近的状态，我来给你分拣一封试读。`,
+    `${sal}${flavor}。告诉我你此刻在想什么，我来替你找一个合适的开头。`,
   firstSorted: `分拣好了。你是新来的 — Peek 已经把最要紧的那几页抽了出来。`,
   firstTaste: `第一口，免费尝。`,
   deskPro: '好 — 办公时间到。我们来解决什么？',
