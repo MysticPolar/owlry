@@ -17,7 +17,7 @@ export interface HistoryDay {
   count: number;
 }
 
-const EMPTY_CHAT: HydratedChat = { messages: [], collected: [], lastBatch: null, chips: [], maxId: 0 };
+const EMPTY_CHAT: HydratedChat = { messages: [], mentioned: [], lastBatch: null, chips: [], maxId: 0 };
 
 function dayLabel(day: string): string {
   const [y, m, d] = day.split('-').map(Number);

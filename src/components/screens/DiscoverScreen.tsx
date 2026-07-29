@@ -294,8 +294,9 @@ function ShelfRail({ reduce }: { reduce: boolean }) {
     [reduce, collectBooks, land],
   );
 
-  // the reader peeked a book → its spine lifts off that letter's card and flies
-  // onto the rail (a beat after the peek letter slides away, so the chat shows)
+  // the reader peeked a book (letter closed while ready) → its spine lifts off
+  // that letter's card and flies onto the rail (a beat after the peek letter
+  // slides away, so the chat shows)
   useEffect(() => {
     if (!shelfFly || shelfFly.n <= seenFly.current) return;
     seenFly.current = shelfFly.n;

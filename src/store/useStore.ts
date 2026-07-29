@@ -50,8 +50,8 @@ import { LV_CAP, cumulativeXp } from '../lib/economy/curve';
 import { STUB_LABEL } from '../content/stubs';
 import type { EconomyAction, Snapshot } from '../lib/economy/types';
 import { getLocalWeather } from '../lib/weather';
-import { dealHand } from '../lib/dealHand';
-import { rowsToChat } from '../lib/chatHydrate';
+import { dealHand, chipsForHand } from '../lib/dealHand';
+import { rowsToChat, shelfFromPeeks } from '../lib/chatHydrate';
 import type { ChatRow } from '../lib/chatHydrate';
 import { resolvePublicDomain } from '../lib/ebook/resolve';
 import {
@@ -1244,13 +1244,15 @@ export const useStore = create<Store>()(
       );
       if (!hydrationIsCurrent()) return;
       chatId = Math.max(chatId, hydrated.maxId); // never collide with hydrated row ids
+      // shelf = peeked ∩ Scout-named today — never auto-shelve the whole hand
+      const collected = shelfFromPeeks(get().openedLetters, hydrated.mentioned);
       set((st) => ({
-        libraryBooks: rememberBookMetadata(st.libraryBooks, hydrated.collected),
+        libraryBooks: rememberBookMetadata(st.libraryBooks, hydrated.mentioned),
         owl: {
           ...st.owl,
           started: true,
           messages: hydrated.messages,
-          collected: hydrated.collected,
+          collected,
           lastBatch: hydrated.lastBatch,
           chips: hydrated.chips,
         },
@@ -1646,11 +1648,12 @@ export const useStore = create<Store>()(
     },
 
     closeLetter: () => {
-      // the shelf records only what the reader peeks: on closing a first peek
-      // (opened, not yet shelved) the book flies onto the rail from its card
+      // the shelf records only a successful peek: letter must be ready (cache hit
+      // or generated), and not yet shelved — then it flies onto the rail
       const id = get().letterId;
+      const ready = get().letterStatus === 'ready';
       const shelf =
-        id && get().openedLetters.includes(id) && !get().owl.collected.includes(id)
+        id && ready && !get().owl.collected.includes(id)
           ? { id, n: ++shelfFlyNonce }
           : get().shelfFly;
       set({ letterId: null, letterStatus: 'idle', shelfFly: shelf });
@@ -2346,8 +2349,8 @@ export const useStore = create<Store>()(
       })();
     },
 
-    // the typewriter finished — deal the hand, then (via the rail flight)
-    // the spine, then the chips. One paper moment, one gold action, in sequence.
+    // the typewriter finished — deal Scout's real picks (1–3), then chips.
+    // Spines land only after a successful Peek (closeLetter → shelfFly).
     revealAfterText: (skipped) => {
       const pending = get().owl.pending;
       if (!pending) return; // already played (guards double-fire across stream lines)
@@ -2358,11 +2361,12 @@ export const useStore = create<Store>()(
           ? [...msgs, { kind: 'msg', id: nextId(), who: 'owl', nodes: [{ t: 'text', v: pending.note! }], tone: 'note' }]
           : msgs;
 
+      const books = dealHand(pending.bookIds);
+      const chips = chipsForHand(pending.chips, books.length, getActiveLang());
       const finish = () =>
-        set((st) => ({ owl: { ...st.owl, busy: false, chips: pending.chips.slice(0, 3) } }));
+        set((st) => ({ owl: { ...st.owl, busy: false, chips } }));
 
-      if (pending.bookIds.length) {
-        const books = dealHand(pending.bookIds);
+      if (books.length) {
         // the hand is dealt a beat after the words settle (sooner if skipped)
         setTimeout(() => {
           set((st) => ({
@@ -2371,9 +2375,7 @@ export const useStore = create<Store>()(
               messages: appendNote([...st.owl.messages, { kind: 'deal', id: nextId(), books }]),
             },
           }));
-          // the whole recommended hand rises onto the shelf a beat after it's dealt
-          setTimeout(() => get().collectBooks(books), 480);
-          // the rail flight (component-side) rides on top; chips arrive at +700
+          // chips after the jackets land — shelf stays empty until Peek
           setTimeout(finish, 700);
         }, skipped ? 40 : 170);
       } else {

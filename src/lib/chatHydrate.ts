@@ -6,6 +6,10 @@
    conversation instead of resetting to the greeting. Every mentioned
    book is re-registered in the runtime registry so Cover/Tray/Sheet/
    Letter resolve it exactly as they did when it first arrived.
+
+   The desk shelf is NOT rebuilt from recommendations — only from books
+   the reader actually peeked (openedLetters ∩ mentioned). Auto-shelving
+   every dealt hand made the Peek flight a no-op.
    ============================================================ */
 import type { OwlBatch } from './owlBrain';
 import { slugify } from './cover';
@@ -27,7 +31,8 @@ export interface ChatRow {
 
 export interface HydratedChat {
   messages: ChatItem[];
-  collected: BookRef[];
+  /** books Scout named today — metadata / shelf ∩ peeks, not auto-shelved */
+  mentioned: BookRef[];
   lastBatch: OwlBatch | null;
   chips: string[];
   maxId: number;
@@ -39,15 +44,15 @@ export function rowsToChat(
   registryScope?: DynamicRegistryScope,
 ): HydratedChat {
   const messages: ChatItem[] = [];
-  let collected: BookRef[] = [];
+  let mentioned: BookRef[] = [];
   let lastBatch: OwlBatch | null = null;
   let chips: string[] = [];
   let maxId = 0;
   /** slugs the turn just above dealt, so its legacy letter row isn't doubled */
   let dealtSlugs: BookRef[] = [];
 
-  const collect = (slug: BookRef) => {
-    if (!collected.includes(slug)) collected = [slug, ...collected];
+  const remember = (slug: BookRef) => {
+    if (!mentioned.includes(slug)) mentioned = [...mentioned, slug];
   };
 
   for (const row of rows) {
@@ -73,16 +78,16 @@ export function rowsToChat(
         const slug = slugify(main.title);
         registerBook(slug, recToBook(main), registryScope);
         lastBatch = { main: slug, also: [] };
-        collect(slug);
+        remember(slug);
         turnSlugs = [slug];
       } else if (picks.length) {
         const slugs = picks.map((p) => {
           const s = slugify(p.title);
           registerBook(s, recToBookLite(p), registryScope);
+          remember(s);
           return s;
         });
         lastBatch = { main: slugs[0], also: slugs.slice(1) };
-        slugs.forEach(collect);
         turnSlugs = slugs;
       }
 
@@ -105,7 +110,10 @@ export function rowsToChat(
     if (row.who === 'owl' && row.kind === 'letter') {
       const slug = String(row.payload.slug ?? '');
       const book = (row.payload.book ?? null) as ScoutBook | null;
-      if (slug && book) registerBook(slug, recToBook(book), registryScope);
+      if (slug && book) {
+        registerBook(slug, recToBook(book), registryScope);
+        remember(slug);
+      }
       // this turn already dealt that book as a card — a letter row for the same
       // slug is the older shape of the same moment, not a second one
       if (slug && dealtSlugs.includes(slug)) continue;
@@ -120,5 +128,12 @@ export function rowsToChat(
     }
   }
 
-  return { messages, collected, lastBatch, chips, maxId };
+  return { messages, mentioned, lastBatch, chips, maxId };
+}
+
+/** Shelf spines = books the reader peeked that Scout also named today. */
+export function shelfFromPeeks(openedLetters: BookRef[], mentioned: BookRef[]): BookRef[] {
+  if (!openedLetters.length || !mentioned.length) return [];
+  const named = new Set(mentioned);
+  return openedLetters.filter((id) => named.has(id));
 }

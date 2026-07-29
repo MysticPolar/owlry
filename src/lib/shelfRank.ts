@@ -11,8 +11,9 @@
    Only four inputs actually survive a reload — savedIds, readingIds,
    finishedIds and pagesRead are the ones extractPersisted() writes
    (src/store/useStore.ts). `peeked` (openedLetters) and `fromScout`
-   (owl.collected) are session state: full after a conversation, empty
-   on a cold load. So they are deliberately small nudges — they refine
+   (owl.collected) are session state: spines from successful Peeks at
+   Scout's desk this session, empty on a cold load before any Peek.
+   So they are deliberately small nudges — they refine
    an order that already stands up without them. If they ever become
    persisted, their weights can grow; until then nothing here silently
    depends on data that may not be there.
@@ -20,7 +21,7 @@
    The one thing we cannot do yet is rank by what the reader has
    TALKED ABOUT: OwlSession carries no topic memory, and dislikes are
    never written down. `fromScout` is the nearest honest proxy — it
-   marks the books that arrived through a conversation at all.
+   marks books the reader actually Peeked from a Scout recommendation.
    ============================================================ */
 import type { BookRef, Genre } from '../content/types';
 import { getBook } from './bookRegistry';
