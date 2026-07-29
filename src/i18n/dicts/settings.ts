@@ -42,7 +42,9 @@ const en = {
     ariaPageSounds: 'Page-turn sounds',
 
     secAccount: 'ACCOUNT',
-    guestSub: (lv: number, coins: number) => `LV ${lv} BIBLIOPHILE · ${coins} COINS`,
+    // the seat leads: levels are rows, counted from the stage (row = 14 − LV)
+    guestSub: (row: number, lv: number, coins: number) =>
+      `ROW ${row} · LV ${lv} BIBLIOPHILE · ${coins} COINS`,
     syncLabel: { off: 'ON', syncing: 'SYNCING…', synced: 'SYNCED', error: 'RETRY' },
     syncRow: 'sync across devices',
     ariaSyncNow: 'Sync progress across devices now',
@@ -134,6 +136,7 @@ const en = {
     stateOpen: 'open',
     stateLocked: 'locked',
     lvOf: (n: number) => `lv ${n} of 5`,
+    rowOf: (row: number, goal: number) => `row ${row} · the glass clears at row ${goal}`,
     chartCap: 'reader chart',
     chartYours: 'yours',
     chartSealed: 'sealed',
@@ -218,7 +221,8 @@ const zh: typeof en = {
     ariaPageSounds: '翻页声',
 
     secAccount: '账户',
-    guestSub: (lv: number, coins: number) => `LV ${lv} 爱书人 · 金币 ${coins}`,
+    guestSub: (row: number, lv: number, coins: number) =>
+      `第 ${row} 排 · LV ${lv} 爱书人 · 铜币 ${coins}`,
     syncLabel: { off: '开启', syncing: '同步中…', synced: '已同步', error: '重试' },
     syncRow: '跨设备同步',
     ariaSyncNow: '立即在设备间同步进度',
@@ -238,7 +242,7 @@ const zh: typeof en = {
     secData: '数据',
     resetRow: '重置阅读进度',
     resetConfirm:
-      '这会清空一切——xp、ink、金币、书架与阅读进度——并从最开始重演一遍首演之夜。',
+      '这会清空一切——xp、ink、铜币、书架与阅读进度——并从最开始重演一遍首演之夜。',
     cancel: '取消',
     reset: '重置',
 
@@ -310,6 +314,7 @@ const zh: typeof en = {
     stateOpen: '开启',
     stateLocked: '锁着',
     lvOf: (n: number) => `lv ${n} / 5`,
+    rowOf: (row: number, goal: number) => `第 ${row} 排 · 到第 ${goal} 排，镜面才会清`,
     chartCap: '读者图谱',
     chartYours: '归你',
     chartSealed: '封存',

@@ -1,5 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useStore } from '../../store/useStore';
+import { LV_CAP, ROWS, encoreStars, rowFromLevel } from '../../lib/economy/curve';
+import { STUBS } from '../../content/stubs';
+import { StatDelta, useLevelFlash } from '../StatFx';
 import { useAuth } from '../../store/useAuth';
 import { getBook } from '../../lib/bookRegistry';
 import { useLang, useT } from '../../i18n/react';
@@ -8,7 +11,6 @@ import {
   REPORT,
   WEEK7,
   WEEK_TIME,
-  ACHIEVEMENTS,
   CMONTH,
   CTODAY,
   CDAYS,
@@ -64,14 +66,101 @@ function StatsTab({ radarKey }: { radarKey: number }) {
           ))}
         </div>
       </div>
-      <div className="achgrid">
-        {ACHIEVEMENTS[lang].map((a, i) => (
-          <div key={i} className={`ach ${a.lock ? 'lock' : ''}`}>
-            <Icon name={a.i} />
-            <span className="al">{a.l}</span>
-          </div>
-        ))}
+      <Album />
+    </div>
+  );
+}
+
+/* ---------- the album: ticket stubs, by programme ----------
+   Every stub is granted from the ledger (or, for guests, the local engine).
+   Nothing is decided here — the album only lays them out, newest programme
+   first, with the ones still to be earned kept quietly at the foot. */
+function Album() {
+  const stubs = useStore((s) => s.stubs);
+  const t = useT().profile;
+  const lang = useLang();
+
+  const { seasons, missing, encores } = useMemo(() => {
+    const encoreCount = stubs.reduce((n, s) => (s.id === 'encore' ? n + 1 : n), 0);
+    const shown = stubs.filter((s) => s.id !== 'encore');
+    const bySeason = new Map<string, { year: number; q: number; items: typeof shown }>();
+    for (const stub of shown) {
+      const at = new Date(stub.at);
+      const year = at.getFullYear();
+      const q = Math.floor(at.getMonth() / 3) + 1;
+      const key = `${year}-${q}`;
+      if (!bySeason.has(key)) bySeason.set(key, { year, q, items: [] });
+      bySeason.get(key)!.items.push(stub);
+    }
+    const earned = new Set(shown.map((s) => s.id));
+    return {
+      seasons: [...bySeason.values()].sort((a, b) => b.year - a.year || b.q - a.q),
+      missing: Object.keys(STUBS).filter((id) => id !== 'encore' && !earned.has(id)),
+      encores: encoreCount,
+    };
+  }, [stubs]);
+
+  const label = (id: string): string => (lang === 'zh' ? STUBS[id]?.zh : STUBS[id]?.en) ?? id;
+
+  return (
+    <div className="pcard album">
+      <div className="chart-head">
+        <div className="d">{t.albumTitle}</div>
+        <span>{stubs.length ? t.albumCount(stubs.length) : t.albumEmpty}</span>
       </div>
+
+      {seasons.map(({ year, q, items }) => (
+        <div key={`${year}-${q}`} className="alb-season">
+          <div className="alb-head">{t.albumSeason(year, q)}</div>
+          <div className="achgrid">
+            {items.map((s) => (
+              <div key={`${s.id}-${s.at}`} className="ach">
+                <Icon name={STUBS[s.id]?.i ?? 'ti-ticket'} />
+                <span className="al">{label(s.id)}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+
+      {encores > 0 && (
+        <div className="alb-season">
+          <div className="achgrid">
+            <div className="ach encore">
+              <Icon name="ti-star" />
+              <span className="al">{t.albumEncore(encores)}</span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {missing.length > 0 && (
+        <div className="alb-season">
+          <div className="achgrid">
+            {missing.map((id) => (
+              <div key={id} className="ach lock">
+                <Icon name={STUBS[id]?.i ?? 'ti-ticket'} />
+                <span className="al">{label(id)}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ---------- the seat map: thirteen rows, the stage at the top ---------- */
+function SeatMap({ lv }: { lv: number }) {
+  const t = useT().profile;
+  const row = rowFromLevel(lv);
+  return (
+    <div className="pb-seatmap" role="img" aria-label={t.seatAria(row, lv)}>
+      <span className="pb-stagelip" aria-hidden="true" />
+      {Array.from({ length: ROWS }, (_, i) => {
+        const r = i + 1; // row 1 is nearest the stage
+        return <span key={r} className={`pb-seatrow${r === row ? ' on' : ''}${r < row ? ' past' : ''}`} />;
+      })}
     </div>
   );
 }
@@ -301,10 +390,13 @@ export function ProfileScreen() {
   const lv = useStore((s) => s.lv);
   const xp = useStore((s) => s.xp);
   const xpMax = useStore((s) => s.xpMax);
+  const totalXp = useStore((s) => s.totalXp);
   const ink = useStore((s) => s.ink);
   const coins = useStore((s) => s.coins);
   const streak = useStore((s) => s.streak);
   const openSettings = useStore((s) => s.openSettings);
+  const openStand = useStore((s) => s.openStand);
+  const popped = useLevelFlash();
   const prefName = useStore((s) => s.prefs.name);
   // the profile display (avatar/name) + the memory-tab gate use the rich useAuth
   // profile; sign-out lives in Settings (product). Chat/history gate on
@@ -355,9 +447,14 @@ export function ProfileScreen() {
         </div>
 
         <div className="pb-plvl">
-          <div className="pb-plvl-row">
-            <Icon name="ti-crown" className="crown" />
-            <span className="pb-plvl-t">{t.profile.levelLabel(lv)}</span>
+          <SeatMap lv={lv} />
+          <div className={`pb-plvl-row${popped ? ' pop' : ''}`}>
+            <Icon name="ti-armchair" className="crown" />
+            <StatDelta stat="xp" />
+            <span className="pb-plvl-t">
+              {lv >= LV_CAP ? t.profile.seatFront : t.profile.seatLabel(rowFromLevel(lv))}
+            </span>
+            <span className="pb-plvl-lv">{t.profile.levelLabel(lv)}</span>
           </div>
           <div
             className="pb-bigxp"
@@ -369,20 +466,37 @@ export function ProfileScreen() {
           >
             <b style={{ width: `${Math.min(100, Math.max(0, (xp / Math.max(1, xpMax)) * 100))}%` }} />
           </div>
-          <div className="pb-xpcap">{t.profile.xpToNext(xp, xpMax, lv + 1)}</div>
+          {/* past the front row the seat stops moving, so the bar counts encores */}
+          <div className="pb-xpcap">
+            {lv >= LV_CAP
+              ? t.profile.seatEncore(xp, xpMax, encoreStars(totalXp) + 1)
+              : t.profile.seatToNext(xp, xpMax, rowFromLevel(lv + 1))}
+          </div>
         </div>
 
         <div className="pb-pchips">
           <div className="pb-chip" aria-label={t.profile.inkAria(ink)}>
             <Icon name="ti-inkdrop" className="drop" />
             <span className="n">{ink}</span>
+            <StatDelta stat="ink" />
           </div>
-          <div className="pb-chip" aria-label={t.profile.coinsAria(coins)}>
+          {/* the purse opens keeper's counter — the one place brass is spent */}
+          <button
+            type="button"
+            className="pb-chip pb-chip-btn"
+            aria-label={t.profile.coinsAria(coins)}
+            onClick={openStand}
+          >
             <Icon name="ti-coin" className="coin" />
             <span className="n">{coins.toLocaleString()}</span>
-          </div>
+            <StatDelta stat="coins" />
+          </button>
           <div className="pb-chip" aria-label={t.profile.streakAria(streak)}>
-            <Icon name="ti-flame" className="flame" />
+            {/* dim when the flame is out, lit while it holds, house gold at seven */}
+            <Icon
+              name="ti-flame"
+              className={`flame${streak === 0 ? ' dim' : streak >= 7 ? ' bright' : ''}`}
+            />
             <span className="n">{t.profile.streakChip(streak)}</span>
           </div>
         </div>

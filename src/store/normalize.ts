@@ -1,3 +1,7 @@
+import { CURVE_VERSION, ECONOMY_VERSION } from '../lib/economy/config';
+import { legacyTotalXp } from '../lib/economy/curve';
+import { derive, emptyDaily, localDay } from '../lib/economy/engine';
+import type { BookEarn, DailyCounters, StubRecord } from '../lib/economy/types';
 import { SEED } from './seed';
 import type {
   PersistedBook,
@@ -169,7 +173,50 @@ const normalizeReadingPositions = (raw: unknown): Record<string, ReadingPosition
   return positions;
 };
 
-/** Hydrate old local/cloud JSON without allowing stale preferences to undercut reading defaults. */
+const strOrNull = (value: unknown): string | null => (typeof value === 'string' ? value : null);
+
+const strList = (value: unknown): string[] =>
+  Array.isArray(value) ? value.filter((v): v is string => typeof v === 'string') : [];
+
+/** a stored day's counters, or a fresh sheet — never SEED's (see the trap below) */
+function readDaily(value: unknown): DailyCounters {
+  const fresh = emptyDaily(localDay());
+  if (!value || typeof value !== 'object') return fresh;
+  const d = value as Partial<DailyCounters>;
+  if (typeof d.day !== 'string') return fresh;
+  return {
+    ...fresh,
+    ...d,
+    day: d.day,
+  };
+}
+
+function readEarn(value: unknown): Record<string, BookEarn & { mask?: number }> {
+  if (!value || typeof value !== 'object') return {};
+  const out: Record<string, BookEarn & { mask?: number }> = {};
+  for (const [id, mark] of Object.entries(value as Record<string, unknown>)) {
+    if (mark && typeof mark === 'object') out[id] = { ...(mark as BookEarn & { mask?: number }) };
+  }
+  return out;
+}
+
+function readStubs(value: unknown): StubRecord[] {
+  if (!Array.isArray(value)) return [];
+  return value.filter(
+    (s): s is StubRecord => !!s && typeof s === 'object' && typeof (s as StubRecord).id === 'string',
+  );
+}
+
+/**
+ * Hydrate old local/cloud JSON without letting stale preferences undercut
+ * reading defaults.
+ *
+ * THE SPREAD TRAP: this returns `{ ...SEED, ...state }`, so any field the
+ * incoming blob is MISSING silently inherits the demo seed — a reader who
+ * never played would arrive at row 7 with 240 coins. Every economy field is
+ * therefore resolved EXPLICITLY below, read from `state` and defaulted to a
+ * neutral value, never left to the spread.
+ */
 export function normalizePersisted(raw: unknown): PersistedState {
   const state = raw && typeof raw === 'object' ? (raw as Partial<PersistedState>) : {};
   const incomingPrefs =
@@ -182,12 +229,42 @@ export function normalizePersisted(raw: unknown): PersistedState {
   const size = Math.round(finite(incomingReader.size, legacySize));
   const dimmer = finite(incomingReader.dimmer, SEED.prefs.reader.dimmer);
 
+  // curveV is read from the RAW blob (never the spread, which would hand every
+  // pre-migration reader the seed's already-migrated stamp). A blob from before
+  // the season ledger only carries (lv, xp) on the old flat-400 curve, so its
+  // lifetime total is reconstructed once, here.
+  const storedCurve = finite(state.curveV, 0);
+  const migrated = storedCurve >= CURVE_VERSION && typeof state.totalXp === 'number';
+  const totalXp = migrated
+    ? Math.max(0, finite(state.totalXp, 0))
+    : legacyTotalXp(finite(state.lv, 1), finite(state.xp, 0));
+  const d = derive(totalXp);
+
   return {
     ...SEED,
     ...state,
     readingPositions: normalizeReadingPositions(state.readingPositions),
     libraryBooks: normalizeLibraryBooks(state.libraryBooks),
     prefsUpdatedAt: Math.max(0, finite(state.prefsUpdatedAt, 0)),
+
+    // the level, re-derived from the one number that means anything
+    totalXp,
+    xp: d.xp,
+    xpMax: d.xpMax,
+    lv: d.lv,
+
+    // ledger-side fields, every one of them explicit
+    daily: readDaily(state.daily),
+    earn: readEarn(state.earn),
+    stubs: readStubs(state.stubs),
+    quoteHashes: strList(state.quoteHashes),
+    goods: strList(state.goods),
+    streakLastDay: strOrNull(state.streakLastDay),
+    darkNightAt: strOrNull(state.darkNightAt),
+    inkAt: finite(state.inkAt, 0),
+    curveV: CURVE_VERSION,
+    economyVersion: ECONOMY_VERSION,
+
     prefs: {
       ...SEED.prefs,
       ...incomingPrefs,

@@ -6,6 +6,8 @@ import { type CastOwlName } from '../CastOwl';
 import { CurtainCloth, type CurtainHandle } from './CurtainCloth';
 import { Confetti, type ConfettiHandle } from './Confetti';
 import { getBook } from '../../lib/bookRegistry';
+import { applyAction, derive } from '../../lib/economy/engine';
+import { rowFromLevel } from '../../lib/economy/curve';
 import { Wordmark } from '../Wordmark';
 import { useT } from '../../i18n/react';
 import type { Dict } from '../../i18n/react';
@@ -658,6 +660,44 @@ function Typed({ step, revealKey, onDone }: { step: Step; revealKey: number; onD
   );
 }
 
+/* ---------- act 5's numbers, borrowed from the ledger ----------
+   the welcome grant is real: finishOnboarding calls econ('onboard'), and that
+   is the ONLY place the +xp and the ink are actually paid. so the act asks the
+   same engine what that grant will do — a dry run on a copy of the state,
+   committed nowhere — and choreographs the reader's true before and after.
+   a replayed opening night (the stub is already in the album) is granted
+   nothing, and the act shows nothing rather than a second welcome. */
+interface FlightNums {
+  lv0: number;
+  xp0: number; // 0..100 — the bar's fill before the grant
+  ink0: number;
+  lv1: number;
+  xp1: number;
+  ink1: number;
+  row1: number;
+  gainXp: number;
+  gainInk: number;
+  leveled: boolean;
+}
+const flightNums = (): FlightNums => {
+  const s = useStore.getState(); // the store carries every EconomyState field
+  const res = applyAction(s, 'onboard');
+  const after = derive(res.next.totalXp);
+  const pct = (xp: number, max: number) => Math.round((xp / Math.max(1, max)) * 100);
+  return {
+    lv0: s.lv,
+    xp0: pct(s.xp, s.xpMax),
+    ink0: s.ink,
+    lv1: after.lv,
+    xp1: pct(after.xp, after.xpMax),
+    ink1: res.next.ink,
+    row1: rowFromLevel(after.lv),
+    gainXp: Math.max(0, res.granted.xp),
+    gainInk: Math.max(0, res.granted.ink),
+    leveled: res.leveled,
+  };
+};
+
 function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void }) {
   const t = useT();
   const o = t.onboarding;
@@ -668,9 +708,12 @@ function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void
   const [typed, setTyped] = useState(false);
   const [inkOn, setInkOn] = useState(false);
   const [lvOn, setLvOn] = useState(false);
+  // the HUDs read the reader's real well and real seat — see flightNums.
+  // read once, on mount: the act's numbers must not shift mid-choreography
+  const [nums] = useState(flightNums);
   const [ink, setInk] = useState(0);
-  const [lv, setLv] = useState(1);
-  const [xp, setXp] = useState(0); // 0..100
+  const [lv, setLv] = useState(nums.lv0);
+  const [xp, setXp] = useState(nums.xp0); // 0..100
   const [mode, setMode] = useState<'story' | 'delivering' | 'done'>('story');
   const [picked, setPicked] = useState<Ask | null>(null);
   const [line, setLine] = useState<ReactNode>(null); // overrides step text during the ask
@@ -693,7 +736,7 @@ function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void
   const runFx = (fx?: 'ink' | 'level') => {
     if (fx === 'ink') {
       setInkOn(true);
-      setTimeout(() => setInk(1), reduced() ? 1 : 500);
+      setTimeout(() => setInk(nums.ink0), reduced() ? 1 : 500);
     } else if (fx === 'level') {
       setLvOn(true);
     }
@@ -744,7 +787,9 @@ function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void
         drop.style.display = 'none';
       };
     }
-    setTimeout(() => setInk(0), reduced() ? 1 : 650);
+    // …and the count holds: the house pays for the first letter (nothing
+    // charges it), so the drop is scout's pen, not the reader's well.
+
     // scout dashes off to the shelves…
     setTimeout(() => {
       setLine(<em>{o.flight.offToShelves}</em>);
@@ -776,13 +821,15 @@ function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void
         confettiRef.current?.burst(lr.left - a.left + lr.width - 30, lr.top - a.top + 20, 34, true);
       }
     }, R ? 1 : 250);
-    // 2 · xp flies from the letter to the level bar, then fills it
+    // 2 · xp flies from the letter to the level bar, then fills it. a bar that
+    //     will cross tops out first; one that won't goes straight to its mark
+    const filled = nums.leveled ? 100 : nums.xp1;
     const t2 = setTimeout(() => {
       const f = xpflyRef.current;
       const lvh = lvHudRef.current;
       const L = letterRef.current;
       const cont = flightRef.current;
-      if (f && lvh && L && cont && !R) {
+      if (f && lvh && L && cont && !R && nums.gainXp > 0) {
         const lr = L.getBoundingClientRect();
         const hr = lvh.getBoundingClientRect();
         const a = cont.getBoundingClientRect();
@@ -802,16 +849,16 @@ function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void
         );
         anim.onfinish = () => {
           f.style.display = 'none';
-          setXp(96);
+          setXp(filled);
         };
       } else {
-        setXp(96);
+        setXp(filled);
       }
     }, R ? 10 : 650);
-    // 3 · level up — the banner drops (stage 1) + a burst on it
+    // 3 · the seat is named — the banner drops (stage 1) + a burst on it
     const t3 = setTimeout(() => {
-      setLv(2);
-      setXp(14);
+      setLv(nums.lv1);
+      setXp(nums.xp1);
       setBanner(1);
       setTimeout(() => {
         const banner = document.querySelector('.ob-banner');
@@ -823,14 +870,19 @@ function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void
         }
       }, 60);
     }, R ? 20 : 2050);
-    // 4 · the welcome bundle joins (stage 2) — ink rains in
+    // 4 · the welcome bundle joins (stage 2) — ink rains into the real well
+    let iv: ReturnType<typeof setInterval> | undefined;
     const t4 = setTimeout(() => {
       setBanner(2);
-      let k = 0;
-      const iv = setInterval(() => {
+      if (nums.ink1 <= nums.ink0) {
+        setInk(nums.ink1); // nothing to pour — a replayed opening night
+        return;
+      }
+      let k = nums.ink0;
+      iv = setInterval(() => {
         k += 1;
         setInk(k);
-        if (k >= 10) clearInterval(iv);
+        if (k >= nums.ink1) clearInterval(iv);
       }, R ? 1 : 90);
     }, R ? 30 : 3150);
     return () => {
@@ -838,6 +890,7 @@ function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void
       clearTimeout(t2);
       clearTimeout(t3);
       clearTimeout(t4);
+      clearInterval(iv);
     };
   }, [mode]);
 
@@ -847,7 +900,7 @@ function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void
     setTyped(true);
     setInkOn(true);
     setLvOn(true);
-    setInk(1);
+    setInk(nums.ink0);
   };
 
   return (
@@ -857,7 +910,7 @@ function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void
         <Icon name="ti-inkdrop" />
       </span>
       <span className="ob-xpfly" ref={xpflyRef} aria-hidden="true">
-        {o.flight.xpFly}
+        {o.flight.xpFly(nums.gainXp)}
       </span>
       <Confetti ref={confettiRef} />
 
@@ -938,16 +991,21 @@ function Flight({ name, onFinish }: { name: string; onFinish: (ask: Ask) => void
         </div>
       )}
 
-      {/* the level-up + welcome bundle banner */}
+      {/* the seat + welcome bundle banner. the bundle only speaks when it has
+          something to give — a replayed opening night is granted nothing */}
       {banner > 0 && (
         <div className={`ob-banner${banner >= 1 ? ' on' : ''}${banner >= 2 ? ' stage2' : ''}`} role="status">
-          <div className="ob-blv d">{o.flight.bannerLevel}</div>
+          <div className="ob-blv d">{o.flight.bannerSeat(nums.lv1, nums.row1)}</div>
           <div className="ob-bsub">{o.flight.bannerSub}</div>
           <div className="ob-bbundle">
-            <div className="ob-bbig">{o.flight.bundleLine}</div>
-            <div className="ob-bink d">
-              <Icon name="ti-inkdrop" /> {o.flight.bundleInk}
-            </div>
+            {nums.gainInk > 0 && (
+              <>
+                <div className="ob-bbig">{o.flight.bundleLine}</div>
+                <div className="ob-bink d">
+                  <Icon name="ti-inkdrop" /> {o.flight.bundleInk(nums.gainInk)}
+                </div>
+              </>
+            )}
             <br />
             <button className="ob-bcont" onClick={() => picked && onFinish(picked)}>
               {o.flight.cont}

@@ -459,11 +459,11 @@ function GuestDeskLevel() {
   const t = useT();
   const authed = useAuth((s) => s.status === 'authed');
   const lv = useStore((s) => s.lv);
-  const addXP = useStore((s) => s.addXP);
-  const xpMax = useStore((s) => s.xpMax);
+  // the seat moves, no coins, no refill — see chrome.tsx's GuestLevelButton
+  const debugLevelUp = useStore((s) => s.debugLevelUp);
   if (authed) return null;
   return (
-    <button className="desk-lvl" onClick={() => addXP(xpMax)} aria-label={t.discover.guestLevelAria(lv)}>
+    <button className="desk-lvl" onClick={debugLevelUp} aria-label={t.discover.guestLevelAria(lv)}>
       <Icon name="ti-sparkles" />
       <b className="d">LV {lv}</b>
     </button>

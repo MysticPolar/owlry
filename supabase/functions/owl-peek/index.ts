@@ -24,6 +24,10 @@ interface PeekRequest {
   slug?: string;
   title?: string;
   author?: string;
+  /** economy v2: idempotency key for the preview charge (client-generated) */
+  idem?: string;
+  /** economy v2: client tz offset, minutes east of UTC */
+  tz?: number;
 }
 
 interface PeekCtx {
@@ -110,6 +114,48 @@ Deno.serve(async (req: Request): Promise<Response> => {
     ctx = { book: { title, author }, query: { themes: [], intent: `revisit ${title}`, language: 'en' }, selectedMemory };
   }
 
+  // ── economy v2: the live letter costs ink — charged HERE, server-side,
+  // before generation; refunded below if the letter never arrives. Cached
+  // re-opens (above) never reach this point and stay free. If the economy
+  // RPCs aren't deployed yet the letter still ships, uncharged — the well
+  // gates the owl, never the reader.
+  const idem = typeof body.idem === 'string' && body.idem
+    ? body.idem.slice(0, 120)
+    : `peek:${slug}:${hourStart().toISOString()}`;
+  let charged = false;
+  {
+    const { data: spend, error: spendErr } = await admin.rpc('owlry_spend_preview', {
+      p_uid: uid,
+      p_book_id: slug,
+      p_meta: {
+        idem,
+        occurred_at: new Date().toISOString(),
+        ...(typeof body.tz === 'number' ? { tz: Math.trunc(body.tz) } : {}),
+      },
+    });
+    if (spendErr) {
+      console.error('[owl-peek] preview spend unavailable — generating uncharged', spendErr);
+    } else if (spend?.ok === false) {
+      const why = (spend.withheld ?? spend.reason ?? 'refused') as string;
+      if (why === 'insufficient_ink' || why === 'rate_limited') {
+        // soft signal: the client shows the same soft-hold + Scout's dry-well
+        // line it uses today — never an error state, never a hard block
+        return jsonResponse({ refused: why, slug });
+      }
+      console.error('[owl-peek] preview spend refused unexpectedly', spend);
+    } else if (spend?.ok === true) {
+      charged = spend.withheld !== 'duplicate';
+    }
+  }
+
+  const refund = async () => {
+    if (!charged) return;
+    const { error: refundErr } = await admin.rpc('owlry_refund_preview', {
+      p_uid: uid, p_book_id: slug, p_idem: idem,
+    });
+    if (refundErr) console.error('[owl-peek] preview refund failed', refundErr);
+  };
+
   const ai = geminiClient(apiKey);
 
   // ── Call C — Peek (3.5 Flash): the reading letter, on tap ──
@@ -133,11 +179,13 @@ Deno.serve(async (req: Request): Promise<Response> => {
   } catch (err) {
     // includes GeminiBlocked — a letter that stopped short is never half-shipped.
     console.error('[owl-peek] Peek call failed', err);
+    await refund();
     return jsonResponse({ error: 'generation_failed' }, 502);
   }
 
   if (!isValidLetterWire(letter)) {
     console.error('[owl-peek] Peek reply failed shape validation', letter);
+    await refund();
     return jsonResponse({ error: 'generation_failed' }, 502);
   }
 

@@ -19,6 +19,7 @@ import { Onboarding } from './components/overlays/Onboarding';
 import { Auth } from './components/overlays/Auth';
 import { IntroCard } from './components/overlays/IntroCard';
 import { MirrorRoom } from './components/overlays/MirrorRoom';
+import { LobbyStand } from './components/overlays/LobbyStand';
 
 /* the standing entrance: a brief curtain-rise on every app open (skipped on
    opening night, which plays the long one, and under reduced motion) */
@@ -131,6 +132,7 @@ export default function App() {
               <History />
               <Letter />
               <Settings />
+              <LobbyStand />
               <MirrorRoom />
               <Onboarding />
               <Auth />

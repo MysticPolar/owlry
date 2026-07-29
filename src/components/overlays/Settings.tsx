@@ -7,6 +7,7 @@ import { usePullDismiss } from '../../hooks/usePullDismiss';
 import { useReduceMotion } from '../../hooks/useReduceMotion';
 import type { OwlEngine } from '../../store/types';
 import { isBackendConfigured } from '../../lib/supabase';
+import { rowFromLevel } from '../../lib/economy/curve';
 import { useLang, useT } from '../../i18n/react';
 import { Icon } from '../Icon';
 import { owlLine, type CastOwlName } from '../CastOwl';
@@ -46,8 +47,8 @@ export function Settings() {
   const showToast = useStore((s) => s.showToast);
   const lv = useStore((s) => s.lv);
   const coins = useStore((s) => s.coins);
-  const addXP = useStore((s) => s.addXP);
-  const xpMax = useStore((s) => s.xpMax);
+  // the guest preview walks the seat map only — no coins, no refill
+  const debugLevelUp = useStore((s) => s.debugLevelUp);
   const authed = useAuth((s) => s.status === 'authed');
   const authUser = useAuth((s) => s.user);
   const openAuth = useAuth((s) => s.openAuth);
@@ -171,7 +172,7 @@ export function Settings() {
             <div>
               <div className="pname d">{authed && authUser ? authUser.name : 'Mira'}</div>
               <div className="psub">
-                {authed && authUser ? authUser.email : t.guestSub(lv, coins)}
+                {authed && authUser ? authUser.email : t.guestSub(rowFromLevel(lv), lv, coins)}
               </div>
             </div>
           </div>
@@ -222,7 +223,7 @@ export function Settings() {
             <div className="sh-sec">{t.secGuest}</div>
             <button
               className="link-row"
-              onClick={() => addXP(xpMax)}
+              onClick={debugLevelUp}
               aria-label={t.ariaGainLevel}
             >
               <Icon name="ti-sparkles" />

@@ -1144,3 +1144,207 @@ body { font-optical-sizing: auto; }
   vertical-align: -.1221em; /* seats the glyph baseline on the text baseline */
 }
 .owl-wm-dot { fill: var(--wm-dot, var(--pb-brass)); }
+
+/* ============================================================
+   THE SEASON LEDGER — seats, the album, the lobby stand.
+   (docs/gamification-design.md)
+   ============================================================ */
+
+/* the seat chip: a level is a row, so the chip shows the row.
+   It also carries #lvLab, the anchor the level-up sparks fly to. */
+.pb-seat .crown { color: var(--pb-candy-crown); }
+
+/* the seat map — thirteen rows, the stage at the top. The rows nearest
+   the stage are the short ones: perspective, done with width alone. */
+.pb-seatmap {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  margin-bottom: 12px;
+}
+.pb-stagelip {
+  width: 34%; height: 3px; border-radius: 999px; margin-bottom: 5px;
+  background: linear-gradient(90deg, transparent, var(--pb-brass), transparent);
+  opacity: .85;
+}
+.pb-seatrow {
+  height: 3px; border-radius: 999px;
+  background: var(--pb-track);
+  transition: background .3s ease, width .45s cubic-bezier(.22,1,.36,1);
+}
+/* row 1 (nearest the stage) is narrowest; row 13 spans the house */
+.pb-seatrow:nth-child(2)  { width: 30%; }
+.pb-seatrow:nth-child(3)  { width: 35%; }
+.pb-seatrow:nth-child(4)  { width: 40%; }
+.pb-seatrow:nth-child(5)  { width: 45%; }
+.pb-seatrow:nth-child(6)  { width: 50%; }
+.pb-seatrow:nth-child(7)  { width: 55%; }
+.pb-seatrow:nth-child(8)  { width: 60%; }
+.pb-seatrow:nth-child(9)  { width: 65%; }
+.pb-seatrow:nth-child(10) { width: 70%; }
+.pb-seatrow:nth-child(11) { width: 75%; }
+.pb-seatrow:nth-child(12) { width: 80%; }
+.pb-seatrow:nth-child(13) { width: 85%; }
+.pb-seatrow:nth-child(14) { width: 90%; }
+/* the rows already crossed keep a little of the house light */
+.pb-seatrow.past { background: color-mix(in srgb, var(--pb-brass) 28%, var(--pb-track)); }
+.pb-seatrow.on {
+  background: var(--pb-brass);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--pb-brass) 55%, transparent);
+  height: 4px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pb-seatrow { transition: none; }
+}
+
+.pb-plvl-lv {
+  margin-left: auto;
+  font-family: var(--font-chrome); font-size: var(--t-micro);
+  font-weight: var(--fw-ui-semibold); letter-spacing: 1.5px;
+  color: var(--pb-cream-mute);
+}
+
+/* the purse's coin chip is a door now — keeper's counter is behind it */
+.pb-chip-btn {
+  border: 0; cursor: pointer; font: inherit;
+  transition: transform .18s cubic-bezier(.22,1,.36,1), background .18s ease;
+}
+.pb-chip-btn:active { transform: scale(.96); }
+
+/* ---------- the album ---------- */
+.pcard.album { padding-bottom: 16px; }
+.alb-season + .alb-season { margin-top: 4px; }
+.alb-head {
+  font-family: var(--font-chrome); font-size: var(--t-micro);
+  font-weight: var(--fw-ui-semibold); letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--mut); padding: 14px 22px 0;
+}
+.ach.encore .ti { color: var(--pb-brass); }
+
+/* ---------- the lobby stand ---------- */
+.pb-stand { padding: 18px 18px 26px; }
+.pb-stand-head { display: flex; align-items: center; gap: 10px; }
+.pb-stand-t {
+  font-size: var(--t-heading); color: var(--pb-ink); line-height: var(--lh-tight);
+}
+.pb-stand-sub { font-size: var(--t-micro); color: var(--pb-ink-mute); }
+.pb-stand-purse { margin-left: auto; }
+.pb-stand-season {
+  font-family: var(--font-chrome); font-size: var(--t-micro);
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--pb-ink-faint); margin: 14px 0 6px;
+}
+.pb-stand-empty { color: var(--pb-ink-mute); font-size: var(--t-callout); }
+.pb-stand-list { list-style: none; margin: 0; padding: 0; }
+.pb-stand-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 2px;
+  border-top: 1px dashed var(--pb-paper-line);
+}
+.pb-stand-row.owned { opacity: .55; }
+.pb-stand-glyph .ti { font-size: var(--icon-2xl); color: var(--pb-brass-deep); }
+.pb-stand-copy { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.pb-stand-n { font-size: var(--t-callout); color: var(--pb-ink); }
+.pb-stand-d { font-size: var(--t-micro); color: var(--pb-ink-mute); }
+.pb-stand-owned {
+  margin-left: auto; font-family: var(--font-chrome); font-size: var(--t-micro);
+  letter-spacing: 1.5px; text-transform: uppercase; color: var(--pb-ink-faint);
+}
+.pb-stand-buy { margin-left: auto; display: flex; align-items: center; gap: 5px; }
+.pb-stand-buy .coin { color: var(--pb-brass); }
+.pb-stand-buy:disabled { opacity: .4; cursor: default; }
+
+/* the album nests the stub grid INSIDE a paper card, and .achgrid carries the
+   22px gutter it used when it sat directly against the screen — which pushed
+   the fourth tile of every row past the card's edge. Inside the card the card
+   owns the gutter. */
+.pcard.album .achgrid,
+.pcard.album .alb-head { padding-left: 0; padding-right: 0; }
+/* auto-min tracks let a long label ("last season's flame") push its tile past
+   the grid; minmax(0,1fr) lets the track shrink and the words wrap instead */
+.pcard.album .achgrid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.pcard.album .ach { min-width: 0; }
+.pcard.album .ach .al { overflow-wrap: anywhere; }
+
+/* the sheet's close button is absolute at 16px/40px square, so the stand
+   reserves the top band for it — otherwise the × lands on keeper's sign */
+.pb-stand { padding-top: 68px; }
+
+/* the seat chip names its unit — the row scale is inverted against the level,
+   so a bare number reads as the wrong thing entirely */
+.pb-seat-k {
+  font-family: var(--font-chrome); font-size: var(--t-micro);
+  font-weight: var(--fw-ui-semibold); letter-spacing: 1px;
+  color: var(--pb-cream-mute);
+}
+/* keeper's flame: out, holding, or seven nights deep (house gold) */
+.pb-chip .flame.dim { color: var(--pb-cream-mute); opacity: .55; }
+.pb-chip .flame.bright { color: var(--pb-brass); }
+
+/* ============================================================
+   THE NUMBERS, MOVING.
+   Deltas lift off the chip they belong to; the seat pops when the
+   row moves; the bars ease rather than jump. Every one of these is
+   decoration — the number itself has already changed by the time
+   the animation starts, so nothing here can lie about a total.
+   ============================================================ */
+
+/* the chips are the frame the figures fly out of */
+.pb-chip, .pb-plvl-row { position: relative; }
+
+/* …but the chip ROW clips its overflow, because that is how it collapses on
+   scroll (max-height 36 → 0). A figure rising out of a chip was therefore
+   drawn and immediately clipped — animating perfectly, and invisible. Let the
+   row overflow while it is open; the clip is only needed while it collapses. */
+.pb-chips { overflow: visible; }
+.pb-home.collapsed .pb-chips { overflow: hidden; }
+
+.pb-fx {
+  position: absolute;
+  left: 50%;
+  top: -4px;
+  font-family: var(--font-chrome);
+  font-size: var(--t-micro);
+  font-weight: var(--fw-ui-semibold);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .3px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 3;
+  animation: pbFxFloat .95s cubic-bezier(.22, 1, .36, 1) forwards;
+}
+.pb-fx.xp    { color: var(--pb-candy-bolt); }
+.pb-fx.ink   { color: var(--pb-candy-drop); }
+.pb-fx.coins { color: var(--pb-brass); }
+
+@keyframes pbFxFloat {
+  0%   { opacity: 0; transform: translate(-50%, 6px) scale(.86); }
+  22%  { opacity: 1; transform: translate(-50%, -7px) scale(1.04); }
+  55%  { opacity: 1; transform: translate(-50%, -14px) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -26px) scale(1); }
+}
+
+/* the seat, when the row moves — a short brass swell, no bounce */
+.pb-chip.pop, .pb-plvl-row.pop { animation: pbSeatPop .6s cubic-bezier(.22, 1, .36, 1); }
+.pb-chip.pop .crown, .pb-plvl-row.pop .crown { animation: pbSeatGlow .6s ease-out; }
+
+@keyframes pbSeatPop {
+  0%   { transform: scale(1); }
+  30%  { transform: scale(1.09); }
+  100% { transform: scale(1); }
+}
+@keyframes pbSeatGlow {
+  0%   { filter: none; }
+  30%  { filter: drop-shadow(0 0 7px color-mix(in srgb, var(--pb-brass) 75%, transparent)); }
+  100% { filter: none; }
+}
+
+/* bars ease to their new width instead of snapping to it */
+.pb-xpbar b, .pb-bigxp b { transition: width .55s cubic-bezier(.22, 1, .36, 1); }
+/* and the well shows its level changing at the same pace */
+.pb-chip .n { transition: color .3s ease; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pb-fx { display: none; }
+  .pb-chip.pop, .pb-plvl-row.pop,
+  .pb-chip.pop .crown, .pb-plvl-row.pop .crown { animation: none; }
+  .pb-xpbar b, .pb-bigxp b { transition: none; }
+}

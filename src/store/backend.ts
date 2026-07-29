@@ -1,26 +1,16 @@
 /* Bridge between the server snapshot and the Zustand store.
-   Imported only when the backend is enabled — see docs/backend-integration.md. */
+   For a signed-in reader the server is the authority: this is where its word
+   replaces the optimistic local delta. The mapping itself lives in
+   lib/economy/snapshot.ts so the store can use it too, without a cycle. */
 import { useStore } from './useStore';
 import { getSnapshot } from '../lib/economy/api';
+import { snapshotPatch } from '../lib/economy/snapshot';
 import type { Snapshot } from '../lib/economy/types';
 
 /** Map a server snapshot into the store's runtime shape (economy + library). */
 export function applySnapshot(s: Snapshot): void {
-  if (!s?.profile) return;
-  const p = s.profile;
-  useStore.setState({
-    xp: p.xp_into_level,
-    xpMax: p.xp_for_next,
-    lv: p.level,
-    ink: p.ink,
-    inkMax: p.ink_max,
-    coins: p.coins,
-    streak: p.streak,
-    savedIds: s.library.saved,
-    readingIds: s.library.reading,
-    finishedIds: s.library.finished,
-    pagesRead: s.library.pagesRead,
-  });
+  const patch = snapshotPatch(s);
+  if (patch) useStore.setState(patch);
 }
 
 /** Pull the latest snapshot from the server and apply it. */

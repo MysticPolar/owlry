@@ -105,18 +105,29 @@ export async function fetchOwlTurn(
 
 /* ---------- the letter (generated once, on tap) ---------- */
 
+/** what came of asking for a letter. `refused` is the desk saying "not now" —
+    a dry well or a day's worth of letters already written — and is never an
+    error: the caller soft-holds and nothing was charged. */
+export type LetterOutcome =
+  | { kind: 'ready'; guide: Guide }
+  | { kind: 'refused'; why: 'insufficient_ink' | 'rate_limited' }
+  | { kind: 'failed' };
+
 async function liveLetter(
   ref: BookRef,
   registryScope?: DynamicRegistryScope,
-): Promise<Guide | undefined> {
+): Promise<LetterOutcome> {
   const b = getBook(ref); // title/author let the backend rebuild context on a cold cache miss
   const { data, error } = await supabase!.functions.invoke('owl-peek', {
     body: { slug: ref, title: b?.t, author: b?.a, lang: getActiveLang() },
   });
   if (error) throw error;
+  const refused = (data as { refused?: string } | null)?.refused;
+  if (refused === 'insufficient_ink' || refused === 'rate_limited') return { kind: 'refused', why: refused };
   const v = validateLetter((data as { letter?: unknown } | null)?.letter);
   if (!v.ok) throw new Error(`owl-peek contract: ${v.errors.join('; ')}`);
-  return registerLetter(ref, v.letter, registryScope);
+  const guide = registerLetter(ref, v.letter, registryScope);
+  return guide ? { kind: 'ready', guide } : { kind: 'failed' };
 }
 
 /**
@@ -128,14 +139,15 @@ async function liveLetter(
 export async function fetchLetter(
   ref: BookRef,
   opts?: { registryScope?: DynamicRegistryScope },
-): Promise<Guide | undefined> {
+): Promise<LetterOutcome> {
   const existing = getGuide(ref);
-  if (existing) return existing; // generate-once: already in the registry
-  if (!supabase) return undefined;
+  if (existing) return { kind: 'ready', guide: existing }; // generate-once
+  if (!supabase) return { kind: 'failed' };
   try {
     return await liveLetter(ref, opts?.registryScope);
   } catch (err) {
     devWarn('[owl] live letter failed:', err);
-    return getGuide(ref);
+    const fallback = getGuide(ref);
+    return fallback ? { kind: 'ready', guide: fallback } : { kind: 'failed' };
   }
 }

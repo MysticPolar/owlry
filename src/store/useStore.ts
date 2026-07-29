@@ -9,7 +9,12 @@
    server-side) and falls back to the offline brain on any failure;
    fetchLetter() calls owl-peek lazily, only when a card is tapped.
    Ink meters the LIVE owl (a live ask costs 1 ink; a tapped peek
-   costs 2); a dry inkwell falls back to the free offline brain.
+   costs 5); a dry inkwell falls back to the free offline brain.
+
+   Every reward verb goes through econ() — the season ledger's one
+   guarded mutation (docs/gamification-design.md). Signed in, the
+   server's ledger has the last word; as a guest the same engine
+   runs locally, guards and all.
    ============================================================ */
 import { create } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
@@ -35,7 +40,15 @@ import {
 import type { DynamicRegistryScope } from '../lib/bookRegistry';
 import { FEED } from '../content/feed';
 import { supabase, isBackendConfigured } from '../lib/supabase';
-import { saveQuote as persistQuote } from '../lib/economy/api';
+import { getSnapshot } from '../lib/economy/api';
+import { applyAction, derive, emptyDaily, localDay, settleInk, tzOffsetMinutes } from '../lib/economy/engine';
+import type { ActionContext, EconomyState, EngineResult } from '../lib/economy/engine';
+import { clearQueue, enqueue, flush } from '../lib/economy/queue';
+import { snapshotPatch } from '../lib/economy/snapshot';
+import { CURVE_VERSION, ECONOMY_VERSION, STAND_LEVEL, goodFor } from '../lib/economy/config';
+import { LV_CAP, cumulativeXp, rowFromLevel } from '../lib/economy/curve';
+import { STUB_LABEL } from '../content/stubs';
+import type { EconomyAction, Snapshot } from '../lib/economy/types';
 import { getLocalWeather } from '../lib/weather';
 import { rowsToChat } from '../lib/chatHydrate';
 import type { ChatRow } from '../lib/chatHydrate';
@@ -99,6 +112,19 @@ import type {
 /** lazy reading-letter state: the letter is generated only when the reader taps the card */
 export type LetterStatus = 'idle' | 'loading' | 'ready';
 
+/** A change to the numbers, published for the chips to animate. Deltas only —
+    the chips already hold the totals; this says what just moved, and by how
+    much, so a +4 can float off the XP chip and a −5 off the inkwell. */
+export interface StatFx {
+  xp: number;
+  ink: number;
+  coins: number;
+  /** the seat moved — the chip pops and the sparks fly */
+  lv: boolean;
+  /** monotonic, so a repeat of the same delta still replays */
+  n: number;
+}
+
 /** The real in-app reader (public-domain EPUB or an uploaded file). */
 export type EbookStatus = 'resolving' | 'reading' | 'empty' | 'error';
 export interface EbookState {
@@ -138,6 +164,8 @@ export interface Store extends PersistedState {
   toast: ToastState | null;
   owlReact: OwlReact | null;
   burstNonce: number;
+  /** the last change to the numbers, so the chips can show it happening */
+  statFx: StatFx | null;
   owl: OwlState;
   deskMode: DeskMode;
   /** bumped on every successful desk switch → the centered avatar hint replays */
@@ -200,6 +228,18 @@ export interface Store extends PersistedState {
   clearScoutDraft: () => void;
   setLibTab: (t: LibTab) => void;
   toggleSave: (id: BookRef) => void;
+  toggleDislike: (id: BookRef) => void;
+  /** the one guarded economy mutation — every reward verb comes through here */
+  econ: (action: EconomyAction, ctx?: EconCtx) => EngineResult;
+  /** the day's first launch: a stamped ticket (+10 XP, +10 ink), once per local day */
+  checkIn: () => void;
+  /** the lobby stand */
+  standOpen: boolean;
+  openStand: () => void;
+  closeStand: () => void;
+  buyGood: (sku: string) => void;
+  /** guest-only preview affordance: moves the seat, mints nothing */
+  debugLevelUp: () => void;
   addXP: (n: number) => void;
   addInk: (n: number) => void;
   showToast: (icon: string, msg: string, owl?: OwlName) => void;
@@ -379,6 +419,7 @@ export const commitStagedReaderCloudRefresh = (
 
 function extractPersisted(s: Store): PersistedState {
   return {
+    totalXp: s.totalXp,
     xp: s.xp,
     xpMax: s.xpMax,
     ink: s.ink,
@@ -390,9 +431,22 @@ function extractPersisted(s: Store): PersistedState {
     savedIds: s.savedIds,
     readingIds: s.readingIds,
     finishedIds: s.finishedIds,
+    quotedIds: s.quotedIds,
+    dislikedIds: s.dislikedIds,
+    savedAt: s.savedAt,
     pagesRead: s.pagesRead,
     readingPositions: s.readingPositions,
     libraryBooks: s.libraryBooks,
+    daily: s.daily,
+    earn: s.earn,
+    stubs: s.stubs,
+    quoteHashes: s.quoteHashes,
+    goods: s.goods,
+    streakLastDay: s.streakLastDay,
+    darkNightAt: s.darkNightAt,
+    inkAt: s.inkAt,
+    curveV: s.curveV,
+    economyVersion: s.economyVersion,
     prefs: s.prefs,
     prefsUpdatedAt: s.prefsUpdatedAt,
   };
@@ -515,6 +569,114 @@ const withPendingReadingPosition = (
   };
 };
 
+/* ---------- the economy seam ---------- */
+
+/** what the store hands the engine, and what it takes back */
+export interface EconCtx extends ActionContext {
+  /** turn_page: the real page number, for the library bars (never the step) */
+  page?: number;
+  /** finish: the book's length */
+  pages?: number;
+  /** quote_keep: the line itself — the server keeps it, the ledger keeps a hash */
+  text?: string;
+  /** the server owns this spend (the peek is charged inside owl-peek) — apply
+      the optimistic delta locally, but never enqueue a second charge */
+  localOnly?: boolean;
+}
+
+const economyOf = (s: Store): EconomyState => ({
+  totalXp: s.totalXp,
+  ink: s.ink,
+  inkMax: s.inkMax,
+  coins: s.coins,
+  streak: s.streak,
+  inkDone: s.inkDone,
+  daily: s.daily,
+  earn: s.earn,
+  stubs: s.stubs,
+  quoteHashes: s.quoteHashes,
+  goods: s.goods,
+  streakLastDay: s.streakLastDay,
+  darkNightAt: s.darkNightAt,
+  inkAt: s.inkAt,
+});
+
+/** the engine's next state, in the store's shape (mirrors re-derived) */
+function economyPatch(next: EconomyState): Partial<Store> {
+  const d = derive(next.totalXp);
+  return {
+    totalXp: next.totalXp,
+    xp: d.xp,
+    xpMax: d.xpMax,
+    lv: d.lv,
+    ink: next.ink,
+    coins: next.coins,
+    streak: next.streak,
+    inkDone: next.inkDone,
+    daily: next.daily,
+    earn: next.earn,
+    stubs: next.stubs,
+    quoteHashes: next.quoteHashes,
+    goods: next.goods,
+    streakLastDay: next.streakLastDay,
+    darkNightAt: next.darkNightAt,
+    inkAt: next.inkAt,
+  };
+}
+
+/** a stable fingerprint for a kept line — local dedupe only; the server
+    computes its own md5 over the text it stores */
+function lineHash(text: string): string {
+  let h = 0;
+  for (let i = 0; i < text.length; i += 1) {
+    h = (h << 5) - h + text.charCodeAt(i);
+    h |= 0;
+  }
+  return `h${(h >>> 0).toString(36)}:${text.length}`;
+}
+
+type Setter = (partial: Partial<Store> | ((s: Store) => Partial<Store>)) => void;
+
+/** publish a change to the numbers. Deltas only, and never a no-op — a chip
+    with nothing to say should stay still. */
+function emitFx(set: Setter, xp: number, ink: number, coins: number, lv: boolean): void {
+  if (!xp && !ink && !coins && !lv) return;
+  set((st) => ({ statFx: { xp, ink, coins, lv, n: (st.statFx?.n ?? 0) + 1 } }));
+}
+
+type Getter = () => Store;
+
+/** the two gates open on their level crossings */
+function crossGates(get: Getter, before: number, after: number): void {
+  if (before < 3 && after >= 3) setTimeout(() => get().showIntro('proscout'), 600);
+  if (before < 5 && after >= 5) {
+    // the chains fall (a burst), then mirror steps out of the glass to introduce itself
+    setTimeout(() => get().triggerBurst(), 700);
+    setTimeout(() => get().showIntro('mirror'), 1150);
+  }
+}
+
+/** the seat moved — name the row it moved to */
+function announceLevel(get: Getter, before: number, after: number): void {
+  if (after <= before) return;
+  const t = L(get().prefs);
+  get().showToast('ti-sparkles', after >= LV_CAP ? t.frontRow : t.levelUp(after, rowFromLevel(after)), 'keeper');
+  get().triggerBurst();
+}
+
+/** which twentieth of a book a position falls in (the ledger's step, 1..20) */
+const stepOf = (percent: number): number => Math.min(20, Math.max(1, Math.ceil(percent / 5)));
+
+/** take the server's word for the balances (after a spend it charged itself) */
+async function refreshSnapshot(): Promise<void> {
+  try {
+    const patch = snapshotPatch(await getSnapshot());
+    if (patch) useStore.setState(patch);
+  } catch {
+    /* offline — the local echo stands until the next successful call */
+  }
+}
+
 /** the store's strings in the reader's language (call inside actions only) */
 const L = (prefs: Prefs) => tOf(prefs.lang ?? 'en').store;
 
@@ -532,6 +694,7 @@ export const useStore = create<Store>()(
     toast: null,
     owlReact: null,
     burstNonce: 0,
+    statFx: null,
     owl: {
       messages: [],
       chips: [],
@@ -671,6 +834,7 @@ export const useStore = create<Store>()(
           returnTo,
         },
       });
+      get().econ('open', { bookId: id }); // opening a book is worth something, once
 
       if (readingOwner !== 'guest') {
         // Keep the resolving surface visible while the account refresh runs,
@@ -898,26 +1062,29 @@ export const useStore = create<Store>()(
       const pages = Math.min(n, Math.round((percent / 100) * n));
       if (pages > (get().pagesRead[id] ?? 0)) set({ pagesRead: { ...get().pagesRead, [id]: pages } });
 
-      // cosmetic XP: one "page turn" per 5% advanced, gated by ≥8s of active reading —
-      // the same economics as the mock reader's nextPage (+2 XP, +2 ink).
+      // one "page turn" per 5% advanced, gated by ≥8s of active reading. The
+      // ledger knows it as a step (1..20) — that's what dedupes a re-read —
+      // while `page` keeps the library bars honest.
       const lastPct = progressMark.get(id) ?? 0;
       const lastSec = secondsMark.get(id) ?? 0;
       if (percent >= lastPct + 5 && secondsRead >= lastSec + 8) {
         progressMark.set(id, Math.floor(percent / 5) * 5);
         secondsMark.set(id, secondsRead);
-        get().addXP(2);
-        get().addInk(2);
+        get().econ('turn_page', { bookId: id, step: stepOf(percent), page: pages });
       }
 
       // finishing near the end — requires real reading time (≥30s), so scrubbing
-      // the bar to the end can't farm the +40. Fires once per open.
+      // the bar to the end can't farm the finish. Fires once per open.
       if (percent >= 97 && secondsRead >= 30 && !finishedMark.has(id)) {
         finishedMark.add(id);
         const finishedIds = get().finishedIds.includes(id) ? get().finishedIds : [id, ...get().finishedIds];
         const readingIds = get().readingIds.filter((x) => x !== id);
         set({ finishedIds, readingIds, pagesRead: { ...get().pagesRead, [id]: n } });
-        get().showToast('ti-trophy', L(get().prefs).finishedTwice, 'keeper');
-        get().addXP(40);
+        const res = get().econ('finish', { bookId: id, pages: n });
+        if (!res.leveled && !res.wellFilled) {
+          const t = L(get().prefs);
+          get().showToast('ti-trophy', res.granted.xp > 0 ? t.finishedTwice : t.finishedQuiet, 'keeper');
+        }
       }
     },
 
@@ -965,6 +1132,13 @@ export const useStore = create<Store>()(
           ownerReady = true;
           ownerTransitionSnapshot = null;
           set({ ...guestState, readingPositions: {}, hydrated: true });
+          // the well regathers with time while the app is shut — settle it on
+          // open, up to the resting line (pages and mornings fill it past that)
+          const before = get();
+          const settled = settleInk(economyOf(before), Date.now());
+          if (settled.ink !== before.ink || settled.inkAt !== before.inkAt) {
+            set({ ink: settled.ink, inkAt: settled.inkAt });
+          }
         }
         // opening night, once — the curtain waits for first-timers
         if (!session?.user && !get().prefs.onboarded) set({ showOnboarding: true });
@@ -977,7 +1151,12 @@ export const useStore = create<Store>()(
         // An authenticated session is still behind the neutral owner gate here.
         // adoptAccount() hydrates its chat only after that account's local/cloud
         // state and dynamic registry are active.
-        if (!session?.user) await get().hydrateChat();
+        // a guest's day starts here; a signed-in reader's ticket is stamped at
+        // the end of adoptAccount instead, so the server's snapshot lands first
+        if (!session?.user) {
+          get().checkIn();
+          await get().hydrateChat();
+        }
       })();
       return bootstrapTask;
     },
@@ -1075,18 +1254,26 @@ export const useStore = create<Store>()(
 
     saveQuote: (text, bookId) => {
       // scribe reveals herself the first time a line is kept; after that, a quiet toast
-      if (!(get().prefs.introsSeen ?? []).includes('scribe')) get().showIntro('scribe');
-      else get().showToast('ti-quote', L(get().prefs).lineSaved, 'scribe');
-      // signed in, the line really lands in owlry_quotes; guests keep the ritual only.
-      // owlry_save_quote needs a book — explicit id first, else whichever book
+      const firstKeep = !(get().prefs.introsSeen ?? []).includes('scribe');
+      if (firstKeep) get().showIntro('scribe');
+      // signed in, the line really lands in owlry_quotes (the ledger keeps only
+      // its fingerprint). The keep needs a book — explicit id first, else whichever
       // surface the line was lifted from. The sheet outranks the letter: they only
       // coexist when a sheet opens OVER a letter (openLetter clears sheetId), and
       // then the sheet is the surface being quoted.
       const st = get();
       const book = bookId ?? (st.ebook.open ? st.ebook.bookId : null) ?? st.sheetId ?? st.letterId;
       const line = text.trim().slice(0, 1000); // a kept line, not a kept chapter
-      if (!line || !book || !st.authUser || !isBackendConfigured()) return;
-      void persistQuote(book, line).catch(() => {});
+      if (!line || !book) return;
+      // remembered locally either way: a kept line is a strong sign of favour,
+      // and the shelf reads it whether or not the reader is signed in
+      const { quotedIds } = st;
+      if (!quotedIds.includes(book)) set({ quotedIds: [...quotedIds, book] });
+      const res = get().econ('quote_keep', { bookId: book, hash: lineHash(line), text: line });
+      if (!firstKeep && !res.refused && !res.leveled && !res.wellFilled) {
+        const t = L(get().prefs);
+        get().showToast('ti-quote', res.granted.xp > 0 ? t.keptLine : t.lineSaved, 'scribe');
+      }
     },
     startAsk: (id) => {
       const b = getBook(id);
@@ -1124,52 +1311,177 @@ export const useStore = create<Store>()(
     setLibTab: (t) => set({ libTab: t }),
 
     toggleSave: (id) => {
-      const { savedIds, libraryBooks } = get();
+      const { savedIds, savedAt, libraryBooks } = get();
       const remembered = rememberBookMetadata(libraryBooks, [id]);
+      const t = L(get().prefs);
       if (savedIds.includes(id)) {
-        set({ savedIds: savedIds.filter((x) => x !== id), libraryBooks: remembered });
-        get().showToast('ti-heart-broken', L(get().prefs).unshelved, 'keeper');
+        const { [id as string]: _dropped, ...rest } = savedAt;
+        set({
+          savedIds: savedIds.filter((x) => x !== id),
+          savedAt: rest,
+          libraryBooks: remembered,
+        });
+        get().econ('unsave', { bookId: id }); // the shelf travels to the ledger too
+        get().showToast('ti-heart-broken', t.unshelved, 'keeper');
       } else {
-        set({ savedIds: [...savedIds, id], libraryBooks: remembered });
-        get().showToast('ti-heart', L(get().prefs).shelved, 'keeper');
-        get().addXP(5);
+        // stamped so the shelf can rank by how lately a book was hearted
+        set({
+          savedIds: [...savedIds, id],
+          savedAt: { ...savedAt, [id as string]: Date.now() },
+          libraryBooks: remembered,
+        });
+        const res = get().econ('save', { bookId: id });
+        // a bigger moment (a new row, a full well) owns the toast if it happened
+        if (!res.leveled && !res.wellFilled) {
+          get().showToast('ti-heart', res.granted.xp > 0 ? t.shelved : t.shelvedAgain, 'keeper');
+        }
       }
+    },
+
+    // the quiet "not for me" — written down so the taste survives a reload
+    toggleDislike: (id) => {
+      const { dislikedIds } = get();
+      set({
+        dislikedIds: dislikedIds.includes(id)
+          ? dislikedIds.filter((x) => x !== id)
+          : [...dislikedIds, id],
+      });
+    },
+
+    /* ---------- the one guarded economy mutation ----------
+       Every reward verb comes through here. The engine runs the same grants
+       and guards the server does, so a guest plays the real economy and a
+       signed-in reader gets an honest optimistic delta — which the ledger's
+       answer then overrules. */
+    econ: (action, ctx = {}) => {
+      const s = get();
+      const now = Date.now();
+      const res = applyAction(economyOf(s), action, { ...ctx, now, finishedCount: s.finishedIds.length });
+
+      // a refusal is never a wall — the caller decides what to say, and every
+      // dry-well path falls through to the free offline owl
+      if (res.refused) return res;
+
+      const before = s.lv;
+      set(economyPatch(res.next));
+      const after = get().lv;
+      emitFx(set, res.granted.xp, res.granted.ink, res.granted.coins, after > before);
+      const t = L(get().prefs);
+      let spoke = false;
+
+      if (res.wellFilled) {
+        get().showToast('ti-coin', t.inkFull, 'keeper');
+        spoke = true;
+      }
+      if (after > before) {
+        get().showToast('ti-sparkles', after >= LV_CAP ? t.frontRow : t.levelUp(after, rowFromLevel(after)), 'keeper');
+        get().triggerBurst();
+        spoke = true;
+      }
+      crossGates(get, before, after);
+      if (res.next.daily.fullHouse && !s.daily.fullHouse) {
+        setTimeout(() => get().showToast('ti-sparkles', t.fullHouse, 'keeper'), spoke ? 2200 : 0);
+        spoke = true;
+      }
+      // one stub at a time — the album keeps the rest
+      const stub = res.newStubs.find((x) => x.id !== 'encore');
+      if (stub) {
+        const label = STUB_LABEL[stub.id]?.[get().prefs.lang ?? 'en'];
+        if (label) setTimeout(() => get().showToast('ti-ticket', t.stubEarned(label), 'keeper'), spoke ? 2200 : 0);
+      }
+
+      // the server has the last word. Queued, so a tunnel costs nobody their
+      // XP; reconciled against `granted`, never against what was asked for.
+      if (!ctx.localOnly && s.authUser && isBackendConfigured()) {
+        const meta: Record<string, unknown> = {
+          occurred_at: new Date(now).toISOString(),
+          tz: tzOffsetMinutes(),
+        };
+        if (ctx.step !== undefined) meta.step = ctx.step;
+        if (ctx.page !== undefined) meta.page = ctx.page;
+        if (ctx.pages !== undefined) meta.pages = ctx.pages;
+        if (ctx.sku) meta.sku = ctx.sku;
+        if (ctx.text) meta.text = ctx.text;
+        void enqueue(s.authUser.id, action, ctx.bookId ?? null, meta)
+          .then((r) => {
+            if (!r?.ok) return;
+            const patch = snapshotPatch(r as Snapshot);
+            if (patch) set(patch);
+          })
+          .catch(() => {});
+      }
+      return res;
+    },
+
+    // the day's first launch — a stamped ticket, then the flame reports in
+    checkIn: () => {
+      const prevDark = get().darkNightAt;
+      const prevStreak = get().streak;
+      if (get().econ('checkin').refused) return;
+      const t = L(get().prefs);
+      get().showToast('ti-ticket', t.checkedIn, 'keeper');
+      setTimeout(() => {
+        const s = get();
+        if (s.darkNightAt !== prevDark) get().showToast('ti-flame', t.flameKept, 'keeper');
+        else if (s.streak !== prevStreak) {
+          get().showToast(
+            'ti-flame',
+            s.streak > 0 && s.streak % 7 === 0 ? t.flameSeven(s.streak) : t.flameNight(s.streak),
+            'keeper',
+          );
+        }
+      }, 2200);
+    },
+
+    standOpen: false,
+    openStand: () => {
+      if (get().lv >= STAND_LEVEL) set({ standOpen: true });
+    },
+    closeStand: () => set({ standOpen: false }),
+
+    buyGood: (sku) => {
+      const good = goodFor(sku);
+      if (!good) return;
+      const res = get().econ('purchase', { sku });
+      const t = L(get().prefs);
+      if (res.refused === 'insufficient_coins') return get().showToast('ti-coin', t.purseLight, 'keeper');
+      if (res.refused === 'rate_limited') return get().showToast('ti-inkdrop', t.standShut, 'keeper');
+      if (res.refused) return;
+      get().showToast(
+        good.kind === 'bottle' ? 'ti-inkdrop' : 'ti-ticket',
+        good.kind === 'bottle' ? t.bottle : t.bought,
+        'keeper',
+      );
+    },
+
+    // the guest preview affordance: the seat moves, but no brass is minted and
+    // the well isn't topped — so adoptAccount can't launder a cheat into an account
+    debugLevelUp: () => {
+      const before = get().lv;
+      const d = derive(cumulativeXp(Math.min(LV_CAP, before + 1)));
+      set({ totalXp: cumulativeXp(Math.min(LV_CAP, before + 1)), xp: d.xp, xpMax: d.xpMax, lv: d.lv });
+      emitFx(set, 0, 0, 0, d.lv > before); // the seat still pops; no brass is minted
+      announceLevel(get, before, d.lv);
+      crossGates(get, before, d.lv);
     },
 
     addXP: (n) => {
-      let { xp, lv } = get();
-      const { xpMax } = get();
-      const before = lv;
-      xp += n;
-      let leveled = false;
-      while (xp >= xpMax) {
-        xp -= xpMax;
-        lv += 1;
-        leveled = true;
-      }
-      set({ xp, lv });
-      if (leveled) {
-        get().showToast('ti-sparkles', L(get().prefs).levelUp(lv));
-        get().triggerBurst();
-      }
-      // the two gates open on their level crossings
-      if (before < 3 && lv >= 3) setTimeout(() => get().showIntro('proscout'), 600);
-      if (before < 5 && lv >= 5) {
-        // the chains fall (a burst), then mirror steps out of the glass to introduce itself
-        setTimeout(() => get().triggerBurst(), 700);
-        setTimeout(() => get().showIntro('mirror'), 1150);
-      }
+      const before = get().lv;
+      const totalXp = Math.max(0, get().totalXp + n);
+      const d = derive(totalXp);
+      set({ totalXp, xp: d.xp, xpMax: d.xpMax, lv: d.lv });
+      emitFx(set, n, 0, 0, d.lv > before);
+      announceLevel(get, before, d.lv);
+      crossGates(get, before, d.lv);
     },
 
+    // a primitive: the well moves, nothing is minted. The once-ever +50 is the
+    // engine's to grant (and, signed in, the ledger's).
     addInk: (n) => {
-      const { ink, inkMax, inkDone, coins } = get();
-      const next = Math.min(ink + n, inkMax);
-      if (next >= inkMax && !inkDone) {
-        set({ ink: next, inkDone: true, coins: coins + 50 });
-        get().showToast('ti-coin', L(get().prefs).inkFull);
-      } else {
-        set({ ink: next });
-      }
+      const { ink, inkMax } = get();
+      const next = Math.min(inkMax, Math.max(0, ink + n));
+      set({ ink: next });
+      emitFx(set, 0, next - ink, 0, false);
     },
 
     showToast: (icon, msg, owl) => {
@@ -1218,8 +1530,7 @@ export const useStore = create<Store>()(
       const p = s.reader.p + 1;
       const pagesRead = { ...s.pagesRead, [id]: Math.max(s.pagesRead[id] ?? 0, p - 1) };
       set({ reader: { ...s.reader, p }, pagesRead });
-      get().addXP(2);
-      get().addInk(2);
+      get().econ('turn_page', { bookId: id, step: stepOf((p / n) * 100), page: p });
     },
 
     prevPage: () => {
@@ -1232,12 +1543,16 @@ export const useStore = create<Store>()(
       const s = get();
       const id = s.reader.id;
       if (!id) return;
-      const pagesRead = { ...s.pagesRead, [id]: getBook(id)?.n ?? s.reader.p };
+      const pages = getBook(id)?.n ?? s.reader.p;
+      const pagesRead = { ...s.pagesRead, [id]: pages };
       const readingIds = s.readingIds.filter((x) => x !== id);
       const finishedIds = s.finishedIds.includes(id) ? s.finishedIds : [id, ...s.finishedIds];
       set({ pagesRead, readingIds, finishedIds, reader: { open: false, id: null, p: 1 } });
-      get().showToast('ti-trophy', L(get().prefs).finishedTwice, 'keeper');
-      get().addXP(40);
+      const res = get().econ('finish', { bookId: id, pages });
+      if (!res.leveled && !res.wellFilled) {
+        const t = L(get().prefs);
+        get().showToast('ti-trophy', res.granted.xp > 0 ? t.finishedTwice : t.finishedQuiet, 'keeper');
+      }
     },
 
     openSheet: (id) => set((s) => ({
@@ -1266,33 +1581,50 @@ export const useStore = create<Store>()(
       if (!openedLetters.includes(id)) {
         set({ openedLetters: [...openedLetters, id] });
         get().showToast('ti-mail-opened', L(get().prefs).peekOpened, 'peek');
-        get().addXP(5);
       }
 
       if (ready) return;
 
-      // a cache-miss peek is written live (owl-peek) — that costs ink; a dry well
-      // holds the letter until reading a few pages refills it.
+      // a cache-miss peek is written live (owl-peek) — that costs ink, and the
+      // desk only writes so many letters a day. A dry well or a spent day never
+      // blocks: the letter simply waits, and scout says so.
       const willGenerate = liveOwlEnabled(get().prefs);
-      if (willGenerate && get().ink < 2) {
-        get().showToast('ti-pencil', L(get().prefs).inkwellDry, 'scout');
-        if (get().letterId === id) set({ letterStatus: 'idle' });
-        return;
+      if (willGenerate) {
+        // signed in, owl-peek does the real charging server-side, so this is an
+        // optimistic local echo only — never a second charge
+        const held = get().econ('preview', { bookId: id, localOnly: true });
+        if (held.refused) {
+          const t = L(get().prefs);
+          get().showToast('ti-pencil', held.refused === 'rate_limited' ? t.peekRested : t.inkwellDry, 'scout');
+          if (get().letterId === id) set({ letterStatus: 'idle' });
+          return;
+        }
       }
-      if (willGenerate) get().addInk(-2); // spend up front; refunded if it fails
 
       void (async () => {
-        const guide = await fetchLetter(id, { registryScope });
+        const outcome = await fetchLetter(id, { registryScope });
+        const authed = !!get().authUser && isBackendConfigured();
         if (
           !isActiveDynamicRegistryScope(registryScope)
           || get().letterId !== id
-        ) return; // closed, replaced, or completed for a different account
-        if (guide) {
+        ) {
+          // closed, replaced, or completed for a different account — still
+          // reconcile, because the charge was real
+          if (authed) void refreshSnapshot();
+          return;
+        }
+        if (outcome.kind === 'ready') {
           set({ letterStatus: 'ready' });
         } else {
-          if (willGenerate) get().addInk(2); // the desk refunds a failed letter
+          // refused or failed: the desk gives the drops back and the letter waits
+          if (willGenerate) get().addInk(5);
+          if (outcome.kind === 'refused') {
+            const t = L(get().prefs);
+            get().showToast('ti-pencil', outcome.why === 'rate_limited' ? t.peekRested : t.inkwellDry, 'scout');
+          }
           set({ letterStatus: 'idle' });
         }
+        if (authed) void refreshSnapshot(); // the server's ink is the real ink
       })();
     },
 
@@ -1322,8 +1654,9 @@ export const useStore = create<Store>()(
     resetProgress: () => (
       bumpTurn(),
       set((s) => ({
+        totalXp: 0,
         xp: 0,
-        xpMax: 400,
+        xpMax: cumulativeXp(2) - cumulativeXp(1), // row 13 costs 200 to leave
         ink: 10, // the welcome bundle, so scout is still askable from zero
         inkMax: 120,
         coins: 0,
@@ -1333,9 +1666,25 @@ export const useStore = create<Store>()(
         savedIds: [],
         readingIds: [],
         finishedIds: [],
+        quotedIds: [],
+        dislikedIds: [],
+        savedAt: {},
         pagesRead: {},
         readingPositions: {},
         libraryBooks: {},
+        // the ledger side goes back to an empty sheet too — no counters, no
+        // marks, no album, no flame memory
+        daily: emptyDaily(localDay()),
+        earn: {},
+        stubs: [],
+        quoteHashes: [],
+        goods: [],
+        streakLastDay: null,
+        darkNightAt: null,
+        inkAt: Date.now(),
+        curveV: CURVE_VERSION,
+        economyVersion: ECONOMY_VERSION,
+        standOpen: false,
         prefs: { ...s.prefs, introsSeen: [], onboarded: false, name: undefined },
         prefsUpdatedAt: nextPrefsUpdatedAt(s.prefsUpdatedAt),
         showOnboarding: true,
@@ -1547,6 +1896,38 @@ export const useStore = create<Store>()(
 
         next = await recoverAccountUploadBooks(next, userId, registryScope);
         if (!transitionIsCurrent()) return;
+
+        // THE SERVER GETS THE LAST WORD, BEFORE ANYTHING IS WRITTEN BACK.
+        // The blob merges by max-wins, and a demo-seeded guest blob reads as row
+        // 7 with 240 coins — so if that were persisted and pushed first, it
+        // would out-rank the account's real ledger and come back every cold
+        // start. Snapshot first; if it can't be had, mark the state dirty and
+        // write NOTHING, so the next launch tries again from clean ground.
+        if (isBackendConfigured()) {
+          let patch: ReturnType<typeof snapshotPatch> = null;
+          try {
+            patch = snapshotPatch(await getSnapshot());
+          } catch {
+            patch = null;
+          }
+          if (!transitionIsCurrent()) return;
+          // a snapshot that never arrived — or arrived unusable ({ok:false}
+          // comes back as a RESOLVED rpc, not a throw) — must not be treated as
+          // truth. Keep the gate up and write nothing, so the next launch
+          // retries from clean ground instead of persisting a guess.
+          if (!patch) {
+            set({ syncStatus: 'error', accountStorageBlocked: true });
+            return;
+          }
+          // THE LIBRARY IS MERGED, NOT REPLACED. A reader from before the ledger
+          // has their shelves only in the blob (owlry_user_books was never
+          // written, because performAction had no call sites). The migration
+          // backfills it, but if that has not run yet the snapshot's empty
+          // library would wipe the shelf — and the writes below would persist
+          // the wipe to both caches. Union the shelves; keep the furthest page.
+          next = mergeProgress(next, { ...next, ...patch } as PersistedState);
+        }
+
         cloudHydrationPending = null;
         clearCloudHydrationRetry();
         ownerReady = true;
@@ -1596,6 +1977,8 @@ export const useStore = create<Store>()(
           && ownerTransitionTarget === userId
         ) ownerTransitionTarget = null;
       }
+      void flush(userId); // anything this device queued offline goes up now
+      get().checkIn(); // the day's first ticket, if it hasn't been stamped yet
     },
 
     syncAccountNow: () => {
@@ -1703,6 +2086,8 @@ export const useStore = create<Store>()(
           previousOwnerWasReady
           && !previousCloudHydrationWasPending
         ) void saveLocal(previousOwner, current);
+        // an account's queued actions never leak into the next session
+        if (previousOwner !== 'guest') void clearQueue(previousOwner);
         // Block access to the departing account's ebook namespace immediately,
         // but do not label its still-visible progress state as guest-owned until
         // the guest cache has actually loaded.
@@ -1774,8 +2159,8 @@ export const useStore = create<Store>()(
           chips: AFTER_CHIPS[get().prefs.lang ?? 'en'],
         },
       }));
-      // the welcome bundle, made real — a few drops in the well to start
-      get().addInk(10);
+      // the welcome bundle, made real — the opening-night grant and its stub
+      get().econ('onboard');
     },
 
     setDeskMode: (mode) => {
@@ -1855,10 +2240,10 @@ export const useStore = create<Store>()(
           chatTurn !== myTurn
           || !isActiveDynamicRegistryScope(registryScope)
         ) return;
-        if (live) {
-          get().addInk(-1); // charged only when the live Scout actually answered
-          get().addXP(3);
-        }
+        // charged only when the live Scout actually answered — a silent offline
+        // fallback costs nothing. Past the day's sixth ask the ink still spends
+        // (the owl still writes); it just stops paying XP.
+        if (live) get().econ('chat');
 
         // the dots hold for ~620ms (the mockup's beat) before Scout's line streams
         // in — but never longer, so a slow live turn doesn't double-wait

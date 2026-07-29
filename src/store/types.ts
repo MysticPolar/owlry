@@ -7,6 +7,7 @@
 import type { Book, BookRef } from '../content/types';
 import type { ReadingPosition } from '../lib/ebook/types';
 import type { OwlMessage, OwlBatch, OwlSession } from '../lib/owlBrain';
+import type { BookEarn, DailyCounters, StubRecord } from '../lib/economy/types';
 
 export type Tab = 'today' | 'discover' | 'profile';
 export type LibTab = 'reading' | 'saved' | 'finished';
@@ -65,23 +66,57 @@ export interface PersistedBook {
 
 /** The durable loop persisted to IndexedDB (and, later, a backend). */
 export interface PersistedState {
+  /** lifetime XP — the durable truth since the season ledger. xp/xpMax/lv are
+      DERIVED MIRRORS of it (lib/economy/engine.ts `derive`), kept in the blob
+      so every existing chip, bar and merge rule keeps working unchanged. */
+  totalXp: number;
   xp: number;
   xpMax: number;
   ink: number;
   inkMax: number;
   coins: number;
   lv: number;
+  /** the once-ever full-well +50 has been paid */
   inkDone: boolean;
   streak: number;
   savedIds: BookRef[];
   readingIds: BookRef[];
   finishedIds: BookRef[];
+  /** books the reader has kept a line from — a quiet, strong signal of favour */
+  quotedIds: BookRef[];
+  /** books waved off with the down-vote; remembered so the taste isn't relearned */
+  dislikedIds: BookRef[];
+  /** epoch ms per save, so the shelf can rank by *when* and not just by order */
+  savedAt: Record<string, number>;
   pagesRead: Record<string, number>;
   /** Exact, reflow-safe resume anchors synced for signed-in readers.
       Guests keep the same shape in memory only for the current tab. */
   readingPositions: Record<string, ReadingPosition>;
   /** Open-world book metadata, keyed by the same stable slug used by shelves/uploads. */
   libraryBooks: Record<BookRef, PersistedBook>;
+
+  /* ---------- the season ledger (docs/gamification-design.md) ---------- */
+  /** one local day's counters — the guest side of the server's guard suite */
+  daily: DailyCounters;
+  /** per-book earn marks, so a re-read can't re-earn what it already paid */
+  earn: Record<string, BookEarn & { mask?: number }>;
+  /** the ticket-stub album */
+  stubs: StubRecord[];
+  /** quote fingerprints (never the prose) */
+  quoteHashes: string[];
+  /** lobby-stand skus owned */
+  goods: string[];
+  /** last local day with an XP-bearing act — the flame's memory */
+  streakLastDay: string | null;
+  /** the missed day a dark night already forgave */
+  darkNightAt: string | null;
+  /** epoch ms the ink clock was last settled */
+  inkAt: number;
+  /** level-curve generation; a bump migrates the bar onto the current curve */
+  curveV: number;
+  /** grant/guard generation */
+  economyVersion: number;
+
   prefs: Prefs;
   /** Monotonic last-write marker for settings, independent of XP/progress. */
   prefsUpdatedAt: number;

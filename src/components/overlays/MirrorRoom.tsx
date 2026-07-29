@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useStore } from '../../store/useStore';
 import { chainsInner } from '../../lib/chains';
+import { rowFromLevel } from '../../lib/economy/curve';
 import { useReduceMotion } from '../../hooks/useReduceMotion';
 import { useModalFocus } from '../../hooks/useModalFocus';
 import { useT } from '../../i18n/react';
@@ -101,7 +102,9 @@ function Room({ freed }: { freed: boolean }) {
           <span key={i} className={`mr-dia${i === 4 ? ' goal' : ''}${i < lv ? ' on' : ''}`} />
         ))}
       </div>
-      <div className="mr-lab">{t.lvOf(Math.min(lv, 5))}</div>
+      {/* the stepper fills as the level climbs; the label names the seat, which
+          counts the other way — rows are numbered from the stage (row = 14 − LV) */}
+      <div className="mr-lab">{t.rowOf(rowFromLevel(lv), rowFromLevel(5))}</div>
       <div className="mr-card">
         <div className="cap">{t.chartCap} · {freed ? t.chartYours : t.chartSealed}</div>
         <svg className="mr-radar" viewBox="0 0 300 244" role="img" aria-label={t.ariaRadar}>

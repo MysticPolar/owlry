@@ -27,21 +27,28 @@ check('legacy reader scale migrates to 21px', migrated.prefs.reader.size === 21)
 const clamped = normalizePersisted({ ...SEED, prefs: { ...SEED.prefs, reader: { ...SEED.prefs.reader, size: 99 } } });
 check('reader size migration clamps at 24px', clamped.prefs.reader.size === 24);
 
+// the seat map: the demo reader sits in row 7, 260 XP into an 800-XP row
+check('seed derives lifetime XP for row 7', g().totalXp === 2960 && g().xpMax === 800, `${g().totalXp}/${g().xpMax}`);
+
 g().addXP(5);
 check('addXP(5) → 265', g().xp === 265, `${g().xp}`);
 
-g().addXP(140); // 405 → level up to 8, xp 5
-check('level-up across xpMax', g().lv === 8 && g().xp === 5, `lv=${g().lv} xp=${g().xp}`);
+// LV8 begins at 3,500 lifetime — the quadratic curve, not the old flat 400
+g().addXP(535);
+check('level-up on the quadratic curve', g().lv === 8 && g().xp === 0 && g().xpMax === 900, `lv=${g().lv} xp=${g().xp}`);
 
-g().addInk(40); // 84+40 = 124 → cap 120, +50 coins once
-check('ink caps + coin bonus', g().ink === 120 && g().inkDone && g().coins === 290, `ink=${g().ink} coins=${g().coins}`);
-
-g().addInk(10); // already done → no further coins
-check('ink bonus only once', g().ink === 120 && g().coins === 290);
+// addInk is a primitive now: the well moves, but nothing is minted — the
+// once-ever +50 belongs to the engine (and, signed in, to the ledger)
+g().addInk(40); // 84+40 = 124 → capped at 120
+check('addInk caps and mints nothing', g().ink === 120 && g().coins === 240, `ink=${g().ink} coins=${g().coins}`);
 
 const xpBeforeSave = g().xp;
 g().toggleSave('hail');
-check('save adds + grants 5 XP', g().savedIds.includes('hail') && g().xp === xpBeforeSave + 5);
+check('save adds + grants 5 XP', g().savedIds.includes('hail') && g().xp === xpBeforeSave + 5, `${g().xp}`);
+
+g().toggleSave('hail'); // unsave…
+g().toggleSave('hail'); // …and save again: the shelf moves, the XP does not
+check('save pays once per book, ever', g().xp === xpBeforeSave + 5, `${g().xp}`);
 
 g().toggleSave('circe');
 check('unsave removes', !g().savedIds.includes('circe'));
@@ -51,14 +58,21 @@ check('openReader moves to reading at p1', g().reader.id === 'hail' && g().reade
 
 const xpBeforeTurn = g().xp;
 g().nextPage();
-check('nextPage advances + earns XP', g().reader.p === 2 && g().pagesRead.hail === 1 && g().xp === xpBeforeTurn + 2);
+check(
+  'nextPage advances + earns a step',
+  g().reader.p === 2 && g().pagesRead.hail === 1 && g().xp === xpBeforeTurn + 4,
+  `xp=${g().xp}`,
+);
 
+// a finish has to be read to: one page turned is not nineteen twentieths, so
+// Keeper still shelves it but the ledger withholds the reward
+const xpBeforeFinish = g().xp;
 g().finishBook();
 check(
-  'finishBook → finished, full pages, +40 XP, reader closed',
+  'finishBook shelves, but an unread finish earns nothing',
   g().finishedIds.includes('hail') &&
     g().pagesRead.hail === BOOKS.hail.n &&
-    g().xp === xpBeforeTurn + 2 + 40 &&
+    g().xp === xpBeforeFinish &&
     g().reader.open === false &&
     !g().readingIds.includes('hail'),
   `pages=${g().pagesRead.hail} xp=${g().xp}`,

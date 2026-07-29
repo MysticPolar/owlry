@@ -23,6 +23,39 @@ const en = {
   bioDone: 'done',
   bioKept: 'bio kept',
 
+  /* ---------- the seat map (levels are seats; row = 14 - LV) ---------- */
+  seatLabel: (row: number) => `ROW ${row}`,
+  seatAria: (row: number, lv: number) => `Row ${row} from the stage — level ${lv}`,
+  seatMapAria: 'The house, thirteen rows deep',
+  seatFront: 'the front row',
+  seatToNext: (xp: number, max: number, row: number) => `${xp} / ${max} XP to row ${row}`,
+  seatEncore: (xp: number, max: number, n: number) => `${xp} / ${max} XP to encore ${n}`,
+
+  /* ---------- the album (ticket stubs) ---------- */
+  albumTitle: 'the album',
+  albumCount: (n: number) => `${n} stubs`,
+  albumEmpty: 'no stubs yet — the night is young',
+  albumSeason: (year: number, q: number) => `${year} · programme ${q}`,
+  albumEncore: (n: number) => `encore ×${n}`,
+
+  /* ---------- the lobby stand (keeper's counter) ---------- */
+  standTitle: 'the lobby stand',
+  standSub: 'keeper minds the counter · brass only',
+  standClose: 'close the stand',
+  standOwned: 'yours',
+  standBuy: 'buy',
+  standPrice: (n: number) => `${n}`,
+  standPurse: (n: number) => `${n} in the purse`,
+  standSeason: (q: number) => `this programme · no. ${q}`,
+  standBottleNote: 'one a day — the well fills the rest itself',
+  standEmpty: 'the shelf is bare this programme',
+  goods: {
+    bottle: { n: 'a small bottle', d: 'five coins, ten ink' },
+    stationery: { n: "this programme's stationery", d: "peek's letters arrive on it" },
+    marquee: { n: 'marquee letters', d: 'spare vowels for the sign' },
+    cushion: { n: 'a velvet cushion', d: 'for your row, whichever it is' },
+  } as Record<string, { n: string; d: string }>,
+
   /* ---------- tab bar ---------- */
   sectionsAria: 'Profile sections',
   tabs: {
@@ -96,10 +129,43 @@ const zh: typeof en = {
   streakChip: (n: number) => `${n} 天`,
   streakAria: (n: number) => `连读 ${n} 天`,
   inkAria: (ink: number) => `${ink} 墨水`,
-  coinsAria: (coins: number) => `${coins} 枚金币`,
+  coinsAria: (coins: number) => `${coins} 枚铜币`,
   bioEdit: '编辑简介',
   bioDone: '完成',
   bioKept: '简介已收好',
+
+  /* ---------- 座位表（等级即座位；排号 = 14 − LV） ---------- */
+  seatLabel: (row: number) => `第 ${row} 排`,
+  seatAria: (row: number, lv: number) => `距舞台第 ${row} 排 — 等级 ${lv}`,
+  seatMapAria: '整座剧院，十三排',
+  seatFront: '第一排',
+  seatToNext: (xp: number, max: number, row: number) => `${xp} / ${max} XP 到第 ${row} 排`,
+  seatEncore: (xp: number, max: number, n: number) => `${xp} / ${max} XP 到第 ${n} 次返场`,
+
+  /* ---------- 票根册 ---------- */
+  albumTitle: '票根册',
+  albumCount: (n: number) => `${n} 张票根`,
+  albumEmpty: '还没有票根 — 夜还长',
+  albumSeason: (year: number, q: number) => `${year} · 第 ${q} 季`,
+  albumEncore: (n: number) => `返场 ×${n}`,
+
+  /* ---------- 大厅的小摊子 ---------- */
+  standTitle: '大厅小摊',
+  standSub: 'Keeper 看摊 · 只收铜币',
+  standClose: '收摊',
+  standOwned: '已入手',
+  standBuy: '买下',
+  standPrice: (n: number) => `${n}`,
+  standPurse: (n: number) => `钱袋里还有 ${n}`,
+  standSeason: (q: number) => `本季节目 · 第 ${q} 号`,
+  standBottleNote: '一天一瓶 — 其余的，墨井自己会涨',
+  standEmpty: '这一季的架子空着',
+  goods: {
+    bottle: { n: '一小瓶墨', d: '五枚铜币，十点墨水' },
+    stationery: { n: '本季的信笺', d: 'Peek 的信会写在它上面' },
+    marquee: { n: '招牌字母', d: '给那块招牌配上备用元音' },
+    cushion: { n: '一块绒垫', d: '给你的那一排 — 不管是哪一排' },
+  } as Record<string, { n: string; d: string }>,
 
   /* ---------- 分栏 ---------- */
   sectionsAria: '个人主页栏目',

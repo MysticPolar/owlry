@@ -1,5 +1,6 @@
 /* runtime smoke test of the progress-merge (cross-device sync) — pure, no backend */
 import { mergeProgress } from '../src/lib/sync/mergeProgress';
+import { cumulativeXp } from '../src/lib/economy/curve';
 import { SEED } from '../src/store/seed';
 import type { PersistedState } from '../src/store/types';
 import { readingPositionKey } from '../src/lib/ebook/positionKey';
@@ -276,20 +277,30 @@ const make = (o: Partial<PersistedState> = {}): PersistedState => ({
   );
 }
 
-// scalars follow the further-along side (level dominates)
+// lifetime XP is the truth now, and it only ever ratchets up — the seat and
+// the bar are re-derived from the merged total, never copied off one side
 {
-  const a = make({ lv: 8, xp: 5 });
-  const b = make({ lv: 7, xp: 399 });
+  const a = make({ totalXp: cumulativeXp(8) + 5 });
+  const b = make({ totalXp: cumulativeXp(7) + 399 });
   const m = mergeProgress(a, b);
-  check('higher level leads', m.lv === 8 && m.xp === 5, `lv=${m.lv} xp=${m.xp}`);
+  check('the further-along lifetime total leads', m.lv === 8 && m.xp === 5, `lv=${m.lv} xp=${m.xp}`);
 }
 
-// tie on level → higher xp leads
 {
-  const a = make({ lv: 7, xp: 100 });
-  const b = make({ lv: 7, xp: 300 });
+  const a = make({ totalXp: cumulativeXp(7) + 100 });
+  const b = make({ totalXp: cumulativeXp(7) + 300 });
   const m = mergeProgress(a, b);
-  check('xp breaks level tie', m.xp === 300, `xp=${m.xp}`);
+  check('within a row, the busier device leads', m.xp === 300 && m.lv === 7, `xp=${m.xp}`);
+}
+
+// the flame travels with the device that tended it most recently, so an honest
+// reset (or a forgiven night) can't be undone by a stale blob
+{
+  const a = make({ streak: 9, streakLastDay: '2026-07-20' });
+  const b = make({ streak: 2, streakLastDay: '2026-07-28' });
+  const m = mergeProgress(a, b);
+  check('the later flame day wins, even when its number is smaller',
+    m.streak === 2 && m.streakLastDay === '2026-07-28', `${m.streak}`);
 }
 
 // currencies never shrink

@@ -2,6 +2,9 @@ import { useMemo, useRef, useState, type ReactNode } from 'react';
 import { useStore } from '../../store/useStore';
 import { getBook } from '../../lib/bookRegistry';
 import { FEED, FEED_GENRES, feedLikes } from '../../content/feed';
+import { rankShelf } from '../../lib/shelfRank';
+import { rowFromLevel } from '../../lib/economy/curve';
+import { StatDelta, useLevelFlash } from '../StatFx';
 import type { BookId, Genre } from '../../content/types';
 import { useT } from '../../i18n/react';
 import { Icon } from '../Icon';
@@ -9,7 +12,11 @@ import { Cover } from '../Cover';
 import { CurtainValance, CurtainHem } from '../stage';
 import { Wordmark } from '../Wordmark';
 
-type Filter = 'all' | Genre;
+/** 'shelf' is the reader's own saved books (ranked); 'all' is the stacks. */
+type Filter = 'shelf' | 'all' | Genre;
+
+/** the tag row, in display order — labels come from i18n (today.home.tags) */
+const FILTERS: Filter[] = ['shelf', 'all', ...FEED_GENRES];
 
 const fmtCount = (n: number): string =>
   n >= 1000 ? (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k' : String(n);
@@ -23,20 +30,29 @@ function StatChips() {
   const inkMax = useStore((s) => s.inkMax);
   const t = useT().today.home;
   const xpPct = Math.min(100, Math.max(0, (xp / Math.max(1, xpMax)) * 100));
+  const row = rowFromLevel(lv);
+  const popped = useLevelFlash();
   return (
     <div className="pb-chips" role="group" aria-label={t.statsAria}>
-      <div className="pb-chip" aria-label={t.statLevel(lv)}>
-        <Icon name="ti-crown" className="crown" />
-        <span className="n">{lv}</span>
+      {/* the seat, not the number: a level is a row, and this chip is also the
+          anchor the level-up sparks fly to (chrome.tsx looks up #lvLab) */}
+      <div className={`pb-chip pb-seat${popped ? ' pop' : ''}`} id="lvLab" aria-label={t.statSeat(row, lv)}>
+        <Icon name="ti-armchair" className="crown" />
+        {/* the unit matters: the scale is inverted (row = 14 − LV), so a bare
+            "13" on a new reader's chip reads as a level, and counts DOWN */}
+        <span className="pb-seat-k">{t.rowKicker}</span>
+        <span className="n">{row}</span>
       </div>
       <div className="pb-chip" aria-label={t.statXp(xp, xpMax)}>
         <Icon name="ti-bolt" className="bolt" />
         <span className="pb-xpbar"><b style={{ width: `${xpPct}%` }} /></span>
         <span className="n">{xp}</span>
+        <StatDelta stat="xp" />
       </div>
       <div className="pb-chip" aria-label={t.statInk(ink)}>
         <Icon name="ti-inkdrop" className="drop" />
         <span className="n">{ink}<span className="pb-chip-max">/{inkMax}</span></span>
+        <StatDelta stat="ink" />
       </div>
     </div>
   );
@@ -50,7 +66,7 @@ function CompactStrip() {
     <div className="pb-compact" aria-hidden="true">
       <span className="wm"><Wordmark decorative /></span>
       <span className="sp" />
-      <span className="pb-mini"><Icon name="ti-crown" className="crown" />{lv}</span>
+      <span className="pb-mini"><Icon name="ti-armchair" className="crown" />{rowFromLevel(lv)}</span>
       <span className="pb-mini"><Icon name="ti-bolt" className="bolt" />{xp}</span>
       <span className="pb-mini"><Icon name="ti-inkdrop" className="drop" />{ink}</span>
     </div>
@@ -62,8 +78,9 @@ function BookCard({ id }: { id: BookId }) {
   const b = getBook(id);
   const openSheet = useStore((s) => s.openSheet);
   const toggleSave = useStore((s) => s.toggleSave);
+  const toggleDislike = useStore((s) => s.toggleDislike);
   const saved = useStore((s) => s.savedIds.includes(id));
-  const [disliked, setDisliked] = useState(false);
+  const disliked = useStore((s) => s.dislikedIds.includes(id));
   const t = useT().today.home;
   if (!b) return null;
 
@@ -95,7 +112,7 @@ function BookCard({ id }: { id: BookId }) {
           className={`pb-iconbtn pb-down ${disliked ? 'on' : ''}`}
           aria-label={t.dislikeAria(b.t)}
           aria-pressed={disliked}
-          onClick={() => setDisliked((v) => !v)}
+          onClick={() => toggleDislike(id)}
         >
           <Icon name={disliked ? 'ti-arrow-big-down-filled' : 'ti-arrow-big-down'} />
         </button>
@@ -133,9 +150,18 @@ function KeeperCard({ id }: { id: BookId }) {
 export function TodayScreen() {
   const active = useStore((s) => s.activeTab === 'today');
   const savedIds = useStore((s) => s.savedIds);
+  const readingIds = useStore((s) => s.readingIds);
+  const finishedIds = useStore((s) => s.finishedIds);
+  const quotedIds = useStore((s) => s.quotedIds);
+  const dislikedIds = useStore((s) => s.dislikedIds);
+  const savedAt = useStore((s) => s.savedAt);
+  const pagesRead = useStore((s) => s.pagesRead);
+  const openedLetters = useStore((s) => s.openedLetters);
+  const collected = useStore((s) => s.owl.collected);
   const t = useT().today.home;
 
-  const [filter, setFilter] = useState<Filter>('all');
+  // home opens on the reader's own shelf; the stacks are one tap away
+  const [filter, setFilter] = useState<Filter>('shelf');
   const [collapsed, setCollapsed] = useState(false);
   const feedRef = useRef<HTMLDivElement>(null);
 
@@ -151,7 +177,22 @@ export function TodayScreen() {
   // build the cell list, splice in the Keeper card (For you + non-empty shelf),
   // then split even→left / odd→right for the waterfall
   const [colL, colR] = useMemo(() => {
-    const ids = FEED.filter((id) => filter === 'all' || getBook(id)?.g === filter);
+    // the shelf is the reader's own saves, warmest first; everything else is
+    // the hand-tuned catalog order, optionally narrowed to one genre
+    const ids =
+      filter === 'shelf'
+        ? (rankShelf({
+            savedIds,
+            readingIds,
+            finishedIds,
+            quotedIds,
+            dislikedIds,
+            savedAt,
+            pagesRead,
+            peeked: openedLetters,
+            fromScout: collected,
+          }) as BookId[])
+        : FEED.filter((id) => filter === 'all' || getBook(id)?.g === filter);
     const cells: ReactNode[] = ids.map((id) => <BookCard key={id} id={id} />);
     if (filter === 'all' && latestSave) {
       cells.splice(Math.min(2, cells.length), 0, <KeeperCard key={`keeper-${latestSave}`} id={latestSave} />);
@@ -160,7 +201,19 @@ export function TodayScreen() {
     const R: ReactNode[] = [];
     cells.forEach((node, i) => (i % 2 ? R : L).push(node));
     return [L, R];
-  }, [filter, latestSave]);
+  }, [
+    filter,
+    latestSave,
+    savedIds,
+    readingIds,
+    finishedIds,
+    quotedIds,
+    dislikedIds,
+    savedAt,
+    pagesRead,
+    openedLetters,
+    collected,
+  ]);
 
   const empty = colL.length === 0 && colR.length === 0;
 
@@ -178,27 +231,17 @@ export function TodayScreen() {
         <StatChips />
         <CompactStrip />
         <div className="pb-tags" role="group" aria-label={t.filterAria}>
-          <button
-            className="pb-tag"
-            aria-pressed={filter === 'all'}
-            onClick={(e) => {
-              setFilter('all');
-              e.currentTarget.scrollIntoView({ inline: 'nearest', block: 'nearest' });
-            }}
-          >
-            {t.tags.all}
-          </button>
-          {FEED_GENRES.map((g) => (
+          {FILTERS.map((k) => (
             <button
-              key={g}
+              key={k}
               className="pb-tag"
-              aria-pressed={filter === g}
+              aria-pressed={filter === k}
               onClick={(e) => {
-                setFilter(g);
+                setFilter(k);
                 e.currentTarget.scrollIntoView({ inline: 'nearest', block: 'nearest' });
               }}
             >
-              {t.tags[g]}
+              {t.tags[k]}
             </button>
           ))}
         </div>
@@ -208,8 +251,8 @@ export function TodayScreen() {
       <div className="pb-feed" ref={feedRef} onScroll={onScroll}>
         {empty ? (
           <div className="pb-empty">
-            <Icon name="ti-feather" />
-            <p>{t.emptyLine}</p>
+            <Icon name={filter === 'shelf' ? 'ti-heart' : 'ti-feather'} />
+            <p>{filter === 'shelf' ? t.emptyShelfLine : t.emptyLine}</p>
           </div>
         ) : (
           <div className="pb-cols">

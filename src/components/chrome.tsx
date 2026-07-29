@@ -15,8 +15,9 @@ export function GuestLevelButton() {
   const tab = useStore((s) => s.activeTab);
   const roomOpen = useStore((s) => s.mirrorRoomOpen);
   const lv = useStore((s) => s.lv);
-  const addXP = useStore((s) => s.addXP);
-  const xpMax = useStore((s) => s.xpMax);
+  // the seat moves, nothing is minted — a preview level can't launder brass
+  // into a real account through adoptAccount
+  const debugLevelUp = useStore((s) => s.debugLevelUp);
   const t = useT().today.chrome;
   if (authed) return null;
   // the locked profile (mirror's room) leaves activeTab where it was, so guard
@@ -28,7 +29,7 @@ export function GuestLevelButton() {
     <button
       className="guest-lvl"
       data-tab={tab}
-      onClick={() => addXP(xpMax)}
+      onClick={debugLevelUp}
       aria-label={t.gainLevelAria(lv)}
     >
       <Icon name="ti-sparkles" />

@@ -1,6 +1,5 @@
-/* Typed wrappers over the three owlry_* RPC entry points. */
+/* Typed wrappers over the owlry_* RPC entry points. */
 import { supabase } from '../supabase';
-import type { BookId, BookRef } from '../../content/types';
 import type { ActionResult, EconomyAction, Snapshot } from './types';
 
 function client() {
@@ -10,7 +9,8 @@ function client() {
   return supabase;
 }
 
-/** Profile + library + radar + calendar + stats + quotes for first paint. */
+/** Profile + library + radar + calendar + stats + quotes + stubs for first paint.
+    Also ratchets owlry_migrate_balance — late-arriving device evidence still counts. */
 export async function getSnapshot(): Promise<Snapshot> {
   const { data, error } = await client().rpc('owlry_get_snapshot');
   if (error) throw error;
@@ -18,15 +18,21 @@ export async function getSnapshot(): Promise<Snapshot> {
 }
 
 /**
- * The one guarded economy mutation. The server validates costs (preview spends
- * ink + coins, chat spends ink), grants XP, recomputes level, updates the
- * library + streak, logs the activity, and returns fresh balances.
+ * The one guarded economy mutation. The server validates the cost, applies its
+ * guard suite (per-book dedupe, daily caps, the 60s step floor, the global daily
+ * ceiling), grants what survives, recomputes the level, updates the library,
+ * streak and stubs, writes the ledger, and returns fresh balances.
  *
- * meta carries action context, e.g. { page } for turn_page, { pages } for finish.
+ * The result is reconciled against `granted` — NEVER against what was asked for.
+ * A guard refusal is a partial success: `ok` stays true, the library write lands,
+ * and `withheld` says which grant didn't.
+ *
+ * meta carries action context: { page, step } for turn_page, { pages } for finish,
+ * { hash } for quote_keep, { sku } for purchase, plus occurred_at / tz / idem.
  */
 export async function performAction(
   action: EconomyAction,
-  bookId?: BookId | null,
+  bookId?: string | null,
   meta: Record<string, unknown> = {},
 ): Promise<ActionResult> {
   const { data, error } = await client().rpc('owlry_perform_action', {
@@ -36,11 +42,4 @@ export async function performAction(
   });
   if (error) throw error;
   return data as ActionResult;
-}
-
-// registry key, not the catalog union — open-world (live-owl) books keep quotes too
-export async function saveQuote(bookId: BookRef, text: string): Promise<Snapshot> {
-  const { data, error } = await client().rpc('owlry_save_quote', { p_book_id: bookId, p_text: text });
-  if (error) throw error;
-  return data as Snapshot;
 }

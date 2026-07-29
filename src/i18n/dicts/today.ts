@@ -19,6 +19,8 @@ const en = {
   home: {
     statsAria: 'Your stats',
     statLevel: (lv: number) => `Level ${lv}`,
+    statSeat: (row: number, lv: number) => `Row ${row} from the stage — level ${lv}`,
+    rowKicker: 'ROW',
     statXp: (xp: number, max: number) => `${xp} of ${max} XP`,
     statInk: (ink: number) => `${ink} ink`,
     marqueeAria: 'owlry',
@@ -31,7 +33,9 @@ const en = {
     keeperLine: 'You shelved this one — still the right moment?',
     keeperAria: (title: string) => `From your shelf: ${title}`,
     emptyLine: 'Nothing on this shelf yet — Scout is still reading.',
+    emptyShelfLine: 'Nothing on your shelf yet — tap the ♥ on any post to keep it here.',
     tags: {
+      shelf: 'My shelf',
       all: 'For you',
       fiction: 'Fiction',
       life: 'Living',
@@ -154,6 +158,8 @@ const zh: typeof en = {
   home: {
     statsAria: '你的进度',
     statLevel: (lv: number) => `等级 ${lv}`,
+    statSeat: (row: number, lv: number) => `距舞台第 ${row} 排 — 等级 ${lv}`,
+    rowKicker: '第',
     statXp: (xp: number, max: number) => `${xp} / ${max} 经验`,
     statInk: (ink: number) => `${ink} 墨水`,
     marqueeAria: 'owlry',
@@ -166,7 +172,9 @@ const zh: typeof en = {
     keeperLine: '这本是你收下的 — 现在正合适吗？',
     keeperAria: (title: string) => `来自你的书架：《${title}》`,
     emptyLine: '这层书架还空着 — Scout 还在读。',
+    emptyShelfLine: '你的书架还空着 — 点一下书上的 ♥，就把它留在这里。',
     tags: {
+      shelf: '我的书架',
       all: '为你',
       fiction: '小说',
       life: '生活',
