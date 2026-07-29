@@ -2,6 +2,16 @@ import { CONTENT_SECURITY_POLICY } from './security.js'
 
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 
+// Scrolled rendering keeps one spine item alive at a time. These thresholds
+// turn an outward wheel/swipe that *starts* at that item's edge into the same
+// guarded prev()/next() navigation used by the page controls. Requiring a new
+// gesture preserves the final viewport instead of advancing as soon as it
+// merely becomes visible.
+const SCROLL_EDGE_EPSILON = 2
+const WHEEL_GESTURE_GAP = 180
+const WHEEL_GESTURE_THRESHOLD = 24
+const TOUCH_GESTURE_THRESHOLD = 36
+
 const debounce = (f, wait, immediate) => {
     let timeout
     return (...args) => {
@@ -477,6 +487,7 @@ export class Paginator extends HTMLElement {
     #scrollBounds
     #touchState
     #touchScrolled
+    #wheelState
     #lastVisibleRange
     #destroyed = false
     #runNavigation(task) {
@@ -613,10 +624,13 @@ export class Paginator extends HTMLElement {
         this.addEventListener('touchstart', this.#onTouchStart.bind(this), opts)
         this.addEventListener('touchmove', this.#onTouchMove.bind(this), opts)
         this.addEventListener('touchend', this.#onTouchEnd.bind(this))
+        this.addEventListener('wheel', this.#onWheel.bind(this), opts)
         this.addEventListener('load', ({ detail: { doc } }) => {
             doc.addEventListener('touchstart', this.#onTouchStart.bind(this), opts)
             doc.addEventListener('touchmove', this.#onTouchMove.bind(this), opts)
             doc.addEventListener('touchend', this.#onTouchEnd.bind(this))
+            // Events inside an iframe do not bubble into the paginator.
+            doc.addEventListener('wheel', this.#onWheel.bind(this), opts)
         })
 
         this.addEventListener('relocate', ({ detail }) => {
@@ -689,6 +703,7 @@ export class Paginator extends HTMLElement {
     attributeChangedCallback(name, _, value) {
         switch (name) {
             case 'flow':
+                this.#wheelState = null
                 this.render()
                 break
             case 'gap':
@@ -887,29 +902,103 @@ export class Paginator extends HTMLElement {
             })
         })
     }
+    #getScrollEdges() {
+        if (!this.#view || this.size <= 0 || this.viewSize <= 0)
+            return { atStart: false, atEnd: false }
+        return {
+            atStart: this.start <= SCROLL_EDGE_EPSILON,
+            atEnd: this.viewSize - this.end <= SCROLL_EDGE_EPSILON,
+        }
+    }
+    #getWheelDelta(e) {
+        // Most vertical-writing readers map a vertical wheel to the horizontal
+        // reading axis. Honour a deliberate horizontal gesture when present;
+        // negative scrollLeft is forward for Foliate's vertical-rl layout.
+        let delta = this.#vertical && Math.abs(e.deltaX) > Math.abs(e.deltaY)
+            ? -e.deltaX : e.deltaY
+        if (e.deltaMode === WheelEvent.DOM_DELTA_LINE) delta *= 16
+        else if (e.deltaMode === WheelEvent.DOM_DELTA_PAGE) delta *= this.size
+        return delta
+    }
+    #onWheel(e) {
+        if (this.#destroyed || !this.scrolled || e.ctrlKey) return
+        const delta = this.#getWheelDelta(e)
+        if (!delta) return
+
+        const now = performance.now()
+        if (!this.#wheelState
+            || now - this.#wheelState.lastTime > WHEEL_GESTURE_GAP) {
+            const { atStart, atEnd } = this.#getScrollEdges()
+            this.#wheelState = {
+                atStart, atEnd,
+                distance: 0,
+                consumed: false,
+                lastTime: now,
+            }
+        }
+
+        const state = this.#wheelState
+        state.lastTime = now
+        const outward = state.atEnd && delta > 0
+            || state.atStart && delta < 0
+        if (state.consumed) {
+            // Do not let trackpad momentum scroll or skip through the section
+            // that has just loaded. A direction reversal remains native.
+            if (outward && e.cancelable) e.preventDefault()
+            return
+        }
+        if (!outward) {
+            state.distance = 0
+            return
+        }
+
+        state.distance += delta
+        const shouldGoNext = state.atEnd
+            && state.distance >= WHEEL_GESTURE_THRESHOLD
+        const shouldGoPrev = state.atStart
+            && state.distance <= -WHEEL_GESTURE_THRESHOLD
+        if (!shouldGoNext && !shouldGoPrev) return
+
+        state.consumed = true
+        if (e.cancelable) e.preventDefault()
+        this.#runNavigation(() => shouldGoNext ? this.next() : this.prev())
+    }
     #onTouchStart(e) {
         if (this.#destroyed) return
         const touch = e.changedTouches[0]
+        const edges = this.scrolled
+            ? this.#getScrollEdges()
+            : { atStart: false, atEnd: false }
         this.#touchState = {
             x: touch?.screenX, y: touch?.screenY,
             t: e.timeStamp,
             vx: 0, xy: 0,
+            ...edges,
+            consumed: false,
         }
     }
     #onTouchMove(e) {
         if (this.#destroyed || !this.#touchState) return
         const state = this.#touchState
         if (state.pinched) return
-        state.pinched = globalThis.visualViewport.scale > 1
-        if (this.scrolled || state.pinched) return
+        state.pinched = e.touches.length > 1
+            || (globalThis.visualViewport?.scale ?? 1) > 1
+        if (state.pinched) return
+        const touch = e.changedTouches[0]
+        if (!touch) return
+        const x = touch.screenX, y = touch.screenY
+        const dx = state.x - x, dy = state.y - y
+        if (this.scrolled) {
+            state.x = x
+            state.y = y
+            state.xy += this.#vertical ? dx : dy
+            return
+        }
         if (e.touches.length > 1) {
             if (this.#touchScrolled) e.preventDefault()
             return
         }
         e.preventDefault()
-        const touch = e.changedTouches[0]
-        const x = touch.screenX, y = touch.screenY
-        const dx = state.x - x, dy = state.y - y
         const dt = e.timeStamp - state.t
         state.x = x
         state.y = y
@@ -919,12 +1008,37 @@ export class Paginator extends HTMLElement {
         this.#touchScrolled = true
         this.scrollBy(dx, dy)
     }
-    #onTouchEnd() {
+    #onTouchEnd(e) {
         const view = this.#view
         const state = this.#touchState
         if (this.#destroyed || !view || !state) return
         this.#touchScrolled = false
-        if (this.scrolled) return
+        if (this.scrolled) {
+            const touch = e.changedTouches?.[0]
+            if (touch) {
+                const dx = state.x - touch.screenX
+                const dy = state.y - touch.screenY
+                state.xy += this.#vertical ? dx : dy
+            }
+            requestAnimationFrame(() => {
+                if (this.#destroyed
+                    || this.#view !== view
+                    || this.#touchState !== state
+                    || state.pinched
+                    || state.consumed
+                    || (globalThis.visualViewport?.scale ?? 1) > 1) return
+                const doc = e.target?.ownerDocument
+                if (doc?.getSelection()?.isCollapsed === false) return
+                const shouldGoNext = state.atEnd
+                    && state.xy >= TOUCH_GESTURE_THRESHOLD
+                const shouldGoPrev = state.atStart
+                    && state.xy <= -TOUCH_GESTURE_THRESHOLD
+                if (!shouldGoNext && !shouldGoPrev) return
+                state.consumed = true
+                this.#runNavigation(() => shouldGoNext ? this.next() : this.prev())
+            })
+            return
+        }
 
         // XXX: Firefox seems to report scale as 1... sometimes...?
         // at this point I'm basically throwing `requestAnimationFrame` at
@@ -933,7 +1047,7 @@ export class Paginator extends HTMLElement {
             if (this.#destroyed
                 || this.#view !== view
                 || this.#touchState !== state) return
-            if (globalThis.visualViewport.scale === 1)
+            if ((globalThis.visualViewport?.scale ?? 1) === 1)
                 this.#runNavigation(() => this.snap(state.vx, state.vy))
         })
     }

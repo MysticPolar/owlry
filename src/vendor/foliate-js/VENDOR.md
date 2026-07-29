@@ -65,9 +65,15 @@ Also skipped: `dict.js`, `footnotes.js`, `opds.js`, `quote-image.js`,
 7. **Safe explicit links.** `view.js` opens only `http:`, `https:`, `mailto:`,
    and `tel:` anchor targets, and uses `noopener,noreferrer` for the new context.
    Script/data/custom-scheme links embedded in an untrusted book are inert.
+8. **Scrolled spine handoff.** `paginator.js` translates a fresh outward wheel
+   or touch gesture at the edge of the current scrolled spine item into its
+   guarded `prev()`/`next()` navigation. This makes short and long sections
+   reachable without page controls while preserving the final viewport and
+   latching trackpad momentum to one section transition per gesture. Paginated
+   and pinch-zoom interactions are unchanged.
 
 ## Re-syncing
 
-Re-clone at a new pin, copy the same file list, and re-apply the seven patches
+Re-clone at a new pin, copy the same file list, and re-apply the eight patches
 above (search for `allow-same-origin` and the `isPDF` branch). foliate-js has no
 stable releases; pin a commit deliberately.
