@@ -16,6 +16,7 @@
 import type { MsgNode, OwlReply } from './owlBrain';
 import { slugify, deriveCover } from './cover';
 import { registerBook } from './bookRegistry';
+import type { DynamicRegistryScope } from './bookRegistry';
 import type { Book, BookRef, Genre } from '../content/types';
 
 /* ---------- the wire shape (owl-chat v2 response) ---------- */
@@ -157,21 +158,24 @@ export function splitSayIntoNodes(say: string, titles: string[], slugOf: (title:
  * (`picks` only) populates the tray/strip but offers no letter, matching the
  * offline brain's fictionReply().
  */
-export function mapChatV2(res: ChatV2Response): OwlReply {
+export function mapChatV2(
+  res: ChatV2Response,
+  registryScope?: DynamicRegistryScope,
+): OwlReply {
   const titles: string[] = res.main ? [res.main.title] : res.picks.map((p) => p.title);
   const bubble = splitSayIntoNodes(res.say, titles, slugify);
   const note = res.note ?? undefined;
 
   if (res.main) {
     const slug = res.slug ?? slugify(res.main.title);
-    registerBook(slug, recToBook(res.main));
+    registerBook(slug, recToBook(res.main), registryScope);
     // the sidelong picks ride along as the rest of the dealt hand (the UI deals
     // up to three cards per turn; the letter stays the lead)
     const also: BookRef[] = res.picks
       .map((p) => {
         const s = slugify(p.title);
         if (s === slug) return null;
-        registerBook(s, recToBookLite(p));
+        registerBook(s, recToBookLite(p), registryScope);
         return s;
       })
       .filter((s): s is BookRef => !!s);
@@ -187,7 +191,7 @@ export function mapChatV2(res: ChatV2Response): OwlReply {
   if (res.picks.length) {
     const slugs: BookRef[] = res.picks.map((p) => {
       const s = slugify(p.title);
-      registerBook(s, recToBookLite(p));
+      registerBook(s, recToBookLite(p), registryScope);
       return s;
     });
     return {

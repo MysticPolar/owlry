@@ -27,16 +27,116 @@ const CATALOG: Record<BookId, Book> = Object.fromEntries(
   }),
 ) as Record<BookId, Book>;
 
-/** session-scoped open-world books/guides (not persisted in v1) */
-const dynBooks: Record<string, Book> = {};
-const dynGuides: Record<string, Guide> = {};
-
-export function registerBook(ref: BookRef, b: Book): void {
-  if (!(ref in BOOKS)) dynBooks[ref] = b;
+/**
+ * Open-world metadata is private to the active auth owner. The generation is
+ * intentionally part of the scope: an async response that started for account
+ * A keeps A's captured scope and can never repopulate account B's active map
+ * after an auth boundary.
+ */
+export interface DynamicRegistryScope {
+  readonly owner: string;
+  readonly generation: number;
 }
 
-export function registerGuide(ref: BookRef, g: Guide): void {
-  if (!(ref in GUIDES)) dynGuides[ref] = g;
+let registryGeneration = 0;
+let activeRegistryScope: DynamicRegistryScope = {
+  owner: 'guest',
+  generation: registryGeneration,
+};
+const dynBooks = new Map<number, Record<string, Book>>();
+const dynGuides = new Map<number, Record<string, Guide>>();
+
+const booksFor = (
+  scope: DynamicRegistryScope,
+  create = false,
+): Record<string, Book> | undefined => {
+  let books = dynBooks.get(scope.generation);
+  if (!books && create) {
+    books = {};
+    dynBooks.set(scope.generation, books);
+  }
+  return books;
+};
+
+const guidesFor = (
+  scope: DynamicRegistryScope,
+  create = false,
+): Record<string, Guide> | undefined => {
+  let guides = dynGuides.get(scope.generation);
+  if (!guides && create) {
+    guides = {};
+    dynGuides.set(scope.generation, guides);
+  }
+  return guides;
+};
+
+export function getActiveDynamicRegistryScope(): DynamicRegistryScope {
+  return activeRegistryScope;
+}
+
+export function isActiveDynamicRegistryScope(
+  scope: DynamicRegistryScope,
+): boolean {
+  return scope.generation === activeRegistryScope.generation;
+}
+
+/** Start a fresh registry generation for the target auth owner. */
+export function setActiveDynamicRegistryScope(
+  owner: string,
+): DynamicRegistryScope {
+  activeRegistryScope = {
+    owner,
+    generation: ++registryGeneration,
+  };
+  return activeRegistryScope;
+}
+
+/** Remove every runtime book and guide; bundled catalog content is untouched. */
+export function clearDynamicRegistry(): void {
+  dynBooks.clear();
+  dynGuides.clear();
+}
+
+export function registerBook(
+  ref: BookRef,
+  b: Book,
+  scope: DynamicRegistryScope = activeRegistryScope,
+): void {
+  if (!(ref in BOOKS)) booksFor(scope, true)![ref] = b;
+}
+
+/** Catalog books are already bundled and should not be duplicated in account state. */
+export function isCatalogBook(ref: BookRef): boolean {
+  return ref in BOOKS;
+}
+
+/** Return only metadata that must follow an open-world book across devices. */
+export function getPersistableBook(ref: BookRef): Book | undefined {
+  return isCatalogBook(ref)
+    ? undefined
+    : booksFor(activeRegistryScope)?.[ref];
+}
+
+/**
+ * Re-register an account's persisted open-world catalog before any shelf
+ * renders. Kept structurally typed to avoid coupling this UI registry to the
+ * Zustand persistence module.
+ */
+export function registerPersistedBooks(
+  entries: Record<string, { book: Book }>,
+  scope: DynamicRegistryScope = activeRegistryScope,
+): void {
+  for (const [ref, entry] of Object.entries(entries)) {
+    if (entry?.book) registerBook(ref, entry.book, scope);
+  }
+}
+
+export function registerGuide(
+  ref: BookRef,
+  g: Guide,
+  scope: DynamicRegistryScope = activeRegistryScope,
+): void {
+  if (!(ref in GUIDES)) guidesFor(scope, true)![ref] = g;
 }
 
 /** resolve a book by ref — catalog (with pre-baked meta) first, then session-registered
@@ -44,7 +144,8 @@ export function registerGuide(ref: BookRef, g: Guide): void {
     TOP of the baked meta, so a reader gets the Chinese title AND the real cover. */
 export function getBook(ref: BookRef | null | undefined): Book | undefined {
   if (!ref) return undefined;
-  const base = CATALOG[ref as BookId] ?? dynBooks[ref];
+  const base = CATALOG[ref as BookId]
+    ?? booksFor(activeRegistryScope)?.[ref];
   if (base && getActiveLang() === 'zh') {
     const z = BOOKS_ZH[ref as BookId];
     if (z) return { ...base, ...z };
@@ -59,10 +160,14 @@ export function getGuide(ref: BookRef | null | undefined): Guide | undefined {
     const z = GUIDES_ZH[ref as GuideId];
     if (z) return z;
   }
-  return GUIDES[ref as GuideId] ?? dynGuides[ref];
+  return GUIDES[ref as GuideId]
+    ?? guidesFor(activeRegistryScope)?.[ref];
 }
 
 /** does this ref have a reading letter the owl can show? */
 export function hasGuide(ref: BookRef | null | undefined): boolean {
-  return !!ref && (ref in GUIDES || ref in dynGuides);
+  return !!ref && (
+    ref in GUIDES
+    || !!guidesFor(activeRegistryScope)?.[ref]
+  );
 }

@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { useStore } from '../../store/useStore';
+import { persistAccountProgressNow, useStore } from '../../store/useStore';
 import { useModalFocus } from '../../hooks/useModalFocus';
 import { useOverlayPresence } from '../../hooks/useOverlayPresence';
 import { getBook } from '../../lib/bookRegistry';
@@ -16,6 +16,7 @@ import {
 } from '../../lib/ebook/uploadSync';
 import { flushActiveReadingPosition } from '../../lib/ebook/activePosition';
 import type { ReadingSource } from '../../lib/ebook/types';
+import { fingerprintEbookCopy } from '../../lib/ebook/fingerprint';
 import { useT } from '../../i18n/react';
 import { Icon } from '../Icon';
 
@@ -102,6 +103,8 @@ export function UploadModal() {
         setError(check.reason ?? t.errUnreadable);
         return;
       }
+      const copyFingerprint = await fingerprintEbookCopy(file);
+      if (stopIfAccountChanged()) return;
       const source: ReadingSource = {
         kind: 'local',
         format: check.format,
@@ -109,6 +112,7 @@ export function UploadModal() {
         author: b.a,
         sourceLabel: t.sourceLabel,
         copyVersion: createEbookCopyVersion(copySelectedAt),
+        copyFingerprint,
         copySelectedAt,
       };
       // The old copy may have a position waiting in the 500ms debounce. Commit
@@ -116,6 +120,10 @@ export function UploadModal() {
       // fence, otherwise the old reader's final turn can be discarded.
       await flushActiveReadingPosition(storageOwner);
       if (stopIfAccountChanged()) return;
+      if (signedOwner) {
+        await persistAccountProgressNow(signedOwner);
+        if (stopIfAccountChanged()) return;
+      }
       await saveUpload(effectiveId, file, source, {
         owner: storageOwner,
         queueCloudSync: !!signedOwner,

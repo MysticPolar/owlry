@@ -1,8 +1,8 @@
-name: Deploy edge functions (owl-chat + owl-peek + book-proxy + signup-with-invite)
+name: Deploy Supabase backend
 
-# One-click deploy of the live owl functions to your Supabase project.
-# Manual trigger only (Actions tab → "Run workflow") so it never runs before
-# you've added the credentials below — and never on a push.
+# Deploy Owlry's database contract before its edge functions. Backend changes
+# on the live branch deploy automatically; the Actions tab remains available
+# for a one-click repair/retry.
 #
 # Requires, in repo Settings → Secrets and variables → Actions:
 #   • Secret   SUPABASE_ACCESS_TOKEN   (Supabase dashboard → Account → Access Tokens)
@@ -19,6 +19,20 @@ name: Deploy edge functions (owl-chat + owl-peek + book-proxy + signup-with-invi
 
 on:
   workflow_dispatch:
+  push:
+    branches: [renovation/homescreen]
+    paths:
+      - ".github/workflows/owl-chat-deploy.yml"
+      - "supabase/functions/**"
+      # Keep this list in lockstep with the migration array below. The
+      # Management API path is intentional: this repo has an access token but
+      # no database password for `supabase db push`.
+      - "supabase/migrations/20260728150000_owlry_uploads_bucket.sql"
+      - "supabase/migrations/20260728170000_owlry_progress_revision.sql"
+
+concurrency:
+  group: supabase-backend
+  cancel-in-progress: false
 
 jobs:
   deploy:
@@ -28,6 +42,49 @@ jobs:
       - uses: supabase/setup-cli@v1
         with:
           version: latest
+      - name: Apply required database migrations
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_REF: ${{ vars.SUPABASE_PROJECT_REF }}
+        run: |
+          set -euo pipefail
+          migrations=(
+            supabase/migrations/20260728150000_owlry_uploads_bucket.sql
+            supabase/migrations/20260728170000_owlry_progress_revision.sql
+          )
+          for migration in "${migrations[@]}"; do
+            payload="$RUNNER_TEMP/$(basename "$migration").json"
+            jq -Rs '{ query: ., read_only: false }' "$migration" > "$payload"
+            curl \
+              --fail-with-body \
+              --retry 3 \
+              --retry-all-errors \
+              --request POST \
+              --url "https://api.supabase.com/v1/projects/$SUPABASE_PROJECT_REF/database/query" \
+              --header "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
+              --header "Content-Type: application/json" \
+              --data-binary "@$payload"
+          done
+      - name: Verify progress and upload schema
+        env:
+          SUPABASE_ANON_KEY: ${{ vars.VITE_SUPABASE_ANON_KEY }}
+          SUPABASE_PROJECT_REF: ${{ vars.SUPABASE_PROJECT_REF }}
+        run: |
+          set -euo pipefail
+          curl \
+            --fail-with-body \
+            --request GET \
+            --url "https://$SUPABASE_PROJECT_REF.supabase.co/rest/v1/owlry_progress?select=revision&limit=0" \
+            --header "apikey: $SUPABASE_ANON_KEY" \
+            --header "Authorization: Bearer $SUPABASE_ANON_KEY"
+          curl \
+            --fail-with-body \
+            --request POST \
+            --url "https://$SUPABASE_PROJECT_REF.supabase.co/storage/v1/object/list/owlry-uploads" \
+            --header "apikey: $SUPABASE_ANON_KEY" \
+            --header "Authorization: Bearer $SUPABASE_ANON_KEY" \
+            --header "Content-Type: application/json" \
+            --data '{"prefix":"","limit":1,"offset":0}'
       - name: Deploy owl-chat
         run: supabase functions deploy owl-chat --project-ref "$SUPABASE_PROJECT_REF"
         env:

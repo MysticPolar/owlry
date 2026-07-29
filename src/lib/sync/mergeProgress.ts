@@ -14,6 +14,7 @@
    ============================================================ */
 import type { PersistedState } from '../../store/types';
 import type { BookId } from '../../content/types';
+import { compareReadingPositionWrites } from '../ebook/positionOrder';
 
 /** total advancement: level dominates, xp within the level breaks ties */
 const advancement = (s: PersistedState): number => s.lv * 1_000_000 + s.xp;
@@ -68,14 +69,25 @@ export function mergeProgress(a: PersistedState, b: PersistedState): PersistedSt
     const current = readingPositions[id];
     if (
       !current
-      || position.updatedAt > current.updatedAt
-      || (
-        position.updatedAt === current.updatedAt
-        && compareText(tieKey(position), tieKey(current)) > 0
-      )
+      || compareReadingPositionWrites(position, current) > 0
     ) {
       readingPositions[id] = position;
     }
+  }
+
+  // Open-world metadata follows the account too. Prefer the newest capture;
+  // canonical metadata breaks equal-clock ties so devices converge.
+  const libraryBooks = { ...a.libraryBooks };
+  for (const [id, persisted] of Object.entries(b.libraryBooks)) {
+    const current = libraryBooks[id];
+    if (
+      !current
+      || persisted.updatedAt > current.updatedAt
+      || (
+        persisted.updatedAt === current.updatedAt
+        && compareText(tieKey(persisted.book), tieKey(current.book)) > 0
+      )
+    ) libraryBooks[id] = persisted;
   }
 
   // shelves union; a finished book must not linger in "reading"
@@ -102,6 +114,7 @@ export function mergeProgress(a: PersistedState, b: PersistedState): PersistedSt
     finishedIds,
     pagesRead,
     readingPositions,
+    libraryBooks,
     prefsUpdatedAt: Math.max(a.prefsUpdatedAt, b.prefsUpdatedAt),
     // Preferences have their own write order; sticky completion/intros merge.
     prefs: {

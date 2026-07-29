@@ -73,6 +73,11 @@ export function syncPendingCopy(
         owner,
         pending.version,
         pending.queuedAt,
+        upload.source.copyFingerprint,
+        {
+          title: upload.source.title,
+          author: upload.source.author,
+        },
       );
       if (outcome.status === 'skipped') return outcome;
       await markUploadSynced(bookId, owner, pending.version);

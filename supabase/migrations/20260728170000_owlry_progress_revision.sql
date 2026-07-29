@@ -23,8 +23,11 @@ language plpgsql
 set search_path = public
 as $$
 begin
-  if new.state is distinct from old.state
-     and new.revision <= old.revision then
+  -- Any update that does not explicitly advance the compare-and-swap token is
+  -- a legacy/stale whole-row write. Preserve the current state even when the
+  -- incoming payload happens to be byte-identical: allowing its default
+  -- revision through would roll the fence backward and reopen lost updates.
+  if new.revision <= old.revision then
     new.state := old.state;
     new.revision := old.revision + 1;
   end if;

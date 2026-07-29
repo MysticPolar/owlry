@@ -15,6 +15,7 @@
    ============================================================ */
 import { slugify, deriveCover } from './cover';
 import { registerBook, registerGuide } from './bookRegistry';
+import type { DynamicRegistryScope } from './bookRegistry';
 import type { Book, BookRef, Genre, Guide, GuideInsight, GuideQuote } from '../content/types';
 
 /** full metadata for a recommended book (tray + sheet + letter header) */
@@ -89,10 +90,18 @@ const quote = (q?: GuideQuote): GuideQuote | undefined =>
  * Letter.tsx resolves it), registering the further-reading books too. Returns
  * the Guide. Called by fetchLetter() the first time a reader taps the card.
  */
-export function registerLetter(ref: BookRef, wire: LetterWire): Guide {
+export function registerLetter(
+  ref: BookRef,
+  wire: LetterWire,
+  registryScope?: DynamicRegistryScope,
+): Guide {
   const fr = wire.fr.map((f) => {
     const slug = slugify(f.title);
-    registerBook(slug, recToBook({ title: f.title, author: f.author, pages: 0, blurb: f.why }));
+    registerBook(
+      slug,
+      recToBook({ title: f.title, author: f.author, pages: 0, blurb: f.why }),
+      registryScope,
+    );
     return { id: slug, why: f.why };
   });
   const guide: Guide = {
@@ -106,6 +115,6 @@ export function registerLetter(ref: BookRef, wire: LetterWire): Guide {
     ask: wire.ask,
     fr,
   };
-  registerGuide(ref, guide);
+  registerGuide(ref, guide, registryScope);
   return guide;
 }

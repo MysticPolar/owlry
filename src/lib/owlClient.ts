@@ -21,6 +21,7 @@ import type { OwlReply, OwlSession } from './owlBrain';
 import type { BookRef, Guide } from '../content/types';
 import type { WeatherKey } from '../content/weather';
 import { getBook, getGuide } from './bookRegistry';
+import type { DynamicRegistryScope } from './bookRegistry';
 import { getActiveLang } from '../i18n';
 import { validateLetter, registerLetter } from './owlContract';
 import { validateChatV2, mapChatV2 } from './owlWireV2';
@@ -62,14 +63,22 @@ function offlineTurn(text: string, ctx: TurnContext): TurnResult {
   return { reply: respond(text, session), session, live: false };
 }
 
-async function liveTurn(text: string, ctx: TurnContext): Promise<TurnResult> {
+async function liveTurn(
+  text: string,
+  ctx: TurnContext,
+  registryScope?: DynamicRegistryScope,
+): Promise<TurnResult> {
   const { data, error } = await supabase!.functions.invoke('owl-chat', {
     body: { message: text, client_day: localDay(), desk: ctx.desk, lang: getActiveLang() },
   });
   if (error) throw error;
   const v = validateChatV2(data);
   if (!v.ok) throw new Error(`owl-chat contract: ${v.errors.join('; ')}`);
-  return { reply: mapChatV2(v.res), session: ctx.session, live: true };
+  return {
+    reply: mapChatV2(v.res, registryScope),
+    session: ctx.session,
+    live: true,
+  };
 }
 
 /**
@@ -77,10 +86,17 @@ async function liveTurn(text: string, ctx: TurnContext): Promise<TurnResult> {
  * `opts.offline` to force the offline brain (e.g. when the inkwell is dry, so
  * the live owl is never called — and never charged).
  */
-export async function fetchOwlTurn(text: string, ctx: TurnContext, opts?: { offline?: boolean }): Promise<TurnResult> {
+export async function fetchOwlTurn(
+  text: string,
+  ctx: TurnContext,
+  opts?: {
+    offline?: boolean;
+    registryScope?: DynamicRegistryScope;
+  },
+): Promise<TurnResult> {
   if (!supabase || opts?.offline) return offlineTurn(text, ctx);
   try {
-    return await liveTurn(text, ctx);
+    return await liveTurn(text, ctx, opts?.registryScope);
   } catch (err) {
     devWarn('[owl] live turn failed, using offline brain:', err);
     return offlineTurn(text, ctx);
@@ -89,7 +105,10 @@ export async function fetchOwlTurn(text: string, ctx: TurnContext, opts?: { offl
 
 /* ---------- the letter (generated once, on tap) ---------- */
 
-async function liveLetter(ref: BookRef): Promise<Guide | undefined> {
+async function liveLetter(
+  ref: BookRef,
+  registryScope?: DynamicRegistryScope,
+): Promise<Guide | undefined> {
   const b = getBook(ref); // title/author let the backend rebuild context on a cold cache miss
   const { data, error } = await supabase!.functions.invoke('owl-peek', {
     body: { slug: ref, title: b?.t, author: b?.a, lang: getActiveLang() },
@@ -97,7 +116,7 @@ async function liveLetter(ref: BookRef): Promise<Guide | undefined> {
   if (error) throw error;
   const v = validateLetter((data as { letter?: unknown } | null)?.letter);
   if (!v.ok) throw new Error(`owl-peek contract: ${v.errors.join('; ')}`);
-  return registerLetter(ref, v.letter);
+  return registerLetter(ref, v.letter, registryScope);
 }
 
 /**
@@ -106,12 +125,15 @@ async function liveLetter(ref: BookRef): Promise<Guide | undefined> {
  * generated at most ONCE. Offline / on failure, falls back to whatever the registry
  * holds (catalog letters render exactly as the mockup).
  */
-export async function fetchLetter(ref: BookRef): Promise<Guide | undefined> {
+export async function fetchLetter(
+  ref: BookRef,
+  opts?: { registryScope?: DynamicRegistryScope },
+): Promise<Guide | undefined> {
   const existing = getGuide(ref);
   if (existing) return existing; // generate-once: already in the registry
   if (!supabase) return undefined;
   try {
-    return await liveLetter(ref);
+    return await liveLetter(ref, opts?.registryScope);
   } catch (err) {
     devWarn('[owl] live letter failed:', err);
     return getGuide(ref);

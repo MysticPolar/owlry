@@ -1473,55 +1473,82 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .l-note{margin-left:8px;padding:8px 0 8px 13px;border-left:2px solid var(--teal);font-style:italic}
 .l-note .l-tag{display:block;margin:0 0 3px;color:#765013}
 
-/* The actual Reader shell, not the retired synthetic demo Reader. */
+/* The real reader leaves the desktop mock-phone behind and becomes a quiet,
+   full-viewport sheet of Playbill paper on every device. */
+.app:has(> .reader-live){overflow:visible}
 .reader-live{
-  z-index:14;padding:0;transform:none;background:#0D111F;color:#241B0E;
-  --reader-paper:#FBF4E1;--reader-font:'Literata',Georgia,serif;--reader-size:18px;
-  width:100%;height:100%;min-height:100%;overflow:hidden;isolation:isolate;
-  animation:readerOpen .28s cubic-bezier(.2,.86,.25,1)
+  position:fixed;inset:0;z-index:14;padding:0;border-radius:0;
+  --reader-paper:#FBF3E2;--reader-font:'Literata',Georgia,serif;--reader-size:18px;
+  width:100vw;height:100vh;height:100dvh;min-height:100dvh;overflow:hidden;isolation:isolate;
+  background:var(--reader-paper);color:#241C14;transform:none!important;
+  opacity:0;pointer-events:none;transition:opacity .18s ease!important
 }
-@keyframes readerOpen{from{opacity:.4;transform:scale(.985)}to{opacity:1;transform:none}}
+.reader-live.on{opacity:1;pointer-events:auto}
 .reader-stage{
   position:absolute;inset:0;width:100%;height:100%;overflow:hidden;
-  container-type:inline-size;background:var(--reader-paper);color:#241B0E
+  container-type:inline-size;background:var(--reader-paper);color:#241C14
 }
 /* Foliate owns touch, link, selection, and scroll behavior inside its iframe.
    A parent gesture shield would make the book feel frozen and inaccessible. */
-.reader-chrome{position:absolute;z-index:3;left:0;right:0;display:flex;align-items:center;gap:10px;color:#F4ECD8;
-  background:linear-gradient(180deg,rgba(13,17,31,.99),rgba(13,17,31,.94));
-  -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
-  box-shadow:0 8px 24px -14px rgba(0,0,0,.78);
+.reader-chrome{
+  position:absolute;z-index:3;left:0;right:0;display:flex;align-items:center;gap:8px;
+  background:var(--reader-paper);background:color-mix(in srgb,var(--reader-paper) 96%,transparent);color:#241C14;
   opacity:0;visibility:hidden;pointer-events:none;
-  transition:opacity .18s ease,transform .18s ease,visibility 0s linear .18s}
-.reader-chrome.is-visible{opacity:1;visibility:visible;pointer-events:auto;transform:none;transition-delay:0s}
+  transition:opacity .16s ease,visibility 0s linear .16s
+}
+.reader-chrome.is-visible{opacity:1;visibility:visible;pointer-events:auto;transition-delay:0s}
 .reader-chrome-top{
-  top:0;min-height:calc(64px + env(safe-area-inset-top));
-  padding:calc(8px + env(safe-area-inset-top))
-    max(12px,calc(8px + env(safe-area-inset-right))) 8px
-    max(12px,calc(8px + env(safe-area-inset-left)));
-  border-bottom:1px solid rgba(255,192,23,.24);transform:translateY(-10px)
+  top:0;min-height:calc(52px + env(safe-area-inset-top));
+  padding:calc(4px + env(safe-area-inset-top))
+    max(14px,calc(10px + env(safe-area-inset-right))) 4px
+    max(14px,calc(10px + env(safe-area-inset-left)));
+  border-bottom:1px solid #D8C6A2
 }
 .reader-chrome-bottom{
-  bottom:0;min-height:calc(62px + env(safe-area-inset-bottom));
-  padding:8px max(12px,calc(8px + env(safe-area-inset-right)))
-    calc(10px + env(safe-area-inset-bottom))
-    max(12px,calc(8px + env(safe-area-inset-left)));
-  background:linear-gradient(0deg,rgba(13,17,31,.99),rgba(13,17,31,.94));
-  border-top:1px solid rgba(255,192,23,.22);box-shadow:0 -8px 24px -14px rgba(0,0,0,.78);
-  transform:translateY(10px)
+  bottom:0;min-height:calc(50px + env(safe-area-inset-bottom));
+  padding:3px max(14px,calc(10px + env(safe-area-inset-right)))
+    calc(3px + env(safe-area-inset-bottom))
+    max(14px,calc(10px + env(safe-area-inset-left)));
+  border-top:1px solid #D8C6A2
 }
-.reader-icon{width:44px;height:44px;flex:0 0 44px;display:flex;align-items:center;justify-content:center;padding:0;
-  border:1px solid rgba(255,213,105,.3);border-radius:12px;background:rgba(255,255,255,.08);color:#FFF8E8;cursor:pointer;
-  touch-action:manipulation}
+.reader-icon{
+  width:44px;height:44px;flex:0 0 44px;display:flex;align-items:center;justify-content:center;padding:0;
+  border:0;border-radius:999px;background:transparent;color:#241C14;cursor:pointer;touch-action:manipulation
+}
+.reader-icon:hover{background:rgba(138,106,51,.09)}
+.reader-icon:active{background:rgba(138,106,51,.15)}
+.reader-icon:focus-visible{outline-color:#8A6A33}
 .reader-icon:disabled{opacity:.35}
 .reader-icon .ti{font-size:var(--icon-2xl)}
 .reader-heading{flex:1;min-width:0;text-align:center}
-.reader-book-title{font-family:var(--font-reading);font-size:var(--t-body);line-height:1.2;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.reader-book-author{margin-top:3px;font-size:var(--t-micro);font-weight:600;letter-spacing:1.1px;color:#D8CFBC;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.reader-book-title{
+  font-family:var(--font-reading);font-size:var(--t-callout);font-weight:600;line-height:1.18;
+  letter-spacing:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+}
+.reader-book-author{
+  margin-top:2px;font-size:var(--t-micro);font-weight:500;letter-spacing:.02em;color:#6A5C4A;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+}
+.reader-type-button span{font:600 var(--t-body)/1 var(--font-reading);letter-spacing:-.04em}
 .reader-progress{flex:1;min-width:0}
-.reader-location{margin-bottom:7px;text-align:center;color:#F2E8D0;font-size:var(--t-micro);font-weight:600;letter-spacing:1px}
-.reader-thread{height:3px;overflow:hidden;background:rgba(255,255,255,.24);border-radius:999px}
-.reader-thread span{display:block;height:100%;background:#FFC017;transition:width .25s ease}
+.reader-progress-meta{
+  display:flex;align-items:center;justify-content:center;gap:8px;min-height:18px;margin-bottom:3px
+}
+.reader-location{
+  text-align:center;color:#6A5C4A;font-size:var(--t-micro);
+  font-weight:600;letter-spacing:.04em
+}
+.reader-sync-status{
+  padding:0;border:0;background:none;color:#726149;
+  font:600 var(--t-micro)/1 var(--font-chrome);letter-spacing:.05em
+}
+button.reader-sync-status{
+  min-height:24px;padding-inline:4px;color:#8C2431;cursor:pointer;
+  text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px
+}
+button.reader-sync-status:focus-visible{outline-color:#8A6A33}
+.reader-thread{height:2px;overflow:hidden;background:#D8C6A2;border-radius:999px}
+.reader-thread span{display:block;height:100%;background:#8A6A33;transition:width .2s ease}
 .reader-page-button{width:44px;height:44px;flex-basis:44px}
 .ebook-empty-title{font-family:var(--font-chrome);font-size:var(--t-body);max-width:260px}
 .ebook-empty p{max-width:270px;margin:0;font:430 var(--t-body)/1.6 var(--font-display);color:#5F523F}
@@ -1534,54 +1561,91 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .ebook-empty{overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
 .ebook-empty .btn,.ebook-empty .gate-switch{min-height:44px;touch-action:manipulation}
 .ebook-empty .gate-switch{padding:10px 12px}
+.ebook-empty .owl.mini{
+  position:static;right:auto;top:auto;width:56px;height:60px;filter:none
+}
+.reader-live .ebook-empty .btn{
+  border:1px solid #241C14;background:#241C14;color:#FBF3E2;box-shadow:none
+}
+.reader-live .ebook-empty .btn.ghost{
+  border-color:#8A6A33;background:transparent;color:#241C14
+}
+.reader-live .ebook-empty .gate-switch{color:#6A5C4A}
 .ebook-recovery-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
 
-/* Exactly four controls, format-aware for fixed PDF pages. */
+/* Flat paper controls: a mobile sheet that becomes a compact desktop popover. */
+.reader-settings-scrim{
+  position:absolute;inset:0;z-index:4;width:100%;height:100%;padding:0;border:0;
+  background:rgba(36,28,20,.24);cursor:default
+}
 .reader-settings{
-  position:absolute;z-index:5;
-  left:calc(8px + env(safe-area-inset-left));right:calc(8px + env(safe-area-inset-right));
-  bottom:calc(8px + env(safe-area-inset-bottom));
-  max-height:calc(100% - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 16px);
+  position:absolute;z-index:5;left:50%;bottom:0;width:min(100%,440px);
+  max-height:calc(78% - env(safe-area-inset-top));transform:translateX(-50%);
   overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scrollbar-width:thin;
-  padding:18px;border:1px solid rgba(255,213,105,.28);border-radius:22px;background:#151B31;color:#F2EBD7;
-  box-shadow:0 20px 50px rgba(0,0,0,.55);animation:settingsUp .24s cubic-bezier(.2,.86,.25,1)}
-@keyframes settingsUp{from{transform:translateY(18px);opacity:0}to{transform:none;opacity:1}}
+  padding:14px max(18px,calc(14px + env(safe-area-inset-right)))
+    calc(18px + env(safe-area-inset-bottom))
+    max(18px,calc(14px + env(safe-area-inset-left)));
+  border:1px solid #D8C6A2;border-bottom:0;border-radius:18px 18px 0 0;
+  background:#FBF3E2;color:#241C14;box-shadow:none;
+  animation:readerSettingsUp .2s cubic-bezier(.2,.8,.2,1)
+}
+@keyframes readerSettingsUp{
+  from{transform:translate(-50%,12px);opacity:0}
+  to{transform:translate(-50%,0);opacity:1}
+}
 .reader-settings-head{
   position:sticky;top:0;z-index:1;display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:8px;padding-bottom:8px;background:#151B31
+  min-height:48px;margin-bottom:2px;padding-bottom:5px;background:#FBF3E2;border-bottom:1px solid #D8C6A2
 }
-.reader-settings-kick{font-size:var(--t-micro);font-weight:600;letter-spacing:2px;color:#FFC017}
-.reader-settings-title{margin-top:3px;font-size:var(--t-title);letter-spacing:.05em}
-.reader-control{display:block;padding:14px 0;border-top:1px solid rgba(255,213,105,.15)}
-.reader-control-label{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:9px;font-size:var(--t-label);font-weight:700;letter-spacing:.7px}
-.reader-control-label small{color:#A9AEC4;font-size:var(--t-micro);font-weight:600;letter-spacing:.3px}
-.reader-fonts{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
-.reader-fonts button{min-height:58px;padding:8px 5px;border:1px solid rgba(255,213,105,.18);border-radius:11px;background:#1B2239;color:#F2EBD7;cursor:pointer}
+.reader-settings-title{font-family:var(--font-reading);font-size:var(--t-heading);font-weight:600;letter-spacing:0}
+.reader-control{display:block;padding:14px 0;border-bottom:1px solid #D8C6A2}
+.reader-control:last-child{border-bottom:0}
+.reader-control-label{
+  display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:10px;
+  font-size:var(--t-label);font-weight:600;letter-spacing:.02em
+}
+.reader-control-label small{color:#726149;font-size:var(--t-micro);font-weight:500;letter-spacing:0}
+.reader-fonts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.reader-fonts button{
+  min-height:58px;padding:8px 6px;border:1px solid #D8C6A2;border-radius:10px;
+  background:transparent;color:#241C14;cursor:pointer
+}
 .reader-fonts button span,.reader-fonts button small{display:block}
-.reader-fonts button span{font-size:var(--t-body)}.reader-fonts button small{margin-top:3px;color:#A9AEC4;font:600 var(--t-micro)/1 var(--font-chrome)}
-.reader-fonts button.on,.reader-flow button.on{border-color:#FFC017;background:rgba(255,192,23,.13);box-shadow:inset 0 0 0 1px #FFC017}
+.reader-fonts button span{font-size:var(--t-body)}
+.reader-fonts button small{margin-top:4px;color:#726149;font:500 var(--t-micro)/1.15 var(--font-chrome)}
+.reader-fonts button.on,.reader-flow button.on{
+  border-color:#8A6A33;background:#EFE6D0;box-shadow:inset 0 -2px #8A6A33;color:#241C14
+}
 .reader-fonts button:disabled,.reader-flow button:disabled{opacity:.42;cursor:not-allowed}
 .reader-stepper-row,.reader-flow-row{display:flex;align-items:center;justify-content:space-between;gap:16px}
 .reader-stepper-row .reader-control-label,.reader-flow-row .reader-control-label{flex:1;margin:0}
 .reader-stepper{display:flex;align-items:center;gap:10px}
-.reader-stepper button{width:44px;height:44px;border:1px solid rgba(255,213,105,.22);border-radius:10px;background:#1B2239;color:#F2EBD7;touch-action:manipulation}
+.reader-stepper button{
+  width:44px;height:44px;border:1px solid #D8C6A2;border-radius:999px;
+  background:transparent;color:#241C14;touch-action:manipulation
+}
 .reader-stepper button:disabled{opacity:.35}.reader-stepper output{min-width:42px;text-align:center;font-weight:600}
-.reader-range-row{display:flex;align-items:center;gap:10px}.reader-range-row input{flex:1;min-width:0;min-height:44px;accent-color:#FFC017}
-.reader-flow{display:flex;padding:3px;border:1px solid rgba(255,213,105,.18);border-radius:999px;background:#1B2239}
-.reader-flow button{min-height:44px;padding:8px 14px;border:0;border-radius:999px;background:none;color:#E3DAC6;
-  font:400 var(--t-micro) var(--font-chrome);letter-spacing:1px;touch-action:manipulation}
+.reader-range-row{display:flex;align-items:center;gap:12px}
+.reader-range-row input{flex:1;min-width:0;min-height:44px;accent-color:#8A6A33}
+.reader-range-row .ti{color:#6A5C4A}
+.reader-flow{display:flex;padding:3px;border:1px solid #D8C6A2;border-radius:999px;background:#EFE6D0}
+.reader-flow button{
+  min-height:40px;padding:8px 15px;border:1px solid transparent;border-radius:999px;
+  background:none;color:#4A3F30;font:600 var(--t-micro) var(--font-chrome);
+  letter-spacing:.04em;touch-action:manipulation
+}
 
-/* Embedded EPUBs cannot see the parent chrome. Contract their actual viewport
-   while the bars are present, then return every pixel to the book when hidden. */
-.foliate-reader{box-sizing:border-box}
-.reader-live.chrome-on .foliate-reader{
-  padding-top:calc(64px + env(safe-area-inset-top));
-  padding-bottom:calc(62px + env(safe-area-inset-bottom))
+/* The viewport is deliberately stable. Showing or hiding controls never changes
+   Foliate's dimensions, so a center tap cannot trigger an EPUB reflow. */
+.foliate-reader{
+  box-sizing:border-box;
+  padding-top:calc(52px + env(safe-area-inset-top));
+  padding-bottom:calc(50px + env(safe-area-inset-bottom))
 }
 
 /* Reflowable plain-text engine. */
 .text-reader{
-  width:100%;height:100%;box-sizing:border-box;background:var(--reader-paper);color:#241B0E;scrollbar-width:none;
+  width:100%;height:100%;box-sizing:border-box;background:var(--reader-paper);color:#241C14;scrollbar-width:none;
   overscroll-behavior:contain;
   --reader-page-max:42rem;
   --reader-page-gap:calc(48px + env(safe-area-inset-left) + env(safe-area-inset-right));
@@ -1598,25 +1662,19 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 }
 .text-reader-page{
   box-sizing:border-box;min-height:100%;max-width:42rem;margin:0 auto;
-  padding:calc(78px + env(safe-area-inset-top))
-    max(clamp(18px,5vw,30px),calc(16px + env(safe-area-inset-right)))
-    calc(94px + env(safe-area-inset-bottom))
-    max(clamp(18px,5vw,30px),calc(16px + env(safe-area-inset-left)));
-  font-family:var(--text-reader-font);font-size:var(--text-reader-size);font-weight:430;line-height:1.68;
+  padding:calc(68px + env(safe-area-inset-top))
+    max(clamp(20px,5vw,34px),calc(16px + env(safe-area-inset-right)))
+    calc(70px + env(safe-area-inset-bottom))
+    max(clamp(20px,5vw,34px),calc(16px + env(safe-area-inset-left)));
+  font-family:var(--text-reader-font);font-size:var(--text-reader-size);font-weight:430;line-height:1.62;
   font-optical-sizing:auto;font-kerning:normal;font-variant-ligatures:common-ligatures;
-  text-align:left;text-wrap:pretty;overflow-wrap:anywhere;word-break:normal;hyphens:auto
+  text-align:left;text-wrap:pretty;overflow-wrap:break-word;word-break:normal;hyphens:none
 }
-.text-reader-page p{margin:0 0 .78em;text-indent:0;orphans:3;widows:3}
+.text-reader-page p{margin:0 0 .68em;text-indent:0;orphans:3;widows:3}
 .text-reader-page p:last-child{margin-bottom:0}
-.text-reader-page p:first-child::first-letter{float:left;margin:7px 9px 0 0;font:400 2.9em/.8 var(--font-display);color:#D8481E}
-.text-reader.is-scroll .text-reader-page p{content-visibility:auto;contain-intrinsic-size:auto 5em}
 .text-reader.is-paged .text-reader-page{
   width:var(--reader-page-width);max-width:none;height:100%;padding-inline:0;
   column-width:var(--reader-page-width);column-gap:var(--reader-page-gap);column-fill:auto
-}
-.reader-live:not(.chrome-on) .text-reader-page{
-  padding-top:max(24px,calc(16px + env(safe-area-inset-top)));
-  padding-bottom:max(28px,calc(18px + env(safe-area-inset-bottom)))
 }
 
 /* PdfView uses these hooks so its high-DPI bitmap remains a responsive CSS
@@ -1624,19 +1682,16 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .pdf-reader{
   width:100%;height:100%;overflow:auto;overscroll-behavior:contain;
   -webkit-overflow-scrolling:touch;scrollbar-width:thin;
-  padding:calc(76px + env(safe-area-inset-top))
+  padding:calc(64px + env(safe-area-inset-top))
     max(12px,calc(8px + env(safe-area-inset-right)))
-    calc(78px + env(safe-area-inset-bottom))
+    calc(62px + env(safe-area-inset-bottom))
     max(12px,calc(8px + env(safe-area-inset-left)))!important
 }
 .pdf-reader-canvas,.pdf-reader>canvas{
-  display:block;max-width:100%!important;height:auto!important;margin-inline:auto
+  display:block;max-width:100%!important;height:auto!important;margin-inline:auto;
+  box-shadow:none!important;mix-blend-mode:normal!important
 }
 .pdf-reader-loading{top:calc(12px + env(safe-area-inset-top))!important}
-.reader-live:not(.chrome-on) .pdf-reader{
-  padding-top:max(20px,calc(12px + env(safe-area-inset-top)))!important;
-  padding-bottom:max(24px,calc(14px + env(safe-area-inset-bottom)))!important
-}
 
 /* The in-app preference must be as authoritative as the OS setting. */
 .app.no-motion *, .app.no-motion *::before, .app.no-motion *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
@@ -1650,26 +1705,40 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
     --reader-page-width:calc(100cqi - var(--reader-page-gap))
   }
 }
-@media (min-width:561px){.text-reader{--reader-page-width:314px}}
+@media (min-width:561px){
+  .text-reader{
+    --reader-page-gap:max(48px,calc(100vw - var(--reader-page-max)));
+    --reader-page-width:min(var(--reader-page-max),calc(100vw - 48px))
+  }
+}
 @supports (width:1cqi){
   @media (min-width:561px){.text-reader{--reader-page-width:calc(100cqi - var(--reader-page-gap))}}
 }
-@media (max-width:560px),(max-height:600px){
-  .reader-live{
-    position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;min-height:100dvh;border-radius:0
+@media (min-width:768px) and (min-height:601px){
+  .reader-settings{
+    left:auto;right:calc(24px + env(safe-area-inset-right));
+    bottom:calc(24px + env(safe-area-inset-bottom));width:360px;
+    max-height:calc(100% - 48px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    transform:none;border-bottom:1px solid #D8C6A2;border-radius:16px;
+    padding:14px 18px 18px;animation:readerSettingsDesktop .18s ease-out
   }
 }
+@keyframes readerSettingsDesktop{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}
 @media (max-width:560px){
   .l-body{padding-inline:max(22px,env(safe-area-inset-left)) max(22px,env(safe-area-inset-right))}
   .l-p,.l-book-note p,.l-q{font-size:var(--t-body);line-height:1.65}
   .msg{font-size:var(--t-body);line-height:1.5}
 }
 @media (max-height:480px) and (orientation:landscape){
-  .reader-chrome-top{min-height:calc(58px + env(safe-area-inset-top))}
-  .reader-chrome-bottom{min-height:calc(56px + env(safe-area-inset-bottom))}
+  .reader-chrome-top{min-height:calc(48px + env(safe-area-inset-top))}
+  .reader-chrome-bottom{min-height:calc(46px + env(safe-area-inset-bottom))}
+  .foliate-reader{
+    padding-top:calc(48px + env(safe-area-inset-top));
+    padding-bottom:calc(46px + env(safe-area-inset-bottom))
+  }
   .text-reader-page{
-    padding-top:calc(66px + env(safe-area-inset-top));
-    padding-bottom:calc(72px + env(safe-area-inset-bottom))
+    padding-top:calc(56px + env(safe-area-inset-top));
+    padding-bottom:calc(56px + env(safe-area-inset-bottom))
   }
   .reader-settings{padding:14px 18px}
   .reader-settings-head{margin-bottom:4px;padding-bottom:5px}

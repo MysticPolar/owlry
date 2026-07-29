@@ -4,7 +4,10 @@
    slugify() never diverges from the server's byte-identical port. */
 import { validateChatV2, mapChatV2, splitSayIntoNodes } from '../src/lib/owlWireV2';
 import type { ChatV2Response } from '../src/lib/owlWireV2';
-import { getBook } from '../src/lib/bookRegistry';
+import {
+  getBook,
+  setActiveDynamicRegistryScope,
+} from '../src/lib/bookRegistry';
 import { slugify as clientSlugify } from '../src/lib/cover';
 import { slugify as serverSlugify } from '../supabase/functions/_shared/slug';
 
@@ -137,6 +140,37 @@ check('note carried through when present', mapChatV2(NOTED).note === NOTED.note)
 
 const multi = splitSayIntoNodes('read Foo then Bar, in that order.', ['Foo', 'Bar'], (t) => t.toLowerCase());
 check('splitSayIntoNodes finds both titles in order', multi.filter((n) => n.t === 'book').map((n) => n.v).join(',') === 'Foo,Bar');
+
+/* ---------- auth-owner registry boundary ---------- */
+
+const accountAScope = setActiveDynamicRegistryScope('account-a');
+const ACCOUNT_A_BOOK: ChatV2Response = {
+  ...GOOD,
+  say: 'Account A Only belongs on this shelf.',
+  main: { ...GOOD.main!, title: 'Account A Only' },
+};
+mapChatV2(ACCOUNT_A_BOOK, accountAScope);
+check(
+  'active account resolves its scoped open-world book',
+  getBook('account-a-only')?.t === 'Account A Only',
+);
+
+setActiveDynamicRegistryScope('account-b');
+check(
+  'switching accounts hides the previous dynamic catalog',
+  getBook('account-a-only') === undefined,
+);
+
+const LATE_ACCOUNT_A_BOOK: ChatV2Response = {
+  ...GOOD,
+  say: 'Late Account A Reply must stay private.',
+  main: { ...GOOD.main!, title: 'Late Account A Reply' },
+};
+mapChatV2(LATE_ACCOUNT_A_BOOK, accountAScope);
+check(
+  'late response cannot repopulate the active account registry',
+  getBook('late-account-a-reply') === undefined,
+);
 
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

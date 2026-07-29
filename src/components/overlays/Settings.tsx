@@ -53,7 +53,7 @@ export function Settings() {
   const openAuth = useAuth((s) => s.openAuth);
   const logout = useAuth((s) => s.logout);
   const syncStatus = useStore((s) => s.syncStatus);
-  const adoptAccount = useStore((s) => s.adoptAccount);
+  const syncAccountNow = useStore((s) => s.syncAccountNow);
   const [confirmReset, setConfirmReset] = useState(false);
   const lang = useLang();
   const t = useT().settings.settings;
@@ -180,7 +180,7 @@ export function Settings() {
           <>
             <button
               className="link-row"
-              onClick={() => authUser && void adoptAccount(authUser.id)}
+              onClick={() => void syncAccountNow()}
               aria-label={t.ariaSyncNow}
             >
               <Icon name="ti-cloud" />

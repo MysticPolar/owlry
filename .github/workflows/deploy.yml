@@ -29,6 +29,48 @@ jobs:
           cache: npm
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
+      - name: Verify configured backend contract
+        env:
+          SUPABASE_ANON_KEY: ${{ vars.VITE_SUPABASE_ANON_KEY }}
+          SUPABASE_PROJECT_REF: ${{ vars.SUPABASE_PROJECT_REF }}
+        run: |
+          set -euo pipefail
+          if [[ -z "$SUPABASE_ANON_KEY" || -z "$SUPABASE_PROJECT_REF" ]]; then
+            echo "No Supabase backend configured; building the offline app."
+            exit 0
+          fi
+          check_backend() {
+            curl \
+              --silent \
+              --show-error \
+              --fail \
+              --request GET \
+              --url "https://$SUPABASE_PROJECT_REF.supabase.co/rest/v1/owlry_progress?select=revision&limit=0" \
+              --header "apikey: $SUPABASE_ANON_KEY" \
+              --header "Authorization: Bearer $SUPABASE_ANON_KEY" \
+              >/dev/null \
+            && curl \
+              --silent \
+              --show-error \
+              --fail \
+              --request POST \
+              --url "https://$SUPABASE_PROJECT_REF.supabase.co/storage/v1/object/list/owlry-uploads" \
+              --header "apikey: $SUPABASE_ANON_KEY" \
+              --header "Authorization: Bearer $SUPABASE_ANON_KEY" \
+              --header "Content-Type: application/json" \
+              --data '{"prefix":"","limit":1,"offset":0}' \
+              >/dev/null
+          }
+          for attempt in $(seq 1 48); do
+            if check_backend; then
+              echo "Supabase progress and upload contracts are ready."
+              exit 0
+            fi
+            echo "Waiting for the backend migration ($attempt/48)…"
+            sleep 5
+          done
+          echo "The configured backend did not become ready in four minutes." >&2
+          check_backend
       - run: npm ci
       - run: npm run build
         env:

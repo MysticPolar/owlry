@@ -3,6 +3,7 @@ import { mergeProgress } from '../src/lib/sync/mergeProgress';
 import { SEED } from '../src/store/seed';
 import type { PersistedState } from '../src/store/types';
 import { readingPositionKey } from '../src/lib/ebook/positionKey';
+import { normalizePersisted } from '../src/store/normalize';
 
 let pass = 0;
 let fail = 0;
@@ -111,6 +112,79 @@ const make = (o: Partial<PersistedState> = {}): PersistedState => ({
   );
 }
 
+// Fingerprint migration enriches an equal-clock anchor without pretending the
+// reader moved later. Merge direction must not change the winner.
+{
+  const copyFingerprint = `sha256:${'cd'.repeat(32)}`;
+  const copyVersion = 'legacy-copy-enriched';
+  const key = readingPositionKey('goldfinch', copyVersion);
+  const legacy = {
+    bookId: 'goldfinch' as never,
+    percent: 46,
+    cfi: 'epubcfi(/6/14)',
+    secondsRead: 75,
+    format: 'epub' as const,
+    copyVersion,
+    updatedAt: 450,
+  };
+  const enriched = { ...legacy, copyFingerprint };
+  const legacyState = make({ readingPositions: { [key]: legacy } });
+  const enrichedState = make({ readingPositions: { [key]: enriched } });
+  const forward = mergeProgress(legacyState, enrichedState);
+  const reverse = mergeProgress(enrichedState, legacyState);
+  check(
+    'equal-clock position merge prefers valid fingerprint metadata',
+    forward.readingPositions[key]?.copyFingerprint === copyFingerprint
+      && reverse.readingPositions[key]?.copyFingerprint === copyFingerprint,
+    JSON.stringify({
+      forward: forward.readingPositions[key],
+      reverse: reverse.readingPositions[key],
+    }),
+  );
+}
+
+// persisted fingerprints are normalized in the value while exact-version keys stay stable
+{
+  const digest = `sha256:${'ab'.repeat(32)}`;
+  const copyVersion = 'copy-with-fingerprint';
+  const key = readingPositionKey('goldfinch', copyVersion);
+  const normalized = normalizePersisted({
+    ...SEED,
+    readingPositions: {
+      staleKey: {
+        bookId: 'goldfinch',
+        percent: 27,
+        secondsRead: 40,
+        format: 'epub',
+        copyVersion,
+        copyFingerprint: `  ${digest.toUpperCase()}  `,
+        updatedAt: 500,
+      },
+      malformed: {
+        bookId: 'pachinko',
+        percent: 18,
+        secondsRead: 20,
+        format: 'epub',
+        copyVersion: 'bad-fingerprint-copy',
+        copyFingerprint: 'sha256:not-a-digest',
+        updatedAt: 600,
+      },
+    },
+  });
+  check(
+    'normalized position keeps valid copy fingerprint under exact-version key',
+    normalized.readingPositions[key]?.copyFingerprint === digest
+      && normalized.readingPositions[key]?.copyVersion === copyVersion,
+    JSON.stringify(normalized.readingPositions[key]),
+  );
+  check(
+    'malformed position fingerprint is discarded',
+    normalized.readingPositions[
+      readingPositionKey('pachinko', 'bad-fingerprint-copy')
+    ]?.copyFingerprint === undefined,
+  );
+}
+
 // exact positions from different books are unioned
 {
   const a = make({
@@ -141,6 +215,64 @@ const make = (o: Partial<PersistedState> = {}): PersistedState => ({
     m.readingPositions[readingPositionKey('goldfinch' as never)]?.percent === 12
       && m.readingPositions[readingPositionKey('pachinko' as never)]?.percent === 34,
     JSON.stringify(m.readingPositions),
+  );
+}
+
+// open-world book metadata follows a shelf onto a fresh device
+{
+  const momTest = {
+    t: 'The Mom Test',
+    a: 'Rob Fitzpatrick',
+    c: '#2F5757',
+    s: 'Mom<br>Test',
+    q: 'How to learn what customers actually need.',
+    n: 138,
+    g: 'life' as const,
+  };
+  const other = {
+    t: 'Continuous Discovery Habits',
+    a: 'Teresa Torres',
+    c: '#56324B',
+    s: 'Continuous<br>Discovery',
+    q: 'A practical cadence for product discovery.',
+    n: 244,
+    g: 'life' as const,
+  };
+  const merged = mergeProgress(
+    make({
+      libraryBooks: {
+        'the-mom-test': { book: momTest, updatedAt: 100 },
+      },
+    }),
+    make({
+      libraryBooks: {
+        'continuous-discovery-habits': { book: other, updatedAt: 200 },
+      },
+    }),
+  );
+  check(
+    'open-world metadata unions across devices',
+    merged.libraryBooks['the-mom-test']?.book.a === 'Rob Fitzpatrick'
+      && merged.libraryBooks['continuous-discovery-habits']?.book.a === 'Teresa Torres',
+    JSON.stringify(merged.libraryBooks),
+  );
+
+  const corrected = {
+    ...momTest,
+    q: 'Ask about their life instead of pitching your idea.',
+  };
+  const refreshed = mergeProgress(
+    merged,
+    make({
+      libraryBooks: {
+        'the-mom-test': { book: corrected, updatedAt: 300 },
+      },
+    }),
+  );
+  check(
+    'newest open-world metadata wins',
+    refreshed.libraryBooks['the-mom-test']?.book.q === corrected.q,
+    refreshed.libraryBooks['the-mom-test']?.book.q,
   );
 }
 

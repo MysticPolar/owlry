@@ -4,7 +4,7 @@
    ephemeral session/UI state, re-derived each load (matching the
    mockup, whose chat + carousel reset on refresh).
    ============================================================ */
-import type { BookRef } from '../content/types';
+import type { Book, BookRef } from '../content/types';
 import type { ReadingPosition } from '../lib/ebook/types';
 import type { OwlMessage, OwlBatch, OwlSession } from '../lib/owlBrain';
 
@@ -53,6 +53,16 @@ export interface Prefs {
   introsSeen?: string[];
 }
 
+/**
+ * Metadata for a non-catalog book Scout introduced. Catalog books already ship
+ * with the app; open-world books need this account-owned copy so a fresh device
+ * can render and open a synced shelf without replaying the original chat.
+ */
+export interface PersistedBook {
+  book: Book;
+  updatedAt: number;
+}
+
 /** The durable loop persisted to IndexedDB (and, later, a backend). */
 export interface PersistedState {
   xp: number;
@@ -70,6 +80,8 @@ export interface PersistedState {
   /** Exact, reflow-safe resume anchors synced for signed-in readers.
       Guests keep the same shape in memory only for the current tab. */
   readingPositions: Record<string, ReadingPosition>;
+  /** Open-world book metadata, keyed by the same stable slug used by shelves/uploads. */
+  libraryBooks: Record<BookRef, PersistedBook>;
   prefs: Prefs;
   /** Monotonic last-write marker for settings, independent of XP/progress. */
   prefsUpdatedAt: number;

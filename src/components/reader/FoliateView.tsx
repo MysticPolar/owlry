@@ -37,8 +37,8 @@ type FoliateViewEl = HTMLElement & {
 };
 
 const paper = (amount: number): string => {
-  const from = [251, 244, 225];
-  const to = [230, 214, 172];
+  const from = [251, 243, 226];
+  const to = [239, 230, 208];
   const channel = (i: number) => Math.round(from[i]! + (to[i]! - from[i]!) * amount);
   return `rgb(${channel(0)} ${channel(1)} ${channel(2)})`;
 };
@@ -154,7 +154,7 @@ const normalizeDocumentTypography = (doc: Document): void => {
   }
 };
 
-const readerStyles = (prefs: ReaderPrefs, chromeVisible: boolean): string => {
+const readerStyles = (prefs: ReaderPrefs): string => {
   const family = prefs.font === 'fraunces'
     ? "'Fraunces', Georgia, serif"
     : prefs.font === 'system'
@@ -171,17 +171,16 @@ const readerStyles = (prefs: ReaderPrefs, chromeVisible: boolean): string => {
     :root {
       color-scheme: light !important;
       background: ${paper(prefs.dimmer)} !important;
-      color: #241B0E !important;
+      color: #241C14 !important;
       font-optical-sizing: auto;
-      --owlry-rule: color-mix(in srgb, #775008 45%, transparent);
+      --owlry-rule: color-mix(in srgb, #8A6A33 42%, transparent);
       --owlry-inner-gutter: clamp(.25rem, 1.5%, .75rem);
-      --owlry-chrome-visible: ${chromeVisible ? 1 : 0};
     }
     *, *::before, *::after { box-sizing: border-box; }
     html, body {
       background: ${paper(prefs.dimmer)} !important;
-      color: #241B0E !important;
-      overflow-wrap: anywhere;
+      color: #241C14 !important;
+      overflow-wrap: break-word;
       word-break: normal;
       -webkit-user-select: text;
       user-select: text;
@@ -198,10 +197,10 @@ const readerStyles = (prefs: ReaderPrefs, chromeVisible: boolean): string => {
       font-weight: 430;
       font-kerning: normal;
       font-variant-ligatures: common-ligatures;
-      line-height: 1.65 !important;
+      line-height: 1.62 !important;
       text-align: start !important;
-      hyphens: auto;
-      -webkit-hyphens: auto;
+      hyphens: none;
+      -webkit-hyphens: none;
     }
     :where(p, li, blockquote, dd, dt, figcaption, section, article, div, span) {
       font-family: inherit !important;
@@ -210,8 +209,12 @@ const readerStyles = (prefs: ReaderPrefs, chromeVisible: boolean): string => {
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace !important;
     }
     p:not([${PRESERVE_LAYOUT_ATTRIBUTE}]) {
-      line-height: 1.65 !important;
+      line-height: 1.62 !important;
       overflow-wrap: break-word !important;
+      word-break: normal !important;
+      hyphens: none !important;
+      -webkit-hyphens: none !important;
+      text-align: start !important;
       text-wrap: pretty;
       break-inside: auto !important;
       page-break-inside: auto !important;
@@ -261,14 +264,14 @@ const readerStyles = (prefs: ReaderPrefs, chromeVisible: boolean): string => {
     }
     h1, h2, h3, h4, h5, h6 {
       margin-block: 1.35em .58em !important;
-      font-family: ${family};
+      font-family: 'Fraunces', Georgia, serif !important;
       font-weight: 650;
       line-height: 1.2 !important;
       text-wrap: balance;
       overflow-wrap: normal !important;
       word-break: normal !important;
-      hyphens: auto !important;
-      -webkit-hyphens: auto !important;
+      hyphens: none !important;
+      -webkit-hyphens: none !important;
       break-after: avoid;
       page-break-after: avoid;
     }
@@ -338,15 +341,15 @@ const readerStyles = (prefs: ReaderPrefs, chromeVisible: boolean): string => {
     }
     code, samp, kbd { overflow-wrap: anywhere; }
     a {
-      color: #775008 !important;
-      text-decoration-color: #A8730A !important;
+      color: #6F5428 !important;
+      text-decoration-color: #8A6A33 !important;
       text-decoration-thickness: .08em;
       text-underline-offset: .14em;
       touch-action: manipulation;
     }
     ::selection {
-      background: rgba(255, 192, 23, .34);
-      color: #241B0E;
+      background: rgba(217, 169, 79, .34);
+      color: #241C14;
     }
     @media (max-width: 430px) {
       :root { --owlry-inner-gutter: clamp(.25rem, 1.4vw, .4rem); }
@@ -395,13 +398,12 @@ const applyReaderPrefs = (
   view: FoliateViewEl | null,
   prefs: ReaderPrefs,
   inlineSize: number,
-  chromeVisible: boolean,
 ): boolean => {
   const renderer = view?.renderer;
   if (!renderer) return false;
 
   let changed = false;
-  const styles = readerStyles(prefs, chromeVisible);
+  const styles = readerStyles(prefs);
   if (renderer.setStyles && appliedSheets.get(renderer) !== styles) {
     appliedSheets.set(renderer, styles);
     renderer.setStyles(styles);
@@ -426,13 +428,12 @@ const applyReaderPrefs = (
 };
 
 export const FoliateView = forwardRef<EngineHandle, EngineProps>(function FoliateView(
-  { bookId, source, initial, prefs, chromeVisible = false, onProgress, onToggleChrome, onError },
+  { bookId, source, initial, prefs, onProgress, onToggleChrome, onError },
   ref,
 ) {
   const hostRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<FoliateViewEl | null>(null);
   const prefsRef = useRef(prefs);
-  const chromeVisibleRef = useRef(chromeVisible);
   const onToggleChromeRef = useRef(onToggleChrome);
   const onErrorRef = useRef(onError);
   const shellAnchorRef = useRef<string | null>(null);
@@ -444,7 +445,6 @@ export const FoliateView = forwardRef<EngineHandle, EngineProps>(function Foliat
     pending: Promise<void>;
   }>({ view: null, ready: false, pending: Promise.resolve() });
   prefsRef.current = prefs;
-  chromeVisibleRef.current = chromeVisible;
   onToggleChromeRef.current = onToggleChrome;
   onErrorRef.current = onError;
 
@@ -486,7 +486,6 @@ export const FoliateView = forwardRef<EngineHandle, EngineProps>(function Foliat
       view,
       prefsRef.current,
       inlineSize,
-      chromeVisibleRef.current,
     );
     if (!changed || !cfi || !view.resolveNavigation || !view.renderer?.goTo) {
       if (changed) shellAnchorRef.current = null;
@@ -726,7 +725,6 @@ export const FoliateView = forwardRef<EngineHandle, EngineProps>(function Foliat
           view,
           prefsRef.current,
           host.clientWidth,
-          chromeVisibleRef.current,
         );
         // display at the saved position (CFI), or the start
         await view.init({ lastLocation: initial?.cfi || undefined });
@@ -759,7 +757,7 @@ export const FoliateView = forwardRef<EngineHandle, EngineProps>(function Foliat
 
   useEffect(() => {
     applyPrefsPreservingLocation(hostRef.current?.clientWidth ?? window.innerWidth);
-  }, [prefs, chromeVisible, applyPrefsPreservingLocation]);
+  }, [prefs, applyPrefsPreservingLocation]);
 
   useEffect(() => {
     const host = hostRef.current;

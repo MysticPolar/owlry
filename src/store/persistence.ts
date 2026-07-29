@@ -31,10 +31,21 @@ export async function loadLocal(owner: Owner): Promise<PersistedState | null> {
 
 export async function saveLocal(owner: Owner, state: PersistedState): Promise<void> {
   try {
-    await set(keyFor(owner), state);
+    await saveLocalStrict(owner, state);
   } catch {
     /* best-effort; private-mode / quota errors are non-fatal */
   }
+}
+
+/**
+ * Immediate durable write for copy-replacement barriers. Unlike saveLocal,
+ * storage failures propagate so callers can keep the old copy/stage intact.
+ */
+export async function saveLocalStrict(
+  owner: Owner,
+  state: PersistedState,
+): Promise<void> {
+  await set(keyFor(owner), state);
 }
 
 export interface ProgressRepository {

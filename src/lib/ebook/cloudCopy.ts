@@ -18,11 +18,20 @@ import { supabase } from '../supabase';
 import { getBook } from '../bookRegistry';
 import type { BookRef } from '../../content/types';
 import type { EbookFormat, ReadingSource } from './types';
+import {
+  fingerprintEbookCopy,
+  normalizeCopyFingerprint,
+} from './fingerprint';
 
 const BUCKET = 'owlry-uploads';
 const FORMATS: EbookFormat[] = ['epub', 'pdf', 'txt', 'fb2', 'mobi', 'azw3'];
 const VERSION_PATTERN = /^[A-Za-z0-9_-]{1,128}$/;
 const LIST_PAGE_SIZE = 100;
+const metadataText = (value: unknown, max: number): string | undefined => {
+  if (typeof value !== 'string') return undefined;
+  const text = value.trim().slice(0, max);
+  return text || undefined;
+};
 
 interface CloudEntry {
   name: string;
@@ -152,6 +161,8 @@ export async function pushCopy(
   expectedUserId?: string,
   version?: string,
   selectedAt?: number,
+  copyFingerprint?: string,
+  bookMetadata?: Pick<ReadingSource, 'title' | 'author'>,
 ): Promise<PushCopyOutcome> {
   if (!supabase) return { status: 'skipped', reason: 'backend-unavailable' };
   const user = await uid();
@@ -169,6 +180,16 @@ export async function pushCopy(
   ) {
     throw new Error('This copy is missing its selection order.');
   }
+  const safeFingerprint = normalizeCopyFingerprint(copyFingerprint);
+  if (copyFingerprint !== undefined && !safeFingerprint) {
+    throw new Error('This copy has an invalid content fingerprint.');
+  }
+  const contentMetadata: Record<string, string> = {};
+  if (safeFingerprint) contentMetadata.copyFingerprint = safeFingerprint;
+  const title = metadataText(bookMetadata?.title, 240);
+  const author = metadataText(bookMetadata?.author, 180);
+  if (title) contentMetadata.title = title;
+  if (author) contentMetadata.author = author;
 
   // Each selection gets a create-only immutable path. If the response was lost,
   // a retry sees the same object and is successful without changing its server
@@ -178,7 +199,7 @@ export async function pushCopy(
     .upload(copyPath(user, bookId, version, format), blob, {
       upsert: false,
       contentType: blob.type || 'application/octet-stream',
-      metadata: { selectedAt: String(selectedAt) },
+      metadata: { selectedAt: String(selectedAt), ...contentMetadata },
     });
   if (error && !alreadyExists(error)) throw error;
 
@@ -202,6 +223,7 @@ export async function pushCopy(
       metadata: {
         selectedAt: String(selectedAt),
         version,
+        ...contentMetadata,
       },
     });
   if (mirrorError) throw mirrorError;
@@ -238,6 +260,29 @@ export async function pullCopy(
   if (expectedUserId && await uid() !== expectedUserId) {
     throw new Error('The signed-in account changed while this copy was downloading.');
   }
+  const legacyEntries = legacyResult.data ?? [];
+  // A retry can encounter an immutable object created by an older client. The
+  // create-only upload then returns "already exists", while the compatibility
+  // mirror is still updated with the new fingerprint. Let that mirror backfill
+  // identity for its immutable twin without downloading mutable root bytes.
+  const mirrorMetadataByVersion = new Map<string, {
+    copyFingerprint?: string;
+    title?: string;
+    author?: string;
+  }>();
+  for (const item of legacyEntries) {
+    const metadataVersion = typeof item.metadata?.version === 'string'
+      && VERSION_PATTERN.test(item.metadata.version)
+      ? item.metadata.version
+      : null;
+    if (metadataVersion) {
+      mirrorMetadataByVersion.set(metadataVersion, {
+        copyFingerprint: normalizeCopyFingerprint(item.metadata?.copyFingerprint),
+        title: metadataText(item.metadata?.title, 240),
+        author: metadataText(item.metadata?.author, 180),
+      });
+    }
+  }
   // Selection order is captured before upload and included in both immutable
   // object metadata and new-version filenames. Thus an older choice that was
   // offline longer cannot supersede a newer choice merely by arriving later.
@@ -248,11 +293,16 @@ export async function pullCopy(
       const version = item.name.slice(0, dot);
       const format = item.name.slice(dot + 1) as EbookFormat;
       const timestamp = item.created_at ?? item.updated_at ?? '';
+      const mirrorMetadata = mirrorMetadataByVersion.get(version);
       return {
         version,
         format,
         timestamp,
         selectedAt: selectedAtFromEntry(item, version, timestamp),
+        copyFingerprint: normalizeCopyFingerprint(item.metadata?.copyFingerprint)
+          ?? mirrorMetadata?.copyFingerprint,
+        title: metadataText(item.metadata?.title, 240) ?? mirrorMetadata?.title,
+        author: metadataText(item.metadata?.author, 180) ?? mirrorMetadata?.author,
         path: copyPath(user, bookId, version, format),
       };
     })
@@ -263,7 +313,7 @@ export async function pullCopy(
   const immutableVersions = new Set(
     immutableCandidates.map((candidate) => candidate.version),
   );
-  const legacyCandidates = (legacyResult.data ?? [])
+  const legacyCandidates = legacyEntries
     .filter((item) => FORMATS.some((format) => item.name === `${bookId}.${format}`))
     .map((item) => {
       const format = item.name.slice(item.name.lastIndexOf('.') + 1) as EbookFormat;
@@ -283,6 +333,9 @@ export async function pullCopy(
         format,
         timestamp,
         selectedAt: selectedAtFromEntry(item, version, timestamp),
+        copyFingerprint: normalizeCopyFingerprint(item.metadata?.copyFingerprint),
+        title: metadataText(item.metadata?.title, 240),
+        author: metadataText(item.metadata?.author, 180),
         path: `${user}/${item.name}`,
       };
     })
@@ -297,16 +350,29 @@ export async function pullCopy(
     if (expectedUserId && await uid() !== expectedUserId) {
       throw new Error('The signed-in account changed while this copy was downloading.');
     }
+    let copyFingerprint = entry.copyFingerprint;
+    if (!copyFingerprint) {
+      try {
+        copyFingerprint = await fingerprintEbookCopy(blob);
+      } catch {
+        // Keep legacy copies readable where Web Crypto is unavailable. Exact
+        // copyVersion matching remains the safe fallback.
+      }
+    }
+    if (expectedUserId && await uid() !== expectedUserId) {
+      throw new Error('The signed-in account changed while this copy was being prepared.');
+    }
     const b = getBook(bookId);
     return {
       blob,
       source: {
         kind: 'local',
         format: entry.format,
-        title: b?.t ?? bookId,
-        author: b?.a ?? '',
+        title: entry.title ?? b?.t ?? bookId,
+        author: entry.author ?? b?.a ?? '',
         sourceLabel,
         copyVersion: entry.version,
+        copyFingerprint,
         copySelectedAt: entry.selectedAt,
         cloudUpdatedAt: entry.timestamp,
       },

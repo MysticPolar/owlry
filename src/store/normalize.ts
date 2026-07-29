@@ -1,15 +1,113 @@
 import { SEED } from './seed';
-import type { PersistedState, Prefs, ReaderFlow, ReaderFont, ReaderPrefs } from './types';
+import type {
+  PersistedBook,
+  PersistedState,
+  Prefs,
+  ReaderFlow,
+  ReaderFont,
+  ReaderPrefs,
+} from './types';
 import type { EbookFormat, ReadingPosition } from '../lib/ebook/types';
-import type { BookRef } from '../content/types';
+import type { Book, BookRef, Genre } from '../content/types';
 import { readingPositionKey } from '../lib/ebook/positionKey';
+import { normalizeCopyFingerprint } from '../lib/ebook/fingerprint';
 
 const READER_FONTS = new Set<ReaderFont>(['literata', 'fraunces', 'system']);
 const READER_FLOWS = new Set<ReaderFlow>(['scroll', 'page']);
 const EBOOK_FORMATS = new Set<EbookFormat>(['epub', 'pdf', 'txt', 'fb2', 'mobi', 'azw3']);
+const BOOK_GENRES = new Set<Genre>(['history', 'fiction', 'scifi', 'mystery', 'romance', 'life']);
+const RESERVED_KEYS = new Set(['__proto__', 'prototype', 'constructor']);
 
 const finite = (value: unknown, fallback: number): number =>
   typeof value === 'number' && Number.isFinite(value) ? value : fallback;
+
+const cleanString = (value: unknown, cap: number): string | null => {
+  if (typeof value !== 'string') return null;
+  const cleaned = value.trim().slice(0, cap);
+  return cleaned || null;
+};
+
+const optionalString = (value: unknown, cap: number): string | undefined =>
+  cleanString(value, cap) ?? undefined;
+
+/** Validate account-synced open-world metadata before it reaches cover/style UI. */
+const normalizeBook = (raw: unknown): Book | null => {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
+  const candidate = raw as Partial<Book>;
+  const t = cleanString(candidate.t, 240);
+  const a = cleanString(candidate.a, 180);
+  const c = cleanString(candidate.c, 16);
+  const s = cleanString(candidate.s, 240);
+  const q = cleanString(candidate.q, 600);
+  const n = finite(candidate.n, -1);
+  if (
+    !t
+    || !a
+    || !c
+    || !/^#[0-9a-f]{6}$/i.test(c)
+    || !s
+    || !q
+    || !Number.isFinite(n)
+    || n < 0
+    || !BOOK_GENRES.has(candidate.g as Genre)
+  ) return null;
+
+  const book: Book = {
+    t,
+    a,
+    c,
+    s,
+    q,
+    n: Math.floor(n),
+    g: candidate.g as Genre,
+  };
+  const tc = optionalString(candidate.tc, 16);
+  if (tc && /^#[0-9a-f]{6}$/i.test(tc)) book.tc = tc;
+  const r = optionalString(candidate.r, 16);
+  if (r) book.r = r;
+  const i = optionalString(candidate.i, 4_000);
+  if (i) book.i = i;
+  const w = optionalString(candidate.w, 2_000);
+  if (w) book.w = w;
+  const img = optionalString(candidate.img, 2_048);
+  if (img && /^https:\/\//i.test(img)) book.img = img;
+  const sub = optionalString(candidate.sub, 300);
+  if (sub) book.sub = sub;
+  const pub = optionalString(candidate.pub, 300);
+  if (pub) book.pub = pub;
+  if (
+    typeof candidate.rn === 'number'
+    && Number.isFinite(candidate.rn)
+    && candidate.rn >= 0
+    && candidate.rn <= 5
+  ) book.rn = candidate.rn;
+  if (
+    typeof candidate.rc === 'number'
+    && Number.isFinite(candidate.rc)
+    && candidate.rc >= 0
+  ) book.rc = Math.floor(candidate.rc);
+  if (
+    candidate.rsrc === 'google'
+    || candidate.rsrc === 'goodreads'
+    || candidate.rsrc === 'openlibrary'
+  ) book.rsrc = candidate.rsrc;
+  return book;
+};
+
+const normalizeLibraryBooks = (raw: unknown): Record<BookRef, PersistedBook> => {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return {};
+  const books: Record<BookRef, PersistedBook> = {};
+  for (const [ref, value] of Object.entries(raw)) {
+    if (RESERVED_KEYS.has(ref) || !ref.trim() || ref.length > 160) continue;
+    if (!value || typeof value !== 'object' || Array.isArray(value)) continue;
+    const candidate = value as Partial<PersistedBook>;
+    const book = normalizeBook(candidate.book);
+    const updatedAt = finite(candidate.updatedAt, -1);
+    if (!book || updatedAt <= 0) continue;
+    books[ref as BookRef] = { book, updatedAt };
+  }
+  return books;
+};
 
 const normalizeReadingPositions = (raw: unknown): Record<string, ReadingPosition> => {
   if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return {};
@@ -51,6 +149,8 @@ const normalizeReadingPositions = (raw: unknown): Record<string, ReadingPosition
     if (typeof candidate.copyVersion === 'string' && candidate.copyVersion.trim()) {
       position.copyVersion = candidate.copyVersion;
     }
+    const copyFingerprint = normalizeCopyFingerprint(candidate.copyFingerprint);
+    if (copyFingerprint) position.copyFingerprint = copyFingerprint;
     if (typeof candidate.cfi === 'string' && candidate.cfi.trim()) position.cfi = candidate.cfi;
     if (typeof candidate.page === 'number' && Number.isFinite(candidate.page) && candidate.page >= 1) {
       position.page = Math.floor(candidate.page);
@@ -86,6 +186,7 @@ export function normalizePersisted(raw: unknown): PersistedState {
     ...SEED,
     ...state,
     readingPositions: normalizeReadingPositions(state.readingPositions),
+    libraryBooks: normalizeLibraryBooks(state.libraryBooks),
     prefsUpdatedAt: Math.max(0, finite(state.prefsUpdatedAt, 0)),
     prefs: {
       ...SEED.prefs,

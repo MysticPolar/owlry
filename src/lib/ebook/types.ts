@@ -20,6 +20,9 @@ export interface ReadingSource {
   sourceLabel: string;
   /** Stable identity for one exact uploaded copy (local + cloud). */
   copyVersion?: string;
+  /** SHA-256 identity of the file bytes. Unlike copyVersion, this is stable
+   *  when the same file is selected again or downloaded on another device. */
+  copyFingerprint?: string;
   /** User-selection order for concurrent/offline copies across devices. */
   copySelectedAt?: number;
   /** Server timestamp retained as ordering fallback for legacy cloud copies. */
@@ -38,6 +41,8 @@ export interface ReadingPosition {
   format: EbookFormat;
   /** Prevents an anchor from one file reopening in a same-format replacement. */
   copyVersion?: string;
+  /** Content identity used to recognize the same bytes across copy versions. */
+  copyFingerprint?: string;
   updatedAt: number;
 }
 

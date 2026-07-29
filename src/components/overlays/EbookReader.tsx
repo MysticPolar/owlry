@@ -1,5 +1,9 @@
 import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
-import { commitStagedReaderCloudRefresh, useStore } from '../../store/useStore';
+import {
+  commitStagedReaderCloudRefresh,
+  persistAccountProgressNow,
+  useStore,
+} from '../../store/useStore';
 import { useT } from '../../i18n/react';
 import { getBook } from '../../lib/bookRegistry';
 import { useOverlayPresence } from '../../hooks/useOverlayPresence';
@@ -14,6 +18,7 @@ import {
 import type { ReadingPosition } from '../../lib/ebook/types';
 import { registerActiveReadingPosition } from '../../lib/ebook/activePosition';
 import { getReadingPosition } from '../../lib/ebook/positionKey';
+import { sameEbookContent } from '../../lib/ebook/fingerprint';
 import type { ReaderFont, ReaderPrefs } from '../../store/types';
 import { COPY_REPLACED_ERROR, SYSTEM_STACK } from '../reader/shared';
 import type { EngineHandle, ProgressUpdate } from '../reader/shared';
@@ -55,13 +60,23 @@ function ReaderSettings({
 }) {
   const t = useT();
   return (
-    <section className="reader-settings" role="dialog" aria-label={t.reader.settingsAria}>
+    <section
+      className="reader-settings"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="reader-settings-title"
+      tabIndex={-1}
+    >
       <div className="reader-settings-head">
-        <div>
-          <div className="reader-settings-kick">{t.reader.settingsKick}</div>
-          <div className="reader-settings-title d">{t.reader.settingsTitle}</div>
+        <div id="reader-settings-title" className="reader-settings-title">
+          {t.reader.settingsAria}
         </div>
-        <button className="reader-icon" aria-label={t.reader.closeSettingsAria} onClick={onClose}>
+        <button
+          className="reader-icon"
+          aria-label={t.reader.closeSettingsAria}
+          onClick={onClose}
+          autoFocus
+        >
           <Icon name="ti-x" />
         </button>
       </div>
@@ -133,8 +148,11 @@ export function EbookReader() {
   const retryBook = useStore((s) => s.openBook);
   const openUpload = useStore((s) => s.openUpload);
   const report = useStore((s) => s.reportProgress);
+  const syncStatus = useStore((s) => s.syncStatus);
+  const syncAccountNow = useStore((s) => s.syncAccountNow);
+  const accountId = useStore((s) => s.authUser?.id ?? null);
 
-  const { open, status, source, percent } = ebook;
+  const { open, status, source } = ebook;
   // scale-fade both ways; latch the id so the fade-out isn't a blank unmount
   // (closeBook resets ebook wholesale — the engine may briefly show the
   // resolving note under the fading surface, invisible at 240ms)
@@ -165,11 +183,20 @@ export function EbookReader() {
   const latestPositionRef = useRef<ReadingPosition | null>(null);
   const positionOwnerRef = useRef<EbookOwner>('guest');
   const tapStart = useRef<{ x: number; y: number } | null>(null);
+  const settingsButtonRef = useRef<HTMLButtonElement>(null);
 
   const revealChrome = useCallback(() => {
     setChromeVisible(true);
   }, []);
   const toggleChrome = useCallback(() => setChromeVisible((visible) => !visible), []);
+  const openSettings = useCallback(() => {
+    setChromeVisible(true);
+    setSettingsOpen(true);
+  }, []);
+  const closeSettings = useCallback(() => {
+    setSettingsOpen(false);
+    requestAnimationFrame(() => settingsButtonRef.current?.focus({ preventScroll: true }));
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -265,12 +292,55 @@ export function EbookReader() {
       );
       const settle = (local: ReadingPosition | null) => {
         if (cancelled) return;
-        const position = [local, synced]
+        const sourceHasFingerprint = sameEbookContent(
+          source.copyFingerprint,
+          source.copyFingerprint,
+        );
+        const exact = [local, synced]
           .filter((candidate): candidate is ReadingPosition => (
-            candidate?.format === source.format
+            candidate?.bookId === bookId
+            && candidate.format === source.format
             && candidate.copyVersion === source.copyVersion
-          ))
+            && (
+              !sourceHasFingerprint
+              || !sameEbookContent(candidate.copyFingerprint, candidate.copyFingerprint)
+              || sameEbookContent(candidate.copyFingerprint, source.copyFingerprint)
+            )
+          ));
+        const fingerprintMatches = sourceHasFingerprint
+          ? [local, ...Object.values(useStore.getState().readingPositions)]
+            .filter((candidate): candidate is ReadingPosition => (
+              candidate?.bookId === bookId
+              && candidate.format === source.format
+              && sameEbookContent(candidate.copyFingerprint, source.copyFingerprint)
+            ))
+          : [];
+        const newest = [...exact, ...fingerprintMatches]
           .sort((a, b) => b.updatedAt - a.updatedAt)[0] ?? null;
+        // Re-uploading byte-identical content briefly creates a fresh 0% copy
+        // marker. It must not erase a well-established anchor from that same
+        // fingerprint. Once the new copy has moved beyond its start, recency
+        // becomes authoritative again so later reading always wins.
+        const selectedAt = (
+          typeof source.copySelectedAt === 'number'
+          && Number.isFinite(source.copySelectedAt)
+        ) ? source.copySelectedAt : null;
+        const isFreshSelectionMarker = (
+          sourceHasFingerprint
+          && newest
+          && newest.percent <= 1
+          && newest.secondsRead <= 3
+          && newest.copyVersion === source.copyVersion
+          && selectedAt !== null
+          && newest.updatedAt >= selectedAt - 1_000
+          && newest.updatedAt - selectedAt <= 10 * 60_000
+        );
+        const establishedSameCopy = isFreshSelectionMarker
+          ? fingerprintMatches
+            .filter((candidate) => candidate.percent >= 5)
+            .sort((a, b) => b.percent - a.percent || b.updatedAt - a.updatedAt)[0] ?? null
+          : null;
+        const position = establishedSameCopy ?? newest;
         const update: ProgressUpdate = position
           ? {
               percent: position.percent,
@@ -306,9 +376,11 @@ export function EbookReader() {
     const flushAndCommit = () => {
       const positionOwner = positionOwnerRef.current;
       void flushPosition()
-        .then(() => {
+        .then(async () => {
           if (positionOwner === 'guest' || !bookId) return;
-          return commitStagedReaderCloudRefresh(positionOwner, bookId);
+          await persistAccountProgressNow(positionOwner);
+          await commitStagedReaderCloudRefresh(positionOwner, bookId);
+          await syncAccountNow();
         })
         .catch((error: unknown) => {
           console.warn('[reader] could not finish hidden-tab storage:', error);
@@ -325,7 +397,7 @@ export function EbookReader() {
       window.removeEventListener('pagehide', onPageHide);
       flushAndCommit();
     };
-  }, [open, bookId, flushPosition]);
+  }, [open, bookId, flushPosition, syncAccountNow]);
 
   useEffect(() => {
     if (!open || status !== 'reading') return;
@@ -344,7 +416,7 @@ export function EbookReader() {
       if (event.defaultPrevented) return;
       if (event.key === 'Escape') {
         event.preventDefault();
-        if (settingsOpen) setSettingsOpen(false);
+        if (settingsOpen) closeSettings();
         else {
           void flushPosition().catch(() => {});
           close();
@@ -359,7 +431,7 @@ export function EbookReader() {
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [open, settingsOpen, pageMode, foliate, close, flushPosition]);
+  }, [open, settingsOpen, pageMode, foliate, close, closeSettings, flushPosition]);
 
   const onProgress = useCallback((update: ProgressUpdate) => {
     posRef.current = update;
@@ -376,6 +448,7 @@ export function EbookReader() {
       secondsRead: secondsRef.current,
       format: source.format,
       copyVersion: source.copyVersion,
+      copyFingerprint: source.copyFingerprint,
       updatedAt: Date.now(),
     };
     latestPositionRef.current = position;
@@ -433,7 +506,7 @@ export function EbookReader() {
 
   const readerStyle = useMemo(
     () => ({
-      '--reader-paper': mix([251, 244, 225], [230, 214, 172], prefs.dimmer),
+      '--reader-paper': mix([251, 243, 226], [239, 230, 208], prefs.dimmer),
       '--reader-font': fontStack(prefs.font),
       '--reader-size': `${prefs.size}px`,
     }) as CSSProperties,
@@ -442,16 +515,19 @@ export function EbookReader() {
 
   if (!mounted || !b || !bookId) return null;
 
+  const displayTitle = source?.title || b.t;
+  const displayAuthor = source?.author || b.a;
+  const progressPercent = Math.max(0, Math.min(100, location.percent));
   const pageLabel = location.page && location.pageTotal
     ? t.reader.pageOf(location.page, location.pageTotal)
-    : `${Math.round(percent)}%`;
+    : `${Math.round(progressPercent)}%`;
   return (
     <div
       className={`reader reader-live${shown ? ' on' : ''}${chromeVisible ? ' chrome-on' : ''}`}
       style={readerStyle}
       role="dialog"
       aria-modal="true"
-      aria-label={t.reader.readingAria(b.t)}
+      aria-label={t.reader.readingAria(displayTitle)}
       ref={rootRef}
       tabIndex={-1}
     >
@@ -510,7 +586,6 @@ export function EbookReader() {
                 source={source}
                 initial={initial}
                 prefs={prefs}
-                chromeVisible={chromeVisible}
                 onProgress={onProgress}
                 onToggleChrome={toggleChrome}
                 onError={onError}
@@ -526,16 +601,17 @@ export function EbookReader() {
       >
         <button tabIndex={chromeVisible ? 0 : -1} className="reader-icon" aria-label={t.reader.backAria} onClick={closeReader}><Icon name="ti-arrow-left" /></button>
         <div className="reader-heading">
-          <div className="reader-book-title d">{b.t}</div>
-          <div className="reader-book-author">{(source?.sourceLabel ?? b.a).toUpperCase()}</div>
+          <div className="reader-book-title">{displayTitle}</div>
+          <div className="reader-book-author">{displayAuthor}</div>
         </div>
         <button
+          ref={settingsButtonRef}
           tabIndex={chromeVisible ? 0 : -1}
-          className="reader-icon"
+          className="reader-icon reader-type-button"
           aria-label={t.reader.settingsAria}
-          onClick={() => setSettingsOpen(true)}
+          onClick={openSettings}
         >
-          <Icon name="ti-settings" />
+          <span aria-hidden="true">Aa</span>
         </button>
       </header>
       <footer
@@ -554,8 +630,39 @@ export function EbookReader() {
           </button>
         )}
         <div className="reader-progress">
-          <div className="reader-location">{pageLabel}</div>
-          <div className="reader-thread"><span style={{ width: `${Math.round(percent)}%` }} /></div>
+          <div className="reader-progress-meta">
+            <span className="reader-location">{pageLabel}</span>
+            {accountId && positionOwnerRef.current !== 'guest' && syncStatus !== 'off' && (
+              syncStatus === 'error' ? (
+                <button
+                  className="reader-sync-status is-error"
+                  type="button"
+                  aria-label={t.settings.settings.ariaSyncNow}
+                  onClick={() => void syncAccountNow()}
+                >
+                  {t.settings.settings.syncLabel.error}
+                </button>
+              ) : (
+                <span
+                  className={`reader-sync-status is-${syncStatus}`}
+                  role="status"
+                  aria-live="polite"
+                >
+                  {t.settings.settings.syncLabel[syncStatus]}
+                </span>
+              )
+            )}
+          </div>
+          <div
+            className="reader-thread"
+            role="progressbar"
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={Math.round(progressPercent)}
+            aria-valuetext={pageLabel}
+          >
+            <span style={{ width: `${Math.round(progressPercent)}%` }} />
+          </div>
         </div>
         {pageMode && (
           <button
@@ -571,12 +678,20 @@ export function EbookReader() {
       </footer>
 
       {settingsOpen && (
-        <ReaderSettings
-          prefs={prefs}
-          pdf={pdf}
-          onChange={(patch) => setPref('reader', { ...prefs, ...patch })}
-          onClose={() => setSettingsOpen(false)}
-        />
+        <>
+          <button
+            className="reader-settings-scrim"
+            tabIndex={-1}
+            aria-hidden="true"
+            onClick={closeSettings}
+          />
+          <ReaderSettings
+            prefs={prefs}
+            pdf={pdf}
+            onChange={(patch) => setPref('reader', { ...prefs, ...patch })}
+            onClose={closeSettings}
+          />
+        </>
       )}
     </div>
   );

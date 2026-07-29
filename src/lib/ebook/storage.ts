@@ -13,6 +13,11 @@
 import { createStore, delMany, get, getMany, keys } from 'idb-keyval';
 import type { BookRef } from '../../content/types';
 import type { EbookFormat, ReadingPosition, ReadingSource } from './types';
+import {
+  fingerprintEbookCopy,
+  normalizeCopyFingerprint,
+} from './fingerprint';
+import { compareReadingPositionWrites } from './positionOrder';
 
 export type EbookOwner = 'guest' | string;
 
@@ -36,6 +41,24 @@ const LEGACY_PREFIXES = [
 ] as const;
 const EBOOK_FORMATS = new Set<EbookFormat>(['epub', 'pdf', 'txt', 'fb2', 'mobi', 'azw3']);
 const ebookKeyvalStore = createStore('keyval-store', 'keyval');
+
+const storedSource = (source: ReadingSource): ReadingSource => {
+  const copyFingerprint = normalizeCopyFingerprint(source.copyFingerprint);
+  const safe = { ...source, url: undefined };
+  if (copyFingerprint) safe.copyFingerprint = copyFingerprint;
+  else delete safe.copyFingerprint;
+  return safe;
+};
+
+const fingerprintBlob = async (blob: Blob): Promise<string | undefined> => {
+  try {
+    return await fingerprintEbookCopy(blob);
+  } catch {
+    // Older browsers/private contexts may not expose Web Crypto. The exact
+    // copyVersion fence still provides the same safe legacy behavior.
+    return undefined;
+  }
+};
 
 const runEbookTransaction = (
   mutate: (store: IDBObjectStore) => void,
@@ -77,7 +100,7 @@ const normalizeStagedCloudRefresh = (value: unknown): StagedCloudRefresh | null 
     || typeof staged.source.sourceLabel !== 'string'
   ) return null;
   return {
-    source: { ...staged.source, url: undefined } as ReadingSource,
+    source: storedSource(staged.source as ReadingSource),
     expectedCopyVersion: typeof staged.expectedCopyVersion === 'string'
       ? staged.expectedCopyVersion
       : undefined,
@@ -158,12 +181,15 @@ export async function saveUpload(
     && source.copySelectedAt > 0
       ? source.copySelectedAt
       : Date.now();
+  const copyFingerprint = normalizeCopyFingerprint(source.copyFingerprint);
   const safeSource = {
     ...source,
     url: undefined,
     copyVersion: source.copyVersion ?? createEbookCopyVersion(copySelectedAt),
     copySelectedAt,
   };
+  if (copyFingerprint) safeSource.copyFingerprint = copyFingerprint;
+  else delete safeSource.copyFingerprint;
   if (owner === 'guest') {
     guestUploads.set(id, { blob, source: safeSource });
     if (options.resetPosition) guestPositions.delete(id);
@@ -210,7 +236,26 @@ export async function loadUpload(
         || upload.source.format !== expected.format
       )
     ) return null;
-    return upload;
+    if (!upload) return null;
+    const safeSource = storedSource(upload.source);
+    if (safeSource.copyFingerprint) {
+      return { blob: upload.blob, source: safeSource };
+    }
+    const copyFingerprint = await fingerprintBlob(upload.blob);
+    if (!copyFingerprint) return { blob: upload.blob, source: safeSource };
+    const backfilledSource = { ...safeSource, copyFingerprint };
+    const current = guestUploads.get(id);
+    if (
+      current
+      && current.source.copyVersion === safeSource.copyVersion
+      && current.source.format === safeSource.format
+    ) {
+      guestUploads.set(id, {
+        blob: current.blob,
+        source: storedSource({ ...current.source, copyFingerprint }),
+      });
+    }
+    return { blob: upload.blob, source: backfilledSource };
   }
   const [blob, source] = await getMany([
     blobKey(owner, id),
@@ -224,7 +269,57 @@ export async function loadUpload(
       || source.format !== expected.format
     )
   ) return null;
-  return { blob, source };
+  const safeSource = storedSource(source);
+  if (safeSource.copyFingerprint) return { blob, source: safeSource };
+  const copyFingerprint = await fingerprintBlob(blob);
+  if (!copyFingerprint) return { blob, source: safeSource };
+
+  // Hashing can take long enough for another tab to select a replacement.
+  // Compare and write in one transaction so this legacy backfill can never
+  // attach the old bytes' identity to newer metadata.
+  try {
+    await runEbookTransaction((store) => {
+      const request = store.get(metaKey(owner, id));
+      request.onsuccess = () => {
+        const current = request.result as ReadingSource | undefined;
+        if (
+          !current
+          || current.copyVersion !== safeSource.copyVersion
+          || current.format !== safeSource.format
+          || normalizeCopyFingerprint(current.copyFingerprint)
+        ) return;
+        store.put(
+          storedSource({ ...current, copyFingerprint }),
+          metaKey(owner, id),
+        );
+      };
+    });
+  } catch {
+    // The computed identity is still useful for this open. A quota/private-mode
+    // failure to backfill metadata must not turn a readable legacy book into an
+    // error; a later load can try again.
+  }
+  return {
+    blob,
+    source: { ...safeSource, copyFingerprint },
+  };
+}
+
+/**
+ * Read only an upload's small metadata record. Account upgrades use this to
+ * restore a legacy open-world shelf entry without loading, hashing, or parsing
+ * the copyrighted book bytes.
+ */
+export async function loadUploadSource(
+  id: BookRef,
+  owner: EbookOwner = activeOwner,
+): Promise<ReadingSource | null> {
+  if (owner === 'guest') {
+    const source = guestUploads.get(id)?.source;
+    return source ? storedSource(source) : null;
+  }
+  const source = await get<ReadingSource>(metaKey(owner, id));
+  return source ? storedSource(source) : null;
 }
 
 /**
@@ -244,7 +339,7 @@ export async function saveCloudRefreshIfCurrent(
 ): Promise<boolean> {
   if (owner === 'guest') return false;
   let saved = false;
-  const safeSource = { ...source, url: undefined };
+  const safeSource = storedSource(source);
   await runEbookTransaction((store) => {
     const metaRequest = store.get(metaKey(owner, id));
     metaRequest.onsuccess = () => {
@@ -276,7 +371,7 @@ export async function stageCloudRefreshIfCurrent(
 ): Promise<boolean> {
   if (owner === 'guest') return false;
   let staged = false;
-  const safeSource = { ...source, url: undefined };
+  const safeSource = storedSource(source);
   await runEbookTransaction((store) => {
     const metaRequest = store.get(metaKey(owner, id));
     metaRequest.onsuccess = () => {
@@ -451,9 +546,21 @@ export async function savePosition(
   owner: EbookOwner = activeOwner,
 ): Promise<boolean> {
   if (owner === 'guest') {
-    const currentVersion = guestUploads.get(pos.bookId)?.source.copyVersion;
-    if (currentVersion !== pos.copyVersion) return false;
-    guestPositions.set(pos.bookId, pos);
+    const currentSource = guestUploads.get(pos.bookId)?.source;
+    if (
+      !currentSource
+      || currentSource.copyVersion !== pos.copyVersion
+      || currentSource.format !== pos.format
+    ) return false;
+    const current = guestPositions.get(pos.bookId);
+    const sameSlot = (
+      current?.bookId === pos.bookId
+      && current.format === pos.format
+      && current.copyVersion === pos.copyVersion
+    );
+    if (!sameSlot || compareReadingPositionWrites(pos, current) > 0) {
+      guestPositions.set(pos.bookId, pos);
+    }
     return true;
   }
   // Serialize against replacement uploads in the same object-store transaction.
@@ -461,13 +568,30 @@ export async function savePosition(
   // reader can therefore never recreate the deleted old-file anchor.
   let saved = false;
   await runEbookTransaction((store) => {
-    const request = store.get(metaKey(owner, pos.bookId));
-    request.onsuccess = () => {
-      const currentVersion = (request.result as ReadingSource | undefined)?.copyVersion;
-      if (currentVersion === pos.copyVersion) {
-        store.put(pos, posKey(owner, pos.bookId));
+    const metaRequest = store.get(metaKey(owner, pos.bookId));
+    metaRequest.onsuccess = () => {
+      const currentSource = metaRequest.result as ReadingSource | undefined;
+      if (
+        !currentSource
+        || currentSource.copyVersion !== pos.copyVersion
+        || currentSource.format !== pos.format
+      ) return;
+
+      const positionRequest = store.get(posKey(owner, pos.bookId));
+      positionRequest.onsuccess = () => {
+        const current = positionRequest.result as ReadingPosition | undefined;
+        const sameSlot = (
+          current?.bookId === pos.bookId
+          && current.format === pos.format
+          && current.copyVersion === pos.copyVersion
+        );
+        if (!sameSlot || compareReadingPositionWrites(pos, current) > 0) {
+          store.put(pos, posKey(owner, pos.bookId));
+        }
+        // `true` means the copy-version fence accepted this save. A stale write
+        // that correctly loses LWW is still not a copy-replacement failure.
         saved = true;
-      }
+      };
     };
   });
   return saved;

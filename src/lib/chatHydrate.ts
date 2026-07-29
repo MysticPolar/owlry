@@ -10,6 +10,7 @@
 import type { OwlBatch } from './owlBrain';
 import { slugify } from './cover';
 import { registerBook } from './bookRegistry';
+import type { DynamicRegistryScope } from './bookRegistry';
 import { recToBook, recToBookLite, splitSayIntoNodes } from './owlWireV2';
 import type { ScoutBook, ScoutPick } from './owlWireV2';
 import type { BookRef } from '../content/types';
@@ -32,7 +33,10 @@ export interface HydratedChat {
 }
 
 /** Rebuild the chat state from rows in chronological (ascending created_at) order. */
-export function rowsToChat(rows: ChatRow[]): HydratedChat {
+export function rowsToChat(
+  rows: ChatRow[],
+  registryScope?: DynamicRegistryScope,
+): HydratedChat {
   const messages: ChatItem[] = [];
   let collected: BookRef[] = [];
   let lastBatch: OwlBatch | null = null;
@@ -63,13 +67,13 @@ export function rowsToChat(rows: ChatRow[]): HydratedChat {
 
       if (main) {
         const slug = slugify(main.title);
-        registerBook(slug, recToBook(main));
+        registerBook(slug, recToBook(main), registryScope);
         lastBatch = { main: slug, also: [] };
         collect(slug);
       } else if (picks.length) {
         const slugs = picks.map((p) => {
           const s = slugify(p.title);
-          registerBook(s, recToBookLite(p));
+          registerBook(s, recToBookLite(p), registryScope);
           return s;
         });
         lastBatch = { main: slugs[0], also: slugs.slice(1) };
@@ -84,7 +88,7 @@ export function rowsToChat(rows: ChatRow[]): HydratedChat {
     if (row.who === 'owl' && row.kind === 'letter') {
       const slug = String(row.payload.slug ?? '');
       const book = (row.payload.book ?? null) as ScoutBook | null;
-      if (slug && book) registerBook(slug, recToBook(book));
+      if (slug && book) registerBook(slug, recToBook(book), registryScope);
       messages.push({ kind: 'letter', id: row.id, book: slug });
       continue;
     }
