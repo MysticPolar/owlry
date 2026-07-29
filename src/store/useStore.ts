@@ -46,7 +46,7 @@ import type { ActionContext, EconomyState, EngineResult } from '../lib/economy/e
 import { clearQueue, enqueue, flush } from '../lib/economy/queue';
 import { snapshotPatch } from '../lib/economy/snapshot';
 import { CURVE_VERSION, ECONOMY_VERSION, STAND_LEVEL, goodFor } from '../lib/economy/config';
-import { LV_CAP, cumulativeXp, rowFromLevel } from '../lib/economy/curve';
+import { LV_CAP, cumulativeXp } from '../lib/economy/curve';
 import { STUB_LABEL } from '../content/stubs';
 import type { EconomyAction, Snapshot } from '../lib/economy/types';
 import { getLocalWeather } from '../lib/weather';
@@ -582,6 +582,9 @@ export interface EconCtx extends ActionContext {
   /** the server owns this spend (the peek is charged inside owl-peek) — apply
       the optimistic delta locally, but never enqueue a second charge */
   localOnly?: boolean;
+  /** the grant lands and the ledger travels, but nothing performs — for
+      moments a scene has already performed itself (onboarding's welcome) */
+  quiet?: boolean;
 }
 
 const economyOf = (s: Store): EconomyState => ({
@@ -656,11 +659,9 @@ function crossGates(get: Getter, before: number, after: number): void {
   }
 }
 
-/** the seat moved — name the row it moved to */
+/** the seat moved — the strip stamps the ROW; here only the sparks fly */
 function announceLevel(get: Getter, before: number, after: number): void {
   if (after <= before) return;
-  const t = L(get().prefs);
-  get().showToast('ti-sparkles', after >= LV_CAP ? t.frontRow : t.levelUp(after, rowFromLevel(after)), 'keeper');
   get().triggerBurst();
 }
 
@@ -1080,11 +1081,7 @@ export const useStore = create<Store>()(
         const finishedIds = get().finishedIds.includes(id) ? get().finishedIds : [id, ...get().finishedIds];
         const readingIds = get().readingIds.filter((x) => x !== id);
         set({ finishedIds, readingIds, pagesRead: { ...get().pagesRead, [id]: n } });
-        const res = get().econ('finish', { bookId: id, pages: n });
-        if (!res.leveled && !res.wellFilled) {
-          const t = L(get().prefs);
-          get().showToast('ti-trophy', res.granted.xp > 0 ? t.finishedTwice : t.finishedQuiet, 'keeper');
-        }
+        get().econ('finish', { bookId: id, pages: n }); // the strip is the trophy
       }
     },
 
@@ -1154,7 +1151,14 @@ export const useStore = create<Store>()(
         // a guest's day starts here; a signed-in reader's ticket is stamped at
         // the end of adoptAccount instead, so the server's snapshot lands first
         if (!session?.user) {
-          get().checkIn();
+          // opening night owns the stage (finishOnboarding stamps day one);
+          // otherwise wait out the curtain so the ticket lands on the open set
+          if (!get().showOnboarding) {
+            const delay = get().prefs.reduceMotion ? 0 : 2000;
+            setTimeout(() => {
+              if (!get().showOnboarding) get().checkIn();
+            }, delay);
+          }
           await get().hydrateChat();
         }
       })();
@@ -1269,11 +1273,7 @@ export const useStore = create<Store>()(
       // and the shelf reads it whether or not the reader is signed in
       const { quotedIds } = st;
       if (!quotedIds.includes(book)) set({ quotedIds: [...quotedIds, book] });
-      const res = get().econ('quote_keep', { bookId: book, hash: lineHash(line), text: line });
-      if (!firstKeep && !res.refused && !res.leveled && !res.wellFilled) {
-        const t = L(get().prefs);
-        get().showToast('ti-quote', res.granted.xp > 0 ? t.keptLine : t.lineSaved, 'scribe');
-      }
+      get().econ('quote_keep', { bookId: book, hash: lineHash(line), text: line });
     },
     startAsk: (id) => {
       const b = getBook(id);
@@ -1330,11 +1330,7 @@ export const useStore = create<Store>()(
           savedAt: { ...savedAt, [id as string]: Date.now() },
           libraryBooks: remembered,
         });
-        const res = get().econ('save', { bookId: id });
-        // a bigger moment (a new row, a full well) owns the toast if it happened
-        if (!res.leveled && !res.wellFilled) {
-          get().showToast('ti-heart', res.granted.xp > 0 ? t.shelved : t.shelvedAgain, 'keeper');
-        }
+        get().econ('save', { bookId: id }); // the strip carries the +5
       }
     },
 
@@ -1365,29 +1361,24 @@ export const useStore = create<Store>()(
       const before = s.lv;
       set(economyPatch(res.next));
       const after = get().lv;
-      emitFx(set, res.granted.xp, res.granted.ink, res.granted.coins, after > before);
-      const t = L(get().prefs);
-      let spoke = false;
-
-      if (res.wellFilled) {
-        get().showToast('ti-coin', t.inkFull, 'keeper');
-        spoke = true;
-      }
-      if (after > before) {
-        get().showToast('ti-sparkles', after >= LV_CAP ? t.frontRow : t.levelUp(after, rowFromLevel(after)), 'keeper');
-        get().triggerBurst();
-        spoke = true;
-      }
       crossGates(get, before, after);
-      if (res.next.daily.fullHouse && !s.daily.fullHouse) {
-        setTimeout(() => get().showToast('ti-sparkles', t.fullHouse, 'keeper'), spoke ? 2200 : 0);
-        spoke = true;
-      }
-      // one stub at a time — the album keeps the rest
-      const stub = res.newStubs.find((x) => x.id !== 'encore');
-      if (stub) {
-        const label = STUB_LABEL[stub.id]?.[get().prefs.lang ?? 'en'];
-        if (label) setTimeout(() => get().showToast('ti-ticket', t.stubEarned(label), 'keeper'), spoke ? 2200 : 0);
+      // ctx.quiet: the grant lands, the ledger travels, but nothing performs —
+      // for moments a scene has already performed itself (onboarding's welcome)
+      if (!ctx.quiet) {
+        // the strip is the econ voice: deltas, well-full, and the ROW stamp are
+        // its lines. Toasts speak only what numbers can't — a full house, a stub.
+        emitFx(set, res.granted.xp, res.granted.ink, res.granted.coins, after > before);
+        const t = L(get().prefs);
+        if (after > before) get().triggerBurst();
+        if (res.next.daily.fullHouse && !s.daily.fullHouse) {
+          get().showToast('ti-sparkles', t.fullHouse, 'keeper');
+        }
+        // one stub at a time, after the strip's beat — the album keeps the rest
+        const stub = res.newStubs.find((x) => x.id !== 'encore');
+        if (stub) {
+          const label = STUB_LABEL[stub.id]?.[get().prefs.lang ?? 'en'];
+          if (label) setTimeout(() => get().showToast('ti-ticket', t.stubEarned(label), 'keeper'), 2200);
+        }
       }
 
       // the server has the last word. Queued, so a tunnel costs nobody their
@@ -1419,7 +1410,7 @@ export const useStore = create<Store>()(
       const prevStreak = get().streak;
       if (get().econ('checkin').refused) return;
       const t = L(get().prefs);
-      get().showToast('ti-ticket', t.checkedIn, 'keeper');
+      // the strip stamps the ticket (+10 ⚡ +10 💧); the flame reports after its beat
       setTimeout(() => {
         const s = get();
         if (s.darkNightAt !== prevDark) get().showToast('ti-flame', t.flameKept, 'keeper');
@@ -1446,12 +1437,7 @@ export const useStore = create<Store>()(
       const t = L(get().prefs);
       if (res.refused === 'insufficient_coins') return get().showToast('ti-coin', t.purseLight, 'keeper');
       if (res.refused === 'rate_limited') return get().showToast('ti-inkdrop', t.standShut, 'keeper');
-      if (res.refused) return;
-      get().showToast(
-        good.kind === 'bottle' ? 'ti-inkdrop' : 'ti-ticket',
-        good.kind === 'bottle' ? t.bottle : t.bought,
-        'keeper',
-      );
+      // a successful purchase is the strip's line (−coins, +ink for a bottle)
     },
 
     // the guest preview affordance: the seat moves, but no brass is minted and
@@ -1548,11 +1534,7 @@ export const useStore = create<Store>()(
       const readingIds = s.readingIds.filter((x) => x !== id);
       const finishedIds = s.finishedIds.includes(id) ? s.finishedIds : [id, ...s.finishedIds];
       set({ pagesRead, readingIds, finishedIds, reader: { open: false, id: null, p: 1 } });
-      const res = get().econ('finish', { bookId: id, pages });
-      if (!res.leveled && !res.wellFilled) {
-        const t = L(get().prefs);
-        get().showToast('ti-trophy', res.granted.xp > 0 ? t.finishedTwice : t.finishedQuiet, 'keeper');
-      }
+      get().econ('finish', { bookId: id, pages }); // the strip is the trophy
     },
 
     openSheet: (id) => set((s) => ({
@@ -1616,8 +1598,13 @@ export const useStore = create<Store>()(
         if (outcome.kind === 'ready') {
           set({ letterStatus: 'ready' });
         } else {
-          // refused or failed: the desk gives the drops back and the letter waits
-          if (willGenerate) get().addInk(5);
+          // refused or failed: the desk gives the drops back and the letter
+          // waits. The refund performs only while the letter is still open —
+          // an orphan Keeper receipt over some other screen would be noise.
+          if (willGenerate) {
+            if (get().letterId === id) get().addInk(5);
+            else set((st) => ({ ink: Math.min(st.inkMax, st.ink + 5) }));
+          }
           if (outcome.kind === 'refused') {
             const t = L(get().prefs);
             get().showToast('ti-pencil', outcome.why === 'rate_limited' ? t.peekRested : t.inkwellDry, 'scout');
@@ -2138,7 +2125,10 @@ export const useStore = create<Store>()(
         prefs: { ...s.prefs, onboarded: true },
         prefsUpdatedAt: nextPrefsUpdatedAt(s.prefsUpdatedAt),
       }));
-      if (!firstAsk) return;
+      if (!firstAsk) {
+        get().checkIn(); // day one's ticket, now that the stage is open
+        return;
+      }
       const meNodes: OwlMessage = [{ t: 'text', v: firstAsk.label }];
       const owlNodes: OwlMessage = [
         { t: 'text', v: L(get().prefs).firstSorted },
@@ -2159,8 +2149,10 @@ export const useStore = create<Store>()(
           chips: AFTER_CHIPS[get().prefs.lang ?? 'en'],
         },
       }));
-      // the welcome bundle, made real — the opening-night grant and its stub
-      get().econ('onboard');
+      // the welcome bundle, made real — quiet, because the scene's own
+      // xp-fly and confetti already performed this exact grant
+      get().econ('onboard', { quiet: true });
+      get().checkIn(); // day one's ticket, now that the stage is open
     },
 
     setDeskMode: (mode) => {

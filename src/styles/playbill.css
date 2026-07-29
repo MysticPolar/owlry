@@ -98,7 +98,6 @@
 .app .toast {
   background: rgba(20,13,10,.85); border: 1px solid rgba(217,169,79,.4);
   color: var(--pb-cream); box-shadow: none;
-  bottom: calc(100px + env(safe-area-inset-bottom));
 }
 .app .toast .ti { color: var(--pb-brass); }
 
@@ -1100,7 +1099,7 @@ button, .owl, .pb-nav, .pb-stagehead, .disc-head, .pb-head, .pb-tags, .pb-chips,
 .app.no-motion .reader-live { transform: none !important; transition: opacity .24s ease !important; }
 .app.no-motion .pintro-scrim, .app.no-motion .pintro-card, .app.no-motion .backdrop, .app.no-motion .pb-upload-scrim { transition: opacity .2s ease !important; }
 .app.no-motion .pintro-card { transform: none !important; }
-.app.no-motion .toast { transition: opacity .25s ease !important; transform: translate(-50%, 0) !important; }
+.app.no-motion .toast { transition: opacity .25s ease !important; transform: none !important; }
 .app.no-motion .auth { transition: opacity .32s ease, visibility 0s linear .32s !important; }
 .app.no-motion .auth.on { transition: opacity .32s ease !important; }
 .app.no-motion .auth-stage { transform: none !important; }
@@ -1281,59 +1280,51 @@ body { font-optical-sizing: auto; }
 
 /* ============================================================
    THE NUMBERS, MOVING.
-   Deltas lift off the chip they belong to; the seat pops when the
+   One receipt strip carries every delta; the seat pops when the
    row moves; the bars ease rather than jump. Every one of these is
    decoration — the number itself has already changed by the time
    the animation starts, so nothing here can lie about a total.
    ============================================================ */
 
-/* the chips are the frame the figures fly out of */
 .pb-chip, .pb-plvl-row { position: relative; }
 
-/* …but the chip ROW clips its overflow, because that is how it collapses on
-   scroll (max-height 36 → 0). A figure rising out of a chip was therefore
-   drawn and immediately clipped — animating perfectly, and invisible. Let the
-   row overflow while it is open; the clip is only needed while it collapses. */
-.pb-chips { overflow: visible; }
-.pb-home.collapsed .pb-chips { overflow: hidden; }
-
-.pb-fx {
-  position: absolute;
-  left: 50%;
-  top: -4px;
-  font-family: var(--font-chrome);
-  font-size: var(--t-micro);
-  font-weight: var(--fw-ui-semibold);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: .3px;
-  white-space: nowrap;
+/* ---- the callout column: ONE feedback anchor ----
+   The receipt strip and the toast live here as flex children — strip first,
+   so when both speak the strip sits ABOVE the toast with a real gap. Both
+   keep their box when hidden (opacity 0), so nothing ever jumps or overlaps.
+   The whole column lifts over the Discover composer and the keyboard. */
+.pb-callouts {
+  position: absolute; left: 0; right: 0;
+  bottom: calc(100px + env(safe-area-inset-bottom) + var(--kb, 0px));
+  z-index: 45;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
   pointer-events: none;
-  z-index: 3;
-  animation: pbFxFloat .95s cubic-bezier(.22, 1, .36, 1) forwards;
 }
-.pb-fx.xp    { color: var(--pb-candy-bolt); }
-.pb-fx.ink   { color: var(--pb-candy-drop); }
-.pb-fx.coins { color: var(--pb-brass); }
+/* the Ask desk's composer band is ~230px tall — clear it */
+.app:has(#screen-discover.on) .pb-callouts {
+  bottom: calc(240px + env(safe-area-inset-bottom) + var(--kb, 0px));
+}
+.pb-callouts .toast { position: static; left: auto; bottom: auto; transform: translateY(14px); }
+.pb-callouts .toast.on { transform: none; }
 
-@keyframes pbFxFloat {
-  0%   { opacity: 0; transform: translate(-50%, 6px) scale(.86); }
-  22%  { opacity: 1; transform: translate(-50%, -7px) scale(1.04); }
-  55%  { opacity: 1; transform: translate(-50%, -14px) scale(1); }
-  100% { opacity: 0; transform: translate(-50%, -26px) scale(1); }
-}
+/* a claiming surface owns the stage: no receipts over the opening night, the
+   curtain, an intro card, or the reading page (deltas still accrue silently) */
+.app:has(.onboard) :is(.pb-callouts, .burst-layer),
+.app:has(.pb-curtain) :is(.pb-callouts, .burst-layer),
+.app:has(.pintro.on) :is(.pb-callouts, .burst-layer),
+.app:has(.reader-live.on) :is(.pb-callouts, .burst-layer) { display: none; }
 
 /* the receipt strip — Keeper left, deltas after, numbers only */
 .pb-econ {
-  position: absolute; left: 50%; bottom: calc(140px + env(safe-area-inset-bottom)); z-index: 44;
   display: flex; align-items: center; gap: 10px;
   background: rgba(16, 13, 7, .92); border: 1px solid rgba(255, 192, 23, .3); border-radius: 999px;
   padding: 6px 14px 6px 8px;
   font-family: var(--font-chrome); font-size: var(--t-micro); font-weight: var(--fw-ui-semibold);
   font-variant-numeric: tabular-nums; letter-spacing: .3px; white-space: nowrap;
-  opacity: 0; pointer-events: none; transform: translate(-50%, 10px);
+  opacity: 0; pointer-events: none; transform: translateY(10px);
   transition: opacity .22s, transform .22s;
 }
-.pb-econ.on { opacity: 1; transform: translate(-50%, 0); }
+.pb-econ.on { opacity: 1; transform: none; }
 .pb-econ .owl { position: static; width: 22px; height: 24px; flex: 0 0 22px; animation: owlpop .5s cubic-bezier(.2, .8, .2, 1); }
 .pb-econ .d { display: inline-flex; align-items: center; gap: 3px; animation: pbEconIn .4s cubic-bezier(.22, 1, .36, 1) backwards; }
 .pb-econ .d:nth-child(3) { animation-delay: .07s; }
@@ -1376,8 +1367,14 @@ body { font-optical-sizing: auto; }
 .pb-chip .n { transition: color .3s ease; }
 
 @media (prefers-reduced-motion: reduce) {
-  .pb-fx { display: none; }
   .pb-chip.pop, .pb-plvl-row.pop,
   .pb-chip.pop .crown, .pb-plvl-row.pop .crown { animation: none; }
   .pb-xpbar b, .pb-bigxp b { transition: none; }
 }
+
+/* in-app reduce keeps parity with the OS setting for every performer */
+.app.no-motion :is(.owlpop, .toast .owl.toasty, .pb-econ .owl, .pb-econ .d) { animation: none !important; }
+.app.no-motion .spark { display: none; }
+.app.no-motion :is(.pb-chip.pop, .pb-plvl-row.pop),
+.app.no-motion :is(.pb-chip.pop .crown, .pb-plvl-row.pop .crown) { animation: none; }
+.app.no-motion :is(.nv-chains.broken, .card-chains.broken) { display: none; }

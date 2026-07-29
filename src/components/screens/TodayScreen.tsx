@@ -4,7 +4,7 @@ import { getBook } from '../../lib/bookRegistry';
 import { FEED, FEED_GENRES, feedLikes } from '../../content/feed';
 import { rankShelf } from '../../lib/shelfRank';
 import { rowFromLevel } from '../../lib/economy/curve';
-import { StatDelta, useLevelFlash } from '../StatFx';
+import { useLevelFlash } from '../StatFx';
 import type { BookId, Genre } from '../../content/types';
 import { useT } from '../../i18n/react';
 import { Icon } from '../Icon';
@@ -47,12 +47,10 @@ function StatChips() {
         <Icon name="ti-bolt" className="bolt" />
         <span className="pb-xpbar"><b style={{ width: `${xpPct}%` }} /></span>
         <span className="n">{xp}</span>
-        <StatDelta stat="xp" />
       </div>
       <div className="pb-chip" aria-label={t.statInk(ink)}>
         <Icon name="ti-inkdrop" className="drop" />
         <span className="n">{ink}<span className="pb-chip-max">/{inkMax}</span></span>
-        <StatDelta stat="ink" />
       </div>
     </div>
   );

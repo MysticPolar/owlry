@@ -17,44 +17,6 @@ import { Icon } from './Icon';
    changes, it just doesn't perform.
    ============================================================ */
 
-type Stat = 'xp' | 'ink' | 'coins';
-
-interface Floater {
-  k: number;
-  v: number;
-}
-
-/** the figure that lifts off a chip — "+4", "−5", "+25" */
-export function StatDelta({ stat }: { stat: Stat }) {
-  const fx = useStore((s) => s.statFx);
-  const reduce = useReduceMotion();
-  const [items, setItems] = useState<Floater[]>([]);
-  const seen = useRef(0);
-
-  useEffect(() => {
-    if (!fx || reduce || fx.n === seen.current) return;
-    seen.current = fx.n;
-    const v = fx[stat];
-    if (!v) return;
-    setItems((xs) => [...xs, { k: fx.n, v }]);
-    // the element outlives its animation by a hair, then leaves on its own
-    const t = setTimeout(() => setItems((xs) => xs.filter((x) => x.k !== fx.n)), 1000);
-    return () => clearTimeout(t);
-  }, [fx, stat, reduce]);
-
-  if (!items.length) return null;
-  return (
-    <>
-      {items.map((it) => (
-        <span key={it.k} className={`pb-fx ${stat}`} aria-hidden="true">
-          {it.v > 0 ? '+' : '−'}
-          {Math.abs(it.v)}
-        </span>
-      ))}
-    </>
-  );
-}
-
 /** the receipt: Keeper on the left, the night's deltas after — numbers only.
     One line per econ() burst ("+60 ⚡ +25 🪙 −5 💧"), and when the seat moves,
     a gold ROW stamp. No sentences; the deltas are the sentence. */
@@ -70,7 +32,12 @@ export function EconStrip() {
     setShown(fx);
     setOn(true);
     const t = setTimeout(() => setOn(false), 1600);
-    return () => clearTimeout(t);
+    // once the fade completes, leave no stale node behind
+    const t2 = setTimeout(() => setShown(null), 1850);
+    return () => {
+      clearTimeout(t);
+      clearTimeout(t2);
+    };
   }, [fx, reduce]);
 
   if (!shown) return null;

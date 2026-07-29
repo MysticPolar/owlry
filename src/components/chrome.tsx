@@ -5,6 +5,7 @@ import type { Tab } from '../store/types';
 import { useT } from '../i18n/react';
 import { Icon } from './Icon';
 import { chainsInner } from '../lib/chains';
+import { useReduceMotion } from '../hooks/useReduceMotion';
 
 /* guest-only shortcut to walk the level ladder (and trip its unlocks) from
    the main screens — today and the shelves. Discover docks its own copy in the
@@ -165,19 +166,35 @@ export function Toast() {
 }
 
 /* ---------- spark burst (ported from the mockup's burst()) ---------- */
+
+/** the seat element the sparks converge on, only if it is actually visible —
+    sparks aimed at a clipped or off-screen chip read as a random mid-air pop */
+function burstAnchor(): DOMRect | null {
+  for (const el of [document.getElementById('lvLab'), document.querySelector('.pb-plvl-row')]) {
+    if (!(el instanceof HTMLElement)) continue;
+    if (el.offsetParent === null) continue; // a display:none screen
+    if (el.closest('.pb-home.collapsed')) continue; // clipped by the collapsed header
+    const r = el.getBoundingClientRect();
+    if (r.width > 0) return r;
+  }
+  return null;
+}
+
 export function BurstLayer() {
   const burstNonce = useStore((s) => s.burstNonce);
+  const reduce = useReduceMotion();
   const layerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (burstNonce === 0) return;
+    if (burstNonce === 0 || reduce) return;
     const layer = layerRef.current;
     const app = document.getElementById('app');
     if (!layer || !app) return;
+    const r = burstAnchor();
+    if (!r) return; // no visible seat on this screen — no sparks
     const a = app.getBoundingClientRect();
-    const r = document.getElementById('lvLab')?.getBoundingClientRect();
-    const cx = r && r.width ? r.left - a.left + r.width / 2 : a.width / 2;
-    const cy = r && r.width ? r.top - a.top + r.height / 2 : a.height * 0.4;
+    const cx = r.left - a.left + r.width / 2;
+    const cy = r.top - a.top + r.height / 2;
     for (let i = 0; i < 10; i++) {
       const s = document.createElement('span');
       s.className = 'spark';
@@ -189,7 +206,7 @@ export function BurstLayer() {
       layer.appendChild(s);
       setTimeout(() => s.remove(), 750);
     }
-  }, [burstNonce]);
+  }, [burstNonce, reduce]);
 
   return <div className="burst-layer" id="burst" ref={layerRef} />;
 }
