@@ -12,6 +12,7 @@ import { slugify } from './cover';
 import { registerBook } from './bookRegistry';
 import type { DynamicRegistryScope } from './bookRegistry';
 import { recToBook, recToBookLite, splitSayIntoNodes } from './owlWireV2';
+import { dealHand } from './dealHand';
 import type { ScoutBook, ScoutPick } from './owlWireV2';
 import type { BookRef } from '../content/types';
 import type { ChatItem } from '../store/types';
@@ -42,6 +43,8 @@ export function rowsToChat(
   let lastBatch: OwlBatch | null = null;
   let chips: string[] = [];
   let maxId = 0;
+  /** slugs the turn just above dealt, so its legacy letter row isn't doubled */
+  let dealtSlugs: BookRef[] = [];
 
   const collect = (slug: BookRef) => {
     if (!collected.includes(slug)) collected = [slug, ...collected];
@@ -65,11 +68,13 @@ export function rowsToChat(
       const titles = main ? [main.title] : picks.map((p) => p.title);
       const bubble = splitSayIntoNodes(say, titles, slugify);
 
+      let turnSlugs: BookRef[] = [];
       if (main) {
         const slug = slugify(main.title);
         registerBook(slug, recToBook(main), registryScope);
         lastBatch = { main: slug, also: [] };
         collect(slug);
+        turnSlugs = [slug];
       } else if (picks.length) {
         const slugs = picks.map((p) => {
           const s = slugify(p.title);
@@ -78,10 +83,22 @@ export function rowsToChat(
         });
         lastBatch = { main: slugs[0], also: slugs.slice(1) };
         slugs.forEach(collect);
+        turnSlugs = slugs;
       }
 
       chips = rowChips;
       messages.push({ kind: 'msg', id: row.id, who: 'owl', nodes: bubble });
+
+      // …and the hand that was dealt under it. The live turn fans a 'deal'
+      // after the words settle; without this the cards were there when the
+      // reply first landed and gone the next time the app opened.
+      // Negative ids can never collide with a row id or a future nextId().
+      if (turnSlugs.length) {
+        dealtSlugs = turnSlugs;
+        messages.push({ kind: 'deal', id: -row.id, books: dealHand(turnSlugs) });
+      } else {
+        dealtSlugs = [];
+      }
       continue;
     }
 
@@ -89,6 +106,9 @@ export function rowsToChat(
       const slug = String(row.payload.slug ?? '');
       const book = (row.payload.book ?? null) as ScoutBook | null;
       if (slug && book) registerBook(slug, recToBook(book), registryScope);
+      // this turn already dealt that book as a card — a letter row for the same
+      // slug is the older shape of the same moment, not a second one
+      if (slug && dealtSlugs.includes(slug)) continue;
       messages.push({ kind: 'letter', id: row.id, book: slug });
       continue;
     }

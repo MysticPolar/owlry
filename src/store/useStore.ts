@@ -38,7 +38,6 @@ import {
   setActiveDynamicRegistryScope,
 } from '../lib/bookRegistry';
 import type { DynamicRegistryScope } from '../lib/bookRegistry';
-import { FEED } from '../content/feed';
 import { supabase, isBackendConfigured } from '../lib/supabase';
 import { getSnapshot } from '../lib/economy/api';
 import { applyAction, derive, emptyDaily, localDay, settleInk, tzOffsetMinutes } from '../lib/economy/engine';
@@ -50,6 +49,7 @@ import { LV_CAP, cumulativeXp } from '../lib/economy/curve';
 import { STUB_LABEL } from '../content/stubs';
 import type { EconomyAction, Snapshot } from '../lib/economy/types';
 import { getLocalWeather } from '../lib/weather';
+import { dealHand } from '../lib/dealHand';
 import { rowsToChat } from '../lib/chatHydrate';
 import type { ChatRow } from '../lib/chatHydrate';
 import { resolvePublicDomain } from '../lib/ebook/resolve';
@@ -303,21 +303,6 @@ export interface Store extends PersistedState {
 
 let chatId = 0;
 const nextId = () => ++chatId;
-
-/* fill scout's hand to three cards: the turn's own picks lead, then catalog
-   neighbours of the lead book's genre (feed order), never repeating. Keeps a
-   thin live/offline reply from dealing a lonely card. */
-const dealHand = (ids: BookRef[]): BookRef[] => {
-  const hand = [...new Set(ids)].slice(0, 3);
-  if (hand.length >= 3 || !hand.length) return hand;
-  const lead = getBook(hand[0]);
-  const pool = [...FEED.filter((id) => lead && getBook(id)?.g === lead.g), ...FEED];
-  for (const id of pool) {
-    if (hand.length >= 3) break;
-    if (!hand.includes(id)) hand.push(id);
-  }
-  return hand;
-};
 
 /* a monotonic "conversation generation" — bumped whenever the conversation is
    wiped or reloaded (restart, reset, hydrate, sign-out). A turn's deferred work
