@@ -22,7 +22,7 @@ import { shallow } from 'zustand/shallow';
 
 import { WX } from '../content/weather';
 import { SAL, FLAVOR, START_CHIPS, AFTER_CHIPS, dayPart } from '../content/owl';
-import { tOf, setActiveLang, syncDocumentLang } from '../i18n';
+import { tOf, setActiveLang, syncDocumentLang, getActiveLang } from '../i18n';
 import { newSession } from '../lib/owlBrain';
 import type { OwlMessage } from '../lib/owlBrain';
 import { fetchOwlTurn, fetchLetter } from '../lib/owlClient';
@@ -44,6 +44,7 @@ import { applyAction, derive, emptyDaily, localDay, settleInk, tzOffsetMinutes }
 import type { ActionContext, EconomyState, EngineResult } from '../lib/economy/engine';
 import { clearQueue, enqueue, flush } from '../lib/economy/queue';
 import { snapshotPatch } from '../lib/economy/snapshot';
+import type { CalendarDay, QuoteRow, RadarPoint, StatsSnapshot } from '../lib/economy/types';
 import { CURVE_VERSION, ECONOMY_VERSION, STAND_LEVEL, goodFor } from '../lib/economy/config';
 import { LV_CAP, cumulativeXp } from '../lib/economy/curve';
 import { STUB_LABEL } from '../content/stubs';
@@ -217,6 +218,14 @@ export interface Store extends PersistedState {
   authUser: AuthUser | null;
   authReady: boolean;
   signOut: () => Promise<void>;
+
+  /* session-only profile read-models from owlry_get_snapshot.
+     null = guest / mockup (UI falls back to content/profile.ts seeds).
+     arrays (even empty) = signed-in server truth. */
+  profileRadar: RadarPoint[] | null;
+  profileCalendar: CalendarDay[] | null;
+  profileStats: StatsSnapshot | null;
+  profileQuotes: QuoteRow[] | null;
 
   /* the separate, read-only history list (past days; today lives in Discover) */
   historyOpen: boolean;
@@ -537,7 +546,7 @@ const recoverAccountUploadBooks = async (
     const book: Book = {
       t: title,
       a: author,
-      q: 'Your private uploaded copy.',
+      q: tOf(getActiveLang()).reader.uploadedCopy,
       n: Math.max(1, pagesRead, estimatedPages),
       g: 'life',
       ...deriveCover(title, author),
@@ -584,6 +593,8 @@ export interface EconCtx extends ActionContext {
   pages?: number;
   /** quote_keep: the line itself — the server keeps it, the ledger keeps a hash */
   text?: string;
+  /** chat: the question text — ledger meta so the calendar can show "you asked" */
+  q?: string;
   /** the server owns this spend (the peek is charged inside owl-peek) — apply
       the optimistic delta locally, but never enqueue a second charge */
   localOnly?: boolean;
@@ -736,6 +747,12 @@ export const useStore = create<Store>()(
     // no backend configured → already "ready", with no user; the app never gates on login
     authUser: null,
     authReady: !supabase,
+
+    // guest/mockup: null → ProfileScreen keeps the seeded Mira scenery
+    profileRadar: null,
+    profileCalendar: null,
+    profileStats: null,
+    profileQuotes: null,
 
     signOut: async () => {
       if (!supabase) return;
@@ -1405,6 +1422,7 @@ export const useStore = create<Store>()(
         if (ctx.pages !== undefined) meta.pages = ctx.pages;
         if (ctx.sku) meta.sku = ctx.sku;
         if (ctx.text) meta.text = ctx.text;
+        if (ctx.q) meta.q = ctx.q.slice(0, 280);
         void enqueue(s.authUser.id, action, ctx.bookId ?? null, meta)
           .then((r) => {
             if (!r?.ok) return;
@@ -1902,6 +1920,10 @@ export const useStore = create<Store>()(
         // would out-rank the account's real ledger and come back every cold
         // start. Snapshot first; if it can't be had, mark the state dirty and
         // write NOTHING, so the next launch tries again from clean ground.
+        let profilePatch: Pick<
+          NonNullable<ReturnType<typeof snapshotPatch>>,
+          'profileRadar' | 'profileCalendar' | 'profileStats' | 'profileQuotes'
+        > | null = null;
         if (isBackendConfigured()) {
           let patch: ReturnType<typeof snapshotPatch> = null;
           try {
@@ -1925,6 +1947,12 @@ export const useStore = create<Store>()(
           // library would wipe the shelf — and the writes below would persist
           // the wipe to both caches. Union the shelves; keep the furthest page.
           next = mergeProgress(next, { ...next, ...patch } as PersistedState);
+          profilePatch = {
+            profileRadar: patch.profileRadar,
+            profileCalendar: patch.profileCalendar,
+            profileStats: patch.profileStats,
+            profileQuotes: patch.profileQuotes,
+          };
         }
 
         cloudHydrationPending = null;
@@ -1935,6 +1963,12 @@ export const useStore = create<Store>()(
           ...next,
           showOnboarding: !next.prefs.onboarded,
           accountStorageBlocked: false,
+          ...(profilePatch ?? {
+            profileRadar: [],
+            profileCalendar: [],
+            profileStats: { books_read: 0, pages_turned: 0, highlights: 0, reading_minutes: 0 },
+            profileQuotes: [],
+          }),
         });
         void backfillLegacyPositionFingerprints(userId);
         void get().hydrateChat();
@@ -2114,6 +2148,11 @@ export const useStore = create<Store>()(
           ...(guest ?? SEED),
           readingPositions: {},
           accountStorageBlocked: false,
+          // drop the account's radar/calendar/quotes — guest scenery resumes
+          profileRadar: null,
+          profileCalendar: null,
+          profileStats: null,
+          profileQuotes: null,
         });
         void get().hydrateChat();
       } catch (error) {
@@ -2247,7 +2286,7 @@ export const useStore = create<Store>()(
         // charged only when the live Scout actually answered — a silent offline
         // fallback costs nothing. Past the day's sixth ask the ink still spends
         // (the owl still writes); it just stops paying XP.
-        if (live) get().econ('chat');
+        if (live) get().econ('chat', { q: text });
 
         // the dots hold for ~620ms (the mockup's beat) before Scout's line streams
         // in — but never longer, so a slow live turn doesn't double-wait
@@ -2592,6 +2631,14 @@ if (supabase) {
         accountStorageBlocked: !!user,
         authUser: user,
         authReady: true,
+        // real accounts never inherit Mira's seeded radar/calendar/quotes —
+        // empty until owlry_get_snapshot lands; guests keep null → mock scenery
+        profileRadar: user ? [] : null,
+        profileCalendar: user ? [] : null,
+        profileStats: user
+          ? { books_read: 0, pages_turned: 0, highlights: 0, reading_minutes: 0 }
+          : null,
+        profileQuotes: user ? [] : null,
       });
     } else {
       useStore.setState({ authUser: user, authReady: true });

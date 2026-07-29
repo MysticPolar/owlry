@@ -19,11 +19,14 @@ import { PEEK_SYSTEM, peekUser } from '../_shared/prompts/peek.ts';
 import { LETTER_SCHEMA } from '../_shared/schemas.ts';
 import { isValidLetterWire } from '../_shared/validators.ts';
 import type { TopicEntry } from '../_shared/memory.ts';
+import { coerceLang } from '../_shared/lang.ts';
 
 interface PeekRequest {
   slug?: string;
   title?: string;
   author?: string;
+  /** UI language prefs — letters are generated + cached per language */
+  lang?: string;
   /** economy v2: idempotency key for the preview charge (client-generated) */
   idem?: string;
   /** economy v2: client tz offset, minutes east of UTC */
@@ -34,6 +37,7 @@ interface PeekCtx {
   book: { title: string; author: string };
   query: unknown;
   selectedMemory: string[];
+  lang?: string;
 }
 
 function hourStart(): Date {
@@ -65,6 +69,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
   }
   const slug = typeof body.slug === 'string' ? body.slug.trim() : '';
   if (!slug) return jsonResponse({ error: 'slug required' }, 400);
+  const lang = coerceLang(body.lang);
 
   const authHeader = req.headers.get('Authorization') ?? '';
   const authedClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { global: { headers: { Authorization: authHeader } } });
@@ -77,8 +82,8 @@ Deno.serve(async (req: Request): Promise<Response> => {
   const { data: rlOk } = await admin.rpc('owlry_rl_bump', { p_key: `owl-peek:${uid}`, p_window_start: hourStart().toISOString(), p_max: 20 });
   if (rlOk === false) return jsonResponse({ error: 'rate_limited' }, 429);
 
-  // ── cache-first: a letter is generated once, then always served from cache ──
-  const letterKey = `peek_letter:${uid}:${slug}`;
+  // ── cache-first: letters are keyed by language so zh/en don't collide ──
+  const letterKey = `peek_letter:${uid}:${slug}:${lang}`;
   const { data: cachedLetter } = await admin
     .from('cached_responses')
     .select('response_json, created_at, ttl_hours')
@@ -99,6 +104,9 @@ Deno.serve(async (req: Request): Promise<Response> => {
   let ctx: PeekCtx;
   if (cachedCtx && isFresh(cachedCtx.created_at, cachedCtx.ttl_hours)) {
     ctx = cachedCtx.response_json as PeekCtx;
+    // Honour the caller's current UI language even if the stash was older.
+    const q = (ctx.query && typeof ctx.query === 'object' ? ctx.query : {}) as Record<string, unknown>;
+    ctx = { ...ctx, query: { ...q, language: lang }, lang };
   } else {
     const title = typeof body.title === 'string' ? body.title : '';
     const author = typeof body.author === 'string' ? body.author : '';
@@ -111,7 +119,8 @@ Deno.serve(async (req: Request): Promise<Response> => {
       ...topics.slice(0, 3).map(formatTopic),
       ...longTerm.taste.loves.slice(0, 2).map((l: string) => `loves ${l}`),
     ];
-    ctx = { book: { title, author }, query: { themes: [], intent: `revisit ${title}`, language: 'en' }, selectedMemory };
+    const intent = lang === 'zh' ? `重温《${title}》` : `revisit ${title}`;
+    ctx = { book: { title, author }, query: { themes: [], intent, language: lang }, selectedMemory, lang };
   }
 
   // ── economy v2: the live letter costs ink — charged HERE, server-side,

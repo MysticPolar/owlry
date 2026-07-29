@@ -1,7 +1,8 @@
 /* Bridge between the server snapshot and the Zustand store.
    For a signed-in reader the server is the authority: this is where its word
-   replaces the optimistic local delta. The mapping itself lives in
-   lib/economy/snapshot.ts so the store can use it too, without a cycle. */
+   replaces the optimistic local delta — economy, library, AND the profile
+   read-models (radar / calendar / stats / quotes). The mapping itself lives
+   in lib/economy/snapshot.ts so the store can use it too, without a cycle. */
 import { useStore } from './useStore';
 import { getSnapshot } from '../lib/economy/api';
 import { snapshotPatch } from '../lib/economy/snapshot';

@@ -117,7 +117,7 @@ export const useAuth = create<AuthStore>((set, get) => ({
   login: async (email, password) => {
     if (get().busy) return false;
     if (!email.trim() || !password) {
-      set({ error: 'enter your email and password.' });
+      set({ error: getActiveLang() === 'zh' ? '请填上邮箱和密码。' : 'enter your email and password.' });
       return false;
     }
     set({ busy: true, error: null });

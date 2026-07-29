@@ -35,13 +35,17 @@ import { SCOUT_SYSTEM, scoutUser } from '../_shared/prompts/scout.ts';
 import { MEMORY_MERGE_SYSTEM, memoryMergeUser } from '../_shared/prompts/memoryMerge.ts';
 import { SEMANTIC_QUERY_SCHEMA, SCOUT_SCHEMA, MEMORY_PATCH_SCHEMA } from '../_shared/schemas.ts';
 import type { SemanticQuery, ScoutReply, MemoryPatch } from '../_shared/schemas.ts';
+import { coerceLang, type ReaderLang } from '../_shared/lang.ts';
 
 interface ChatRequest {
   message?: string;
   client_day?: string; // reader's local YYYY-MM-DD (drives dated topics + history grouping)
+  /** UI language prefs — Scout/Peek must honour this for every reader-facing field */
+  lang?: string;
+  desk?: 'all' | 'pro';
 }
 
-const FALLBACK: ScoutReply = {
+const FALLBACK_EN: ScoutReply = {
   say: "the post desk is quiet for a moment — tell me what's going on and i'll sort you something.",
   main: null,
   picks: [],
@@ -49,16 +53,26 @@ const FALLBACK: ScoutReply = {
   chips: ['rest', 'need focus', 'feeling blue', 'cozy escape'],
 };
 
-const FALLBACK_QUERY: Omit<SemanticQuery, 'themes' | 'intent'> = {
+const FALLBACK_ZH: ScoutReply = {
+  say: '柜台这会儿安静了一拍——跟我说点近况，我帮你分拣一本。',
+  main: null,
+  picks: [],
+  note: null,
+  chips: ['想休息', '需要专注', '心情低落', '来点治愈的'],
+};
+
+const FALLBACK = (lang: ReaderLang): ScoutReply => (lang === 'zh' ? FALLBACK_ZH : FALLBACK_EN);
+
+const FALLBACK_QUERY = (lang: ReaderLang): Omit<SemanticQuery, 'themes' | 'intent'> => ({
   mood: '',
   avoid: [],
   depth: 'mixed',
   length: 'any',
-  language: 'en',
+  language: lang,
   selected_memory: [],
   topic_candidate: null,
   note_domain: null,
-};
+});
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -128,6 +142,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
   const message = typeof body.message === 'string' ? body.message.trim().slice(0, 600) : '';
   if (!message) return jsonResponse({ error: 'message required' }, 400);
   const clientDay = typeof body.client_day === 'string' && DATE_RE.test(body.client_day) ? body.client_day : today();
+  const lang = coerceLang(body.lang);
 
   // ── auth: revalidate the caller's JWT against the auth server ──
   const authHeader = req.headers.get('Authorization') ?? '';
@@ -183,16 +198,17 @@ Deno.serve(async (req: Request): Promise<Response> => {
     const parsed = (await callGeminiJson(ai, {
       model: MODEL_FAST,
       system: DIGEST_SYSTEM,
-      user: digestUser(message, history, JSON.stringify(longTerm), JSON.stringify(topics), clientDay),
+      user: digestUser(message, history, JSON.stringify(longTerm), JSON.stringify(topics), clientDay, lang),
       schema: SEMANTIC_QUERY_SCHEMA,
       temperature: 0.2, // intake distillation — near-deterministic, no invented themes
       maxOutputTokens: 1000,
       thinkingLevel: 'MINIMAL',
     })) as SemanticQuery;
-    query = { ...parsed, selected_memory: capSelectedMemory(parsed.selected_memory) };
+    // Force UI language prefs — never let the model default to English for a zh reader.
+    query = { ...parsed, language: lang, selected_memory: capSelectedMemory(parsed.selected_memory) };
   } catch (err) {
     console.error('[owl-chat] digest failed, using thin fallback query', err);
-    query = { themes: [message], intent: message, ...FALLBACK_QUERY };
+    query = { themes: [message], intent: message, ...FALLBACK_QUERY(lang) };
   }
 
   // ── Call B — Scout (3.5 Flash): pick + bubble, no letter ──
@@ -211,7 +227,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
     // a blocked reply still deserves a turn at the desk; a broken one is a 502.
     if (err instanceof GeminiBlocked) {
       console.error('[owl-chat] Scout blocked, serving the quiet-desk fallback', err.reason);
-      scout = FALLBACK;
+      scout = FALLBACK(lang);
     } else {
       console.error('[owl-chat] Scout call failed', err);
       return jsonResponse({ error: 'generation_failed' }, 502);
@@ -234,7 +250,12 @@ Deno.serve(async (req: Request): Promise<Response> => {
         question_hash: `peek_ctx:${uid}:${slug}`,
         mode: 'peek_ctx',
         question_text: message,
-        response_json: { book: { title: scout.main.title, author: scout.main.author }, query, selectedMemory: query.selected_memory },
+        response_json: {
+          book: { title: scout.main.title, author: scout.main.author },
+          query,
+          selectedMemory: query.selected_memory,
+          lang,
+        },
         ttl_hours: 72,
       },
       { onConflict: 'question_hash' },

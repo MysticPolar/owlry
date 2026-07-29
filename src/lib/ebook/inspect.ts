@@ -177,10 +177,8 @@ async function inspectMobi(
 
 export async function inspectFile(file: File): Promise<FileInspection> {
   const preflight = preflightFile(file);
-  if (preflight === 'empty') return { ok: false, reason: 'This file is empty.' };
-  if (preflight === 'too-large') {
-    return { ok: false, reason: 'This file is larger than the 50 MiB upload limit.' };
-  }
+  if (preflight === 'empty') return { ok: false, reason: 'empty' };
+  if (preflight === 'too-large') return { ok: false, reason: 'too-large' };
 
   const name = file.name.toLowerCase();
   const ext = name.slice(name.lastIndexOf('.') + 1);
@@ -194,38 +192,21 @@ export async function inspectFile(file: File): Promise<FileInspection> {
   if (ext === 'mobi' || ext === 'azw3' || ext === 'azw') {
     const magic = new TextDecoder('latin1').decode(head.subarray(60, 68));
     if (magic !== 'BOOKMOBI') {
-      return {
-        ok: false,
-        reason: 'This is not a supported DRM-free Kindle file. Try a DRM-free EPUB, MOBI, or AZW3.',
-      };
+      return { ok: false, reason: 'bad-kindle' };
     }
     const protection = await inspectMobi(file, head);
-    if (protection === 'protected') {
-      return {
-        ok: false,
-        reason: 'This file is copy-protected and can’t be opened. Try a DRM-free EPUB.',
-      };
-    }
-    if (protection === 'invalid') {
-      return {
-        ok: false,
-        reason: 'This is not a supported DRM-free Kindle file. Try a DRM-free EPUB, MOBI, or AZW3.',
-      };
-    }
+    if (protection === 'protected') return { ok: false, reason: 'protected' };
+    if (protection === 'invalid') return { ok: false, reason: 'bad-kindle' };
     return { ok: true, format: ext === 'mobi' ? 'mobi' : 'azw3' };
   }
   const isZip = head[0] === 0x50 && head[1] === 0x4b; // "PK"
 
   // EPUB (zip carrying the epub mimetype)
   if (ext === 'epub' || (isZip && bytesIndexOf(head, enc('application/epub+zip')) !== -1)) {
-    if (!isZip) return { ok: false, reason: 'That doesn’t look like a valid EPUB file.' };
+    if (!isZip) return { ok: false, reason: 'bad-epub' };
     const protection = await inspectEpubProtection(file);
-    if (protection === 'invalid') {
-      return { ok: false, reason: 'That doesn’t look like a valid EPUB file.' };
-    }
-    if (protection === 'protected') {
-      return { ok: false, reason: 'This file is copy-protected and can’t be opened. Try a DRM-free EPUB.' };
-    }
+    if (protection === 'invalid') return { ok: false, reason: 'bad-epub' };
+    if (protection === 'protected') return { ok: false, reason: 'protected' };
     return { ok: true, format: 'epub' };
   }
 
@@ -236,32 +217,23 @@ export async function inspectFile(file: File): Promise<FileInspection> {
     bytesIndexOf(head.subarray(0, 1024), enc('%PDF-')) !== -1
   ) {
     if (bytesIndexOf(head.subarray(0, 1024), enc('%PDF-')) === -1) {
-      return { ok: false, reason: 'That doesn’t look like a valid PDF file.' };
+      return { ok: false, reason: 'bad-pdf' };
     }
     const protection = await inspectPdf(file);
-    if (protection === 'protected') {
-      return {
-        ok: false,
-        reason: 'This file is copy-protected and can’t be opened. Try a DRM-free EPUB.',
-      };
-    }
-    if (protection === 'invalid') {
-      return { ok: false, reason: 'That doesn’t look like a readable PDF file.' };
-    }
+    if (protection === 'protected') return { ok: false, reason: 'protected' };
+    if (protection === 'invalid') return { ok: false, reason: 'bad-readable-pdf' };
     return { ok: true, format: 'pdf' };
   }
 
   // FB2 (FictionBook XML)
   if (ext === 'fb2' || bytesIndexOf(head, enc('<FictionBook')) !== -1) {
-    if (await inspectFb2(file) === 'invalid') {
-      return { ok: false, reason: 'That doesn’t look like a valid FB2 file.' };
-    }
+    if (await inspectFb2(file) === 'invalid') return { ok: false, reason: 'bad-fb2' };
     return { ok: true, format: 'fb2' };
   }
 
   if (ext === 'txt') return { ok: true, format: 'txt' };
 
-  return { ok: false, reason: 'Unsupported file type. Use a DRM-free EPUB, PDF, FB2, or TXT.' };
+  return { ok: false, reason: 'unsupported' };
 }
 
 export const ACCEPT_ATTR = '.epub,.pdf,.fb2,.txt,.mobi,.azw3';

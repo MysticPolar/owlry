@@ -12,6 +12,9 @@ import { loadUpload } from '../../lib/ebook/storage';
 import { useStore } from '../../store/useStore';
 import { COPY_REPLACED_ERROR, SYSTEM_STACK } from './shared';
 import type { EngineHandle, EngineProps } from './shared';
+import { getActiveLang, tOf } from '../../i18n';
+
+const r = () => tOf(getActiveLang()).reader;
 
 async function decodeText(blob: Blob): Promise<string> {
   const bytes = new Uint8Array(await blob.arrayBuffer());
@@ -177,7 +180,7 @@ export const TextView = forwardRef<EngineHandle, EngineProps>(function TextView(
             onError(
               replacement
                 ? COPY_REPLACED_ERROR
-                : 'Your uploaded file is missing — please upload it again.',
+                : r().errMissingUpload,
               true,
             );
           }
@@ -186,7 +189,7 @@ export const TextView = forwardRef<EngineHandle, EngineProps>(function TextView(
         const text = await decodeText(upload.blob);
         if (!cancelled) setParas(txtToParas(text));
       } catch {
-        if (!cancelled) onError('We couldn’t open this file.');
+        if (!cancelled) onError(r().errOpenFile);
       }
     })();
     return () => { cancelled = true; };

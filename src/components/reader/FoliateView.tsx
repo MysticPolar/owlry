@@ -14,9 +14,12 @@ import { fetchRemoteBook } from '../../lib/ebook/remote';
 import type { ReaderPrefs } from '../../store/types';
 import { COPY_REPLACED_ERROR, SYSTEM_STACK, pageTapAction } from './shared';
 import type { EngineHandle, EngineProps } from './shared';
+import { getActiveLang, tOf } from '../../i18n';
 import literataUrl from '../../assets/fonts/literata-var-latin.woff2';
 import frauncesUrl from '../../assets/fonts/fraunces-var-latin.woff2';
 import frauncesItalicUrl from '../../assets/fonts/fraunces-italic-latin.woff2';
+
+const r = () => tOf(getActiveLang()).reader;
 
 type FoliateRenderer = HTMLElement & {
   destroy?: () => void;
@@ -518,7 +521,7 @@ export const FoliateView = forwardRef<EngineHandle, EngineProps>(function Foliat
       } catch (error) {
         if (turnStateRef.current !== state || viewRef.current !== view) return;
         console.error('[reader] foliate page turn failed:', error);
-        onErrorRef.current('We couldn’t turn that page. Try closing and reopening the book.');
+        onErrorRef.current(r().errTurnPage);
       }
     });
   }, []);
@@ -748,7 +751,7 @@ export const FoliateView = forwardRef<EngineHandle, EngineProps>(function Foliat
       ) return;
       event.stopPropagation();
       console.error('[reader] foliate internal navigation failed:', error);
-      onErrorRef.current('We couldn’t turn that page. Try closing and reopening the book.');
+      onErrorRef.current(r().errTurnPage);
     };
 
     const teardownView = (target: FoliateViewEl | null) => {
@@ -789,7 +792,7 @@ export const FoliateView = forwardRef<EngineHandle, EngineProps>(function Foliat
     // back to the upload flow if nothing has rendered in time.
     // generous: a remote classic streams through book-proxy (~4-5s from Gutenberg)
     // before foliate even parses it.
-    const watchdog = setTimeout(() => fail('We couldn’t load this book. Upload your own file to read it.'), 20000);
+    const watchdog = setTimeout(() => fail(r().errLoadBook), 20000);
 
     (async () => {
       try {
@@ -802,7 +805,7 @@ export const FoliateView = forwardRef<EngineHandle, EngineProps>(function Foliat
           if (!up) {
             const replacement = await loadUpload(bookId);
             if (replacement) return fail(COPY_REPLACED_ERROR);
-            return fail('Your uploaded file is missing — please upload it again.');
+            return fail(r().errMissingUpload);
           }
           // foliate sniffs format from file.name — a raw Blob (or a platform
           // that degrades File → Blob in IndexedDB) would crash makeBook, so
@@ -861,7 +864,7 @@ export const FoliateView = forwardRef<EngineHandle, EngineProps>(function Foliat
         teardownView(view);
         if (cancelled) return;
         console.error('[reader] foliate open failed:', e);
-        fail('We couldn’t open this book. Try a different DRM-free file.');
+        fail(r().errOpenBook);
       }
     })();
 

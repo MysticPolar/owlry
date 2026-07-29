@@ -50,6 +50,20 @@ export interface ReadingPosition {
 export interface FileInspection {
   ok: boolean;
   format?: EbookFormat;
-  /** blocking reason when ok=false (shown to the user) */
-  reason?: string;
+  /**
+   * Machine reason when ok=false. UI maps via i18n
+   * (`settings.upload.err*` / `reader.err*`) — never store English prose here.
+   */
+  reason?: InspectReason;
 }
+
+export type InspectReason =
+  | 'empty'
+  | 'too-large'
+  | 'bad-kindle'
+  | 'protected'
+  | 'bad-epub'
+  | 'bad-pdf'
+  | 'bad-readable-pdf'
+  | 'bad-fb2'
+  | 'unsupported';

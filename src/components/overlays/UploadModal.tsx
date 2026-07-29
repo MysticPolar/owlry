@@ -4,6 +4,7 @@ import { useModalFocus } from '../../hooks/useModalFocus';
 import { useOverlayPresence } from '../../hooks/useOverlayPresence';
 import { getBook } from '../../lib/bookRegistry';
 import { inspectFile, preflightFile, ACCEPT_ATTR } from '../../lib/ebook/inspect';
+import type { InspectReason } from '../../lib/ebook/types';
 import {
   createEbookCopyVersion,
   getPendingUploadSync,
@@ -37,6 +38,31 @@ export function UploadModal() {
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const t = useT().settings.upload;
+
+  const inspectReason = (reason?: InspectReason): string => {
+    switch (reason) {
+      case 'empty':
+        return t.errEmpty;
+      case 'too-large':
+        return t.errTooLarge;
+      case 'bad-kindle':
+        return t.errBadKindle;
+      case 'protected':
+        return t.errProtected;
+      case 'bad-epub':
+        return t.errBadEpub;
+      case 'bad-pdf':
+        return t.errBadPdf;
+      case 'bad-readable-pdf':
+        return t.errBadReadablePdf;
+      case 'bad-fb2':
+        return t.errBadFb2;
+      case 'unsupported':
+        return t.errUnsupported;
+      default:
+        return t.errUnreadable;
+    }
+  };
 
   // fade both ways (centered dialog — a fade is its natural path); latch the id
   const { mounted, shown } = useOverlayPresence(open && !!bookId, { ref: dialogRef, duration: 220 });
@@ -100,7 +126,7 @@ export function UploadModal() {
       const check = await inspectFile(file);
       if (stopIfAccountChanged()) return;
       if (!check.ok || !check.format) {
-        setError(check.reason ?? t.errUnreadable);
+        setError(inspectReason(check.reason));
         return;
       }
       const copyFingerprint = await fingerprintEbookCopy(file);

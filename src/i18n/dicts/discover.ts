@@ -107,7 +107,7 @@ const zh: typeof en = {
   saveAria: '收进书房',
   pages: (n: number) => `${n} 页`,
   about: '简介',
-  peek: 'PEEK',
+  peek: '试读',
   reasonAria: (title: string) => `Scout 推荐《${title}》的理由`,
   peekInside: '翻开看看',
   openBook: '打开这本书',

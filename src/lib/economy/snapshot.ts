@@ -6,7 +6,14 @@
    import cycle.
    ============================================================ */
 import { derive } from './engine';
-import type { Snapshot, StubRecord } from './types';
+import type {
+  CalendarDay,
+  QuoteRow,
+  RadarPoint,
+  Snapshot,
+  StatsSnapshot,
+  StubRecord,
+} from './types';
 
 export interface SnapshotPatch {
   totalXp: number;
@@ -25,6 +32,11 @@ export interface SnapshotPatch {
   stubs?: StubRecord[];
   goods?: string[];
   inkAt: number;
+  /** session-only profile read-models — guest keeps content seeds instead */
+  profileRadar: RadarPoint[];
+  profileCalendar: CalendarDay[];
+  profileStats: StatsSnapshot;
+  profileQuotes: QuoteRow[];
 }
 
 /**
@@ -57,6 +69,16 @@ export function snapshotPatch(s: Snapshot): SnapshotPatch | null {
     pagesRead: s.library.pagesRead,
     // the server's clock is the one that counts; the local regen restarts here
     inkAt: Date.now(),
+    // always replace — empty arrays mean a quiet new account, not "keep Mira's demo"
+    profileRadar: Array.isArray(s.radar) ? s.radar : [],
+    profileCalendar: Array.isArray(s.calendar) ? s.calendar : [],
+    profileStats: s.stats ?? {
+      books_read: 0,
+      pages_turned: 0,
+      highlights: 0,
+      reading_minutes: 0,
+    },
+    profileQuotes: Array.isArray(s.quotes) ? s.quotes : [],
   };
 
   // the +50 latch is ledger-derived server-side, so the client copy can never

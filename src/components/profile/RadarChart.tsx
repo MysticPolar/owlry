@@ -1,4 +1,4 @@
-import { DIMS } from '../../content/profile';
+import { DIMS, type RadarDim } from '../../content/profile';
 import { useLang, useT } from '../../i18n/react';
 
 const RCX = 176;
@@ -19,10 +19,17 @@ const ANCH: ('middle' | 'start' | 'end')[] = ['middle', 'start', 'start', 'middl
 /**
  * The "reading balance" radar (mockup buildRadar). `replayKey` remounts
  * the data group so the CSS pop animation (.radar.go #rg) re-runs.
+ * Pass `dims` for a signed-in snapshot; omit to keep the guest seed.
  */
-export function RadarChart({ replayKey }: { replayKey: number }) {
+export function RadarChart({
+  replayKey,
+  dims: dimsProp,
+}: {
+  replayKey: number;
+  dims?: RadarDim[];
+}) {
   const t = useT();
-  const dims = DIMS[useLang()];
+  const dims = dimsProp ?? DIMS[useLang()];
   const dataPoints = dims.map(([, v], i) => rpt(i, v / 100).map((n) => n.toFixed(1)).join(',')).join(' ');
   const aria = t.profile.radarAria(dims.map(([n, v]) => `${n} ${v}`).join(', '));
 

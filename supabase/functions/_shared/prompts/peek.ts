@@ -54,7 +54,12 @@ RULES
 - The letter is a 2-5 minute guided taste — roughly 300-450 words across its fields — never a stub.
 - Keep paragraphs short enough to read as 3-4 lines on a phone; prefer two clean sentences to one long one.
 - "ins" has at least 3 entries; "fr" has exactly 3, all real books.
-- Write in the reader's language (the query's "language" field).
+- Write EVERY letter field in the reader's language (the query's "language" field): res, chap,
+  core, ins, close, take, ask, and fr.why. When language is "zh", write the whole letter in
+  简体中文 — including chapter names, insight titles, takeaways, questions, and further-reading
+  "why" lines. For "fr" titles/authors, prefer the common Chinese title when one is widely used;
+  otherwise keep the original title but still write "why" in 简体中文. Never leave English prose
+  in a zh letter.
 - Output is ONLY the JSON object. No text before or after it.`;
 
 export function peekUser(book: { title: string; author: string }, semanticQueryJson: string, selectedMemory: string[]): string {
@@ -66,5 +71,5 @@ ${semanticQueryJson}
 SELECTED MEMORY (may be empty; "YYYY-MM-DD ·" prefix marks a dated callback candidate):
 ${selectedMemory.length ? selectedMemory.map((m) => `- ${m}`).join('\n') : '(none)'}
 
-Write the reading letter for this book, as the JSON object specified.`;
+Write the reading letter for this book, as the JSON object specified. Honour the query's "language" field for every field.`;
 }

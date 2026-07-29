@@ -70,22 +70,30 @@ const en = {
   sixShelves: 'six shelves of you',
   radarAria: (dims: string) => `Radar chart of reading balance: ${dims}`,
   thisWeek: 'this week',
+  weekQuiet: 'quiet so far',
+  weekPosts: (n: number) => (n === 1 ? '1 owl post' : `${n} owl posts`),
   /** monday-first single letters — shared by the week bars & the calendar header */
   weekdays: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
 
   /* ---------- calendar tab ---------- */
   owlPosts: (n: number) => `${n} owl posts`,
-  calDayAria: (d: number, title: string) => `june ${d} — asked the owl, peeked ${title}`,
-  calDayAriaPlain: (d: number) => `june ${d}`,
+  calEmpty: 'no owl posts yet — ask scout and a day will light up.',
+  calDayAria: (d: number, title: string) => `day ${d} — asked the owl, peeked ${title}`,
+  calDayAriaAsked: (d: number) => `day ${d} — asked the owl`,
+  calDayAriaPlain: (d: number) => `day ${d}`,
   calFoot: 'a day you asked the owl & peeked a pick',
-  owlPost: (d: number) => `OWL POST · JUN ${d}`,
+  owlPost: (d: number) => `OWL POST · ${d}`,
+  owlPostDated: (label: string) => `OWL POST · ${label}`,
   youAsked: 'YOU ASKED',
   youPeeked: 'YOU PEEKED',
   firstPages: 'first pages, by owl',
+  noPeekYet: 'no peek yet that day',
+  noAskYet: 'nothing written down for that ask',
 
   /* ---------- quotes tab ---------- */
   tuckedAway: 'tucked away',
   quotesKept: (n: number) => `${n} quotes kept`,
+  quotesEmpty: 'no lines kept yet — underline something that stays with you.',
   keptOn: (d: string) => `kept ${d}`,
   copyAria: 'Copy quote',
   clipQuote: (x: string, author: string, title: string) => `“${x}” — ${author}, ${title}`,
@@ -139,8 +147,8 @@ const zh: typeof en = {
   seatAria: (row: number, lv: number) => `距舞台第 ${row} 排 — 等级 ${lv}`,
   seatMapAria: '整座剧院，十三排',
   seatFront: '第一排',
-  seatToNext: (xp: number, max: number, row: number) => `${xp} / ${max} XP 到第 ${row} 排`,
-  seatEncore: (xp: number, max: number, n: number) => `${xp} / ${max} XP 到第 ${n} 次返场`,
+  seatToNext: (xp: number, max: number, row: number) => `${xp} / ${max} 经验 到第 ${row} 排`,
+  seatEncore: (xp: number, max: number, n: number) => `${xp} / ${max} 经验 到第 ${n} 次返场`,
 
   /* ---------- 票根册 ---------- */
   albumTitle: '票根册',
@@ -181,22 +189,30 @@ const zh: typeof en = {
   sixShelves: '六个书架上的你',
   radarAria: (dims: string) => `阅读平衡雷达图：${dims}`,
   thisWeek: '本周',
+  weekQuiet: '本周还安静',
+  weekPosts: (n: number) => `${n} 封猫头鹰来信`,
   /** 周一开头的单字 — 周条形图与日历表头共用 */
   weekdays: ['一', '二', '三', '四', '五', '六', '日'],
 
   /* ---------- 日历 ---------- */
   owlPosts: (n: number) => `${n} 封猫头鹰来信`,
-  calDayAria: (d: number, title: string) => `6月${d}日 — 问过猫头鹰，翻过《${title}》`,
-  calDayAriaPlain: (d: number) => `6月${d}日`,
+  calEmpty: '还没有猫头鹰来信 — 问一问 Scout，这一天就会亮起来。',
+  calDayAria: (d: number, title: string) => `${d}日 — 问过猫头鹰，翻过《${title}》`,
+  calDayAriaAsked: (d: number) => `${d}日 — 问过猫头鹰`,
+  calDayAriaPlain: (d: number) => `${d}日`,
   calFoot: '这一天，你问过猫头鹰，也翻过它的推荐',
-  owlPost: (d: number) => `猫头鹰来信 · 6月${d}日`,
+  owlPost: (d: number) => `猫头鹰来信 · ${d}日`,
+  owlPostDated: (label: string) => `猫头鹰来信 · ${label}`,
   youAsked: '你问过',
   youPeeked: '你翻过',
   firstPages: '开篇几页，由猫头鹰递来',
+  noPeekYet: '那天还没有翻开试读',
+  noAskYet: '那天的提问没有留下字句',
 
   /* ---------- 摘句 ---------- */
   tuckedAway: '悄悄收好',
   quotesKept: (n: number) => `已收藏 ${n} 句`,
+  quotesEmpty: '还没有摘句 — 划下一句真正留住你的话。',
   keptOn: (d: string) => `${d} 收藏`,
   copyAria: '复制摘句',
   clipQuote: (x: string, author: string, title: string) => `“${x}” — ${author}《${title}》`,

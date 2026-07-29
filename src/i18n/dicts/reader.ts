@@ -98,6 +98,18 @@ const en = {
   flowGroupAria: 'Reading flow',
   flowScroll: 'SCROLL',
   flowPage: 'PAGE',
+
+  /* ---- reader engine errors / status ---- */
+  loadingPage: 'Loading page…',
+  errTurnPage: 'We couldn’t turn that page. Try closing and reopening the book.',
+  errMissingUpload: 'Your uploaded file is missing — please upload it again.',
+  errProtected: 'This file is copy-protected and can’t be opened. Try a DRM-free EPUB.',
+  errOpenPdf: 'We couldn’t open this PDF.',
+  errRenderPdf: 'We couldn’t render this PDF page.',
+  errOpenFile: 'We couldn’t open this file.',
+  errLoadBook: 'We couldn’t load this book. Upload your own file to read it.',
+  errOpenBook: 'We couldn’t open this book. Try a different DRM-free file.',
+  uploadedCopy: 'Your private uploaded copy.',
 };
 
 const zh: typeof en = {
@@ -115,8 +127,8 @@ const zh: typeof en = {
   owlPost: '猫头鹰邮局',
   showFullLetter: '展开整封信',
   kickReadingLetter: '猫头鹰邮局 · 读书信',
-  kickPeek: '猫头鹰邮局 · PEEK',
-  peekWriting: 'peek 正在为你写信…',
+  kickPeek: '猫头鹰邮局 · 试读',
+  peekWriting: 'Peek 正在为你写信…',
   inkRan: '墨水写到半句就断了。再试一次？',
   tryAgain: '再试一次',
   secChapter: '推荐章节',
@@ -138,7 +150,7 @@ const zh: typeof en = {
   sheetAria: '书籍详情',
   goodreads: 'GOODREADS',
   askBtn: '问一问',
-  peekBtn: 'PEEK 来信',
+  peekBtn: '试读来信',
   resumeBtn: '接着读',
   secAuthor: '作者其人',
   linkToast: '将在 owlry 之外打开',
@@ -194,6 +206,18 @@ const zh: typeof en = {
   flowGroupAria: '翻页方式',
   flowScroll: '滚动',
   flowPage: '逐页',
+
+  /* ---- reader engine errors / status ---- */
+  loadingPage: '正在加载页…',
+  errTurnPage: '这一页没能翻过去。试试关掉再重新打开这本书。',
+  errMissingUpload: '你上传的文件不见了——请重新上传一次。',
+  errProtected: '这份文件受版权保护，无法打开。请试试无 DRM 的 EPUB。',
+  errOpenPdf: '我们打不开这份 PDF。',
+  errRenderPdf: '这一页 PDF 没能渲染出来。',
+  errOpenFile: '我们打不开这个文件。',
+  errLoadBook: '这本书没能加载。上传你自己的文件来读。',
+  errOpenBook: '这本书没能打开。请换一份无 DRM 的文件试试。',
+  uploadedCopy: '你的私人上传藏本。',
 };
 
 export const reader = { en, zh };

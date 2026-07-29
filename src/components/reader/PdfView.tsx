@@ -5,8 +5,11 @@ import * as pdfjs from 'pdfjs-dist';
 import workerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 import { loadUpload } from '../../lib/ebook/storage';
 import { COPY_REPLACED_ERROR, type EngineHandle, type EngineProps } from './shared';
+import { getActiveLang, tOf } from '../../i18n';
 
 pdfjs.GlobalWorkerOptions.workerSrc = workerUrl;
+
+const r = () => tOf(getActiveLang()).reader;
 
 export const PdfView = forwardRef<EngineHandle, EngineProps>(function PdfView(
   { bookId, source, initial, onProgress, onError },
@@ -79,7 +82,7 @@ export const PdfView = forwardRef<EngineHandle, EngineProps>(function PdfView(
     } catch (error) {
       const cancelled = (error as { name?: string })?.name === 'RenderingCancelledException';
       if (!cancelled && generation === renderGenerationRef.current) {
-        onErrorRef.current('We couldn’t render this PDF page.');
+        onErrorRef.current(r().errRenderPdf);
       }
     } finally {
       if (generation === renderGenerationRef.current) {
@@ -117,7 +120,7 @@ export const PdfView = forwardRef<EngineHandle, EngineProps>(function PdfView(
             onErrorRef.current(
               replacement
                 ? COPY_REPLACED_ERROR
-                : 'Your uploaded file is missing — please upload it again.',
+                : r().errMissingUpload,
               true,
             );
           }
@@ -141,8 +144,8 @@ export const PdfView = forwardRef<EngineHandle, EngineProps>(function PdfView(
         if (cancelled) return;
         const name = (e as { name?: string })?.name;
         if (name === 'PasswordException')
-          onErrorRef.current('This file is copy-protected and can’t be opened. Try a DRM-free EPUB.');
-        else onErrorRef.current('We couldn’t open this PDF.');
+          onErrorRef.current(r().errProtected);
+        else onErrorRef.current(r().errOpenPdf);
       } finally {
         if (!cancelled && !docRef.current) setLoading(false);
       }
@@ -234,7 +237,7 @@ export const PdfView = forwardRef<EngineHandle, EngineProps>(function PdfView(
             pointerEvents: 'none',
           }}
         >
-          Loading page…
+          {r().loadingPage}
         </div>
       )}
       <canvas

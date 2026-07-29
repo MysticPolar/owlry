@@ -1,6 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useStore } from '../../store/useStore';
 import { LV_CAP, ROWS, encoreStars, rowFromLevel } from '../../lib/economy/curve';
+import {
+  localDayKey,
+  monthLabel,
+  radarDimsFromSnapshot,
+  radarNoteFromDims,
+  reportFromStats,
+  weekBarsFromCalendar,
+} from '../../lib/economy/profileView';
+import type { CalendarDay, QuoteRow } from '../../lib/economy/types';
 import { STUBS } from '../../content/stubs';
 import { useLevelFlash } from '../StatFx';
 import { useAuth } from '../../store/useAuth';
@@ -32,6 +41,26 @@ type ProfileTab = 'stats' | 'cal' | 'quotes' | 'mem';
 function StatsTab({ radarKey }: { radarKey: number }) {
   const t = useT();
   const lang = useLang();
+  const radar = useStore((s) => s.profileRadar);
+  const stats = useStore((s) => s.profileStats);
+  const calendar = useStore((s) => s.profileCalendar);
+  const live = radar !== null && stats !== null;
+
+  const dims = useMemo(
+    () => (live ? radarDimsFromSnapshot(radar!, lang) : undefined),
+    [live, radar, lang],
+  );
+  const note = live ? radarNoteFromDims(dims!, lang) : RADAR_NOTE[lang];
+  const report = live ? reportFromStats(stats!, lang) : REPORT[lang];
+  const week = useMemo(() => {
+    if (!live || !calendar) return { bars: WEEK7, label: WEEK_TIME[lang] };
+    const { bars, posts } = weekBarsFromCalendar(calendar);
+    return {
+      bars,
+      label: posts > 0 ? t.profile.weekPosts(posts) : t.profile.weekQuiet,
+    };
+  }, [live, calendar, lang, t.profile]);
+
   return (
     <div className="tpanel on swap" id="tab-stats" role="tabpanel" aria-labelledby="tabbtn-stats">
       <div className="pcard radar go" id="radarCard">
@@ -39,11 +68,11 @@ function StatsTab({ radarKey }: { radarKey: number }) {
           <div className="d">{t.profile.readingBalance}</div>
           <span>{t.profile.sixShelves}</span>
         </div>
-        <RadarChart replayKey={radarKey} />
-        <p className="radar-note it">{RADAR_NOTE[lang]}</p>
+        <RadarChart replayKey={radarKey} dims={dims} />
+        <p className="radar-note it">{note}</p>
         <div className="pdiv" />
         <div className="rep-grid">
-          {REPORT[lang].map((r) => (
+          {report.map((r) => (
             <div key={r.l} className="rcell">
               <div className="snum d">{r.n}</div>
               <div className="slab">{r.l}</div>
@@ -53,10 +82,10 @@ function StatsTab({ radarKey }: { radarKey: number }) {
         <div className="pdiv" />
         <div className="chart-head">
           <div className="d">{t.profile.thisWeek}</div>
-          <span>{WEEK_TIME[lang]}</span>
+          <span>{week.label}</span>
         </div>
         <div className="week7">
-          {WEEK7.map((w, i) => (
+          {week.bars.map((w, i) => (
             <div key={i} className="day">
               <div className="vtrack">
                 <div className={`vfill ${w.today ? 'today' : ''}`} style={{ height: `${w.h}%` }} />
@@ -166,7 +195,7 @@ function SeatMap({ lv }: { lv: number }) {
 }
 
 /* ---------- calendar tab ---------- */
-function CalendarTab() {
+function MockCalendarTab() {
   const t = useT();
   const lang = useLang();
   const [selDay, setSelDay] = useState(CTODAY);
@@ -240,8 +269,148 @@ function CalendarTab() {
   );
 }
 
+function LiveCalendarTab({ calendar }: { calendar: CalendarDay[] }) {
+  const t = useT();
+  const lang = useLang();
+  const byDay = useMemo(() => {
+    const map = new Map<string, CalendarDay>();
+    for (const row of calendar) map.set(row.day, row);
+    return map;
+  }, [calendar]);
+
+  const focus = useMemo(() => {
+    const today = new Date();
+    today.setHours(12, 0, 0, 0);
+    if (byDay.has(localDayKey(today))) return today;
+    const latest = calendar[0]?.day;
+    if (latest) {
+      const [y, m, d] = latest.split('-').map(Number);
+      return new Date(y!, m! - 1, d!, 12);
+    }
+    return today;
+  }, [byDay, calendar]);
+
+  const year = focus.getFullYear();
+  const month = focus.getMonth(); // 0-based
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const todayKey = localDayKey(new Date());
+  const pad = (focus.getDay() + 6) % 7; // monday-first leading blanks
+
+  const activeDays = useMemo(
+    () =>
+      [...byDay.values()]
+        .filter((row) => row.day.startsWith(`${year}-${String(month + 1).padStart(2, '0')}`))
+        .filter((row) => (row.owl_posts ?? 0) > 0 || row.previewed_book || row.asked),
+    [byDay, year, month],
+  );
+
+  const defaultKey =
+    activeDays.find((r) => r.day === todayKey)?.day
+    ?? activeDays[0]?.day
+    ?? todayKey;
+  const [selKey, setSelKey] = useState(defaultKey);
+  useEffect(() => {
+    setSelKey(defaultKey);
+  }, [defaultKey]);
+
+  const sel = byDay.get(selKey);
+  const bk = sel?.previewed_book ? getBook(sel.previewed_book) : null;
+  const dayNum = Number(selKey.slice(-2));
+  const stampLabel =
+    lang === 'zh'
+      ? `${month + 1}月${dayNum}日`
+      : focus.toLocaleString('en-US', { month: 'short' }).toUpperCase() + ` ${dayNum}`;
+
+  return (
+    <div className="tpanel on swap" id="tab-cal" role="tabpanel" aria-labelledby="tabbtn-cal">
+      <div className="pcard">
+        <div className="chart-head">
+          <div className="d">{monthLabel(focus, lang)}</div>
+          <span id="calCount">{t.profile.owlPosts(activeDays.length)}</span>
+        </div>
+        <div className="cal-week" aria-hidden="true">
+          {t.profile.weekdays.map((d, i) => (
+            <span key={i}>{d}</span>
+          ))}
+        </div>
+        <div className="cal-grid" id="calGrid">
+          {Array.from({ length: pad }, (_, i) => (
+            <span key={`pad-${i}`} className="cd off" aria-hidden="true" />
+          ))}
+          {Array.from({ length: daysInMonth }, (_, idx) => {
+            const d = idx + 1;
+            const key = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+            const row = byDay.get(key);
+            const has = !!(row && ((row.owl_posts ?? 0) > 0 || row.previewed_book || row.asked));
+            const isToday = key === todayKey;
+            const future = key > todayKey;
+            const isSel = key === selKey;
+            const clickable = has && !future;
+            const cls = ['cd', isToday && 'today', future && 'off', has && 'rec', isSel && 'sel']
+              .filter(Boolean)
+              .join(' ');
+            return (
+              <button
+                key={key}
+                className={cls}
+                disabled={!clickable}
+                aria-label={
+                  has && row?.previewed_book
+                    ? t.profile.calDayAria(d, getBook(row.previewed_book)?.t ?? '')
+                    : has
+                      ? t.profile.calDayAriaAsked(d)
+                      : t.profile.calDayAriaPlain(d)
+                }
+                aria-pressed={has ? isSel : undefined}
+                onClick={clickable ? () => setSelKey(key) : undefined}
+              >
+                {d}
+              </button>
+            );
+          })}
+        </div>
+        <div className="cal-foot">
+          <i aria-hidden="true" />
+          {activeDays.length ? t.profile.calFoot : t.profile.calEmpty}
+        </div>
+      </div>
+      {sel && (sel.asked || sel.previewed_book) ? (
+        <div className="pcard" id="recCard" aria-live="polite" key={selKey}>
+          <div className="rec-kick">
+            <div className="stamp">
+              <Icon name="ti-mail" />
+            </div>
+            <span className="k">{t.profile.owlPostDated(stampLabel)}</span>
+          </div>
+          <div className="rec-lab">{t.profile.youAsked}</div>
+          <div className="ask">{sel.asked?.trim() || t.profile.noAskYet}</div>
+          <div className="rec-lab">{t.profile.youPeeked}</div>
+          {bk && sel.previewed_book ? (
+            <div className="prev-row">
+              <Cover id={sel.previewed_book} cls="cover-xs" />
+              <div>
+                <div className="prev-ttl d">{bk.t}</div>
+                <div className="prev-auth">{bk.a}</div>
+                <div className="prev-note">{t.profile.firstPages}</div>
+              </div>
+            </div>
+          ) : (
+            <div className="ask">{t.profile.noPeekYet}</div>
+          )}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+function CalendarTab() {
+  const calendar = useStore((s) => s.profileCalendar);
+  if (calendar === null) return <MockCalendarTab />;
+  return <LiveCalendarTab calendar={calendar} />;
+}
+
 /* ---------- quotes tab ---------- */
-function QuoteCard({ index }: { index: number }) {
+function MockQuoteCard({ index }: { index: number }) {
   const t = useT();
   const lang = useLang();
   const q = QUOTES[index];
@@ -283,8 +452,64 @@ function QuoteCard({ index }: { index: number }) {
   );
 }
 
+function LiveQuoteCard({ quote }: { quote: QuoteRow }) {
+  const t = useT();
+  const lang = useLang();
+  const bk = getBook(quote.book);
+  const showToast = useStore((s) => s.showToast);
+  const [done, setDone] = useState(false);
+
+  const keptLabel = (() => {
+    const d = new Date(quote.kept_at);
+    if (Number.isNaN(d.getTime())) return '';
+    return lang === 'zh'
+      ? `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`
+      : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  })();
+
+  const author = bk?.a ?? '';
+  const title = bk?.t ?? quote.book;
+  const stampBg = bk?.c ?? '#3A3428';
+  const stampFg = bk?.tc ?? '#E8E0BC';
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(t.profile.clipQuote(quote.text, author, title));
+      showToast('ti-copy', t.profile.copiedToast, 'scribe');
+    } catch {
+      showToast('ti-copy', t.profile.keptToast, 'scribe');
+    }
+    setDone(false);
+    requestAnimationFrame(() => setDone(true));
+  };
+
+  return (
+    <article className="qcard">
+      <div className="q-top">
+        <div className="q-stamp" style={{ background: stampBg, color: stampFg }}>
+          <Icon name="ti-quote" />
+        </div>
+        <div className="q-text it">&ldquo;{quote.text}&rdquo;</div>
+      </div>
+      <button className={`q-copy ${done ? 'done' : ''}`} aria-label={t.profile.copyAria} onClick={copy}>
+        <Icon name="ti-copy" />
+      </button>
+      <div className="q-meta">
+        <span className="q-by">
+          {author ? `${author} · ${title}` : title}
+        </span>
+        {keptLabel ? <span className="q-date">{t.profile.keptOn(keptLabel)}</span> : null}
+      </div>
+    </article>
+  );
+}
+
 function QuotesTab() {
   const t = useT();
+  const quotes = useStore((s) => s.profileQuotes);
+  const live = quotes !== null;
+  const list = live ? quotes : null;
+
   return (
     <div className="tpanel on swap" id="tab-quotes" role="tabpanel" aria-labelledby="tabbtn-quotes">
       <div className="sec">
@@ -293,12 +518,22 @@ function QuotesTab() {
             <CastOwl owl="scribe" cls="mini" />
             <div className="sec-title d">{t.profile.tuckedAway}</div>
           </div>
-          <span style={{ fontSize: 11, color: 'var(--fade)', fontWeight: 700 }}>{t.profile.quotesKept(QUOTES.length)}</span>
+          <span style={{ fontSize: 11, color: 'var(--fade)', fontWeight: 700 }}>
+            {t.profile.quotesKept(live ? list!.length : QUOTES.length)}
+          </span>
         </div>
         <div className="qlist" id="qList" style={{ paddingTop: 0 }}>
-          {QUOTES.map((_, i) => (
-            <QuoteCard key={i} index={i} />
-          ))}
+          {live ? (
+            list!.length ? (
+              list!.map((q) => <LiveQuoteCard key={q.id} quote={q} />)
+            ) : (
+              <p className="radar-note it" style={{ padding: '12px 4px' }}>
+                {t.profile.quotesEmpty}
+              </p>
+            )
+          ) : (
+            QUOTES.map((_, i) => <MockQuoteCard key={i} index={i} />)
+          )}
         </div>
       </div>
     </div>
