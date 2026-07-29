@@ -5,6 +5,7 @@ import { useAuth } from './store/useAuth';
 import { useKeyboardInset } from './hooks/useKeyboardInset';
 import { useModalFocus } from './hooks/useModalFocus';
 import { BottomNav, Toast, BurstLayer, Backdrop, GuestLevelButton } from './components/chrome';
+import { EconStrip } from './components/StatFx';
 import { SelectionBar } from './components/SelectionBar';
 import { TodayScreen } from './components/screens/TodayScreen';
 import { DiscoverScreen } from './components/screens/DiscoverScreen';
@@ -140,6 +141,7 @@ export default function App() {
               {onboarded && !showOnboarding && !curtainDone && !reduceMotion && <PlaybillCurtain />}
               <SelectionBar />
               <Toast />
+              <EconStrip />
               <BurstLayer />
               {accountStorageBlocked && (
                 <div

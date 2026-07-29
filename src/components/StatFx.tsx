@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { useStore } from '../store/useStore';
 import { useReduceMotion } from '../hooks/useReduceMotion';
+import { rowFromLevel } from '../lib/economy/curve';
+import { Icon } from './Icon';
 
 /* ============================================================
    The numbers, moving.
@@ -50,6 +52,51 @@ export function StatDelta({ stat }: { stat: Stat }) {
         </span>
       ))}
     </>
+  );
+}
+
+/** the receipt: Keeper on the left, the night's deltas after — numbers only.
+    One line per econ() burst ("+60 ⚡ +25 🪙 −5 💧"), and when the seat moves,
+    a gold ROW stamp. No sentences; the deltas are the sentence. */
+export function EconStrip() {
+  const fx = useStore((s) => s.statFx);
+  const lv = useStore((s) => s.lv);
+  const reduce = useReduceMotion();
+  const [shown, setShown] = useState<typeof fx>(null);
+  const [on, setOn] = useState(false);
+
+  useEffect(() => {
+    if (!fx || reduce) return;
+    setShown(fx);
+    setOn(true);
+    const t = setTimeout(() => setOn(false), 1600);
+    return () => clearTimeout(t);
+  }, [fx, reduce]);
+
+  if (!shown) return null;
+  const part = (v: number, cls: string, glyph: string) =>
+    v !== 0 && (
+      <span className={`d ${cls}`}>
+        {v > 0 ? '+' : '−'}
+        {Math.abs(v)}
+        <Icon name={glyph} />
+      </span>
+    );
+  return (
+    <div className={`pb-econ ${on ? 'on' : ''}`} aria-hidden="true">
+      <svg className="owl" viewBox="0 0 120 130" key={shown.n}>
+        <use href="#owl-keeper" />
+      </svg>
+      {part(shown.xp, 'xp', 'ti-bolt')}
+      {part(shown.coins, 'coins', 'ti-coin')}
+      {part(shown.ink, 'ink', 'ti-inkdrop')}
+      {shown.lv && (
+        <span className="d row" key={`r${shown.n}`}>
+          <Icon name="ti-crown" />
+          ROW {rowFromLevel(lv)}
+        </span>
+      )}
+    </div>
   );
 }
 

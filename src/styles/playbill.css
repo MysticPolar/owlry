@@ -1322,6 +1322,39 @@ body { font-optical-sizing: auto; }
   100% { opacity: 0; transform: translate(-50%, -26px) scale(1); }
 }
 
+/* the receipt strip — Keeper left, deltas after, numbers only */
+.pb-econ {
+  position: absolute; left: 50%; bottom: calc(140px + env(safe-area-inset-bottom)); z-index: 44;
+  display: flex; align-items: center; gap: 10px;
+  background: rgba(16, 13, 7, .92); border: 1px solid rgba(255, 192, 23, .3); border-radius: 999px;
+  padding: 6px 14px 6px 8px;
+  font-family: var(--font-chrome); font-size: var(--t-micro); font-weight: var(--fw-ui-semibold);
+  font-variant-numeric: tabular-nums; letter-spacing: .3px; white-space: nowrap;
+  opacity: 0; pointer-events: none; transform: translate(-50%, 10px);
+  transition: opacity .22s, transform .22s;
+}
+.pb-econ.on { opacity: 1; transform: translate(-50%, 0); }
+.pb-econ .owl { position: static; width: 22px; height: 24px; flex: 0 0 22px; animation: owlpop .5s cubic-bezier(.2, .8, .2, 1); }
+.pb-econ .d { display: inline-flex; align-items: center; gap: 3px; animation: pbEconIn .4s cubic-bezier(.22, 1, .36, 1) backwards; }
+.pb-econ .d:nth-child(3) { animation-delay: .07s; }
+.pb-econ .d:nth-child(4) { animation-delay: .14s; }
+.pb-econ .d:nth-child(5) { animation-delay: .21s; }
+.pb-econ .d .ti { font-size: var(--icon-sm); }
+.pb-econ .d.xp    { color: var(--pb-candy-bolt); }
+.pb-econ .d.coins { color: var(--pb-brass); }
+.pb-econ .d.ink   { color: var(--pb-candy-drop); }
+.pb-econ .d.row   { color: var(--pb-cream); animation: pbRowStamp .6s cubic-bezier(.22, 1, .36, 1) backwards; animation-delay: .28s; }
+.pb-econ .d.row .ti { color: var(--pb-brass); }
+@keyframes pbEconIn {
+  from { opacity: 0; transform: translateY(5px) scale(.85); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes pbRowStamp {
+  0%   { opacity: 0; transform: scale(1.6) rotate(-4deg); }
+  60%  { opacity: 1; transform: scale(.96); }
+  100% { opacity: 1; transform: none; }
+}
+
 /* the seat, when the row moves — a short brass swell, no bounce */
 .pb-chip.pop, .pb-plvl-row.pop { animation: pbSeatPop .6s cubic-bezier(.22, 1, .36, 1); }
 .pb-chip.pop .crown, .pb-plvl-row.pop .crown { animation: pbSeatGlow .6s ease-out; }
