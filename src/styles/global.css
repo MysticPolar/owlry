@@ -1422,7 +1422,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .composer .iconbtn{width:44px;height:44px;flex-basis:44px}
 .chip{min-height:36px;font-size:var(--t-micro)}
 .chat-excerpt{display:block;margin:8px 0 5px;padding:8px 10px;border-left:3px solid #FFC017;background:#FBF4E1;
-  color:#241B0E;font:italic 430 15px/1.55 var(--font-display)}
+  color:#241B0E;font:italic 430 var(--t-callout)/1.55 var(--font-display)}
 
 /* Peek: editorial structure with explicit owl/book registers. */
 /* (paperRise retired — overlay slides now play symmetrically both ways via

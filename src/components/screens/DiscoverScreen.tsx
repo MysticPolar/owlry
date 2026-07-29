@@ -503,7 +503,36 @@ function DeskSwitchHint() {
 export function DiscoverScreen() {
   const t = useT();
   const active = useStore((s) => s.activeTab === 'discover');
+  const backRef = useRef<HTMLButtonElement>(null);
+  const wasActive = useRef(active);
+
+  // FOCUS HANDOFF, both ways — and it has to happen HERE, in an effect, not in
+  // the chevron's onClick: on the way out the nav is still inert from the
+  // previous render at click time, so focusing it there is a silent no-op and
+  // focus stays stranded on a chevron inside a display:none screen.
+  //
+  // In:  the nav goes inert, blurring the very button just pressed — hand focus
+  //      to the chevron, which is both the landmark and the way back.
+  // Out: hand it to the Ask nav button that opened the desk — but only if focus
+  //      was actually lost with the screen; if something else legitimately took
+  //      it (an overlay), leave it alone.
+  useEffect(() => {
+    if (active === wasActive.current) return;
+    wasActive.current = active;
+    if (active) {
+      backRef.current?.focus({ preventScroll: true });
+      return;
+    }
+    const el = document.activeElement as HTMLElement | null;
+    const stranded = !el || el === document.body || !!el.closest?.('#screen-discover');
+    if (stranded) {
+      document
+        .querySelector<HTMLButtonElement>('.pb-nav .pb-nv[data-tab="discover"]')
+        ?.focus({ preventScroll: true });
+    }
+  }, [active]);
   const desk = useStore((s) => s.deskMode);
+  const setTab = useStore((s) => s.setTab);
   const openHistory = useStore((s) => s.openHistory);
   const chatting = useStore((s) => s.owl.messages.some((m) => m.kind === 'msg' && m.who === 'me'));
   const reduce = useReduceMotion();
@@ -517,7 +546,25 @@ export function DiscoverScreen() {
   return (
     <section className={cls.join(' ')} id="screen-discover" data-desk={desk}>
       <StageBar />
-      <div className="pad-h disc-head">
+      {/* Composing collapses this header to max-height:0 for chat space — but a
+          zero-height header must not keep FOCUSABLE controls (the chevron, the
+          history button) in the tab order, or focus lands somewhere invisible.
+          `inert` does that deterministically; CSS visibility can't, because
+          `.calm .disc-head` carries `transition: all` and swallows it. The way
+          out while composing is to dismiss the keyboard — and tabbing off the
+          input blurs it, which brings the header back in the same beat. */}
+      <div className="pad-h disc-head" {...(typing ? ({ inert: '' } as Record<string, string>) : {})}>
+        {/* the way back: entering Ask cleared the house chrome (the glass nav
+            stepped off, the composer took the bottom edge), so this chevron is
+            the door — leaving is also what pulls the nav back out */}
+        <button
+          ref={backRef}
+          className="iconbtn lite disc-back"
+          aria-label={t.discover.backAria}
+          onClick={() => setTab('today')}
+        >
+          <Icon name="ti-arrow-left" />
+        </button>
         <span className="ghost" aria-hidden="true">
           Scout
         </span>

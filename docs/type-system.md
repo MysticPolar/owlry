@@ -83,6 +83,37 @@ Regenerate with `fontTools`: instance the axes, then subset to Latin +
 `U+2000-206F` (that block carries the curly quotes, em dashes and ellipses a
 literary product is judged on — do not drop it).
 
+## The Ask page — one device, one meaning
+
+The desk is the densest mix of voices in the app (prose, book links, cards,
+chips, a form), so it carries an extra law on top of the three voices:
+
+| Device | Its one meaning | Worn by |
+|---|---|---|
+| **Underline** | a book you can open | `.bk` links in Scout's prose — nothing else |
+| **Italic** | why-you'd-read-it | the card's Fraunces accent (`.pb-dc-why`) — nothing else |
+| **THE label** | a control | chrome · `--t-micro` · semibold · `--track-label` · uppercase |
+
+Italic here means the **accent voice**, precisely: the card's why-line, the
+owl's leaned-on word (`.it`), and a line quoted back from a book
+(`.chat-excerpt`) — all "a line worth savouring". What italic never dresses is
+chrome: the composer placeholder is chrome roman, because a form control is
+stage crew, not a pull-quote.
+
+THE label is worn one of two ways: a **quiet pill** (chip-bg, hairline
+`--pb-tag-line`, radius 999) for chips / ABOUT / the desk pill / skip, or the
+**brass pill** for the single primary action per group (the deal card's PEEK,
+the composer's send; on the Sheet that role belongs to OPEN and PEEK goes
+ghost). Cold-start chips brighten their ink; they never change shape. Book
+titles on cards are Literata roman, cased as printed; uppercase serif is
+banned from UI text — the 5%-ink "Scout" ghost is set decoration, exempt, and
+the guest "gain a level" pair keeps its lowercase demo voice (it never ships
+to signed-in readers).
+
+Before this law the desk ran seven letter-spacings at once (`.8px`, `1.4px`,
+`1.6px`, `3px`, `.02em`, `.06em`/`.08em`, and the token). Everything now
+tracks `--track-label`. If a new Ask control needs an eighth, it doesn't.
+
 ## Guardrails
 
 `npm run lint:css` enforces the two invariants: no px font-sizes, no

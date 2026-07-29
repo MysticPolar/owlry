@@ -111,8 +111,18 @@ export function BottomNav() {
   const setTab = useStore((s) => s.setTab);
   const lv = useStore((s) => s.lv);
   const t = useT().today.chrome;
+  // the desk takes the full depth of the house: while Ask is on, the glass nav
+  // steps off (CSS slides it; these attributes take it out of the a11y tree so
+  // an invisible control can't hold focus). The chevron in the desk header is
+  // the way back — leaving Ask is what brings the nav back out.
+  const offstage = activeTab === 'discover';
   return (
-    <nav className="pb-nav" aria-label={t.navAria}>
+    <nav
+      className="pb-nav"
+      aria-label={t.navAria}
+      aria-hidden={offstage || undefined}
+      {...(offstage ? ({ inert: '' } as Record<string, string>) : {})}
+    >
       {NAV.map((n) => {
         const on = activeTab === n.tab;
         const chained = n.tab === 'profile' && lv < 5;
