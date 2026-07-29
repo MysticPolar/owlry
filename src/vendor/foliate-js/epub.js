@@ -1,5 +1,10 @@
 import * as CFI from './epubcfi.js'
-import { injectContentSecurityPolicy } from './security.js'
+import {
+    injectContentSecurityPolicy,
+    markEventSafeDocumentURL,
+    sanitizeContentDocument,
+    unmarkEventSafeDocumentURL,
+} from './security.js'
 
 const NS = {
     CONTAINER: 'urn:oasis:names:tc:opendocument:xmlns:container',
@@ -13,6 +18,12 @@ const NS = {
     XLINK: 'http://www.w3.org/1999/xlink',
     SMIL: 'http://www.w3.org/ns/SMIL',
 }
+
+// A browser-created document for these decoded raster types contains no
+// executable book markup. Marking the blob URL is safe and keeps fixed-layout
+// image pages responsive to iOS tap zones.
+const EVENT_SAFE_RASTER_TYPE =
+    /^image\/(?:avif|bmp|gif|jpeg|png|webp|x-icon)(?:\s*;|$)/i
 
 const MIME = {
     XML: 'application/xml',
@@ -730,6 +741,8 @@ class Loader {
         const newData = await event.detail.data
         const newType = await event.detail.type
         const url = URL.createObjectURL(new Blob([newData], { type: newType }))
+        if (EVENT_SAFE_RASTER_TYPE.test(newType))
+            markEventSafeDocumentURL(url)
         this.#cache.set(href, url)
         this.#refCount.set(href, 1)
         if (parent) {
@@ -755,7 +768,9 @@ class Loader {
         //console.log(`unreferencing ${href}, now ${count}`)
         if (count < 1) {
             //console.log(`unloading ${href}`)
-            URL.revokeObjectURL(this.#cache.get(href))
+            const url = this.#cache.get(href)
+            unmarkEventSafeDocumentURL(url)
+            URL.revokeObjectURL(url)
             this.#cache.delete(href)
             this.#refCount.delete(href)
             // unref children
@@ -770,7 +785,9 @@ class Loader {
         const { href, mediaType } = item
 
         const isScript = MIME.JS.test(item.mediaType)
-        const detail = { type: mediaType, isScript, allow: true}
+        // Script resources are never needed by Owlry's renderer. Deny them by
+        // default rather than relying on every host to remember a load hook.
+        const detail = { type: mediaType, isScript, allow: !isScript }
         const event = new CustomEvent('load', { detail })
         this.eventTarget.dispatchEvent(event)
         const allow = await event.detail.allow
@@ -830,6 +847,7 @@ class Loader {
                 item.mediaType = MIME.HTML
                 doc = new DOMParser().parseFromString(str, item.mediaType)
             }
+            sanitizeContentDocument(doc)
             // replace hrefs in XML processing instructions
             // this is mainly for SVGs that use xml-stylesheet
             if ([MIME.XHTML, MIME.SVG].includes(item.mediaType)) {
@@ -881,11 +899,13 @@ class Loader {
             for (const el of doc.querySelectorAll('meta[http-equiv]'))
                 if (el.getAttribute('http-equiv')?.toLowerCase() === 'refresh')
                     el.remove()
-            // TODO: replace inline scripts? probably not worth the trouble
-            if ([MIME.XHTML, MIME.HTML].includes(item.mediaType))
+            const eventSafe = [MIME.XHTML, MIME.HTML].includes(item.mediaType)
+            if (eventSafe)
                 injectContentSecurityPolicy(doc)
             const result = new XMLSerializer().serializeToString(doc)
-            return this.createURL(href, result, item.mediaType, parent)
+            const url = await this.createURL(
+                href, result, item.mediaType, parent)
+            return eventSafe ? markEventSafeDocumentURL(url) : url
         }
 
         const result = mediaType === MIME.CSS
@@ -929,7 +949,10 @@ class Loader {
         this.unref(item?.href)
     }
     destroy() {
-        for (const url of this.#cache.values()) URL.revokeObjectURL(url)
+        for (const url of this.#cache.values()) {
+            unmarkEventSafeDocumentURL(url)
+            URL.revokeObjectURL(url)
+        }
     }
 }
 

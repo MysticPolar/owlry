@@ -1,4 +1,9 @@
-import { injectContentSecurityPolicy } from './security.js'
+import {
+    injectContentSecurityPolicy,
+    markEventSafeDocumentURL,
+    sanitizeContentDocument,
+    unmarkEventSafeDocumentURL,
+} from './security.js'
 
 const unescapeHTML = str => {
     if (!str) return ''
@@ -851,6 +856,7 @@ class MOBI6 {
     async loadSection(section) {
         if (this.#cache.has(section)) return this.#cache.get(section)
         const doc = await this.createDocument(section)
+        sanitizeContentDocument(doc)
         injectContentSecurityPolicy(doc)
 
         // inject default stylesheet
@@ -868,7 +874,8 @@ class MOBI6 {
 
         await this.replaceResources(doc)
         const result = this.serializer.serializeToString(doc)
-        const url = URL.createObjectURL(new Blob([result], { type: this.#type }))
+        const url = markEventSafeDocumentURL(
+            URL.createObjectURL(new Blob([result], { type: this.#type })))
         this.#cache.set(section, url)
         return url
     }
@@ -893,7 +900,10 @@ class MOBI6 {
     }
     destroy() {
         for (const url of this.#resourceCache.values()) URL.revokeObjectURL(url)
-        for (const url of this.#cache.values()) URL.revokeObjectURL(url)
+        for (const url of this.#cache.values()) {
+            unmarkEventSafeDocumentURL(url)
+            URL.revokeObjectURL(url)
+        }
     }
 }
 
@@ -1187,9 +1197,10 @@ class KF8 {
             for (const el of doc.querySelectorAll(`img[src="${url}"]`))
                 el.replaceWith(node)
         }
+        sanitizeContentDocument(doc)
         injectContentSecurityPolicy(doc)
-        const url = URL.createObjectURL(
-            new Blob([this.serializer.serializeToString(doc)], { type: this.#type }))
+        const url = markEventSafeDocumentURL(URL.createObjectURL(
+            new Blob([this.serializer.serializeToString(doc)], { type: this.#type })))
         this.#cache.set(section, url)
         return url
     }
@@ -1237,6 +1248,9 @@ class KF8 {
         return /^(?!blob|kindle)\w+:/i.test(uri)
     }
     destroy() {
-        for (const url of this.#cache.values()) URL.revokeObjectURL(url)
+        for (const url of this.#cache.values()) {
+            unmarkEventSafeDocumentURL(url)
+            URL.revokeObjectURL(url)
+        }
     }
 }

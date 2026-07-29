@@ -3,9 +3,10 @@
    FB2 — foliate's makeBook() auto-detects the format. Progress is the book-wide
    fraction from foliate's `relocate` event (percent), with a CFI to resume.
 
-   Security: the vendored paginator/fixed-layout are patched to sandbox content
-   iframes with "allow-same-origin" only (no allow-scripts) — a malicious ebook
-   cannot run scripts against our origin. See src/vendor/foliate-js/VENDOR.md. */
+   Security: the vendored loader sanitizes and injects a script-blocking CSP
+   before marking a document event-safe. Only those URLs receive WebKit's
+   required allow-scripts sandbox flag; SVG/unknown content stays stricter.
+   See src/vendor/foliate-js/VENDOR.md. */
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
 import '../../vendor/foliate-js/view.js'; // side effect: registers <foliate-view>
 import { loadUpload } from '../../lib/ebook/storage';
@@ -107,6 +108,8 @@ const PRESERVED_PARAGRAPH_LAYOUT = [
 ].join(',');
 const RUNNING_TEXT_BLOCKS = 'p, li, blockquote, dd, dt';
 const RUNNING_TEXT_INLINE = 'span, a, em, strong, b, i, cite, q, mark';
+const DOCUMENT_TAP_SLOP = 16;
+const DOCUMENT_LONG_PRESS_MS = 425;
 const READER_SIZE_VALUE = 'var(--owlry-reader-size)';
 
 const hasGeneratedContent = (element: Element, doc: Document): boolean => {
@@ -199,12 +202,10 @@ const readerStyles = (prefs: ReaderPrefs): string => {
     : prefs.font === 'system'
       ? SYSTEM_STACK
       : "'Literata', Georgia, serif";
-  const scrollInteraction = prefs.flow === 'scroll'
-    ? `
+  const readerInteraction = `
       html, body {
-        touch-action: pan-y pinch-zoom !important;
-      }`
-    : '';
+        touch-action: ${prefs.flow === 'scroll' ? 'pan-y pinch-zoom' : 'pinch-zoom'} !important;
+      }`;
   return `
     ${READER_FACES}
     :root {
@@ -227,7 +228,7 @@ const readerStyles = (prefs: ReaderPrefs): string => {
       -webkit-user-select: text;
       user-select: text;
     }
-    ${scrollInteraction}
+    ${readerInteraction}
     body {
       inline-size: 100%;
       max-inline-size: 42rem;
@@ -481,7 +482,6 @@ export const FoliateView = forwardRef<EngineHandle, EngineProps>(function Foliat
   const prefsRef = useRef(prefs);
   const onToggleChromeRef = useRef(onToggleChrome);
   const onErrorRef = useRef(onError);
-  const shellAnchorRef = useRef<string | null>(null);
   const reflowFrameRef = useRef<number | null>(null);
   const reflowGenerationRef = useRef(0);
   const turnStateRef = useRef<{
@@ -494,6 +494,12 @@ export const FoliateView = forwardRef<EngineHandle, EngineProps>(function Foliat
   onErrorRef.current = onError;
 
   const turnSafely = useCallback((direction: 'next' | 'prev') => {
+    // A user turn always outranks the delayed two-frame CFI restore used after
+    // a font/flow reflow. Otherwise a quick tap after closing Aa can advance
+    // and then be pulled back to the old page.
+    reflowGenerationRef.current += 1;
+    if (reflowFrameRef.current != null) cancelAnimationFrame(reflowFrameRef.current);
+    reflowFrameRef.current = null;
     const view = viewRef.current;
     const state = turnStateRef.current;
     if (!view || state.view !== view || !state.ready) return;
@@ -526,14 +532,13 @@ export const FoliateView = forwardRef<EngineHandle, EngineProps>(function Foliat
   const applyPrefsPreservingLocation = useCallback((inlineSize: number) => {
     const view = viewRef.current;
     if (!view) return;
-    const cfi = shellAnchorRef.current ?? view.lastLocation?.cfi;
+    const cfi = view.lastLocation?.cfi;
     const changed = applyReaderPrefs(
       view,
       prefsRef.current,
       inlineSize,
     );
     if (!changed || !cfi || !view.resolveNavigation || !view.renderer?.goTo) {
-      if (changed) shellAnchorRef.current = null;
       return;
     }
 
@@ -541,10 +546,7 @@ export const FoliateView = forwardRef<EngineHandle, EngineProps>(function Foliat
     // CFI once more after the batched style/metric change is a guard for font
     // swaps and flow switches, whose geometry can settle one frame later.
     const target = view.resolveNavigation(cfi);
-    if (!target) {
-      shellAnchorRef.current = null;
-      return;
-    }
+    if (!target) return;
     cancelPendingReflow();
     const generation = reflowGenerationRef.current;
     reflowFrameRef.current = requestAnimationFrame(() => {
@@ -554,9 +556,6 @@ export const FoliateView = forwardRef<EngineHandle, EngineProps>(function Foliat
         void view.renderer?.goTo?.(target)
           .catch((error: unknown) => {
             console.warn('[reader] could not restore location after reflow:', error);
-          })
-          .finally(() => {
-            if (shellAnchorRef.current === cfi) shellAnchorRef.current = null;
           });
       });
     });
@@ -574,39 +573,81 @@ export const FoliateView = forwardRef<EngineHandle, EngineProps>(function Foliat
     let settled = false;
     let view: FoliateViewEl | null = null;
     const wiredDocuments = new WeakSet<Document>();
-    let activeDocumentRefs: WeakRef<Document>[] = [];
+    const pointerStarts = new WeakMap<Document, {
+      pointerId: number;
+      x: number;
+      y: number;
+      startedAt: number;
+      maxTravel: number;
+      interactive: boolean;
+      hadSelection: boolean;
+    }>();
+    let activeDocumentRefs: Array<{ deref: () => Document | undefined }> = [];
 
-    const pruneDocumentListeners = () => {
-      activeDocumentRefs = activeDocumentRefs.filter((ref) => {
-        const doc = ref.deref();
-        if (!doc) return false;
-        if (!doc.defaultView?.frameElement?.isConnected) {
-          doc.removeEventListener('click', handleDocumentClick);
-          return false;
-        }
-        return true;
+    const isInteractiveTarget = (target: Element | null) => (
+      typeof target?.closest === 'function'
+      && Boolean(target.closest(
+        'a,button,input,textarea,select,option,label,summary,details,audio,video,'
+        + '[role="button"],[role="link"],'
+        + '[contenteditable]:not([contenteditable="false"])',
+      ))
+    );
+
+    const handleDocumentPointerDown = (pointer: PointerEvent) => {
+      if (cancelled || !pointer.isPrimary || pointer.button !== 0) return;
+      const doc = pointer.currentTarget as Document | null;
+      if (!doc || viewRef.current !== view) return;
+      pointerStarts.set(doc, {
+        pointerId: pointer.pointerId,
+        x: pointer.clientX,
+        y: pointer.clientY,
+        startedAt: pointer.timeStamp,
+        maxTravel: 0,
+        interactive: isInteractiveTarget(pointer.target as Element | null),
+        hadSelection: doc.getSelection()?.isCollapsed === false,
       });
     };
 
-    const handleDocumentClick = (click: MouseEvent) => {
-      if (cancelled || click.defaultPrevented || click.button !== 0 || click.detail === 0) return;
-      const doc = click.currentTarget as Document | null;
+    const handleDocumentPointerMove = (pointer: PointerEvent) => {
+      const doc = pointer.currentTarget as Document | null;
+      const start = doc ? pointerStarts.get(doc) : undefined;
+      if (!start || pointer.pointerId !== start.pointerId) return;
+      start.maxTravel = Math.max(
+        start.maxTravel,
+        Math.hypot(pointer.clientX - start.x, pointer.clientY - start.y),
+      );
+    };
+
+    const handleDocumentPointerUp = (pointer: PointerEvent) => {
+      if (cancelled || !pointer.isPrimary || pointer.button !== 0) return;
+      const doc = pointer.currentTarget as Document | null;
       const activeView = viewRef.current;
       if (!doc || !activeView || activeView !== view) return;
-
-      // The target belongs to the iframe's realm, so parent-window
-      // `instanceof Element` would reject it even though it is an element.
-      const target = click.target as Element | null;
+      const start = pointerStarts.get(doc);
+      pointerStarts.delete(doc);
       if (
-        typeof target?.closest === 'function'
-        && target.closest(
-          'a,button,input,textarea,select,option,label,summary,details,audio,video,'
-          + '[role="button"],[role="link"],[tabindex],'
-          + '[contenteditable]:not([contenteditable="false"])',
-        )
+        !start
+        || pointer.pointerId !== start.pointerId
+        || start.interactive
+        || isInteractiveTarget(pointer.target as Element | null)
+        || Math.max(
+          start.maxTravel,
+          Math.hypot(pointer.clientX - start.x, pointer.clientY - start.y),
+        ) > DOCUMENT_TAP_SLOP
       ) return;
+
       const selection = doc.getSelection();
-      if (selection && !selection.isCollapsed) return;
+      if (start.hadSelection) {
+        selection?.removeAllRanges();
+        return;
+      }
+      // A range created by this press belongs to the reader. Preserve it; the
+      // next ordinary tap can dismiss it. The duration guard also covers iOS
+      // builds that materialize the long-press selection just after pointerup.
+      if (
+        selection?.isCollapsed === false
+        || pointer.timeStamp - start.startedAt >= DOCUMENT_LONG_PRESS_MS
+      ) return;
 
       if (prefsRef.current.flow === 'page') {
         const hostRect = host.getBoundingClientRect();
@@ -619,8 +660,8 @@ export const FoliateView = forwardRef<EngineHandle, EngineProps>(function Foliat
           ? frameRect.width / frameElement.clientWidth
           : 1;
         const parentClientX = frameRect
-          ? frameRect.left + click.clientX * scaleX
-          : click.clientX;
+          ? frameRect.left + pointer.clientX * scaleX
+          : pointer.clientX;
         const x = hostRect.width > 0 ? (parentClientX - hostRect.left) / hostRect.width : .5;
         const action = pageTapAction(x);
         if (action === 'prev') {
@@ -633,27 +674,58 @@ export const FoliateView = forwardRef<EngineHandle, EngineProps>(function Foliat
         }
       }
 
-      // Capture before React changes the host height. The prefs/reflow effect
-      // consumes this exact CFI after the chrome transition.
-      shellAnchorRef.current = activeView.lastLocation?.cfi ?? null;
       onToggleChromeRef.current?.();
+    };
+
+    const handleDocumentPointerCancel = (pointer: PointerEvent) => {
+      const doc = pointer.currentTarget as Document | null;
+      if (doc) pointerStarts.delete(doc);
+    };
+
+    const removeDocumentListeners = (doc: Document) => {
+      pointerStarts.delete(doc);
+      doc.removeEventListener('pointerdown', handleDocumentPointerDown);
+      doc.removeEventListener('pointermove', handleDocumentPointerMove);
+      doc.removeEventListener('pointerup', handleDocumentPointerUp);
+      doc.removeEventListener('pointercancel', handleDocumentPointerCancel);
+    };
+
+    const pruneDocumentListeners = () => {
+      activeDocumentRefs = activeDocumentRefs.filter((ref) => {
+        const doc = ref.deref();
+        if (!doc) return false;
+        if (!doc.defaultView?.frameElement?.isConnected) {
+          removeDocumentListeners(doc);
+          return false;
+        }
+        return true;
+      });
     };
 
     const handleDocumentLoad = (event: Event) => {
       const doc = (event as CustomEvent<{ doc?: Document }>).detail?.doc;
       if (cancelled || viewRef.current !== view || !doc || wiredDocuments.has(doc)) return;
-      wiredDocuments.add(doc);
-
-      // Fixed-layout books are authored canvases. Reflowable books get a
-      // predictable paragraph rhythm even when their source uses empty
-      // paragraphs and large fixed indents for visual spacing.
-      if (!view?.isFixedLayout) normalizeDocumentTypography(doc);
 
       // Reflowable books have one live document; fixed-layout spreads can have
-      // two. Weak references cover both without retaining every visited spine.
+      // two. Older WebKit without WeakRef safely retains documents only until
+      // this reader closes.
       pruneDocumentListeners();
-      activeDocumentRefs.push(new WeakRef(doc));
-      doc.addEventListener('click', handleDocumentClick);
+      const docRef = typeof WeakRef === 'function'
+        ? new WeakRef(doc)
+        : { deref: () => doc };
+      doc.addEventListener('pointerdown', handleDocumentPointerDown);
+      doc.addEventListener('pointermove', handleDocumentPointerMove);
+      doc.addEventListener('pointerup', handleDocumentPointerUp);
+      doc.addEventListener('pointercancel', handleDocumentPointerCancel);
+      activeDocumentRefs.push(docRef);
+      wiredDocuments.add(doc);
+
+      // Typography cleanup must never gate navigation controls for a chapter.
+      try {
+        if (!view?.isFixedLayout) normalizeDocumentTypography(doc);
+      } catch (error) {
+        console.warn('[reader] could not normalize this chapter typography:', error);
+      }
     };
 
     const handleRelocate = (event: Event) => {
@@ -681,7 +753,8 @@ export const FoliateView = forwardRef<EngineHandle, EngineProps>(function Foliat
 
     const teardownView = (target: FoliateViewEl | null) => {
       for (const ref of activeDocumentRefs) {
-        ref.deref()?.removeEventListener('click', handleDocumentClick);
+        const doc = ref.deref();
+        if (doc) removeDocumentListeners(doc);
       }
       activeDocumentRefs = [];
       target?.removeEventListener('load', handleDocumentLoad);

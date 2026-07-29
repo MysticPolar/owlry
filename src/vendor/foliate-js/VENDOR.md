@@ -25,13 +25,18 @@ Also skipped: `dict.js`, `footnotes.js`, `opds.js`, `quote-image.js`,
 
 ## Local patches (keep this list current when re-syncing)
 
-1. **Script-blocking (security).** `paginator.js` + `fixed-layout.js`: the
-   content-iframe sandbox was `'allow-same-origin allow-scripts'`; patched to
-   **`'allow-same-origin'`**. Foliate measures pagination from the parent via
-   `contentDocument` (needs same-origin) but does NOT need scripts to run inside
-   the frame — `allow-scripts` was only a WebKit event workaround. Dropping it
-   prevents a malicious ebook from executing scripts against our origin (matches
-   the `allowScriptedContent:false` posture of the previous epub.js engine).
+1. **Script-blocking with WebKit-safe events.** WebKit blocks callbacks that the
+   parent installs in a sandboxed book document unless the iframe also has
+   `allow-scripts` (WebKit bug 218086). `security.js` therefore marks only URLs
+   produced by Owlry's sanitized, CSP-injected HTML/XHTML serializers as
+   event-safe. Trusted browser-decoded raster pages are safe as well.
+   `paginator.js` + `fixed-layout.js` grant
+   `'allow-same-origin allow-scripts'` only to those provenance-marked URLs;
+   SVG, unknown, and unmarked content keeps `'allow-same-origin'`. The explicit
+   CSP blocks scripts/workers, executable elements and attributes are stripped,
+   and manifest JavaScript is denied before resource rewriting. This restores
+   iOS tap/touch/wheel listeners without trusting a book-provided MIME label or
+   the experimental iframe `csp` attribute alone.
 2. **Prune PDF.** `view.js` `makeBook()`: the `else if (isPDF)` branch (which did
    `await import('./pdf.js')`) now throws `UnsupportedTypeError` — removing the
    only reference to `pdf.js`/`vendor/pdfjs` so they need not be vendored. Foliate
@@ -69,14 +74,21 @@ Also skipped: `dict.js`, `footnotes.js`, `opds.js`, `quote-image.js`,
    intent at the live edge of the current scrolled spine item into queued,
    guarded `prev()`/`next()` navigation. Touch intent follows native
    `scrollend` (with an idle fallback) so post-release momentum can complete the
-   handoff. Queued turns remain bound to their originating view, carryover and
-   rebound trackpad momentum are quarantined until idle, and touch state is
-   cleared after every decision. This keeps short and long sections reachable
-   without page controls, skipped sections, or a frozen next chapter. Paginated
-   and pinch-zoom interactions are unchanged.
+   handoff. Queued turns remain bound to their originating view, slow loads no
+   longer discard a queued intent after a fixed one-second poll, carryover and
+   rebound trackpad momentum are quarantined without extending that quarantine
+   forever, and cancelled pans can still settle. Selection suppression is scoped
+   to a selection changed by the active gesture. This keeps short and long
+   sections reachable without page controls, skipped sections, or a frozen next
+   chapter.
+9. **Single-owner mobile page gestures.** Stationary iframe taps are handled by
+   Owlry's pointer tap zones; Foliate's touch snap runs only after movement
+   crosses a shared drag threshold. This prevents duplicate `snap()`/`next()`
+   races at section boundaries, tolerates normal finger jitter, and avoids dead
+   chapters caused by `tabindex="-1"` wrappers or a stale text selection.
 
 ## Re-syncing
 
-Re-clone at a new pin, copy the same file list, and re-apply the eight patches
+Re-clone at a new pin, copy the same file list, and re-apply the nine patches
 above (search for `allow-same-origin` and the `isPDF` branch). foliate-js has no
 stable releases; pin a commit deliberately.

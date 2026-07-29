@@ -186,6 +186,7 @@ export function EbookReader() {
     pointerId: number;
     x: number;
     y: number;
+    maxTravel: number;
     interactive: boolean;
   } | null>(null);
   const settingsButtonRef = useRef<HTMLButtonElement>(null);
@@ -512,29 +513,65 @@ export function EbookReader() {
   const handleReaderPointerDown = useCallback((event: React.PointerEvent<HTMLDivElement>) => {
     if (!event.isPrimary) return;
     const target = event.target as HTMLElement;
+    const interactive = Boolean(target.closest(
+      'a,button,input,textarea,select,option,label,summary,details,audio,video,'
+      + '.reader-settings,[role="button"],[role="link"],'
+      + '[contenteditable]:not([contenteditable="false"])',
+    ));
     tapStart.current = {
       pointerId: event.pointerId,
       x: event.clientX,
       y: event.clientY,
-      interactive: Boolean(target.closest(
-        'a,button,input,textarea,select,option,label,summary,details,audio,video,'
-        + '.reader-settings,[role="button"],[role="link"],'
-        + '[contenteditable]:not([contenteditable="false"])',
-      )),
+      maxTravel: 0,
+      interactive,
     };
+    if (!interactive) {
+      try {
+        event.currentTarget.setPointerCapture(event.pointerId);
+      } catch {
+        /* the pointer may already have been claimed by the embedded reader */
+      }
+    }
+  }, []);
+
+  const handleReaderPointerMove = useCallback((event: React.PointerEvent<HTMLDivElement>) => {
+    const start = tapStart.current;
+    if (!start || start.pointerId !== event.pointerId) return;
+    start.maxTravel = Math.max(
+      start.maxTravel,
+      Math.hypot(event.clientX - start.x, event.clientY - start.y),
+    );
   }, []);
 
   const handleReaderPointerUp = useCallback((event: React.PointerEvent<HTMLDivElement>) => {
     const start = tapStart.current;
     if (!start || !event.isPrimary || start.pointerId !== event.pointerId) return;
     tapStart.current = null;
-    if (start.interactive || Math.hypot(event.clientX - start.x, event.clientY - start.y) > 10) return;
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+    if (
+      start.interactive
+      || Math.max(
+        start.maxTravel,
+        Math.hypot(event.clientX - start.x, event.clientY - start.y),
+      ) > 16
+    ) return;
     const target = event.target as HTMLElement;
     if (target.closest(
       'a,button,input,textarea,select,option,label,summary,details,audio,video,'
       + '.reader-settings,[role="button"],[role="link"],[contenteditable]:not([contenteditable="false"])',
     )) return;
-    if (window.getSelection()?.toString()) return;
+    const selection = window.getSelection();
+    if (
+      selection
+      && !selection.isCollapsed
+      && selection.anchorNode
+      && event.currentTarget.contains(selection.anchorNode)
+    ) {
+      selection.removeAllRanges();
+      return;
+    }
 
     const rect = event.currentTarget.getBoundingClientRect();
     const x = rect.width > 0 ? (event.clientX - rect.left) / rect.width : .5;
@@ -571,6 +608,7 @@ export function EbookReader() {
       ref={rootRef}
       tabIndex={-1}
       onPointerDown={handleReaderPointerDown}
+      onPointerMove={handleReaderPointerMove}
       onPointerUp={handleReaderPointerUp}
       onPointerCancel={() => { tapStart.current = null; }}
     >

@@ -1,4 +1,7 @@
-import { CONTENT_SECURITY_POLICY } from './security.js'
+import {
+    CONTENT_SECURITY_POLICY,
+    isEventSafeDocumentURL,
+} from './security.js'
 
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 
@@ -6,10 +9,29 @@ const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 // turn outward wheel/swipe intent at that item's live edge into the same
 // guarded prev()/next() navigation used by the page controls.
 const SCROLL_EDGE_EPSILON = 2
-const WHEEL_IDLE_TIMEOUT = 180
+const WHEEL_IDLE_TIMEOUT = 320
 const WHEEL_GESTURE_THRESHOLD = 24
 const TOUCH_GESTURE_THRESHOLD = 36
-const TOUCH_SCROLL_IDLE_TIMEOUT = 180
+const TOUCH_SCROLL_IDLE_TIMEOUT = 350
+const PAGE_DRAG_THRESHOLD = 16
+const IFRAME_LOAD_TIMEOUT = 15_000
+
+const getSelectionSnapshot = doc => {
+    const selection = doc?.getSelection?.()
+    if (!selection || selection.isCollapsed || !selection.rangeCount) return null
+    return {
+        anchorNode: selection.anchorNode,
+        anchorOffset: selection.anchorOffset,
+        focusNode: selection.focusNode,
+        focusOffset: selection.focusOffset,
+    }
+}
+
+const sameSelection = (a, b) => a === b || Boolean(a && b
+    && a.anchorNode === b.anchorNode
+    && a.anchorOffset === b.anchorOffset
+    && a.focusNode === b.focusNode
+    && a.focusOffset === b.focusOffset)
 
 const debounce = (f, wait, immediate) => {
     let timeout
@@ -230,6 +252,7 @@ class View {
     #column = true
     #size
     #layout = {}
+    #cancelLoad
     constructor({ container, onExpand }) {
         this.container = container
         this.onExpand = onExpand
@@ -251,8 +274,8 @@ class View {
             display: 'none',
             width: '100%', height: '100%',
         })
-        // `allow-scripts` is needed for events because of WebKit bug
-        // https://bugs.webkit.org/show_bug.cgi?id=218086
+        // Event-safe documents opt into allow-scripts immediately before
+        // navigation. Unknown/SVG content keeps this stricter default.
         this.#iframe.setAttribute('sandbox', 'allow-same-origin')
         this.#iframe.setAttribute('csp', CONTENT_SECURITY_POLICY)
         this.#iframe.setAttribute('referrerpolicy', 'no-referrer')
@@ -266,44 +289,68 @@ class View {
     }
     async load(src, afterLoad, beforeRender) {
         if (typeof src !== 'string') throw new Error(`${src} is not string`)
-        return new Promise(resolve => {
-            this.#iframe.addEventListener('load', () => {
-                const doc = this.document
-                if (this.#destroyed || !doc) {
-                    resolve()
-                    return
+        this.#cancelLoad?.()
+        this.#iframe.setAttribute('sandbox', isEventSafeDocumentURL(src)
+            ? 'allow-same-origin allow-scripts' : 'allow-same-origin')
+        return new Promise((resolve, reject) => {
+            let settled = false
+            let timeout
+            const cleanup = () => {
+                clearTimeout(timeout)
+                this.#iframe.removeEventListener('load', onLoad)
+                this.#iframe.removeEventListener('error', onError)
+                if (this.#cancelLoad === cancel) this.#cancelLoad = null
+            }
+            const finish = error => {
+                if (settled) return
+                settled = true
+                cleanup()
+                if (error) reject(error)
+                else resolve()
+            }
+            const cancel = () => finish()
+            const onError = () => finish(new Error('Ebook section frame failed to load'))
+            const onLoad = () => {
+                try {
+                    const doc = this.document
+                    if (this.#destroyed || !doc) return finish()
+                    afterLoad?.(doc)
+                    if (this.#destroyed || this.document !== doc) return finish()
+
+                    // it needs to be visible for Firefox to get computed style
+                    this.#iframe.style.display = 'block'
+                    const { vertical, rtl } = getDirection(doc)
+                    const background = getBackground(doc)
+                    this.#iframe.style.display = 'none'
+
+                    this.#vertical = vertical
+                    this.#rtl = rtl
+
+                    this.#contentRange.selectNodeContents(doc.body)
+                    const layout = beforeRender?.({ vertical, rtl, background })
+                    this.#iframe.style.display = 'block'
+                    this.render(layout)
+                    this.#observer.observe(doc.body)
+
+                    // the resize observer above doesn't work in Firefox
+                    // (see https://bugzilla.mozilla.org/show_bug.cgi?id=1832939)
+                    // until the bug is fixed we can at least account for font load
+                    doc.fonts?.ready?.then(() => {
+                        if (this.#destroyed || this.document !== doc) return
+                        this.expand()
+                    })
+
+                    finish()
+                } catch (error) {
+                    finish(error)
                 }
-                afterLoad?.(doc)
-                if (this.#destroyed || this.document !== doc) {
-                    resolve()
-                    return
-                }
-
-                // it needs to be visible for Firefox to get computed style
-                this.#iframe.style.display = 'block'
-                const { vertical, rtl } = getDirection(doc)
-                const background = getBackground(doc)
-                this.#iframe.style.display = 'none'
-
-                this.#vertical = vertical
-                this.#rtl = rtl
-
-                this.#contentRange.selectNodeContents(doc.body)
-                const layout = beforeRender?.({ vertical, rtl, background })
-                this.#iframe.style.display = 'block'
-                this.render(layout)
-                this.#observer.observe(doc.body)
-
-                // the resize observer above doesn't work in Firefox
-                // (see https://bugzilla.mozilla.org/show_bug.cgi?id=1832939)
-                // until the bug is fixed we can at least account for font load
-                doc.fonts?.ready?.then(() => {
-                    if (this.#destroyed || this.document !== doc) return
-                    this.expand()
-                })
-
-                resolve()
-            }, { once: true })
+            }
+            this.#cancelLoad = cancel
+            this.#iframe.addEventListener('load', onLoad, { once: true })
+            this.#iframe.addEventListener('error', onError, { once: true })
+            timeout = setTimeout(() => finish(
+                new Error('Ebook section frame timed out while loading')),
+            IFRAME_LOAD_TIMEOUT)
             this.#iframe.src = src
         })
     }
@@ -452,6 +499,7 @@ class View {
     destroy() {
         if (this.#destroyed) return
         this.#destroyed = true
+        this.#cancelLoad?.()
         this.#observer.disconnect()
         this.onExpand = null
         this.container = null
@@ -514,8 +562,9 @@ export class Paginator extends HTMLElement {
                 // A rapid second, deliberate touch may arrive while the prior
                 // spine is still loading. Wait for that guarded turn instead
                 // of silently dropping the new gesture.
-                for (let i = 0; this.#locked && i < 60; i++)
-                    await wait(16)
+                while (this.#locked
+                    && !this.#destroyed
+                    && this.#view === originView) await wait(16)
                 // Several events from one released finger can arrive before
                 // the first turn settles. Never apply an old view's queued
                 // intent to the newly loaded spine.
@@ -567,7 +616,8 @@ export class Paginator extends HTMLElement {
             return true
         }
         const doc = state.doc ?? view.document
-        if (doc?.getSelection()?.isCollapsed === false) {
+        const selection = getSelectionSnapshot(doc)
+        if (selection && !sameSelection(selection, state.selection)) {
             this.#clearTouchState(state)
             return true
         }
@@ -580,6 +630,10 @@ export class Paginator extends HTMLElement {
 
         this.#clearTouchState(state)
         if (!shouldGoNext && !shouldGoPrev) return true
+        // A selection left over from an earlier long-press must not disable
+        // every later chapter handoff. A selection changed by this gesture was
+        // handled above; an unchanged stale range can now be dismissed.
+        if (selection) doc.getSelection()?.removeAllRanges()
         state.consumed = true
         this.#queueBoundaryNavigation(
             shouldGoNext ? 1 : -1,
@@ -1028,7 +1082,6 @@ export class Paginator extends HTMLElement {
         const view = this.#view
         if (!view) return
 
-        this.#scheduleWheelIdleReset()
         if (!this.#wheelState
             || (!this.#wheelState.consumed && this.#wheelState.view !== view)) {
             this.#wheelState = {
@@ -1042,8 +1095,8 @@ export class Paginator extends HTMLElement {
         let state = this.#wheelState
         if (state.consumed) {
             // Quarantine same-direction carryover momentum from the old spine,
-            // including rubber-band rebound. A reversal is only actionable
-            // immediately while it still belongs to the same live view.
+            // including rubber-band rebound, without letting every carryover
+            // event postpone the idle release forever.
             if (state.view !== view
                 || Math.sign(delta) === state.direction) {
                 if (e.cancelable) e.preventDefault()
@@ -1056,6 +1109,7 @@ export class Paginator extends HTMLElement {
                 direction: 0,
             }
         }
+        this.#scheduleWheelIdleReset()
 
         const { atStart, atEnd } = this.#getScrollEdges()
         const outward = atEnd && delta > 0 || atStart && delta < 0
@@ -1086,11 +1140,14 @@ export class Paginator extends HTMLElement {
             view,
             doc: view?.document,
             x: touch?.screenX, y: touch?.screenY,
+            startX: touch?.screenX, startY: touch?.screenY,
             t: e.timeStamp,
             vx: 0, xy: 0,
+            dragging: false,
             released: false,
             scrolledAfterRelease: false,
             consumed: false,
+            selection: getSelectionSnapshot(view?.document),
         }
     }
     #onTouchMove(e) {
@@ -1114,8 +1171,14 @@ export class Paginator extends HTMLElement {
             if (this.#touchScrolled) e.preventDefault()
             return
         }
+        if (!state.dragging) {
+            const totalX = (state.startX ?? x) - x
+            const totalY = (state.startY ?? y) - y
+            if (Math.hypot(totalX, totalY) < PAGE_DRAG_THRESHOLD) return
+            state.dragging = true
+        }
         e.preventDefault()
-        const dt = e.timeStamp - state.t
+        const dt = Math.max(1, e.timeStamp - state.t)
         state.x = x
         state.y = y
         state.t = e.timeStamp
@@ -1144,20 +1207,44 @@ export class Paginator extends HTMLElement {
             return
         }
 
-        // XXX: Firefox seems to report scale as 1... sometimes...?
-        // at this point I'm basically throwing `requestAnimationFrame` at
-        // anything that doesn't work
+        const moved = state.dragging || this.#touchScrolled
+        const pinched = state.pinched
+        const selectionChanged = !sameSelection(
+            state.selection, getSelectionSnapshot(state.doc ?? view.document))
+        const { vx, vy } = state
+        this.#clearTouchState(state)
+        if (!moved || pinched || selectionChanged) return
+
+        // Only an actual drag owns snap navigation. A stationary tap is owned
+        // by Owlry's document pointer handler, preventing two independent
+        // navigation paths from racing at a spine boundary.
         requestAnimationFrame(() => {
             if (this.#destroyed
-                || this.#view !== view
-                || this.#touchState !== state) return
-            this.#clearTouchState(state)
+                || this.#view !== view) return
             if ((globalThis.visualViewport?.scale ?? 1) === 1)
-                this.#runNavigation(() => this.snap(state.vx, state.vy))
+                this.#runNavigation(() => this.snap(vx, vy))
         })
     }
-    #onTouchCancel() {
-        this.#clearTouchState()
+    #onTouchCancel(e) {
+        const state = this.#touchState
+        if (!state) return
+        const touch = e.changedTouches?.[0]
+        if (this.scrolled && !state.pinched) {
+            if (touch) {
+                const dx = state.x - touch.screenX
+                const dy = state.y - touch.screenY
+                state.xy += this.#vertical ? dx : dy
+            }
+            if (Math.abs(state.xy) >= TOUCH_GESTURE_THRESHOLD) {
+                state.released = true
+                this.#scheduleTouchSettle(state)
+                requestAnimationFrame(() => {
+                    this.#finishTouchScroll(state, true)
+                })
+                return
+            }
+        }
+        this.#clearTouchState(state)
     }
     // allows one to process rects as if they were LTR and horizontal
     #getRectMapper() {

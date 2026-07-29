@@ -1,4 +1,8 @@
-import { CONTENT_SECURITY_POLICY } from './security.js'
+import {
+    CONTENT_SECURITY_POLICY,
+    markEventSafeDocumentURL,
+    unmarkEventSafeDocumentURL,
+} from './security.js'
 
 const normalizeWhitespace = str => str ? str
     .replace(/[\t\n\f\r ]+/g, ' ')
@@ -312,7 +316,7 @@ export const makeFB2 = async blob => {
         .map(({ ids, titles, el, linear }) => {
             const str = template(el.outerHTML)
             const blob = new Blob([str], { type: MIME.XHTML })
-            const url = URL.createObjectURL(blob)
+            const url = markEventSafeDocumentURL(URL.createObjectURL(blob))
             urls.push(url)
             const title = normalizeWhitespace(
                 el.querySelector('.title, .subtitle, p')?.textContent
@@ -360,7 +364,10 @@ export const makeFB2 = async blob => {
     book.isExternal = uri => /^\w+:/i.test(uri)
 
     book.destroy = () => {
-        for (const url of urls) URL.revokeObjectURL(url)
+        for (const url of urls) {
+            unmarkEventSafeDocumentURL(url)
+            URL.revokeObjectURL(url)
+        }
     }
     return book
 }

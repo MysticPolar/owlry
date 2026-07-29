@@ -1,4 +1,9 @@
-import { CONTENT_SECURITY_POLICY } from './security.js'
+import {
+    CONTENT_SECURITY_POLICY,
+    isEventSafeDocumentURL,
+} from './security.js'
+
+const IFRAME_LOAD_TIMEOUT = 15_000
 
 const parseViewport = str => str
     ?.split(/[,;\s]/) // NOTE: technically, only the comma is valid
@@ -83,27 +88,49 @@ export class FixedLayout extends HTMLElement {
             display: 'none',
             overflow: 'hidden',
         })
-        // `allow-scripts` is needed for events because of WebKit bug
-        // https://bugs.webkit.org/show_bug.cgi?id=218086
-        iframe.setAttribute('sandbox', 'allow-same-origin')
+        // WebKit needs allow-scripts for callbacks installed by the parent
+        // document. Only our sanitized, CSP-injected URLs receive it.
+        iframe.setAttribute('sandbox', isEventSafeDocumentURL(src)
+            ? 'allow-same-origin allow-scripts' : 'allow-same-origin')
         iframe.setAttribute('csp', CONTENT_SECURITY_POLICY)
         iframe.setAttribute('referrerpolicy', 'no-referrer')
         iframe.setAttribute('scrolling', 'no')
         iframe.setAttribute('part', 'filter')
         this.#root.append(element)
         if (!src) return { blank: true, element, iframe }
-        return new Promise(resolve => {
-            iframe.addEventListener('load', () => {
-                const doc = iframe.contentDocument
-                this.dispatchEvent(new CustomEvent('load', { detail: { doc, index } }))
-                const { width, height } = getViewport(doc, this.defaultViewport)
-                resolve({
-                    element, iframe,
-                    width: parseFloat(width),
-                    height: parseFloat(height),
-                    onZoom,
-                })
-            }, { once: true })
+        return new Promise((resolve, reject) => {
+            let timeout
+            const cleanup = () => {
+                clearTimeout(timeout)
+                iframe.removeEventListener('load', onLoad)
+                iframe.removeEventListener('error', onError)
+            }
+            const onError = () => {
+                cleanup()
+                reject(new Error('Fixed-layout ebook frame failed to load'))
+            }
+            const onLoad = () => {
+                try {
+                    cleanup()
+                    const doc = iframe.contentDocument
+                    this.dispatchEvent(new CustomEvent('load', { detail: { doc, index } }))
+                    const { width, height } = getViewport(doc, this.defaultViewport)
+                    resolve({
+                        element, iframe,
+                        width: parseFloat(width),
+                        height: parseFloat(height),
+                        onZoom,
+                    })
+                } catch (error) {
+                    reject(error)
+                }
+            }
+            iframe.addEventListener('load', onLoad, { once: true })
+            iframe.addEventListener('error', onError, { once: true })
+            timeout = setTimeout(() => {
+                cleanup()
+                reject(new Error('Fixed-layout ebook frame timed out while loading'))
+            }, IFRAME_LOAD_TIMEOUT)
             iframe.src = src
         })
     }
