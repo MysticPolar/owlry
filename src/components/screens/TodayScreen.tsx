@@ -1,12 +1,12 @@
-import { useMemo, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useStore } from '../../store/useStore';
 import { getBook } from '../../lib/bookRegistry';
 import { FEED, FEED_GENRES, feedLikes } from '../../content/feed';
 import { rankShelf } from '../../lib/shelfRank';
 import { rowFromLevel } from '../../lib/economy/curve';
 import { useLevelFlash } from '../StatFx';
-import type { BookId, Genre } from '../../content/types';
-import { useT } from '../../i18n/react';
+import type { BookId, BookRef, Genre } from '../../content/types';
+import { useLang, useT } from '../../i18n/react';
 import { Icon } from '../Icon';
 import { Cover } from '../Cover';
 import { CurtainValance, CurtainHem } from '../stage';
@@ -18,8 +18,31 @@ type Filter = 'shelf' | 'all' | Genre;
 /** the tag row, in display order — labels come from i18n (today.home.tags) */
 const FILTERS: Filter[] = ['shelf', 'all', ...FEED_GENRES];
 
-const fmtCount = (n: number): string =>
-  n >= 1000 ? (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k' : String(n);
+const SINK_MS = 420;
+
+function sinkDelayMs(reduceMotion: boolean): number {
+  if (reduceMotion) return 0;
+  if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    return 0;
+  }
+  return SINK_MS;
+}
+
+const fmtCount = (n: number, zh: boolean): string => {
+  if (n < 1000) return String(n);
+  const v = (n / 1000).toFixed(1).replace(/\.0$/, '');
+  return zh ? `${v}千` : `${v}k`;
+};
+
+/** push waved-off books to the end while preserving relative order among the rest */
+function withDislikedLast(ids: BookId[], dislikedIds: BookRef[]): BookId[] {
+  if (!dislikedIds.length) return ids;
+  const waved = new Set(dislikedIds);
+  const kept: BookId[] = [];
+  const sunk: BookId[] = [];
+  for (const id of ids) (waved.has(id) ? sunk : kept).push(id);
+  return [...kept, ...sunk];
+}
 
 /* ---------- stat chips (candy in glyphs + numbers only) ---------- */
 function StatChips() {
@@ -79,14 +102,44 @@ function BookCard({ id }: { id: BookId }) {
   const toggleDislike = useStore((s) => s.toggleDislike);
   const saved = useStore((s) => s.savedIds.includes(id));
   const disliked = useStore((s) => s.dislikedIds.includes(id));
+  const reduceMotion = useStore((s) => !!s.prefs.reduceMotion);
   const t = useT().today.home;
+  const zh = useLang() === 'zh';
+  const [sinking, setSinking] = useState(false);
+  const sinkTimer = useRef<number | null>(null);
+
+  useEffect(
+    () => () => {
+      if (sinkTimer.current != null) window.clearTimeout(sinkTimer.current);
+    },
+    [],
+  );
+
   if (!b) return null;
 
   const open = () => openSheet(id);
-  // the heart IS the save (a hearted book lands in the library); the down-vote
-  // is a quiet "not for me" — it fades the post so scout learns the taste
+
+  const onDislike = () => {
+    if (sinking) return;
+    // cancel: lift the label and let the shelf re-rank immediately
+    if (disliked) {
+      toggleDislike(id);
+      return;
+    }
+    // wave off: play the sink beat, THEN mark disliked so the card lands at the end
+    setSinking(true);
+    const delay = sinkDelayMs(reduceMotion);
+    sinkTimer.current = window.setTimeout(() => {
+      sinkTimer.current = null;
+      toggleDislike(id);
+      setSinking(false);
+    }, delay);
+  };
+
+  // the heart IS the save; the down-arrow is "not for me" — sinks to the end,
+  // stays labeled, and a second tap cancels
   return (
-    <article className={`pb-card ${disliked ? 'disliked' : ''}`}>
+    <article className={`pb-card${sinking ? ' sinking' : ''}${disliked ? ' disliked' : ''}`}>
       <button type="button" className="pb-open" aria-label={t.openAria(b.t)} onClick={open}>
         <Cover id={id} cls="pb-cover" />
         <span className="body">
@@ -102,7 +155,7 @@ function BookCard({ id }: { id: BookId }) {
           onClick={() => toggleSave(id)}
         >
           <Icon name={saved ? 'ti-heart-filled' : 'ti-heart'} />
-          <span>{fmtCount(feedLikes(id) + (saved ? 1 : 0))}</span>
+          <span>{fmtCount(feedLikes(id) + (saved ? 1 : 0), zh)}</span>
         </button>
         <span className="sp" />
         <button
@@ -110,7 +163,8 @@ function BookCard({ id }: { id: BookId }) {
           className={`pb-iconbtn pb-down ${disliked ? 'on' : ''}`}
           aria-label={t.dislikeAria(b.t)}
           aria-pressed={disliked}
-          onClick={() => toggleDislike(id)}
+          disabled={sinking}
+          onClick={onDislike}
         >
           <Icon name={disliked ? 'ti-arrow-big-down-filled' : 'ti-arrow-big-down'} />
         </button>
@@ -177,7 +231,7 @@ export function TodayScreen() {
   const [colL, colR] = useMemo(() => {
     // the shelf is the reader's own saves, warmest first; everything else is
     // the hand-tuned catalog order, optionally narrowed to one genre
-    const ids =
+    const base =
       filter === 'shelf'
         ? (rankShelf({
             savedIds,
@@ -191,6 +245,9 @@ export function TodayScreen() {
             fromScout: collected,
           }) as BookId[])
         : FEED.filter((id) => filter === 'all' || getBook(id)?.g === filter);
+    // waved-off books always sit at the end (rankShelf already sinks them on
+    // the shelf view; other filters need the same courtesy)
+    const ids = withDislikedLast(base, dislikedIds);
     const cells: ReactNode[] = ids.map((id) => <BookCard key={id} id={id} />);
     if (filter === 'all' && latestSave) {
       cells.splice(Math.min(2, cells.length), 0, <KeeperCard key={`keeper-${latestSave}`} id={latestSave} />);

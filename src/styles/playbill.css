@@ -228,6 +228,32 @@
    the spine + the cover's own padding; its own inset border is the plate edge */
 .cover-art { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; }
 .cover-art svg { display: block; width: 100%; height: 100%; }
+/* 简体中文: hide baked-in English SVG title/author; Chinese labels sit on top */
+.cover-art-zh svg text,
+.cover-art-zh svg tspan { display: none !important; }
+.cover-zh {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  display: flex; flex-direction: column; justify-content: space-between;
+  padding: 11% 9% 10%;
+  text-align: center;
+  /* Chinese titles wrap by word/phrase, not glyph-column */
+  writing-mode: horizontal-tb;
+  word-break: keep-all;
+}
+.cover-zh-t {
+  font-family: var(--font-display); font-weight: 600;
+  font-size: clamp(11px, 3.6vw, 15px); line-height: 1.25;
+  letter-spacing: 0.02em;
+}
+.cover-zh-a {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: clamp(8px, 2.4vw, 10px); line-height: 1.2;
+  letter-spacing: 0; opacity: .92;
+}
+/* tiny covers: title only, tighter padding */
+.cover-xs .cover-zh { padding: 14% 6% 12%; }
+.cover-xs .cover-zh-t { font-size: 7px; letter-spacing: 0; }
+.cover-xs .cover-zh-a { display: none; }
 /* the about-sheet cover takes the jacket's 150:205 ratio so the flat art fills
    it without letterboxing (photos there just crop a hair, as object-fit covers) */
 .pb-sheet .cover-md { height: auto; aspect-ratio: 150 / 205; }
@@ -250,7 +276,21 @@
 /* down-vote lives in the post's bottom-right — a quiet "not for me" */
 .pb-down { color: var(--pb-ink-mute); }
 .pb-down.on { color: var(--pb-ink-soft); }
-.pb-card.disliked .pb-open { opacity: .4; transition: opacity .2s ease; }
+/* waved-off cards stay fully readable — the filled arrow is the only lasting mark.
+   `.sinking` is the brief send-to-end beat before the shelf reorders. */
+.pb-card.sinking {
+  animation: pbCardSink .42s cubic-bezier(.4, 0, .2, 1) forwards;
+  pointer-events: none;
+}
+@keyframes pbCardSink {
+  0% { opacity: 1; transform: translateY(0) scale(1); }
+  55% { opacity: .55; transform: translateY(10px) scale(.96); }
+  100% { opacity: .2; transform: translateY(22px) scale(.92); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pb-card.sinking { animation: none; opacity: .55; }
+}
+.app.no-motion .pb-card.sinking { animation: none; opacity: .55; }
 
 /* ---------- Keeper card (conditional) ---------- */
 .pb-keeper {
@@ -296,11 +336,33 @@
   background: none; border: 0; padding: 0; cursor: pointer;
   font-family: var(--font-chrome); font-size: var(--t-micro); font-weight: 600;
   color: var(--pb-cream-mute); transition: color .2s ease; touch-action: manipulation;
+  /* keep each pill wide enough for a horizontal CJK label (问一问) —
+     without this, the column can shrink to the icon and stack glyphs */
+  min-width: 52px;
 }
 .pb-nv .pb-nvpill { position: relative; display: flex; align-items: center; justify-content: center; }
 .pb-nv .ti { font-size: var(--icon-2xl); }
 .pb-nv.on { color: var(--pb-nav-gold); }
-.pb-nv .lab { letter-spacing: .2px; }
+.pb-nv .lab {
+  writing-mode: horizontal-tb;
+  text-orientation: mixed;
+  white-space: nowrap;
+  word-break: keep-all;
+  line-height: 1.15;
+  letter-spacing: .2px;
+  font-size: 11px;
+  width: max-content;
+  max-width: none;
+}
+/* 简体中文: no Latin tracking; room for three-character labels on one line */
+html[lang="zh-CN"] .pb-nav { gap: 22px; padding-left: 20px; padding-right: 20px; }
+html[lang="zh-CN"] .pb-nv { min-width: 64px; }
+html[lang="zh-CN"] .pb-nv .lab {
+  letter-spacing: 0;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font-chrome);
+}
 
 /* profile pill chains (kept from the legacy nav — locked until level 5) */
 .pb-nv .nv-chains { position: absolute; inset: -4px -2px; width: calc(100% + 4px); height: calc(100% + 8px); pointer-events: none; }
