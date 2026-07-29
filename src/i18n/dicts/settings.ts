@@ -52,9 +52,6 @@ const en = {
     signOut: 'sign out',
     toastSignedOut: 'signed out. keeper closed the ledger.',
     signIn: 'sign in or create account',
-    storageWaitTitle: 'opening your private shelf',
-    storageWaitBody: 'Cloud sync is retrying. Reading changes are paused so this account’s progress stays safe.',
-    storageRetry: 'retry now',
 
     secGuest: 'GUEST PREVIEW',
     gainLevel: 'gain a level',
@@ -230,9 +227,6 @@ const zh: typeof en = {
     signOut: '退出登录',
     toastSignedOut: '已退出。keeper 合上了账本。',
     signIn: '登录或注册账户',
-    storageWaitTitle: '正在打开你的私人书架',
-    storageWaitBody: '云同步正在重试。阅读操作暂时停用，以确保此账户的进度安全。',
-    storageRetry: '立即重试',
 
     secGuest: '访客预览',
     gainLevel: '升一级',
