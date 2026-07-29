@@ -3,14 +3,13 @@ import { CONTENT_SECURITY_POLICY } from './security.js'
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 // Scrolled rendering keeps one spine item alive at a time. These thresholds
-// turn an outward wheel/swipe that *starts* at that item's edge into the same
-// guarded prev()/next() navigation used by the page controls. Requiring a new
-// gesture preserves the final viewport instead of advancing as soon as it
-// merely becomes visible.
+// turn outward wheel/swipe intent at that item's live edge into the same
+// guarded prev()/next() navigation used by the page controls.
 const SCROLL_EDGE_EPSILON = 2
-const WHEEL_GESTURE_GAP = 180
+const WHEEL_IDLE_TIMEOUT = 180
 const WHEEL_GESTURE_THRESHOLD = 24
 const TOUCH_GESTURE_THRESHOLD = 36
+const TOUCH_SCROLL_IDLE_TIMEOUT = 180
 
 const debounce = (f, wait, immediate) => {
     let timeout
@@ -480,6 +479,7 @@ export class Paginator extends HTMLElement {
     #anchor = 0 // anchor view to a fraction (0-1), Range, or Element
     #justAnchored = false
     #locked = false // while true, prevent any further navigation
+    #boundaryNavigation = Promise.resolve()
     #styles
     #styleMap = new WeakMap()
     #mediaQuery = matchMedia('(prefers-color-scheme: dark)')
@@ -487,22 +487,105 @@ export class Paginator extends HTMLElement {
     #scrollBounds
     #touchState
     #touchScrolled
+    #touchIdleTimer
     #wheelState
+    #wheelIdleTimer
     #lastVisibleRange
     #destroyed = false
+    #reportNavigationError(error) {
+        if (this.#destroyed) return
+        const detail = error instanceof Error
+            ? error : new Error(String(error))
+        this.dispatchEvent(new CustomEvent('error', {
+            detail,
+            bubbles: true,
+            composed: true,
+        }))
+    }
     #runNavigation(task) {
         Promise.resolve()
             .then(task)
-            .catch(error => {
-                if (this.#destroyed) return
-                const detail = error instanceof Error
-                    ? error : new Error(String(error))
-                this.dispatchEvent(new CustomEvent('error', {
-                    detail,
-                    bubbles: true,
-                    composed: true,
-                }))
+            .catch(error => this.#reportNavigationError(error))
+    }
+    #queueBoundaryNavigation(direction, originView = this.#view) {
+        if (!originView) return
+        this.#boundaryNavigation = this.#boundaryNavigation
+            .then(async () => {
+                // A rapid second, deliberate touch may arrive while the prior
+                // spine is still loading. Wait for that guarded turn instead
+                // of silently dropping the new gesture.
+                for (let i = 0; this.#locked && i < 60; i++)
+                    await wait(16)
+                // Several events from one released finger can arrive before
+                // the first turn settles. Never apply an old view's queued
+                // intent to the newly loaded spine.
+                if (this.#destroyed
+                    || this.#locked
+                    || this.#view !== originView) return
+                return direction > 0 ? this.next() : this.prev()
             })
+            .catch(error => this.#reportNavigationError(error))
+    }
+    #clearWheelState() {
+        if (this.#wheelIdleTimer) clearTimeout(this.#wheelIdleTimer)
+        this.#wheelIdleTimer = null
+        this.#wheelState = null
+    }
+    #scheduleWheelIdleReset() {
+        if (this.#wheelIdleTimer) clearTimeout(this.#wheelIdleTimer)
+        this.#wheelIdleTimer = setTimeout(() => {
+            this.#wheelIdleTimer = null
+            this.#wheelState = null
+        }, WHEEL_IDLE_TIMEOUT)
+    }
+    #clearTouchState(state = this.#touchState) {
+        if (state && this.#touchState !== state) return
+        if (this.#touchIdleTimer) clearTimeout(this.#touchIdleTimer)
+        this.#touchIdleTimer = null
+        this.#touchState = null
+        this.#touchScrolled = false
+    }
+    #scheduleTouchSettle(state) {
+        if (this.#touchState !== state || !state.released) return
+        if (this.#touchIdleTimer) clearTimeout(this.#touchIdleTimer)
+        this.#touchIdleTimer = setTimeout(() => {
+            this.#touchIdleTimer = null
+            this.#finishTouchScroll(state)
+        }, TOUCH_SCROLL_IDLE_TIMEOUT)
+    }
+    #finishTouchScroll(state, edgeOnly = false) {
+        if (this.#touchState !== state || !state.released) return true
+        const view = this.#view
+        if (this.#destroyed
+            || !this.scrolled
+            || !view
+            || view !== state.view
+            || state.pinched
+            || state.consumed
+            || (globalThis.visualViewport?.scale ?? 1) > 1) {
+            this.#clearTouchState(state)
+            return true
+        }
+        const doc = state.doc ?? view.document
+        if (doc?.getSelection()?.isCollapsed === false) {
+            this.#clearTouchState(state)
+            return true
+        }
+        const { atStart, atEnd } = this.#getScrollEdges()
+        const shouldGoNext = atEnd
+            && state.xy >= TOUCH_GESTURE_THRESHOLD
+        const shouldGoPrev = atStart
+            && state.xy <= -TOUCH_GESTURE_THRESHOLD
+        if (edgeOnly && !shouldGoNext && !shouldGoPrev) return false
+
+        this.#clearTouchState(state)
+        if (!shouldGoNext && !shouldGoPrev) return true
+        state.consumed = true
+        this.#queueBoundaryNavigation(
+            shouldGoNext ? 1 : -1,
+            state.view,
+        )
+        return true
     }
     constructor() {
         super()
@@ -611,7 +694,22 @@ export class Paginator extends HTMLElement {
         this.#footer = this.#root.getElementById('footer')
 
         this.#observer.observe(this.#container)
-        this.#container.addEventListener('scroll', () => this.dispatchEvent(new Event('scroll')))
+        this.#container.addEventListener('scroll', () => {
+            this.dispatchEvent(new Event('scroll'))
+            const state = this.#touchState
+            if (state?.released) {
+                state.scrolledAfterRelease = true
+                this.#scheduleTouchSettle(state)
+            }
+        })
+        // Safari's momentum can reach a chapter edge well after touchend.
+        // Native scrollend gives the smoothest handoff; the debounced timer
+        // above covers engines and older WebKit versions without scrollend.
+        this.#container.addEventListener('scrollend', () => {
+            const state = this.#touchState
+            if (state?.released && state.scrolledAfterRelease)
+                this.#finishTouchScroll(state)
+        })
         this.#container.addEventListener('scroll', debounce(() => {
             if (this.#destroyed) return
             if (this.scrolled) {
@@ -624,11 +722,13 @@ export class Paginator extends HTMLElement {
         this.addEventListener('touchstart', this.#onTouchStart.bind(this), opts)
         this.addEventListener('touchmove', this.#onTouchMove.bind(this), opts)
         this.addEventListener('touchend', this.#onTouchEnd.bind(this))
+        this.addEventListener('touchcancel', this.#onTouchCancel.bind(this))
         this.addEventListener('wheel', this.#onWheel.bind(this), opts)
         this.addEventListener('load', ({ detail: { doc } }) => {
             doc.addEventListener('touchstart', this.#onTouchStart.bind(this), opts)
             doc.addEventListener('touchmove', this.#onTouchMove.bind(this), opts)
             doc.addEventListener('touchend', this.#onTouchEnd.bind(this))
+            doc.addEventListener('touchcancel', this.#onTouchCancel.bind(this))
             // Events inside an iframe do not bubble into the paginator.
             doc.addEventListener('wheel', this.#onWheel.bind(this), opts)
         })
@@ -703,7 +803,8 @@ export class Paginator extends HTMLElement {
     attributeChangedCallback(name, _, value) {
         switch (name) {
             case 'flow':
-                this.#wheelState = null
+                this.#clearWheelState()
+                this.#clearTouchState()
                 this.render()
                 break
             case 'gap':
@@ -924,56 +1025,71 @@ export class Paginator extends HTMLElement {
         if (this.#destroyed || !this.scrolled || e.ctrlKey) return
         const delta = this.#getWheelDelta(e)
         if (!delta) return
+        const view = this.#view
+        if (!view) return
 
-        const now = performance.now()
+        this.#scheduleWheelIdleReset()
         if (!this.#wheelState
-            || now - this.#wheelState.lastTime > WHEEL_GESTURE_GAP) {
-            const { atStart, atEnd } = this.#getScrollEdges()
+            || (!this.#wheelState.consumed && this.#wheelState.view !== view)) {
             this.#wheelState = {
-                atStart, atEnd,
+                view,
                 distance: 0,
                 consumed: false,
-                lastTime: now,
+                direction: 0,
             }
         }
 
-        const state = this.#wheelState
-        state.lastTime = now
-        const outward = state.atEnd && delta > 0
-            || state.atStart && delta < 0
+        let state = this.#wheelState
         if (state.consumed) {
-            // Do not let trackpad momentum scroll or skip through the section
-            // that has just loaded. A direction reversal remains native.
-            if (outward && e.cancelable) e.preventDefault()
-            return
+            // Quarantine same-direction carryover momentum from the old spine,
+            // including rubber-band rebound. A reversal is only actionable
+            // immediately while it still belongs to the same live view.
+            if (state.view !== view
+                || Math.sign(delta) === state.direction) {
+                if (e.cancelable) e.preventDefault()
+                return
+            }
+            state = this.#wheelState = {
+                view,
+                distance: 0,
+                consumed: false,
+                direction: 0,
+            }
         }
+
+        const { atStart, atEnd } = this.#getScrollEdges()
+        const outward = atEnd && delta > 0 || atStart && delta < 0
         if (!outward) {
             state.distance = 0
             return
         }
 
-        state.distance += delta
-        const shouldGoNext = state.atEnd
+        state.distance = Math.sign(state.distance) === Math.sign(delta)
+            ? state.distance + delta : delta
+        const shouldGoNext = atEnd
             && state.distance >= WHEEL_GESTURE_THRESHOLD
-        const shouldGoPrev = state.atStart
+        const shouldGoPrev = atStart
             && state.distance <= -WHEEL_GESTURE_THRESHOLD
         if (!shouldGoNext && !shouldGoPrev) return
 
         state.consumed = true
+        state.direction = shouldGoNext ? 1 : -1
         if (e.cancelable) e.preventDefault()
-        this.#runNavigation(() => shouldGoNext ? this.next() : this.prev())
+        this.#queueBoundaryNavigation(state.direction, state.view)
     }
     #onTouchStart(e) {
         if (this.#destroyed) return
+        this.#clearTouchState()
+        const view = this.#view
         const touch = e.changedTouches[0]
-        const edges = this.scrolled
-            ? this.#getScrollEdges()
-            : { atStart: false, atEnd: false }
         this.#touchState = {
+            view,
+            doc: view?.document,
             x: touch?.screenX, y: touch?.screenY,
             t: e.timeStamp,
             vx: 0, xy: 0,
-            ...edges,
+            released: false,
+            scrolledAfterRelease: false,
             consumed: false,
         }
     }
@@ -1020,22 +1136,10 @@ export class Paginator extends HTMLElement {
                 const dy = state.y - touch.screenY
                 state.xy += this.#vertical ? dx : dy
             }
+            state.released = true
+            this.#scheduleTouchSettle(state)
             requestAnimationFrame(() => {
-                if (this.#destroyed
-                    || this.#view !== view
-                    || this.#touchState !== state
-                    || state.pinched
-                    || state.consumed
-                    || (globalThis.visualViewport?.scale ?? 1) > 1) return
-                const doc = e.target?.ownerDocument
-                if (doc?.getSelection()?.isCollapsed === false) return
-                const shouldGoNext = state.atEnd
-                    && state.xy >= TOUCH_GESTURE_THRESHOLD
-                const shouldGoPrev = state.atStart
-                    && state.xy <= -TOUCH_GESTURE_THRESHOLD
-                if (!shouldGoNext && !shouldGoPrev) return
-                state.consumed = true
-                this.#runNavigation(() => shouldGoNext ? this.next() : this.prev())
+                this.#finishTouchScroll(state, true)
             })
             return
         }
@@ -1047,9 +1151,13 @@ export class Paginator extends HTMLElement {
             if (this.#destroyed
                 || this.#view !== view
                 || this.#touchState !== state) return
+            this.#clearTouchState(state)
             if ((globalThis.visualViewport?.scale ?? 1) === 1)
                 this.#runNavigation(() => this.snap(state.vx, state.vy))
         })
+    }
+    #onTouchCancel() {
+        this.#clearTouchState()
     }
     // allows one to process rects as if they were LTR and horizontal
     #getRectMapper() {
@@ -1334,6 +1442,8 @@ export class Paginator extends HTMLElement {
     destroy() {
         if (this.#destroyed) return
         this.#destroyed = true
+        this.#clearWheelState()
+        this.#clearTouchState()
         this.#observer.disconnect()
         const view = this.#view
         this.#view = null

@@ -65,11 +65,14 @@ Also skipped: `dict.js`, `footnotes.js`, `opds.js`, `quote-image.js`,
 7. **Safe explicit links.** `view.js` opens only `http:`, `https:`, `mailto:`,
    and `tel:` anchor targets, and uses `noopener,noreferrer` for the new context.
    Script/data/custom-scheme links embedded in an untrusted book are inert.
-8. **Scrolled spine handoff.** `paginator.js` translates a fresh outward wheel
-   or touch gesture at the edge of the current scrolled spine item into its
-   guarded `prev()`/`next()` navigation. This makes short and long sections
-   reachable without page controls while preserving the final viewport and
-   latching trackpad momentum to one section transition per gesture. Paginated
+8. **Scrolled spine handoff.** `paginator.js` translates outward wheel or touch
+   intent at the live edge of the current scrolled spine item into queued,
+   guarded `prev()`/`next()` navigation. Touch intent follows native
+   `scrollend` (with an idle fallback) so post-release momentum can complete the
+   handoff. Queued turns remain bound to their originating view, carryover and
+   rebound trackpad momentum are quarantined until idle, and touch state is
+   cleared after every decision. This keeps short and long sections reachable
+   without page controls, skipped sections, or a frozen next chapter. Paginated
    and pinch-zoom interactions are unchanged.
 
 ## Re-syncing

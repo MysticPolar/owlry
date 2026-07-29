@@ -20,7 +20,7 @@ import { registerActiveReadingPosition } from '../../lib/ebook/activePosition';
 import { getReadingPosition } from '../../lib/ebook/positionKey';
 import { sameEbookContent } from '../../lib/ebook/fingerprint';
 import type { ReaderFont, ReaderPrefs } from '../../store/types';
-import { COPY_REPLACED_ERROR, SYSTEM_STACK } from '../reader/shared';
+import { COPY_REPLACED_ERROR, SYSTEM_STACK, pageTapAction } from '../reader/shared';
 import type { EngineHandle, ProgressUpdate } from '../reader/shared';
 import { Icon } from '../Icon';
 import { CastOwl } from '../CastOwl';
@@ -182,7 +182,12 @@ export function EbookReader() {
   const pendingPositionRef = useRef<ReadingPosition | null>(null);
   const latestPositionRef = useRef<ReadingPosition | null>(null);
   const positionOwnerRef = useRef<EbookOwner>('guest');
-  const tapStart = useRef<{ x: number; y: number } | null>(null);
+  const tapStart = useRef<{
+    pointerId: number;
+    x: number;
+    y: number;
+    interactive: boolean;
+  } | null>(null);
   const settingsButtonRef = useRef<HTMLButtonElement>(null);
 
   const revealChrome = useCallback(() => {
@@ -504,6 +509,41 @@ export function EbookReader() {
     close();
   }, [close, flushPosition]);
 
+  const handleReaderPointerDown = useCallback((event: React.PointerEvent<HTMLDivElement>) => {
+    if (!event.isPrimary) return;
+    const target = event.target as HTMLElement;
+    tapStart.current = {
+      pointerId: event.pointerId,
+      x: event.clientX,
+      y: event.clientY,
+      interactive: Boolean(target.closest(
+        'a,button,input,textarea,select,option,label,summary,details,audio,video,'
+        + '.reader-settings,[role="button"],[role="link"],'
+        + '[contenteditable]:not([contenteditable="false"])',
+      )),
+    };
+  }, []);
+
+  const handleReaderPointerUp = useCallback((event: React.PointerEvent<HTMLDivElement>) => {
+    const start = tapStart.current;
+    if (!start || !event.isPrimary || start.pointerId !== event.pointerId) return;
+    tapStart.current = null;
+    if (start.interactive || Math.hypot(event.clientX - start.x, event.clientY - start.y) > 10) return;
+    const target = event.target as HTMLElement;
+    if (target.closest(
+      'a,button,input,textarea,select,option,label,summary,details,audio,video,'
+      + '.reader-settings,[role="button"],[role="link"],[contenteditable]:not([contenteditable="false"])',
+    )) return;
+    if (window.getSelection()?.toString()) return;
+
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = rect.width > 0 ? (event.clientX - rect.left) / rect.width : .5;
+    const action = pageMode ? pageTapAction(x) : 'chrome';
+    if (action === 'prev') engineRef.current?.prev();
+    else if (action === 'next') engineRef.current?.next();
+    else toggleChrome();
+  }, [pageMode, toggleChrome]);
+
   const readerStyle = useMemo(
     () => ({
       '--reader-paper': mix([251, 243, 226], [239, 230, 208], prefs.dimmer),
@@ -530,23 +570,11 @@ export function EbookReader() {
       aria-label={t.reader.readingAria(displayTitle)}
       ref={rootRef}
       tabIndex={-1}
+      onPointerDown={handleReaderPointerDown}
+      onPointerUp={handleReaderPointerUp}
+      onPointerCancel={() => { tapStart.current = null; }}
     >
-      <div
-        className="reader-stage"
-        onPointerDown={(event) => { tapStart.current = { x: event.clientX, y: event.clientY }; }}
-        onPointerUp={(event) => {
-          const start = tapStart.current;
-          tapStart.current = null;
-          if (!start || Math.hypot(event.clientX - start.x, event.clientY - start.y) > 10) return;
-          if ((event.target as HTMLElement).closest('button,input,.reader-settings')) return;
-          if (window.getSelection()?.toString()) return;
-          const rect = event.currentTarget.getBoundingClientRect();
-          const x = (event.clientX - rect.left) / rect.width;
-          if (pageMode && x < 0.24) engineRef.current?.prev();
-          else if (pageMode && x > 0.76) engineRef.current?.next();
-          else toggleChrome();
-        }}
-      >
+      <div className="reader-stage">
         {status === 'resolving' && <div className="ebook-center it" role="status">{t.reader.resolving}</div>}
         {status === 'error' && (
           <div className="ebook-center ebook-empty" role="alert">
@@ -632,25 +660,20 @@ export function EbookReader() {
         <div className="reader-progress">
           <div className="reader-progress-meta">
             <span className="reader-location">{pageLabel}</span>
-            {accountId && positionOwnerRef.current !== 'guest' && syncStatus !== 'off' && (
-              syncStatus === 'error' ? (
-                <button
-                  className="reader-sync-status is-error"
-                  type="button"
-                  aria-label={t.settings.settings.ariaSyncNow}
-                  onClick={() => void syncAccountNow()}
-                >
-                  {t.settings.settings.syncLabel.error}
-                </button>
-              ) : (
-                <span
-                  className={`reader-sync-status is-${syncStatus}`}
-                  role="status"
-                  aria-live="polite"
-                >
-                  {t.settings.settings.syncLabel[syncStatus]}
-                </span>
-              )
+            {accountId && positionOwnerRef.current !== 'guest' && syncStatus === 'error' && (
+              <button
+                className="reader-sync-status is-error"
+                type="button"
+                aria-label={t.settings.settings.ariaSyncRetry}
+                onClick={() => void syncAccountNow()}
+              >
+                {t.settings.settings.syncLabel.error}
+              </button>
+            )}
+            {accountId && positionOwnerRef.current !== 'guest' && (
+              <span className="sr-only" role="status" aria-live="polite">
+                {syncStatus === 'error' ? t.settings.settings.ariaSyncRetry : ''}
+              </span>
             )}
           </div>
           <div

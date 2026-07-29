@@ -31,6 +31,16 @@ export interface EngineHandle {
   prev: () => void;
 }
 
+export type PageTapAction = 'prev' | 'chrome' | 'next';
+
+/** Full-height page-mode tap zones: generous outer thirds turn pages while the
+    middle third remains a stable way to reveal or hide the reader chrome. */
+export const pageTapAction = (fraction: number): PageTapAction => {
+  if (fraction < 1 / 3) return 'prev';
+  if (fraction > 2 / 3) return 'next';
+  return 'chrome';
+};
+
 /** Internal engine signal: another tab atomically replaced this exact copy. */
 export const COPY_REPLACED_ERROR = '__owlry_copy_replaced__';
 

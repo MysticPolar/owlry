@@ -11,7 +11,7 @@ import '../../vendor/foliate-js/view.js'; // side effect: registers <foliate-vie
 import { loadUpload } from '../../lib/ebook/storage';
 import { fetchRemoteBook } from '../../lib/ebook/remote';
 import type { ReaderPrefs } from '../../store/types';
-import { COPY_REPLACED_ERROR, SYSTEM_STACK } from './shared';
+import { COPY_REPLACED_ERROR, SYSTEM_STACK, pageTapAction } from './shared';
 import type { EngineHandle, EngineProps } from './shared';
 import literataUrl from '../../assets/fonts/literata-var-latin.woff2';
 import frauncesUrl from '../../assets/fonts/fraunces-var-latin.woff2';
@@ -105,6 +105,9 @@ const PRESERVED_PARAGRAPH_LAYOUT = [
   '[class*="verse" i]',
   '[class*="stanza" i]',
 ].join(',');
+const RUNNING_TEXT_BLOCKS = 'p, li, blockquote, dd, dt';
+const RUNNING_TEXT_INLINE = 'span, a, em, strong, b, i, cite, q, mark';
+const READER_SIZE_VALUE = 'var(--owlry-reader-size)';
 
 const hasGeneratedContent = (element: Element, doc: Document): boolean => {
   const win = doc.defaultView;
@@ -130,6 +133,42 @@ const hasGeneratedDescendantContent = (element: Element, doc: Document): boolean
     second paragraph-sized gap. The marker keeps anchor geometry in the document
     while the injected sheet removes only blocks with no readable/visual content. */
 const normalizeDocumentTypography = (doc: Document): void => {
+  // EPUB CSS frequently fixes running prose in px/pt (sometimes inline and
+  // `!important`), which otherwise outranks the reader's selected base size.
+  // Referencing Owlry's live custom property from an inline-important rule
+  // makes 16–24px changes authoritative without rebuilding the spine.
+  doc.documentElement.style.setProperty('-webkit-text-size-adjust', '100%', 'important');
+  doc.documentElement.style.setProperty('text-size-adjust', '100%', 'important');
+  doc.body?.style.setProperty('font-size', READER_SIZE_VALUE, 'important');
+  const win = doc.defaultView;
+  for (const block of doc.querySelectorAll<HTMLElement>(RUNNING_TEXT_BLOCKS)) {
+    // Preserve intentional relative inline typography (drop caps, small text,
+    // callouts) while replacing the publisher's fixed prose size. Ratios are
+    // captured before any inline overrides and remain live as the base size
+    // changes.
+    const inlineScales = Array.from(block.querySelectorAll<HTMLElement>(RUNNING_TEXT_INLINE))
+      .filter((inline) => inline.closest(RUNNING_TEXT_BLOCKS) === block)
+      .map((inline) => {
+        const ownSize = Number.parseFloat(win?.getComputedStyle(inline).fontSize ?? '');
+        const parentSize = Number.parseFloat(
+          win?.getComputedStyle(inline.parentElement ?? block).fontSize ?? '',
+        );
+        const ratio = parentSize > 0 && Number.isFinite(ownSize)
+          ? ownSize / parentSize
+          : 1;
+        return { inline, ratio: Number.isFinite(ratio) ? ratio : 1 };
+      });
+    block.style.setProperty('font-size', READER_SIZE_VALUE, 'important');
+    for (const { inline, ratio } of inlineScales) {
+      const normalizedRatio = Math.round(ratio * 1000) / 1000;
+      inline.style.setProperty(
+        'font-size',
+        Math.abs(normalizedRatio - 1) < .001 ? 'inherit' : `${normalizedRatio}em`,
+        'important',
+      );
+    }
+  }
+
   for (const paragraph of doc.querySelectorAll('p')) {
     const preservesLayout = Boolean(paragraph.closest(PRESERVED_PARAGRAPH_LAYOUT));
     if (preservesLayout) {
@@ -173,8 +212,11 @@ const readerStyles = (prefs: ReaderPrefs): string => {
       background: ${paper(prefs.dimmer)} !important;
       color: #241C14 !important;
       font-optical-sizing: auto;
+      -webkit-text-size-adjust: 100% !important;
+      text-size-adjust: 100% !important;
       --owlry-rule: color-mix(in srgb, #8A6A33 42%, transparent);
       --owlry-inner-gutter: clamp(.25rem, 1.5%, .75rem);
+      --owlry-reader-size: ${prefs.size}px;
     }
     *, *::before, *::after { box-sizing: border-box; }
     html, body {
@@ -193,7 +235,7 @@ const readerStyles = (prefs: ReaderPrefs): string => {
       padding-block: clamp(1rem, 3%, 1.75rem) !important;
       padding-inline: var(--owlry-inner-gutter) !important;
       font-family: ${family} !important;
-      font-size: ${prefs.size}px !important;
+      font-size: var(--owlry-reader-size) !important;
       font-weight: 430;
       font-kerning: normal;
       font-variant-ligatures: common-ligatures;
@@ -204,6 +246,9 @@ const readerStyles = (prefs: ReaderPrefs): string => {
     }
     :where(p, li, blockquote, dd, dt, figcaption, section, article, div, span) {
       font-family: inherit !important;
+    }
+    :where(p, li, blockquote, dd, dt) {
+      font-size: var(--owlry-reader-size) !important;
     }
     :where(pre, code, samp, kbd) {
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace !important;
@@ -577,11 +622,12 @@ export const FoliateView = forwardRef<EngineHandle, EngineProps>(function Foliat
           ? frameRect.left + click.clientX * scaleX
           : click.clientX;
         const x = hostRect.width > 0 ? (parentClientX - hostRect.left) / hostRect.width : .5;
-        if (x < .24) {
+        const action = pageTapAction(x);
+        if (action === 'prev') {
           turnSafely('prev');
           return;
         }
-        if (x > .76) {
+        if (action === 'next') {
           turnSafely('next');
           return;
         }
