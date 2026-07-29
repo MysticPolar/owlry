@@ -135,8 +135,11 @@ export default function App() {
               <IntroCard />
               {onboarded && !showOnboarding && !curtainDone && !reduceMotion && <PlaybillCurtain />}
               <SelectionBar />
-              <Toast />
-              <EconStrip />
+              {/* one feedback anchor: the receipt stacks ABOVE the toast, never over it */}
+              <div className="pb-callouts">
+                <EconStrip />
+                <Toast />
+              </div>
               <BurstLayer />
             </>
           )}

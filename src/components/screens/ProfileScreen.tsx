@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useStore } from '../../store/useStore';
 import { LV_CAP, ROWS, encoreStars, rowFromLevel } from '../../lib/economy/curve';
 import { STUBS } from '../../content/stubs';
-import { StatDelta, useLevelFlash } from '../StatFx';
+import { useLevelFlash } from '../StatFx';
 import { useAuth } from '../../store/useAuth';
 import { getBook } from '../../lib/bookRegistry';
 import { useLang, useT } from '../../i18n/react';
@@ -450,7 +450,6 @@ export function ProfileScreen() {
           <SeatMap lv={lv} />
           <div className={`pb-plvl-row${popped ? ' pop' : ''}`}>
             <Icon name="ti-armchair" className="crown" />
-            <StatDelta stat="xp" />
             <span className="pb-plvl-t">
               {lv >= LV_CAP ? t.profile.seatFront : t.profile.seatLabel(rowFromLevel(lv))}
             </span>
@@ -478,7 +477,6 @@ export function ProfileScreen() {
           <div className="pb-chip" aria-label={t.profile.inkAria(ink)}>
             <Icon name="ti-inkdrop" className="drop" />
             <span className="n">{ink}</span>
-            <StatDelta stat="ink" />
           </div>
           {/* the purse opens keeper's counter — the one place brass is spent */}
           <button
@@ -489,7 +487,6 @@ export function ProfileScreen() {
           >
             <Icon name="ti-coin" className="coin" />
             <span className="n">{coins.toLocaleString()}</span>
-            <StatDelta stat="coins" />
           </button>
           <div className="pb-chip" aria-label={t.profile.streakAria(streak)}>
             {/* dim when the flame is out, lit while it holds, house gold at seven */}

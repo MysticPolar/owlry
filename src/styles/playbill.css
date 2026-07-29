@@ -98,7 +98,6 @@
 .app .toast {
   background: rgba(20,13,10,.85); border: 1px solid rgba(217,169,79,.4);
   color: var(--pb-cream); box-shadow: none;
-  bottom: calc(100px + env(safe-area-inset-bottom));
 }
 .app .toast .ti { color: var(--pb-brass); }
 
@@ -429,7 +428,7 @@
 /* guest desk-level pill + history button → flat brass on the stage */
 #screen-discover .desk-lvl { background: var(--pb-chip-bg); border: 1px solid var(--pb-brass-deep); color: var(--pb-brass); box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
 #screen-discover .desk-lvl .ti { color: var(--pb-brass); }
-#screen-discover .disc-head-right .iconbtn.lite { background: var(--pb-chip-bg); border: 1px solid var(--pb-tag-line); box-shadow: none; color: var(--pb-brass); }
+#screen-discover :is(.disc-head-right .iconbtn.lite, .disc-back) { background: var(--pb-chip-bg); border: 1px solid var(--pb-tag-line); box-shadow: none; color: var(--pb-brass); }
 /* scout owl + history button share the corner — pull the owl into the flow so
    flex lays the two out side-by-side instead of the owl floating over the icon */
 #screen-discover .disc-head-right { position: relative; gap: 6px; margin-left: auto; }
@@ -465,7 +464,7 @@
 }
 .pb-deskhint .owl { width: 130px; height: 141px; filter: drop-shadow(0 14px 26px rgba(0,0,0,.55)); }
 .pb-deskhint-lbl {
-  font-family: var(--font-chrome); font-size: var(--t-body); letter-spacing: 3px; color: var(--pb-brass);
+  font-family: var(--font-chrome); font-size: var(--t-body); letter-spacing: var(--track-label); color: var(--pb-brass);
   background: rgba(20,13,10,.72); border: 1px solid var(--pb-brass-deep); border-radius: 999px;
   padding: 7px 18px; -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
 }
@@ -552,21 +551,25 @@
   max-height: 0; opacity: 0; pointer-events: none;
 }
 #screen-discover.before-ask .disc-head {
-  display: grid; grid-template-columns: 44px minmax(0,1fr) 44px; align-items: center; gap: 10px;
+  display: grid; grid-template-columns: 44px 44px minmax(0,1fr) 44px 44px; align-items: center; gap: 4px;
   min-height: 54px; padding: 4px var(--ask-gutter) !important;
 }
+#screen-discover.before-ask.typing .disc-head { min-height: 0; padding-block: 0 !important; }
 #screen-discover.before-ask .desk-lvl { display: none; }
+#screen-discover.before-ask .disc-back {
+  grid-column: 1; grid-row: 1; justify-self: start; margin: 0;
+}
 #screen-discover.before-ask .disc-wordmark {
-  display: flex; grid-column: 2; grid-row: 1; align-items: center; justify-content: center;
+  display: flex; grid-column: 3; grid-row: 1; align-items: center; justify-content: center;
   color: var(--pb-cream); font-size: var(--t-body); line-height: 1;
 }
 #screen-discover.before-ask .disc-head-right { display: contents; }
 #screen-discover.before-ask .disc-head-right .owl.mini {
-  grid-column: 1; grid-row: 1; justify-self: start;
+  grid-column: 2; grid-row: 1; justify-self: start;
   width: 44px; height: 48px; margin: 0;
 }
 #screen-discover.before-ask .disc-head-right .iconbtn.lite {
-  grid-column: 3; grid-row: 1; justify-self: end;
+  grid-column: 5; grid-row: 1; justify-self: end;
 }
 #screen-discover.opening #chat {
   flex: 0 1 auto !important; margin-top: auto;
@@ -615,7 +618,7 @@
 
 @media (max-height: 600px) {
   #screen-discover.before-ask {
-    overflow-y: auto; padding-bottom: calc(104px + env(safe-area-inset-bottom));
+    overflow-y: auto;
   }
   #screen-discover.opening .pb-ask-body {
     flex: 0 0 auto; min-height: auto;
@@ -722,7 +725,7 @@
   color: var(--pb-ink);
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
-.pb-dc-a { font-size: var(--t-micro); color: var(--pb-ink-mute); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pb-dc-a { font-family: var(--font-chrome); font-size: var(--t-micro); color: var(--pb-ink-mute); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 /* the "why" stays the brand's italic accent — Fraunces earns its keep here.
    Tight leading because it is a 2-line clamped blurb, not running prose:
    this is how the hand stays inside its height budget after the floor lift. */
@@ -1060,8 +1063,10 @@
 .settings .set-foot { color: var(--pb-cream-mute); }
 
 @media (prefers-reduced-motion: reduce) {
-  .pb-valance, .pb-marquee, .pb-chips, .pb-compact, .pb-card, .pb-keeper, .pb-tag, .pb-nv, .pb-iconbtn { transition: none !important; }
+  .pb-valance, .pb-marquee, .pb-chips, .pb-compact, .pb-card, .pb-keeper, .pb-tag, .pb-nav, .pb-nv, .pb-iconbtn { transition: none !important; }
 }
+/* the in-app toggle gets the same courtesy: the nav steps off without the glide */
+.app.no-motion .pb-nav { transition: none !important; }
 
 /* ============================================================
    MOBILE ERGONOMICS — audit remediation, Phase 1
@@ -1093,7 +1098,7 @@ body { overscroll-behavior: none; }
 .pb-nv { padding: 5px 6px; }
 .pb-send { width: 44px; height: 44px; }
 .pb-stagebar .pb-gear { width: 40px; height: 40px; }
-#screen-discover .disc-head-right .iconbtn.lite { width: 40px; height: 40px; flex: 0 0 40px; }
+#screen-discover :is(.disc-head-right .iconbtn.lite, .disc-back) { width: 40px; height: 40px; flex: 0 0 40px; }
 .pb-askq-x { width: 36px; height: 36px; }
 .pb-psheet .mem-chip button { width: 24px; height: 24px; flex: 0 0 24px; }
 .pb-psheet .mem-chip button .ti { font-size: var(--icon-sm); }
@@ -1110,11 +1115,13 @@ body { overscroll-behavior: none; }
    (vertical-only for row-packed controls so a transparent ::after never steals a sibling's tap;
    all-sides only for standalone pills; skipped inside overflow scrollers like .pb-tags) --- */
 .pb-deskpill, .pb-selbar button, .pb-dc-about, .pb-dc-go,
-.guest-lvl, .desk-lvl, .tgl, .ptab { position: relative; }
+.guest-lvl, .desk-lvl, .tgl, .ptab, .disc-back { position: relative; }
 .pb-selbar button::after { content: ""; position: absolute; inset: -7px 0; }
 .pb-dc-about::after, .pb-dc-go::after { content: ""; position: absolute; inset: -9px 0; }
 .ptab::before { content: ""; position: absolute; inset: -6px 0; }
 .pb-deskpill::after, .guest-lvl::after, .desk-lvl::after { content: ""; position: absolute; inset: -7px; }
+/* the chevron is the only way off a nav-less Ask page — it catches the near-miss */
+.disc-back::after { content: ""; position: absolute; inset: -6px; }
 .tgl::after { content: ""; position: absolute; inset: -9px -8px; }
 
 /* --- 1.6 shelf spines: wider gap + vertical hit reach (thickness floor set in DiscoverScreen.tsx) --- */
@@ -1265,7 +1272,7 @@ button, .owl, .pb-nav, .pb-stagehead, .disc-head, .pb-head, .pb-tags, .pb-chips,
 .app.no-motion .reader-live { transform: none !important; transition: opacity .24s ease !important; }
 .app.no-motion .pintro-scrim, .app.no-motion .pintro-card, .app.no-motion .backdrop, .app.no-motion .pb-upload-scrim { transition: opacity .2s ease !important; }
 .app.no-motion .pintro-card { transform: none !important; }
-.app.no-motion .toast { transition: opacity .25s ease !important; transform: translate(-50%, 0) !important; }
+.app.no-motion .toast { transition: opacity .25s ease !important; transform: none !important; }
 .app.no-motion .auth { transition: opacity .32s ease, visibility 0s linear .32s !important; }
 .app.no-motion .auth.on { transition: opacity .32s ease !important; }
 .app.no-motion .auth-stage { transform: none !important; }
@@ -1446,69 +1453,65 @@ body { font-optical-sizing: auto; }
 
 /* ============================================================
    THE NUMBERS, MOVING.
-   Deltas lift off the chip they belong to; the seat pops when the
+   One receipt strip carries every delta; the seat pops when the
    row moves; the bars ease rather than jump. Every one of these is
    decoration — the number itself has already changed by the time
    the animation starts, so nothing here can lie about a total.
    ============================================================ */
 
-/* the chips are the frame the figures fly out of */
 .pb-chip, .pb-plvl-row { position: relative; }
 
-/* …but the chip ROW clips its overflow, because that is how it collapses on
-   scroll (max-height 36 → 0). A figure rising out of a chip was therefore
-   drawn and immediately clipped — animating perfectly, and invisible. Let the
-   row overflow while it is open; the clip is only needed while it collapses. */
-.pb-chips { overflow: visible; }
-.pb-home.collapsed .pb-chips { overflow: hidden; }
-
-.pb-fx {
-  position: absolute;
-  left: 50%;
-  top: -4px;
-  font-family: var(--font-chrome);
-  font-size: var(--t-micro);
-  font-weight: var(--fw-ui-semibold);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: .3px;
-  white-space: nowrap;
+/* ---- the callout column: ONE feedback anchor ----
+   The receipt strip and the toast live here as flex children — strip first,
+   so when both speak the strip sits ABOVE the toast with a real gap. Both
+   keep their box when hidden (opacity 0), so nothing ever jumps or overlaps.
+   The whole column lifts over the Discover composer and the keyboard. */
+.pb-callouts {
+  position: absolute; left: 0; right: 0;
+  bottom: calc(100px + env(safe-area-inset-bottom) + var(--kb, 0px));
+  z-index: 45;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
   pointer-events: none;
-  z-index: 3;
-  animation: pbFxFloat .95s cubic-bezier(.22, 1, .36, 1) forwards;
 }
-.pb-fx.xp    { color: var(--pb-candy-bolt); }
-.pb-fx.ink   { color: var(--pb-candy-drop); }
-.pb-fx.coins { color: var(--pb-brass); }
+/* the Ask desk's in-flow band (chips + composer) is ~150px tall now that the
+   88px nav reserve is gone (the desk runs full depth) — clear it by ~10px */
+.app:has(#screen-discover.on) .pb-callouts {
+  bottom: calc(162px + env(safe-area-inset-bottom) + var(--kb, 0px));
+}
+.pb-callouts .toast { position: static; left: auto; bottom: auto; transform: translateY(14px); }
+.pb-callouts .toast.on { transform: none; }
 
-@keyframes pbFxFloat {
-  0%   { opacity: 0; transform: translate(-50%, 6px) scale(.86); }
-  22%  { opacity: 1; transform: translate(-50%, -7px) scale(1.04); }
-  55%  { opacity: 1; transform: translate(-50%, -14px) scale(1); }
-  100% { opacity: 0; transform: translate(-50%, -26px) scale(1); }
-}
+/* a claiming surface owns the stage: no receipts over the opening night, the
+   curtain, an intro card, or the reading page (deltas still accrue silently) */
+.app:has(.onboard) :is(.pb-callouts, .burst-layer),
+.app:has(.pb-curtain) :is(.pb-callouts, .burst-layer),
+.app:has(.pintro.on) :is(.pb-callouts, .burst-layer),
+.app:has(.reader-live.on) :is(.pb-callouts, .burst-layer) { display: none; }
 
 /* the receipt strip — Keeper left, deltas after, numbers only */
 .pb-econ {
-  position: absolute; left: 50%; bottom: calc(140px + env(safe-area-inset-bottom)); z-index: 44;
   display: flex; align-items: center; gap: 10px;
   background: rgba(16, 13, 7, .92); border: 1px solid rgba(255, 192, 23, .3); border-radius: 999px;
   padding: 6px 14px 6px 8px;
   font-family: var(--font-chrome); font-size: var(--t-micro); font-weight: var(--fw-ui-semibold);
   font-variant-numeric: tabular-nums; letter-spacing: .3px; white-space: nowrap;
-  opacity: 0; pointer-events: none; transform: translate(-50%, 10px);
+  opacity: 0; pointer-events: none; transform: translateY(10px);
   transition: opacity .22s, transform .22s;
 }
-.pb-econ.on { opacity: 1; transform: translate(-50%, 0); }
+.pb-econ.on { opacity: 1; transform: none; }
 .pb-econ .owl { position: static; width: 22px; height: 24px; flex: 0 0 22px; animation: owlpop .5s cubic-bezier(.2, .8, .2, 1); }
 .pb-econ .d { display: inline-flex; align-items: center; gap: 3px; animation: pbEconIn .4s cubic-bezier(.22, 1, .36, 1) backwards; }
 .pb-econ .d:nth-child(3) { animation-delay: .07s; }
 .pb-econ .d:nth-child(4) { animation-delay: .14s; }
 .pb-econ .d:nth-child(5) { animation-delay: .21s; }
+/* the figures read as plain type — only the little logos keep their colour,
+   because that is what tells xp from ink from brass at a glance */
+.pb-econ .d { color: var(--pb-cream); }
 .pb-econ .d .ti { font-size: var(--icon-sm); }
-.pb-econ .d.xp    { color: var(--pb-candy-bolt); }
-.pb-econ .d.coins { color: var(--pb-brass); }
-.pb-econ .d.ink   { color: var(--pb-candy-drop); }
-.pb-econ .d.row   { color: var(--pb-cream); animation: pbRowStamp .6s cubic-bezier(.22, 1, .36, 1) backwards; animation-delay: .28s; }
+.pb-econ .d.xp .ti    { color: var(--pb-candy-bolt); }
+.pb-econ .d.coins .ti { color: var(--pb-brass); }
+.pb-econ .d.ink .ti   { color: var(--pb-candy-drop); }
+.pb-econ .d.row { animation: pbRowStamp .6s cubic-bezier(.22, 1, .36, 1) backwards; animation-delay: .28s; }
 .pb-econ .d.row .ti { color: var(--pb-brass); }
 @keyframes pbEconIn {
   from { opacity: 0; transform: translateY(5px) scale(.85); }
@@ -1541,8 +1544,57 @@ body { font-optical-sizing: auto; }
 .pb-chip .n { transition: color .3s ease; }
 
 @media (prefers-reduced-motion: reduce) {
-  .pb-fx { display: none; }
   .pb-chip.pop, .pb-plvl-row.pop,
   .pb-chip.pop .crown, .pb-plvl-row.pop .crown { animation: none; }
   .pb-xpbar b, .pb-bigxp b { transition: none; }
 }
+
+/* in-app reduce keeps parity with the OS setting for every performer */
+.app.no-motion :is(.owlpop, .toast .owl.toasty, .pb-econ .owl, .pb-econ .d) { animation: none !important; }
+.app.no-motion .spark { display: none; }
+.app.no-motion :is(.pb-chip.pop, .pb-plvl-row.pop),
+.app.no-motion :is(.pb-chip.pop .crown, .pb-plvl-row.pop .crown) { animation: none; }
+.app.no-motion :is(.nv-chains.broken, .card-chains.broken) { display: none; }
+
+/* ============================================================
+   THE ASK PAGE, TUNED — one device, one meaning.
+   (docs/type-system.md, "The Ask page")
+
+   UNDERLINE means a book Scout can open, and nothing else. Starter
+   prompts are editorial menu rows; post-answer prompts are a
+   conversational Literata rail. Neither is a pill or an underlined
+   pseudo-link. Recommendation reasons use Scout's normal response
+   voice so each card and its explanation read as one calm unit.
+   ============================================================ */
+
+/* stray trackings come home to the token */
+#screen-discover .sr-count { font-family: var(--font-chrome); font-weight: var(--fw-ui-semibold); letter-spacing: var(--track-label); }
+#screen-discover .pb-skip { font-weight: var(--fw-ui-semibold); letter-spacing: var(--track-label); }
+#screen-discover .desk-lvl, #screen-discover .desk-lvl b { letter-spacing: var(--track-label); }
+
+/* a book title is set as printed — Literata roman, never shouted */
+.calm .gl-t { text-transform: none; letter-spacing: 0; }
+/* its meta is stage crew, declared */
+.calm .gl-a { font-family: var(--font-chrome); }
+
+/* ============================================================
+   THE DESK, FULL DEPTH — entering Ask clears the house chrome.
+   The glass nav steps off the stage and the ~88px it reserved
+   goes to the conversation; the composer takes the bottom edge
+   (safe-area kept). No new state: everything keys off the
+   data-tab attribute the app already carries. The chevron in
+   the desk header is the way back — and leaving is what pulls
+   the nav back out.
+   ============================================================ */
+.pb-nav { transition: transform .38s cubic-bezier(.22, 1, .36, 1), opacity .28s ease; }
+.app[data-tab="discover"] .pb-nav {
+  opacity: 0;
+  transform: translateX(-50%) translateY(150%);
+  pointer-events: none;
+}
+.app[data-tab="discover"] #screen-discover {
+  padding-bottom: calc(10px + env(safe-area-inset-bottom));
+}
+/* the way back — same species as the history button beside the owl */
+.disc-back { flex: 0 0 auto; margin-right: -2px; }
+.disc-back .ti { font-size: var(--icon-lg); }

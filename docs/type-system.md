@@ -83,6 +83,35 @@ Regenerate with `fontTools`: instance the axes, then subset to Latin +
 `U+2000-206F` (that block carries the curly quotes, em dashes and ellipses a
 literary product is judged on — do not drop it).
 
+## The Ask page — one device, one meaning
+
+The desk mixes prose, book links, recommendations, prompts, and a form. Its
+extra law is that each visual treatment carries one meaning:
+
+| Device | Its one meaning | Worn by |
+|---|---|---|
+| **Underline** | a book Scout can open | `.bk` links in Scout's prose — nothing else |
+| **Response prose** | Scout explaining a recommendation | the intro, replies, and `.pb-short-reason` |
+| **THE label** | a compact control or status | chrome · `--t-micro` · semibold · `--track-label` · uppercase |
+
+Recommendation results form three editorial units: one compact paper card,
+then one short explanation in Scout's normal Literata response voice. The
+explanation is not italic, smaller, or otherwise demoted. Book titles are
+Literata roman and cased as printed. PEEK is a quiet inline arrow action rather
+than a repeated filled button, so the cards support the conversation instead
+of becoming a wall of controls.
+
+Starter prompts are natural-case Inter menu rows separated by hairlines.
+Post-answer prompts are natural-case Literata phrases in a single horizontal
+rail; the rail becomes swipeable only when its contents overflow. Neither
+prompt treatment uses pills or underlines. The composer placeholder is chrome
+roman because a form control is stage crew, not a pull-quote. The send control
+may use brass when enabled; secondary controls stay quiet.
+
+Before this law the desk ran seven letter-spacings at once (`.8px`, `1.4px`,
+`1.6px`, `3px`, `.02em`, `.06em`/`.08em`, and the token). Everything now
+tracks `--track-label`. If a new Ask control needs an eighth, it doesn't.
+
 ## Guardrails
 
 `npm run lint:css` enforces the two invariants: no px font-sizes, no

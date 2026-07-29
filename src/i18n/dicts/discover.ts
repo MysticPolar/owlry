@@ -22,6 +22,7 @@ const en = {
   officeHourLockedAria: 'Office hour — opens at level 3',
   nonFictionAria: 'Non-fiction',
   historyAria: 'Chat history',
+  backAria: 'Back to Home',
   guestLevelAria: (lv: number) => `Gain a level — guest preview (level ${lv})`,
 
   /* ---- shelf rail ---- */
@@ -85,6 +86,7 @@ const zh: typeof en = {
   officeHourLockedAria: '办公时间——LV 3 开启',
   nonFictionAria: '非虚构',
   historyAria: '聊天记录',
+  backAria: '返回首页',
   guestLevelAria: (lv: number) => `升一级——访客预览（LV ${lv}）`,
 
   /* ---- shelf rail ---- */

@@ -62,8 +62,17 @@ check('collected includes the recommended book', hydrated.collected.includes(slu
 check('chips restored from the persisted owl msg row', hydrated.chips.length === 4 && hydrated.chips[0] === 'go deeper');
 check('main book registered w/ tray metadata after hydration', getBook(slugify(MAIN_BOOK.title))?.n === 296);
 
-const letterItem = hydrated.messages[2];
-check('letter row → kind:letter with the right book ref', letterItem.kind === 'letter' && (letterItem as { book: string }).book === slugify(MAIN_BOOK.title));
+// the hand is dealt under the words, exactly as the live turn fans it — and
+// the legacy letter row for that same book is folded into it, not doubled
+const dealItem = hydrated.messages[2];
+check('owl msg with a main → a dealt hand under the bubble', dealItem.kind === 'deal');
+const dealBooks = dealItem.kind === 'deal' ? dealItem.books : [];
+check('the dealt hand leads with the recommended book', dealBooks[0] === slugify(MAIN_BOOK.title));
+check('a thin reply is still filled to three cards', dealBooks.length === 3, String(dealBooks.length));
+check('the letter row for the dealt book is not doubled',
+  !hydrated.messages.some((m) => m.kind === 'letter' && m.book === slugify(MAIN_BOOK.title)));
+check('deal ids can never collide with a row id or a later nextId',
+  hydrated.messages.every((m) => m.kind !== 'deal' || m.id < 0));
 
 const noteItem = hydrated.messages[3];
 check('note row → msg/who:owl with tone:note', noteItem.kind === 'msg' && (noteItem as { tone?: string }).tone === 'note');
@@ -92,6 +101,30 @@ check('fiction hand-off: lastBatch main/also from picks in order', fictionHydrat
 check('fiction hand-off: both picks registered', !!getBook(slugify(PICK_A.title)) && !!getBook(slugify(PICK_B.title)));
 const fictionBookNodes = fictionHydrated.messages[0].kind === 'msg' ? fictionHydrated.messages[0].nodes.filter((n) => n.t === 'book') : [];
 check('fiction hand-off: both picks became book nodes', fictionBookNodes.length === 2);
+
+/* THE REGRESSION THIS GUARDS: a picks-only turn (no main, so no letter row)
+   used to hydrate as words alone. The cards were there when the reply first
+   landed and gone the next time the app opened. */
+const fictionDeal = fictionHydrated.messages.find((m) => m.kind === 'deal');
+check('fiction hand-off: the cards survive a reload', !!fictionDeal);
+const fictionCards = fictionDeal?.kind === 'deal' ? fictionDeal.books : [];
+check('fiction hand-off: both picks are on the table, in order',
+  fictionCards[0] === slugify(PICK_A.title) && fictionCards[1] === slugify(PICK_B.title));
+check('fiction hand-off: the hand is filled to three', fictionCards.length === 3, String(fictionCards.length));
+
+/* a turn that recommends nothing must not deal a phantom hand */
+const chatterRows: ChatRow[] = [
+  { id: 301, who: 'owl', kind: 'msg', payload: { say: 'happy to just talk.', main: null, picks: [], chips: [] } },
+];
+const chatter = rowsToChat(chatterRows);
+check('a bookless reply deals no cards', !chatter.messages.some((m) => m.kind === 'deal'));
+
+/* an old letter row with no picks alongside it still renders its card */
+const legacyRows: ChatRow[] = [
+  { id: 401, who: 'owl', kind: 'letter', payload: { slug: slugify(MAIN_BOOK.title), book: MAIN_BOOK } },
+];
+check('a standalone legacy letter row still renders',
+  rowsToChat(legacyRows).messages.some((m) => m.kind === 'letter'));
 
 /* ---------- empty history ---------- */
 
