@@ -112,18 +112,37 @@ import type {
 /** lazy reading-letter state: the letter is generated only when the reader taps the card */
 export type LetterStatus = 'idle' | 'loading' | 'ready';
 
-/** A change to the numbers, published for the chips to animate. Deltas only —
-    the chips already hold the totals; this says what just moved, and by how
-    much, so a +4 can float off the XP chip and a −5 off the inkwell. */
+/** A change to the numbers, published for the receipt strip to perform. Deltas
+    only — the chips already hold the totals; this says what just moved, by how
+    much, and which owl's desk it moved at. */
 export interface StatFx {
   xp: number;
   ink: number;
   coins: number;
   /** the seat moved — the chip pops and the sparks fly */
   lv: boolean;
+  /** whose desk this happened at — that owl hands you the receipt */
+  owl: OwlName;
   /** monotonic, so a repeat of the same delta still replays */
   n: number;
 }
+
+/** which owl owns each action: scout finds, peek tastes, scribe remembers,
+    keeper keeps the shelves and the counter. Mirror is deliberately absent —
+    she is a level-5 reveal, and the strip must not spoil her. */
+export const ACTION_OWL: Record<EconomyAction, OwlName> = {
+  turn_page: 'keeper',
+  open: 'keeper',
+  finish: 'keeper',
+  save: 'keeper',
+  unsave: 'keeper',
+  chat: 'scout',
+  preview: 'peek',
+  quote_keep: 'scribe',
+  checkin: 'keeper',
+  purchase: 'keeper',
+  onboard: 'keeper',
+};
 
 /** The real in-app reader (public-domain EPUB or an uploaded file). */
 export type EbookStatus = 'resolving' | 'reading' | 'empty' | 'error';
@@ -240,8 +259,9 @@ export interface Store extends PersistedState {
   buyGood: (sku: string) => void;
   /** guest-only preview affordance: moves the seat, mints nothing */
   debugLevelUp: () => void;
-  addXP: (n: number) => void;
-  addInk: (n: number) => void;
+  /** `owl` is whose desk the change happened at — it fronts the receipt strip */
+  addXP: (n: number, owl?: OwlName) => void;
+  addInk: (n: number, owl?: OwlName) => void;
   showToast: (icon: string, msg: string, owl?: OwlName) => void;
   triggerBurst: () => void;
   openReader: (id: BookRef, page?: number) => void;
@@ -640,11 +660,18 @@ function lineHash(text: string): string {
 
 type Setter = (partial: Partial<Store> | ((s: Store) => Partial<Store>)) => void;
 
-/** publish a change to the numbers. Deltas only, and never a no-op — a chip
+/** publish a change to the numbers. Deltas only, and never a no-op — a strip
     with nothing to say should stay still. */
-function emitFx(set: Setter, xp: number, ink: number, coins: number, lv: boolean): void {
+function emitFx(
+  set: Setter,
+  xp: number,
+  ink: number,
+  coins: number,
+  lv: boolean,
+  owl: OwlName,
+): void {
   if (!xp && !ink && !coins && !lv) return;
-  set((st) => ({ statFx: { xp, ink, coins, lv, n: (st.statFx?.n ?? 0) + 1 } }));
+  set((st) => ({ statFx: { xp, ink, coins, lv, owl, n: (st.statFx?.n ?? 0) + 1 } }));
 }
 
 type Getter = () => Store;
@@ -1367,7 +1394,7 @@ export const useStore = create<Store>()(
       if (!ctx.quiet) {
         // the strip is the econ voice: deltas, well-full, and the ROW stamp are
         // its lines. Toasts speak only what numbers can't — a full house, a stub.
-        emitFx(set, res.granted.xp, res.granted.ink, res.granted.coins, after > before);
+        emitFx(set, res.granted.xp, res.granted.ink, res.granted.coins, after > before, ACTION_OWL[action]);
         const t = L(get().prefs);
         if (after > before) get().triggerBurst();
         if (res.next.daily.fullHouse && !s.daily.fullHouse) {
@@ -1446,28 +1473,28 @@ export const useStore = create<Store>()(
       const before = get().lv;
       const d = derive(cumulativeXp(Math.min(LV_CAP, before + 1)));
       set({ totalXp: cumulativeXp(Math.min(LV_CAP, before + 1)), xp: d.xp, xpMax: d.xpMax, lv: d.lv });
-      emitFx(set, 0, 0, 0, d.lv > before); // the seat still pops; no brass is minted
+      emitFx(set, 0, 0, 0, d.lv > before, 'keeper'); // the seat still pops; no brass is minted
       announceLevel(get, before, d.lv);
       crossGates(get, before, d.lv);
     },
 
-    addXP: (n) => {
+    addXP: (n, owl = 'keeper') => {
       const before = get().lv;
       const totalXp = Math.max(0, get().totalXp + n);
       const d = derive(totalXp);
       set({ totalXp, xp: d.xp, xpMax: d.xpMax, lv: d.lv });
-      emitFx(set, n, 0, 0, d.lv > before);
+      emitFx(set, n, 0, 0, d.lv > before, owl);
       announceLevel(get, before, d.lv);
       crossGates(get, before, d.lv);
     },
 
     // a primitive: the well moves, nothing is minted. The once-ever +50 is the
     // engine's to grant (and, signed in, the ledger's).
-    addInk: (n) => {
+    addInk: (n, owl = 'keeper') => {
       const { ink, inkMax } = get();
       const next = Math.min(inkMax, Math.max(0, ink + n));
       set({ ink: next });
-      emitFx(set, 0, next - ink, 0, false);
+      emitFx(set, 0, next - ink, 0, false, owl);
     },
 
     showToast: (icon, msg, owl) => {
@@ -1602,7 +1629,7 @@ export const useStore = create<Store>()(
           // waits. The refund performs only while the letter is still open —
           // an orphan Keeper receipt over some other screen would be noise.
           if (willGenerate) {
-            if (get().letterId === id) get().addInk(5);
+            if (get().letterId === id) get().addInk(5, 'peek');
             else set((st) => ({ ink: Math.min(st.inkMax, st.ink + 5) }));
           }
           if (outcome.kind === 'refused') {

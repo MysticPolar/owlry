@@ -51,8 +51,10 @@ export function EconStrip() {
     );
   return (
     <div className={`pb-econ ${on ? 'on' : ''}`} aria-hidden="true">
+      {/* whichever owl's desk this happened at — scout finds, peek tastes,
+          scribe remembers, keeper keeps the shelves */}
       <svg className="owl" viewBox="0 0 120 130" key={shown.n}>
-        <use href="#owl-keeper" />
+        <use href={`#owl-${shown.owl}`} />
       </svg>
       {part(shown.xp, 'xp', 'ti-bolt')}
       {part(shown.coins, 'coins', 'ti-coin')}
