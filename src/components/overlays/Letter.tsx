@@ -135,7 +135,7 @@ export function Letter() {
         {writing && b && (
           <>
             <div className="l-kick">{t.reader.kickReadingLetter}</div>
-            <div className="l-ttl d">{b.t}</div>
+            <div className="l-ttl">{b.t}</div>
             <div className="l-auth">
               {b.a} · {t.reader.pages(b.n)}
             </div>
@@ -145,36 +145,38 @@ export function Letter() {
                 <span />
                 <span />
               </span>
-              <span className="it">{t.reader.peekWriting}</span>
+              <span>{t.reader.peekWriting}</span>
             </div>
           </>
         )}
 
         {failed && b && (
-          <>
+          <div className="l-failed-state">
             <div className="l-kick">{t.reader.kickReadingLetter}</div>
-            <div className="l-ttl d">{b.t}</div>
+            <div className="l-ttl">{b.t}</div>
             <div className="l-auth">
               {b.a} · {t.reader.pages(b.n)}
             </div>
-            <div className="l-writing">
-              <span className="it">{t.reader.inkRan}</span>
-              <div className="l-btnrow">
-                <button className="btn xs" onClick={() => id && openLetter(id)}>
+            <div className="l-failed-notice">
+              <p className="l-failed-copy" role="status">
+                {t.reader.inkRan}
+              </p>
+              <div className="l-failed-actions">
+                <button className="btn" onClick={() => id && openLetter(id)}>
                   {t.reader.tryAgain} <Icon name="ti-refresh" />
                 </button>
-                <button className="btn xs ghost" onClick={() => id && openBook(id)}>
+                <button className="btn ghost" onClick={() => id && openBook(id)}>
                   {t.discover.openBook}
                 </button>
               </div>
             </div>
-          </>
+          </div>
         )}
 
         {g && b && id && (
           <div className="l-swap" key={id}>
             <div className="l-kick">{t.reader.kickPeek}</div>
-            <div className="l-ttl d">
+            <div className="l-ttl">
               <button
                 className="l-ttl-link"
                 type="button"
@@ -186,10 +188,10 @@ export function Letter() {
             <div className="l-auth">
               {b.a} · {t.reader.pages(b.n)}
             </div>
-            <div className="l-res it">{type(g.res)}</div>
+            <div className="l-res">{type(g.res)}</div>
 
             {shown >= at() && <div className="l-sec">{t.reader.secChapter}</div>}
-            <div className="l-chap d">&ldquo;{type(g.chap)}&rdquo;</div>
+            <div className="l-chap">&ldquo;{type(g.chap)}&rdquo;</div>
 
             {shown >= at() && <div className="l-sec">{t.reader.secCore}</div>}
             <p className="l-p">{type(g.core)}</p>
@@ -204,7 +206,7 @@ export function Letter() {
               if (!tt) return null;
               return (
                 <div className="l-ins" key={i}>
-                  <div className="l-ins-t d">
+                  <div className="l-ins-t">
                     {i + 1}. {tt}
                   </div>
                   {rr && <p className="l-p">{rr}</p>}
@@ -215,7 +217,7 @@ export function Letter() {
                     </div>
                   )}
                   {n.q && q && (
-                    <div className="l-q it">
+                    <div className="l-q">
                       &ldquo;{q}&rdquo;<small>{by}</small>
                       {/* the full line, not the typed-so-far slice */}
                       <SaveLine quote={n.q.t} bookId={id} />
@@ -239,7 +241,7 @@ export function Letter() {
             {g.ask.map((line, i) => {
               const v = type(line);
               return v ? (
-                <p className="l-p l-note it" key={i}>
+                <p className="l-p l-note" key={i}>
                   <span className="l-tag">{t.reader.tagSit}</span>
                   {v}
                 </p>
@@ -258,7 +260,7 @@ export function Letter() {
                     <button className="fr-row" key={i} onClick={() => (frGuide ? openLetter(f.id) : openSheet(f.id))}>
                       <Cover id={f.id} cls="cover-xs" />
                       <span className="fr-txt">
-                        <span className="rtitle d">{fb.t}</span>
+                        <span className="rtitle">{fb.t}</span>
                         <span className="rauth" style={{ display: 'block' }}>
                           {fb.a}
                         </span>
