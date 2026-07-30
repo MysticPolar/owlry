@@ -29,6 +29,8 @@ const en = {
   seatMapAria: 'The house, thirteen rows deep',
   seatFront: 'the front row',
   seatToNext: (xp: number, max: number, row: number) => `${xp} / ${max} XP to row ${row}`,
+  /** two level-ups in three keep the seat where it is — say the level, not the row */
+  seatToLevel: (xp: number, max: number, lv: number) => `${xp} / ${max} XP to level ${lv}`,
   seatEncore: (xp: number, max: number, n: number) => `${xp} / ${max} XP to encore ${n}`,
 
   /* ---------- the album (ticket stubs) ---------- */
@@ -48,9 +50,11 @@ const en = {
   standPurse: (n: number) => `${n} in the purse`,
   standSeason: (q: number) => `this programme · no. ${q}`,
   standBottleNote: 'one a day — the well fills the rest itself',
+  standSlipNote: (left: number) => `${left} left today`,
   standEmpty: 'the shelf is bare this programme',
   goods: {
     bottle: { n: 'a small bottle', d: 'five coins, ten ink' },
+    slip: { n: 'a slip for the desk', d: 'one more letter today' },
     stationery: { n: "this programme's stationery", d: "peek's letters arrive on it" },
     marquee: { n: 'marquee letters', d: 'spare vowels for the sign' },
     cushion: { n: 'a velvet cushion', d: 'for your row, whichever it is' },
@@ -148,6 +152,8 @@ const zh: typeof en = {
   seatMapAria: '整座剧院，十三排',
   seatFront: '第一排',
   seatToNext: (xp: number, max: number, row: number) => `${xp} / ${max} 经验 到第 ${row} 排`,
+  /** 三次升级里有两次座位不动 — 那就报等级，别报排号 */
+  seatToLevel: (xp: number, max: number, lv: number) => `${xp} / ${max} 经验 到等级 ${lv}`,
   seatEncore: (xp: number, max: number, n: number) => `${xp} / ${max} 经验 到第 ${n} 次返场`,
 
   /* ---------- 票根册 ---------- */
@@ -167,9 +173,11 @@ const zh: typeof en = {
   standPurse: (n: number) => `钱袋里还有 ${n}`,
   standSeason: (q: number) => `本季节目 · 第 ${q} 号`,
   standBottleNote: '一天一瓶 — 其余的，墨井自己会涨',
+  standSlipNote: (left: number) => `今天还剩 ${left} 张`,
   standEmpty: '这一季的架子空着',
   goods: {
     bottle: { n: '一小瓶墨', d: '五枚铜币，十点墨水' },
+    slip: { n: '一张给写字台的条子', d: '今天再写一封信' },
     stationery: { n: '本季的信笺', d: 'Peek 的信会写在它上面' },
     marquee: { n: '招牌字母', d: '给那块招牌配上备用元音' },
     cushion: { n: '一块绒垫', d: '给你的那一排 — 不管是哪一排' },

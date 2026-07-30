@@ -45,7 +45,7 @@ import type { ActionContext, EconomyState, EngineResult } from '../lib/economy/e
 import { clearQueue, enqueue, flush } from '../lib/economy/queue';
 import { snapshotPatch } from '../lib/economy/snapshot';
 import type { CalendarDay, QuoteRow, RadarPoint, StatsSnapshot } from '../lib/economy/types';
-import { CURVE_VERSION, ECONOMY_VERSION, STAND_LEVEL, goodFor } from '../lib/economy/config';
+import { CURVE_VERSION, DAILY_CAPS, ECONOMY_VERSION, STAND_LEVEL, goodFor } from '../lib/economy/config';
 import { LV_CAP, cumulativeXp } from '../lib/economy/curve';
 import { STUB_LABEL } from '../content/stubs';
 import type { EconomyAction, Snapshot } from '../lib/economy/types';
@@ -193,6 +193,8 @@ export interface Store extends PersistedState {
   /** the first-use owl intro card on screen, or null; introAfter opens after peek's */
   introCard: IntroKey | null;
   introAfter: BookRef | null;
+  /** owls waiting their turn behind the card on screen (session-only, never persisted) */
+  pendingIntros: IntroKey[];
   showIntro: (key: IntroKey, afterLetter?: BookRef) => void;
   dismissIntro: () => void;
   saveQuote: (text: string, bookId?: BookRef) => void;
@@ -682,10 +684,36 @@ function crossGates(get: Getter, before: number, after: number): void {
   }
 }
 
+/** Re-arm a gate whose level was crossed but whose owl never got to speak.
+    `crossGates` only fires on the crossing itself, so anything that swallowed
+    the card — an app closed mid-queue, or the pre-queue drop bug — used to lose
+    that introduction for good. Runs once per hydration, never during the
+    curtain (opening night has its own cast call). */
+function armMissedGates(get: Getter): void {
+  if (get().showOnboarding) return;
+  const seen = get().prefs.introsSeen ?? [];
+  const lv = get().lv;
+  if (lv >= 3 && !seen.includes('proscout')) get().showIntro('proscout');
+  if (lv >= 5 && !seen.includes('mirror')) get().showIntro('mirror');
+}
+
 /** the seat moved — the strip stamps the ROW; here only the sparks fly */
 function announceLevel(get: Getter, before: number, after: number): void {
   if (after <= before) return;
   get().triggerBurst();
+}
+
+/** The day's letters are spent, but keeper keeps slips behind the counter.
+    Offered only when it is actually actionable — the stand is open, slips
+    remain, and the brass is already in the purse. Returns true if it spoke. */
+function offerSlip(get: Getter, set: Setter): boolean {
+  const s = get();
+  const slip = goodFor('peek-slip');
+  if (!slip || s.lv < STAND_LEVEL) return false;
+  if (s.daily.slips >= DAILY_CAPS.slip || s.coins < slip.price) return false;
+  get().showToast('ti-ticket', L(s.prefs).peekSlipOffer(slip.price), 'keeper');
+  setTimeout(() => set({ standOpen: true }), 1400);
+  return true;
 }
 
 /** which twentieth of a book a position falls in (the ledger's step, 1..20) */
@@ -733,6 +761,7 @@ export const useStore = create<Store>()(
     deskSwitchNonce: 0,
     introCard: null,
     introAfter: null,
+    pendingIntros: [],
     mirrorRoomOpen: false,
     scoutDraft: '',
     askQuote: null,
@@ -1186,6 +1215,7 @@ export const useStore = create<Store>()(
             const delay = get().prefs.reduceMotion ? 0 : 2000;
             setTimeout(() => {
               if (!get().showOnboarding) get().checkIn();
+              armMissedGates(get);
             }, delay);
           }
           await get().hydrateChat();
@@ -1272,7 +1302,17 @@ export const useStore = create<Store>()(
 
     showIntro: (key, afterLetter) => {
       const seen = get().prefs.introsSeen ?? [];
-      if (seen.includes(key) || get().introCard) return; // once, ever; one at a time
+      if (seen.includes(key)) return; // once, ever
+      // one card at a time — but a second owl WAITS rather than being dropped.
+      // On the learning curve a single act can cross LV3 and LV5 together, and
+      // a dropped card is gone for good: crossGates only fires on the crossing,
+      // so mirror would never introduce herself while her chains fell anyway.
+      if (get().introCard) {
+        if (get().introCard !== key && !get().pendingIntros.includes(key)) {
+          set((s) => ({ pendingIntros: [...s.pendingIntros, key] }));
+        }
+        return;
+      }
       set((s) => ({
         prefs: { ...s.prefs, introsSeen: [...seen, key] },
         prefsUpdatedAt: nextPrefsUpdatedAt(s.prefsUpdatedAt),
@@ -1283,8 +1323,11 @@ export const useStore = create<Store>()(
 
     dismissIntro: () => {
       const after = get().introAfter;
-      set({ introCard: null, introAfter: null });
+      const [next, ...rest] = get().pendingIntros;
+      set({ introCard: null, introAfter: null, pendingIntros: rest });
       if (after) get().openLetter(after); // 'peek' is now seen → the letter opens for real
+      // let the card finish leaving before the next owl steps in
+      else if (next) setTimeout(() => get().showIntro(next), 400);
     },
 
     saveQuote: (text, bookId) => {
@@ -1609,7 +1652,11 @@ export const useStore = create<Store>()(
         const held = get().econ('preview', { bookId: id, localOnly: true });
         if (held.refused) {
           const t = L(get().prefs);
-          get().showToast('ti-pencil', held.refused === 'rate_limited' ? t.peekRested : t.inkwellDry, 'scout');
+          // a spent day is the one refusal brass can answer — keeper offers a
+          // slip before scout resigns the reader to tomorrow
+          if (!(held.refused === 'rate_limited' && offerSlip(get, set))) {
+            get().showToast('ti-pencil', held.refused === 'rate_limited' ? t.peekRested : t.inkwellDry, 'scout');
+          }
           if (get().letterId === id) set({ letterStatus: 'idle' });
           return;
         }
@@ -1639,7 +1686,10 @@ export const useStore = create<Store>()(
           }
           if (outcome.kind === 'refused') {
             const t = L(get().prefs);
-            get().showToast('ti-pencil', outcome.why === 'rate_limited' ? t.peekRested : t.inkwellDry, 'scout');
+            // same offer on the server's refusal as on the local one
+            if (!(outcome.why === 'rate_limited' && offerSlip(get, set))) {
+              get().showToast('ti-pencil', outcome.why === 'rate_limited' ? t.peekRested : t.inkwellDry, 'scout');
+            }
           }
           set({ letterStatus: 'idle' });
         }
@@ -1711,6 +1761,7 @@ export const useStore = create<Store>()(
         activeTab: 'today',
         deskMode: 'all',
         mirrorRoomOpen: false,
+        pendingIntros: [],
         introCard: null,
         introAfter: null,
         shelfFly: null,

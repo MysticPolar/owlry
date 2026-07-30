@@ -71,9 +71,13 @@ exactly. But they are not *nothing*, either — see §4.
   way wells refill.
 - **Coins** are the theatre's old brass tokens, found under the seats by the
   crateful. House currency. Milestones shake a few more loose.
-- **Levels** are seats. Everyone starts in the back row of the theatre. The
-  more you read, the closer to the stage your seat moves. (LV 7 is row 7 from
-  the front, if anyone asks. Keeper tracks it.)
+- **Levels** are seats. The house has thirteen rows, counted from the stage,
+  and everyone starts in the back one, against the wall. The more you read,
+  the closer to the stage your seat moves — though not every night: Keeper
+  moves people forward one row at a time, and a row costs three levels of
+  reading, which Keeper considers generous. Thirty-six levels in, you are in
+  row 1, close enough to hear the pages turn, and there is nowhere left to
+  move you. (Yes, Keeper tracks it. Twice.)
 - **The streak flame** is a real flame, in a small gold box on Keeper's desk.
   It is lit as long as you keep showing up. Keeper minds it like a life.
 
@@ -459,7 +463,7 @@ design and copy):
 | Matinée / evening show | The lighting toggle + its toasts |
 | "Delivered while you slept" | The Today marquee + nightly letter cards |
 | Ink returns as you read | +ink per page; ink regen over time |
-| Seats move closer to the stage | Levels (LV *n* = row *n*) |
+| Seats move closer to the stage | Levels — thirteen rows, the seat moving one row forward every third level; row 13 at the start, row 1 at LV 36 |
 | Keeper's flamebox | The streak UI; streak copy belongs to Keeper's voice |
 | The hoard | Library; nothing is deleted, only re-shelved (unsave copy stays gentle) |
 | Scribe's returned lines | Quotes tab; future "this line, again" resurfacing feature |

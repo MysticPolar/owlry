@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useStore } from '../../store/useStore';
-import { LV_CAP, ROWS, encoreStars, rowFromLevel } from '../../lib/economy/curve';
+import { LV_CAP, ROWS, encoreStars, rowFromLevel, seatMovesAt } from '../../lib/economy/curve';
 import {
   localDayKey,
   monthLabel,
@@ -187,8 +187,10 @@ function SeatMap({ lv }: { lv: number }) {
     <div className="pb-seatmap" role="img" aria-label={t.seatAria(row, lv)}>
       <span className="pb-stagelip" aria-hidden="true" />
       {Array.from({ length: ROWS }, (_, i) => {
-        const r = i + 1; // row 1 is nearest the stage
-        return <span key={r} className={`pb-seatrow${r === row ? ' on' : ''}${r < row ? ' past' : ''}`} />;
+        // row 1 is nearest the stage and the climb runs 13 → 1, so the rows
+        // already CROSSED are the ones numbered ABOVE the current seat
+        const r = i + 1;
+        return <span key={r} className={`pb-seatrow${r === row ? ' on' : ''}${r > row ? ' past' : ''}`} />;
       })}
     </div>
   );
@@ -700,11 +702,15 @@ export function ProfileScreen() {
           >
             <b style={{ width: `${Math.min(100, Math.max(0, (xp / Math.max(1, xpMax)) * 100))}%` }} />
           </div>
-          {/* past the front row the seat stops moving, so the bar counts encores */}
+          {/* past the front row the seat stops moving, so the bar counts encores.
+              below it, only every third level walks you forward a row — on the
+              other two the bar owes a level, not a seat, and must say so */}
           <div className="pb-xpcap">
             {lv >= LV_CAP
               ? t.profile.seatEncore(xp, xpMax, encoreStars(totalXp) + 1)
-              : t.profile.seatToNext(xp, xpMax, rowFromLevel(lv + 1))}
+              : seatMovesAt(lv + 1)
+                ? t.profile.seatToNext(xp, xpMax, rowFromLevel(lv + 1))
+                : t.profile.seatToLevel(xp, xpMax, lv + 1)}
           </div>
         </div>
 

@@ -17,7 +17,9 @@ function check(label: string, cond: boolean, detail = '') {
   }
 }
 
-check('seed xp/ink/coins/lv', g().xp === 260 && g().ink === 84 && g().coins === 240 && g().lv === 7);
+check('seed starts in the back row with nothing',
+  g().xp === 0 && g().ink === 10 && g().coins === 0 && g().lv === 1 && g().streak === 0,
+  `xp=${g().xp} ink=${g().ink} coins=${g().coins} lv=${g().lv}`);
 
 const migrated = normalizePersisted({
   ...SEED,
@@ -27,20 +29,21 @@ check('legacy reader scale migrates to 21px', migrated.prefs.reader.size === 21)
 const clamped = normalizePersisted({ ...SEED, prefs: { ...SEED.prefs, reader: { ...SEED.prefs.reader, size: 99 } } });
 check('reader size migration clamps at 24px', clamped.prefs.reader.size === 24);
 
-// the seat map: the demo reader sits in row 7, 260 XP into an 800-XP row
-check('seed derives lifetime XP for row 7', g().totalXp === 2960 && g().xpMax === 800, `${g().totalXp}/${g().xpMax}`);
+// the seat map: everyone opens in row 13, and it costs 32 to leave
+check('seed derives an empty ledger in the back row',
+  g().totalXp === 0 && g().xpMax === 32, `${g().totalXp}/${g().xpMax}`);
 
 g().addXP(5);
-check('addXP(5) → 265', g().xp === 265, `${g().xp}`);
+check('addXP(5) → 5', g().xp === 5, `${g().xp}`);
 
-// LV8 begins at 3,500 lifetime — the quadratic curve, not the old flat 400
-g().addXP(535);
-check('level-up on the quadratic curve', g().lv === 8 && g().xp === 0 && g().xpMax === 900, `lv=${g().lv} xp=${g().xp}`);
+// LV2 begins at 32 lifetime — the learning curve, not the old quadratic
+g().addXP(27);
+check('level-up on the learning curve', g().lv === 2 && g().xp === 0 && g().xpMax === 6, `lv=${g().lv} xp=${g().xp}`);
 
 // addInk is a primitive now: the well moves, but nothing is minted — the
 // once-ever +50 belongs to the engine (and, signed in, to the ledger)
-g().addInk(40); // 84+40 = 124 → capped at 120
-check('addInk caps and mints nothing', g().ink === 120 && g().coins === 240, `ink=${g().ink} coins=${g().coins}`);
+g().addInk(200); // 10+200 → capped at 120
+check('addInk caps and mints nothing', g().ink === 120 && g().coins === 0, `ink=${g().ink} coins=${g().coins}`);
 
 const xpBeforeSave = g().xp;
 g().toggleSave('hail');
@@ -50,6 +53,9 @@ g().toggleSave('hail'); // unsave…
 g().toggleSave('hail'); // …and save again: the shelf moves, the XP does not
 check('save pays once per book, ever', g().xp === xpBeforeSave + 5, `${g().xp}`);
 
+// nothing is shelved on a fresh seed, so put it there before taking it back
+g().toggleSave('circe');
+check('save adds to the shelf', g().savedIds.includes('circe'));
 g().toggleSave('circe');
 check('unsave removes', !g().savedIds.includes('circe'));
 

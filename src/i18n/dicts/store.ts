@@ -14,6 +14,8 @@ const en = {
   peekOpened: 'a peek, opened',
   inkwellDry: 'the inkwell is dry — a few pages will refill it',
   peekRested: 'the desk has written enough letters today — tomorrow, then',
+  peekSlipOffer: (price: number) =>
+    `the desk has written its letters for today — but a slip is ${price} coins.`,
   checkedIn: 'checked in — your ticket, stamped. +10 XP',
   flameKept: 'the house was dark last night — your flame kept.',
   flameNight: (n: number) => `night ${n} · the flame holds`,
@@ -49,6 +51,7 @@ const zh: typeof en = {
   peekOpened: '拆开一封试读',
   inkwellDry: '墨水见底了 — 读上几页就能续满',
   peekRested: '今天的信写够了 — 明天再来吧',
+  peekSlipOffer: (price: number) => `今天的信写够了 — 不过一张条子只要 ${price} 枚铜币。`,
   checkedIn: '签到 — 票根盖章。+10 经验',
   flameKept: '昨晚剧院熄灯 — 你的火苗还在。',
   flameNight: (n: number) => `第 ${n} 夜 · 火苗还亮着`,

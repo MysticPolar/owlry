@@ -3,7 +3,7 @@ import { useStore } from '../../store/useStore';
 import { useT } from '../../i18n/react';
 import { useModalFocus } from '../../hooks/useModalFocus';
 import { useOverlayPresence } from '../../hooks/useOverlayPresence';
-import { seasonId, seasonStock } from '../../lib/economy/config';
+import { DAILY_CAPS, seasonId, seasonStock } from '../../lib/economy/config';
 import { Icon } from '../Icon';
 import { CastOwl } from '../CastOwl';
 
@@ -20,6 +20,7 @@ import { CastOwl } from '../CastOwl';
 /* sprite ids from index.html — only those exist */
 const GLYPH: Record<string, string> = {
   bottle: 'ti-inkdrop',
+  slip: 'ti-ticket',
   stationery: 'ti-mail',
   marquee: 'ti-sparkles',
   cushion: 'ti-armchair',
@@ -33,6 +34,7 @@ export function LobbyStand() {
   const coins = useStore((s) => s.coins);
   const goods = useStore((s) => s.goods);
   const bottleUsed = useStore((s) => s.daily.bottle);
+  const slipsUsed = useStore((s) => s.daily.slips);
 
   const dialogRef = useRef<HTMLDivElement>(null);
   const { mounted, shown } = useOverlayPresence(open, { ref: dialogRef });
@@ -96,8 +98,12 @@ export function LobbyStand() {
             // programme but keeps its name), with room for a per-sku override
             const copy = t.goods[good.sku] ??
               t.goods[good.kind] ?? { n: good.sku, d: '' };
-            const owned = good.kind !== 'bottle' && goods.includes(good.sku);
-            const spent = good.kind === 'bottle' && bottleUsed;
+            // consumables are never "owned" — they are bought again tomorrow
+            const consumable = good.kind === 'bottle' || good.kind === 'slip';
+            const owned = !consumable && goods.includes(good.sku);
+            const spent =
+              (good.kind === 'bottle' && bottleUsed) ||
+              (good.kind === 'slip' && slipsUsed >= DAILY_CAPS.slip);
             const afford = coins >= good.price;
             const disabled = owned || spent || !afford;
             return (
@@ -113,6 +119,7 @@ export function LobbyStand() {
                   <span className="pb-stand-d">
                     {copy.d}
                     {good.kind === 'bottle' && ` · ${t.standBottleNote}`}
+                    {good.kind === 'slip' && ` · ${t.standSlipNote(DAILY_CAPS.slip - slipsUsed)}`}
                   </span>
                 </span>
                 {owned ? (

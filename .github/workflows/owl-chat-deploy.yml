@@ -31,6 +31,7 @@ on:
       - "supabase/migrations/20260728170000_owlry_progress_revision.sql"
       - "supabase/migrations/20260728170000_owlry_season_ledger.sql"
       - "supabase/migrations/20260728170100_owlry_migrate_balance.sql"
+      - "supabase/migrations/20260730120000_owlry_36_rows.sql"
 
 concurrency:
   group: supabase-backend
@@ -61,6 +62,7 @@ jobs:
             supabase/migrations/20260728170000_owlry_progress_revision.sql
             supabase/migrations/20260728170000_owlry_season_ledger.sql
             supabase/migrations/20260728170100_owlry_migrate_balance.sql
+            supabase/migrations/20260730120000_owlry_36_rows.sql
           )
           for migration in "${migrations[@]}"; do
             payload="$RUNNER_TEMP/$(basename "$migration").json"

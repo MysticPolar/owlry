@@ -1,16 +1,18 @@
 /* smoke: the home shelf gathers the reader's own books and ranks them warmest-first */
 import { rankShelf, shelfContents, genreAffinity, type ShelfSignals } from '../src/lib/shelfRank';
 import { getBook } from '../src/lib/bookRegistry';
-import { SEED } from '../src/store/seed';
 
+/* A reader some way into a season, spelled out here rather than borrowed from
+   SEED — the seed is a fresh back-row start with empty shelves now, and every
+   assertion below is about the RANKING, which needs books to rank. */
 const base: ShelfSignals = {
-  savedIds: SEED.savedIds,
-  readingIds: SEED.readingIds,
-  finishedIds: SEED.finishedIds,
-  quotedIds: SEED.quotedIds,
-  dislikedIds: SEED.dislikedIds,
-  savedAt: SEED.savedAt,
-  pagesRead: SEED.pagesRead,
+  savedIds: ['circe'],
+  readingIds: ['goldfinch', 'pachinko', 'tranq'],
+  finishedIds: ['oldman', 'none'],
+  quotedIds: ['piranesi', 'medit', 'snow', 'atomic', 'sleep'],
+  dislikedIds: [],
+  savedAt: {},
+  pagesRead: { goldfinch: 463, pachinko: 118, tranq: 224 },
 };
 
 const tag = (s: ShelfSignals, id: string): string =>

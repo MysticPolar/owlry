@@ -24,9 +24,10 @@ import {
   RETURNING_PATRON_DAYS,
   STEP_COOLDOWN_MS,
   goodFor,
+  levelUpCoins,
   seasonId,
 } from './config';
-import { LV_CAP, cumulativeXp, encoreStars, levelForXp } from './curve';
+import { ENCORE_STEP, LV_CAP, cumulativeXp, encoreStars, levelForXp } from './curve';
 import type {
   BookEarn,
   DailyCounters,
@@ -67,6 +68,7 @@ export const emptyDaily = (day: string): DailyCounters => ({
   evening: false,
   fullHouse: false,
   bottle: false,
+  slips: 0,
   lastStepAt: 0,
   firstAt: 0,
   lastAt: 0,
@@ -136,7 +138,7 @@ export function derive(totalXp: number): { lv: number; xp: number; xpMax: number
   const encore = encoreStars(totalXp);
   if (raw >= LV_CAP) {
     const past = Math.max(0, totalXp - cumulativeXp(LV_CAP));
-    return { lv: LV_CAP, xp: past % 1000, xpMax: 1000, encore };
+    return { lv: LV_CAP, xp: past % ENCORE_STEP, xpMax: ENCORE_STEP, encore };
   }
   return {
     lv: raw,
@@ -300,8 +302,10 @@ export function applyAction(state: EconomyState, action: EconomyAction, ctx: Act
       daily.chat += 1;
     }
   } else if (action === 'preview') {
-    // the LLM throttle: the daily cap binds, not the ink
-    if (daily.preview >= DAILY_CAPS.preview) return refuse('rate_limited');
+    // the LLM throttle: the daily cap binds, not the ink. A peek slip bought at
+    // the stand raises today's ceiling by one — the only thing brass can buy
+    // that the free economy also grants, and it is bounded three a day.
+    if (daily.preview >= DAILY_CAPS.preview + daily.slips) return refuse('rate_limited');
     if (s.ink + dInk < 0) return refuse('insufficient_ink');
     daily.preview += 1;
   } else if (action === 'quote_keep') {
@@ -326,13 +330,19 @@ export function applyAction(state: EconomyState, action: EconomyAction, ctx: Act
     const good = ctx.sku ? goodFor(ctx.sku) : undefined;
     const season = seasonId(at);
     if (!good || (good.season !== null && good.season !== season)) return refuse('unverified');
-    if (good.kind !== 'bottle' && goods.includes(good.sku)) return refuse('duplicate');
+    // consumables are bought again and again; everything else is owned once
+    const consumable = good.kind === 'bottle' || good.kind === 'slip';
+    if (!consumable && goods.includes(good.sku)) return refuse('duplicate');
     if (good.kind === 'bottle' && daily.bottle) return refuse('rate_limited');
+    if (good.kind === 'slip' && daily.slips >= DAILY_CAPS.slip) return refuse('rate_limited');
     if (s.coins < good.price) return refuse('insufficient_coins');
     dCoins = -good.price;
     if (good.kind === 'bottle') {
       dInk = ECONOMY.bottleInk;
       daily.bottle = true;
+    } else if (good.kind === 'slip') {
+      // no ink, no XP — it buys the desk's attention, nothing else
+      daily.slips += 1;
     } else {
       goods.push(good.sku);
     }
@@ -360,9 +370,13 @@ export function applyAction(state: EconomyState, action: EconomyAction, ctx: Act
   const leveled = levelAfter > levelBefore;
   if (leveled) {
     // the faucet stops at the front row; the refill tops to the resting line,
-    // not the cap — a full-cap refill was twenty-four free peeks a level
-    const paidLevels = Math.max(0, Math.min(levelAfter, LV_CAP) - Math.min(levelBefore, LV_CAP));
-    coins += ECONOMY.levelCoins * paidLevels;
+    // not the cap — a full-cap refill was twenty-four free peeks a level.
+    // Brass is priced per LEVEL, by the row that level sits in, so one action
+    // that crosses several levels pays each of them at its own rate (a finish
+    // early in the learning curve can clear three at once).
+    for (let l = Math.min(levelBefore, LV_CAP) + 1; l <= Math.min(levelAfter, LV_CAP); l += 1) {
+      coins += levelUpCoins(l);
+    }
     ink = Math.max(ink, rest);
   }
 

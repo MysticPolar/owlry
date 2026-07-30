@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useStore } from '../store/useStore';
 import { useReduceMotion } from '../hooks/useReduceMotion';
-import { rowFromLevel } from '../lib/economy/curve';
+import { rowFromLevel, seatMovesAt } from '../lib/economy/curve';
 import { Icon } from './Icon';
 
 /* ============================================================
@@ -18,8 +18,9 @@ import { Icon } from './Icon';
    ============================================================ */
 
 /** the receipt: Keeper on the left, the night's deltas after — numbers only.
-    One line per econ() burst ("+60 ⚡ +25 🪙 −5 💧"), and when the seat moves,
-    a gold ROW stamp. No sentences; the deltas are the sentence. */
+    One line per econ() burst ("+60 ⚡ +25 🪙 −5 💧"), and on a level-up a gold
+    stamp — ROW when the seat actually moved, LV when it didn't.
+    No sentences; the deltas are the sentence. */
 export function EconStrip() {
   const fx = useStore((s) => s.statFx);
   const lv = useStore((s) => s.lv);
@@ -60,9 +61,12 @@ export function EconStrip() {
       {part(shown.coins, 'coins', 'ti-coin')}
       {part(shown.ink, 'ink', 'ti-inkdrop')}
       {shown.lv && (
+        /* a seat only moves every third level — on the other two the stamp
+           would name a row they were already sitting in, so it names the
+           level instead. Numbers either way; no sentence to translate. */
         <span className="d row" key={`r${shown.n}`}>
           <Icon name="ti-crown" />
-          ROW {rowFromLevel(lv)}
+          {seatMovesAt(lv) ? `ROW ${rowFromLevel(lv)}` : `LV ${lv}`}
         </span>
       )}
     </div>

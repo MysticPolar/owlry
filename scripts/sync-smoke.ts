@@ -280,17 +280,18 @@ const make = (o: Partial<PersistedState> = {}): PersistedState => ({
 // lifetime XP is the truth now, and it only ever ratchets up — the seat and
 // the bar are re-derived from the merged total, never copied off one side
 {
+  // LV7 is 100 XP wide on the 36-level table — the loser must stay inside it
   const a = make({ totalXp: cumulativeXp(8) + 5 });
-  const b = make({ totalXp: cumulativeXp(7) + 399 });
+  const b = make({ totalXp: cumulativeXp(7) + 99 });
   const m = mergeProgress(a, b);
   check('the further-along lifetime total leads', m.lv === 8 && m.xp === 5, `lv=${m.lv} xp=${m.xp}`);
 }
 
 {
-  const a = make({ totalXp: cumulativeXp(7) + 100 });
-  const b = make({ totalXp: cumulativeXp(7) + 300 });
+  const a = make({ totalXp: cumulativeXp(7) + 10 });
+  const b = make({ totalXp: cumulativeXp(7) + 90 });
   const m = mergeProgress(a, b);
-  check('within a row, the busier device leads', m.xp === 300 && m.lv === 7, `xp=${m.xp}`);
+  check('within a row, the busier device leads', m.xp === 90 && m.lv === 7, `xp=${m.xp}`);
 }
 
 // the flame travels with the device that tended it most recently, so an honest

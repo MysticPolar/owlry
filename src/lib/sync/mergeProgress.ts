@@ -81,6 +81,9 @@ function mergeDaily(a: DailyCounters, b: DailyCounters): DailyCounters {
     evening: a.evening || b.evening,
     fullHouse: a.fullHouse || b.fullHouse,
     bottle: a.bottle || b.bottle,
+    // the busier device's slip count leads — taking the min would re-arm the
+    // day's letter ceiling on a device hop, and the brass was already spent
+    slips: Math.max(a.slips, b.slips),
     lastStepAt: Math.max(a.lastStepAt, b.lastStepAt),
     // `Math.min(Infinity, Infinity) || 0` is Infinity — Infinity is truthy — so
     // the guard has to be explicit or a day with no acts yet poisons the

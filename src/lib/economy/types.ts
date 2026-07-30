@@ -126,7 +126,8 @@ export interface ActionResult extends Partial<Snapshot> {
 /** the lobby stand's stock */
 export interface StandGood {
   sku: string;
-  kind: 'stationery' | 'marquee' | 'cushion' | 'bottle';
+  /** `bottle` and `slip` are consumables — bought again, never "owned" */
+  kind: 'stationery' | 'marquee' | 'cushion' | 'bottle' | 'slip';
   price: number;
   /** null = evergreen; else only on sale that season */
   season: number | null;
@@ -169,6 +170,8 @@ export interface DailyCounters {
   fullHouse: boolean;
   /** the daily small bottle has been bought */
   bottle: boolean;
+  /** peek slips bought today — each one raises the day's letter ceiling by 1 */
+  slips: number;
   /** epoch ms of the last XP-bearing page step (the 60s floor) */
   lastStepAt: number;
   /** epoch ms of this day's first and last XP-bearing acts (the marathon span) */

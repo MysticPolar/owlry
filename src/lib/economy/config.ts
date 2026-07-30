@@ -9,11 +9,19 @@
    When the server's config rows are retuned, bump ECONOMY_VERSION and
    change them here in the same PR.
    ============================================================ */
+import { rowFromLevel } from './curve';
 import type { EconomyAction, StandGood } from './types';
 
 /** bumped when the grant/guard numbers change; rides in the persisted blob */
-export const ECONOMY_VERSION = 2;
-/** bumped when the LEVEL CURVE changes; drives the one-time xpMax migration */
+export const ECONOMY_VERSION = 3;
+/** The curve-migration stamp. DELIBERATELY STILL 2 across the 36-row change.
+    `curveV` does not describe the curve's shape — it marks whether a blob has
+    been converted off the pre-ledger flat-400 scheme onto lifetime `totalXp`.
+    Every post-ledger blob already carries a real `totalXp`, and `derive()`
+    re-labels it against whatever table ships today, so the 36-row curve needs
+    no migration. Bumping this would flip those blobs back to `migrated: false`
+    in normalize.ts and shove real lifetime totals through `legacyTotalXp` —
+    data loss, not a no-op. Bump it only for a genuine storage change. */
 export const CURVE_VERSION = 2;
 
 export const ECONOMY = {
@@ -24,7 +32,6 @@ export const ECONOMY = {
   /** the global daily ceiling; grants past it are withheld, not banked */
   dailyXpCap: 150,
   streakBonusCoins: 30,
-  levelCoins: 50,
   wellFullCoins: 50,
   bottleInk: 10,
   /** 2026-01-01T00:00:00Z, in epoch seconds — matches season_epoch */
@@ -49,14 +56,44 @@ export const ACTION_CONFIG: Record<EconomyAction, { xp: number; ink: number; coi
   onboard: { xp: 20, ink: 10, coins: 0 },
 };
 
+/** level-up brass, keyed to the ROW the new level lands in — the seats near
+    the stage pay better, so brass velocity is part of the climb. Ramps to row
+    8, holds at 100 through row 3, then the last two rows pay double.
+    Lifetime total across LV2→LV36: 3,120. */
+export const ROW_COINS: Record<number, number> = {
+  13: 10,
+  12: 20,
+  11: 30,
+  10: 50,
+  9: 70,
+  8: 100,
+  7: 100,
+  6: 100,
+  5: 100,
+  4: 100,
+  3: 100,
+  2: 200,
+  1: 200,
+};
+
+/** What LANDING on this level pays. LV1 is where everyone starts, so it is
+    never landed on and pays nothing; past the summit `rowFromLevel` clamps to
+    row 1. Byte-for-byte the same answer as owlry_level_coins in Postgres at
+    every input, so neither side depends on the other's caller to clamp — though
+    both loops do stop at LV_CAP, so an encore level is never actually paid. */
+export const levelUpCoins = (lv: number): number => (lv < 2 ? 0 : ROW_COINS[rowFromLevel(lv)] ?? 0);
+
 /** how many XP-bearing acts of each kind a local day may hold */
 export const DAILY_CAPS = {
   turn_page: 60,
   open: 3,
   chat: 6,
-  /** live generations, ink or no ink — this is what throttles the LLM */
+  /** live generations, ink or no ink — this is what throttles the LLM.
+      A peek slip buys one more on top, up to `slip` of them a day. */
   preview: 6,
   quote_keep: 5,
+  /** peek slips purchasable in a local day */
+  slip: 3,
 } as const;
 
 /** the quiet floor between two XP-bearing page steps */
@@ -76,6 +113,9 @@ export const QUOTE_HASH_MEMORY = 200;
     more row here and one more in the migration. */
 export const STAND_CATALOG: StandGood[] = [
   { sku: 'bottle-small', kind: 'bottle', price: 5, season: null },
+  // the second consumable: one more letter from the desk today. This is the
+  // sink the milestone faucets need — brass finally buys something recurring.
+  { sku: 'peek-slip', kind: 'slip', price: 30, season: null },
   { sku: 'marquee-letters', kind: 'marquee', price: 80, season: null },
   { sku: 'cushion-velvet', kind: 'cushion', price: 120, season: null },
   ...Array.from({ length: 12 }, (_, n): StandGood => ({

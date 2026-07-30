@@ -7,6 +7,11 @@
 > rebuilt from a read-only audit and must be diffed against the live database
 > before any `db push`. The client half runs today for guests, which is the
 > whole economy minus the ledger.
+> **Revised 2026-07-30 — the seat map was re-cut from 13 levels to 36** (§4): same thirteen rows,
+> same 9,000-XP summit, but a seat now moves every third level and the first four levels are a
+> learning curve a reader clears in one session. Level-up brass is keyed to the row (§4, §6) and
+> the **peek slip** joins the stand as the recurring sink (§6). `ECONOMY_VERSION` → 3;
+> `CURVE_VERSION` deliberately stays 2 (it marks the storage migration, not the curve's shape).
 > **How it came to be:** three candidate designs were drafted, adversarially critiqued, and revised
 > (A — *House Lights*, client-side; B — *The House Ledger*, server-authoritative; C — *A Season at
 > the Theatre*, the theatrical superset). The decision: **C's soul on B's skeleton** — the theatre
@@ -88,7 +93,7 @@ release):
 | `finish` | 60 | 0 | +25 | once per book; requires ≥ 19 of 20 steps in the ledger and ≥ 20 min since `open` |
 | `save` | 5 | 0 | 0 | XP once per (user, book); save/unsave cycling nets zero |
 | `chat` (live reply) | 3 | −1 | 0 | XP on the **first 6 live chats/day**; ink still spends past that |
-| `preview` (live letter) | 0 | −5 | 0 | ≤ **6 live generations/day** regardless of ink; cached re-opens free |
+| `preview` (live letter) | 0 | −5 | 0 | ≤ **6 live generations/day** regardless of ink, **+1 per peek slip bought today** (§6); cached re-opens free |
 | `quote_keep` | 5 | 0 | 0 | text-hash dedupe; first 5/day pay XP, silent keep after |
 | `checkin` | 10 | +10 | 0 | once per local day |
 | `purchase` | 0 | varies | −price | sku validated against the season catalogue (§6) |
@@ -104,8 +109,10 @@ Notes, each of which closes a verified exploit:
   without it, regen + pages + checkin fund ~37 free Gemini letters a day.
 - **`chat` XP caps at 6/day.** Otherwise passive regen (48 ink/day) converts to 144 XP/day of
   idle chatting, beating any reader.
-- **Global daily XP ceiling: 150.** Grants past it are withheld (not banked). A ceiling-grinder
-  needs ≥ 9 days to LV5 and ≥ 60 days to LV13 instead of exhausting the seat map in a week.
+- **Global daily XP ceiling: 150.** Grants past it are withheld (not banked). The learning curve
+  (§4) is *meant* to fall in the first session — LV5 costs 90 XP — but the climb behind it is
+  where the ceiling bites: a grinder still needs ≥ 60 days to reach the front row (LV36, 9,000
+  XP) instead of exhausting the seat map in a week.
 - **`full_house` (+5 XP)** — a matinée act (before 18:00 local) *and* an evening act the same
   local day, once/day — is **not callable**. It is granted server-side inside
   `owlry_perform_action`, like `levelup`, with its own `type='full_house'` ledger row.
@@ -121,34 +128,64 @@ Notes, each of which closes a verified exploit:
 
 ## 4. Levels — the seat map
 
-**Curve** (adopt the deployed quadratic): cumulative XP(L) = 50L² + 50L − 100; the cost of
-reaching level L is 100·L.
+**Curve** (a hand-built table, `src/lib/economy/curve.ts`): **thirty-six levels**. The deployed
+quadratic is retired from live pricing and survives only inside `legacyTotalXp` /
+`owlry_migrate_balance`, which must keep quoting it (§9) or a grandfathered blob would re-price
+against a curve the ledger never paid out on.
 
-**Seats, canon resolved.** The house has **thirteen rows, numbered from the stage**:
-`row = 14 − LV`. LV1 is row 13 — the back row, so *"everyone starts in the back row"* is
-literally true — and LV7 is row 7 from the front, exactly as the story bible has it.
-**LV13 is the front row and the cap.**
+The first four steps are the **learning curve** — 32 / 6 / 17 / 35 XP, so LV2 costs 32 and LV5
+costs 90 — and the climb proper starts at LV6: +100 a level through row 11, then the step widens
+by 40 every third level (+140, +180, +220 … +460) and +510 for the last stride to the front.
+**LV36 = 9,000 XP, exactly where LV13 used to sit** — the summit's price never moved, only the
+number of stops on the way up. Past the cap, cumulative XP(L) = 9,000 + (L − 36)·1,000: one
+honorary level per encore star, the same cadence on purpose, so the bar and the album never
+disagree.
+
+**Seats, canon resolved.** The house still has **thirteen rows, numbered from the stage** — but a
+seat now moves every **third** level: `row = 13 − ⌊LV/3⌋`. LV1–2 sit in row 13 — the back row, so
+*"everyone starts in the back row"* is literally true — and **LV36 alone holds row 1, the front
+row and the last paid level.** Twelve moves across thirty-five level-ups: the row is the
+milestone, the levels are the heartbeat between two of them.
 
 | LV | row | cum. XP | casual day* | unlock |
 |---:|---:|---:|---:|---|
-| 2 | 12 | 200 | ~6 | the lobby stand opens |
-| 3 | 11 | 500 | ~15 | **Scout's pro desk** (unchanged gate) |
-| 4 | 10 | 900 | ~26 | — |
-| 5 | 9 | 1,400 | ~41 | **Profile / Mirror, chains fall** (unchanged gate) |
-| 7 | 7 | 2,700 | ~79 | — |
-| 10 | 4 | 5,400 | ~159 | — |
-| 13 | 1 | 9,000 | ~265 | the front row |
+| 2 | 13 | 32 | ~1 | the lobby stand opens |
+| 3 | 12 | 38 | ~2 | **Scout's pro desk** (unchanged gate); the seat's first move |
+| 5 | 12 | 90 | ~3 | **Profile / Mirror, chains fall** (unchanged gate) |
+| 6 | 11 | 190 | ~6 | the climb proper begins |
+| 9 | 10 | 530 | ~16 | — |
+| 12 | 9 | 990 | ~30 | — |
+| 15 | 8 | 1,570 | ~47 | — |
+| 18 | 7 | 2,270 | ~67 | — |
+| 21 | 6 | 3,090 | ~91 | — |
+| 24 | 5 | 4,030 | ~119 | — |
+| 27 | 4 | 5,090 | ~150 | — |
+| 30 | 3 | 6,270 | ~185 | — |
+| 33 | 2 | 7,570 | ~223 | — |
+| 36 | 1 | 9,000 | ~265 | the front row |
 
-\* casual ≈ 34 XP/day (§10). Engaged (~54 XP/day) reaches LV5 in ~26 days.
+\* casual ≈ 34 XP/day (§10). The whole meta layer opens at the start rather than six weeks in —
+the stand and the pro desk in the first few minutes, the mirror by day 3 — which is the point of
+the learning band: a seeded LV7 reader would never have watched any of it happen. Engaged
+(~54 XP/day) clears the learning curve on day 2 and reaches row 8 (LV15) in ~30 days.
 
-**Above LV13:** the server stops the level faucet (no +50 coins, no refill above L13) and
-`applySnapshot` clamps display `lv = min(level, 13)` — no row 0, ever. Every further 1,000 XP
+**Above LV36:** the server stops the level faucet (no row coins, no refill above LV36) and
+`applySnapshot` clamps display `lv = min(level, 36)` — no row 0, ever. Every further 1,000 XP
 stamps a cosmetic **encore star**: the bar runs on `(total_xp − 9000) mod 1000`; each star is a
 ledger stub `type='stub', meta {id:'encore', n}` and the album renders "encore ×N".
 
-**Level-up grants:** +50 coins (≤ LV13) and the well tops up **to the resting line (60), not the
-cap** — a full-cap refill was 24 free peeks per level, outside every budget. Level-up copy names
-the row.
+**Level-up grants: brass is keyed to the ROW the new level lands in** (`ROW_COINS`), so the seats
+near the stage pay better and coin velocity is part of the climb:
+
+| row | 13 | 12 | 11 | 10 | 9 | 8–3 | 2–1 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| coins per level-up | 10 | 20 | 30 | 50 | 70 | 100 | 200 |
+
+A single action that crosses several levels pays **each** level at its own row's rate (`engine.ts`
+loops level by level), so one early finish can clear three levels and three payments at once.
+Nothing is paid past LV36. **Lifetime LV2 → LV36: 3,120 coins.** On any level-up the well also
+tops up **to the resting line (60), not the cap** — a full-cap refill was 24 free peeks per level,
+outside every budget. Level-up copy names the row.
 
 ---
 
@@ -178,8 +215,9 @@ the row.
 ## 6. Coins — the lobby stand
 
 **Faucets — milestones only, no drip:**
-+50 per level-up (≤ LV13) · +25 per finish · +30 per 7-day streak · +50 once-ever full-well
-latch. The client-side +50 in `addInk` is **deleted**; the latch becomes server-derived —
+row-keyed level-up brass, 10 → 200 a level by the row it lands in (§4; **3,120 across
+LV2 → LV36**, nothing past the front row) · +25 per finish · +30 per 7-day streak · +50 once-ever
+full-well latch. The client-side +50 in `addInk` is **deleted**; the latch becomes server-derived —
 `ink_done` joins `owlry_profile_json` and `applySnapshot` sets it, so the bonus can never
 double-fire, and the lying "daily ink full" toast is retired.
 
@@ -192,6 +230,13 @@ Keeper runs it (he counts brass); it opens from the coins chip, LV2+. Stock:
 | marquee letters | 80 | decorate the Today wordmark marquee (cosmetic) |
 | seat cushion | 120 | shown on your row of the seat map (cosmetic) |
 | **the small bottle** | 5 | +10 ink, **once a day** — a bounded valve, never required |
+| **a slip for the desk** | 30 | one more live letter *today* — raises the day's generation ceiling by 1, **max 3/day**. No ink, no XP, never "owned" |
+
+**The slip is the recurring sink the milestone faucets need.** Cosmetics are bought once and then
+never again; the bottle is capped at 5 coins a day. The slip is the only thing brass can buy that
+the free economy also grants — which is why it is bounded hard at three a day and grants nothing
+but the desk's attention (the client guard is `daily.preview >= DAILY_CAPS.preview + daily.slips`;
+the LLM ceiling is never lifted by ink, only by brass).
 
 **Purchases are ledger entries:** `performAction('purchase', { sku, season })`, `type='purchase'`
 rows; owned goods derive from the snapshot. There is **no client-blob `standGoods` field** — a
@@ -203,9 +248,14 @@ resurrectable by max-wins merge.
 into `meta.season` on every purchase and stub. Each season rotates the stationery design and
 regroups the album (§8).
 
-**Balance (coins/month):** inflow ~250–370 in the early levels, decaying to a steady state of
-~145 post-LV13 (streak ~120 + finishes). Outflow: ~80/month amortized on seasonal goods, plus up
-to ~150 on daily bottles for heavy generators. Mild pressure early, real pressure late, no drip.
+**Balance (coins/month), casual reader:** the level faucet runs the whole climb rather than
+front-loading it — the ladder spreads 3,120 across nine months, so inflow sits at **~345–585 a
+month** (month one ≈ 525: 380 of level brass to LV12, plus ~145 of streak and finishes) and then
+falls to **~145** the month the seat reaches row 1 and the faucet closes. Outflow: ~80/month
+amortized on seasonal goods, up to ~150 on daily bottles — and up to **90 a day** (~2,700/month)
+for a reader who buys all three slips. The entire lifetime 3,120 of level-up brass is about five
+weeks of a three-slip habit: the milestones can afford to be generous precisely because the sink
+outruns them. Mild pressure early, real pressure late, no drip.
 **Coins never buy XP, levels, content, or forgiveness.**
 
 ---
@@ -248,7 +298,7 @@ mirrored in `src/lib/economy/types.ts`. Guests evaluate local equivalents.
 | full well | the once-ever cap latch |
 | returning patron | first active day after ≥ 14 dark days |
 | last season's flame | keepsake, stamped at migration for old blobs with the seeded streak |
-| encore ×N | each 1,000 XP past LV13 |
+| encore ×N | each 1,000 XP past LV36 |
 
 The Profile `.achgrid` becomes **the album**: stubs grouped under quarterly programme headers by
 their ledger timestamp.
@@ -274,7 +324,7 @@ Ordered; steps 2 and 4 must ship together.
    `well_full` ledger row — badge kept, no second +50.
 3. **Blob demotion.** For authed users, `owlry_progress.state` keeps authority only over shelves,
    `pagesRead`, and prefs. Economy fields **stay mirrored** (absence would trigger the
-   `{...SEED, ...state}` resurrection in `normalizePersisted`) plus `economyVersion: 2`;
+   `{...SEED, ...state}` resurrection in `normalizePersisted`) plus `economyVersion: 3`;
    hydration ignores blob economy whenever a snapshot exists; `mergeProgress` compares economy
    only between legacy blobs.
 4. **`adoptAccount` goes snapshot-first.** Today it saves and cloud-pushes the merged
@@ -286,7 +336,10 @@ Ordered; steps 2 and 4 must ship together.
    (`src/lib/sync/mergeProgress.ts`) — with an explicit default and an explicit merge rule.
    New fields: `stubsSince`, `streakLastDay`, `quoteDay` (day + count + hashes — never quote
    text), `fullHouseDay`, `curveV`, `economyVersion`. Guests get a one-time `curveV: 2` pass that
-   recomputes `xpMax` onto the quadratic curve.
+   converts a pre-ledger flat-400 blob onto lifetime `totalXp`. **`curveV` stays 2 across the
+   36-level re-cut**: it marks that storage conversion, not the curve's shape, and `derive()`
+   re-labels every post-ledger blob against whatever table ships today. Bumping it would flip
+   real lifetime totals back through `legacyTotalXp` — data loss, not a no-op.
 6. **Guests.** A versioned `ACTION_CONFIG` constants module (keyed to `curveV`) carries the same
    numbers **and the same guards** (anon cannot read `owlry_action_config`, and numbers without
    guards are an unbounded farm). `adoptAccount`'s guest carry-over clamps XP/coins exactly as
@@ -298,18 +351,27 @@ Ordered; steps 2 and 4 must ship together.
 ## 10. Numbers sanity (worked)
 
 - **Casual day** (~20 min ≈ ~10% of a book ≈ 2 ticks): pages 8 + checkin 10 + the odd
-  save/quote/ask ~8 + one finish a week amortized ~8 → **~34 XP/day** → LV3 ~day 15, LV5 ~day 41.
-  Engaged (~40 min): ~54 XP/day → LV5 ~day 26.
+  save/quote/ask ~8 + one finish a week amortized ~8 → **~34 XP/day** → LV3 ~day 2, LV5 ~day 3,
+  LV13 ~day 35, the front row ~day 265. Engaged (~40 min): ~54 XP/day → LV5 on day 2, LV13 in
+  ~22 days.
+- **The learning curve is the onboarding, not a tutorial:** onboarding 20 + a first open 8 + one
+  5% tick 4 = **32 exactly** — LV2 and the lobby stand, before the reader finishes a chapter.
+  Six more XP is LV3 and Scout's pro desk. LV5 and the mirror cost 90: day one for a session that
+  opens a few books, day 3 for the ~34 XP/day casual. Nobody waits six weeks to meet the app's
+  own features anymore.
 - **Idle ceiling** (no reading): checkin 10 + 6 chats × 3 = **28 XP/day** — less than one
   casual reading day. Principle 3 holds.
-- **Grinder ceiling:** global 150/day → LV5 in ≥ 9.3 days, LV13 in ≥ 60 days.
+- **Grinder ceiling:** global 150/day → the learning curve falls inside day 1 (by design), LV13
+  in ≥ 8 days, LV36 in ≥ 60 days — the summit's pace is exactly what it was when it was LV13.
 - **Peeks/day fundable:** the 6/day generation guard binds, not ink (a full well would fund 24);
-  the resting line means a binge recovers to 60, not 120.
+  three slips lift the day's ceiling to 9 and cost 90 brass to do it. The resting line means a
+  binge recovers to 60, not 120.
 - **30-min session ink:** 80 → 91 (§5). A five-peek night: −25, back to the resting line by
   morning, pages refill the rest.
-- **Coins:** early months +250–370 vs ~80 amortized goods + optional bottles; post-LV13 steady
-  state ~145/month vs the same sinks — surplus shrinks as the album fills. No drip: every faucet
-  is a milestone.
+- **Coins:** ~345–585/month across the ~9-month climb (3,120 of level brass spread over it, plus
+  ~145 of streak and finishes) vs ~80 amortized goods + optional bottles; **~145/month** once the
+  seat reaches the front row and the faucet closes, against the same sinks plus slips at up to
+  90/day. Surplus shrinks as the album fills. No drip: every faucet is a milestone.
 
 ---
 
@@ -317,10 +379,10 @@ Ordered; steps 2 and 4 must ship together.
 
 | surface | change |
 |---|---|
-| StatChips + CompactStrip (`src/components/screens/TodayScreen.tsx:23-47`) | crown becomes the **seat chip** ("row 7"); it takes `id="lvLab"`, reclaiming the dead burst anchor (`src/components/chrome.tsx:177`) so level-up sparks finally land |
+| StatChips + CompactStrip (`src/components/screens/TodayScreen.tsx:23-47`) | crown becomes the **seat chip** — the row, never the level ("ROW 13" on opening night, "ROW 1" at LV36); it takes `id="lvLab"`, reclaiming the dead burst anchor (`src/components/chrome.tsx:177`) so level-up sparks finally land |
 | ProfileScreen (`src/components/screens/ProfileScreen.tsx`) | 13-row **seat map** above the XP bar; coins chip opens the LobbyStand; `.achgrid` becomes the stub album; flame chip dim/lit/bright |
-| MirrorRoom (`src/components/overlays/MirrorRoom.tsx`) | same LV5 logic; stepper labeled by row, **counting down** (row 13 → row 9). Direction rule: rows count down as levels count up — state once, apply everywhere. `lvOf` gets a row-worded en+zh variant |
-| Settings (`src/components/overlays/Settings.tsx`) | account line reads live values, e.g. "ROW 9 · LV 5 · 180 COINS" |
+| MirrorRoom (`src/components/overlays/MirrorRoom.tsx`) | same LV5 logic; stepper labeled by row, **counting down** (row 13 → row 12 — LV5 is one move off the back wall). Direction rule: rows count down as levels count up — state once, apply everywhere. `lvOf` gets a row-worded en+zh variant |
+| Settings (`src/components/overlays/Settings.tsx`) | account line reads live values, e.g. "ROW 12 · LV 5 · 70 COINS" |
 | LobbyStand (`src/components/overlays/LobbyStand.tsx`, **new**) | §6; built from existing overlay primitives (`useOverlayPresence`, `usePullDismiss`, `.pb-psheet` paper grammar) |
 | Onboarding act 5 (`src/components/overlays/Onboarding.tsx`) | ink HUD, XP fly, and level bar all wired to real grants |
 | Toasts (`showToast`) | all new lines below; migration morning gets one Keeper toast |
@@ -331,11 +393,13 @@ Ordered; steps 2 and 4 must ship together.
 
 | owl | line |
 |---|---|
-| keeper | "level up! LV 7 — row 7. your seat moved toward the stage." |
+| keeper | "level up! LV 6 — row 11. your seat moved toward the stage." |
+| keeper | "the front row. the seat stops moving — the reading does not." |
 | keeper | "the house was dark last night — your flame kept." |
 | keeper | "checked in — your ticket, stamped. +10 XP" |
 | keeper | "finished — entered in the ledger. +60 XP · +25 coins" |
 | keeper | "a small bottle — 5 coins, 10 ink." |
+| keeper | "the desk has written its letters for today — but a slip is 30 coins." |
 | keeper | "a stub for the album — opening night." |
 | keeper | "the house opened its ledger — your page is copied in. the flame starts fresh tonight." |
 | scribe | "kept — the nib remembers. +5 XP" |
@@ -356,7 +420,7 @@ line names the Hush; every line passes the one-owl test.
 | peek pricing | +25 XP · −5 ink · −10 coins | 0 XP · −5 ink · 0 coins | **C + a 6/day generation cap** | coins must feed the stand; the cap replaces the throttle the merge removed |
 | streak mercy | banked embers | free dark night | **C** | warmer fiction, no bank column |
 | migration | grandfather floor, none demote | LV5 cap unless evidence | **C, made ratcheting** | the LV7 seed is fake for nearly everyone; the ratchet protects real multi-device readers |
-| seat math | unbounded house | 13 rows + encore stars | **C, enforced server-side above L13** | the soul, made overflow-proof |
+| seat math | unbounded house | 13 rows + encore stars | **C's 13 rows, re-cut as 36 levels — the seat moves every third one, enforced server-side above LV36** | the soul, made overflow-proof; the house keeps its thirteen rows, the ladder gets the rungs a first session needs |
 | checkin ink | +20 | +10 | **C** | fits the resting-line flow |
 | turn_page XP | 2 | 4 | **C** | reading must out-earn launching |
 | guards, ledger, queue, contract | full suite | lighter | **B, hardened** | `occurred_at`, granted/withheld, the 150/day ceiling |
@@ -368,7 +432,7 @@ line names the Hush; every line passes the one-owl test.
 | # | step | size |
 |---|---|---|
 | 1 | drift audit → commit 3 live migrations; `schema_v` + 1-indexed profile JSON | S |
-| 2 | guards migration: full suite on `occurred_at`, config table, rest line/regen 30/cap 120, streak + dark night + full house, stub grants, `purchase`, L13 faucet stop, `tz_offset_minutes`, `dark_night_at`, both unique indexes | L |
+| 2 | guards migration: full suite on `occurred_at`, config table, rest line/regen 30/cap 120, streak + dark night + full house, stub grants, `purchase`, LV36 faucet stop, `tz_offset_minutes`, `dark_night_at`, both unique indexes | L |
 | 3 | `owlry_migrate_balance` (ratcheting evidence filter, clamps, well_full carry, keepsake stub) | M |
 | 4 | peek charge/refund in `owl-peek` with the soft-hold contract | M |
 | 5 | wire `performAction` call sites; granted/withheld reconciliation; offline queue; `adoptAccount` snapshot-first | L |

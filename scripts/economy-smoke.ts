@@ -3,7 +3,7 @@
    day boundary can be exercised without waiting for one. */
 import { applyAction, derive, emptyDaily, localDay, settleInk } from '../src/lib/economy/engine';
 import type { EconomyState } from '../src/lib/economy/engine';
-import { cumulativeXp, encoreStars, levelForXp, rowFromLevel } from '../src/lib/economy/curve';
+import { LV_CAP, cumulativeXp, encoreStars, levelForXp, rowFromLevel, seatMovesAt } from '../src/lib/economy/curve';
 import { ECONOMY } from '../src/lib/economy/config';
 
 let pass = 0;
@@ -41,18 +41,26 @@ const base = (over: Partial<EconomyState> = {}): EconomyState => ({
 });
 
 /* ---------- the seat map ---------- */
-check('curve: LV2 at 200, LV5 at 1400, LV13 at 9000',
-  cumulativeXp(2) === 200 && cumulativeXp(5) === 1400 && cumulativeXp(13) === 9000);
-check('curve: level inverts its own cumulative',
-  levelForXp(0) === 1 && levelForXp(200) === 2 && levelForXp(1399) === 4 && levelForXp(1400) === 5);
-check('seats: LV1 is the back row, LV7 is row 7, LV13 is the front',
-  rowFromLevel(1) === 13 && rowFromLevel(7) === 7 && rowFromLevel(13) === 1);
-check('seats: past the front row there is no row 0', rowFromLevel(20) === 1);
+check('curve: the learning band is cheap — LV2 at 32, LV5 at 90',
+  cumulativeXp(2) === 32 && cumulativeXp(5) === 90);
+check('curve: the summit is still 9,000', cumulativeXp(LV_CAP) === 9000 && LV_CAP === 36);
+check('curve: level inverts its own cumulative at every boundary',
+  Array.from({ length: LV_CAP }, (_, i) => i + 1).every(
+    (l) => levelForXp(cumulativeXp(l)) === l && (l === 1 || levelForXp(cumulativeXp(l) - 1) === l - 1),
+  ));
+check('curve: past the summit, a level is a thousand XP like a star',
+  levelForXp(9999) === 36 && levelForXp(10_000) === 37 && cumulativeXp(37) === 10_000);
+check('seats: LV1 is the back row, the seat moves every third level',
+  rowFromLevel(1) === 13 && rowFromLevel(2) === 13 && rowFromLevel(3) === 12
+  && rowFromLevel(6) === 11 && rowFromLevel(35) === 2 && rowFromLevel(36) === 1);
+check('seats: a seat move is exactly a multiple of three',
+  Array.from({ length: 35 }, (_, i) => i + 2).every((l) => seatMovesAt(l) === (l % 3 === 0)));
+check('seats: past the front row there is no row 0', rowFromLevel(50) === 1);
 check('encore: a star per thousand past the front row',
   encoreStars(9000) === 0 && encoreStars(10_000) === 1 && encoreStars(11_500) === 2);
 const past = derive(10_400);
-check('derive: past LV13 the bar tracks the next star',
-  past.lv === 13 && past.xpMax === 1000 && past.xp === 400, `${past.lv}/${past.xp}`);
+check('derive: past the summit the bar tracks the next star',
+  past.lv === LV_CAP && past.xpMax === 1000 && past.xp === 400, `${past.lv}/${past.xp}`);
 
 /* ---------- turn_page: the step is what dedupes a re-read ---------- */
 {
@@ -208,19 +216,55 @@ check('derive: past LV13 the bar tracks the next star',
   check('and never again', !after.wellFilled && after.next.coins === r.next.coins);
 }
 {
-  // crossing a row pays fifty and tops the well to the resting line, not the cap
+  // a level in the back row pays the back row's rate, and tops the well to the
+  // resting line, not the cap
   const s = base({ totalXp: cumulativeXp(2) - 4, ink: 10 });
   const r = applyAction(s, 'turn_page', { now: T0, bookId: 'b', step: 1 });
-  check('a new row pays fifty coins', r.leveled && r.next.coins === 50, `${r.next.coins}`);
+  check('the back row pays ten coins', r.leveled && r.next.coins === 10, `${r.next.coins}`);
   check('and refills to the resting line, never the cap', r.next.ink === ECONOMY.inkRest, `${r.next.ink}`);
 }
 {
+  // brass is priced by the row the level lands in, not by the level
+  const mid = applyAction(base({ totalXp: cumulativeXp(15) - 4 }), 'turn_page', { now: T0, bookId: 'b', step: 1 });
+  check('row 8 pays a hundred', mid.next.coins === 100, `${mid.next.coins}`);
+  const near = applyAction(base({ totalXp: cumulativeXp(33) - 4 }), 'turn_page', { now: T0, bookId: 'b', step: 1 });
+  check('the last two rows pay double', near.next.coins === 200, `${near.next.coins}`);
+}
+{
   // the faucet stops at the front row
-  const s = base({ totalXp: cumulativeXp(13) - 4 });
+  const s = base({ totalXp: cumulativeXp(LV_CAP) - 4 });
   const r = applyAction(s, 'turn_page', { now: T0, bookId: 'b', step: 1 });
-  check('reaching the front row still pays', r.next.coins === 50, `${r.next.coins}`);
-  const beyond = applyAction(base({ totalXp: cumulativeXp(14) - 4 }), 'turn_page', { now: T0, bookId: 'b', step: 1 });
+  check('reaching the front row still pays', r.next.coins === 200, `${r.next.coins}`);
+  const beyond = applyAction(base({ totalXp: cumulativeXp(LV_CAP + 1) - 4 }), 'turn_page', { now: T0, bookId: 'b', step: 1 });
   check('past it, no more brass', beyond.next.coins === 0, `${beyond.next.coins}`);
+}
+{
+  // one act can clear several levels on the learning curve — each is paid at
+  // its own row's rate, never at the destination's
+  const s = base({ totalXp: 4, earn: { b: { mask: (1 << 19) - 1 } } });
+  const r = applyAction(s, 'finish', { now: T0, bookId: 'b' });
+  check('a multi-level crossing pays every level it passes',
+    r.levelBefore === 1 && r.levelAfter === 4 && r.granted.coins === 25 + 10 + 20 + 20,
+    `${r.levelBefore}→${r.levelAfter} coins=${r.granted.coins}`);
+}
+{
+  // the peek slip: brass buys one more letter, three times a day at most
+  const s = base({ coins: 200, ink: 60, daily: { ...emptyDaily(localDay(T0)), preview: 6 } });
+  check('a spent day refuses the seventh letter',
+    applyAction(s, 'preview', { now: T0 }).refused === 'rate_limited');
+  const bought = applyAction(s, 'purchase', { now: T0, sku: 'peek-slip' });
+  check('a slip costs thirty and mints nothing else',
+    bought.granted.coins === -30 && bought.granted.ink === 0 && bought.granted.xp === 0
+    && bought.next.daily.slips === 1 && !bought.next.goods.includes('peek-slip'),
+    `${bought.granted.coins}/${bought.next.daily.slips}`);
+  check('and the seventh letter is written',
+    !applyAction(bought.next, 'preview', { now: T0 }).refused);
+  let walk = bought.next;
+  for (let i = 0; i < 2; i += 1) walk = applyAction(walk, 'purchase', { now: T0, sku: 'peek-slip' }).next;
+  check('the fourth slip of a day is refused',
+    walk.daily.slips === 3
+    && applyAction(walk, 'purchase', { now: T0, sku: 'peek-slip' }).refused === 'rate_limited',
+    `${walk.daily.slips}`);
 }
 
 /* ---------- regen seeps to the resting line, and no further ---------- */
