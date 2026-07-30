@@ -11,7 +11,8 @@ import {
 import { loadUpload } from '../../lib/ebook/storage';
 import { useStore } from '../../store/useStore';
 import { COPY_REPLACED_ERROR, SYSTEM_STACK, readerThemeColors } from './shared';
-import type { EngineHandle, EngineProps } from './shared';
+import type { EngineHandle, EngineProps, TocItem } from './shared';
+import { textToc } from './tocBuild';
 import { getActiveLang, tOf } from '../../i18n';
 
 const r = () => tOf(getActiveLang()).reader;
@@ -61,6 +62,7 @@ export const TextView = forwardRef<EngineHandle, EngineProps>(function TextView(
   ref,
 ) {
   const viewportRef = useRef<HTMLDivElement>(null);
+  const tocRef = useRef<TocItem[]>([]);
   const [paras, setParas] = useState<string[] | null>(null);
   const fractionRef = useRef(initial?.scroll ?? 0);
   const restoredRef = useRef(false);
@@ -168,8 +170,13 @@ export const TextView = forwardRef<EngineHandle, EngineProps>(function TextView(
   useImperativeHandle(ref, () => ({
     next: () => pageBy(1),
     prev: () => pageBy(-1),
-    getToc: () => [],
+    getToc: () => tocRef.current,
     goToFraction,
+    goToHref: (href: string) => {
+      if (!href.startsWith('frac:')) return;
+      const frac = Number(href.slice(5));
+      if (Number.isFinite(frac)) goToFraction(frac);
+    },
   }), [pageBy, goToFraction]);
 
   useEffect(() => {
@@ -208,12 +215,18 @@ export const TextView = forwardRef<EngineHandle, EngineProps>(function TextView(
           return;
         }
         const text = await decodeText(upload.blob);
-        if (!cancelled) setParas(txtToParas(text));
+        if (cancelled) return;
+        const paragraphs = txtToParas(text);
+        tocRef.current = textToc(paragraphs, (n) => r().tocSection(n));
+        setParas(paragraphs);
       } catch {
         if (!cancelled) onError(r().errOpenFile);
       }
     })();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+      tocRef.current = [];
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bookId, source]);
 

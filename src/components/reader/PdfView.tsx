@@ -4,12 +4,48 @@ import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useSta
 import * as pdfjs from 'pdfjs-dist';
 import workerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 import { loadUpload } from '../../lib/ebook/storage';
-import { COPY_REPLACED_ERROR, type EngineHandle, type EngineProps } from './shared';
+import { COPY_REPLACED_ERROR, type EngineHandle, type EngineProps, type TocItem } from './shared';
+import { pageChunkToc } from './tocBuild';
 import { getActiveLang, tOf } from '../../i18n';
 
 pdfjs.GlobalWorkerOptions.workerSrc = workerUrl;
 
 const r = () => tOf(getActiveLang()).reader;
+
+type PdfOutlineNode = {
+  title: string;
+  dest: string | unknown[] | null;
+  items: PdfOutlineNode[];
+};
+
+async function outlineToToc(
+  doc: pdfjs.PDFDocumentProxy,
+  nodes: PdfOutlineNode[] | null | undefined,
+): Promise<TocItem[]> {
+  if (!nodes?.length) return [];
+  const items: TocItem[] = [];
+  for (const node of nodes) {
+    let page: number | null = null;
+    try {
+      let dest = node.dest;
+      if (typeof dest === 'string') dest = await doc.getDestination(dest);
+      if (Array.isArray(dest) && dest[0]) {
+        const index = await doc.getPageIndex(dest[0] as Parameters<typeof doc.getPageIndex>[0]);
+        if (Number.isFinite(index)) page = index + 1;
+      }
+    } catch {
+      page = null;
+    }
+    const children = node.items?.length ? await outlineToToc(doc, node.items) : undefined;
+    const label = (node.title || '').trim() || (page != null ? r().tocPage(page) : '…');
+    if (page != null) {
+      items.push({ label, href: `page:${page}`, ...(children?.length ? { children } : {}) });
+    } else if (children?.length) {
+      items.push({ label, href: '', children });
+    }
+  }
+  return items;
+}
 
 export const PdfView = forwardRef<EngineHandle, EngineProps>(function PdfView(
   { bookId, source, initial, onProgress, onError },
@@ -18,6 +54,7 @@ export const PdfView = forwardRef<EngineHandle, EngineProps>(function PdfView(
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const docRef = useRef<pdfjs.PDFDocumentProxy | null>(null);
+  const tocRef = useRef<TocItem[]>([]);
   const pageRef = useRef<number>(initial?.page ?? 1);
   const numRef = useRef<number>(1);
   const renderTaskRef = useRef<pdfjs.RenderTask | null>(null);
@@ -102,8 +139,13 @@ export const PdfView = forwardRef<EngineHandle, EngineProps>(function PdfView(
   useImperativeHandle(ref, () => ({
     next: () => go(pageRef.current + 1),
     prev: () => go(pageRef.current - 1),
-    getToc: () => [],
+    getToc: () => tocRef.current,
     goToPage: (page: number) => go(page),
+    goToHref: (href: string) => {
+      if (!href.startsWith('page:')) return;
+      const page = Number(href.slice(5));
+      if (Number.isFinite(page)) go(page);
+    },
     goToFraction: (frac: number) => {
       const total = Math.max(1, numRef.current);
       if (total <= 1) {
@@ -145,6 +187,15 @@ export const PdfView = forwardRef<EngineHandle, EngineProps>(function PdfView(
         if (cancelled) return;
         docRef.current = doc;
         numRef.current = doc.numPages;
+        try {
+          const outline = (await doc.getOutline()) as PdfOutlineNode[] | null;
+          const fromOutline = await outlineToToc(doc, outline);
+          tocRef.current = fromOutline.length
+            ? fromOutline
+            : pageChunkToc(doc.numPages, (n) => r().tocPage(n));
+        } catch {
+          tocRef.current = pageChunkToc(doc.numPages, (n) => r().tocPage(n));
+        }
         const restored = initial?.page ?? 1;
         pageRef.current = Math.max(
           1,
@@ -167,6 +218,7 @@ export const PdfView = forwardRef<EngineHandle, EngineProps>(function PdfView(
       renderTaskRef.current?.cancel();
       renderTaskRef.current = null;
       docRef.current = null;
+      tocRef.current = [];
       const loadingTask = loadingTaskRef.current;
       loadingTaskRef.current = null;
       if (loadingTask) void loadingTask.destroy().catch(() => undefined);

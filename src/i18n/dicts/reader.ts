@@ -77,6 +77,8 @@ const en = {
   tocTitle: 'Contents',
   tocCloseAria: 'Close contents',
   tocEmpty: 'This copy has no chapter list.',
+  tocSection: (n: number) => `Section ${n}`,
+  tocPage: (n: number) => `Page ${n}`,
   scrubAria: 'Reading progress',
   selectionAria: 'Selected text actions',
 
@@ -196,6 +198,8 @@ const zh: typeof en = {
   tocTitle: '目录',
   tocCloseAria: '关闭目录',
   tocEmpty: '这份藏本没有章节目录。',
+  tocSection: (n: number) => `第 ${n} 节`,
+  tocPage: (n: number) => `第 ${n} 页`,
   scrubAria: '阅读进度',
   selectionAria: '选中文字操作',
 

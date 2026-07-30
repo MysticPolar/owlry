@@ -19,6 +19,7 @@ import {
   readerThemeColors,
 } from './shared';
 import type { EngineHandle, EngineProps, TextSelectPayload, TocItem } from './shared';
+import { labelFromPath } from './tocBuild';
 import { getActiveLang, tOf } from '../../i18n';
 import literataUrl from '../../assets/fonts/literata-var-latin.woff2';
 import frauncesUrl from '../../assets/fonts/fraunces-var-latin.woff2';
@@ -33,6 +34,11 @@ type FoliateRenderer = HTMLElement & {
 };
 
 /** the minimal <foliate-view> surface we drive (the element is plain-JS). */
+type FoliateSection = {
+  id?: string;
+  linear?: string;
+};
+
 type FoliateViewEl = HTMLElement & {
   open(input: File | Blob | string): Promise<void>;
   init(opts: { lastLocation?: string; showTextStart?: boolean }): Promise<void>;
@@ -47,6 +53,7 @@ type FoliateViewEl = HTMLElement & {
   renderer?: FoliateRenderer;
   book?: {
     toc?: Array<{ label?: string; href?: string; subitems?: unknown[] }>;
+    sections?: FoliateSection[];
   };
 };
 
@@ -62,6 +69,28 @@ const mapToc = (items: RawToc[] | undefined): TocItem[] => {
       return { label, href, ...(children.length ? { children } : {}) };
     })
     .filter((item) => item.href || item.children?.length);
+};
+
+/** When an EPUB/MOBI has no nav/NCX, list linear spine documents so uploads still get a TOC. */
+const spineToc = (sections: FoliateSection[] | undefined): TocItem[] => {
+  if (!sections?.length) return [];
+  const items: TocItem[] = [];
+  let n = 0;
+  sections.forEach((section, index) => {
+    if (!section || section.linear === 'no') return;
+    n += 1;
+    const href = section.id ? String(section.id) : `spine:${index}`;
+    const fromPath = section.id ? labelFromPath(section.id) : '';
+    const label = fromPath || r().tocSection(n);
+    items.push({ label, href });
+  });
+  return items;
+};
+
+const tocForBook = (book: FoliateViewEl['book']): TocItem[] => {
+  const fromNav = mapToc(book?.toc as RawToc[] | undefined);
+  if (fromNav.length) return fromNav;
+  return spineToc(book?.sections);
 };
 
 const selectionFromDoc = (doc: Document): TextSelectPayload | null => {
@@ -630,6 +659,11 @@ export const FoliateView = forwardRef<EngineHandle, EngineProps>(function Foliat
       if (!view || !href) return;
       onTextSelectRef.current?.(null);
       try {
+        if (href.startsWith('spine:')) {
+          const index = Number(href.slice(6));
+          if (Number.isFinite(index)) await view.goTo(index);
+          return;
+        }
         await view.goTo(href);
       } catch (error) {
         console.error('[reader] foliate goTo href failed:', error);
@@ -950,7 +984,7 @@ export const FoliateView = forwardRef<EngineHandle, EngineProps>(function Foliat
           teardownView(view);
           return;
         }
-        tocRef.current = mapToc(view.book?.toc as RawToc[] | undefined);
+        tocRef.current = tocForBook(view.book);
         applyReaderPrefs(
           view,
           prefsRef.current,

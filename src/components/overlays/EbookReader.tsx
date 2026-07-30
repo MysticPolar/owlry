@@ -611,16 +611,31 @@ export function EbookReader() {
     if (!scrubbing) setScrubValue(Math.max(0, Math.min(100, location.percent)));
   }, [location.percent, scrubbing]);
 
-  // Foliate builds TOC after open — refresh when the engine mounts into reading
+  // Engines build TOC after the file opens (nav, PDF outline, or a synthesized
+  // spine/page/heading list). Poll briefly so the chrome button appears once ready.
   useEffect(() => {
     if (status !== 'reading' || !positionReady) {
       setTocItems([]);
       return;
     }
-    const id = window.setTimeout(() => {
-      setTocItems(engineRef.current?.getToc?.() ?? []);
-    }, 80);
-    return () => window.clearTimeout(id);
+    let cancelled = false;
+    let attempts = 0;
+    let timer = 0;
+    const tick = () => {
+      if (cancelled) return;
+      const items = engineRef.current?.getToc?.() ?? [];
+      if (items.length || attempts >= 30) {
+        setTocItems(items);
+        return;
+      }
+      attempts += 1;
+      timer = window.setTimeout(tick, 120);
+    };
+    tick();
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
   }, [status, positionReady, bookId, source]);
 
   const onProgress = useCallback((update: ProgressUpdate) => {
