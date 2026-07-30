@@ -26,6 +26,8 @@ import { tOf, setActiveLang, syncDocumentLang, getActiveLang } from '../i18n';
 import { newSession } from '../lib/owlBrain';
 import type { OwlMessage } from '../lib/owlBrain';
 import { fetchOwlTurn, fetchLetter } from '../lib/owlClient';
+import type { OwlFallbackReason } from '../lib/owlClient';
+import type { OwlDelivery } from '../lib/owlStatus';
 import {
   clearDynamicRegistry,
   getActiveDynamicRegistryScope,
@@ -38,7 +40,7 @@ import {
   setActiveDynamicRegistryScope,
 } from '../lib/bookRegistry';
 import type { DynamicRegistryScope } from '../lib/bookRegistry';
-import { supabase, isBackendConfigured } from '../lib/supabase';
+import { supabase, isBackendConfigured, isLiveOwlConfigured } from '../lib/supabase';
 import { getSnapshot } from '../lib/economy/api';
 import { applyAction, derive, emptyDaily, localDay, settleInk, tzOffsetMinutes } from '../lib/economy/engine';
 import type { ActionContext, EconomyState, EngineResult } from '../lib/economy/engine';
@@ -167,9 +169,7 @@ export interface AuthUser {
 
 /** The live owl answers when a backend is configured and the user hasn't pinned the mockup. */
 const liveOwlEnabled = (prefs: Prefs): boolean => {
-  if (!isBackendConfigured() || prefs.owlEngine === 'mockup') return false;
-  const env = (import.meta as unknown as { env?: Record<string, string | undefined> }).env;
-  return env?.VITE_OWL_LIVE !== 'off';
+  return isLiveOwlConfigured() && prefs.owlEngine !== 'mockup';
 };
 
 export interface Store extends PersistedState {
@@ -187,6 +187,8 @@ export interface Store extends PersistedState {
   /** the last change to the numbers, so the chips can show it happening */
   statFx: StatFx | null;
   owl: OwlState;
+  /** How the last completed ask was delivered; session-only UI truth. */
+  owlDelivery: OwlDelivery;
   deskMode: DeskMode;
   /** bumped on every successful desk switch → the centered avatar hint replays */
   deskSwitchNonce: number;
@@ -757,6 +759,7 @@ export const useStore = create<Store>()(
       started: false,
       pending: null,
     },
+    owlDelivery: 'none',
     deskMode: 'all',
     deskSwitchNonce: 0,
     introCard: null,
@@ -1714,6 +1717,7 @@ export const useStore = create<Store>()(
     setPref: (key, value) => set((s) => ({
       prefs: { ...s.prefs, [key]: value },
       prefsUpdatedAt: nextPrefsUpdatedAt(s.prefsUpdatedAt),
+      ...(key === 'owlEngine' ? { owlDelivery: 'none' as const } : {}),
     })),
     // A true first-run reset — NOT the SEED demo state (level 7 with books
     // already shelved). Level 1, empty shelves, every gate re-locked, the owl
@@ -1765,6 +1769,7 @@ export const useStore = create<Store>()(
         introCard: null,
         introAfter: null,
         shelfFly: null,
+        owlDelivery: 'none',
         owl: { ...s.owl, messages: [], chips: [], collected: [], lastBatch: null, started: false, busy: false, pending: null },
       }))
     ),
@@ -1783,7 +1788,8 @@ export const useStore = create<Store>()(
           v: L(get().prefs).greeting(SAL[lang][dp], FLAVOR[lang][wxKey]),
         },
       ];
-      console.info('[owlry] owl engine →', liveOwlEnabled(get().prefs) ? 'LIVE (Scout + memory)' : 'mockup (offline)');
+      const liveReady = liveOwlEnabled(get().prefs) && !!get().authUser;
+      console.info('[owlry] owl engine →', liveReady ? 'LIVE (Scout + memory)' : 'offline guide');
       set((s) => ({
         owl: {
           ...s.owl,
@@ -1795,7 +1801,7 @@ export const useStore = create<Store>()(
       }));
 
       // best-effort: seed the theme from the real local sky (never blocks the greeting)
-      if (liveOwlEnabled(get().prefs)) {
+      if (liveReady) {
         void getLocalWeather()
           .then((w) => {
             if (!w) return;
@@ -1810,6 +1816,7 @@ export const useStore = create<Store>()(
       bumpTurn(); // abandon any in-flight turn so its reply can't land here
       set((s) => ({
         shelfFly: null,
+        owlDelivery: 'none',
         owl: {
           ...s.owl,
           started: false,
@@ -1871,6 +1878,7 @@ export const useStore = create<Store>()(
         ownerReady = false;
         set((st) => ({
           shelfFly: null,
+          owlDelivery: 'none',
           owl: {
             ...st.owl,
             started: false,
@@ -2158,6 +2166,7 @@ export const useStore = create<Store>()(
         ownerReady = false;
         set((st) => ({
           shelfFly: null,
+          owlDelivery: 'none',
           owl: {
             ...st.owl,
             started: false,
@@ -2324,20 +2333,58 @@ export const useStore = create<Store>()(
       void (async () => {
         // ink meters the LIVE owl (−1 ink, +3 XP). A dry inkwell → the free
         // offline brain answers instead (never charged), so chat never breaks.
-        const canLive = liveOwlEnabled(get().prefs);
-        const spend = canLive && get().ink >= 1;
-        if (canLive && !spend) get().showToast('ti-pencil', L(get().prefs).inkwellDry, 'scout');
+        const current = get();
+        const liveConfigured = isLiveOwlConfigured();
+        const wantsLive = current.prefs.owlEngine !== 'mockup';
+        const signedIn = !!current.authUser;
+        const hasInk = current.ink >= 1;
+        const spend = liveConfigured && wantsLive && signedIn && hasInk;
+        const shouldExplainFallback =
+          current.owlDelivery === 'none' || current.owlDelivery === 'live';
+        const offlineReason: OwlFallbackReason | undefined =
+          !liveConfigured
+            ? 'backend-unavailable'
+            : !wantsLive
+              ? 'classic'
+              : !signedIn
+                ? 'sign-in'
+                : !hasInk
+                  ? 'ink-dry'
+                  : undefined;
+        if (offlineReason === 'ink-dry' && shouldExplainFallback) {
+          get().showToast('ti-pencil', L(current.prefs).inkwellDry, 'scout');
+        }
 
-        const { reply, session, live } = await fetchOwlTurn(
+        const { reply, session, live, fallbackReason } = await fetchOwlTurn(
           text,
           { session: s.owl.session, wxKey, desk: deskMode },
-          { offline: !spend, registryScope },
+          { offline: !spend, offlineReason, registryScope },
         );
         if (
           chatTurn !== myTurn
           || !isActiveDynamicRegistryScope(registryScope)
         ) return;
-        // charged only when the live Scout actually answered — a silent offline
+        set({
+          owlDelivery:
+            live
+              ? 'live'
+              : fallbackReason === 'auth-required'
+                ? 'auth-required'
+                : 'fallback',
+        });
+        if (!live && shouldExplainFallback) {
+          const copy = L(get().prefs);
+          if (fallbackReason === 'backend-unavailable') {
+            get().showToast('ti-wifi-off', copy.owlOffline, 'scout');
+          } else if (fallbackReason === 'sign-in' || fallbackReason === 'auth-required') {
+            get().showToast('ti-user', copy.owlSignIn, 'scout');
+          } else if (fallbackReason === 'rate-limited') {
+            get().showToast('ti-hourglass', copy.owlResting, 'scout');
+          } else if (fallbackReason === 'invalid-response' || fallbackReason === 'service-unavailable') {
+            get().showToast('ti-wifi', copy.owlFallback, 'scout');
+          }
+        }
+        // charged only when the live Scout actually answered — an offline
         // fallback costs nothing. Past the day's sixth ask the ink still spends
         // (the owl still writes); it just stops paying XP.
         if (live) get().econ('chat', { q: text });
@@ -2669,6 +2716,7 @@ if (supabase) {
         openedLetters: [],
         shelfFly: null,
         askQuote: null,
+        owlDelivery: 'none',
         owl: {
           messages: [],
           chips: [],

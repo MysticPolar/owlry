@@ -11,7 +11,7 @@
     "preview": "vite preview",
     "preview:host": "vite preview --host",
     "typecheck": "tsc -b",
-    "test": "tsx scripts/owl-smoke.ts && tsx scripts/owl-contract-smoke.ts && tsx scripts/owl-wire-v2-smoke.ts && tsx scripts/memory-merge-smoke.ts && tsx scripts/chat-hydrate-smoke.ts && tsx scripts/store-smoke.ts && tsx scripts/economy-smoke.ts && tsx scripts/sync-smoke.ts && tsx scripts/ebook-fingerprint-smoke.ts && tsx scripts/book-proxy-smoke.ts && tsx scripts/gbooks-smoke.ts && tsx scripts/shelf-rank-smoke.ts && tsx scripts/econ-owl-smoke.ts",
+    "test": "tsx scripts/owl-smoke.ts && tsx scripts/owl-contract-smoke.ts && tsx scripts/owl-wire-v2-smoke.ts && tsx scripts/owl-status-smoke.ts && tsx scripts/memory-merge-smoke.ts && tsx scripts/chat-hydrate-smoke.ts && tsx scripts/store-smoke.ts && tsx scripts/economy-smoke.ts && tsx scripts/sync-smoke.ts && tsx scripts/ebook-fingerprint-smoke.ts && tsx scripts/book-proxy-smoke.ts && tsx scripts/gbooks-smoke.ts && tsx scripts/shelf-rank-smoke.ts && tsx scripts/econ-owl-smoke.ts",
     "books:enrich": "tsx scripts/enrich-books.ts",
     "bench": "tsx scripts/owl-bench.ts",
     "lint:css": "stylelint \"src/styles/*.css\""

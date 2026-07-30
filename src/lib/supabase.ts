@@ -19,6 +19,7 @@ function normalizeProjectUrl(u?: string): string | undefined {
 
 const url = normalizeProjectUrl(env.VITE_SUPABASE_URL);
 const anonKey = env.VITE_SUPABASE_ANON_KEY?.trim();
+const liveOwlBuildEnabled = env.VITE_OWL_LIVE !== 'off';
 
 /**
  * The Supabase client, or `null` when env vars aren't set — in which case the
@@ -36,3 +37,6 @@ export const isBackendConfigured = (): boolean => supabase !== null;
 
 /** const alias of isBackendConfigured() — the OwlChat client/store seams import this name. */
 export const isConfigured: boolean = supabase !== null;
+
+/** The build can reach Live Scout. A signed-in session and ink are still required per turn. */
+export const isLiveOwlConfigured = (): boolean => supabase !== null && liveOwlBuildEnabled;

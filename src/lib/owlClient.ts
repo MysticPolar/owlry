@@ -56,11 +56,24 @@ export interface TurnResult {
   /** true only when the live Scout (edge function) actually answered — the store
       meters ink on this, so a silent offline fallback is never charged. */
   live: boolean;
+  /** Why the offline guide answered. Kept intentionally small and non-sensitive
+      so the UI can be honest without exposing transport details. */
+  fallbackReason: OwlFallbackReason | null;
 }
 
-function offlineTurn(text: string, ctx: TurnContext): TurnResult {
+export type OwlFallbackReason =
+  | 'backend-unavailable'
+  | 'classic'
+  | 'sign-in'
+  | 'ink-dry'
+  | 'auth-required'
+  | 'rate-limited'
+  | 'invalid-response'
+  | 'service-unavailable';
+
+function offlineTurn(text: string, ctx: TurnContext, fallbackReason: OwlFallbackReason): TurnResult {
   const session: OwlSession = { ...ctx.session, wxKey: ctx.wxKey, usedGuides: [...ctx.session.usedGuides] };
-  return { reply: respond(text, session), session, live: false };
+  return { reply: respond(text, session), session, live: false, fallbackReason };
 }
 
 async function liveTurn(
@@ -78,7 +91,26 @@ async function liveTurn(
     reply: mapChatV2(v.res, registryScope),
     session: ctx.session,
     live: true,
+    fallbackReason: null,
   };
+}
+
+function fallbackReasonFor(error: unknown): OwlFallbackReason {
+  if (error instanceof Error && error.message.startsWith('owl-chat contract:')) return 'invalid-response';
+  if (!error || typeof error !== 'object') return 'service-unavailable';
+  const candidate = error as {
+    status?: unknown;
+    context?: { status?: unknown };
+  };
+  const status =
+    typeof candidate.context?.status === 'number'
+      ? candidate.context.status
+      : typeof candidate.status === 'number'
+        ? candidate.status
+        : null;
+  if (status === 401 || status === 403) return 'auth-required';
+  if (status === 429) return 'rate-limited';
+  return 'service-unavailable';
 }
 
 /**
@@ -91,15 +123,17 @@ export async function fetchOwlTurn(
   ctx: TurnContext,
   opts?: {
     offline?: boolean;
+    offlineReason?: OwlFallbackReason;
     registryScope?: DynamicRegistryScope;
   },
 ): Promise<TurnResult> {
-  if (!supabase || opts?.offline) return offlineTurn(text, ctx);
+  if (!supabase) return offlineTurn(text, ctx, 'backend-unavailable');
+  if (opts?.offline) return offlineTurn(text, ctx, opts.offlineReason ?? 'service-unavailable');
   try {
     return await liveTurn(text, ctx, opts?.registryScope);
   } catch (err) {
     devWarn('[owl] live turn failed, using offline brain:', err);
-    return offlineTurn(text, ctx);
+    return offlineTurn(text, ctx, fallbackReasonFor(err));
   }
 }
 

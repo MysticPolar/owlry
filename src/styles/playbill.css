@@ -252,6 +252,7 @@
 }
 /* tiny covers: title only, tighter padding */
 .cover-xs .cover-zh { padding: 14% 6% 12%; }
+/* stylelint-disable-next-line declaration-property-value-disallowed-list -- miniature book-jacket art */
 .cover-xs .cover-zh-t { font-size: 7px; letter-spacing: 0; }
 .cover-xs .cover-zh-a { display: none; }
 /* the about-sheet cover takes the jacket's 150:205 ratio so the flat art fills
@@ -350,7 +351,7 @@
   word-break: keep-all;
   line-height: 1.15;
   letter-spacing: .2px;
-  font-size: 11px;
+  font-size: var(--t-micro);
   width: max-content;
   max-width: none;
 }
@@ -359,7 +360,7 @@ html[lang="zh-CN"] .pb-nav { gap: 22px; padding-left: 20px; padding-right: 20px;
 html[lang="zh-CN"] .pb-nv { min-width: 64px; }
 html[lang="zh-CN"] .pb-nv .lab {
   letter-spacing: 0;
-  font-size: 12px;
+  font-size: var(--t-micro);
   font-weight: 600;
   font-family: var(--font-chrome);
 }
@@ -571,11 +572,30 @@ html[lang="zh-CN"] .pb-nv .lab {
 /* Composer: one compact utility row. The prose owns the screen; this stays a
    supporting control until the reader has actually typed something. */
 .composer.pb-composer {
+  position: relative;
   display: grid; grid-template-columns: auto minmax(0,1fr) auto; align-items: center; gap: 8px;
   min-height: 54px; margin: 6px var(--ask-gutter) 10px; padding: 5px 6px 5px 9px;
   background: var(--pb-chip-bg); border: 1px solid var(--pb-tag-line); border-radius: 15px;
 }
 .composer.pb-composer:focus-within { border-color: var(--pb-brass); }
+.pb-owl-state {
+  position: absolute; z-index: 2; top: -9px; right: 12px;
+  display: inline-flex; align-items: center; gap: 5px; min-height: 18px; padding: 1px 6px;
+  border-radius: 999px; background: var(--pb-stage); color: var(--pb-cream-mute);
+  font: var(--fw-ui-semibold) var(--t-micro)/1 var(--font-chrome);
+  letter-spacing: .08em; text-transform: uppercase; white-space: nowrap;
+}
+.pb-owl-state-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+.pb-owl-state.live { color: var(--teal); }
+.pb-owl-state.sign-in,
+.pb-owl-state.ink-dry { color: var(--pb-brass); }
+.pb-owl-state.fallback { color: var(--ember); }
+.pb-owl-state button {
+  position: relative; margin: -5px; padding: 5px; border: 0; background: none; color: inherit;
+  font: inherit; letter-spacing: inherit; text-transform: inherit; cursor: pointer;
+}
+.pb-owl-state button::after { content: ""; position: absolute; inset: -12px -8px; }
+.pb-owl-state button:focus-visible { outline: 2px solid var(--pb-brass); outline-offset: 2px; border-radius: 4px; }
 /* the composer input takes the body token, which IS the 16px iOS needs to not
    auto-zoom on focus — the mobile block below no longer has to force it */
 .pb-composer input {

@@ -31,6 +31,15 @@ const en = {
     ariaLiveOwl: 'Live owl',
     toastLiveOwl: 'the live owl is at the desk',
     toastClassicOwl: 'classic owl — the original mockup',
+    owlStates: {
+      checking: { label: 'CHECKING', detail: 'checking your seat at the live desk' },
+      live: { label: 'LIVE', detail: 'signed in and ready · 1 ink per live answer' },
+      offline: { label: 'OFFLINE', detail: 'live desk unavailable here · the offline guide is answering' },
+      classic: { label: 'CLASSIC', detail: 'offline guide selected · switch on for Live Scout' },
+      'sign-in': { label: 'SIGN IN', detail: 'sign in to Owlry to use Live Scout and memory' },
+      'ink-dry': { label: 'INK DRY', detail: 'the offline guide answers until the inkwell refills' },
+      fallback: { label: 'RETRY', detail: 'Live Scout missed the last turn · the offline guide answered' },
+    },
 
     secReminders: 'REMINDERS',
     soon: 'SOON',
@@ -214,6 +223,15 @@ const zh: typeof en = {
     ariaLiveOwl: '活的猫头鹰',
     toastLiveOwl: '活的猫头鹰已在案前值守',
     toastClassicOwl: '经典猫头鹰——最初的样机',
+    owlStates: {
+      checking: { label: '检查中', detail: '正在确认你的 Live Scout 席位' },
+      live: { label: '在线', detail: '已登录并就绪 · 每次实时回答消耗 1 点墨水' },
+      offline: { label: '离线', detail: '当前无法连接实时书桌 · 由离线向导回答' },
+      classic: { label: '经典', detail: '已选择离线向导 · 开启即可使用 Live Scout' },
+      'sign-in': { label: '登录', detail: '登录 Owlry 后即可使用 Live Scout 与记忆' },
+      'ink-dry': { label: '墨水见底', detail: '墨水补满前，由离线向导回答' },
+      fallback: { label: '重试', detail: 'Live Scout 上一轮断了线 · 已由离线向导回答' },
+    },
 
     secReminders: '提醒',
     soon: '即将',

@@ -6,7 +6,8 @@ import { useOverlayPresence } from '../../hooks/useOverlayPresence';
 import { usePullDismiss } from '../../hooks/usePullDismiss';
 import { useReduceMotion } from '../../hooks/useReduceMotion';
 import type { OwlEngine } from '../../store/types';
-import { isBackendConfigured } from '../../lib/supabase';
+import { isLiveOwlConfigured } from '../../lib/supabase';
+import { resolveOwlStatus } from '../../lib/owlStatus';
 import { rowFromLevel } from '../../lib/economy/curve';
 import { useLang, useT } from '../../i18n/react';
 import { Icon } from '../Icon';
@@ -22,13 +23,30 @@ const CAST: [CastOwlName, string, string][] = [
   ['mirror', 'mirror', 'violet'],
 ];
 
-function Toggle({ on, onToggle, label }: { on: boolean; onToggle: () => void; label: string }) {
+function Toggle({
+  on,
+  onToggle,
+  label,
+  disabled = false,
+  describedBy,
+  testId,
+}: {
+  on: boolean;
+  onToggle: () => void;
+  label: string;
+  disabled?: boolean;
+  describedBy?: string;
+  testId?: string;
+}) {
   return (
     <button
       className={`tgl ${on ? 'on' : ''}`}
       role="switch"
       aria-checked={on}
       aria-label={label}
+      aria-describedby={describedBy}
+      data-testid={testId}
+      disabled={disabled}
       onClick={onToggle}
     >
       <span className="tgl-knob" />
@@ -42,14 +60,16 @@ export function Settings() {
   const prefs = useStore((s) => s.prefs);
   const setPref = useStore((s) => s.setPref);
   const resetProgress = useStore((s) => s.resetProgress);
-  const restartChat = useStore((s) => s.restartChat);
   const openOnboarding = useStore((s) => s.openOnboarding);
   const showToast = useStore((s) => s.showToast);
   const lv = useStore((s) => s.lv);
+  const ink = useStore((s) => s.ink);
   const coins = useStore((s) => s.coins);
+  const owlDelivery = useStore((s) => s.owlDelivery);
   // the guest preview walks the seat map only — no coins, no refill
   const debugLevelUp = useStore((s) => s.debugLevelUp);
-  const authed = useAuth((s) => s.status === 'authed');
+  const authStatus = useAuth((s) => s.status);
+  const authed = authStatus === 'authed';
   const authUser = useAuth((s) => s.user);
   const openAuth = useAuth((s) => s.openAuth);
   const logout = useAuth((s) => s.logout);
@@ -59,11 +79,26 @@ export function Settings() {
   const lang = useLang();
   const t = useT().settings.settings;
 
+  const liveAvailable = isLiveOwlConfigured();
   const liveOn = (prefs.owlEngine ?? 'live') === 'live';
+  const owlStatus = resolveOwlStatus({
+    liveAvailable,
+    engine: prefs.owlEngine ?? 'live',
+    authReady: authStatus !== 'loading',
+    authed,
+    ink,
+    lastDelivery: owlDelivery,
+  });
+  const owlStatusCopy = t.owlStates[owlStatus];
+  const liveEffective = liveOn && liveAvailable && authed;
   const toggleEngine = () => {
+    if (!liveAvailable) return;
+    if (!authed) {
+      openAuth('login');
+      return;
+    }
     const next: OwlEngine = liveOn ? 'mockup' : 'live';
     setPref('owlEngine', next);
-    restartChat();
     showToast('ti-feather', next === 'live' ? t.toastLiveOwl : t.toastClassicOwl);
   };
 
@@ -133,14 +168,26 @@ export function Settings() {
 
         {/* the owl */}
         <div className="sh-sec">{t.secOwl}</div>
-        <div className="set-row">
+        <div
+          className="set-row"
+          data-testid="live-owl-row"
+          data-owl-state={owlStatus}
+        >
           <div className="set-info">
-            <div className="set-lab d">{t.liveOwl}</div>
-            <div className="set-sub">
-              {isBackendConfigured() ? t.liveOwlSubOn : t.liveOwlSubOff}
+            <div className="set-labline">
+              <div className="set-lab d">{t.liveOwl}</div>
+              <span className={`owl-state-pill ${owlStatus}`}>{owlStatusCopy.label}</span>
             </div>
+            <div className="set-sub" id="liveOwlStatus">{owlStatusCopy.detail}</div>
           </div>
-          <Toggle on={liveOn} onToggle={toggleEngine} label={t.ariaLiveOwl} />
+          <Toggle
+            on={liveEffective}
+            onToggle={toggleEngine}
+            label={t.ariaLiveOwl}
+            describedBy="liveOwlStatus"
+            testId="live-owl-toggle"
+            disabled={!liveAvailable || authStatus === 'loading'}
+          />
         </div>
 
         {/* reminders */}

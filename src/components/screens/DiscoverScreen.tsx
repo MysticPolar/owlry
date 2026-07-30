@@ -4,6 +4,8 @@ import { useAuth } from '../../store/useAuth';
 import { useKeyboardInset } from '../../hooks/useKeyboardInset';
 import { useReduceMotion } from '../../hooks/useReduceMotion';
 import { getBook } from '../../lib/bookRegistry';
+import { isLiveOwlConfigured } from '../../lib/supabase';
+import { resolveOwlStatus } from '../../lib/owlStatus';
 import {
   renderChatItem,
   renderStreamedNodes,
@@ -484,6 +486,48 @@ function Chips() {
 }
 
 /* ---------- composer ---------- */
+function OwlDeskStatus() {
+  const t = useT().settings.settings;
+  const prefs = useStore((s) => s.prefs);
+  const ink = useStore((s) => s.ink);
+  const lastDelivery = useStore((s) => s.owlDelivery);
+  const authStatus = useAuth((s) => s.status);
+  const openAuth = useAuth((s) => s.openAuth);
+  const liveAvailable = isLiveOwlConfigured();
+  const status = resolveOwlStatus({
+    liveAvailable,
+    engine: prefs.owlEngine ?? 'live',
+    authReady: authStatus !== 'loading',
+    authed: authStatus === 'authed',
+    ink,
+    lastDelivery,
+  });
+
+  if (status === 'checking') return null;
+  const copy = t.owlStates[status];
+  return (
+    <div
+      className={`pb-owl-state ${status}`}
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+      aria-label={copy.detail}
+      title={copy.detail}
+      data-testid="ask-owl-status"
+      data-owl-state={status}
+    >
+      <span className="pb-owl-state-dot" aria-hidden="true" />
+      {status === 'sign-in' && liveAvailable ? (
+        <button type="button" onClick={() => openAuth('login')}>
+          {copy.label}
+        </button>
+      ) : (
+        <span>{copy.label}</span>
+      )}
+    </div>
+  );
+}
+
 function Composer({
   onTyping,
   onDraftChange,
@@ -530,6 +574,7 @@ function Composer({
   const deskLabel = pro ? t.discover.deskNonFictionShort : t.discover.deskAllShort;
   return (
     <div className="composer pb-composer">
+      <OwlDeskStatus />
       <button
         type="button"
         className={`pb-deskpill${pro ? ' pro' : ''}`}
