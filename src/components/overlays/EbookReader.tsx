@@ -8,6 +8,7 @@ import { useT } from '../../i18n/react';
 import { getBook } from '../../lib/bookRegistry';
 import { useOverlayPresence } from '../../hooks/useOverlayPresence';
 import { useModalFocus } from '../../hooks/useModalFocus';
+import { useWakeLock } from '../../hooks/useWakeLock';
 import {
   getEbookStorageOwner,
   loadUpload,
@@ -19,11 +20,18 @@ import type { ReadingPosition } from '../../lib/ebook/types';
 import { registerActiveReadingPosition } from '../../lib/ebook/activePosition';
 import { getReadingPosition } from '../../lib/ebook/positionKey';
 import { sameEbookContent } from '../../lib/ebook/fingerprint';
-import type { ReaderFont, ReaderPrefs } from '../../store/types';
-import { COPY_REPLACED_ERROR, SYSTEM_STACK, pageTapAction } from '../reader/shared';
-import type { EngineHandle, ProgressUpdate } from '../reader/shared';
+import type { ReaderFont, ReaderPrefs, ReaderTheme } from '../../store/types';
+import {
+  COPY_REPLACED_ERROR,
+  SYSTEM_STACK,
+  pageTapAction,
+  readerThemeColors,
+} from '../reader/shared';
+import type { EngineHandle, ProgressUpdate, TextSelectPayload, TocItem } from '../reader/shared';
 import { Icon } from '../Icon';
 import { CastOwl } from '../CastOwl';
+
+const THEME_KEYS: ReaderTheme[] = ['paper', 'sepia', 'night'];
 
 const FoliateView = lazy(() => import('../reader/FoliateView').then((m) => ({ default: m.FoliateView })));
 const PdfView = lazy(() => import('../reader/PdfView').then((m) => ({ default: m.PdfView })));
@@ -42,11 +50,6 @@ const fontStack = (font: ReaderFont): string => {
   return "'Literata', Georgia, serif";
 };
 
-const mix = (a: [number, number, number], b: [number, number, number], amount: number): string => {
-  const channel = (i: number) => Math.round(a[i]! + (b[i]! - a[i]!) * amount);
-  return `rgb(${channel(0)} ${channel(1)} ${channel(2)})`;
-};
-
 function ReaderSettings({
   prefs,
   pdf,
@@ -59,6 +62,10 @@ function ReaderSettings({
   onClose: () => void;
 }) {
   const t = useT();
+  const theme = prefs.theme ?? 'paper';
+  const themeLabel = (key: ReaderTheme) => (
+    key === 'sepia' ? t.reader.themeSepia : key === 'night' ? t.reader.themeNight : t.reader.themePaper
+  );
   return (
     <section
       className="reader-settings"
@@ -79,6 +86,23 @@ function ReaderSettings({
         >
           <Icon name="ti-x" />
         </button>
+      </div>
+
+      <div className="reader-control">
+        <div className="reader-control-label"><span>{t.reader.themeLabel}</span></div>
+        <div className="reader-themes" role="group" aria-label={t.reader.themeGroupAria}>
+          {THEME_KEYS.map((key) => (
+            <button
+              key={key}
+              type="button"
+              className={theme === key ? 'on' : ''}
+              aria-pressed={theme === key}
+              onClick={() => onChange({ theme: key })}
+            >
+              {themeLabel(key)}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="reader-control">
@@ -139,6 +163,96 @@ function ReaderSettings({
   );
 }
 
+function flattenToc(items: TocItem[], depth = 0): Array<TocItem & { depth: number }> {
+  const out: Array<TocItem & { depth: number }> = [];
+  for (const item of items) {
+    out.push({ ...item, depth });
+    if (item.children?.length) out.push(...flattenToc(item.children, depth + 1));
+  }
+  return out;
+}
+
+function ReaderSelectionRail({
+  selection,
+  rootEl,
+  onDismiss,
+}: {
+  selection: TextSelectPayload;
+  rootEl: HTMLElement | null;
+  onDismiss: () => void;
+}) {
+  const t = useT().today.chrome.selection;
+  const showToast = useStore((s) => s.showToast);
+  const saveQuote = useStore((s) => s.saveQuote);
+  const beginAskQuote = useStore((s) => s.beginAskQuote);
+  const barRef = useRef<HTMLDivElement>(null);
+  const [pos, setPos] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const app = rootEl ?? document.getElementById('app');
+    if (!app) return;
+    const box = app.getBoundingClientRect();
+    const rect = selection.rect;
+    const coarse = window.matchMedia('(pointer: coarse)').matches;
+    const below = coarse || rect.top - box.top < 56;
+    const half = barRef.current ? barRef.current.offsetWidth / 2 + 10 : 130;
+    setPos({
+      x: Math.min(Math.max(rect.left - box.left + rect.width / 2, half), box.width - half),
+      y: below ? rect.bottom - box.top + 10 : Math.max(8, rect.top - box.top - 46),
+    });
+  }, [selection, rootEl]);
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(selection.text);
+      showToast('ti-copy', t.copied, 'scribe');
+    } catch {
+      /* clipboard denied */
+    }
+    onDismiss();
+  };
+
+  return (
+    <div
+      ref={barRef}
+      className="reader-selbar"
+      role="toolbar"
+      aria-label={t.aria}
+      style={{ left: pos.x, top: pos.y }}
+      onMouseDown={(e) => e.preventDefault()}
+    >
+      <button type="button" onClick={() => void copy()}>
+        <Icon name="ti-copy" />
+        {t.copy}
+      </button>
+      <button
+        type="button"
+        onClick={() => {
+          saveQuote(selection.text);
+          onDismiss();
+        }}
+      >
+        <svg className="owl pb-sel-owl" viewBox="0 0 120 130" aria-hidden="true">
+          <use href="#owl-scribe" />
+        </svg>
+        {t.saveQuote}
+      </button>
+      <button
+        type="button"
+        onClick={() => {
+          beginAskQuote(selection.text);
+          onDismiss();
+        }}
+      >
+        <svg className="owl pb-sel-owl" viewBox="0 0 120 130" aria-hidden="true">
+          <use href="#owl-scout" />
+        </svg>
+        {t.ask}
+      </button>
+    </div>
+  );
+}
+
 export function EbookReader() {
   const t = useT();
   const ebook = useStore((s) => s.ebook);
@@ -175,7 +289,14 @@ export function EbookReader() {
   const [location, setLocation] = useState<ProgressUpdate>({ percent: 0 });
   const [chromeVisible, setChromeVisible] = useState(true);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [tocOpen, setTocOpen] = useState(false);
+  const [tocItems, setTocItems] = useState<TocItem[]>([]);
+  const [textSelect, setTextSelect] = useState<TextSelectPayload | null>(null);
+  const [scrubbing, setScrubbing] = useState(false);
+  const [scrubValue, setScrubValue] = useState(0);
   const secondsRef = useRef(0);
+
+  useWakeLock(open && status === 'reading');
   const posRef = useRef<ProgressUpdate>({ percent: 0 });
   const saveTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const positionFlushTaskRef = useRef<Promise<void> | null>(null);
@@ -191,18 +312,56 @@ export function EbookReader() {
   } | null>(null);
   const settingsButtonRef = useRef<HTMLButtonElement>(null);
 
+  const clearReaderSelection = useCallback(() => {
+    engineRef.current?.clearSelection?.();
+    setTextSelect(null);
+  }, []);
+
   const revealChrome = useCallback(() => {
     setChromeVisible(true);
   }, []);
-  const toggleChrome = useCallback(() => setChromeVisible((visible) => !visible), []);
+  const toggleChrome = useCallback(() => {
+    clearReaderSelection();
+    setChromeVisible((visible) => !visible);
+  }, [clearReaderSelection]);
   const openSettings = useCallback(() => {
     setChromeVisible(true);
+    setTocOpen(false);
+    clearReaderSelection();
     setSettingsOpen(true);
-  }, []);
+  }, [clearReaderSelection]);
   const closeSettings = useCallback(() => {
     setSettingsOpen(false);
     requestAnimationFrame(() => settingsButtonRef.current?.focus({ preventScroll: true }));
   }, []);
+  const openToc = useCallback(() => {
+    clearReaderSelection();
+    setSettingsOpen(false);
+    setChromeVisible(true);
+    const items = engineRef.current?.getToc?.() ?? [];
+    setTocItems(items);
+    setTocOpen(true);
+  }, [clearReaderSelection]);
+  const closeToc = useCallback(() => setTocOpen(false), []);
+  const jumpToc = useCallback(async (href: string) => {
+    if (!href) return;
+    clearReaderSelection();
+    setTocOpen(false);
+    await engineRef.current?.goToHref?.(href);
+  }, [clearReaderSelection]);
+
+  const commitScrub = useCallback((percent: number) => {
+    const engine = engineRef.current;
+    if (!engine) return;
+    clearReaderSelection();
+    if (pdf && engine.goToPage && location.pageTotal) {
+      const total = location.pageTotal;
+      const page = total <= 1 ? 1 : Math.round((percent / 100) * (total - 1)) + 1;
+      void engine.goToPage(page);
+      return;
+    }
+    void engine.goToFraction?.(percent / 100);
+  }, [clearReaderSelection, pdf, location.pageTotal]);
 
   useEffect(() => {
     if (!open) return;
@@ -213,6 +372,14 @@ export function EbookReader() {
   useEffect(() => {
     if (settingsOpen) setChromeVisible(true);
   }, [settingsOpen]);
+
+  useEffect(() => {
+    if (!open) {
+      setTextSelect(null);
+      setTocOpen(false);
+      setScrubbing(false);
+    }
+  }, [open]);
 
   const flushPosition = useCallback((): Promise<void> => {
     clearTimeout(saveTimer.current);
@@ -423,6 +590,7 @@ export function EbookReader() {
       if (event.key === 'Escape') {
         event.preventDefault();
         if (settingsOpen) closeSettings();
+        else if (tocOpen) closeToc();
         else {
           void flushPosition().catch(() => {});
           close();
@@ -437,7 +605,23 @@ export function EbookReader() {
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [open, settingsOpen, pageMode, foliate, close, closeSettings, flushPosition]);
+  }, [open, settingsOpen, tocOpen, pageMode, foliate, close, closeSettings, closeToc, flushPosition]);
+
+  useEffect(() => {
+    if (!scrubbing) setScrubValue(Math.max(0, Math.min(100, location.percent)));
+  }, [location.percent, scrubbing]);
+
+  // Foliate builds TOC after open — refresh when the engine mounts into reading
+  useEffect(() => {
+    if (status !== 'reading' || !positionReady) {
+      setTocItems([]);
+      return;
+    }
+    const id = window.setTimeout(() => {
+      setTocItems(engineRef.current?.getToc?.() ?? []);
+    }, 80);
+    return () => window.clearTimeout(id);
+  }, [status, positionReady, bookId, source]);
 
   const onProgress = useCallback((update: ProgressUpdate) => {
     posRef.current = update;
@@ -581,23 +765,34 @@ export function EbookReader() {
     else toggleChrome();
   }, [pageMode, toggleChrome]);
 
-  const readerStyle = useMemo(
-    () => ({
-      '--reader-paper': mix([251, 243, 226], [239, 230, 208], prefs.dimmer),
+  const readerStyle = useMemo(() => {
+    const theme = readerThemeColors(prefs.theme ?? 'paper', prefs.dimmer);
+    return {
+      '--reader-paper': theme.paper,
+      '--reader-ink': theme.ink,
+      '--reader-mute': theme.mute,
+      '--reader-rule': theme.rule,
+      '--reader-accent': theme.accent,
       '--reader-font': fontStack(prefs.font),
       '--reader-size': `${prefs.size}px`,
-    }) as CSSProperties,
-    [prefs],
-  );
+    } as CSSProperties;
+  }, [prefs]);
+
+  const onTextSelect = useCallback((sel: TextSelectPayload | null) => {
+    setTextSelect(sel);
+  }, []);
 
   if (!mounted || !b || !bookId) return null;
 
   const displayTitle = source?.title || b.t;
   const displayAuthor = source?.author || b.a;
-  const progressPercent = Math.max(0, Math.min(100, location.percent));
+  const progressPercent = Math.max(0, Math.min(100, scrubbing ? scrubValue : location.percent));
+  const canScrub = status === 'reading' && (pdf || foliate || source?.format === 'txt');
+  const hasToc = tocItems.length > 0;
   const pageLabel = location.page && location.pageTotal
     ? t.reader.pageOf(location.page, location.pageTotal)
     : `${Math.round(progressPercent)}%`;
+  const tocRows = flattenToc(tocItems);
   return (
     <div
       className={`reader reader-live${shown ? ' on' : ''}${chromeVisible ? ' chrome-on' : ''}`}
@@ -654,6 +849,7 @@ export function EbookReader() {
                 prefs={prefs}
                 onProgress={onProgress}
                 onToggleChrome={toggleChrome}
+                onTextSelect={onTextSelect}
                 onError={onError}
               />
             )}
@@ -670,6 +866,17 @@ export function EbookReader() {
           <div className="reader-book-title">{displayTitle}</div>
           <div className="reader-book-author">{displayAuthor}</div>
         </div>
+        {hasToc && (
+          <button
+            tabIndex={chromeVisible ? 0 : -1}
+            className="reader-icon"
+            aria-label={t.reader.tocAria}
+            aria-expanded={tocOpen}
+            onClick={openToc}
+          >
+            <Icon name="ti-books" />
+          </button>
+        )}
         <button
           ref={settingsButtonRef}
           tabIndex={chromeVisible ? 0 : -1}
@@ -690,7 +897,7 @@ export function EbookReader() {
             className="reader-icon reader-page-button"
             aria-label={t.reader.prevPageAria}
             disabled={status !== 'reading'}
-            onClick={() => { revealChrome(); engineRef.current?.prev(); }}
+            onClick={() => { revealChrome(); clearReaderSelection(); engineRef.current?.prev(); }}
           >
             <Icon name="ti-chevron-left" />
           </button>
@@ -714,16 +921,51 @@ export function EbookReader() {
               </span>
             )}
           </div>
-          <div
-            className="reader-thread"
-            role="progressbar"
-            aria-valuemin={0}
-            aria-valuemax={100}
-            aria-valuenow={Math.round(progressPercent)}
-            aria-valuetext={pageLabel}
-          >
-            <span style={{ width: `${Math.round(progressPercent)}%` }} />
-          </div>
+          {canScrub ? (
+            <input
+              type="range"
+              className="reader-scrub"
+              min={0}
+              max={100}
+              step={0.1}
+              value={progressPercent}
+              tabIndex={chromeVisible ? 0 : -1}
+              aria-label={t.reader.scrubAria}
+              aria-valuetext={pageLabel}
+              disabled={status !== 'reading'}
+              onPointerDown={() => setScrubbing(true)}
+              onPointerUp={(event) => {
+                const next = Number((event.target as HTMLInputElement).value);
+                setScrubValue(next);
+                setScrubbing(false);
+                commitScrub(next);
+              }}
+              onPointerCancel={() => setScrubbing(false)}
+              onChange={(event) => {
+                const next = Number(event.target.value);
+                setScrubbing(true);
+                setScrubValue(next);
+              }}
+              onKeyUp={(event) => {
+                if (event.key === 'ArrowLeft' || event.key === 'ArrowRight' || event.key === 'Home' || event.key === 'End') {
+                  const next = Number((event.target as HTMLInputElement).value);
+                  setScrubValue(next);
+                  commitScrub(next);
+                }
+              }}
+            />
+          ) : (
+            <div
+              className="reader-thread"
+              role="progressbar"
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuenow={Math.round(progressPercent)}
+              aria-valuetext={pageLabel}
+            >
+              <span style={{ width: `${Math.round(progressPercent)}%` }} />
+            </div>
+          )}
         </div>
         {pageMode && (
           <button
@@ -731,12 +973,63 @@ export function EbookReader() {
             className="reader-icon reader-page-button"
             aria-label={t.reader.nextPageAria}
             disabled={status !== 'reading'}
-            onClick={() => { revealChrome(); engineRef.current?.next(); }}
+            onClick={() => { revealChrome(); clearReaderSelection(); engineRef.current?.next(); }}
           >
             <Icon name="ti-chevron-right" />
           </button>
         )}
       </footer>
+
+      {textSelect && (
+        <ReaderSelectionRail
+          selection={textSelect}
+          rootEl={rootRef.current}
+          onDismiss={clearReaderSelection}
+        />
+      )}
+
+      {tocOpen && (
+        <>
+          <button
+            type="button"
+            className="reader-toc-scrim"
+            tabIndex={-1}
+            aria-hidden="true"
+            onClick={closeToc}
+          />
+          <section
+            className="reader-toc"
+            role="dialog"
+            aria-modal="true"
+            aria-label={t.reader.tocTitle}
+          >
+            <div className="reader-toc-head">
+              <div className="reader-toc-title">{t.reader.tocTitle}</div>
+              <button type="button" className="reader-icon" aria-label={t.reader.tocCloseAria} onClick={closeToc}>
+                <Icon name="ti-x" />
+              </button>
+            </div>
+            {tocRows.length ? (
+              <ul className="reader-toc-list">
+                {tocRows.map((item, index) => (
+                  <li key={`${item.href}-${index}`}>
+                    <button
+                      type="button"
+                      className={`reader-toc-item${item.depth > 0 ? ' is-nested' : ''}`}
+                      disabled={!item.href}
+                      onClick={() => void jumpToc(item.href)}
+                    >
+                      {item.label}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="reader-toc-empty">{t.reader.tocEmpty}</p>
+            )}
+          </section>
+        </>
+      )}
 
       {settingsOpen && (
         <>

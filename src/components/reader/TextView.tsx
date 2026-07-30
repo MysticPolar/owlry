@@ -10,7 +10,7 @@ import {
 } from 'react';
 import { loadUpload } from '../../lib/ebook/storage';
 import { useStore } from '../../store/useStore';
-import { COPY_REPLACED_ERROR, SYSTEM_STACK } from './shared';
+import { COPY_REPLACED_ERROR, SYSTEM_STACK, readerThemeColors } from './shared';
 import type { EngineHandle, EngineProps } from './shared';
 import { getActiveLang, tOf } from '../../i18n';
 
@@ -149,7 +149,28 @@ export const TextView = forwardRef<EngineHandle, EngineProps>(function TextView(
     }
   }, [prefersReducedMotion]);
 
-  useImperativeHandle(ref, () => ({ next: () => pageBy(1), prev: () => pageBy(-1) }), [pageBy]);
+  const goToFraction = useCallback((frac: number) => {
+    const el = viewportRef.current;
+    if (!el) return;
+    const clamped = Math.max(0, Math.min(1, frac));
+    fractionRef.current = clamped;
+    if (flowRef.current === 'page') {
+      const max = Math.max(0, el.scrollWidth - el.clientWidth);
+      el.scrollLeft = clamped * max;
+      snapToPage('auto');
+    } else {
+      const max = Math.max(0, el.scrollHeight - el.clientHeight);
+      el.scrollTop = clamped * max;
+      queueProgress();
+    }
+  }, [queueProgress, snapToPage]);
+
+  useImperativeHandle(ref, () => ({
+    next: () => pageBy(1),
+    prev: () => pageBy(-1),
+    getToc: () => [],
+    goToFraction,
+  }), [pageBy, goToFraction]);
 
   useEffect(() => {
     let cancelled = false;
@@ -225,9 +246,12 @@ export const TextView = forwardRef<EngineHandle, EngineProps>(function TextView(
     if (settleTimerRef.current !== null) window.clearTimeout(settleTimerRef.current);
   }, []);
 
+  const theme = readerThemeColors(prefs.theme ?? 'paper', prefs.dimmer);
   const style = {
     '--text-reader-font': stack(prefs.font),
     '--text-reader-size': `${prefs.size}px`,
+    '--text-reader-paper': theme.paper,
+    '--text-reader-ink': theme.ink,
   } as CSSProperties;
 
   return (

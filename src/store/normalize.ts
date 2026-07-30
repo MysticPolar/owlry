@@ -10,6 +10,7 @@ import type {
   ReaderFlow,
   ReaderFont,
   ReaderPrefs,
+  ReaderTheme,
 } from './types';
 import type { EbookFormat, ReadingPosition } from '../lib/ebook/types';
 import type { Book, BookRef, Genre } from '../content/types';
@@ -18,6 +19,7 @@ import { normalizeCopyFingerprint } from '../lib/ebook/fingerprint';
 
 const READER_FONTS = new Set<ReaderFont>(['literata', 'fraunces', 'system']);
 const READER_FLOWS = new Set<ReaderFlow>(['scroll', 'page']);
+const READER_THEMES = new Set<ReaderTheme>(['paper', 'sepia', 'night']);
 const EBOOK_FORMATS = new Set<EbookFormat>(['epub', 'pdf', 'txt', 'fb2', 'mobi', 'azw3']);
 const BOOK_GENRES = new Set<Genre>(['history', 'fiction', 'scifi', 'mystery', 'romance', 'life']);
 const RESERVED_KEYS = new Set(['__proto__', 'prototype', 'constructor']);
@@ -274,6 +276,9 @@ export function normalizePersisted(raw: unknown): PersistedState {
           : SEED.prefs.reader.font,
         size: Math.min(24, Math.max(16, size)),
         dimmer: Math.min(1, Math.max(0, dimmer)),
+        theme: READER_THEMES.has(incomingReader.theme as ReaderTheme)
+          ? (incomingReader.theme as ReaderTheme)
+          : SEED.prefs.reader.theme,
         // an inherited flow only sticks if the reader chose it in settings —
         // profiles that never touched the toggle migrate to the seed default
         flow: incomingReader.flowSetByUser && READER_FLOWS.has(incomingReader.flow as ReaderFlow)

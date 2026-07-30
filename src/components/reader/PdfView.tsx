@@ -102,6 +102,17 @@ export const PdfView = forwardRef<EngineHandle, EngineProps>(function PdfView(
   useImperativeHandle(ref, () => ({
     next: () => go(pageRef.current + 1),
     prev: () => go(pageRef.current - 1),
+    getToc: () => [],
+    goToPage: (page: number) => go(page),
+    goToFraction: (frac: number) => {
+      const total = Math.max(1, numRef.current);
+      if (total <= 1) {
+        go(1);
+        return;
+      }
+      const page = Math.round(frac * (total - 1)) + 1;
+      go(page);
+    },
   }), [go]);
 
   useEffect(() => {

@@ -51,7 +51,7 @@ export const SEED: PersistedState = {
   curveV: CURVE_VERSION,
   economyVersion: ECONOMY_VERSION,
   prefs: {
-    reader: { font: 'literata', size: 18, dimmer: 0, flow: 'page' },
+    reader: { font: 'literata', size: 18, dimmer: 0, flow: 'page', theme: 'paper' },
     reduceMotion: false,
     dailyReminder: false,
     sounds: false,

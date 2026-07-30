@@ -12,8 +12,13 @@ import '../../vendor/foliate-js/view.js'; // side effect: registers <foliate-vie
 import { loadUpload } from '../../lib/ebook/storage';
 import { fetchRemoteBook } from '../../lib/ebook/remote';
 import type { ReaderPrefs } from '../../store/types';
-import { COPY_REPLACED_ERROR, SYSTEM_STACK, pageTapAction } from './shared';
-import type { EngineHandle, EngineProps } from './shared';
+import {
+  COPY_REPLACED_ERROR,
+  SYSTEM_STACK,
+  pageTapAction,
+  readerThemeColors,
+} from './shared';
+import type { EngineHandle, EngineProps, TextSelectPayload, TocItem } from './shared';
 import { getActiveLang, tOf } from '../../i18n';
 import literataUrl from '../../assets/fonts/literata-var-latin.woff2';
 import frauncesUrl from '../../assets/fonts/fraunces-var-latin.woff2';
@@ -33,18 +38,58 @@ type FoliateViewEl = HTMLElement & {
   init(opts: { lastLocation?: string; showTextStart?: boolean }): Promise<void>;
   next(distance?: number): Promise<void>;
   prev(distance?: number): Promise<void>;
+  goTo(target: unknown): Promise<unknown>;
   goToFraction(frac: number): Promise<void>;
+  deselect?: () => void;
   isFixedLayout?: boolean;
   lastLocation?: { cfi?: string };
   resolveNavigation?: (target: string) => unknown;
   renderer?: FoliateRenderer;
+  book?: {
+    toc?: Array<{ label?: string; href?: string; subitems?: unknown[] }>;
+  };
 };
 
-const paper = (amount: number): string => {
-  const from = [251, 243, 226];
-  const to = [239, 230, 208];
-  const channel = (i: number) => Math.round(from[i]! + (to[i]! - from[i]!) * amount);
-  return `rgb(${channel(0)} ${channel(1)} ${channel(2)})`;
+type RawToc = { label?: string; href?: string; subitems?: RawToc[] };
+
+const mapToc = (items: RawToc[] | undefined): TocItem[] => {
+  if (!items?.length) return [];
+  return items
+    .map((item) => {
+      const children = mapToc(item.subitems);
+      const href = String(item.href ?? '');
+      const label = String(item.label ?? '').trim() || '…';
+      return { label, href, ...(children.length ? { children } : {}) };
+    })
+    .filter((item) => item.href || item.children?.length);
+};
+
+const selectionFromDoc = (doc: Document): TextSelectPayload | null => {
+  const sel = doc.getSelection();
+  if (!sel || sel.isCollapsed) return null;
+  const text = sel.toString().trim();
+  if (text.length < 2) return null;
+  let range: Range;
+  try {
+    range = sel.getRangeAt(0);
+  } catch {
+    return null;
+  }
+  const rect = range.getBoundingClientRect();
+  if (!rect.width && !rect.height) return null;
+  const frame = doc.defaultView?.frameElement as HTMLElement | null | undefined;
+  if (!frame) return null;
+  const frameRect = frame.getBoundingClientRect();
+  const scaleX = frame.clientWidth > 0 ? frameRect.width / frame.clientWidth : 1;
+  const scaleY = frame.clientHeight > 0 ? frameRect.height / frame.clientHeight : 1;
+  const left = frameRect.left + rect.left * scaleX;
+  const top = frameRect.top + rect.top * scaleY;
+  const width = rect.width * scaleX;
+  const height = rect.height * scaleY;
+  return {
+    text,
+    rect: { left, top, right: left + width, bottom: top + height, width, height },
+  };
 };
 
 /* The ebook renders inside an iframe served from a blob: URL, whose base is
@@ -205,6 +250,8 @@ const readerStyles = (prefs: ReaderPrefs): string => {
     : prefs.font === 'system'
       ? SYSTEM_STACK
       : "'Literata', Georgia, serif";
+  const theme = readerThemeColors(prefs.theme ?? 'paper', prefs.dimmer);
+  const scheme = prefs.theme === 'night' ? 'dark' : 'light';
   const readerInteraction = `
       html, body {
         touch-action: ${prefs.flow === 'scroll' ? 'pan-y pinch-zoom' : 'pinch-zoom'} !important;
@@ -212,20 +259,20 @@ const readerStyles = (prefs: ReaderPrefs): string => {
   return `
     ${READER_FACES}
     :root {
-      color-scheme: light !important;
-      background: ${paper(prefs.dimmer)} !important;
-      color: #241C14 !important;
+      color-scheme: ${scheme} !important;
+      background: ${theme.paper} !important;
+      color: ${theme.ink} !important;
       font-optical-sizing: auto;
       -webkit-text-size-adjust: 100% !important;
       text-size-adjust: 100% !important;
-      --owlry-rule: color-mix(in srgb, #8A6A33 42%, transparent);
+      --owlry-rule: ${theme.rule};
       --owlry-inner-gutter: clamp(.25rem, 1.5%, .75rem);
       --owlry-reader-size: ${prefs.size}px;
     }
     *, *::before, *::after { box-sizing: border-box; }
     html, body {
-      background: ${paper(prefs.dimmer)} !important;
-      color: #241C14 !important;
+      background: ${theme.paper} !important;
+      color: ${theme.ink} !important;
       overflow-wrap: break-word;
       word-break: normal;
       -webkit-user-select: text;
@@ -390,15 +437,15 @@ const readerStyles = (prefs: ReaderPrefs): string => {
     }
     code, samp, kbd { overflow-wrap: anywhere; }
     a {
-      color: #6F5428 !important;
-      text-decoration-color: #8A6A33 !important;
+      color: ${theme.accent} !important;
+      text-decoration-color: ${theme.accent} !important;
       text-decoration-thickness: .08em;
       text-underline-offset: .14em;
       touch-action: manipulation;
     }
     ::selection {
-      background: rgba(217, 169, 79, .34);
-      color: #241C14;
+      background: color-mix(in srgb, ${theme.accent} 34%, transparent);
+      color: ${theme.ink};
     }
     @media (max-width: 430px) {
       :root { --owlry-inner-gutter: clamp(.25rem, 1.4vw, .4rem); }
@@ -477,16 +524,19 @@ const applyReaderPrefs = (
 };
 
 export const FoliateView = forwardRef<EngineHandle, EngineProps>(function FoliateView(
-  { bookId, source, initial, prefs, onProgress, onToggleChrome, onError },
+  { bookId, source, initial, prefs, onProgress, onToggleChrome, onTextSelect, onError },
   ref,
 ) {
   const hostRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<FoliateViewEl | null>(null);
+  const tocRef = useRef<TocItem[]>([]);
   const prefsRef = useRef(prefs);
   const onToggleChromeRef = useRef(onToggleChrome);
+  const onTextSelectRef = useRef(onTextSelect);
   const onErrorRef = useRef(onError);
   const reflowFrameRef = useRef<number | null>(null);
   const reflowGenerationRef = useRef(0);
+  const selectTimerRef = useRef<number | null>(null);
   const turnStateRef = useRef<{
     view: FoliateViewEl | null;
     ready: boolean;
@@ -494,6 +544,7 @@ export const FoliateView = forwardRef<EngineHandle, EngineProps>(function Foliat
   }>({ view: null, ready: false, pending: Promise.resolve() });
   prefsRef.current = prefs;
   onToggleChromeRef.current = onToggleChrome;
+  onTextSelectRef.current = onTextSelect;
   onErrorRef.current = onError;
 
   const turnSafely = useCallback((direction: 'next' | 'prev') => {
@@ -565,8 +616,45 @@ export const FoliateView = forwardRef<EngineHandle, EngineProps>(function Foliat
   }, [cancelPendingReflow]);
 
   useImperativeHandle(ref, () => ({
-    next: () => turnSafely('next'),
-    prev: () => turnSafely('prev'),
+    next: () => {
+      onTextSelectRef.current?.(null);
+      turnSafely('next');
+    },
+    prev: () => {
+      onTextSelectRef.current?.(null);
+      turnSafely('prev');
+    },
+    getToc: () => tocRef.current,
+    goToHref: async (href: string) => {
+      const view = viewRef.current;
+      if (!view || !href) return;
+      onTextSelectRef.current?.(null);
+      try {
+        await view.goTo(href);
+      } catch (error) {
+        console.error('[reader] foliate goTo href failed:', error);
+        onErrorRef.current(r().errTurnPage);
+      }
+    },
+    goToFraction: async (frac: number) => {
+      const view = viewRef.current;
+      if (!view) return;
+      onTextSelectRef.current?.(null);
+      try {
+        await view.goToFraction(Math.max(0, Math.min(1, frac)));
+      } catch (error) {
+        console.error('[reader] foliate goToFraction failed:', error);
+        onErrorRef.current(r().errTurnPage);
+      }
+    },
+    clearSelection: () => {
+      try {
+        viewRef.current?.deselect?.();
+      } catch {
+        /* ignore */
+      }
+      onTextSelectRef.current?.(null);
+    },
   }), [turnSafely]);
 
   useEffect(() => {
@@ -685,12 +773,28 @@ export const FoliateView = forwardRef<EngineHandle, EngineProps>(function Foliat
       if (doc) pointerStarts.delete(doc);
     };
 
+    const emitSelectionFrom = (doc: Document) => {
+      if (cancelled || viewRef.current !== view) return;
+      onTextSelectRef.current?.(selectionFromDoc(doc));
+    };
+
+    const handleDocumentSelectionChange = (event: Event) => {
+      const doc = event.currentTarget as Document | null;
+      if (!doc || cancelled || viewRef.current !== view) return;
+      if (selectTimerRef.current != null) window.clearTimeout(selectTimerRef.current);
+      selectTimerRef.current = window.setTimeout(() => {
+        selectTimerRef.current = null;
+        emitSelectionFrom(doc);
+      }, 160);
+    };
+
     const removeDocumentListeners = (doc: Document) => {
       pointerStarts.delete(doc);
       doc.removeEventListener('pointerdown', handleDocumentPointerDown);
       doc.removeEventListener('pointermove', handleDocumentPointerMove);
       doc.removeEventListener('pointerup', handleDocumentPointerUp);
       doc.removeEventListener('pointercancel', handleDocumentPointerCancel);
+      doc.removeEventListener('selectionchange', handleDocumentSelectionChange);
     };
 
     const pruneDocumentListeners = () => {
@@ -720,6 +824,7 @@ export const FoliateView = forwardRef<EngineHandle, EngineProps>(function Foliat
       doc.addEventListener('pointermove', handleDocumentPointerMove);
       doc.addEventListener('pointerup', handleDocumentPointerUp);
       doc.addEventListener('pointercancel', handleDocumentPointerCancel);
+      doc.addEventListener('selectionchange', handleDocumentSelectionChange);
       activeDocumentRefs.push(docRef);
       wiredDocuments.add(doc);
 
@@ -738,6 +843,8 @@ export const FoliateView = forwardRef<EngineHandle, EngineProps>(function Foliat
         cfi?: string;
       } | undefined;
       const percent = Math.max(0, Math.min(100, (detail?.fraction ?? 0) * 100));
+      // a page/section change strands any iframe selection rail
+      onTextSelectRef.current?.(null);
       onProgress({ percent, cfi: detail?.cfi });
     };
 
@@ -843,6 +950,7 @@ export const FoliateView = forwardRef<EngineHandle, EngineProps>(function Foliat
           teardownView(view);
           return;
         }
+        tocRef.current = mapToc(view.book?.toc as RawToc[] | undefined);
         applyReaderPrefs(
           view,
           prefsRef.current,
@@ -871,6 +979,10 @@ export const FoliateView = forwardRef<EngineHandle, EngineProps>(function Foliat
     return () => {
       cancelled = true;
       cancelPendingReflow();
+      if (selectTimerRef.current != null) window.clearTimeout(selectTimerRef.current);
+      selectTimerRef.current = null;
+      tocRef.current = [];
+      onTextSelectRef.current?.(null);
       clearTimeout(watchdog);
       teardownView(view);
     };

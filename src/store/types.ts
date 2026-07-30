@@ -14,12 +14,15 @@ export type LibTab = 'reading' | 'saved' | 'finished';
 
 export type ReaderFont = 'literata' | 'fraunces' | 'system';
 export type ReaderFlow = 'scroll' | 'page';
+export type ReaderTheme = 'paper' | 'sepia' | 'night';
 
 export interface ReaderPrefs {
   font: ReaderFont;
   size: number;
   dimmer: number;
   flow: ReaderFlow;
+  /** reading page lamp — paper / sepia / night */
+  theme: ReaderTheme;
   /** true once the reader has explicitly picked a flow in settings — without it,
       a persisted flow is treated as the old default and re-seeded (page) */
   flowSetByUser?: boolean;
