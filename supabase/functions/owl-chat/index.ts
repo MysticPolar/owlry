@@ -25,8 +25,15 @@
 //            are provided automatically to every edge function)
 // ============================================================
 import { createClient } from 'npm:@supabase/supabase-js@2';
-import type { GoogleGenAI } from 'npm:@google/genai@2';
-import { callGeminiJson, geminiClient, GeminiBlocked, MODEL_FAST, MODEL_VOICE } from '../_shared/gemini.ts';
+import type { GoogleGenAI } from 'npm:@google/genai@2.14.0';
+import {
+  callGeminiJson,
+  callGeminiJsonWithFallback,
+  geminiClient,
+  GeminiBlocked,
+  MODEL_FAST,
+  MODEL_VOICE,
+} from '../_shared/gemini.ts';
 import { corsHeaders, jsonResponse } from '../_shared/cors.ts';
 import { slugify } from '../_shared/slug.ts';
 import { capSelectedMemory, EMPTY_LONG_TERM, mergeTopic, sanitizeLongTerm } from '../_shared/memory.ts';
@@ -44,24 +51,6 @@ interface ChatRequest {
   lang?: string;
   desk?: 'all' | 'pro';
 }
-
-const FALLBACK_EN: ScoutReply = {
-  say: "the post desk is quiet for a moment — tell me what's going on and i'll sort you something.",
-  main: null,
-  picks: [],
-  note: null,
-  chips: ['rest', 'need focus', 'feeling blue', 'cozy escape'],
-};
-
-const FALLBACK_ZH: ScoutReply = {
-  say: '柜台这会儿安静了一拍——跟我说点近况，我帮你分拣一本。',
-  main: null,
-  picks: [],
-  note: null,
-  chips: ['想休息', '需要专注', '心情低落', '来点治愈的'],
-};
-
-const FALLBACK = (lang: ReaderLang): ScoutReply => (lang === 'zh' ? FALLBACK_ZH : FALLBACK_EN);
 
 const FALLBACK_QUERY = (lang: ReaderLang): Omit<SemanticQuery, 'themes' | 'intent'> => ({
   mood: '',
@@ -214,7 +203,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
   // ── Call B — Scout (3.5 Flash): pick + bubble, no letter ──
   let scout: ScoutReply;
   try {
-    scout = (await callGeminiJson(ai, {
+    scout = (await callGeminiJsonWithFallback(ai, {
       model: MODEL_VOICE,
       system: SCOUT_SYSTEM,
       user: scoutUser(JSON.stringify(query)),
@@ -224,10 +213,9 @@ Deno.serve(async (req: Request): Promise<Response> => {
       thinkingLevel: 'LOW',
     })) as ScoutReply;
   } catch (err) {
-    // a blocked reply still deserves a turn at the desk; a broken one is a 502.
     if (err instanceof GeminiBlocked) {
-      console.error('[owl-chat] Scout blocked, serving the quiet-desk fallback', err.reason);
-      scout = FALLBACK(lang);
+      console.error('[owl-chat] Scout blocked', err.reason);
+      return jsonResponse({ error: 'generation_blocked' }, 502);
     } else {
       console.error('[owl-chat] Scout call failed', err);
       return jsonResponse({ error: 'generation_failed' }, 502);

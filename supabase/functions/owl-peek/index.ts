@@ -12,7 +12,7 @@
 // Secrets: same as owl-chat (GEMINI_API_KEY; SUPABASE_* provided automatically)
 // ============================================================
 import { createClient } from 'npm:@supabase/supabase-js@2';
-import { callGeminiJson, geminiClient, MODEL_VOICE } from '../_shared/gemini.ts';
+import { callGeminiJsonWithFallback, geminiClient, MODEL_VOICE } from '../_shared/gemini.ts';
 import { corsHeaders, jsonResponse } from '../_shared/cors.ts';
 import { formatTopic, EMPTY_LONG_TERM } from '../_shared/memory.ts';
 import { PEEK_SYSTEM, peekUser } from '../_shared/prompts/peek.ts';
@@ -170,7 +170,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
   // ── Call C — Peek (3.5 Flash): the reading letter, on tap ──
   let letter: unknown;
   try {
-    letter = await callGeminiJson(ai, {
+    letter = await callGeminiJsonWithFallback(ai, {
       model: MODEL_VOICE,
       system: PEEK_SYSTEM,
       user: peekUser(ctx.book, JSON.stringify(ctx.query), ctx.selectedMemory),

@@ -12,10 +12,10 @@
 // RECITATION is the finishReason to watch: it fires when output matches
 // training data too closely, which is a live hazard for Peek — a good
 // reading letter quotes a real book closely by design. It surfaces as
-// GeminiBlocked like any other stop, so Scout falls back and Peek 502s
-// rather than shipping a half-letter.
+// GeminiBlocked like any other stop, so the client falls back for Scout
+// and Peek 502s rather than shipping a half-letter.
 // ============================================================
-import { GoogleGenAI } from 'npm:@google/genai@2';
+import { GoogleGenAI } from 'npm:@google/genai@2.14.0';
 
 /** digest + memory merge — extraction jobs, cheapest tier */
 export const MODEL_FAST = 'gemini-3.1-flash-lite';
@@ -88,4 +88,35 @@ export async function callGeminiJson(ai: GoogleGenAI, opts: JsonCallOpts): Promi
   if (!text) throw new GeminiBlocked('empty');
 
   return JSON.parse(text);
+}
+
+/**
+ * Voice calls prefer the richer model, but production should not go dark just
+ * because that model is temporarily unavailable to a project or region. Retry
+ * once on the stable Flash-Lite tier for retryable provider/model errors and
+ * malformed JSON. Safety/finish blocks are deliberate outcomes and must not
+ * be bypassed by asking a second model.
+ */
+export async function callGeminiJsonWithFallback(
+  ai: GoogleGenAI,
+  opts: JsonCallOpts,
+  fallbackModel = MODEL_FAST,
+): Promise<unknown> {
+  try {
+    return await callGeminiJson(ai, opts);
+  } catch (err) {
+    const status =
+      err && typeof err === 'object' && typeof (err as { status?: unknown }).status === 'number'
+        ? (err as { status: number }).status
+        : null;
+    const retryable =
+      err instanceof SyntaxError
+      || status === 404
+      || status === 408
+      || status === 429
+      || (status !== null && status >= 500);
+    if (err instanceof GeminiBlocked || opts.model === fallbackModel || !retryable) throw err;
+    console.warn(`[gemini] ${opts.model} failed; retrying with ${fallbackModel}`, err);
+    return callGeminiJson(ai, { ...opts, model: fallbackModel });
+  }
 }
