@@ -219,10 +219,9 @@ the same transaction.
   with the previewed book per day. Plus optional "books finished" dots from
   `owlry_user_books.finished_at`. Served by a view `owlry_calendar(user_id, day, …)`.
 - **Radar** ("reading balance — five shelves of you"): for each of the 5
-  dimensions, aggregate the user's engagement in books tagged with that dimension
-  (count of finished/reading books, weighted by pages), normalized to 0–100.
-  Served by `owlry_radar(user_id)` → 5 rows. *Per-book dimension tags are a
-  content decision — proposed mapping in §8.*
+  dimensions, count **+1 per saved book** and **+1 per kept quote** tagged to that
+  pillar (unsaving or deleting a quote drops those points). Cap 100.
+  Served by `owlry_radar_json(user_id)` → 5 rows.
 - **Stats report card**: `books_read = count(status='finished')`,
   `pages_turned = sum(pages_read)`, `highlights = count(owlry_quotes)`.
   `time_reading` has no source yet — either estimate from page-turn events
