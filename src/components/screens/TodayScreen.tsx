@@ -57,7 +57,7 @@ function StatChips() {
     <div className="pb-chips" role="group" aria-label={t.statsAria}>
       {/* level chip — also the anchor level-up sparks fly to (chrome looks up #lvLab) */}
       <div className={`pb-chip pb-seat${popped ? ' pop' : ''}`} id="lvLab" aria-label={t.statLevel(lv)}>
-        <Icon name="ti-armchair" className="crown" />
+        <Icon name="ti-crown" className="crown" />
         <span className="pb-seat-k">{t.levelKicker}</span>
         <span className="n">{lv}</span>
       </div>
@@ -82,7 +82,7 @@ function CompactStrip() {
     <div className="pb-compact" aria-hidden="true">
       <span className="wm"><Wordmark decorative /></span>
       <span className="sp" />
-      <span className="pb-mini"><Icon name="ti-armchair" className="crown" />{lv}</span>
+      <span className="pb-mini"><Icon name="ti-crown" className="crown" />{lv}</span>
       <span className="pb-mini"><Icon name="ti-bolt" className="bolt" />{xp}</span>
       <span className="pb-mini"><Icon name="ti-inkdrop" className="drop" />{ink}</span>
     </div>
