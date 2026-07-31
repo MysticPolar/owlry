@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useStore } from '../store/useStore';
 import { useReduceMotion } from '../hooks/useReduceMotion';
-import { rowFromLevel, seatMovesAt } from '../lib/economy/curve';
+import { rowFromLevel } from '../lib/economy/curve';
 import { Icon } from './Icon';
 
 /* ============================================================
@@ -19,7 +19,8 @@ import { Icon } from './Icon';
 
 /** the receipt: Keeper on the left, the night's deltas after — numbers only.
     One line per econ() burst ("+60 ⚡ +25 🪙 −5 💧"), and on a level-up a gold
-    stamp — ROW when the seat actually moved, LV when it didn't.
+    LV stamp — plus a ROW stamp when the seat actually moved. Both show when
+    they coincide; neither swallows the other.
     No sentences; the deltas are the sentence. */
 export function EconStrip() {
   const fx = useStore((s) => s.statFx);
@@ -32,9 +33,11 @@ export function EconStrip() {
     if (!fx || reduce) return;
     setShown(fx);
     setOn(true);
-    const t = setTimeout(() => setOn(false), 1600);
+    // ROW stamp lands after LV — hold the strip a beat longer when both play
+    const hold = fx.lv && fx.row ? 2100 : 1600;
+    const t = setTimeout(() => setOn(false), hold);
     // once the fade completes, leave no stale node behind
-    const t2 = setTimeout(() => setShown(null), 1850);
+    const t2 = setTimeout(() => setShown(null), hold + 250);
     return () => {
       clearTimeout(t);
       clearTimeout(t2);
@@ -61,13 +64,20 @@ export function EconStrip() {
       {part(shown.coins, 'coins', 'ti-coin')}
       {part(shown.ink, 'ink', 'ti-inkdrop')}
       {shown.lv && (
-        /* a seat only moves every third level — on the other two the stamp
-           would name a row they were already sitting in, so it names the
-           level instead. Numbers either way; no sentence to translate. */
-        <span className="d row" key={`r${shown.n}`}>
-          <Icon name="ti-crown" />
-          {seatMovesAt(lv) ? `ROW ${rowFromLevel(lv)}` : `LV ${lv}`}
-        </span>
+        /* every level-up stamps LV; a seat move (every third level) adds ROW
+           after — both when they coincide, never one in place of the other */
+        <>
+          <span className="d lv" key={`lv${shown.n}`}>
+            <Icon name="ti-crown" />
+            {`LV ${lv}`}
+          </span>
+          {shown.row && (
+            <span className="d row" key={`r${shown.n}`}>
+              <Icon name="ti-crown" />
+              {`ROW ${rowFromLevel(lv)}`}
+            </span>
+          )}
+        </>
       )}
     </div>
   );

@@ -48,7 +48,7 @@ import { clearQueue, enqueue, flush } from '../lib/economy/queue';
 import { snapshotPatch } from '../lib/economy/snapshot';
 import type { CalendarDay, QuoteRow, RadarPoint, StatsSnapshot } from '../lib/economy/types';
 import { CURVE_VERSION, DAILY_CAPS, ECONOMY_VERSION, STAND_LEVEL, goodFor } from '../lib/economy/config';
-import { LV_CAP, cumulativeXp } from '../lib/economy/curve';
+import { LV_CAP, cumulativeXp, rowFromLevel } from '../lib/economy/curve';
 import { STUB_LABEL } from '../content/stubs';
 import type { EconomyAction, Snapshot } from '../lib/economy/types';
 import { getLocalWeather } from '../lib/weather';
@@ -122,8 +122,10 @@ export interface StatFx {
   xp: number;
   ink: number;
   coins: number;
-  /** the seat moved — the chip pops and the sparks fly */
+  /** leveled up — the chip pops, sparks fly, and the strip stamps LV */
   lv: boolean;
+  /** the seat also moved forward — the strip stamps ROW in addition to LV */
+  row: boolean;
   /** whose desk this happened at — that owl hands you the receipt */
   owl: OwlName;
   /** monotonic, so a repeat of the same delta still replays */
@@ -669,9 +671,17 @@ function emitFx(
   coins: number,
   lv: boolean,
   owl: OwlName,
+  row = false,
 ): void {
   if (!xp && !ink && !coins && !lv) return;
-  set((st) => ({ statFx: { xp, ink, coins, lv, owl, n: (st.statFx?.n ?? 0) + 1 } }));
+  set((st) => ({
+    statFx: { xp, ink, coins, lv, row: lv && row, owl, n: (st.statFx?.n ?? 0) + 1 },
+  }));
+}
+
+/** true when crossing from `before` into `after` moves the seat toward the stage */
+function seatMoved(before: number, after: number): boolean {
+  return after > before && rowFromLevel(after) < rowFromLevel(before);
 }
 
 type Getter = () => Store;
@@ -699,7 +709,7 @@ function armMissedGates(get: Getter): void {
   if (lv >= 5 && !seen.includes('mirror')) get().showIntro('mirror');
 }
 
-/** the seat moved — the strip stamps the ROW; here only the sparks fly */
+/** a level crossed — sparks fly; the strip stamps LV (+ ROW when the seat moved) */
 function announceLevel(get: Getter, before: number, after: number): void {
   if (after <= before) return;
   get().triggerBurst();
@@ -1442,9 +1452,17 @@ export const useStore = create<Store>()(
       // ctx.quiet: the grant lands, the ledger travels, but nothing performs —
       // for moments a scene has already performed itself (onboarding's welcome)
       if (!ctx.quiet) {
-        // the strip is the econ voice: deltas, well-full, and the ROW stamp are
-        // its lines. Toasts speak only what numbers can't — a full house, a stub.
-        emitFx(set, res.granted.xp, res.granted.ink, res.granted.coins, after > before, ACTION_OWL[action]);
+        // the strip is the econ voice: deltas, well-full, and the LV/ROW stamps
+        // are its lines. Toasts speak only what numbers can't — a full house, a stub.
+        emitFx(
+          set,
+          res.granted.xp,
+          res.granted.ink,
+          res.granted.coins,
+          after > before,
+          ACTION_OWL[action],
+          seatMoved(before, after),
+        );
         const t = L(get().prefs);
         if (after > before) get().triggerBurst();
         if (res.next.daily.fullHouse && !s.daily.fullHouse) {
@@ -1524,7 +1542,8 @@ export const useStore = create<Store>()(
       const before = get().lv;
       const d = derive(cumulativeXp(Math.min(LV_CAP, before + 1)));
       set({ totalXp: cumulativeXp(Math.min(LV_CAP, before + 1)), xp: d.xp, xpMax: d.xpMax, lv: d.lv });
-      emitFx(set, 0, 0, 0, d.lv > before, 'keeper'); // the seat still pops; no brass is minted
+      // the seat still pops; no brass is minted
+      emitFx(set, 0, 0, 0, d.lv > before, 'keeper', seatMoved(before, d.lv));
       announceLevel(get, before, d.lv);
       crossGates(get, before, d.lv);
     },
@@ -1534,7 +1553,7 @@ export const useStore = create<Store>()(
       const totalXp = Math.max(0, get().totalXp + n);
       const d = derive(totalXp);
       set({ totalXp, xp: d.xp, xpMax: d.xpMax, lv: d.lv });
-      emitFx(set, n, 0, 0, d.lv > before, owl);
+      emitFx(set, n, 0, 0, d.lv > before, owl, seatMoved(before, d.lv));
       announceLevel(get, before, d.lv);
       crossGates(get, before, d.lv);
     },

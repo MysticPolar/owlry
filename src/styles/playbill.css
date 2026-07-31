@@ -1618,7 +1618,11 @@ body { font-optical-sizing: auto; }
 .pb-econ .d.xp .ti    { color: var(--pb-candy-bolt); }
 .pb-econ .d.coins .ti { color: var(--pb-brass); }
 .pb-econ .d.ink .ti   { color: var(--pb-candy-drop); }
-.pb-econ .d.row { animation: pbRowStamp .6s cubic-bezier(.22, 1, .36, 1) backwards; animation-delay: .28s; }
+/* LV stamps first; when the seat also moves, ROW follows a beat later so
+   neither gold stamp overwrites the other */
+.pb-econ .d.lv { animation: pbRowStamp .6s cubic-bezier(.22, 1, .36, 1) backwards; animation-delay: .28s; }
+.pb-econ .d.lv .ti { color: var(--pb-brass); }
+.pb-econ .d.row { animation: pbRowStamp .6s cubic-bezier(.22, 1, .36, 1) backwards; animation-delay: .55s; }
 .pb-econ .d.row .ti { color: var(--pb-brass); }
 @keyframes pbEconIn {
   from { opacity: 0; transform: translateY(5px) scale(.85); }
