@@ -196,7 +196,10 @@
   padding: 14px 12px calc(124px + env(safe-area-inset-bottom)); scrollbar-width: none;
 }
 .pb-feed::-webkit-scrollbar { display: none; }
-.pb-cols { display: flex; gap: 11px; align-items: flex-start; }
+.pb-cols {
+  display:flex;gap:clamp(11px,2.5vw,22px);align-items:flex-start;
+  width:min(100%,var(--content-max));margin-inline:auto;
+}
 .pb-col { flex: 1; min-width: 0; }
 .pb-col.r { padding-top: 26px; }
 
@@ -482,6 +485,30 @@ html[lang="zh-CN"] .pb-nv .lab {
 .pb-ask-body {
   width: min(100%, 680px); min-height: 0; flex: 1; margin-inline: auto;
   display: flex; flex-direction: column;
+}
+
+/* The theatre fills tablets and desktops too, but its editorial content keeps
+   a calm measure instead of inflating into oversized phone cards. */
+@media (min-width: 720px) {
+  .pb-valance {
+    height:min(150px,22vh);
+  }
+  .pb-marquee,
+  .pb-chips,
+  .pb-compact,
+  .pb-tags {
+    width:min(100%,var(--content-max));margin-inline:auto;
+  }
+  .pb-sheet {
+    left:0;right:0;width:min(calc(100% - 48px),var(--content-max));
+    margin-inline:auto;
+  }
+  #screen-profile > :not(.pb-stagehead),
+  .settings .set-body,
+  .history .hist-body,
+  .letter .l-body {
+    width:min(100%,var(--content-max));margin-inline:auto;
+  }
 }
 /* the section title hides in desk-head mode; the StageBar wordmark carries the brand */
 
@@ -1197,7 +1224,7 @@ body { overscroll-behavior: none; }
    (vertical-only for row-packed controls so a transparent ::after never steals a sibling's tap;
    all-sides only for standalone pills; skipped inside overflow scrollers like .pb-tags) --- */
 .pb-deskpill, .pb-selbar button, .pb-dc-about, .pb-dc-go,
-.guest-lvl, .desk-lvl, .tgl, .ptab, .disc-back { position: relative; }
+.desk-lvl, .tgl, .ptab, .disc-back { position: relative; }
 .pb-selbar button::after { content: ""; position: absolute; inset: -7px 0; }
 .pb-dc-about::after, .pb-dc-go::after { content: ""; position: absolute; inset: -9px 0; }
 .ptab::before { content: ""; position: absolute; inset: -6px 0; }

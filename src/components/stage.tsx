@@ -10,7 +10,7 @@ import { Wordmark } from './Wordmark';
 /** Full scalloped valance — the home masthead's curtain. */
 export function CurtainValance() {
   return (
-    <svg className="pb-valance" viewBox="0 0 370 106" aria-hidden="true">
+    <svg className="pb-valance" viewBox="0 0 370 106" preserveAspectRatio="none" aria-hidden="true">
       <clipPath id="pb-cv">
         <path d="M0,0 H370 V64 Q347,92 324,64 Q301,92 278,64 Q255,92 231,64 Q208,92 185,64 Q162,92 139,64 Q116,92 92,64 Q69,92 46,64 Q23,92 0,64 Z" />
       </clipPath>

@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { useStore } from './store/useStore';
-import { useT } from './i18n/react';
 import { useAuth } from './store/useAuth';
 import { useKeyboardInset } from './hooks/useKeyboardInset';
 import { BottomNav, Toast, BurstLayer, Backdrop, GuestLevelButton } from './components/chrome';
@@ -45,7 +44,6 @@ function PlaybillCurtain() {
 }
 
 export default function App() {
-  const t = useT();
   const hydrated = useStore((s) => s.hydrated);
   const bootstrap = useStore((s) => s.bootstrap);
   const reduceMotion = useStore((s) => s.prefs.reduceMotion);
@@ -102,50 +100,45 @@ export default function App() {
   const ready = hydrated;
 
   return (
-    <div className="page">
-      <div className="phone">
-        <div
-          className={`app b${reduceMotion ? ' no-motion' : ''}`}
-          id="app"
-          data-mode="night"
-          data-tab={activeTab}
-          data-kb={kb > 0 ? 'open' : 'closed'}
-          style={appStyle}
-        >
-          {ready && (
-            <>
-              <main className="screens">
-                <TodayScreen />
-                <DiscoverScreen />
-                <ProfileScreen />
-              </main>
-              <BottomNav />
-              <GuestLevelButton />
-              <Backdrop />
-              <Sheet />
-              <EbookReader />
-              <UploadModal />
-              <History />
-              <Letter />
-              <Settings />
-              <LobbyStand />
-              <MirrorRoom />
-              <Onboarding />
-              <Auth />
-              <IntroCard />
-              {onboarded && !showOnboarding && !curtainDone && !reduceMotion && <PlaybillCurtain />}
-              <SelectionBar />
-              {/* one feedback anchor: the receipt stacks ABOVE the toast, never over it */}
-              <div className="pb-callouts">
-                <EconStrip />
-                <Toast />
-              </div>
-              <BurstLayer />
-            </>
-          )}
-        </div>
-      </div>
-      <p className="caption">{t.today.chrome.caption}</p>
+    <div
+      className={`app b${reduceMotion ? ' no-motion' : ''}`}
+      id="app"
+      data-mode="night"
+      data-tab={activeTab}
+      data-kb={kb > 0 ? 'open' : 'closed'}
+      style={appStyle}
+    >
+      {ready && (
+        <>
+          <main className="screens">
+            <TodayScreen />
+            <DiscoverScreen />
+            <ProfileScreen />
+          </main>
+          <BottomNav />
+          <GuestLevelButton />
+          <Backdrop />
+          <Sheet />
+          <EbookReader />
+          <UploadModal />
+          <History />
+          <Letter />
+          <Settings />
+          <LobbyStand />
+          <MirrorRoom />
+          <Onboarding />
+          <Auth />
+          <IntroCard />
+          {onboarded && !showOnboarding && !curtainDone && !reduceMotion && <PlaybillCurtain />}
+          <SelectionBar />
+          {/* one feedback anchor: the receipt stacks ABOVE the toast, never over it */}
+          <div className="pb-callouts">
+            <EconStrip />
+            <Toast />
+          </div>
+          <BurstLayer />
+        </>
+      )}
     </div>
   );
 }
