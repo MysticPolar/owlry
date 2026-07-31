@@ -35,6 +35,8 @@ const withCover: GVolume = {
     averageRating: 4,
     ratingsCount: 1234,
     description: '<p>Piranesi lives in a <b>house</b> &amp; keeps journals.</p>',
+    mainCategory: 'Fiction',
+    categories: ['Fiction / Fantasy'],
     imageLinks: {
       thumbnail:
         'http://books.google.com/books/content?id=abc123&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api',
@@ -75,6 +77,9 @@ check('map: rating + count carried', m.rating === 4 && m.ratingsCount === 1234);
 check('map: publisher + pages carried', m.publisher === 'Bloomsbury' && m.pageCount === 272);
 check('map: no imageLinks → img undefined', mapVolume(sameTitleNoCover).img === undefined);
 check('map: google source tagged', mapVolume(withCover).source === 'google');
+check('query requests categories', url.includes('categories'));
+check('map: categories carried', (m.categories ?? []).includes('Fiction / Fantasy'));
+check('map: pillar classified', m.pillar === 'wonder', m.pillar ?? '');
 
 /* ---------- Open Library fallback ---------- */
 const olUrl = buildOpenLibUrl('The Snow Child', 'Eowyn Ivey');
@@ -90,6 +95,7 @@ const olWithCover: OLDoc = {
   cover_i: 10226290,
   ratings_average: 4.3333,
   ratings_count: 63,
+  subject: ['Fantasy fiction', 'nyt:hardcover_fiction'],
 };
 const olNoCover: OLDoc = { key: '/works/OL2W', title: 'Piranesi', author_name: ['Susanna Clarke'], cover_edition_key: 'OL9M' };
 const olWrongAuthor: OLDoc = { key: '/works/OL3W', title: 'Piranesi', author_name: ['Someone Else'], cover_i: 999 };
@@ -101,6 +107,8 @@ const om = mapOpenLibDoc(olWithCover);
 check('ol map: cover from cover_i (https)', om.img === 'https://covers.openlibrary.org/b/id/10226290-L.jpg');
 check('ol map: subtitle + first publisher + pages', om.subtitle === 'A Novel' && om.publisher === 'Bloomsbury' && om.pageCount === 272);
 check('ol map: rating + count + source tagged', om.rating === 4.3333 && om.ratingsCount === 63 && om.source === 'openlibrary');
+check('ol query requests subject', olUrl.includes('subject'));
+check('ol map: subjects → categories + pillar', (om.categories ?? []).includes('Fantasy fiction') && om.pillar === 'wonder', om.pillar ?? '');
 check('ol cover: falls back to olid, else undefined', olCover(olNoCover) === 'https://covers.openlibrary.org/b/olid/OL9M-L.jpg' && olCover({ title: 'x' }) === undefined);
 
 /* ---------- cache key ---------- */

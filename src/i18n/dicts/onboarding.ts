@@ -55,7 +55,7 @@ const en = {
       job: 'the reflection',
       head: 'meet your reading self',
       body: 'mirror charts your reading identity, and it levels as you read.',
-      em: 'six shelves of you.',
+      em: 'five shelves of you.',
     },
   },
 
@@ -207,7 +207,7 @@ const zh: typeof en = {
       job: '倒影',
       head: '与阅读中的自己相见',
       body: 'Mirror 描画你的阅读身份，随你的阅读一路升级。',
-      em: '六个书架，都是你。',
+      em: '五个书架，都是你。',
     },
   },
 

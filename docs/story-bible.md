@@ -373,7 +373,7 @@ what you reread, what you avoid.
 
 **Voice** (one short declarative, then silence):
 > "you read about sleep when you're avoiding it."
-> "fiction is carrying the team. wealth could use a chapter."
+> "wonder is carrying the team. wealth could use a chapter."
 
 ---
 

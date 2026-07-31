@@ -108,22 +108,21 @@ function Room({ freed }: { freed: boolean }) {
       <div className="mr-card">
         <div className="cap">{t.chartCap} · {freed ? t.chartYours : t.chartSealed}</div>
         <svg className="mr-radar" viewBox="0 0 300 244" role="img" aria-label={t.ariaRadar}>
-          <polygon className="ringp" points="150,26 229.7,72 229.7,164 150,210 70.3,164 70.3,72" />
-          <polygon className="ring" points="150,57 202.8,87.5 202.8,148.5 150,179 97.2,148.5 97.2,87.5" />
-          <polygon className="ring" points="150,87 176.8,102.5 176.8,133.5 150,149 123.2,133.5 123.2,102.5" />
-          <line className="axis" x1="150" y1="118" x2="150" y2="26" />
-          <line className="axis" x1="150" y1="118" x2="229.7" y2="72" />
-          <line className="axis" x1="150" y1="118" x2="229.7" y2="164" />
-          <line className="axis" x1="150" y1="118" x2="150" y2="210" />
-          <line className="axis" x1="150" y1="118" x2="70.3" y2="164" />
-          <line className="axis" x1="150" y1="118" x2="70.3" y2="72" />
-          <polygon className="shape" points="150,61 188.3,95.9 206.6,150.7 150,187.9 82.3,157.1 75.1,74.8" />
-          <text className="lab" x="150" y="14" textAnchor="middle">{t.radar.health}</text>
-          <text className="lab" x="238" y="66" textAnchor="start">{t.radar.wealth}</text>
-          <text className="lab" x="240" y="176" textAnchor="start">{t.radar.relation}</text>
-          <text className="lab" x="150" y="228" textAnchor="middle">{t.radar.career}</text>
-          <text className="lab" x="62" y="176" textAnchor="end">{t.radar.mindset}</text>
-          <text className="lab" x="62" y="66" textAnchor="end">{t.radar.fiction}</text>
+          {/* decorative pentagon — five life pillars */}
+          <polygon className="ringp" points="150,30 237.5,94 204.1,196 95.9,196 62.5,94" />
+          <polygon className="ring" points="150,61 208.5,104 186.1,172 113.9,172 91.5,104" />
+          <polygon className="ring" points="150,91 179.5,114 166.1,148 133.9,148 120.5,114" />
+          <line className="axis" x1="150" y1="122" x2="150" y2="30" />
+          <line className="axis" x1="150" y1="122" x2="237.5" y2="94" />
+          <line className="axis" x1="150" y1="122" x2="204.1" y2="196" />
+          <line className="axis" x1="150" y1="122" x2="95.9" y2="196" />
+          <line className="axis" x1="150" y1="122" x2="62.5" y2="94" />
+          <polygon className="shape" points="150,55 210,100 190,170 110,170 90,100" />
+          <text className="lab" x="150" y="16" textAnchor="middle">{t.radar.health}</text>
+          <text className="lab" x="248" y="90" textAnchor="start">{t.radar.wealth}</text>
+          <text className="lab" x="220" y="214" textAnchor="middle">{t.radar.love}</text>
+          <text className="lab" x="80" y="214" textAnchor="middle">{t.radar.happiness}</text>
+          <text className="lab" x="52" y="90" textAnchor="end">{t.radar.wonder}</text>
         </svg>
         <svg
           className={`card-chains${freed ? ' broken' : ''}`}

@@ -71,7 +71,7 @@ const en = {
 
   /* ---------- stats tab ---------- */
   readingBalance: 'reading balance',
-  sixShelves: 'six shelves of you',
+  sixShelves: 'five shelves of you',
   radarAria: (dims: string) => `Radar chart of reading balance: ${dims}`,
   thisWeek: 'this week',
   weekQuiet: 'quiet so far',
@@ -194,7 +194,7 @@ const zh: typeof en = {
 
   /* ---------- 统计 ---------- */
   readingBalance: '阅读平衡',
-  sixShelves: '六个书架上的你',
+  sixShelves: '五个书架上的你',
   radarAria: (dims: string) => `阅读平衡雷达图：${dims}`,
   thisWeek: '本周',
   weekQuiet: '本周还安静',

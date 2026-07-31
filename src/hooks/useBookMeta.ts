@@ -27,13 +27,13 @@ export function useBookMeta(ref: BookRef | null | undefined): BookMeta | null {
   useEffect(() => {
     if (!b || enriched) return;
     let alive = true;
-    resolveBookMeta(b.t, b.a).then((m) => {
+    resolveBookMeta(b.t, b.a, { genre: b.g }).then((m) => {
       if (alive) setMeta(m);
     });
     return () => {
       alive = false;
     };
-  }, [b?.t, b?.a, enriched]);
+  }, [b?.t, b?.a, b?.g, enriched]);
 
   return meta;
 }

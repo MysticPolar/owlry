@@ -13,6 +13,7 @@
    ============================================================ */
 import { norm, surname } from './textMatch';
 import type { BookMeta } from './gbooks';
+import { classifyPillar } from './pillars/categoryMap';
 
 const SEARCH = 'https://openlibrary.org/search.json';
 const COVER = 'https://covers.openlibrary.org/b';
@@ -29,6 +30,7 @@ export interface OLDoc {
   cover_edition_key?: string;
   ratings_average?: number;
   ratings_count?: number;
+  subject?: string[];
 }
 
 /** the search query — title+author, trimmed to the fields we render */
@@ -37,7 +39,7 @@ export function buildOpenLibUrl(title: string, author: string): string {
     title,
     author,
     fields:
-      'key,title,subtitle,author_name,publisher,number_of_pages_median,cover_i,cover_edition_key,ratings_average,ratings_count',
+      'key,title,subtitle,author_name,publisher,number_of_pages_median,cover_i,cover_edition_key,ratings_average,ratings_count,subject',
     limit: '5',
   });
   return `${SEARCH}?${params.toString()}`;
@@ -67,7 +69,8 @@ export function pickOpenLibMatch(docs: OLDoc[], title: string, author: string): 
 
 /** map a matched doc to our shared metadata shape (no description — OL search
  *  doesn't return one; the UI falls back to the catalog blurb/tagline) */
-export function mapOpenLibDoc(doc: OLDoc): BookMeta {
+export function mapOpenLibDoc(doc: OLDoc, opts?: { genre?: string | null }): BookMeta {
+  const categories = (doc.subject ?? []).filter((s) => typeof s === 'string' && s.trim()).slice(0, 12);
   return {
     volumeId: doc.key ?? doc.cover_edition_key ?? '',
     title: doc.title ?? '',
@@ -79,6 +82,8 @@ export function mapOpenLibDoc(doc: OLDoc): BookMeta {
     ratingsCount: typeof doc.ratings_count === 'number' && doc.ratings_count > 0 ? doc.ratings_count : undefined,
     description: undefined,
     img: olCover(doc),
+    ...(categories.length ? { categories } : {}),
+    pillar: classifyPillar(categories, null, { genre: opts?.genre }),
     source: 'openlibrary',
   };
 }

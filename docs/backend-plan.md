@@ -135,7 +135,7 @@ owlry_action_config (
 -- book → radar dimension tag (drives "reading balance")
 owlry_book_dimensions (
   book_id   text primary key,
-  dimension text not null  -- health|wealth|relationship|career|mindset|fiction
+  dimension text not null  -- health|wealth|love|happiness|wonder
 )
 ```
 
@@ -218,10 +218,10 @@ the same transaction.
   pick"): distinct dates from `owlry_activity` where `type in ('preview','chat')`,
   with the previewed book per day. Plus optional "books finished" dots from
   `owlry_user_books.finished_at`. Served by a view `owlry_calendar(user_id, day, …)`.
-- **Radar** ("reading balance — six shelves of you"): for each of the 6
+- **Radar** ("reading balance — five shelves of you"): for each of the 5
   dimensions, aggregate the user's engagement in books tagged with that dimension
   (count of finished/reading books, weighted by pages), normalized to 0–100.
-  Served by `owlry_radar(user_id)` → 6 rows. *Per-book dimension tags are a
+  Served by `owlry_radar(user_id)` → 5 rows. *Per-book dimension tags are a
   content decision — proposed mapping in §8.*
 - **Stats report card**: `books_read = count(status='finished')`,
   `pages_turned = sum(pages_read)`, `highlights = count(owlry_quotes)`.
@@ -269,24 +269,18 @@ table writes.
 
 ---
 
-## 8. Proposed radar dimension mapping (content — confirm/tweak)
+## 8. Radar dimension mapping (five life pillars)
 
-The 6 radar shelves are *life areas*, not literary genres, so each book gets a
-tag. Proposed:
+Life areas, not literary genres. One pillar per book. Google Books categories
+map via `src/lib/pillars/categoryMap.ts`; catalog seeds override:
 
-- **fiction**: snow, piranesi, goldfinch, pachinko, tranq, cuckoo, rose, hail,
-  circe, sleep, kindred, remains, beach, oldman, none
-- **mindset**: medit, frankl, pema, atomic
-- **career**: deep, bird, spqr
 - **health**: wws
-- **relationship**: *(none yet)*
-- **wealth**: *(none yet — which is why the mockup quips "wealth could use a
-  chapter")*
-- **history** (gentle, spqr): folded into career/fiction — open to a 7th shelf
-  instead.
+- **wealth**: deep, bird
+- **love**: beach
+- **happiness**: medit, frankl, pema, atomic, gentle, remains, oldman, circe, goldfinch
+- **wonder**: snow, piranesi, pachinko, tranq, cuckoo, rose, hail, sleep, kindred, none, spqr
 
-Leaving wealth/relationship empty is *intentional and on-brand* (the radar is
-meant to show an unbalanced reader). Confirm or hand me a different mapping.
+Empty shelves (e.g. little wealth reading) are intentional — Mirror names the quiet district.
 
 ---
 

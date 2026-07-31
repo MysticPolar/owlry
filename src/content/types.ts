@@ -62,6 +62,10 @@ export interface Book {
   rc?: number;
   /** which source the rating came from */
   rsrc?: 'google' | 'goodreads' | 'openlibrary';
+  /** Google / OL subject strings (pre-baked when enriching) */
+  cats?: string[];
+  /** Mirror life pillar (health|wealth|love|happiness|wonder) */
+  pillar?: 'health' | 'wealth' | 'love' | 'happiness' | 'wonder';
 }
 
 export interface GuideQuote {

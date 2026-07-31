@@ -27,10 +27,12 @@
 import { get, set } from 'idb-keyval';
 import { norm, surname } from './textMatch';
 import { buildOpenLibUrl, pickOpenLibMatch, mapOpenLibDoc, type OLDoc } from './openlibrary';
+import { classifyPillar, isSparseFictionCategories, mergeCategoryLists, type Pillar } from './pillars/categoryMap';
 
 const ENDPOINT = 'https://www.googleapis.com/books/v1/volumes';
 const TIMEOUT_MS = 6000;
-const CACHE_VERSION = 'v1';
+/** bumped when sparse-fiction enrichment / sibling categories change the shape */
+const CACHE_VERSION = 'v3';
 
 // A PUBLIC, HTTP-referrer-restricted key (safe in the browser). With it UNSET
 // the resolver simply skips Google and uses Open Library — covers still work.
@@ -51,6 +53,11 @@ export interface BookMeta {
   description?: string;
   /** https cover image URL, only set when the volume actually has cover art */
   img?: string;
+  /** Google mainCategory and/or categories / OL subjects */
+  categories?: string[];
+  mainCategory?: string;
+  /** Mirror life pillar derived from categories (token-free) */
+  pillar?: Pillar;
   source: 'google' | 'openlibrary';
 }
 
@@ -63,6 +70,8 @@ interface GVolumeInfo {
   averageRating?: number;
   ratingsCount?: number;
   description?: string;
+  mainCategory?: string;
+  categories?: string[];
   imageLinks?: { thumbnail?: string; smallThumbnail?: string };
 }
 export interface GVolume {
@@ -84,7 +93,7 @@ export function buildQueryUrl(title: string, author: string, key?: string): stri
     country: 'US',
     langRestrict: 'en',
     fields:
-      'items(id,volumeInfo(title,subtitle,authors,publisher,pageCount,averageRating,ratingsCount,description,imageLinks/thumbnail,imageLinks/smallThumbnail))',
+      'items(id,volumeInfo(title,subtitle,authors,publisher,pageCount,averageRating,ratingsCount,description,mainCategory,categories,imageLinks/thumbnail,imageLinks/smallThumbnail))',
   });
   if (key) params.set('key', key);
   return `${ENDPOINT}?${params.toString()}`;
@@ -105,8 +114,13 @@ const stripHtml = (s: string): string =>
     .trim();
 
 /** map a raw volume to our lean metadata shape */
-export function mapVolume(item: GVolume): BookMeta {
+export function mapVolume(
+  item: GVolume,
+  opts?: { extraCategories?: readonly string[]; genre?: string | null },
+): BookMeta {
   const vi = item.volumeInfo ?? {};
+  const categories = mergeCategoryLists(vi.categories, opts?.extraCategories);
+  const mainCategory = vi.mainCategory?.trim() || undefined;
   return {
     volumeId: item.id,
     title: vi.title ?? '',
@@ -118,8 +132,29 @@ export function mapVolume(item: GVolume): BookMeta {
     ratingsCount: typeof vi.ratingsCount === 'number' ? vi.ratingsCount : undefined,
     description: vi.description ? stripHtml(vi.description) : undefined,
     img: cleanImg(vi.imageLinks?.thumbnail ?? vi.imageLinks?.smallThumbnail),
+    ...(categories.length ? { categories } : {}),
+    ...(mainCategory ? { mainCategory } : {}),
+    pillar: classifyPillar(categories, mainCategory, { genre: opts?.genre }),
     source: 'google',
   };
+}
+
+/** gather categories from every title+author hit — one edition often has richer BISAC */
+export function collectSiblingCategories(items: GVolume[], title: string, author: string): string[] {
+  const nt = norm(title);
+  const sa = surname(author);
+  const lists: string[][] = [];
+  for (const it of items) {
+    const vi = it.volumeInfo;
+    if (!vi?.title) continue;
+    const bt = norm(vi.title);
+    const titleOk = bt === nt || bt.includes(nt) || nt.includes(bt);
+    const authorOk = (vi.authors ?? []).some((a) => norm(a).includes(sa) && sa.length > 2);
+    if (!titleOk || !authorOk) continue;
+    if (vi.mainCategory) lists.push([vi.mainCategory]);
+    if (vi.categories?.length) lists.push(vi.categories);
+  }
+  return mergeCategoryLists(...lists);
 }
 
 /** pick the best title+author match — prefer an edition that has cover art */
@@ -163,19 +198,32 @@ async function timedJson<T>(url: string): Promise<T | null> {
   }
 }
 
-async function fetchGoogle(title: string, author: string): Promise<Attempt> {
+async function fetchGoogle(title: string, author: string, genre?: string | null): Promise<Attempt> {
   if (!API_KEY) return { meta: null, ok: true }; // not attempted — settled, not a failure
   const data = await timedJson<{ items?: GVolume[] }>(buildQueryUrl(title, author, API_KEY));
   if (!data) return { meta: null, ok: false };
-  const match = pickMatch(data.items ?? [], title, author);
-  return { meta: match ? mapVolume(match) : null, ok: true };
+  const items = data.items ?? [];
+  const match = pickMatch(items, title, author);
+  if (!match) return { meta: null, ok: true };
+  const siblings = collectSiblingCategories(items, title, author);
+  return { meta: mapVolume(match, { extraCategories: siblings, genre }), ok: true };
 }
 
-async function fetchOpenLibrary(title: string, author: string): Promise<Attempt> {
+async function fetchOpenLibrary(title: string, author: string, genre?: string | null): Promise<Attempt> {
   const data = await timedJson<{ docs?: OLDoc[] }>(buildOpenLibUrl(title, author));
   if (!data) return { meta: null, ok: false };
   const match = pickOpenLibMatch(data.docs ?? [], title, author);
-  return { meta: match ? mapOpenLibDoc(match) : null, ok: true };
+  return { meta: match ? mapOpenLibDoc(match, { genre }) : null, ok: true };
+}
+
+/** re-classify after merging more category strings onto an existing meta */
+function withMergedCategories(meta: BookMeta, extra: readonly string[], genre?: string | null): BookMeta {
+  const categories = mergeCategoryLists(meta.categories, meta.mainCategory ? [meta.mainCategory] : null, extra);
+  return {
+    ...meta,
+    ...(categories.length ? { categories } : {}),
+    pillar: classifyPillar(categories, meta.mainCategory, { genre }),
+  };
 }
 
 /* ---------- browser resolver (mem + IndexedDB cache) ---------- */
@@ -193,15 +241,23 @@ export function peekMeta(title: string, author: string): BookMeta | null | undef
 /**
  * Resolve book metadata for a title/author, or null if no source has a
  * confident match. Tries Google Books first (when a key is configured), then
- * Open Library. Reads mem → IndexedDB → network; caches only definitive answers
+ * Open Library. When Google only returns bare "Fiction", also pulls OL subjects
+ * (and optional catalog `genre`) so pillars can still split romance/mystery/etc.
+ * Reads mem → IndexedDB → network; caches only definitive answers
  * (a match, or a genuine no-match from every source that actually responded);
  * dedupes concurrent calls for the same book.
  */
-export async function resolveBookMeta(title: string, author: string): Promise<BookMeta | null> {
+export async function resolveBookMeta(
+  title: string,
+  author: string,
+  opts?: { genre?: string | null },
+): Promise<BookMeta | null> {
   const key = metaKey(title, author);
   if (mem.has(key)) return mem.get(key)!;
   const pending = inflight.get(key);
   if (pending) return pending;
+
+  const genre = opts?.genre ?? null;
 
   const run = (async (): Promise<BookMeta | null> => {
     // persistent cache (survives reloads / offline)
@@ -218,14 +274,23 @@ export async function resolveBookMeta(title: string, author: string): Promise<Bo
     let meta: BookMeta | null = null;
     let transient = false; // did any attempted source fail (vs. genuinely miss)?
 
-    const g = await fetchGoogle(title, author);
+    const g = await fetchGoogle(title, author, genre);
     if (g.meta) meta = g.meta;
     else if (!g.ok) transient = true;
 
-    if (!meta) {
-      const o = await fetchOpenLibrary(title, author);
-      if (o.meta) meta = o.meta;
-      else if (!o.ok) transient = true;
+    const needSubjects =
+      !meta || isSparseFictionCategories(meta.categories ?? (meta.mainCategory ? [meta.mainCategory] : []));
+
+    if (!meta || needSubjects) {
+      const o = await fetchOpenLibrary(title, author, genre);
+      if (!meta) {
+        if (o.meta) meta = o.meta;
+        else if (!o.ok) transient = true;
+      } else if (o.meta?.categories?.length) {
+        meta = withMergedCategories(meta, o.meta.categories, genre);
+      } else if (!o.ok) {
+        transient = true;
+      }
     }
 
     if (meta || !transient) {

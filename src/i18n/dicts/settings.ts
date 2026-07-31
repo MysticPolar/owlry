@@ -150,10 +150,9 @@ const en = {
     radar: {
       health: 'health',
       wealth: 'wealth',
-      relation: 'relation',
-      career: 'career',
-      mindset: 'mindset',
-      fiction: 'fiction',
+      love: 'love',
+      happiness: 'happiness',
+      wonder: 'wonder',
     },
   },
 
@@ -341,10 +340,9 @@ const zh: typeof en = {
     radar: {
       health: '健康',
       wealth: '财富',
-      relation: '关系',
-      career: '事业',
-      mindset: '心态',
-      fiction: '小说',
+      love: '爱',
+      happiness: '幸福',
+      wonder: '惊奇',
     },
   },
 

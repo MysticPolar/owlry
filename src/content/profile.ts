@@ -20,23 +20,21 @@ export const DIMS: Record<Lang, RadarDim[]> = {
   en: [
     ['health', 62],
     ['wealth', 48],
-    ['relationship', 71],
-    ['career', 76],
-    ['mindset', 85],
-    ['fiction', 94],
+    ['love', 71],
+    ['happiness', 85],
+    ['wonder', 94],
   ],
   zh: [
     ['健康', 62],
     ['财富', 48],
-    ['关系', 71],
-    ['事业', 76],
-    ['心态', 85],
-    ['虚构', 94],
+    ['爱', 71],
+    ['幸福', 85],
+    ['惊奇', 94],
   ],
 };
 export const RADAR_NOTE: Record<Lang, string> = {
-  en: 'fiction is carrying the team — wealth could use a chapter.',
-  zh: '虚构类一枝独秀 — 财富区还差一章。',
+  en: 'wonder is carrying the team — wealth could use a chapter.',
+  zh: '惊奇一枝独秀 — 财富区还差一章。',
 };
 
 /* ---------- stats tab: report card ---------- */

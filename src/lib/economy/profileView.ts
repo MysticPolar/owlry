@@ -7,14 +7,13 @@ import type { Lang } from '../../i18n';
 import type { RadarDim, WeekBar } from '../../content/profile';
 import type { CalendarDay, RadarPoint, StatsSnapshot } from './types';
 
-/** fixed district order matching the mockup radar geometry */
+/** fixed district order matching the radar geometry (pentagon) */
 export const RADAR_ORDER = [
   'health',
   'wealth',
-  'relationship',
-  'career',
-  'mindset',
-  'fiction',
+  'love',
+  'happiness',
+  'wonder',
 ] as const;
 
 export type RadarKey = (typeof RADAR_ORDER)[number];
@@ -23,18 +22,16 @@ export const RADAR_LABELS: Record<Lang, Record<RadarKey, string>> = {
   en: {
     health: 'health',
     wealth: 'wealth',
-    relationship: 'relationship',
-    career: 'career',
-    mindset: 'mindset',
-    fiction: 'fiction',
+    love: 'love',
+    happiness: 'happiness',
+    wonder: 'wonder',
   },
   zh: {
     health: '健康',
     wealth: '财富',
-    relationship: '关系',
-    career: '事业',
-    mindset: '心态',
-    fiction: '虚构',
+    love: '爱',
+    happiness: '幸福',
+    wonder: '惊奇',
   },
 };
 
@@ -47,21 +44,21 @@ export function radarDimsFromSnapshot(radar: RadarPoint[], lang: Lang): RadarDim
 /** One calm line naming the quietest district — Mirror's voice. */
 export function radarNoteFromDims(dims: RadarDim[], lang: Lang): string {
   if (!dims.length) {
-    return lang === 'zh' ? '六座架子还空着 — 读几页，轮廓就会长出来。' : 'six empty shelves — a few pages and the shape will grow.';
+    return lang === 'zh' ? '五座架子还空着 — 读几页，轮廓就会长出来。' : 'five empty shelves — a few pages and the shape will grow.';
   }
   const total = dims.reduce((n, [, v]) => n + v, 0);
   if (total === 0) {
-    return lang === 'zh' ? '六座架子还空着 — 读几页，轮廓就会长出来。' : 'six empty shelves — a few pages and the shape will grow.';
+    return lang === 'zh' ? '五座架子还空着 — 读几页，轮廓就会长出来。' : 'five empty shelves — a few pages and the shape will grow.';
   }
   let quiet = dims[0]!;
   for (const d of dims) if (d[1] < quiet[1]) quiet = d;
   let loud = dims[0]!;
   for (const d of dims) if (d[1] > loud[1]) loud = d;
   if (lang === 'zh') {
-    if (loud[1] === quiet[1]) return '六座架子齐平 — 接着读，轮廓还会动。';
+    if (loud[1] === quiet[1]) return '五座架子齐平 — 接着读，轮廓还会动。';
     return `${loud[0]}一枝独秀 — ${quiet[0]}区还差一章。`;
   }
-  if (loud[1] === quiet[1]) return 'the six shelves are even — keep reading and the shape will shift.';
+  if (loud[1] === quiet[1]) return 'the five shelves are even — keep reading and the shape will shift.';
   return `${loud[0]} is carrying the team — ${quiet[0]} could use a chapter.`;
 }
 
