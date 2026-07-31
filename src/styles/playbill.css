@@ -1548,8 +1548,7 @@ body { font-optical-sizing: auto; }
    reserves the top band for it — otherwise the × lands on keeper's sign */
 .pb-stand { padding-top: 68px; }
 
-/* the seat chip names its unit — the row scale is inverted against the level,
-   so a bare number reads as the wrong thing entirely */
+/* the level chip names its unit (LV) so a bare number isn't ambiguous */
 .pb-seat-k {
   font-family: var(--font-chrome); font-size: var(--t-micro);
   font-weight: var(--fw-ui-semibold); letter-spacing: 1px;

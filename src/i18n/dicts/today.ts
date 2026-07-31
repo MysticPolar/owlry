@@ -19,7 +19,9 @@ const en = {
   home: {
     statsAria: 'Your stats',
     statLevel: (lv: number) => `Level ${lv}`,
+    /** @deprecated seat aria kept for profile; home chip uses statLevel */
     statSeat: (row: number, lv: number) => `Row ${row} from the stage — level ${lv}`,
+    levelKicker: 'LEVEL',
     rowKicker: 'ROW',
     statXp: (xp: number, max: number) => `${xp} of ${max} XP`,
     statInk: (ink: number) => `${ink} ink`,
@@ -158,7 +160,9 @@ const zh: typeof en = {
   home: {
     statsAria: '你的进度',
     statLevel: (lv: number) => `等级 ${lv}`,
+    /** @deprecated 座位文案留给个人页；首页芯片用 statLevel */
     statSeat: (row: number, lv: number) => `距舞台第 ${row} 排 — 等级 ${lv}`,
+    levelKicker: '等级',
     rowKicker: '第',
     statXp: (xp: number, max: number) => `${xp} / ${max} 经验`,
     statInk: (ink: number) => `${ink} 墨水`,

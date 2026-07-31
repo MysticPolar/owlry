@@ -3,7 +3,6 @@ import { useStore } from '../../store/useStore';
 import { getBook } from '../../lib/bookRegistry';
 import { FEED, FEED_GENRES, feedLikes } from '../../content/feed';
 import { rankShelf } from '../../lib/shelfRank';
-import { rowFromLevel } from '../../lib/economy/curve';
 import { useLevelFlash } from '../StatFx';
 import type { BookId, BookRef, Genre } from '../../content/types';
 import { useLang, useT } from '../../i18n/react';
@@ -53,18 +52,14 @@ function StatChips() {
   const inkMax = useStore((s) => s.inkMax);
   const t = useT().today.home;
   const xpPct = Math.min(100, Math.max(0, (xp / Math.max(1, xpMax)) * 100));
-  const row = rowFromLevel(lv);
   const popped = useLevelFlash();
   return (
     <div className="pb-chips" role="group" aria-label={t.statsAria}>
-      {/* the seat, not the number: a level is a row, and this chip is also the
-          anchor the level-up sparks fly to (chrome.tsx looks up #lvLab) */}
-      <div className={`pb-chip pb-seat${popped ? ' pop' : ''}`} id="lvLab" aria-label={t.statSeat(row, lv)}>
+      {/* level chip — also the anchor level-up sparks fly to (chrome looks up #lvLab) */}
+      <div className={`pb-chip pb-seat${popped ? ' pop' : ''}`} id="lvLab" aria-label={t.statLevel(lv)}>
         <Icon name="ti-armchair" className="crown" />
-        {/* the unit matters: the scale is inverted (row = 14 − LV), so a bare
-            "13" on a new reader's chip reads as a level, and counts DOWN */}
-        <span className="pb-seat-k">{t.rowKicker}</span>
-        <span className="n">{row}</span>
+        <span className="pb-seat-k">{t.levelKicker}</span>
+        <span className="n">{lv}</span>
       </div>
       <div className="pb-chip" aria-label={t.statXp(xp, xpMax)}>
         <Icon name="ti-bolt" className="bolt" />
@@ -87,7 +82,7 @@ function CompactStrip() {
     <div className="pb-compact" aria-hidden="true">
       <span className="wm"><Wordmark decorative /></span>
       <span className="sp" />
-      <span className="pb-mini"><Icon name="ti-armchair" className="crown" />{rowFromLevel(lv)}</span>
+      <span className="pb-mini"><Icon name="ti-armchair" className="crown" />{lv}</span>
       <span className="pb-mini"><Icon name="ti-bolt" className="bolt" />{xp}</span>
       <span className="pb-mini"><Icon name="ti-inkdrop" className="drop" />{ink}</span>
     </div>
