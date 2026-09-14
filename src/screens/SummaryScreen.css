@@ -1,0 +1,24 @@
+.summary { overflow: hidden; }
+.summary-owl { position: absolute; right: 22px; top: 58px; z-index: 5; pointer-events: none; }
+.phone.framed .summary-owl { top: 98px; }
+.summary-body { padding-top: 6px; padding-bottom: 16px; }
+.summary-title { font-size: 2rem; margin-top: 4px; padding-right: 96px; }
+.summary-lead { margin-top: 12px; font-size: 1.0625rem; line-height: 1.55; color: var(--ink-2); }
+.summary-h2 { margin-top: 24px; font-size: 1.25rem; }
+.summary-diffs { display: grid; gap: 12px; margin-top: 10px; }
+.summary-diffs li { display: flex; gap: 12px; align-items: flex-start; font-size: 0.9375rem; line-height: 1.45; }
+.summary-diffs .avatar { margin-top: 2px; }
+.summary-p { margin-top: 8px; font-size: 0.9375rem; line-height: 1.55; }
+.summary-ctx { margin-top: 8px; }
+.summary-next { margin-top: 18px; background: var(--yellow-soft); border-radius: 16px; padding: 14px 16px; display: grid; gap: 6px; }
+.summary-next p { font-size: 0.9375rem; line-height: 1.5; font-weight: 500; }
+.books-h2 { margin-top: 28px; }
+.summary-books { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 14px; }
+.summary-book { display: grid; justify-items: center; gap: 6px; width: 100%; text-align: center; }
+.summary-cover { position: relative; }
+.summary-best { position: absolute; left: 50%; bottom: -8px; transform: translateX(-50%); display: inline-flex; align-items: center; gap: 3px; white-space: nowrap; font-size: 10px; font-weight: 800; background: var(--yellow); color: var(--yellow-ink); padding: 3px 8px; border-radius: var(--r-pill); box-shadow: var(--shadow-card); }
+.summary-best svg { width: 11px; height: 11px; }
+.summary-book-title { margin-top: 8px; font-size: var(--t-label); font-weight: 700; line-height: 1.2; }
+.summary-book-author { font-size: 11px; color: var(--mut); line-height: 1.2; }
+.summary-whys { display: grid; gap: 8px; margin-top: 18px; font-size: var(--t-small); line-height: 1.45; color: var(--ink-2); }
+.summary-actions { display: grid; gap: 10px; padding-top: 10px; padding-bottom: calc(var(--sab) + 16px); border-top: 1px solid var(--line); background: var(--cream); }

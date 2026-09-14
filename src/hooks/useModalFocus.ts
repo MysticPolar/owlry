@@ -1,27 +1,14 @@
 import { useEffect, useRef, type RefObject } from 'react';
 
 /* ============================================================
-   Modal focus management — one small hook, no dependencies.
-
-   While `open`, it: moves focus into the dialog (first focusable, else the
-   container), traps Tab within it, closes on Escape (when `onClose` is given),
-   and restores focus to whatever was focused before it opened.
-
-   Overlays here are mounted-but-hidden (toggled by an `.on` class), so this
-   keys off the `open` boolean, not mount. Give the container `tabIndex={-1}`
-   so it can hold focus when it has no focusable children yet.
+   Modal focus management: moves focus in, traps Tab, closes on Escape,
+   restores focus on close. Give the container tabIndex={-1}.
    ============================================================ */
 const FOCUSABLE =
   'a[href],button:not([disabled]),input:not([disabled]),textarea:not([disabled]),select:not([disabled]),[tabindex]:not([tabindex="-1"])';
 
-export function useModalFocus(
-  open: boolean,
-  onClose: (() => void) | null,
-  ref: RefObject<HTMLElement | null>,
-) {
+export function useModalFocus(open: boolean, onClose: (() => void) | null, ref: RefObject<HTMLElement | null>) {
   const restoreRef = useRef<HTMLElement | null>(null);
-  // hold onClose in a ref so an inline callback doesn't re-run the trap effect
-  // (and re-steal focus) on every render
   const onCloseRef = useRef(onClose);
   onCloseRef.current = onClose;
 
@@ -29,18 +16,13 @@ export function useModalFocus(
     if (!open) return;
     const el = ref.current;
     if (!el) return;
-
     restoreRef.current = document.activeElement as HTMLElement | null;
-
     const visible = () =>
       Array.from(el.querySelectorAll<HTMLElement>(FOCUSABLE)).filter(
         (n) => n.offsetWidth > 0 || n.offsetHeight > 0 || n === document.activeElement,
       );
-
-    // move focus in — prefer an explicitly autofocused field, else the first control
-    const initial = el.querySelector<HTMLElement>('[data-autofocus]') ?? visible()[0] ?? el;
+    const initial = el.querySelector<HTMLElement>('[data-autofocus]') ?? el;
     initial.focus({ preventScroll: true });
-
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && onCloseRef.current) {
         e.preventDefault();
@@ -65,7 +47,6 @@ export function useModalFocus(
         first.focus({ preventScroll: true });
       }
     };
-
     document.addEventListener('keydown', onKey, true);
     return () => {
       document.removeEventListener('keydown', onKey, true);

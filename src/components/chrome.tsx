@@ -1,229 +1,158 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
+import { IconHome, IconBook, IconBooks, IconUsers, IconUser, IconArrowLeft } from '@tabler/icons-react';
+import { navigate, goBack, type Route, type TabName } from '../app/router';
 import { useStore } from '../store/useStore';
-import { useAuth } from '../store/useAuth';
-import type { Tab } from '../store/types';
-import { useT } from '../i18n/react';
-import { Icon } from './Icon';
-import { chainsInner } from '../lib/chains';
-import { useReduceMotion } from '../hooks/useReduceMotion';
+import { useModalFocus } from '../hooks/useModalFocus';
 
-/* guest-only shortcut to walk the level ladder (and trip its unlocks) from
-   the main screens — today and the shelves. Discover docks its own copy in the
-   desk header (a floating pill would sit on the chat stream); the profile tab
-   and signed-in accounts (server-authoritative xp) get none. */
-export function GuestLevelButton() {
-  const authed = useAuth((s) => s.status === 'authed');
-  const tab = useStore((s) => s.activeTab);
-  const roomOpen = useStore((s) => s.mirrorRoomOpen);
-  const lv = useStore((s) => s.lv);
-  // the seat moves, nothing is minted — a preview level can't launder brass
-  // into a real account through adoptAccount
-  const debugLevelUp = useStore((s) => s.debugLevelUp);
-  const t = useT().today.chrome;
-  if (authed) return null;
-  // the locked profile (mirror's room) leaves activeTab where it was, so guard
-  // on it too — that page gets its own settings gear, not this pill
-  if (roomOpen) return null;
-  // library folded into profile, so the home stage is the only guest-preview surface
-  if (tab !== 'today') return null;
+/* ============================================================
+   The chrome: fake status bar (desktop frame only), bottom nav, top bar,
+   sheets and toasts. Everything is absolutely positioned inside .screen-clip
+   so it composes the same in the phone frame and full-bleed on a phone.
+   ============================================================ */
+export function StatusBar() {
   return (
-    <button
-      className="guest-lvl"
-      data-tab={tab}
-      onClick={debugLevelUp}
-      aria-label={t.gainLevelAria(lv)}
-    >
-      <Icon name="ti-sparkles" />
-      <span>{t.gainLevel}</span>
-      <b className="d">LV {lv}</b>
-    </button>
-  );
-}
-
-/* the profile pill, bound in chains until level 5: it wiggles for attention
-   (4s after mount, then every 30s), and the chains fall when 5 arrives */
-function ProfilePill({ icon }: { icon: string }) {
-  const lv = useStore((s) => s.lv);
-  const locked = lv < 5;
-  const [wiggle, setWiggle] = useState(false);
-  const [falling, setFalling] = useState(false);
-  const [gone, setGone] = useState(!locked);
-  const prevLocked = useRef(locked);
-
-  // wiggle the button for attention while locked
-  useEffect(() => {
-    if (!locked || gone) return;
-    const bump = () => {
-      setWiggle(false);
-      requestAnimationFrame(() => setWiggle(true));
-      setTimeout(() => setWiggle(false), 850);
-    };
-    const first = setTimeout(bump, 4000);
-    const iv = setInterval(bump, 30000);
-    return () => {
-      clearTimeout(first);
-      clearInterval(iv);
-    };
-  }, [locked, gone]);
-
-  // the chains fall when level 5 lands — and snap back if the level ever drops
-  // below 5 again (e.g. a progress reset), so a re-locked profile is re-chained
-  useEffect(() => {
-    const was = prevLocked.current;
-    prevLocked.current = locked;
-    if (was && !locked) {
-      // just unlocked → the chains fall away, then vanish
-      setFalling(true);
-      const t = setTimeout(() => setGone(true), 900);
-      return () => clearTimeout(t);
-    }
-    if (!was && locked) {
-      // re-locked → the chains are back, whole
-      setFalling(false);
-      setGone(false);
-    }
-  }, [locked]);
-
-  return (
-    <span className={`pb-nvpill${wiggle ? ' nv-wiggle' : ''}`}>
-      <Icon name={icon} />
-      {!gone && (
-        <svg
-          className={`nv-chains${falling ? ' broken' : ''}`}
-          viewBox="0 0 56 42"
-          aria-hidden="true"
-          dangerouslySetInnerHTML={{ __html: chainsInner(56, 42, 3, 13, 18, 26) }}
-        />
-      )}
-    </span>
-  );
-}
-
-/* ---------- glass nav — Home / Ask / Profile (the one glass object) ---------- */
-const NAV: { tab: Tab; icon: string }[] = [
-  { tab: 'today', icon: 'ti-home' },
-  { tab: 'discover', icon: 'ti-message-circle' },
-  { tab: 'profile', icon: 'ti-user' },
-];
-
-export function BottomNav() {
-  const activeTab = useStore((s) => s.activeTab);
-  const setTab = useStore((s) => s.setTab);
-  const lv = useStore((s) => s.lv);
-  const t = useT().today.chrome;
-  // the desk takes the full depth of the house: while Ask is on, the glass nav
-  // steps off (CSS slides it; these attributes take it out of the a11y tree so
-  // an invisible control can't hold focus). The chevron in the desk header is
-  // the way back — leaving Ask is what brings the nav back out.
-  const offstage = activeTab === 'discover';
-  return (
-    <nav
-      className="pb-nav"
-      aria-label={t.navAria}
-      aria-hidden={offstage || undefined}
-      {...(offstage ? ({ inert: '' } as Record<string, string>) : {})}
-    >
-      {NAV.map((n) => {
-        const on = activeTab === n.tab;
-        const chained = n.tab === 'profile' && lv < 5;
-        return (
-          <button
-            key={n.tab}
-            className={`pb-nv ${on ? 'on' : ''}`}
-            data-tab={n.tab}
-            aria-current={on ? 'page' : undefined}
-            aria-label={chained ? t.profileChainedAria : undefined}
-            onClick={() => setTab(n.tab)}
-          >
-            {n.tab === 'profile' ? (
-              <ProfilePill icon={n.icon} />
-            ) : (
-              <span className="pb-nvpill">
-                <Icon name={n.icon} />
-              </span>
-            )}
-            <span className="lab">{t.nav[n.tab]}</span>
-          </button>
-        );
-      })}
-    </nav>
-  );
-}
-
-/* ---------- toast ---------- */
-export function Toast() {
-  const toast = useStore((s) => s.toast);
-  const [shown, setShown] = useState(toast);
-  useEffect(() => {
-    if (toast) setShown(toast);
-  }, [toast]);
-  return (
-    <div className={`toast ${toast ? 'on' : ''}`} id="toast" role="status" aria-live="polite">
-      {shown && (
-        <>
-          {shown.owl ? (
-            <svg className="owl toasty" viewBox="0 0 120 130" aria-hidden="true" key={shown.key}>
-              <use href={`#owl-${shown.owl}`} />
-            </svg>
-          ) : (
-            <Icon name={shown.icon} />
-          )}
-          <span>{shown.msg}</span>
-        </>
-      )}
+    <div className="statusbar" aria-hidden="true">
+      <span>9:41</span>
+      <span className="sb-right">
+        <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor">
+          <rect x="0" y="8" width="3" height="4" rx="0.8" />
+          <rect x="5" y="5.5" width="3" height="6.5" rx="0.8" />
+          <rect x="10" y="3" width="3" height="9" rx="0.8" />
+          <rect x="15" y="0" width="3" height="12" rx="0.8" />
+        </svg>
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor">
+          <path d="M8 9.6a1.7 1.7 0 1 1 0 3.4 1.7 1.7 0 0 1 0-3.4zM8 6c1.6 0 3 .6 4.1 1.6l-1.3 1.3A4.1 4.1 0 0 0 8 7.8c-1.1 0-2 .4-2.8 1.1L3.9 7.6C5 6.6 6.4 6 8 6zm0-3.4c2.5 0 4.8 1 6.5 2.6l-1.3 1.3A7.3 7.3 0 0 0 8 4.4c-2 0-3.8.8-5.2 2.1L1.5 5.2A9.2 9.2 0 0 1 8 2.6z" />
+        </svg>
+        <svg width="25" height="12" viewBox="0 0 25 12" fill="none" stroke="currentColor">
+          <rect x="0.5" y="0.5" width="21" height="11" rx="3" opacity="0.4" />
+          <rect x="2" y="2" width="17" height="8" rx="1.6" fill="currentColor" stroke="none" />
+          <path d="M23 4v4a2 2 0 0 0 0-4z" fill="currentColor" stroke="none" opacity="0.4" />
+        </svg>
+      </span>
     </div>
   );
 }
 
-/* ---------- spark burst (ported from the mockup's burst()) ---------- */
+const TABS: { name: TabName; label: string; icon: ReactNode; route: Route }[] = [
+  { name: 'council', label: 'Home', icon: <IconHome stroke={1.9} />, route: { name: 'council' } },
+  { name: 'reading', label: 'Reading', icon: <IconBook stroke={1.9} />, route: { name: 'reading' } },
+  { name: 'library', label: 'Library', icon: <IconBooks stroke={1.9} />, route: { name: 'library' } },
+  { name: 'social', label: 'Social', icon: <IconUsers stroke={1.9} />, route: { name: 'social' } },
+  { name: 'profile', label: 'Profile', icon: <IconUser stroke={1.9} />, route: { name: 'profile' } },
+];
 
-/** the seat element the sparks converge on, only if it is actually visible —
-    sparks aimed at a clipped or off-screen chip read as a random mid-air pop */
-function burstAnchor(): DOMRect | null {
-  for (const el of [document.getElementById('lvLab'), document.querySelector('.pb-plvl-row')]) {
-    if (!(el instanceof HTMLElement)) continue;
-    if (el.offsetParent === null) continue; // a display:none screen
-    if (el.closest('.pb-home.collapsed')) continue; // clipped by the collapsed header
-    const r = el.getBoundingClientRect();
-    if (r.width > 0) return r;
-  }
-  return null;
+export function Nav({ active }: { active: TabName }) {
+  return (
+    <nav className="nav" aria-label="Main">
+      {TABS.map((t) => (
+        <button
+          key={t.name}
+          type="button"
+          className={t.name === active ? 'on' : ''}
+          aria-current={t.name === active ? 'page' : undefined}
+          onClick={() => navigate(t.route)}
+        >
+          {t.icon}
+          <span>{t.label}</span>
+        </button>
+      ))}
+    </nav>
+  );
 }
 
-export function BurstLayer() {
-  const burstNonce = useStore((s) => s.burstNonce);
-  const reduce = useReduceMotion();
-  const layerRef = useRef<HTMLDivElement>(null);
+export function TopBar({
+  title,
+  onBack,
+  backFallback,
+  right,
+  left,
+  className = '',
+}: {
+  title?: ReactNode;
+  onBack?: () => void;
+  backFallback?: Route;
+  right?: ReactNode;
+  left?: ReactNode;
+  className?: string;
+}) {
+  const showBack = onBack !== undefined || backFallback !== undefined;
+  return (
+    <div className={`topbar ${className}`}>
+      {left ??
+        (showBack ? (
+          <button type="button" className="iconbtn" aria-label="Back" onClick={() => (onBack ? onBack() : goBack(backFallback))}>
+            <IconArrowLeft stroke={2} />
+          </button>
+        ) : (
+          <span style={{ width: 40 }} />
+        ))}
+      <div className="grow title">{title}</div>
+      <div className="row" style={{ gap: 0, minWidth: 40, justifyContent: 'flex-end' }}>
+        {right}
+      </div>
+    </div>
+  );
+}
 
+/** bottom sheet with focus trap + escape + backdrop tap */
+export function Sheet({
+  open,
+  onClose,
+  children,
+  label,
+  tall = false,
+}: {
+  open: boolean;
+  onClose: () => void;
+  children: ReactNode;
+  label: string;
+  tall?: boolean;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  useModalFocus(open, onClose, ref);
+  if (!open) return null;
+  return (
+    <>
+      <div className="backdrop" onClick={onClose} />
+      <div
+        className="sheet"
+        role="dialog"
+        aria-modal="true"
+        aria-label={label}
+        ref={ref}
+        tabIndex={-1}
+        style={tall ? { maxHeight: '94%' } : undefined}
+      >
+        <div className="grabber" />
+        <div className="sheet-body">{children}</div>
+      </div>
+    </>
+  );
+}
+
+export function ToastHost() {
+  const toast = useStore((s) => s.toast);
+  const dismiss = useStore((s) => s.dismissToast);
   useEffect(() => {
-    if (burstNonce === 0 || reduce) return;
-    const layer = layerRef.current;
-    const app = document.getElementById('app');
-    if (!layer || !app) return;
-    const r = burstAnchor();
-    if (!r) return; // no visible seat on this screen — no sparks
-    const a = app.getBoundingClientRect();
-    const cx = r.left - a.left + r.width / 2;
-    const cy = r.top - a.top + r.height / 2;
-    for (let i = 0; i < 10; i++) {
-      const s = document.createElement('span');
-      s.className = 'spark';
-      s.style.left = cx + 'px';
-      s.style.top = cy + 'px';
-      s.style.background = i % 2 ? 'var(--pb-brass)' : 'var(--pb-cream)';
-      s.style.setProperty('--dx', (Math.random() * 68 - 34).toFixed(0) + 'px');
-      s.style.setProperty('--dy', (-10 - Math.random() * 34).toFixed(0) + 'px');
-      layer.appendChild(s);
-      setTimeout(() => s.remove(), 750);
-    }
-  }, [burstNonce, reduce]);
-
-  return <div className="burst-layer" id="burst" ref={layerRef} />;
-}
-
-/* ---------- sheet backdrop ---------- */
-export function Backdrop() {
-  const sheetId = useStore((s) => s.sheetId);
-  const closeSheet = useStore((s) => s.closeSheet);
-  return <div className={`backdrop ${sheetId ? 'on' : ''}`} id="backdrop" onClick={closeSheet} />;
+    if (!toast) return;
+    const t = setTimeout(dismiss, toast.action ? 7000 : 3200);
+    return () => clearTimeout(t);
+  }, [toast, dismiss]);
+  if (!toast) return null;
+  return (
+    <div className="toast" role="status">
+      <span className="grow">{toast.text}</span>
+      {toast.action && (
+        <button
+          type="button"
+          onClick={() => {
+            toast.action?.onClick();
+            dismiss();
+          }}
+        >
+          {toast.action.label}
+        </button>
+      )}
+    </div>
+  );
 }

@@ -9,16 +9,12 @@ function editableHasFocus(): boolean {
 
 /**
  * Height (px) of the on-screen keyboard overlapping the layout viewport,
- * measured via visualViewport. Returns 0 on desktop, and ~0 on platforms
- * that resize the layout viewport themselves (Android Chrome honors the
- * viewport meta's interactive-widget=resizes-content). On iOS Safari the
- * keyboard overlays the layout instead, so this drives the chat's
- * keyboard-open mode: pad the app bottom, hide the nav, and keep the
- * composer sitting right above the keyboard.
+ * via visualViewport. 0 on desktop and on platforms that resize the layout
+ * viewport themselves; on iOS Safari it keeps the chat composer sitting
+ * right above the keyboard.
  */
 export function useKeyboardInset(): number {
   const [inset, setInset] = useState(0);
-
   useEffect(() => {
     const vv = window.visualViewport;
     if (!vv) return;
@@ -26,9 +22,6 @@ export function useKeyboardInset(): number {
     const update = () => {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
-        // Safari's collapsing address bar also changes visualViewport. It is
-        // browser chrome, not a keyboard, and must never shift the app or hide
-        // the nav when the reader is simply scrolling.
         if (!editableHasFocus()) {
           setInset(0);
           return;
@@ -50,6 +43,5 @@ export function useKeyboardInset(): number {
       document.removeEventListener('focusout', update);
     };
   }, []);
-
   return inset;
 }

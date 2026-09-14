@@ -1,0 +1,8 @@
+.auth-form { display: grid; gap: 14px; align-content: start; padding-bottom: calc(var(--sab) + 24px); }
+.auth-title { margin-top: 6px; }
+.auth-social { display: grid; gap: 10px; margin-top: 8px; }
+.auth-or { display: flex; align-items: center; gap: 12px; color: var(--night-mut); margin: 4px 0; }
+.auth-or::before, .auth-or::after { content: ''; flex: 1; height: 1px; background: var(--night-line); }
+.auth-submit { margin-top: 6px; }
+.auth-guest { justify-self: center; color: var(--night-mut); }
+.auth-note { text-align: center; }

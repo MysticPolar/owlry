@@ -1,108 +1,119 @@
-# owlry.
+# owlry. — Walk with Great Minds
 
-A gamified reading app — small, warm, tactile. You earn **XP** and **ink** by
-turning pages, keep a streak, save books to your library, and ask **the owl**
-for a hand-written *reading letter*. This is the production web port of the
-interactive mockup, built to wrap into native apps (App Store / Google Play)
-via Capacitor later.
+Bring a real question to a council of three great minds. They discuss it in a
+group chat — agreeing, disagreeing, answering each other — and hand you a
+synthesis, one next step, and one book each to read. **Different perspectives.
+A clearer you.**
 
-Built with **React + TypeScript + Vite**, a **Zustand** store persisted to
-**IndexedDB**, and an installable **PWA** (manifest + service worker).
-
-## Quick start
+This branch is the front-end prototype of the redesign (the nine screens on the
+"Walk with Great Minds." poster). It is a mobile-first web app with realistic
+sample content and simulated AI conversations; the backend is the next phase.
 
 ```bash
 npm install
 npm run dev        # http://localhost:5173
 npm run build      # typecheck + production build to dist/
 npm run preview    # serve the production build
-npm test           # runtime smoke tests (owl brain + game loop)
 ```
 
-Mobile-first at ~380px. On desktop it renders inside a "phone on a desk" frame;
-on phones / installed PWA / a native shell it goes full-bleed and respects safe
-areas.
+Open it on a phone (or a narrow window) for the full-bleed app; on a desktop
+it renders inside a phone frame on a dark desk, like the poster.
 
-## Architecture
+## The journey
 
-The app is layered so the simulated, fully client-side v1 can be swapped for a
-backend or a live model **without touching the UI**. Three seams matter:
+Ask a question → explore three perspectives → understand the takeaways → open
+the relevant reading → save and return.
 
-| Seam | Where | Swap to |
-| --- | --- | --- |
-| **Persistence** | `src/store/persistence.ts` | Replace the single `repository` binding (`IndexedDbRepository`) with an `ApiRepository`. The store shape is unchanged. |
-| **The owl** | `src/lib/owlBrain.ts` + `src/content/{owl,guides}.ts` | `respond()` is pure intent-matching over standalone content modules. Point it at a live model; messages are structured nodes, not HTML, so the chat keeps rendering as-is. |
-| **Book text** | `src/content/reader-text.ts` | Drop a `BookId`-keyed entry into `BOOK_TEXT` to give a title real public-domain pages (Standard Ebooks / Project Gutenberg). |
+| # | Screen | Route | What it does |
+|---|--------|-------|--------------|
+| 1 | Welcome | `#/welcome` | Create an account, sign in, or explore without one |
+| 2 | Select interest | `#/interests` | Six tiles, multi-select, "Skip and ask a question" |
+| 3 | The Council (Screen 0) | `#/council` | Round table, three empty seats, "What's on your mind?", suggested questions. On submit the seats fill and each thinker is introduced with why they fit |
+| 4 | The Discussion (Screen 1) | `#/discussion/:id` | Group chat, two rounds with cross-replies, then the Takeaways and Reading cards. Follow up with everyone or one figure, add context, tap an avatar for background / sources / **Replace** (with undo) |
+| 5 | Summary | `#/summary/:id` | What they agree on, where they differ, what fits your situation, one next step, the three books; Save to Library / Continue |
+| 6 | Book | `#/book/:id?council=…` | Cover, tags, a verbatim epigraph, why it relates to your question, where to start; Start Reading / Read Book Summary / Save |
+| 7 | Reader (Screen 2) | `#/read/:id?council=…` | Literata, three text sizes, bookmarks, saved progress, highlight a passage or **bring it to the council** |
+| 8 | Library (Screen 3) | `#/library` | Continue reading, saved books by shelf, All / Reading / Completed, past councils, highlights |
+| 9 | Social (Screen 4) | `#/social` | For You / Following feed of passages + reflections; composer asks "What did this change for you?" |
+| 10 | Profile (Screen 5) | `#/profile` | Level card, milestones, six-axis reading radar, activity, badges, highlights & reflections |
+
+The Reading tab (`#/reading`) resumes the latest session; Settings
+(`#/settings`) edits the profile, text size, account and resets the demo data.
+
+## How the council works (and what is simulated)
+
+Everything the council says is data in `src/content`:
+
+- **`figures.ts`** — ~40 thinkers: role, perspective label, bio, source works,
+  and a short list of *verified verbatim quotes with their location*. A figure's
+  `voice` holds generic lines for unscripted moments (follow-ups, added
+  context, passages from the reader, direct questions).
+- **`books-1.ts` / `books-2.ts`** — 45 books: categories, radar axes, a
+  summary (gist + main ideas), the recommended starting section, and the
+  reader text. Four books carry real public-domain passages from Project
+  Gutenberg (`content/texts/*.json`, translator named); the rest carry an
+  *Owlry reading guide* to the recommended chapter, labelled as such in the
+  reader — never passed off as the book's text.
+- **`councils/`** — eight scripted councils, one per interest area plus the
+  four questions on the poster: intros, two rounds, follow-up rounds, a
+  context round, direct answers, takeaways, and an alternate thinker per seat.
+
+`src/engine/council.ts` turns those into transcripts. Free-text questions are
+keyword-matched to the closest council (with a bonus for the reader's chosen
+areas); every figure message records which scripted *slot* it came from, so
+**Replace** regenerates the whole transcript for the new seat — the newcomer
+answers the same question and the others' replies pick up the new name.
+To swap in a live model later, replace the bodies in `figureLines()` and keep
+the message shape.
+
+Honesty rules the UI enforces:
+
+- Figures are labelled as AI interpretations grounded in their published work
+  (council intro, chat header, avatar sheet, settings).
+- Only lines from a figure's `quotes` list render as quotations, with a
+  "verbatim" tag and a lightweight source link; everything else looks like chat.
+- Reading guides are labelled; public-domain passages name the translator.
+
+## Structure
 
 ```
 src/
-  content/          # standalone, swappable content (the "what")
-    books.ts        # the catalog (B + about-sheet meta), ported verbatim
-    guides.ts       # the 7 owl reading letters — the v1 owl product
-    owl.ts          # intents, chips, flavor lines, fiction pools
-    reader-text.ts  # reader prose + the public-domain text seam
-    profile.ts      # radar / calendar / quotes seeds
-    picks.ts        # today's curated picks
-    weather.ts      # weather modes
-  lib/
-    owlBrain.ts     # the simulated brain: respond(input, session) → reply
-    format.ts       # tiny helpers (pct, spine lines, guide guard)
-  store/            # state layer (the "how it changes")
-    useStore.ts     # Zustand store: the whole game loop
-    persistence.ts  # ProgressRepository interface + IndexedDB impl
-    seed.ts         # initial loop state
-    types.ts        # PersistedState + ephemeral/session types
-  components/        # the UI (the "how it looks")
-    screens/        # today · discover · library · profile
-    overlays/       # reader · letter · sheet
-    profile/        # radar chart
-    chrome.tsx      # status bar · nav · toast · spark burst · backdrop
-  styles/           # tokens.css + global.css (ported near-verbatim)
+  app/          hash router (every screen is a URL), ids
+  content/      figures, books, councils, seed posts, PD texts, portrait map
+  engine/       the simulated council (pure functions over content + session)
+  store/        Zustand store persisted to localStorage (the backend seam)
+  components/   chrome (status bar, nav, sheet, toast), owl, avatar, cover,
+                council table, chat, council cards, figure sheet, radar
+  screens/      one file (+ css) per screen
+  styles/       fonts (self-hosted), tokens (the poster's palette), base
+public/
+  portraits/    Wikimedia Commons portraits + CREDITS.md
 ```
 
-**State split.** `PersistedState` (XP, level, ink, coins, streak, saved /
-reading / finished, reading progress) is the durable loop, debounce-saved to
-IndexedDB through the repository. Everything else — the owl conversation, the
-carousel, weather, open overlays — is ephemeral session/UI state that resets on
-reload, matching the mockup.
+Design tokens follow the poster: one yellow (`--yellow`) for the primary
+action, the active nav item and the wordmark's period; a night room for the
+welcome and council screens; cream paper with white cards for everything
+after a question is asked. Display type is Archivo (its width axis gives the
+condensed marquee and the wide titles from one file), UI is Inter, the reader
+is Literata, margin notes are Caveat, the wordmark is Rubik.
 
-## The owl post
+## Backend seams (next phase)
 
-The discover screen ships the mockup's owl **as-is**: no API calls, no keys.
-You type a vibe ("can't sleep", "fresh start", "feeling stuck"), `INTENTS`
-regex-match it to one of seven guides, and the owl types back (with a delay) and
-posts a **reading letter** — a faithful paraphrase of that book's real argument,
-chapter, insights, and a couple of genuine short quotes. `go deeper`, `more like
-this`, `something lighter`, and `surprise me` continue the conversation. All of
-it lives in `content/guides.ts` + `content/owl.ts` so a live model can replace
-the brain later.
+- **Persistence** — `src/store/useStore.ts` is one persisted slice; sync it or
+  swap the storage adapter.
+- **The council** — `src/engine/council.ts` `figureLines()`; messages are
+  structured segments (text / quote + source), not HTML.
+- **Books and covers** — `content/books.ts`; cover art already comes from Open
+  Library by ISBN with a typographic fallback.
+- The old app's `supabase/` migrations and edge functions are kept on this
+  branch untouched for that work.
 
-## Content & provenance (v1)
+## Assets and credits
 
-- **Covers are the brand.** Every cover is CSS-drawn (illustrated spine, color +
-  label) — no cover images, so there's nothing to license.
-- **Reader text** is original placeholder literary prose (legally safe — it is
-  not a copyrighted excerpt), cycled through the reader exactly as the mockup
-  does. `reader-text.ts` is the seam for real public-domain texts; genuinely
-  public-domain catalog titles (e.g. *Meditations*) are the first candidates.
-- **Owl letters** are original paraphrases written for the mockup; quotes are
-  kept short and only where confidently genuine.
-
-**Out of scope for v1** (and already labelled in the UI where relevant):
-accounts/sync, payments, social reviews ("coming soon"), and live AI letters.
-
-## PWA & Capacitor readiness
-
-- Manifest + service worker via `vite-plugin-pwa` (Workbox). App shell and
-  modern web fonts are precached; Google Fonts are runtime-cached so type
-  survives offline. Icons in `public/` (`owl.svg`, `pwa-192`, `pwa-512`,
-  `apple-touch-icon`).
-- No web-only APIs without a fallback (e.g. clipboard copy degrades to a toast),
-  client-side only navigation, and a layout that already fills a device
-  viewport — ready to wrap with Capacitor.
-
-## Tests
-
-`npm test` runs two fast runtime smoke suites with `tsx` (no browser): the owl
-brain's intent routing and follow-ups, and the store's XP / level-up / ink-cap /
-save / reading / finish math.
+- Portraits: Wikimedia Commons, per-file licence and author in
+  `public/portraits/CREDITS.md`; thinkers without a suitable image show a
+  monogram.
+- Texts: Project Gutenberg (#2680 Casaubon's *Meditations*, #8438 Chase's
+  *Nicomachean Ethics*, #45109 Higginson's *Enchiridion*, #64576 Stewart's
+  Seneca).
+- Fonts: SIL Open Font License, subset from Google Fonts and self-hosted.

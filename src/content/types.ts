@@ -1,113 +1,127 @@
 /* ============================================================
-   owlry — content types.
-   Field names mirror the mockup's data objects verbatim (t, a, c,
-   s, q, n, g, ...) so the content modules read as a faithful,
-   reviewable port of the source of truth. These modules are the
-   seam a live backend / model would later replace.
+   Content model. Everything the council "knows" is data in this folder:
+   the figures, their books, and the scripted conversations. The engine in
+   src/engine turns these into transcripts; the UI never hard-codes a name.
    ============================================================ */
+import type { Segment } from '../store/types';
 
-export type BookId =
-  | 'gentle' | 'snow' | 'piranesi' | 'goldfinch' | 'pachinko' | 'tranq' | 'cuckoo'
-  | 'rose' | 'hail' | 'circe' | 'sleep' | 'kindred' | 'remains' | 'spqr' | 'beach'
-  | 'oldman' | 'none' | 'wws' | 'medit' | 'deep' | 'atomic' | 'pema' | 'frankl' | 'bird';
+export type Area = 'health' | 'career' | 'investing' | 'relationships' | 'literature' | 'other';
 
-/** Books that the owl can write a reading letter for. */
-export type GuideId = 'wws' | 'medit' | 'deep' | 'atomic' | 'pema' | 'frankl' | 'bird';
+/** the six spokes of the profile radar (the poster's axes) */
+export type Axis = 'philosophy' | 'career' | 'health' | 'investing' | 'relationships' | 'literature';
 
-/**
- * A reference to a book: either a catalog `BookId` or a slug for an
- * open-world book the live owl recommended (registered at runtime in
- * lib/bookRegistry.ts). Widened to string so both resolve identically.
- */
-export type BookRef = string;
+/** shelf labels in the library */
+export type Category =
+  | 'Philosophy'
+  | 'Self-help'
+  | 'Business'
+  | 'Psychology'
+  | 'Science'
+  | 'Literature'
+  | 'Investing'
+  | 'Relationships'
+  | 'Health'
+  | 'History';
 
-export type Genre = 'history' | 'fiction' | 'scifi' | 'mystery' | 'romance' | 'life';
+export interface Quote {
+  text: string;
+  source: { work: string; loc?: string; url?: string };
+}
 
-/** A catalog entry — the mockup's `B` (core) merged with `BMETA` (about-sheet). */
+export interface Figure {
+  id: string;
+  name: string;
+  /** how the others address them in the chat */
+  short: string;
+  /** one line: who they were/are */
+  role: string;
+  /** the perspective label under the avatar, e.g. "The Stoic" */
+  label: string;
+  initials: string;
+  color: string;
+  /** /portraits/<slug>.jpg when a licensed one exists */
+  portrait?: string;
+  bio: string;
+  works: { title: string; year: string; bookId?: string; url?: string }[];
+  /** verbatim, sourced — the only lines the UI renders as direct quotation */
+  quotes: Quote[];
+  /** generic lines in this figure's voice for unscripted moments. {q} = the user's words, {ctx} = added context, {passage} = a quoted passage, {book} = its book */
+  voice: {
+    followUp: string[];
+    context: string[];
+    passage: string[];
+    direct: string[];
+  };
+}
+
+export interface ReadingText {
+  kind: 'public-domain' | 'guide';
+  heading: string;
+  /** shown above the text: translation/provenance, or the "reading guide" disclaimer */
+  note: string;
+  paragraphs: string[];
+}
+
 export interface Book {
-  /** title */
-  t: string;
-  /** author */
-  a: string;
-  /** cover background color */
-  c: string;
-  /** cover text color (defaults to #E8E0BC) */
-  tc?: string;
-  /** spine label; may contain <br> line breaks */
-  s: string;
-  /** short italic tagline */
-  q: string;
-  /** page count */
-  n: number;
-  /** genre */
-  g: Genre;
-  /** about-sheet: goodreads-style rating */
-  r?: string;
-  /** about-sheet: book intro */
-  i?: string;
-  /** about-sheet: who the author is */
-  w?: string;
-  /* ── Google Books hydration (pre-baked for catalog, resolved at runtime for
-     open-world books — see lib/gbooks.ts). All optional; the UI falls back to
-     the CSS spine + fields above when absent. ── */
-  /** real cover image URL (https) */
-  img?: string;
-  /** subtitle */
-  sub?: string;
-  /** publisher */
-  pub?: string;
-  /** numeric rating 1–5 (Google Books) */
-  rn?: number;
-  /** ratings count (Google Books) */
-  rc?: number;
-  /** which source the rating came from */
-  rsrc?: 'google' | 'goodreads' | 'openlibrary';
-  /** Google / OL subject strings (pre-baked when enriching) */
-  cats?: string[];
-  /** Mirror life pillar (health|wealth|love|happiness|wonder) */
-  pillar?: 'health' | 'wealth' | 'love' | 'happiness' | 'wonder';
+  id: string;
+  title: string;
+  authorId: string;
+  authorName: string;
+  year: number;
+  isbn?: string;
+  category: Category;
+  axes: Axis[];
+  tags: string[];
+  palette: { bg: string; fg: string };
+  blurb: string;
+  /** an epigraph-style verbatim line from the book, with its location */
+  quote?: Quote;
+  summary: { gist: string; ideas: string[] };
+  /** the recommended place to begin */
+  start: { label: string; title: string; why: string };
+  text: ReadingText;
 }
 
-export interface GuideQuote {
-  t: string;
-  by: string;
-}
-
-export interface GuideInsight {
-  /** insight title */
-  t: string;
-  /** the reasoning / idea */
-  r: string;
-  /** an example "from the book" */
-  ex: string;
-  /** an optional short, confidently-genuine quote */
-  q?: GuideQuote;
-}
-
-export interface GuideFurther {
-  /** catalog BookId, or an open-world slug registered at runtime */
-  id: BookRef;
+/* ---------- scripted councils ---------- */
+export interface SeatScript {
+  figureId: string;
+  /** intro card: why this perspective fits the question */
   why: string;
+  bookId: string;
+  bookWhy: string;
+  bestStart?: boolean;
+  /** round one: a distinct idea */
+  r1: Segment[];
+  /** round two: responds to another seat ({0} {1} {2} = the seats' short names) */
+  r2: Segment[];
+  /** scripted answers to the first two whole-council follow-ups ({q} = the follow-up) */
+  f1?: Segment[];
+  f2?: Segment[];
+  /** reaction to added context ({ctx}) */
+  ctx?: Segment[];
+  /** answers when asked directly (cycled) */
+  direct?: Segment[][];
+  /** the "Key differences" bullet for this seat */
+  differs: string;
 }
 
-/** A reading letter. The full GUIDES content *is* the v1 owl product. */
-export interface Guide {
-  /** chat line; contains a {{b}} placeholder for the linked book title */
-  say: string;
-  /** resonance line — names the feeling the reader arrived with */
-  res: string;
-  /** recommended chapter */
-  chap: string;
-  /** the core idea */
-  core: string;
-  /** insights from the chapter */
-  ins: GuideInsight[];
-  /** closing reflection */
-  close: string;
-  /** "take with you" */
-  take: string[];
-  /** "to sit with" */
-  ask: string[];
-  /** further reading */
-  fr: GuideFurther[];
+export interface AltScript extends Omit<SeatScript, 'bestStart'> {
+  bestStart?: boolean;
+}
+
+export interface CouncilScript {
+  id: string;
+  area: Area;
+  question: string;
+  /** short topic for the header: "A Conversation on {title}" */
+  title: string;
+  keywords: string[];
+  seats: [SeatScript, SeatScript, SeatScript];
+  /** alternates per seat, in order of preference */
+  alternates: [AltScript[], AltScript[], AltScript[]];
+  takeaways: {
+    commonGround: string;
+    fits: string;
+    nextStep: string;
+  };
 }

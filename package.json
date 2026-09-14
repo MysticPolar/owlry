@@ -1,41 +1,29 @@
 {
-  "name": "owlry",
+  "name": "owlry-council",
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Owlry \u2014 a gamified reading app. Small, warm, tactile.",
+  "description": "owlry — Walk with Great Minds. Bring a real question to a council of three thinkers.",
   "scripts": {
     "dev": "vite",
     "dev:host": "vite --host",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "preview:host": "vite preview --host",
-    "typecheck": "tsc -b",
-    "test": "tsx scripts/owl-smoke.ts && tsx scripts/owl-contract-smoke.ts && tsx scripts/owl-wire-v2-smoke.ts && tsx scripts/owl-status-smoke.ts && tsx scripts/memory-merge-smoke.ts && tsx scripts/chat-hydrate-smoke.ts && tsx scripts/store-smoke.ts && tsx scripts/economy-smoke.ts && tsx scripts/sync-smoke.ts && tsx scripts/ebook-fingerprint-smoke.ts && tsx scripts/book-proxy-smoke.ts && tsx scripts/gbooks-smoke.ts && tsx scripts/pillar-smoke.ts && tsx scripts/shelf-rank-smoke.ts && tsx scripts/econ-owl-smoke.ts",
-    "books:enrich": "tsx scripts/enrich-books.ts",
-    "bench": "tsx scripts/owl-bench.ts",
-    "lint:css": "stylelint \"src/styles/*.css\""
+    "typecheck": "tsc -b"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.110.1",
     "@tabler/icons-react": "^3.44.0",
-    "idb-keyval": "^6.2.1",
-    "pdfjs-dist": "^6.0.227",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "zustand": "^4.5.5"
   },
   "devDependencies": {
-    "@tabler/icons-webfont": "^3.24.0",
+    "@types/node": "^22.20.2",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
-    "fontaine": "^0.8.0",
-    "stylelint": "^17.14.1",
-    "stylelint-config-standard": "^40.0.0",
-    "tsx": "^4.19.2",
     "typescript": "^5.6.3",
-    "vite": "^5.4.11",
-    "vite-plugin-pwa": "^0.21.1"
+    "vite": "^5.4.11"
   }
 }

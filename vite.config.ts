@@ -1,62 +1,11 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import { VitePWA } from 'vite-plugin-pwa'
-import { FontaineTransform } from 'fontaine'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
 // https://vite.dev/config/
 export default defineConfig({
-  // relative base: works on github.io/owlry/ and on app.owlry.ai/
+  // relative base works on github.io/<repo>/ and on a custom domain alike
   base: process.env.BASE_PATH || '/',
-  plugins: [
-    react(),
-    // Metric-matched fallback faces for the self-hosted fonts (src/styles/type.css).
-    // Reads each woff2's real metrics and emits an '<X> Fallback' family with
-    // size-adjust/ascent-override, so the page does not shift when the webfont
-    // swaps in. The tokens in type.css already name these families.
-    FontaineTransform.vite({
-      fallbacks: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial'],
-      resolvePath: (id) => new URL(`./src/styles/${id}`, import.meta.url),
-    }),
-    VitePWA({
-      registerType: 'autoUpdate',
-      includeAssets: ['owl.svg', 'apple-touch-icon.png'],
-      manifest: {
-        name: 'Owlry',
-        short_name: 'Owlry',
-        description: 'A gamified reading app. Small, warm, tactile.',
-        theme_color: '#1A110D',
-        background_color: '#1A110D',
-        display: 'standalone',
-        start_url: '.',
-        scope: '.',
-        icons: [
-          { src: 'pwa-192.png', sizes: '192x192', type: 'image/png' },
-          { src: 'pwa-512.png', sizes: '512x512', type: 'image/png' },
-          { src: 'pwa-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
-          { src: 'owl.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any' },
-        ],
-      },
-      workbox: {
-        // precache modern web fonts only; legacy ttf/eot fallbacks are served
-        // on demand and would blow past the precache size limit
-        // Fonts are self-hosted now, so they are precached by this glob rather
-        // than runtime-cached from a third party — offline type comes for free.
-        globPatterns: ['**/*.{js,css,html,svg,png,woff,woff2}'],
-        runtimeCaching: [
-          {
-            // Book cover art (Google Books + Open Library) — cache so covers
-            // render offline. statuses includes 0 (opaque cross-origin images).
-            urlPattern: /^https:\/\/(books\.google(usercontent)?\.com\/books\/content|covers\.openlibrary\.org)\/.*/i,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'book-covers',
-              expiration: { maxEntries: 120, maxAgeSeconds: 60 * 60 * 24 * 30 },
-              cacheableResponse: { statuses: [0, 200] },
-            },
-          },
-        ],
-      },
-      devOptions: { enabled: false },
-    }),
-  ],
-})
+  plugins: [react()],
+  server: { port: 5173 },
+  build: { target: 'es2021' },
+});

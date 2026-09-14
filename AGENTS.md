@@ -1,21 +1,37 @@
 # AGENTS.md
 
-## Cursor Cloud specific instructions
+Owlry — "Walk with Great Minds." A single Vite + React + TypeScript web app,
+mobile-first, fully usable offline with simulated council conversations.
 
-Owlry is a single Vite + React + TypeScript PWA. Local-only mode (no Supabase env) is fully usable: classic owl brain, IndexedDB persistence, catalog, reader.
+## Commands
 
-### Commands
+- `npm run dev` — Vite on http://localhost:5173 (`npm run dev:host` for LAN)
+- `npm run typecheck` — `tsc -b` (strict; the build runs it first)
+- `npm run build` — typecheck + production build to `dist/`
+- `npm run preview` — serve `dist/`
 
-See `package.json` / README for the standard scripts:
+There is no test runner yet; the engine is pure and small enough to check by
+driving the app. A Playwright journey script used during the build lives in
+the session scratchpad and is not part of the repo.
 
-- `npm run dev` — Vite on http://localhost:5173 (use `npm run dev:host` if you need LAN access)
-- `npm run lint:css` — Stylelint on `src/styles/*.css` (there is no ESLint script)
-- `npm run typecheck` / `npm test` / `npm run build` — as documented in README
+## Where things are
 
-### Non-obvious gotchas
+- Content (figures, books, scripted councils) → `src/content/`. Adding a
+  council: write a `CouncilScript` (see `content/types.ts`) and register it in
+  `content/councils/index.ts`; give each seat at least one alternate.
+- Simulation → `src/engine/council.ts`. Every figure message stores a `slot`
+  so a replaced seat regenerates deterministically.
+- State → `src/store/useStore.ts` (Zustand + localStorage, key
+  `owlry-council-v1`). Bump `version` when the persisted shape changes.
+- Screens → `src/screens/*.tsx` with a css file each; shared primitives in
+  `src/styles/base.css` and `src/components/`.
 
-- **Guest path:** Onboarding ends at an invite gate. For local demos without Supabase invites, use **PEEK IN AS GUEST**.
-- **Live owl is optional:** Without `VITE_SUPABASE_URL` + `VITE_SUPABASE_ANON_KEY`, the app stays on the mockup owl. Live Scout/Peek needs hosted Supabase + edge functions + `GEMINI_API_KEY` (server secret). Do not put Gemini keys in Vite env.
-- **Open-world books need a file:** Catalog titles recommended by the owl often have no bundled EPUB; **OPEN** prompts an upload (EPUB/PDF/TXT). Built-in placeholder prose is available for some titles via the peek/letter path; page-turn XP is strongest once a real ebook is open in the reader.
-- **Covers work without Google Books:** Open Library is the keyless fallback; `VITE_GOOGLE_BOOKS_API_KEY` only upgrades metadata.
-- **Smoke tests are Node-only:** `npm test` runs `tsx` scripts — no browser, no backend required.
+## Rules of the house
+
+- Only a figure's `quotes` may render as quotations; they must be verbatim and
+  carry a source. Everything else is paraphrase and is labelled as such.
+- Reading guides are not the book's text and say so; public-domain passages
+  name the translator.
+- Portraits must have a Wikimedia licence entry in `public/portraits/CREDITS.md`.
+- Yellow is for the primary action, the active nav item and the wordmark's
+  period. Nothing else.

@@ -1,0 +1,26 @@
+.bookscreen { overflow: hidden; }
+.book-body { padding-bottom: 12px; }
+.book-hero { display: grid; justify-items: center; text-align: center; gap: 6px; padding-top: 6px; }
+.book-cover { margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 18px 34px rgba(0, 0, 0, 0.22); border-radius: 8px; }
+.book-title { font-size: 1.5rem; }
+.book-author { color: var(--mut); font-size: var(--t-small); }
+.book-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 6px; }
+.book-quote { margin: 20px 0 0; padding: 0 6px; text-align: center; }
+.book-quote p { font-family: var(--font-read); font-size: 1.0625rem; line-height: 1.55; color: var(--ink-2); font-style: italic; }
+.book-quote footer { margin-top: 8px; font-size: var(--t-label); color: var(--mut); display: inline-flex; gap: 8px; align-items: center; }
+.book-quote footer a { display: inline-grid; color: var(--mut); }
+.book-quote footer a svg { width: 14px; height: 14px; }
+.book-why, .book-start { margin-top: 16px; padding: 14px 16px; display: grid; gap: 6px; }
+.book-why p:first-of-type { font-size: 0.9375rem; line-height: 1.5; }
+.book-start-title { font-size: 0.9375rem; line-height: 1.4; }
+.book-progress { font-weight: 600; color: var(--ink-2); }
+.book-blurb { margin-top: 16px; font-size: var(--t-small); line-height: 1.5; color: var(--mut); }
+.book-actions { position: relative; display: grid; gap: 10px; padding-top: 10px; padding-bottom: calc(var(--sab) + 14px); border-top: 1px solid var(--line); background: var(--cream); }
+.book-save { justify-self: center; min-height: 40px; display: inline-flex; align-items: center; }
+.book-hand { position: absolute; left: 22px; bottom: calc(var(--sab) + 12px); font-size: 1rem; line-height: 1; text-align: center; pointer-events: none; }
+.book-owl { position: absolute; right: 14px; bottom: calc(var(--sab) + 2px); pointer-events: none; }
+.book-summary { display: grid; gap: 10px; }
+.book-summary-gist { font-size: 0.9375rem; line-height: 1.55; }
+.book-ideas { display: grid; gap: 8px; padding-left: 20px; list-style: decimal; font-size: 0.9375rem; line-height: 1.45; }
+.book-ideas li::marker { font-weight: 700; color: var(--yellow-2); }
+.book-summary .btn { margin-top: 6px; }

@@ -1,144 +1,109 @@
-import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { useEffect, useState } from 'react';
+import { useRoute, tabFor, navigate } from './app/router';
 import { useStore } from './store/useStore';
-import { useAuth } from './store/useAuth';
-import { useKeyboardInset } from './hooks/useKeyboardInset';
-import { BottomNav, Toast, BurstLayer, Backdrop, GuestLevelButton } from './components/chrome';
-import { EconStrip } from './components/StatFx';
-import { SelectionBar } from './components/SelectionBar';
-import { TodayScreen } from './components/screens/TodayScreen';
-import { DiscoverScreen } from './components/screens/DiscoverScreen';
-import { ProfileScreen } from './components/screens/ProfileScreen';
-import { Sheet } from './components/overlays/Sheet';
-import { EbookReader } from './components/overlays/EbookReader';
-import { UploadModal } from './components/overlays/UploadModal';
-import { History } from './components/overlays/History';
-import { Letter } from './components/overlays/Letter';
-import { Settings } from './components/overlays/Settings';
-import { Onboarding } from './components/overlays/Onboarding';
-import { Auth } from './components/overlays/Auth';
-import { IntroCard } from './components/overlays/IntroCard';
-import { MirrorRoom } from './components/overlays/MirrorRoom';
-import { LobbyStand } from './components/overlays/LobbyStand';
+import { Nav, StatusBar, ToastHost } from './components/chrome';
+import { WelcomeScreen } from './screens/WelcomeScreen';
+import { AuthScreen } from './screens/AuthScreen';
+import { InterestsScreen } from './screens/InterestsScreen';
+import { CouncilScreen } from './screens/CouncilScreen';
+import { DiscussionScreen } from './screens/DiscussionScreen';
+import { SummaryScreen } from './screens/SummaryScreen';
+import { BookScreen } from './screens/BookScreen';
+import { ReaderScreen } from './screens/ReaderScreen';
+import { ReadingScreen } from './screens/ReadingScreen';
+import { LibraryScreen } from './screens/LibraryScreen';
+import { SocialScreen } from './screens/SocialScreen';
+import { ProfileScreen } from './screens/ProfileScreen';
+import { SettingsScreen } from './screens/SettingsScreen';
 
-/* the standing entrance: a brief curtain-rise on every app open (skipped on
-   opening night, which plays the long one, and under reduced motion) */
-let curtainDone = false;
-function PlaybillCurtain() {
-  // start "gone" if the OS asks for reduced motion (no flash of frozen panels);
-  // the app-level reduceMotion toggle is handled at the render site
-  const [gone, setGone] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+/* the desk + the phone; on a real phone the frame collapses to full-bleed (see base.css) */
+function useFramed(): boolean {
+  const [framed, setFramed] = useState(() => !window.matchMedia('(max-width: 560px)').matches);
   useEffect(() => {
-    curtainDone = true;
-    if (gone) return;
-    // panels part over ~1.57s (420ms hold + 1150ms slide); retire the nodes after
-    const t = setTimeout(() => setGone(true), 1900);
-    return () => clearTimeout(t);
-  }, [gone]);
-  if (gone) return null;
-  return (
-    <div className="pb-curtain" aria-hidden="true">
-      <div className="pb-curtain-panel l" />
-      <div className="pb-curtain-panel r" />
-    </div>
-  );
+    const mq = window.matchMedia('(max-width: 560px)');
+    const on = () => setFramed(!mq.matches);
+    mq.addEventListener('change', on);
+    return () => mq.removeEventListener('change', on);
+  }, []);
+  return framed;
 }
 
-export default function App() {
-  const hydrated = useStore((s) => s.hydrated);
-  const bootstrap = useStore((s) => s.bootstrap);
-  const reduceMotion = useStore((s) => s.prefs.reduceMotion);
-  const activeTab = useStore((s) => s.activeTab);
-  const onboarded = useStore((s) => s.prefs.onboarded);
-  const showOnboarding = useStore((s) => s.showOnboarding);
-  const initAuth = useAuth((s) => s.init);
-  const authStatus = useAuth((s) => s.status);
-  const authUserId = useAuth((s) => s.user?.id ?? null);
-  const adoptAccount = useStore((s) => s.adoptAccount);
-  const revertToGuest = useStore((s) => s.revertToGuest);
-  const syncOwner = useRef<string>('guest');
-  const kb = useKeyboardInset();
+export function App() {
+  const route = useRoute();
+  const framed = useFramed();
+  const onboarded = useStore((s) => s.onboarded);
 
-  // Route progress to the account (pull + merge + push) on sign-in, and back to
-  // the local guest cache on sign-out once bootstrap has hydrated. The store's
-  // raw-session listener may begin the same transition earlier for immediate
-  // privacy revocation; its target/ready guards make this profile-backed call
-  // idempotent.
+  // first visit lands on the welcome screen; deep links still work
   useEffect(() => {
-    if (!hydrated) return;
-    if (authStatus === 'authed' && authUserId) {
-      if (syncOwner.current !== authUserId) {
-        syncOwner.current = authUserId;
-        void adoptAccount(authUserId);
-      }
-    } else if (authStatus === 'guest' && syncOwner.current !== 'guest') {
-      syncOwner.current = 'guest';
-      void revertToGuest();
-    }
-  }, [authStatus, authUserId, hydrated, adoptAccount, revertToGuest]);
+    if (!location.hash && !onboarded) navigate({ name: 'welcome' }, { replace: true });
+    else if (!location.hash) navigate({ name: 'council' }, { replace: true });
+  }, [onboarded]);
 
-  // opening night claims the entrance — the brief curtain stands down
+  // scroll-to-top per route
   useEffect(() => {
-    if (showOnboarding) curtainDone = true;
-  }, [showOnboarding]);
+    document.querySelector('.screen-scroll')?.scrollTo({ top: 0 });
+  }, [route.name]);
 
-  useEffect(() => {
-    void bootstrap();
-    void initAuth();
-  }, [bootstrap, initAuth]);
+  const tab = tabFor(route);
+  const night = route.name === 'welcome' || route.name === 'council' || route.name === 'signup' || route.name === 'signin';
 
-  const appStyle = {
-    ...(kb > 0 ? { paddingBottom: kb } : {}),
-    // exposed so absolute-positioned overlays (ask panel, auth) can lift their
-    // own inputs above the on-screen keyboard, which the .app padding can't reach
-    '--kb': `${kb}px`,
-  } as CSSProperties;
-
-  // Guest-first: the app is always usable without an account (the offline owl
-  // answers). Signing in — via the <Auth /> members-door overlay — turns on
-  // cross-device sync, chat history, and the live memory owl (owl-chat is
-  // JWT-gated, so a guest silently gets the offline brain).
-  const ready = hydrated;
+  let screen: React.ReactNode;
+  switch (route.name) {
+    case 'welcome':
+      screen = <WelcomeScreen />;
+      break;
+    case 'signup':
+      screen = <AuthScreen mode="signup" />;
+      break;
+    case 'signin':
+      screen = <AuthScreen mode="signin" />;
+      break;
+    case 'interests':
+      screen = <InterestsScreen />;
+      break;
+    case 'council':
+      screen = <CouncilScreen />;
+      break;
+    case 'discussion':
+      screen = <DiscussionScreen id={route.id} />;
+      break;
+    case 'summary':
+      screen = <SummaryScreen id={route.id} />;
+      break;
+    case 'book':
+      screen = <BookScreen id={route.id} councilId={route.council} />;
+      break;
+    case 'read':
+      screen = <ReaderScreen id={route.id} councilId={route.council} />;
+      break;
+    case 'reading':
+      screen = <ReadingScreen />;
+      break;
+    case 'library':
+      screen = <LibraryScreen />;
+      break;
+    case 'social':
+      screen = <SocialScreen />;
+      break;
+    case 'profile':
+      screen = <ProfileScreen />;
+      break;
+    case 'settings':
+      screen = <SettingsScreen />;
+      break;
+  }
 
   return (
-    <div
-      className={`app b${reduceMotion ? ' no-motion' : ''}`}
-      id="app"
-      data-mode="night"
-      data-tab={activeTab}
-      data-kb={kb > 0 ? 'open' : 'closed'}
-      style={appStyle}
-    >
-      {ready && (
-        <>
-          <main className="screens">
-            <TodayScreen />
-            <DiscoverScreen />
-            <ProfileScreen />
-          </main>
-          <BottomNav />
-          <GuestLevelButton />
-          <Backdrop />
-          <Sheet />
-          <EbookReader />
-          <UploadModal />
-          <History />
-          <Letter />
-          <Settings />
-          <LobbyStand />
-          <MirrorRoom />
-          <Onboarding />
-          <Auth />
-          <IntroCard />
-          {onboarded && !showOnboarding && !curtainDone && !reduceMotion && <PlaybillCurtain />}
-          <SelectionBar />
-          {/* one feedback anchor: the receipt stacks ABOVE the toast, never over it */}
-          <div className="pb-callouts">
-            <EconStrip />
-            <Toast />
-          </div>
-          <BurstLayer />
-        </>
-      )}
+    <div className="desk">
+      <div className={`phone ${framed ? 'framed' : ''}`}>
+        {framed && <div className="notch" aria-hidden="true" />}
+        <div className={`screen-clip ${night ? 'night' : ''} ${tab ? '' : 'no-nav'}`}>
+          {framed && <StatusBar />}
+          {screen}
+          {tab && <Nav active={tab} />}
+          <ToastHost />
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,110 +1,99 @@
 /* ============================================================
-   owlry — design tokens
-   Palette ported from the mockup; fluid type/space scale and a
-   contrast-safe secondary ink added for the mobile-first pass.
+   owlry — design tokens, lifted from the "Walk with Great Minds." poster.
+
+   Two rooms: the NIGHT room (welcome, the council table) is near-black with
+   one warm lamp; the DAY room (everything after a question is asked) is
+   cream paper with white cards. Yellow is the only brand colour and it is
+   used for exactly three things: the primary action, the active nav item,
+   and the period in the wordmark.
    ============================================================ */
 :root {
-  --cream: #FAF4E6;
-  --paper: #EDE3CC;
-  --paper2: #D9CFB8;
-  --ink: #1A1A1A;
-  --green: #156D44;
-  --yellow: #FFC017;
-  --gold: #E5A50A;
-  --mut: #6B6B6B;
-  /* --fade was #A09683 (~2.7:1 on cream — failed WCAG AA). Darkened to
-     ~4.8:1 so the many small secondary labels are legible. Use --hair for
-     the old light tone on purely decorative hairlines. */
-  --fade: #736B57;
-  --hair: #A09683;
+  /* brand */
+  --yellow: #FFD100;
+  --yellow-2: #F0C200;        /* pressed */
+  --yellow-soft: #FFF2B3;     /* highlight marker, chart fill */
+  --yellow-ink: #141414;      /* text on yellow */
 
-  /* device safe-area insets (notches, home indicators) */
+  /* night room */
+  --night: #0F1013;
+  --night-2: #17181D;
+  --night-3: #21232A;
+  --night-line: rgba(255, 255, 255, 0.10);
+  --night-text: #F5F2EA;
+  --night-mut: #A7A49C;
+  --lamp: #F5B942;            /* the one warm bulb */
+
+  /* day room */
+  --cream: #F6F3EC;
+  --paper: #FFFFFF;
+  --paper-2: #F0ECE3;
+  --line: #E7E2D7;
+  --line-2: #D9D3C5;
+  --ink: #141414;
+  --ink-2: #2E2D2A;
+  --mut: #6E6A62;             /* ≥4.5:1 on cream */
+  --hint: #9B968C;            /* placeholders, decorative only */
+
+  /* the five owls */
+  --owl-teal: #2FB8A6;
+  --owl-violet: #8A5CE0;
+  --owl-yellow: #FFC93C;
+  --owl-orange: #F5883A;
+  --owl-green: #4DB36B;
+  --owl-blue: #4C86F5;
+
+  /* interest tints */
+  --tint-health: #35A56B;
+  --tint-career: #B07A2A;
+  --tint-investing: #2E9E63;
+  --tint-relationships: #E2483C;
+  --tint-literature: #24304A;
+  --tint-other: #4A4844;
+
+  /* shape */
+  --r-card: 18px;
+  --r-card-lg: 24px;
+  --r-input: 22px;
+  --r-pill: 999px;
+  --shadow-card: 0 1px 2px rgba(20, 20, 20, 0.05), 0 6px 20px rgba(20, 20, 20, 0.06);
+  --shadow-float: 0 12px 40px rgba(0, 0, 0, 0.18);
+
+  /* type */
+  --font-display: 'Archivo', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-read: 'Literata', Georgia, 'Times New Roman', serif;
+  --font-hand: 'Caveat', 'Segoe Print', 'Bradley Hand', cursive;
+  --font-wordmark: 'Rubik', 'Archivo', 'Inter', sans-serif;
+
+  --t-marquee: clamp(2.75rem, 12vw, 3.6rem); /* WALK WITH GREAT MINDS. */
+  --t-display: 2rem;      /* 32 — screen titles */
+  --t-title: 1.375rem;    /* 22 — card / modal titles */
+  --t-heading: 1.0625rem; /* 17 — section heads */
+  --t-body: 1rem;         /* 16 — never smaller for inputs (iOS zoom) */
+  --t-small: 0.875rem;    /* 14 */
+  --t-label: 0.8125rem;   /* 13 */
+  --t-micro: 0.75rem;     /* 12 — the floor */
+
+  --lh-display: 1.02;
+  --lh-tight: 1.2;
+  --lh-ui: 1.45;
+  --lh-read: 1.7;
+
+  --track-display: -0.035em;
+  --track-title: -0.02em;
+  --track-label: 0.02em;
+  --track-caps: 0.14em;
+
+  /* safe areas + viewport */
   --sat: env(safe-area-inset-top, 0px);
   --sab: env(safe-area-inset-bottom, 0px);
-  --sal: env(safe-area-inset-left, 0px);
-  --sar: env(safe-area-inset-right, 0px);
-
-  /* The theatre always fills the current viewport. Older engines use vh; the
-     @supports block below upgrades this to Safari's dynamic viewport so
-     collapsing browser chrome cannot leave a second, scrollable canvas. */
   --app-h: 100vh;
+  --nav-h: 64px;
 
-  /* The stage runs edge to edge, while editorial content keeps a readable
-     measure on tablets and desktop. */
-  --content-max: 760px;
-
-  /* ============================================================
-     THE TYPE RAMP
-
-     Ten roles, in rem, root 16px. Replaces ~50 ad-hoc px sizes and ~45
-     letter-spacing values that had drifted across three stylesheets.
-     Families come from type.css (--font-display / -reading / -chrome).
-
-     Two rules worth keeping in mind when extending this:
-       · small text gets OPEN tracking, display gets TIGHT tracking
-         (most systems do this backwards, or skip it);
-       · 0.75rem/12px is the floor for anything a person reads. Book-jacket
-         artwork is the only exemption.
-     ============================================================ */
-
-  /* sizes */
-  --t-display-xl: 2.5rem;    /* 40px — hero / onboarding marquees        */
-  --t-display:    2rem;      /* 32px — hub screen titles                 */
-  --t-title:      1.5rem;    /* 24px — overlay titles, book titles ≥24   */
-  --t-heading:    1.125rem;  /* 18px — section heads, card titles        */
-  --t-reading:    1rem;      /* 16px — prose (see the measure note below) */
-  --t-body:       1rem;      /* 16px — UI body, rows, inputs (see below) */
-  --t-callout:    0.875rem;  /* 14px — secondary UI copy, pull-quotes    */
-  --t-label:      0.8125rem; /* 13px — chips, buttons, tabs (uppercase)  */
-  --t-micro:      0.75rem;   /* 12px — metadata only. THE FLOOR.         */
-
-  /* --t-body is exactly 1rem/16px on purpose: 16px is the threshold below
-     which iOS auto-zooms a focused input. Inputs can now just take the body
-     token instead of carrying a magic number.
-
-     --t-reading shares that 16px because it was MEASURED, not guessed: the
-     app's text column is ~312px on a 390px phone, and at 18px Literata that
-     yields a 31-character measure — well under the 35–45 a line wants before
-     the eye starts working to find the next one. 16px lands at ~35. Reading
-     and body being the same size is fine; they differ by family and leading
-     (Literata at 1.65 vs Inter at 1.5), which is what separates prose from UI.
-     Literata's large x-height also makes 16px read bigger than it measures. */
-
-  /* weights — one scale, ending the 800-vs-600 split between the two sheets */
-  --fw-serif: 430;         /* Fraunces/Literata text weight */
-  --fw-serif-strong: 600;
-  --fw-ui: 400;
-  --fw-ui-medium: 500;
-  --fw-ui-semibold: 600;   /* THE label weight — replaces legacy 800 at small sizes */
-  --fw-ui-bold: 700;       /* scarce: ≥13px true bold, numerals */
-
-  /* line-heights */
-  --lh-display: 1.05;
-  --lh-tight: 1.25;
-  --lh-ui: 1.45;
-  --lh-body: 1.5;
-  --lh-read: 1.65;
-
-  /* tracking — 45 scattered values collapse to four, in em so they scale */
-  --track-display: -0.02em;  /* large display type wants to close up      */
-  --track-title: -0.015em;
-  --track-label: 0.06em;     /* ALL-CAPS ticket-stub labels               */
-  --track-wide: 0.3em;       /* ceremonial: onboarding/auth credit lines  */
-
-  /* ---- icon sizes ----
-     Icons are drawn with font-size (Tabler's glyphs and our inline SVG both
-     scale off it) but they are NOT text: nobody reads them, so they answer to
-     optical balance beside a label rather than to the reading floor. Their own
-     scale keeps them out of the type ramp — and lets the lint rule mean
-     exactly one thing: "text sizes come from the ramp". */
-  --icon-xs: 11px;
-  --icon-sm: 12px;
-  --icon-md: 13px;
-  --icon-lg: 14px;
-  --icon-xl: 16px;
-  --icon-2xl: 19px;
-  --icon-3xl: 26px;
-  --icon-4xl: 36px;
+  /* motion */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+  --dur: 220ms;
 }
 
 @supports (height: 100dvh) {

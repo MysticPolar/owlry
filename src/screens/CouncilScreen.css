@@ -1,0 +1,41 @@
+.council-head { display: flex; align-items: center; justify-content: space-between; }
+.council-titles { text-align: center; margin-top: 2px; }
+.council-title { font-size: 2.1rem; }
+.council-sub { margin-top: 4px; }
+
+.council-stage { position: relative; margin-top: 4px; }
+.council-hand { position: absolute; right: 18px; top: 26px; font-size: 1.05rem; transform: rotate(-7deg); max-width: 120px; white-space: normal; text-align: center; line-height: 1.05; }
+
+/* the table + seats */
+.table-wrap { position: relative; width: 100%; max-width: 360px; margin: 0 auto; aspect-ratio: 360 / 300; }
+.table-svg { width: 100%; height: 100%; display: block; }
+.seat { position: absolute; width: 0; height: 0; display: grid; place-items: center; }
+.seat-0 { left: 14%; top: 66%; }
+.seat-1 { left: 50%; top: 40%; }
+.seat-2 { left: 86%; top: 66%; }
+.seat-empty { display: block; width: 14px; height: 14px; border-radius: 50%; background: rgba(255, 255, 255, 0.06); box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08); }
+.seat.on { animation: seat-in 480ms var(--ease-spring) both; }
+.seat-btn { display: grid; justify-items: center; gap: 4px; }
+.seat-name { font-size: var(--t-micro); font-weight: 700; color: var(--night-text); background: rgba(16, 17, 19, 0.7); padding: 2px 8px; border-radius: var(--r-pill); white-space: nowrap; }
+@keyframes seat-in { from { opacity: 0; transform: translateY(14px) scale(0.6); } to { opacity: 1; transform: none; } }
+
+/* the ask */
+.council-ask { margin-top: 2px; }
+.council-prompt { font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; letter-spacing: -0.01em; margin-bottom: 10px; color: var(--night-text); }
+.suggestions { display: grid; gap: 8px; margin-top: 14px; }
+.suggestion {
+  width: 100%; text-align: left; min-height: 44px; padding: 10px 16px; border-radius: var(--r-pill);
+  background: var(--night-2); box-shadow: inset 0 0 0 1px var(--night-line); color: var(--night-text);
+  font-size: var(--t-small); font-weight: 500; transition: background var(--dur);
+}
+.suggestion:active { background: var(--night-3); }
+
+/* the introductions */
+.intros { display: grid; gap: 10px; opacity: 0; transform: translateY(8px); transition: opacity 300ms var(--ease-out), transform 300ms var(--ease-out); margin-top: 2px; }
+.intros.show { opacity: 1; transform: none; }
+.intros-label { color: var(--night-mut); }
+.intro-card { display: flex; gap: 12px; padding: 12px 14px; align-items: flex-start; animation: screen-in 400ms var(--ease-out) both; }
+.intro-name { font-weight: 700; font-size: var(--t-body); }
+.intro-label { font-weight: 500; color: var(--night-mut); font-size: var(--t-small); }
+.intro-why { margin-top: 2px; color: var(--night-mut); line-height: 1.4; }
+.micro-note { font-size: var(--t-micro); color: var(--night-mut); line-height: 1.4; margin: 2px 4px 4px; }

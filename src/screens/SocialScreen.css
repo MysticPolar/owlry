@@ -1,0 +1,40 @@
+.social-head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+.social-tabs { display: flex; gap: 18px; }
+.social-tabs button { font-family: var(--font-display); font-weight: 800; font-size: 1.125rem; letter-spacing: -0.015em; color: var(--hint); padding: 6px 0; border-bottom: 2px solid transparent; }
+.social-tabs button.on { color: var(--ink); border-bottom-color: var(--ink); }
+.social-plus { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--ink); color: #fff; }
+.social-plus svg { width: 22px; height: 22px; }
+.feed { display: grid; align-content: start; }
+.post { padding: 12px 0 6px; border-bottom: 1px solid var(--line); }
+.post-head { display: flex; align-items: center; gap: 10px; padding-bottom: 10px; }
+.post-handle { font-weight: 700; font-size: var(--t-small); }
+.post-time { font-size: 11px; color: var(--mut); }
+.quote-card {
+  --qc: #2B2A33;
+  margin: 0 20px; aspect-ratio: 1 / 0.92; border-radius: 18px; padding: 26px 22px; display: flex; flex-direction: column; justify-content: center; gap: 12px;
+  background:
+    radial-gradient(120% 80% at 10% 0%, rgba(255, 255, 255, 0.16), transparent 55%),
+    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 28px),
+    linear-gradient(160deg, color-mix(in srgb, var(--qc) 88%, #fff) 0%, var(--qc) 60%, color-mix(in srgb, var(--qc) 70%, #000) 100%);
+  color: #FFF8EC; box-shadow: var(--shadow-card); position: relative; overflow: hidden;
+}
+.quote-card::after { content: ''; position: absolute; right: -30px; bottom: -40px; width: 160px; height: 200px; border-radius: 8px; background: rgba(255, 255, 255, 0.06); transform: rotate(-14deg); }
+.quote-card-text { font-family: var(--font-read); font-weight: 500; font-size: 1.2rem; line-height: 1.45; letter-spacing: -0.005em; position: relative; z-index: 1; text-wrap: pretty; }
+.quote-card-attr { font-size: var(--t-label); opacity: 0.85; font-weight: 500; position: relative; z-index: 1; }
+.post-actions { display: flex; align-items: center; gap: 14px; padding-top: 10px; }
+.post-action { display: inline-flex; align-items: center; gap: 5px; color: var(--ink); font-size: var(--t-label); font-weight: 600; min-height: 36px; }
+.post-action svg { width: 24px; height: 24px; }
+.post-action.on { color: var(--tint-relationships); }
+.post-action.on svg { color: var(--tint-relationships); }
+.post-caption { padding-top: 2px; padding-bottom: 6px; display: grid; gap: 2px; }
+.post-prompt { font-size: 11px; color: var(--mut); font-style: italic; }
+.post-caption p { font-size: var(--t-small); line-height: 1.45; }
+.post-caption b { font-weight: 700; }
+
+.compose { display: grid; gap: 10px; }
+.compose-picks { display: grid; gap: 8px; }
+.compose-pick { width: 100%; text-align: left; display: grid; gap: 2px; padding: 10px 12px; border-radius: 12px; background: var(--paper-2); box-shadow: inset 0 0 0 1px transparent; }
+.compose-pick.on { box-shadow: inset 0 0 0 2px var(--ink); background: var(--yellow-soft); }
+.compose-pick-text { font-family: var(--font-read); font-style: italic; font-size: var(--t-small); line-height: 1.45; }
+.compose-quote, .compose-caption { padding: 12px 14px; line-height: 1.45; min-height: 0; resize: none; }
+.compose-label { font-family: var(--font-display); font-weight: 800; font-size: 1.0625rem; letter-spacing: -0.01em; margin-top: 4px; }
