@@ -25,6 +25,7 @@ export function InterestsScreen() {
   const interests = useStore((s) => s.interests);
   const setInterests = useStore((s) => s.setInterests);
   const setOnboarded = useStore((s) => s.setOnboarded);
+  const onboarded = useStore((s) => s.onboarded);
   const [picked, setPicked] = useState<Area[]>(interests);
   const [lastPicked, setLastPicked] = useState<Area | null>(null);
 
@@ -40,7 +41,7 @@ export function InterestsScreen() {
 
   return (
     <div className="screen interests">
-      <TopBar backFallback={{ name: 'welcome' }} className="top-inset" />
+      <TopBar backFallback={onboarded ? { name: 'council' } : { name: 'welcome' }} className="top-inset" />
       <div className="screen-scroll pad interests-body">
         <div className="interests-titlerow">
           <h1 className="display interests-title">

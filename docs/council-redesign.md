@@ -8,7 +8,9 @@ phase and later design passes know what is deliberate.*
 
 The complete journey, interactive end to end, with realistic content:
 
-1. **Welcome → interests → council room.** Users can explore without an
+1. **Path → council room, every visit.** Opening the app lands on the interest
+   screen (previous picks pre-selected), then the council; the welcome screen
+   appears only on the first visit. Users can explore without an
    account (the welcome screen's tertiary link and the interest screen's
    "Skip and ask a question"). Interests personalise the suggested questions
    and can be changed later from the interests screen; the free-text matcher

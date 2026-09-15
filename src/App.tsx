@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useRoute, tabFor, navigate } from './app/router';
+import { useRoute, tabFor, navigate, parseRoute } from './app/router';
 import { useStore } from './store/useStore';
 import { Nav, StatusBar, ToastHost } from './components/chrome';
 import { WelcomeScreen } from './screens/WelcomeScreen';
@@ -33,11 +33,16 @@ export function App() {
   const framed = useFramed();
   const onboarded = useStore((s) => s.onboarded);
 
-  // first visit lands on the welcome screen; deep links still work
+  // Every visit starts by choosing a path: a plain open (or a tab URL) lands on the
+  // interest screen — the welcome screen only on the very first visit. Deep links
+  // into a discussion, summary, book or reader still open directly.
   useEffect(() => {
-    if (!location.hash && !onboarded) navigate({ name: 'welcome' }, { replace: true });
-    else if (!location.hash) navigate({ name: 'council' }, { replace: true });
-  }, [onboarded]);
+    const first = parseRoute(location.hash);
+    const isTab = !location.hash || tabFor(first) !== undefined;
+    if (!onboarded) navigate({ name: 'welcome' }, { replace: true });
+    else if (isTab) navigate({ name: 'interests' }, { replace: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // scroll-to-top per route
   useEffect(() => {
