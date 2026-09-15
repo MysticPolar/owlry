@@ -1,0 +1,87 @@
+name: Deploy Council preview to GitHub Pages
+
+# A repository gets one GitHub Pages site, and it already serves the
+# production app (renovation/homescreen) at the root. This workflow keeps
+# that in place and publishes the Council redesign from this branch under
+# /council/, so the redesign can be reviewed at a stable URL without
+# replacing the live app:
+#
+#   https://app.owlry.ai/council/   (also <owner>.github.io/owlry/council/)
+#
+# Note: the production branch's own deploy workflow publishes only the root
+# app; if it runs after this one, re-run this workflow to restore /council/.
+
+on:
+  push:
+    branches: [claude/affectionate-knuth-dpk8iy, worktree-TheCouncilRoom]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the Council redesign (this branch)
+        uses: actions/checkout@v4
+        with:
+          path: council
+      - name: Check out the production app (renovation/homescreen)
+        uses: actions/checkout@v4
+        with:
+          ref: renovation/homescreen
+          path: prod
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Build the production app (root)
+        working-directory: prod
+        env:
+          BASE_PATH: ./
+          VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ vars.VITE_SUPABASE_ANON_KEY }}
+        run: |
+          npm ci
+          npm run build
+
+      - name: Build the Council redesign (/council/)
+        working-directory: council
+        env:
+          BASE_PATH: ./
+        run: |
+          npm ci
+          npm run build
+
+      - name: Assemble the site
+        run: |
+          mkdir -p site
+          cp -R prod/dist/. site/
+          mkdir -p site/council
+          cp -R council/dist/. site/council/
+          # the custom domain must stay attached
+          cp prod/public/CNAME site/CNAME 2>/dev/null || cp council/public/CNAME site/CNAME
+          ls site site/council
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}council/
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
