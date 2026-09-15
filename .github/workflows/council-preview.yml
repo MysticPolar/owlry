@@ -51,8 +51,15 @@ jobs:
           VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ vars.VITE_SUPABASE_ANON_KEY }}
         run: |
+          # The production app is a PWA whose service worker answers every
+          # navigation on the origin with its own page — /council/ included,
+          # in any browser that has opened the classic app. Keep /council/
+          # out of that fallback in the worker we publish (one workbox option;
+          # see scripts/patch-prod-sw.mjs and docs/council-preview.md).
+          node ../council/scripts/patch-prod-sw.mjs vite.config.ts
           npm ci
           npm run build
+          grep -q "council" dist/sw.js || { echo "the published service worker does not exclude /council/"; exit 1; }
 
       # The Council build talks to the same Supabase project as the root app
       # once the repository variable COUNCIL_BACKEND is "on" — flip it after
@@ -75,6 +82,14 @@ jobs:
           cp -R prod/dist/. site/
           mkdir -p site/council
           cp -R council/dist/. site/council/
+          # Browsers that still hold the old worker get the production page at
+          # /council/ once more; its relative script paths then land on these
+          # shims, which unregister the worker and reload (scripts/sw-escape-shims.mjs).
+          # The root page that is live right now may predate this build, so
+          # its script names are shimmed too.
+          live=$(curl -fsS --max-time 20 https://app.owlry.ai/ | grep -o 'assets/[A-Za-z0-9_.-]*\.\(js\|css\)' | sed 's|^assets/||' | sort -u | tr '\n' ' ' || true)
+          echo "live root assets: ${live:-none}"
+          node council/scripts/sw-escape-shims.mjs prod/dist site/council $live
           # the custom domain must stay attached
           cp prod/public/CNAME site/CNAME 2>/dev/null || cp council/public/CNAME site/CNAME
           ls site site/council

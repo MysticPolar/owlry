@@ -22,6 +22,11 @@ npm run preview    # serve the production build
 Open it on a phone (or a narrow window) for the full-bleed app; on a desktop
 it renders inside a phone frame on a dark desk, like the poster.
 
+The branch is published for review at **https://app.owlry.ai/council/**, next
+to the classic app at the root. If that page is blank in a browser that has
+used the classic app, see `docs/council-preview.md` (its offline worker used
+to capture `/council/`; the preview now repairs that on its own).
+
 ## The journey
 
 Ask a question → explore three perspectives → understand the takeaways → open
