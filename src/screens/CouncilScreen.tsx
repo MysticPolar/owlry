@@ -63,13 +63,18 @@ export function CouncilScreen() {
     <div className="screen night council">
       <div className="council-head top-inset pad">
         <Wordmark size={24} />
-        {convening ? (
-          <button type="button" className="iconbtn" aria-label="Ask something else" onClick={() => setActive(null)}>
-            <IconRefresh stroke={2} />
-          </button>
-        ) : (
-          <span style={{ width: 40 }} />
-        )}
+        <button
+          type="button"
+          className="iconbtn"
+          aria-label={convening ? 'Ask something else' : 'Start over'}
+          onClick={() => {
+            setActive(null);
+            setText('');
+            inputRef.current?.focus();
+          }}
+        >
+          <IconRefresh stroke={2} />
+        </button>
       </div>
       <div className="screen-scroll council-body nav-space">
         <div className="pad council-titles">

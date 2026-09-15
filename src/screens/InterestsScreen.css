@@ -22,9 +22,9 @@
 .tile-text { display: grid; gap: 1px; flex: 1 1 auto; min-width: 0; }
 .tile-title { font-family: var(--font-display); font-weight: 800; font-size: 1.0625rem; letter-spacing: -0.01em; }
 .tile-sub { font-size: var(--t-small); color: var(--mut); }
-.tile-check { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--paper-2); color: transparent; transition: background var(--dur), color var(--dur); }
+.tile-check { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--yellow); color: var(--yellow-ink); opacity: 0; transform: scale(0.6); transition: opacity var(--dur), transform var(--dur) var(--ease-spring); }
 .tile-check svg { width: 15px; height: 15px; }
-.tile.on .tile-check { background: var(--yellow); color: var(--yellow-ink); }
+.tile.on .tile-check { opacity: 1; transform: none; }
 .interests-good { position: absolute; right: 8px; bottom: -14px; font-size: 1.05rem; color: var(--ink-2); z-index: 2; }
 .interests-actions { display: grid; gap: 6px; justify-items: center; padding-top: 10px; padding-bottom: calc(var(--sab) + 16px); background: linear-gradient(180deg, transparent, var(--cream) 30%); position: relative; z-index: 2; padding-right: 96px; }
 .interests-actions .btn { width: 100%; }

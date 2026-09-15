@@ -14,6 +14,7 @@ export function WelcomeScreen() {
   return (
     <div className="screen night welcome">
       <div className="welcome-spot" aria-hidden="true" />
+      <div className="welcome-cone" aria-hidden="true" />
       <div className="welcome-head top-inset pad">
         <Wordmark size={28} />
         <Owl color="orange" size={54} className="welcome-owl" title="An owl, perched in the corner" />

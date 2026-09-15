@@ -1,6 +1,16 @@
 import type { Figure } from '../content/types';
 import { Avatar } from './Avatar';
 
+/* book spines for the wall behind the table — deterministic so the room never flickers */
+const SPINE_COLORS = ['#4A3220', '#3B2816', '#5A3F26', '#2E2014', '#6B4A2C', '#503A24'];
+const SPINES = Array.from({ length: 27 }, (_, i) => ({
+  x: 4 + i * 13.2,
+  w: 9 + (i % 3),
+  h: 24 + ((i * 7) % 5) * 3,
+  c: SPINE_COLORS[(i * 5) % SPINE_COLORS.length],
+}));
+const SHELVES = [84, 132, 180];
+
 /* ============================================================
    The round table with three seats, under one hanging lamp. Seats are
    empty until a question is asked; then the avatars pop in one by one.
@@ -35,7 +45,25 @@ export function CouncilTable({
           <filter id="ct-glow" x="-100%" y="-100%" width="300%" height="300%">
             <feGaussianBlur stdDeviation="6" />
           </filter>
+          <linearGradient id="ct-fade" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor="#0F1013" stopOpacity="0.9" />
+            <stop offset="0.35" stopColor="#0F1013" stopOpacity="0.35" />
+            <stop offset="1" stopColor="#0F1013" stopOpacity="0.85" />
+          </linearGradient>
         </defs>
+        {/* the room: a dim wall of book spines behind the table (poster frame 3) */}
+        <g className="room" opacity="0.55">
+          <rect x="0" y="0" width="360" height="184" fill="#171310" />
+          {SHELVES.map((shelfY, s) => (
+            <g key={s}>
+              {SPINES.map((sp, i) => (
+                <rect key={i} x={sp.x} y={shelfY - sp.h} width={sp.w} height={sp.h} rx="1" fill={sp.c} />
+              ))}
+              <rect x="0" y={shelfY} width="360" height="5" fill="#2A1F16" />
+            </g>
+          ))}
+          <rect x="0" y="0" width="360" height="184" fill="url(#ct-fade)" />
+        </g>
         {/* lamp */}
         <line x1="180" y1="6" x2="180" y2="38" stroke="#4A4B52" strokeWidth="2" />
         <path d="M148 38 L212 38 L232 66 L128 66 Z" fill="#26272D" stroke="#3B3C44" strokeWidth="1" />

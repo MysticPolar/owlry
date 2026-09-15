@@ -16,7 +16,9 @@ export function AuthScreen({ mode }: { mode: 'signup' | 'signin' }) {
   const [password, setPassword] = useState('');
 
   const finish = (n?: string) => {
-    signIn(n ?? name, n ? n.toLowerCase().replace(/[^a-z0-9]+/g, '.') : undefined);
+    // only derive a new handle when the reader actually typed a name; otherwise keep the demo profile as is
+    const typed = name.trim();
+    signIn(n ?? typed, typed ? typed.toLowerCase().replace(/[^a-z0-9]+/g, '.') : undefined);
     setOnboarded(true);
     navigate(mode === 'signup' ? { name: 'interests' } : { name: 'council' }, { replace: true });
   };
