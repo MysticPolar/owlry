@@ -54,10 +54,17 @@ jobs:
           npm ci
           npm run build
 
+      # The Council build talks to the same Supabase project as the root app
+      # once the repository variable COUNCIL_BACKEND is "on" — flip it after
+      # the "Deploy Supabase backend" workflow has run for this branch, so the
+      # preview never points at tables that don't exist yet. Until then the
+      # preview is the offline prototype (scripted councils, local library).
       - name: Build the Council redesign (/council/)
         working-directory: council
         env:
           BASE_PATH: ./
+          VITE_SUPABASE_URL: ${{ vars.COUNCIL_BACKEND == 'on' && vars.VITE_SUPABASE_URL || '' }}
+          VITE_SUPABASE_ANON_KEY: ${{ vars.COUNCIL_BACKEND == 'on' && vars.VITE_SUPABASE_ANON_KEY || '' }}
         run: |
           npm ci
           npm run build

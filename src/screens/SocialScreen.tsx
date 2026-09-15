@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IconHeart, IconHeartFilled, IconMessageCircle, IconSend, IconBookmark, IconBookmarkFilled, IconPlus, IconDots } from '@tabler/icons-react';
 import { useStore } from '../store/useStore';
+import { refreshFeed } from '../lib/sync';
 import { maybeBook } from '../content/books';
 import { timeAgo } from '../app/ids';
 import { PersonAvatar } from '../components/Avatar';
@@ -22,6 +23,11 @@ export function SocialScreen() {
   const showToast = useStore((s) => s.showToast);
   const [tab, setTab] = useState<'foryou' | 'following'>('foryou');
   const [compose, setCompose] = useState(false);
+
+  // signed in: the cloud feed is refreshed each time the tab opens (a no-op otherwise)
+  useEffect(() => {
+    void refreshFeed();
+  }, []);
 
   const shown = tab === 'foryou' ? posts : posts.filter((p) => p.mine || following.includes(p.author.handle));
 

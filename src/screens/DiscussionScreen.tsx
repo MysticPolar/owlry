@@ -50,10 +50,12 @@ export function DiscussionScreen({ id }: { id: string }) {
   useEffect(() => {
     if (!session || revealed >= total) return;
     const next = session.messages[revealed];
+    // the live council is still writing this line — the typing indicator stays up until it lands
+    if (session.pending?.includes(next.id)) return;
     const delay = reduceMotion ? 120 : typingDelay(next);
     const t = setTimeout(() => reveal(session.id), delay);
     return () => clearTimeout(t);
-  }, [session?.id, revealed, total, reveal, reduceMotion]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [session?.id, revealed, total, reveal, reduceMotion, session?.pending]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // keep the newest line in view
   useLayoutEffect(() => {

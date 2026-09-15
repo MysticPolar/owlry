@@ -16,6 +16,14 @@ name: Deploy Supabase backend
 # owl-chat + owl-peek are JWT-gated (default); book-proxy and
 # signup-with-invite are public (--no-verify-jwt) because guests call them
 # before a session exists.
+#
+# The Council Room (docs/council-backend.md) adds one additive migration and
+# two functions: council-chat (JWT-gated) and council-signup (public — it
+# creates the account). They deploy with everything else; to deploy them
+# from the Council branch before it lands on the live branch, run this
+# workflow from the Actions tab with that branch selected. Optional secret
+# COUNCIL_INVITE_REQUIRED=false (Edge Functions → Secrets) opens sign-up
+# without an invite code.
 
 on:
   workflow_dispatch:
@@ -32,6 +40,7 @@ on:
       - "supabase/migrations/20260728170000_owlry_season_ledger.sql"
       - "supabase/migrations/20260728170100_owlry_migrate_balance.sql"
       - "supabase/migrations/20260730120000_owlry_36_rows.sql"
+      - "supabase/migrations/20260915120000_owlry_council.sql"
 
 concurrency:
   group: supabase-backend
@@ -63,6 +72,7 @@ jobs:
             supabase/migrations/20260728170000_owlry_season_ledger.sql
             supabase/migrations/20260728170100_owlry_migrate_balance.sql
             supabase/migrations/20260730120000_owlry_36_rows.sql
+            supabase/migrations/20260915120000_owlry_council.sql
           )
           for migration in "${migrations[@]}"; do
             payload="$RUNNER_TEMP/$(basename "$migration").json"
@@ -76,6 +86,20 @@ jobs:
               --header "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
               --header "Content-Type: application/json" \
               --data-binary "@$payload"
+          done
+      - name: Verify the Council schema
+        env:
+          SUPABASE_ANON_KEY: ${{ vars.VITE_SUPABASE_ANON_KEY }}
+          SUPABASE_PROJECT_REF: ${{ vars.SUPABASE_PROJECT_REF }}
+        run: |
+          set -euo pipefail
+          for table in owlry_council_state owlry_council_sessions owlry_council_profiles owlry_council_posts; do
+            curl \
+              --fail-with-body \
+              --request GET \
+              --url "https://$SUPABASE_PROJECT_REF.supabase.co/rest/v1/$table?select=user_id&limit=0" \
+              --header "apikey: $SUPABASE_ANON_KEY" \
+              --header "Authorization: Bearer $SUPABASE_ANON_KEY"
           done
       - name: Verify progress and upload schema
         env:
@@ -114,6 +138,16 @@ jobs:
           SUPABASE_PROJECT_REF: ${{ vars.SUPABASE_PROJECT_REF }}
       - name: Deploy signup-with-invite (public — no JWT)
         run: supabase functions deploy signup-with-invite --no-verify-jwt --project-ref "$SUPABASE_PROJECT_REF"
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_REF: ${{ vars.SUPABASE_PROJECT_REF }}
+      - name: Deploy council-chat
+        run: supabase functions deploy council-chat --project-ref "$SUPABASE_PROJECT_REF"
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_REF: ${{ vars.SUPABASE_PROJECT_REF }}
+      - name: Deploy council-signup (public — no JWT)
+        run: supabase functions deploy council-signup --no-verify-jwt --project-ref "$SUPABASE_PROJECT_REF"
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
           SUPABASE_PROJECT_REF: ${{ vars.SUPABASE_PROJECT_REF }}

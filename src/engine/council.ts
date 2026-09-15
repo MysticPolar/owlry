@@ -142,7 +142,10 @@ export function rebuild(session: CouncilSession): CouncilSession {
   const messages = session.messages.map((m) => {
     if (m.kind !== 'figure' || m.seat === undefined || !m.slot) return m;
     const figureId = session.seats[m.seat];
-    return { ...m, figureId, segments: figureLines(script, session.seats, m.seat, m.slot, m.variant ?? 0, varsFor(m)) };
+    // live words belong to the thinker who said them — a replaced seat falls back to the script
+    const live = m.live && m.figureId === figureId ? m.live : undefined;
+    const scripted = figureLines(script, session.seats, m.seat, m.slot, m.variant ?? 0, varsFor(m));
+    return { ...m, figureId, live, segments: live ?? scripted };
   });
   return { ...session, messages };
 }
@@ -297,9 +300,25 @@ export interface Takeaways {
   context: string[];
 }
 
+/** the live council's cards, if it wrote them for exactly these seats */
+export function liveFor(session: CouncilSession) {
+  const l = session.live;
+  return l && l.seats.every((id, i) => id === session.seats[i]) ? l : undefined;
+}
+
 export function takeawaysFor(session: CouncilSession): Takeaways {
   const script = scriptFor(session);
   const seats = session.seats;
+  const live = liveFor(session);
+  if (live) {
+    return {
+      commonGround: live.takeaways.commonGround,
+      differences: seats.map((fid, i) => ({ figureId: fid, text: live.takeaways.differences[i] || seatScript(script, i, fid).differs })),
+      fits: live.takeaways.fits,
+      nextStep: live.takeaways.nextStep,
+      context: session.context,
+    };
+  }
   return {
     commonGround: fill(script.takeaways.commonGround, seats),
     differences: seats.map((fid, i) => ({ figureId: fid, text: seatScript(script, i, fid).differs })),
@@ -318,9 +337,11 @@ export interface ReadingRec {
 
 export function readingFor(session: CouncilSession): ReadingRec[] {
   const script = scriptFor(session);
+  const live = liveFor(session);
   const recs = session.seats.map((fid, i) => {
     const ss = seatScript(script, i, fid);
-    return { bookId: ss.bookId, figureId: fid, why: ss.bookWhy, bestStart: !!ss.bestStart };
+    const l = live?.reading[i];
+    return { bookId: ss.bookId, figureId: fid, why: l?.why || ss.bookWhy, bestStart: live ? !!l?.bestStart : !!ss.bestStart };
   });
   if (!recs.some((r) => r.bestStart)) recs[0].bestStart = true;
   return recs;
@@ -328,7 +349,20 @@ export function readingFor(session: CouncilSession): ReadingRec[] {
 
 export function introsFor(session: CouncilSession): { figureId: string; why: string }[] {
   const script = scriptFor(session);
-  return session.seats.map((fid, i) => ({ figureId: fid, why: seatScript(script, i, fid).why }));
+  const live = liveFor(session);
+  return session.seats.map((fid, i) => ({ figureId: fid, why: live?.intros[i] || seatScript(script, i, fid).why }));
+}
+
+/** the figure messages that are waiting for the live council, newest turn only: everything after the last user message */
+export function latestFigureMessages(session: CouncilSession): Message[] {
+  let last = -1;
+  for (let i = session.messages.length - 1; i >= 0; i--) {
+    if (session.messages[i].kind === 'user') {
+      last = i;
+      break;
+    }
+  }
+  return session.messages.slice(last + 1).filter((m) => m.kind === 'figure');
 }
 
 /** how long the typing indicator shows before a message lands: quick, scaled by length, never sluggish */

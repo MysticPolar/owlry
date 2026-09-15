@@ -22,14 +22,22 @@ the session scratchpad and is not part of the repo.
 - Simulation → `src/engine/council.ts`. Every figure message stores a `slot`
   so a replaced seat regenerates deterministically.
 - State → `src/store/useStore.ts` (Zustand + localStorage, key
-  `owlry-council-v1`). Bump `version` when the persisted shape changes.
+  `owlry-council-v1`). Bump `version` when the persisted shape changes. A
+  new durable field must also be named in `src/lib/sync/types.ts` +
+  `merge.ts`, or it is dropped on sign-in.
+- Backend seams → `src/lib/` (`supabase.ts` is null without env keys; auth,
+  sync, social, the live council all no-op on null). Server side lives in
+  `supabase/migrations/20260915120000_owlry_council.sql` and
+  `supabase/functions/council-*`; design notes in `docs/council-backend.md`.
 - Screens → `src/screens/*.tsx` with a css file each; shared primitives in
   `src/styles/base.css` and `src/components/`.
 
 ## Rules of the house
 
 - Only a figure's `quotes` may render as quotations; they must be verbatim and
-  carry a source. Everything else is paraphrase and is labelled as such.
+  carry a source. Everything else is paraphrase and is labelled as such. The
+  live council is held to the same rule in code (`_shared/council/quotes.ts`
+  and `src/lib/councilClient.ts`), not just in the prompt.
 - Reading guides are not the book's text and say so; public-domain passages
   name the translator.
 - Portraits must have a Wikimedia licence entry in `public/portraits/CREDITS.md`.

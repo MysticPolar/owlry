@@ -43,6 +43,16 @@ export interface Message {
   passage?: { bookId: string; text: string };
   /** system notices */
   sys?: 'replace';
+  /** words written by the live council for this seat; when present they replace the scripted `segments` */
+  live?: Segment[];
+}
+
+/** what the live council wrote for the cards and the intro; valid only while `seats` still match */
+export interface LiveOverrides {
+  seats: [string, string, string];
+  intros: string[];
+  takeaways: { commonGround: string; differences: string[]; fits: string; nextStep: string };
+  reading: { why: string; bestStart: boolean }[];
 }
 
 export interface Replacement {
@@ -50,6 +60,8 @@ export interface Replacement {
   from: string;
   to: string;
   ts: number;
+  /** the live words the replacement discarded, so Undo can put them back without another call */
+  restore?: { live?: LiveOverrides; lines: Record<string, Segment[]> };
 }
 
 export interface CouncilSession {
@@ -69,6 +81,11 @@ export interface CouncilSession {
   createdAt: number;
   updatedAt: number;
   saved: boolean;
+  /** 'live' once the council-chat function wrote the opening; absent = the scripted council */
+  source?: 'live';
+  live?: LiveOverrides;
+  /** message ids still waiting for the live council's words — playback pauses on them (never persisted to the cloud) */
+  pending?: string[];
 }
 
 export interface Progress {
@@ -100,6 +117,8 @@ export interface Post {
   likes: number;
   comments: number;
   mine?: boolean;
+  /** true for posts that live in the cloud feed (owlry_council_posts); seed posts are local */
+  remote?: boolean;
   /** the composer's prompt answered, for the "What did this change for you?" framing */
   prompt?: string;
 }
@@ -110,6 +129,9 @@ export interface UserProfile {
   bio: string;
   signedIn: boolean;
   initial: string;
+  /** set when signed in to a real account (Supabase auth.users id) */
+  id?: string;
+  email?: string;
 }
 
 export type TextSize = 'S' | 'M' | 'L';

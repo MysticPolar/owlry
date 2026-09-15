@@ -73,14 +73,11 @@ The complete journey, interactive end to end, with realistic content:
   Seneca, Epictetus, Cal Newport, Ryan Holiday, Russell, Fogg,
   Thich Nhat Hanh, Walker, Housel, Gottman, de Botton, Bloom, Borges, Harari).
 
-## Open questions for the backend phase
+## The backend phase
 
-- Which of the simulated pieces become live first: the council (model +
-  retrieval over the source works), or persistence/sync of sessions,
-  library and highlights? The store shape is ready for the latter; the engine
-  is ready for the former (`figureLines()`).
-- Accounts: the welcome/auth screens are mock; Supabase auth from the old app
-  can be reattached to `useStore.signIn`.
-- Book text: reading guides are placeholders for licensed excerpts or the
-  user's own ebook; the old app's foliate-js reader is a candidate for real
-  EPUBs.
+Done in `docs/council-backend.md`: the live council (`council-chat`), accounts
+(`council-signup` + Supabase Auth), cloud sync of the library, highlights and
+every council, and the shared feed — all on the classic owlry project, all
+optional (the prototype above is what runs with no keys). Still open: real
+book text (reading guides are placeholders for licensed excerpts or the
+reader's own ebook; the classic app's foliate-js reader is the candidate).

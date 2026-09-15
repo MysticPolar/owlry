@@ -5,9 +5,12 @@ group chat — agreeing, disagreeing, answering each other — and hand you a
 synthesis, one next step, and one book each to read. **Different perspectives.
 A clearer you.**
 
-This branch is the front-end prototype of the redesign (the nine screens on the
-"Walk with Great Minds." poster). It is a mobile-first web app with realistic
-sample content and simulated AI conversations; the backend is the next phase.
+This branch is the redesign (the nine screens on the "Walk with Great Minds."
+poster): a mobile-first web app that runs as an offline prototype — scripted
+councils, a library in localStorage — and, once the Supabase keys are set,
+becomes the real product on the classic owlry backend: accounts, cloud sync,
+a shared feed, and councils written live for your question
+(`docs/council-backend.md`).
 
 ```bash
 npm install
@@ -97,16 +100,25 @@ after a question is asked. Display type is Archivo (its width axis gives the
 condensed marquee and the wide titles from one file), UI is Inter, the reader
 is Literata, margin notes are Caveat, the wordmark is Rubik.
 
-## Backend seams (next phase)
+## Backend
 
-- **Persistence** — `src/store/useStore.ts` is one persisted slice; sync it or
-  swap the storage adapter.
-- **The council** — `src/engine/council.ts` `figureLines()`; messages are
-  structured segments (text / quote + source), not HTML.
-- **Books and covers** — `content/books.ts`; cover art already comes from Open
-  Library by ISBN with a typographic fallback.
-- The old app's `supabase/` migrations and edge functions are kept on this
-  branch untouched for that work.
+The Council shares the classic app's Supabase project: the same accounts, the
+same rate limiter and invite ledger, the same Gemini client. Everything new is
+additive and namespaced `owlry_council_*` — see `docs/council-backend.md`.
+
+- **Off by default.** With no `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY`
+  the app is the offline prototype; every seam in `src/lib/` is a no-op.
+- **Live council** — `supabase/functions/council-chat` writes the opening and
+  every later turn (Gemini, JSON-schema output, the verbatim-quote rule
+  enforced server- and client-side). The scripted council is shown first and
+  stands in whenever the live one can't be reached.
+- **Accounts + sync** — `council-signup` creates the account; `src/lib/sync/`
+  merges what you did as a guest with your cloud state (compare-and-swap on a
+  revision, as `owlry_progress` does) and keeps every council in its own row.
+- **Feed** — posts, likes and follows in `owlry_council_posts` / `_likes` /
+  `_follows`, shown in front of the seed posts.
+- **Deploy** — `.github/workflows/owl-chat-deploy.yml` applies the migration
+  and deploys both functions with the classic ones.
 
 ## Assets and credits
 

@@ -1,30 +1,64 @@
-import { useState, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import { IconBrandApple, IconBrandGoogle } from '@tabler/icons-react';
 import { navigate } from '../app/router';
 import { useStore } from '../store/useStore';
+import { useAuth } from '../store/useAuth';
 import { TopBar } from '../components/chrome';
 import { Wordmark } from '../components/Wordmark';
 import './AuthScreen.css';
 
-/* mock sign-up / sign-in: no backend yet, the name becomes the profile */
+/* ============================================================
+   Sign-up / sign-in. With a backend (VITE_SUPABASE_*), this is a real
+   account: council-signup creates it, Supabase Auth signs it in, and the
+   sync module pulls the reader's library. Without one, the on-device mock
+   from the prototype stays: the name becomes the profile.
+   ============================================================ */
 export function AuthScreen({ mode }: { mode: 'signup' | 'signin' }) {
-  const signIn = useStore((s) => s.signIn);
+  const signInLocal = useStore((s) => s.signIn);
   const setOnboarded = useStore((s) => s.setOnboarded);
   const user = useStore((s) => s.user);
+  const available = useAuth((s) => s.available);
+  const busy = useAuth((s) => s.busy);
+  const error = useAuth((s) => s.error);
+  const login = useAuth((s) => s.login);
+  const register = useAuth((s) => s.register);
+  const oauth = useAuth((s) => s.oauth);
+  const clearError = useAuth((s) => s.clearError);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [invite, setInvite] = useState('');
 
-  const finish = (n?: string) => {
-    // only derive a new handle when the reader actually typed a name; otherwise keep the demo profile as is
-    const typed = name.trim();
-    signIn(n ?? typed, typed ? typed.toLowerCase().replace(/[^a-z0-9]+/g, '.') : undefined);
+  useEffect(() => clearError, [mode, clearError]);
+
+  const afterAuth = () => {
     setOnboarded(true);
     navigate(mode === 'signup' ? { name: 'interests' } : { name: 'council' }, { replace: true });
   };
-  const submit = (e: FormEvent) => {
+
+  // the prototype path: no backend, the typed name becomes the profile
+  const finishLocal = (n?: string) => {
+    const typed = name.trim();
+    signInLocal(n ?? typed, typed ? typed.toLowerCase().replace(/[^a-z0-9]+/g, '.') : undefined);
+    afterAuth();
+  };
+
+  const submit = async (e: FormEvent) => {
     e.preventDefault();
-    finish(mode === 'signup' ? name.trim() || user.name : user.name);
+    if (!available) {
+      finishLocal(mode === 'signup' ? name.trim() || user.name : user.name);
+      return;
+    }
+    const ok = mode === 'signup' ? await register({ name: name.trim(), email, password, inviteCode: invite }) : await login(email, password);
+    if (ok) afterAuth();
+  };
+
+  const social = async (provider: 'apple' | 'google') => {
+    if (!available) {
+      finishLocal(user.name);
+      return;
+    }
+    await oauth(provider);
   };
 
   return (
@@ -35,10 +69,10 @@ export function AuthScreen({ mode }: { mode: 'signup' | 'signin' }) {
         <h1 className="display auth-title">{mode === 'signup' ? 'Create your account' : 'Welcome back'}</h1>
         <p className="muted">{mode === 'signup' ? 'Save councils, highlights and books across devices.' : 'Pick up where you left off.'}</p>
         <div className="auth-social">
-          <button type="button" className="btn btn-dark" onClick={() => finish(user.name)}>
+          <button type="button" className="btn btn-dark" disabled={busy} onClick={() => social('apple')}>
             <IconBrandApple /> Continue with Apple
           </button>
-          <button type="button" className="btn btn-outline" onClick={() => finish(user.name)}>
+          <button type="button" className="btn btn-outline" disabled={busy} onClick={() => social('google')}>
             <IconBrandGoogle /> Continue with Google
           </button>
         </div>
@@ -51,19 +85,42 @@ export function AuthScreen({ mode }: { mode: 'signup' | 'signin' }) {
         )}
         <div className="field">
           <label htmlFor="auth-email">Email</label>
-          <input id="auth-email" className="input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" autoComplete="email" />
+          <input id="auth-email" className="input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" autoComplete="email" required={available} />
         </div>
         <div className="field">
           <label htmlFor="auth-pass">Password</label>
-          <input id="auth-pass" className="input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" autoComplete={mode === 'signup' ? 'new-password' : 'current-password'} />
+          <input
+            id="auth-pass"
+            className="input"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="••••••••"
+            autoComplete={mode === 'signup' ? 'new-password' : 'current-password'}
+            minLength={available ? 8 : undefined}
+            required={available}
+          />
         </div>
-        <button type="submit" className="btn btn-primary auth-submit">
-          {mode === 'signup' ? 'Create account' : 'Sign in'}
+        {mode === 'signup' && available && (
+          <div className="field">
+            <label htmlFor="auth-invite">Invite code</label>
+            <input id="auth-invite" className="input" value={invite} onChange={(e) => setInvite(e.target.value.toUpperCase())} placeholder="The Council is in a closed beta" autoComplete="off" autoCapitalize="characters" />
+          </div>
+        )}
+        {error && (
+          <p className="small auth-error" role="alert">
+            {error}
+          </p>
+        )}
+        <button type="submit" className="btn btn-primary auth-submit" disabled={busy}>
+          {busy ? 'One moment…' : mode === 'signup' ? 'Create account' : 'Sign in'}
         </button>
         <button type="button" className="linkbtn auth-guest" onClick={() => { setOnboarded(true); navigate({ name: 'interests' }, { replace: true }); }}>
           Continue as a guest
         </button>
-        <p className="small muted auth-note">Prototype: accounts are stored on this device only.</p>
+        <p className="small muted auth-note">
+          {available ? 'Your councils, library and highlights sync to your account. Explore as a guest first if you like — it all comes with you when you sign in.' : 'Prototype: accounts are stored on this device only.'}
+        </p>
       </form>
     </div>
   );
