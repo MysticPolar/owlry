@@ -8,6 +8,7 @@ import { figure } from '../content/figures';
 import { timeAgo } from '../app/ids';
 import { Cover } from '../components/Cover';
 import { Avatar } from '../components/Avatar';
+import { useT, fmt } from '../i18n/react';
 import './LibraryScreen.css';
 
 /* ============================================================
@@ -28,6 +29,7 @@ export function LibraryScreen() {
   const [cat, setCat] = useState<Category | 'All'>('All');
   const [searchOpen, setSearchOpen] = useState(false);
   const [q, setQ] = useState('');
+  const t = useT();
 
   const books = useMemo(() => {
     const ids = new Set([...saved, ...Object.keys(progress)]);
@@ -49,32 +51,32 @@ export function LibraryScreen() {
   return (
     <div className="screen library">
       <div className="lib-head top-inset pad">
-        <h1 className="display lib-title">My Library</h1>
-        <button type="button" className={`iconbtn ${searchOpen ? 'on' : ''}`} aria-label="Search" onClick={() => { setSearchOpen((v) => !v); setQ(''); }}>
+        <h1 className="display lib-title">{t.library.title}</h1>
+        <button type="button" className={`iconbtn ${searchOpen ? 'on' : ''}`} aria-label={t.library.search} onClick={() => { setSearchOpen((v) => !v); setQ(''); }}>
           {searchOpen ? <IconX stroke={2} /> : <IconSearch stroke={2} />}
         </button>
       </div>
       {searchOpen && (
         <div className="pad lib-search">
-          <input className="input" placeholder="Search your library" value={q} onChange={(e) => setQ(e.target.value)} autoFocus aria-label="Search your library" />
+          <input className="input" placeholder={t.library.searchPh} value={q} onChange={(e) => setQ(e.target.value)} autoFocus aria-label={t.library.searchPh} />
         </div>
       )}
       <div className="pad">
-        <div className="seg" role="tablist" aria-label="Filter">
-          {(['all', 'reading', 'completed'] as Tab[]).map((t) => (
-            <button key={t} type="button" role="tab" aria-selected={tab === t} className={tab === t ? 'on' : ''} onClick={() => setTab(t)}>
-              {t === 'all' ? 'All' : t === 'reading' ? 'Reading' : 'Completed'}
+        <div className="seg" role="tablist" aria-label={t.library.filter}>
+          {(['all', 'reading', 'completed'] as Tab[]).map((tb) => (
+            <button key={tb} type="button" role="tab" aria-selected={tab === tb} className={tab === tb ? 'on' : ''} onClick={() => setTab(tb)}>
+              {tb === 'all' ? t.library.all : tb === 'reading' ? t.library.reading : t.library.completed}
             </button>
           ))}
         </div>
         {shelves.length > 1 && (
           <div className="chiprow lib-shelves">
             <button type="button" className={`chip ${cat === 'All' ? 'on' : ''}`} onClick={() => setCat('All')}>
-              All shelves
+              {t.library.allShelves}
             </button>
             {shelves.map((c) => (
               <button key={c} type="button" className={`chip ${cat === c ? 'on' : ''}`} onClick={() => setCat(c)}>
-                {c}
+                {t.library.categories[c]}
               </button>
             ))}
           </div>
@@ -85,7 +87,7 @@ export function LibraryScreen() {
           <button type="button" className="card continue" onClick={() => navigate({ name: 'read', id: current.id, council: lastRead?.councilId })}>
             <Cover book={current} width={56} />
             <span className="grow">
-              <span className="caps muted">Continue reading</span>
+              <span className="caps muted">{t.library.continueReading}</span>
               <span className="continue-title">{current.title}</span>
               <span className="small muted">{current.text.heading} · {Math.round((progress[current.id]?.pct ?? 0) * 100)}%</span>
               <span className="progress-track">
@@ -107,9 +109,9 @@ export function LibraryScreen() {
                   <span className="bookrow-text">
                     <span className="bookrow-title">{b.title}</span>
                     <span className="bookrow-sub">
-                      {b.authorName} · {b.category}
-                      {p ? ` · ${p.status === 'completed' ? 'Completed' : `${Math.round(p.pct * 100)}%`}` : ''}
-                      {marks ? ` · ${marks} bookmark${marks > 1 ? 's' : ''}` : ''}
+                      {b.authorName} · {t.library.categories[b.category]}
+                      {p ? ` · ${p.status === 'completed' ? t.library.completed : `${Math.round(p.pct * 100)}%`}` : ''}
+                      {marks ? ` · ${fmt(marks > 1 ? t.library.bookmarks : t.library.bookmark, { n: marks })}` : ''}
                     </span>
                   </span>
                   <IconChevronRight className="bookrow-chev" />
@@ -117,13 +119,13 @@ export function LibraryScreen() {
               </li>
             );
           })}
-          {shown.length === 0 && <li className="small muted lib-empty">Nothing here yet.</li>}
+          {shown.length === 0 && <li className="small muted lib-empty">{t.library.empty}</li>}
         </ul>
 
         {!qn && tab === 'all' && savedCouncils.length > 0 && (
           <section className="lib-section">
             <h2 className="heading">
-              <IconMessageCircle /> Your councils
+              <IconMessageCircle /> {t.library.councils}
             </h2>
             <ul className="stack">
               {savedCouncils.map((c) => (
@@ -138,7 +140,7 @@ export function LibraryScreen() {
                       <span className="council-row-q">“{c.question}”</span>
                       <span className="small muted">
                         {c.seats.map((fid) => figure(fid).short).join(', ')} · {timeAgo(c.updatedAt)}
-                        {c.stage !== 'summarized' ? ' · in progress' : ''}
+                        {c.stage !== 'summarized' ? t.library.inProgress : ''}
                       </span>
                     </span>
                     <IconChevronRight className="bookrow-chev" />
@@ -152,7 +154,7 @@ export function LibraryScreen() {
         {!qn && tab === 'all' && highlights.length > 0 && (
           <section className="lib-section">
             <h2 className="heading">
-              <IconHighlight /> Highlights
+              <IconHighlight /> {t.library.highlights}
             </h2>
             <ul className="stack">
               {highlights.slice(0, 8).map((h) => {

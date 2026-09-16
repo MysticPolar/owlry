@@ -19,6 +19,7 @@ import { pullSessions, pushSessions, mergeSessions } from './sessions';
 import { fetchFeed } from '../social/api';
 import type { CloudState } from './types';
 import type { CouncilSession } from '../../store/types';
+import { UI } from '../../i18n/ui';
 
 const DEBOUNCE_MS = 1500;
 
@@ -39,6 +40,7 @@ function toCloud(s: StoreState): CloudState {
     interests: s.interests,
     onboarded: s.onboarded,
     textSize: s.textSize,
+    lang: s.lang,
     saved: s.saved,
     progress: s.progress,
     bookmarks: s.bookmarks,
@@ -68,6 +70,8 @@ function applyCloud(c: CloudState) {
       savedPosts: c.savedPosts,
       following: c.following,
     }));
+    // the language travels with the account; switching rebuilds the scripted councils
+    if (c.lang && c.lang !== useStore.getState().lang) useStore.getState().setLang(c.lang);
   } finally {
     applying = false;
   }
@@ -137,7 +141,7 @@ async function pushNow(): Promise<void> {
 
 /* ---------- attach / detach ---------- */
 
-const STATE_KEYS: (keyof StoreState)[] = ['prefsAt', 'user', 'interests', 'onboarded', 'textSize', 'saved', 'progress', 'bookmarks', 'highlights', 'lastRead', 'liked', 'savedPosts', 'following'];
+const STATE_KEYS: (keyof StoreState)[] = ['prefsAt', 'user', 'interests', 'onboarded', 'textSize', 'lang', 'saved', 'progress', 'bookmarks', 'highlights', 'lastRead', 'liked', 'savedPosts', 'following'];
 
 function watchStore() {
   useStore.subscribe((s, prev) => {
@@ -179,7 +183,7 @@ async function attach(profile: AuthProfile): Promise<void> {
     await pushNow();
   } catch (err) {
     if (import.meta.env?.DEV) console.warn('[sync] first pull failed', err);
-    useStore.getState().showToast('Couldn’t reach your library just now. Changes will sync when it’s back.');
+    useStore.getState().showToast(UI[useStore.getState().lang].sync.unreachable);
     stateDirty = true;
     schedulePush();
   }

@@ -88,6 +88,8 @@ Honesty rules the UI enforces:
 src/
   app/          hash router (every screen is a URL), ids
   content/      figures, books, councils, seed posts, PD texts, portrait map
+                (zh/ holds the Chinese versions of all of it)
+  i18n/         the two UI dictionaries (en, zh) and the active-language switch
   engine/       the simulated council (pure functions over content + session)
   store/        Zustand store persisted to localStorage (the backend seam)
   components/   chrome (status bar, nav, sheet, toast), owl, avatar, cover,
@@ -104,6 +106,25 @@ welcome and council screens; cream paper with white cards for everything
 after a question is asked. Display type is Archivo (its width axis gives the
 condensed marquee and the wide titles from one file), UI is Inter, the reader
 is Literata, margin notes are Caveat, the wordmark is Rubik.
+
+## Languages
+
+The Council speaks English and Chinese. The choice lives in Settings
+(语言 / Language), is remembered on the device, synced with the account, and
+sent to the live council so the figures answer in the same language.
+
+- The interface comes from one dictionary per language in `src/i18n/ui.ts`;
+  both share one shape, so a missing string is a type error.
+- Content stays English source-of-truth. `src/content/zh/` carries a Chinese
+  layer for every figure, book, scripted council, path, seed post and reading
+  guide, merged in by the same accessors (`figure()`, `book()`, `council()`).
+  The public-domain reader passages have their own Chinese renderings in
+  `src/content/texts/zh/`, prepared from the same Gutenberg editions and
+  labelled as the app's own translation, not a published one.
+- Verified quotes are never translated in place: the original stays as the
+  quotation, and a Chinese gloss appears under it marked 译文.
+- The first visit follows the browser (`zh-*` → 中文, anything else →
+  English).
 
 ## Backend
 

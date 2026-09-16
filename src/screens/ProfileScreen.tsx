@@ -8,6 +8,7 @@ import { timeAgo } from '../app/ids';
 import { PersonAvatar } from '../components/Avatar';
 import { Owl } from '../components/Owl';
 import { RadarChart, AXES } from '../components/RadarChart';
+import { useT, fmt } from '../i18n/react';
 import './ProfileScreen.css';
 
 /* ============================================================
@@ -15,7 +16,6 @@ import './ProfileScreen.css';
    Progress as personal development: milestones, a radar of what you
    read, and the highlights and reflections you kept.
    ============================================================ */
-const LEVELS = ['The Newcomer', 'The Reader', 'The Curious', 'The Seeker', 'The Thinker', 'The Sage'];
 
 export function ProfileScreen() {
   const user = useStore((s) => s.user);
@@ -27,6 +27,8 @@ export function ProfileScreen() {
   const interests = useStore((s) => s.interests);
   const councils = useStore(selectCouncils);
   const [tab, setTab] = useState<'insights' | 'activity' | 'badges'>('insights');
+  const t = useT();
+  const LEVELS = t.profile.levels;
 
   const completed = Object.values(progress).filter((p) => p.status === 'completed').length;
   const myPosts = posts.filter((p) => p.mine);
@@ -54,37 +56,37 @@ export function ProfileScreen() {
   }, [saved, progress, highlights]);
 
   const milestones = [
-    { label: 'Convened your first council', done: councils.length >= 1, note: `${councils.length} so far` },
-    { label: 'Saved five books', done: saved.length >= 5, note: `${Math.min(saved.length, 5)}/5` },
-    { label: 'Finished a book', done: completed >= 1, note: `${completed} completed` },
-    { label: 'Kept ten highlights', done: highlights.length >= 10, note: `${Math.min(highlights.length, 10)}/10` },
-    { label: 'Shared a reflection', done: myPosts.length >= 1, note: myPosts.length ? `${myPosts.length} shared` : 'not yet' },
-    { label: 'Explored three areas', done: interests.length >= 3, note: `${Math.min(interests.length, 3)}/3` },
+    { label: t.profile.ms.firstCouncil, done: councils.length >= 1, note: fmt(t.profile.ms.soFar, { n: councils.length }) },
+    { label: t.profile.ms.fiveBooks, done: saved.length >= 5, note: `${Math.min(saved.length, 5)}/5` },
+    { label: t.profile.ms.finished, done: completed >= 1, note: fmt(t.profile.ms.completedN, { n: completed }) },
+    { label: t.profile.ms.tenHighlights, done: highlights.length >= 10, note: `${Math.min(highlights.length, 10)}/10` },
+    { label: t.profile.ms.shared, done: myPosts.length >= 1, note: myPosts.length ? fmt(t.profile.ms.sharedN, { n: myPosts.length }) : t.profile.ms.notYet },
+    { label: t.profile.ms.threeAreas, done: interests.length >= 3, note: `${Math.min(interests.length, 3)}/3` },
   ];
 
   const activity = [
-    ...councils.map((c) => ({ ts: c.updatedAt, text: `Asked the council: “${c.question}”`, onClick: () => navigate({ name: c.stage === 'summarized' ? 'summary' : 'discussion', id: c.id }) })),
-    ...highlights.map((h) => ({ ts: h.ts, text: `Highlighted a line in ${maybeBook(h.bookId)?.title ?? 'a book'}`, onClick: () => navigate({ name: 'read', id: h.bookId }) })),
-    ...myPosts.map((p) => ({ ts: p.ts, text: 'Shared a reflection', onClick: () => navigate({ name: 'social' }) })),
+    ...councils.map((c) => ({ ts: c.updatedAt, text: fmt(t.profile.act.asked, { q: c.question }), onClick: () => navigate({ name: c.stage === 'summarized' ? 'summary' : 'discussion', id: c.id }) })),
+    ...highlights.map((h) => ({ ts: h.ts, text: fmt(t.profile.act.highlighted, { title: maybeBook(h.bookId)?.title ?? t.profile.act.aBook }), onClick: () => navigate({ name: 'read', id: h.bookId }) })),
+    ...myPosts.map((p) => ({ ts: p.ts, text: t.profile.act.shared, onClick: () => navigate({ name: 'social' }) })),
     ...Object.entries(progress)
       .filter(([, p]) => p.status === 'completed')
-      .map(([id, p]) => ({ ts: p.lastReadAt, text: `Finished ${maybeBook(id)?.title ?? 'a book'}`, onClick: () => navigate({ name: 'book', id }) })),
+      .map(([id, p]) => ({ ts: p.lastReadAt, text: fmt(t.profile.act.finished, { title: maybeBook(id)?.title ?? t.profile.act.aBook }), onClick: () => navigate({ name: 'book', id }) })),
   ].sort((a, b) => b.ts - a.ts);
 
   const badges = [
-    { name: 'First Council', done: councils.length >= 1, color: 'yellow' as const },
-    { name: 'Bookworm', done: saved.length >= 5, color: 'green' as const },
-    { name: 'Finisher', done: completed >= 1, color: 'teal' as const },
-    { name: 'Highlighter', done: highlights.length >= 10, color: 'orange' as const },
-    { name: 'Contributor', done: myPosts.length >= 1, color: 'violet' as const },
-    { name: 'Explorer', done: interests.length >= 3, color: 'blue' as const },
+    { name: t.profile.badges.firstCouncil, done: councils.length >= 1, color: 'yellow' as const },
+    { name: t.profile.badges.bookworm, done: saved.length >= 5, color: 'green' as const },
+    { name: t.profile.badges.finisher, done: completed >= 1, color: 'teal' as const },
+    { name: t.profile.badges.highlighter, done: highlights.length >= 10, color: 'orange' as const },
+    { name: t.profile.badges.contributor, done: myPosts.length >= 1, color: 'violet' as const },
+    { name: t.profile.badges.explorer, done: interests.length >= 3, color: 'blue' as const },
   ];
 
   return (
     <div className="screen profile">
       <div className="profile-head top-inset pad">
         <span style={{ width: 40 }} />
-        <button type="button" className="iconbtn" aria-label="Settings" onClick={() => navigate({ name: 'settings' })}>
+        <button type="button" className="iconbtn" aria-label={t.profile.settings} onClick={() => navigate({ name: 'settings' })}>
           <IconSettings stroke={1.8} />
         </button>
       </div>
@@ -99,15 +101,15 @@ export function ProfileScreen() {
         <ul className="profile-stats">
           <li>
             <b>{saved.length + completed}</b>
-            <span>Books</span>
+            <span>{t.profile.books}</span>
           </li>
           <li>
             <b>12.4K</b>
-            <span>Followers</span>
+            <span>{t.profile.followers}</span>
           </li>
           <li>
             <b>{310 + following.length}</b>
-            <span>Following</span>
+            <span>{t.profile.following}</span>
           </li>
         </ul>
 
@@ -115,7 +117,7 @@ export function ProfileScreen() {
           <Owl color="yellow" size={48} />
           <div className="grow">
             <div className="level-name">{LEVELS[level - 1]}</div>
-            <div className="level-sub">Level {level}</div>
+            <div className="level-sub">{fmt(t.profile.level, { n: level })}</div>
             <div className="level-track">
               <span style={{ width: `${Math.round(toNext * 100)}%` }} />
             </div>
@@ -123,9 +125,9 @@ export function ProfileScreen() {
         </div>
 
         <div className="profile-tabs" role="tablist">
-          {(['insights', 'activity', 'badges'] as const).map((t) => (
-            <button key={t} type="button" role="tab" aria-selected={tab === t} className={tab === t ? 'on' : ''} onClick={() => setTab(t)}>
-              {t[0].toUpperCase() + t.slice(1)}
+          {(['insights', 'activity', 'badges'] as const).map((tb) => (
+            <button key={tb} type="button" role="tab" aria-selected={tab === tb} className={tab === tb ? 'on' : ''} onClick={() => setTab(tb)}>
+              {t.profile.tabs[tb]}
             </button>
           ))}
         </div>
@@ -133,12 +135,12 @@ export function ProfileScreen() {
         {tab === 'insights' && (
           <>
             <section className="profile-section">
-              <h2 className="heading">Reading Profile</h2>
+              <h2 className="heading">{t.profile.readingProfile}</h2>
               <RadarChart values={radar} />
-              <p className="small muted profile-note">Where your reading has gone so far — a picture of habits, not a personality test.</p>
+              <p className="small muted profile-note">{t.profile.radarNote}</p>
             </section>
             <section className="profile-section">
-              <h2 className="heading">Milestones</h2>
+              <h2 className="heading">{t.profile.milestones}</h2>
               <ul className="milestones">
                 {milestones.map((m) => (
                   <li key={m.label} className={m.done ? 'done' : ''}>
@@ -150,7 +152,7 @@ export function ProfileScreen() {
               </ul>
             </section>
             <section className="profile-section">
-              <h2 className="heading">Highlights & reflections</h2>
+              <h2 className="heading">{t.profile.highlightsTitle}</h2>
               <ul className="stack">
                 {highlights.slice(0, 3).map((h) => (
                   <li key={h.id}>
@@ -163,12 +165,12 @@ export function ProfileScreen() {
                 {myPosts.slice(0, 2).map((p) => (
                   <li key={p.id}>
                     <div className="card highlight-row reflection">
-                      <span className="small muted">You wrote · {timeAgo(p.ts)}</span>
+                      <span className="small muted">{t.profile.youWrote} · {timeAgo(p.ts)}</span>
                       <span>{p.caption}</span>
                     </div>
                   </li>
                 ))}
-                {highlights.length === 0 && myPosts.length === 0 && <li className="small muted">Highlight a passage while reading and it will appear here.</li>}
+                {highlights.length === 0 && myPosts.length === 0 && <li className="small muted">{t.profile.emptyHighlights}</li>}
               </ul>
             </section>
           </>
@@ -186,7 +188,7 @@ export function ProfileScreen() {
                   </button>
                 </li>
               ))}
-              {activity.length === 0 && <li className="small muted">Your reading and council activity will show up here.</li>}
+              {activity.length === 0 && <li className="small muted">{t.profile.emptyActivity}</li>}
             </ul>
           </section>
         )}

@@ -6,6 +6,8 @@
    ============================================================ */
 import type { Figure } from './types';
 import { PORTRAITS } from './portraits';
+import { isZh } from '../i18n';
+import { FIGURES_ZH } from './zh/figures';
 
 const OL = (isbn: string) => `https://openlibrary.org/isbn/${isbn}`;
 
@@ -1130,8 +1132,31 @@ const RAW: Omit<Figure, 'portrait'>[] = [
 export const FIGURES: Figure[] = RAW.map((f) => ({ ...f, portrait: PORTRAITS[f.id] }));
 const BY_ID = new Map(FIGURES.map((f) => [f.id, f]));
 
+/* the Chinese rendering of a figure: the override's words over the English source, built once per figure */
+const ZH_CACHE = new Map<string, Figure>();
+function localized(f: Figure): Figure {
+  const hit = ZH_CACHE.get(f.id);
+  if (hit) return hit;
+  const z = FIGURES_ZH[f.id];
+  const out: Figure = z
+    ? {
+        ...f,
+        name: z.name,
+        short: z.short,
+        role: z.role,
+        label: z.label,
+        bio: z.bio,
+        works: f.works.map((w, i) => (z.works?.[i] ? { ...w, title: z.works[i] as string } : w)),
+        quotes: f.quotes.map((q, i) => (z.quotes?.[i] ? { ...q, gloss: z.quotes[i] } : q)),
+        voice: z.voice,
+      }
+    : f;
+  ZH_CACHE.set(f.id, out);
+  return out;
+}
+
 export function figure(id: string): Figure {
   const f = BY_ID.get(id);
   if (!f) throw new Error(`unknown figure: ${id}`);
-  return f;
+  return isZh() ? localized(f) : f;
 }

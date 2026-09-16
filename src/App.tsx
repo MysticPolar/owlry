@@ -32,6 +32,7 @@ export function App() {
   const route = useRoute();
   const framed = useFramed();
   const onboarded = useStore((s) => s.onboarded);
+  const lang = useStore((s) => s.lang);
 
   // Every visit starts by choosing a path: a plain open (or a tab URL) lands on the
   // interest screen — the welcome screen only on the very first visit. Deep links
@@ -99,7 +100,8 @@ export function App() {
   }
 
   return (
-    <div className="desk">
+    // keyed by language: a switch remounts every screen, so memoised content re-reads the localised catalogue
+    <div className="desk" key={lang}>
       <div className={`phone ${framed ? 'framed' : ''}`}>
         {framed && <div className="notch" aria-hidden="true" />}
         <div className={`screen-clip ${night ? 'night' : ''} ${tab ? '' : 'no-nav'}`}>

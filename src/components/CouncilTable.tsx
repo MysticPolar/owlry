@@ -1,5 +1,6 @@
 import type { Figure } from '../content/types';
 import { Avatar } from './Avatar';
+import { useT, fmt } from '../i18n/react';
 
 /* book spines for the wall behind the table — deterministic so the room never flickers */
 const SPINE_COLORS = ['#4A3220', '#3B2816', '#5A3F26', '#2E2014', '#6B4A2C', '#503A24'];
@@ -25,6 +26,7 @@ export function CouncilTable({
   labels?: boolean;
 }) {
   const filled = seats.some(Boolean);
+  const t = useT();
   return (
     <div className={`table-wrap ${filled ? 'filled' : ''}`}>
       <svg className="table-svg" viewBox="0 0 360 300" aria-hidden="true">
@@ -102,7 +104,7 @@ export function CouncilTable({
         return (
           <div key={i} className={`seat seat-${i} ${f ? 'on' : ''}`} style={{ animationDelay: `${180 + i * 380}ms` }}>
             {f ? (
-              <button type="button" className="seat-btn" onClick={() => onSeatTap?.(i)} aria-label={`${f.name}, ${f.label}`}>
+              <button type="button" className="seat-btn" onClick={() => onSeatTap?.(i)} aria-label={fmt(t.figure.seatAria, { name: f.name, label: f.label })}>
                 <Avatar figure={f} size={i === 1 ? 62 : 56} ring />
                 {labels && <span className="seat-name">{f.short}</span>}
               </button>

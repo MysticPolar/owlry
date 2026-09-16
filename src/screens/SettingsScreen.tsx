@@ -7,6 +7,8 @@ import { TopBar } from '../components/chrome';
 import { OwlRow } from '../components/Owl';
 import { saveProfile } from '../lib/auth/api';
 import { isBackendConfigured, isLiveCouncilConfigured } from '../lib/supabase';
+import { useT, fmt } from '../i18n/react';
+import { LANGS } from '../i18n';
 
 /* profile details, reading preferences, account, and the honest notes about what this prototype is */
 export function SettingsScreen() {
@@ -18,6 +20,9 @@ export function SettingsScreen() {
   const resetDemo = useStore((s) => s.resetDemo);
   const showToast = useStore((s) => s.showToast);
   const logout = useAuth((s) => s.logout);
+  const lang = useStore((s) => s.lang);
+  const setLang = useStore((s) => s.setLang);
+  const t = useT();
   const backend = isBackendConfigured();
   const [name, setName] = useState(user.name);
   const [handle, setHandle] = useState(user.handle);
@@ -32,51 +37,64 @@ export function SettingsScreen() {
       const res = await saveProfile(user.id, next);
       setSaving(false);
       if (res === 'handle-taken') {
-        showToast('That handle is taken — try another.');
+        showToast(t.settings.handleTaken);
         return;
       }
       if (res === 'server') {
-        showToast('Couldn’t save just now. Try again in a moment.');
+        showToast(t.settings.saveFail);
         return;
       }
     }
     setProfile({ ...next, initial: next.name.charAt(0).toUpperCase() });
-    showToast('Profile updated.');
+    showToast(t.settings.updated);
     navigate({ name: 'profile' });
   };
 
   const doSignOut = async () => {
     if (backend) await logout();
     else signOut();
-    showToast('Signed out.');
+    showToast(t.settings.signedOut);
   };
 
   return (
     <div className="screen">
-      <TopBar backFallback={{ name: 'profile' }} title="Settings" className="top-inset" />
+      <TopBar backFallback={{ name: 'profile' }} title={t.settings.title} className="top-inset" />
       <div className="screen-scroll pad nav-space stack" style={{ paddingTop: 8, gap: 18 }}>
         <section className="stack">
-          <h2 className="heading">Profile</h2>
+          <h2 className="heading">{t.settings.language}</h2>
+          <div className="row">
+            <span className="grow small muted">{t.settings.languageSub}</span>
+            <div className="seg" role="group" aria-label={t.settings.language}>
+              {LANGS.map((l) => (
+                <button key={l.id} type="button" className={lang === l.id ? 'on' : ''} aria-pressed={lang === l.id} lang={l.id === 'zh' ? 'zh-CN' : 'en'} onClick={() => setLang(l.id)}>
+                  {l.native}
+                </button>
+              ))}
+            </div>
+          </div>
+        </section>
+        <section className="stack">
+          <h2 className="heading">{t.settings.profile}</h2>
           <div className="field">
-            <label htmlFor="s-name">Name</label>
+            <label htmlFor="s-name">{t.settings.name}</label>
             <input id="s-name" className="input" value={name} onChange={(e) => setName(e.target.value)} />
           </div>
           <div className="field">
-            <label htmlFor="s-handle">Handle</label>
+            <label htmlFor="s-handle">{t.settings.handle}</label>
             <input id="s-handle" className="input" value={handle} onChange={(e) => setHandle(e.target.value)} />
           </div>
           <div className="field">
-            <label htmlFor="s-bio">Short bio</label>
+            <label htmlFor="s-bio">{t.settings.bio}</label>
             <input id="s-bio" className="input" value={bio} onChange={(e) => setBio(e.target.value)} />
           </div>
           <button type="button" className="btn btn-dark btn-sm" onClick={() => void save()} disabled={saving}>
-            {saving ? 'Saving…' : 'Save'}
+            {saving ? t.settings.saving : t.settings.save}
           </button>
         </section>
         <section className="stack">
-          <h2 className="heading">Reading</h2>
+          <h2 className="heading">{t.settings.reading}</h2>
           <div className="row">
-            <span className="grow">Text size</span>
+            <span className="grow">{t.settings.textSize}</span>
             <div className="seg">
               {(['S', 'M', 'L'] as TextSize[]).map((s) => (
                 <button key={s} type="button" className={textSize === s ? 'on' : ''} onClick={() => setTextSize(s)}>
@@ -87,47 +105,42 @@ export function SettingsScreen() {
           </div>
         </section>
         <section className="stack">
-          <h2 className="heading">Account</h2>
+          <h2 className="heading">{t.settings.account}</h2>
           <p className="small muted">
             {user.signedIn
               ? backend
-                ? `Signed in as ${user.name}${user.email ? ` (${user.email})` : ''}. Your councils, library and highlights sync to this account.`
-                : `Signed in as ${user.name}. Accounts live on this device only in the prototype.`
+                ? fmt(t.settings.signedInSync, { name: `${user.name}${user.email ? ` (${user.email})` : ''}` })
+                : fmt(t.settings.signedInProto, { name: user.name })
               : backend
-                ? 'You’re exploring as a guest. Sign in and everything you’ve done here comes with you.'
-                : 'You’re exploring as a guest.'}
+                ? t.settings.guestSync
+                : t.settings.guest}
           </p>
           {user.signedIn ? (
             <button type="button" className="btn btn-outline btn-sm" onClick={() => void doSignOut()}>
-              Sign out
+              {t.settings.signOut}
             </button>
           ) : (
             <button type="button" className="btn btn-dark btn-sm" onClick={() => navigate({ name: 'signup' })}>
-              Create an account
+              {t.settings.createAccount}
             </button>
           )}
-          <button type="button" className="btn btn-outline btn-sm" onClick={() => { resetDemo(); showToast('Demo data reset.'); navigate({ name: 'welcome' }); }}>
-            Reset demo data
+          <button type="button" className="btn btn-outline btn-sm" onClick={() => { resetDemo(); showToast(t.settings.resetDone); navigate({ name: 'welcome' }); }}>
+            {t.settings.resetDemo}
           </button>
         </section>
         <section className="stack">
-          <h2 className="heading">About the council</h2>
+          <h2 className="heading">{t.settings.about}</h2>
+          <p className="small muted">{isLiveCouncilConfigured() ? (user.signedIn ? t.settings.liveSigned : t.settings.liveGuest) : t.settings.scripted}</p>
+          <p className="small muted">{t.settings.aboutBody}</p>
           <p className="small muted">
-            {isLiveCouncilConfigured()
-              ? user.signedIn
-                ? 'Your councils are written live for your question; if the live council can’t be reached, the scripted one answers instead.'
-                : 'Sign in and the council answers your question live; as a guest you hear the scripted councils.'
-              : 'This build runs the scripted councils: eight conversations written for the most common questions.'}
+            {t.settings.credits}
+            <code>public/portraits/CREDITS.md</code>
+            {t.settings.creditsTail}
           </p>
-          <p className="small muted">
-            The thinkers in the council are AI interpretations grounded in their published work. Lines shown as quotations are verbatim from the named source;
-            everything else is paraphrase, generated to show how each perspective might approach your question. Reading guides summarise a chapter and are not the book’s text; public-domain passages are labelled with their translator.
-          </p>
-          <p className="small muted">Portraits: Wikimedia Commons, credited in <code>public/portraits/CREDITS.md</code>. Cover art: Open Library.</p>
           <div className="row" style={{ justifyContent: 'center', paddingTop: 8 }}>
             <OwlRow size={30} />
           </div>
-          <p className="caps muted" style={{ textAlign: 'center' }}>Five owls at your service</p>
+          <p className="caps muted" style={{ textAlign: 'center' }}>{t.settings.fiveOwls}</p>
         </section>
       </div>
     </div>

@@ -8,6 +8,7 @@ import { readingFor } from '../engine/council';
 import { TopBar, Sheet } from '../components/chrome';
 import { Cover } from '../components/Cover';
 import { Owl } from '../components/Owl';
+import { useT, fmt } from '../i18n/react';
 import './BookScreen.css';
 
 /* ============================================================
@@ -23,12 +24,13 @@ export function BookScreen({ id, councilId }: { id: string; councilId?: string }
   const showToast = useStore((s) => s.showToast);
   const progress = useStore((s) => (b ? s.progress[b.id] : undefined));
   const [summaryOpen, setSummaryOpen] = useState(false);
+  const t = useT();
 
   if (!b) {
     return (
       <div className="screen">
-        <TopBar backFallback={{ name: 'library' }} title="Book" className="top-inset" />
-        <p className="pad muted" style={{ paddingTop: 24 }}>We couldn’t find that book.</p>
+        <TopBar backFallback={{ name: 'library' }} title={t.book.title} className="top-inset" />
+        <p className="pad muted" style={{ paddingTop: 24 }}>{t.book.missing}</p>
       </div>
     );
   }
@@ -37,15 +39,15 @@ export function BookScreen({ id, councilId }: { id: string; councilId?: string }
   const isSaved = saved.includes(b.id);
   const onSave = () => {
     toggleSaved(b.id);
-    showToast(isSaved ? 'Removed from your library.' : 'Saved to your library.');
+    showToast(isSaved ? t.book.removed : t.book.savedLib);
   };
   const share = async () => {
-    const text = `${b.title} by ${b.authorName} — ${b.blurb}`;
+    const text = fmt(t.book.shareText, { title: b.title, author: b.authorName, blurb: b.blurb });
     try {
       if (navigator.share) await navigator.share({ title: b.title, text });
       else {
         await navigator.clipboard.writeText(text);
-        showToast('Copied.');
+        showToast(t.common.copied);
       }
     } catch {
       /* dismissed */
@@ -60,10 +62,10 @@ export function BookScreen({ id, councilId }: { id: string; councilId?: string }
         className="top-inset"
         right={
           <>
-            <button type="button" className={`iconbtn ${isSaved ? 'on' : ''}`} aria-label={isSaved ? 'Remove from library' : 'Save to library'} onClick={onSave}>
+            <button type="button" className={`iconbtn ${isSaved ? 'on' : ''}`} aria-label={isSaved ? t.book.ariaRemove : t.book.ariaSave} onClick={onSave}>
               {isSaved ? <IconBookmarkFilled /> : <IconBookmark stroke={1.8} />}
             </button>
-            <button type="button" className="iconbtn" aria-label="Share" onClick={share}>
+            <button type="button" className="iconbtn" aria-label={t.common.share} onClick={share}>
               <IconShare stroke={1.8} />
             </button>
           </>
@@ -86,34 +88,39 @@ export function BookScreen({ id, councilId }: { id: string; councilId?: string }
         {b.quote && (
           <blockquote className="book-quote">
             <p>“{b.quote.text}”</p>
+            {b.quote.gloss && (
+              <p className="book-quote-gloss">
+                <span className="msg-source-tag">{t.common.translation}</span> {b.quote.gloss}
+              </p>
+            )}
             <footer>
               — {b.authorName}
               {b.quote.source.url && (
-                <a href={b.quote.source.url} target="_blank" rel="noreferrer" aria-label="Source">
+                <a href={b.quote.source.url} target="_blank" rel="noreferrer" aria-label={t.common.source}>
                   <IconExternalLink />
                 </a>
               )}
-              <span className="msg-source-tag">verbatim</span>
+              <span className="msg-source-tag">{t.common.verbatim}</span>
             </footer>
           </blockquote>
         )}
 
         {rec && session && (
           <section className="card book-why">
-            <span className="caps muted">Why it relates to your question</span>
+            <span className="caps muted">{t.book.why}</span>
             <p>{rec.why}</p>
-            <p className="small muted">“{session.question}” — recommended by {author.short}’s seat on your council.</p>
+            <p className="small muted">{fmt(t.book.recommended, { q: session.question, name: author.short })}</p>
           </section>
         )}
 
         <section className="card book-start">
-          <span className="caps muted">Start here</span>
+          <span className="caps muted">{t.book.startHere}</span>
           <p className="book-start-title">
             <b>{b.start.label}</b> — {b.start.title}
           </p>
           <p className="small muted">{b.start.why}</p>
           {progress && progress.pct > 0 && (
-            <p className="small book-progress">{progress.status === 'completed' ? 'Completed' : `${Math.round(progress.pct * 100)}% read — pick up where you left off`}</p>
+            <p className="small book-progress">{progress.status === 'completed' ? t.book.completed : fmt(t.book.pctRead, { pct: Math.round(progress.pct * 100) })}</p>
           )}
         </section>
 
@@ -121,36 +128,36 @@ export function BookScreen({ id, councilId }: { id: string; councilId?: string }
       </div>
       <div className="book-actions pad">
         <button type="button" className="btn btn-primary" onClick={startReading}>
-          {progress && progress.pct > 0 && progress.status !== 'completed' ? 'Continue Reading' : 'Start Reading'}
+          {progress && progress.pct > 0 && progress.status !== 'completed' ? t.book.continueReading : t.book.startReading}
         </button>
         <button type="button" className="btn btn-outline" onClick={() => setSummaryOpen(true)}>
-          Read Book Summary
+          {t.book.readSummary}
         </button>
         <button type="button" className="linkbtn book-save" onClick={onSave}>
-          {isSaved ? 'Saved to Library ✓' : 'Save to Library'}
+          {isSaved ? t.book.savedTick : t.book.saveLib}
         </button>
         <span className="hand book-hand" aria-hidden="true">
-          Small steps.
+          {t.book.hand1}
           <br />
-          Brighter you.
+          {t.book.hand2}
         </span>
         <Owl color="yellow" size={62} className="book-owl" />
       </div>
 
-      <Sheet open={summaryOpen} onClose={() => setSummaryOpen(false)} label={`Summary of ${b.title}`} tall>
+      <Sheet open={summaryOpen} onClose={() => setSummaryOpen(false)} label={fmt(t.book.summaryOf, { title: b.title })} tall>
         <div className="book-summary">
-          <span className="caps muted">Book summary</span>
+          <span className="caps muted">{t.book.bookSummary}</span>
           <h2 className="title">{b.title}</h2>
-          <p className="small muted">{b.authorName} · {b.year < 0 ? `${-b.year} BC` : b.year}</p>
+          <p className="small muted">{b.authorName} · {b.year < 0 ? fmt(t.common.bc, { year: -b.year }) : b.year}</p>
           <p className="book-summary-gist">{b.summary.gist}</p>
-          <span className="caps muted">Main ideas</span>
+          <span className="caps muted">{t.book.mainIdeas}</span>
           <ol className="book-ideas">
             {b.summary.ideas.map((idea, i) => (
               <li key={i}>{idea}</li>
             ))}
           </ol>
           <button type="button" className="btn btn-primary" onClick={startReading}>
-            Read {b.start.label}
+            {fmt(t.book.read, { label: b.start.label })}
           </button>
         </div>
       </Sheet>

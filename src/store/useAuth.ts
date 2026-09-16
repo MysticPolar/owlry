@@ -10,22 +10,13 @@
    ============================================================ */
 import { create } from 'zustand';
 import { authAvailable, currentProfile, onAuthChange, signIn, signInReason, signInWithProvider, signOut, signUp, type AuthProfile, type AuthReason } from '../lib/auth/api';
+import { fmt, getActiveLang } from '../i18n';
+import { UI } from '../i18n/ui';
 
 export type AuthStatus = 'loading' | 'guest' | 'authed';
 
-const VOICE: Record<AuthReason, string> = {
-  ok: '',
-  'bad-input': 'Fill in an email and a password.',
-  'bad-email': 'That doesn’t look like an email address.',
-  'weak-password': 'The password needs at least 8 characters.',
-  'bad-code': 'That invite code isn’t in the ledger — the Council is in a closed beta.',
-  'email-taken': 'That email already has an account — try signing in.',
-  'bad-credentials': 'That email and password don’t match. Try again?',
-  unconfirmed: 'This account still needs confirming — check your email.',
-  'rate-limited': 'Too many attempts for now. Give it an hour.',
-  server: 'The desk is quiet for a moment. Try again soon.',
-  'no-backend': 'Accounts need a backend — you can still explore as a guest.',
-};
+/** the reasons in the reader's language, read at the moment they are shown */
+const VOICE = new Proxy({} as Record<AuthReason, string>, { get: (_, k: string) => UI[getActiveLang()].auth.reasons[k as AuthReason] ?? UI[getActiveLang()].auth.reasons.server });
 
 interface AuthStore {
   status: AuthStatus;
@@ -117,7 +108,7 @@ export const useAuth = create<AuthStore>((set, get) => ({
       await signInWithProvider(provider);
       return true; // the page redirects; onAuthChange picks the session up on return
     } catch {
-      set({ busy: false, error: `${provider === 'apple' ? 'Apple' : 'Google'} sign-in isn’t switched on for this project yet. Use your email for now.` });
+      set({ busy: false, error: fmt(UI[getActiveLang()].auth.oauthOff, { provider: provider === 'apple' ? 'Apple' : 'Google' }) });
       return false;
     }
   },

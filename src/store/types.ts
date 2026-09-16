@@ -43,6 +43,8 @@ export interface Message {
   passage?: { bookId: string; text: string };
   /** system notices */
   sys?: 'replace';
+  /** for a replace notice: who left and who joined, so the line follows the interface language */
+  figures?: { from: string; to: string };
   /** words written by the live council for this seat; when present they replace the scripted `segments` */
   live?: Segment[];
 }

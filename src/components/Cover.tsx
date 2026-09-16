@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { Book } from '../content/types';
+import { useT, fmt } from '../i18n/react';
 
 /* ============================================================
    Book covers. A typographic cover on the book's palette colour is always
@@ -22,6 +23,7 @@ export function Cover({
   className?: string;
   size?: 'S' | 'M' | 'L';
 }) {
+  const t = useT();
   const [loaded, setLoaded] = useState(false);
   const [broken, setBroken] = useState(false);
   const url = coverUrl(book, size ?? (width > 120 ? 'L' : 'M'));
@@ -30,7 +32,7 @@ export function Cover({
     <span
       className={`cover ${className}`}
       style={{ width, height, background: book.palette.bg, color: book.palette.fg }}
-      aria-label={`${book.title} by ${book.authorName}`}
+      aria-label={fmt(t.book.coverAria, { title: book.title, author: book.authorName })}
       role="img"
     >
       <span className="cover-type" style={{ fontSize: Math.max(6, Math.round(width * 0.1)) }} aria-hidden="true">

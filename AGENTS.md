@@ -19,6 +19,11 @@ the session scratchpad and is not part of the repo.
 - Content (figures, books, scripted councils) → `src/content/`. Adding a
   council: write a `CouncilScript` (see `content/types.ts`) and register it in
   `content/councils/index.ts`; give each seat at least one alternate.
+- Languages → `src/i18n/` (UI dictionaries `en`/`zh`, one shape; `useT()` in
+  React, `UI[getActiveLang()]` elsewhere) and `src/content/zh/` (Chinese
+  layer per figure/book/council/area, merged by the accessors). Reader texts
+  in Chinese are `src/content/texts/zh/`. New UI copy goes in both
+  dictionaries; new content gets a `zh/` entry or it shows in English.
 - Simulation → `src/engine/council.ts`. Every figure message stores a `slot`
   so a replaced seat regenerates deterministically.
 - State → `src/store/useStore.ts` (Zustand + localStorage, key
@@ -40,6 +45,8 @@ the session scratchpad and is not part of the repo.
   and `src/lib/councilClient.ts`), not just in the prompt.
 - Reading guides are not the book's text and say so; public-domain passages
   name the translator.
+- A quote is never translated in place. Chinese shows the original plus a
+  `gloss` marked 译文. Screens read strings through `useT()`, never literals.
 - Portraits must have a Wikimedia licence entry in `public/portraits/CREDITS.md`.
 - Yellow is for the primary action, the active nav item and the wordmark's
   period. Nothing else.

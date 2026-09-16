@@ -5,6 +5,7 @@ import { useStore } from '../store/useStore';
 import { useAuth } from '../store/useAuth';
 import { TopBar } from '../components/chrome';
 import { Wordmark } from '../components/Wordmark';
+import { useT } from '../i18n/react';
 import './AuthScreen.css';
 
 /* ============================================================
@@ -24,6 +25,7 @@ export function AuthScreen({ mode }: { mode: 'signup' | 'signin' }) {
   const register = useAuth((s) => s.register);
   const oauth = useAuth((s) => s.oauth);
   const clearError = useAuth((s) => s.clearError);
+  const t = useT();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -66,29 +68,29 @@ export function AuthScreen({ mode }: { mode: 'signup' | 'signin' }) {
       <TopBar backFallback={{ name: 'welcome' }} className="top-inset" />
       <form className="screen-scroll pad auth-form" onSubmit={submit}>
         <Wordmark size={24} />
-        <h1 className="display auth-title">{mode === 'signup' ? 'Create your account' : 'Welcome back'}</h1>
-        <p className="muted">{mode === 'signup' ? 'Save councils, highlights and books across devices.' : 'Pick up where you left off.'}</p>
+        <h1 className="display auth-title">{mode === 'signup' ? t.auth.titleSignup : t.auth.titleSignin}</h1>
+        <p className="muted">{mode === 'signup' ? t.auth.subSignup : t.auth.subSignin}</p>
         <div className="auth-social">
           <button type="button" className="btn btn-dark" disabled={busy} onClick={() => social('apple')}>
-            <IconBrandApple /> Continue with Apple
+            <IconBrandApple /> {t.auth.apple}
           </button>
           <button type="button" className="btn btn-outline" disabled={busy} onClick={() => social('google')}>
-            <IconBrandGoogle /> Continue with Google
+            <IconBrandGoogle /> {t.auth.google}
           </button>
         </div>
-        <div className="auth-or caps">or with email</div>
+        <div className="auth-or caps">{t.auth.or}</div>
         {mode === 'signup' && (
           <div className="field">
-            <label htmlFor="auth-name">Name</label>
-            <input id="auth-name" className="input" value={name} onChange={(e) => setName(e.target.value)} placeholder="What should we call you?" autoComplete="name" />
+            <label htmlFor="auth-name">{t.auth.name}</label>
+            <input id="auth-name" className="input" value={name} onChange={(e) => setName(e.target.value)} placeholder={t.auth.namePh} autoComplete="name" />
           </div>
         )}
         <div className="field">
-          <label htmlFor="auth-email">Email</label>
-          <input id="auth-email" className="input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" autoComplete="email" required={available} />
+          <label htmlFor="auth-email">{t.auth.email}</label>
+          <input id="auth-email" className="input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder={t.auth.emailPh} autoComplete="email" required={available} />
         </div>
         <div className="field">
-          <label htmlFor="auth-pass">Password</label>
+          <label htmlFor="auth-pass">{t.auth.password}</label>
           <input
             id="auth-pass"
             className="input"
@@ -103,8 +105,8 @@ export function AuthScreen({ mode }: { mode: 'signup' | 'signin' }) {
         </div>
         {mode === 'signup' && available && (
           <div className="field">
-            <label htmlFor="auth-invite">Invite code</label>
-            <input id="auth-invite" className="input" value={invite} onChange={(e) => setInvite(e.target.value.toUpperCase())} placeholder="The Council is in a closed beta" autoComplete="off" autoCapitalize="characters" />
+            <label htmlFor="auth-invite">{t.auth.invite}</label>
+            <input id="auth-invite" className="input" value={invite} onChange={(e) => setInvite(e.target.value.toUpperCase())} placeholder={t.auth.invitePh} autoComplete="off" autoCapitalize="characters" />
           </div>
         )}
         {error && (
@@ -113,14 +115,12 @@ export function AuthScreen({ mode }: { mode: 'signup' | 'signin' }) {
           </p>
         )}
         <button type="submit" className="btn btn-primary auth-submit" disabled={busy}>
-          {busy ? 'One moment…' : mode === 'signup' ? 'Create account' : 'Sign in'}
+          {busy ? t.auth.busy : mode === 'signup' ? t.auth.submitSignup : t.auth.submitSignin}
         </button>
         <button type="button" className="linkbtn auth-guest" onClick={() => { setOnboarded(true); navigate({ name: 'interests' }, { replace: true }); }}>
-          Continue as a guest
+          {t.auth.guest}
         </button>
-        <p className="small muted auth-note">
-          {available ? 'Your councils, library and highlights sync to your account. Explore as a guest first if you like — it all comes with you when you sign in.' : 'Prototype: accounts are stored on this device only.'}
-        </p>
+        <p className="small muted auth-note">{available ? t.auth.noteBackend : t.auth.noteProto}</p>
       </form>
     </div>
   );

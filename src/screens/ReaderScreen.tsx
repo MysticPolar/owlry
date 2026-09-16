@@ -6,6 +6,7 @@ import { maybeBook } from '../content/books';
 import { readingFor } from '../engine/council';
 import type { TextSize } from '../store/types';
 import { TopBar } from '../components/chrome';
+import { useT, fmt } from '../i18n/react';
 import './ReaderScreen.css';
 
 /* ============================================================
@@ -28,6 +29,7 @@ export function ReaderScreen({ id, councilId }: { id: string; councilId?: string
   const addHighlight = useStore((s) => s.addHighlight);
   const bringPassage = useStore((s) => s.bringPassage);
   const showToast = useStore((s) => s.showToast);
+  const t = useT();
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
@@ -94,8 +96,8 @@ export function ReaderScreen({ id, councilId }: { id: string; councilId?: string
   if (!b) {
     return (
       <div className="screen">
-        <TopBar backFallback={{ name: 'library' }} title="Reader" className="top-inset" />
-        <p className="pad muted" style={{ paddingTop: 24 }}>We couldn’t find that book.</p>
+        <TopBar backFallback={{ name: 'library' }} title={t.reader.title} className="top-inset" />
+        <p className="pad muted" style={{ paddingTop: 24 }}>{t.reader.missing}</p>
       </div>
     );
   }
@@ -109,7 +111,7 @@ export function ReaderScreen({ id, councilId }: { id: string; councilId?: string
     addHighlight(b.id, sel.text, councilId);
     window.getSelection()?.removeAllRanges();
     setSel(null);
-    showToast('Highlight saved to your library.');
+    showToast(t.reader.highlightSaved);
   };
   const doCouncil = () => {
     if (!sel) return;
@@ -119,15 +121,15 @@ export function ReaderScreen({ id, councilId }: { id: string; councilId?: string
     setSel(null);
     const target = bringPassage(b.id, passage);
     if (target) navigate({ name: 'discussion', id: target });
-    else showToast('Ask the council a question first, then bring passages back to it.');
+    else showToast(t.reader.askFirst);
   };
   const doCopy = async () => {
     if (!sel) return;
     try {
       await navigator.clipboard.writeText(`“${sel.text}” — ${b.title}, ${b.authorName}`);
-      showToast('Copied with attribution.');
+      showToast(t.reader.copiedAttr);
     } catch {
-      showToast('Copy isn’t available here.');
+      showToast(t.reader.copyNA);
     }
     window.getSelection()?.removeAllRanges();
     setSel(null);
@@ -146,17 +148,17 @@ export function ReaderScreen({ id, councilId }: { id: string; councilId?: string
         className="top-inset"
         right={
           <>
-            <button type="button" className={`iconbtn ${sizeOpen ? 'on' : ''}`} aria-label="Text size" aria-expanded={sizeOpen} onClick={() => setSizeOpen((v) => !v)}>
+            <button type="button" className={`iconbtn ${sizeOpen ? 'on' : ''}`} aria-label={t.reader.textSize} aria-expanded={sizeOpen} onClick={() => setSizeOpen((v) => !v)}>
               <IconTypography stroke={1.8} />
             </button>
-            <button type="button" className={`iconbtn ${nearBookmark ? 'on' : ''}`} aria-label={nearBookmark ? 'Remove bookmark' : 'Bookmark this spot'} onClick={() => { toggleBookmark(b.id, pos); showToast(nearBookmark ? 'Bookmark removed.' : 'Bookmarked. Find it in your library.'); }}>
+            <button type="button" className={`iconbtn ${nearBookmark ? 'on' : ''}`} aria-label={nearBookmark ? t.reader.removeBookmark : t.reader.bookmarkSpot} onClick={() => { toggleBookmark(b.id, pos); showToast(nearBookmark ? t.reader.bookmarkRemoved : t.reader.bookmarked); }}>
               {nearBookmark ? <IconBookmarkFilled /> : <IconBookmark stroke={1.8} />}
             </button>
           </>
         }
       />
       {sizeOpen && (
-        <div className="size-pop" role="group" aria-label="Text size">
+        <div className="size-pop" role="group" aria-label={t.reader.textSize}>
           {SIZES.map((s) => (
             <button key={s} type="button" className={`size-btn size-btn-${s} ${textSize === s ? 'on' : ''}`} onClick={() => { setTextSize(s); setSizeOpen(false); }}>
               Aa
@@ -167,14 +169,14 @@ export function ReaderScreen({ id, councilId }: { id: string; councilId?: string
       <div className="screen-scroll reader-scroll" ref={scrollRef} onScroll={onScroll}>
         {rec && session && noteOpen && (
           <aside className="reader-note">
-            <button type="button" className="reader-note-x" aria-label="Dismiss" onClick={() => setNoteOpen(false)}>
+            <button type="button" className="reader-note-x" aria-label={t.common.dismiss} onClick={() => setNoteOpen(false)}>
               <IconX />
             </button>
-            <span className="caps">Why this section</span>
+            <span className="caps">{t.reader.whySection}</span>
             <p>{rec.why}</p>
-            <p className="small muted">You asked: “{session.question}”</p>
+            <p className="small muted">{fmt(t.reader.youAsked, { q: session.question })}</p>
             <button type="button" className="linkbtn" onClick={() => navigate({ name: 'discussion', id: session.id })}>
-              Back to the council
+              {t.reader.backToCouncil}
             </button>
           </aside>
         )}
@@ -182,7 +184,7 @@ export function ReaderScreen({ id, councilId }: { id: string; councilId?: string
           <p className="caps muted reader-kicker">{b.title} · {b.authorName}</p>
           <h1 className="reader-heading">{b.text.heading}</h1>
           <p className={`reader-provenance ${b.text.kind === 'guide' ? 'guide' : ''}`}>
-            {b.text.kind === 'guide' ? 'Reading guide · ' : ''}
+            {b.text.kind === 'guide' ? t.reader.guide : ''}
             {b.text.note}
           </p>
           <div className="reader-text" ref={textRef}>
@@ -191,32 +193,32 @@ export function ReaderScreen({ id, councilId }: { id: string; councilId?: string
             ))}
           </div>
           <div className="reader-end">
-            <span className="caps muted">End of section</span>
+            <span className="caps muted">{t.reader.end}</span>
             {b.isbn && (
               <a className="reader-ol" href={`https://openlibrary.org/isbn/${b.isbn}`} target="_blank" rel="noreferrer">
-                Find the full book <IconExternalLink />
+                {t.reader.findFull} <IconExternalLink />
               </a>
             )}
           </div>
         </div>
         {sel && (
-          <div className="sel-tools" style={{ left: Math.max(90, Math.min(sel.x, (scrollRef.current?.clientWidth ?? 390) - 90)), top: Math.max(8, sel.y + (scrollRef.current?.scrollTop ?? 0) - 52) }} role="toolbar" aria-label="Selection">
+          <div className="sel-tools" style={{ left: Math.max(90, Math.min(sel.x, (scrollRef.current?.clientWidth ?? 390) - 90)), top: Math.max(8, sel.y + (scrollRef.current?.scrollTop ?? 0) - 52) }} role="toolbar" aria-label={t.reader.selection}>
             <button type="button" onClick={doHighlight}>
-              <IconHighlight /> Highlight
+              <IconHighlight /> {t.reader.highlight}
             </button>
             <button type="button" onClick={doCouncil}>
-              <IconUsers /> To council
+              <IconUsers /> {t.reader.toCouncil}
             </button>
-            <button type="button" onClick={doCopy} aria-label="Copy">
+            <button type="button" onClick={doCopy} aria-label={t.reader.copy}>
               <IconCopy />
             </button>
           </div>
         )}
       </div>
-      <div className="reader-progress" aria-label={`${Math.round(pct * 100)}% read`}>
+      <div className="reader-progress" aria-label={fmt(t.reader.pctRead, { pct: Math.round(pct * 100) })}>
         <span className="reader-bar" style={{ width: `${Math.round(pct * 100)}%` }} />
         <span className="reader-progress-text">
-          {Math.round(pct * 100)}% · {pct >= 0.98 ? 'Finished' : 'Progress saved'}
+          {Math.round(pct * 100)}% · {pct >= 0.98 ? t.reader.finished : t.reader.progressSaved}
         </span>
       </div>
     </div>

@@ -3,9 +3,10 @@ import { IconHeartbeat, IconBriefcase, IconChartBar, IconHeart, IconBook, IconMe
 import { navigate } from '../app/router';
 import { useStore } from '../store/useStore';
 import type { Area } from '../content/types';
-import { AREAS } from '../content/councils';
+import { areasList } from '../content/councils';
 import { TopBar } from '../components/chrome';
 import { Owl } from '../components/Owl';
+import { useT } from '../i18n/react';
 import './InterestsScreen.css';
 
 /* ============================================================
@@ -28,6 +29,8 @@ export function InterestsScreen() {
   const onboarded = useStore((s) => s.onboarded);
   const [picked, setPicked] = useState<Area[]>(interests);
   const [lastPicked, setLastPicked] = useState<Area | null>(null);
+  const t = useT();
+  const areas = areasList();
 
   const toggle = (a: Area) => {
     setPicked((p) => (p.includes(a) ? p.filter((x) => x !== a) : [...p, a]));
@@ -45,18 +48,18 @@ export function InterestsScreen() {
       <div className="screen-scroll pad interests-body">
         <div className="interests-titlerow">
           <h1 className="display interests-title">
-            What are you
+            {t.interests.title1}
             <br />
-            curious about today?
+            {t.interests.title2}
           </h1>
           <span className="hand interests-hand">
-            Pick a path.
+            {t.interests.hand1}
             <br />
-            Or a few!
+            {t.interests.hand2}
           </span>
         </div>
         <ul className="tiles" role="list">
-          {AREAS.map((a) => {
+          {areas.map((a) => {
             const on = picked.includes(a.id);
             return (
               <li key={a.id}>
@@ -72,7 +75,7 @@ export function InterestsScreen() {
                     <IconCheck stroke={3} />
                   </span>
                 </button>
-                {lastPicked === a.id && <span className="hand pop interests-good">Good choice.</span>}
+                {lastPicked === a.id && <span className="hand pop interests-good">{t.interests.good}</span>}
               </li>
             );
           })}
@@ -80,13 +83,13 @@ export function InterestsScreen() {
       </div>
       <div className="interests-actions pad">
         <button type="button" className="btn btn-dark" disabled={picked.length === 0} onClick={() => go(picked)}>
-          Continue <IconArrowRight />
+          {t.interests.continue} <IconArrowRight />
         </button>
         <button type="button" className="linkbtn" onClick={() => go(picked)}>
-          Skip and ask a question
+          {t.interests.skip}
         </button>
       </div>
-      <Owl color="teal" size={92} pose="peek" className="interests-owl" title="A teal owl peeking in" />
+      <Owl color="teal" size={92} pose="peek" className="interests-owl" title={t.interests.owl} />
     </div>
   );
 }

@@ -6,6 +6,7 @@ import { book } from '../content/books';
 import { takeawaysFor, readingFor } from '../engine/council';
 import { Avatar } from './Avatar';
 import { Cover } from './Cover';
+import { useT, fmt } from '../i18n/react';
 
 /* ============================================================
    Card 1 — Your Council's Takeaways · Card 2 — Reading for Your Question
@@ -13,15 +14,16 @@ import { Cover } from './Cover';
    ============================================================ */
 export function TakeawaysCard({ session, full = false }: { session: CouncilSession; full?: boolean }) {
   const t = takeawaysFor(session);
+  const d = useT();
   return (
-    <section className={`card council-card takeaways ${full ? 'full' : ''}`} aria-label="Your council's takeaways">
-      {!full && <h3 className="council-card-title">Your Council’s Takeaways</h3>}
+    <section className={`card council-card takeaways ${full ? 'full' : ''}`} aria-label={d.cards.takeawaysAria}>
+      {!full && <h3 className="council-card-title">{d.cards.takeawaysTitle}</h3>}
       <div className="tk-section">
-        <span className="caps tk-label">Common ground</span>
+        <span className="caps tk-label">{d.cards.common}</span>
         <p>{t.commonGround}</p>
       </div>
       <div className="tk-section">
-        <span className="caps tk-label">Key differences</span>
+        <span className="caps tk-label">{d.cards.differences}</span>
         <ul className="tk-diffs">
           {t.differences.map((d) => {
             const f = figure(d.figureId);
@@ -37,23 +39,23 @@ export function TakeawaysCard({ session, full = false }: { session: CouncilSessi
         </ul>
       </div>
       <div className="tk-section">
-        <span className="caps tk-label">What fits your situation</span>
+        <span className="caps tk-label">{d.cards.fits}</span>
         <p>{t.fits}</p>
         {t.context.length > 0 && (
           <ul className="tk-context">
             {t.context.map((c, i) => (
-              <li key={i}>You added: “{c}”</li>
+              <li key={i}>{fmt(d.cards.youAdded, { c })}</li>
             ))}
           </ul>
         )}
       </div>
       <div className="tk-section tk-next">
-        <span className="caps tk-label">One next step</span>
+        <span className="caps tk-label">{d.cards.next}</span>
         <p>{t.nextStep}</p>
       </div>
       {!full && (
         <button type="button" className="council-card-link" onClick={() => navigate({ name: 'summary', id: session.id })}>
-          View full summary <IconArrowRight />
+          {d.cards.viewSummary} <IconArrowRight />
         </button>
       )}
     </section>
@@ -62,9 +64,10 @@ export function TakeawaysCard({ session, full = false }: { session: CouncilSessi
 
 export function ReadingCard({ session, full = false }: { session: CouncilSession; full?: boolean }) {
   const recs = readingFor(session);
+  const d = useT();
   return (
-    <section className={`card council-card reading ${full ? 'full' : ''}`} aria-label="Reading for your question">
-      {!full && <h3 className="council-card-title">Reading for Your Question</h3>}
+    <section className={`card council-card reading ${full ? 'full' : ''}`} aria-label={d.cards.readingAria}>
+      {!full && <h3 className="council-card-title">{d.cards.readingTitle}</h3>}
       <ul className="rec-list">
         {recs.map((r) => {
           const b = book(r.bookId);
@@ -79,12 +82,12 @@ export function ReadingCard({ session, full = false }: { session: CouncilSession
                   </span>
                   {r.bestStart && (
                     <span className="rec-best">
-                      <IconStar /> Best starting point
+                      <IconStar /> {d.cards.best}
                     </span>
                   )}
                   <span className="rec-why">{r.why}</span>
                   <span className="rec-start">
-                    Start with <b>{b.start.label}</b> — {b.start.title}
+                    {d.cards.startWith} <b>{b.start.label}</b> — {b.start.title}
                   </span>
                 </span>
               </button>

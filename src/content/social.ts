@@ -1,4 +1,6 @@
 import type { Post } from '../store/types';
+import { isZh } from '../i18n';
+import { seedPostsZh, SEED_HIGHLIGHTS_ZH } from './zh/social';
 
 /* ============================================================
    Seed posts for the social feed. Every quote is a real line from the
@@ -7,7 +9,18 @@ import type { Post } from '../store/types';
 const H = 3600_000;
 const D = 24 * H;
 
+/** the demo library's two starting highlights, in the interface language */
+export function seedHighlights(): { meditations: string; atomicHabits: string; note: string } {
+  if (isZh()) return SEED_HIGHLIGHTS_ZH;
+  return {
+    meditations: 'Am I then yet unwilling to go about that, for which I myself was born and brought forth into this world?',
+    atomicHabits: 'Every action you take is a vote for the type of person you wish to become.',
+    note: 'Tuesday votes.',
+  };
+}
+
 export function seedPosts(now = Date.now()): Post[] {
+  if (isZh()) return seedPostsZh(now);
   return [
     {
       id: 'p_alex',

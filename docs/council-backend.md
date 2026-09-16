@@ -103,8 +103,9 @@ unchanged.
 
 ## Not done yet / open
 
-- The live council is English-only on the client (`lang: 'en'`); the function
-  already accepts `zh`.
+- ~~The live council is English-only on the client.~~ The client now sends the
+  reader's language (`lang` in `CloudState`, chosen in Settings) with every
+  call.
 - After a Replace, only the opening (two rounds + cards) is regenerated live;
   later follow-ups fall back to the script for the new seat.
 - Comments on posts are a count in the UI and nothing else yet.

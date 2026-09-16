@@ -12,6 +12,7 @@ import { FigureMessage, UserMessage, SystemMessage, Typing } from '../components
 import { TakeawaysCard, ReadingCard } from '../components/CouncilCards';
 import { FigureSheet } from '../components/FigureSheet';
 import { Owl } from '../components/Owl';
+import { useT, fmt } from '../i18n/react';
 import './DiscussionScreen.css';
 
 /* ============================================================
@@ -31,6 +32,7 @@ export function DiscussionScreen({ id }: { id: string }) {
   const showToast = useStore((s) => s.showToast);
   const reduceMotion = useReduceMotion();
   const kb = useKeyboardInset();
+  const t = useT();
 
   const [text, setText] = useState('');
   const [target, setTarget] = useState<string | null>(null);
@@ -66,9 +68,9 @@ export function DiscussionScreen({ id }: { id: string }) {
   if (!session) {
     return (
       <div className="screen">
-        <TopBar backFallback={{ name: 'council' }} title="Discussion" className="top-inset" />
+        <TopBar backFallback={{ name: 'council' }} title={t.discussion.title} className="top-inset" />
         <div className="pad" style={{ paddingTop: 24 }}>
-          <p className="muted">This conversation isn’t on this device. Ask the council a new question.</p>
+          <p className="muted">{t.discussion.missing}</p>
         </div>
       </div>
     );
@@ -101,10 +103,10 @@ export function DiscussionScreen({ id }: { id: string }) {
     replaceSeat(session.id, seat);
     setSheetFigure(null);
     setTarget(null);
-    showToast(`${from.name} replaced. The council and reading are updated.`, { label: 'Undo', onClick: () => undoReplace(session.id) });
+    showToast(fmt(t.discussion.replaced, { name: from.name }), { label: t.common.undo, onClick: () => undoReplace(session.id) });
   };
 
-  const placeholder = contextMode ? 'Add context or a constraint…' : target ? `Ask ${figure(target).short}…` : 'Share your thoughts…';
+  const placeholder = contextMode ? t.discussion.phContext : target ? fmt(t.discussion.phAsk, { name: figure(target).short }) : t.discussion.phShare;
 
   return (
     <div className="screen discussion" style={kb ? { paddingBottom: kb } : undefined}>
@@ -112,7 +114,7 @@ export function DiscussionScreen({ id }: { id: string }) {
         backFallback={{ name: 'council' }}
         title={
           <span className="disc-title">
-            <span className="disc-title-kicker">A conversation on</span>
+            <span className="disc-title-kicker">{t.discussion.kicker}</span>
             <span className="disc-title-topic">{session.title.replace(/^(a|the) /i, '')}</span>
           </span>
         }
@@ -126,22 +128,24 @@ export function DiscussionScreen({ id }: { id: string }) {
               navigate({ name: 'summary', id: session.id });
             }}
           >
-            Summary
+            {t.discussion.summary}
           </button>
         }
       />
-      <div className="seats-strip" role="list" aria-label="The council">
+      <div className="seats-strip" role="list" aria-label={t.discussion.councilAria}>
         {seats.map((f, i) => (
           <button key={f.id} type="button" className="seat-chip" role="listitem" onClick={() => setSheetFigure(f.id)}>
             <Avatar figure={f} size={56} ring={target === f.id} />
             <span className="seat-chip-name">{f.name}</span>
             <span className="seat-chip-label">{f.label}</span>
-            {session.replaced.some((r) => r.seat === i && r.to === f.id) && <span className="seat-chip-new">new</span>}
+            {session.replaced.some((r) => r.seat === i && r.to === f.id) && <span className="seat-chip-new">{t.discussion.newTag}</span>}
           </button>
         ))}
       </div>
       <p className="ai-note">
-        AI interpretations grounded in their published work · <span className="ai-note-q">“ ”</span> marks a verbatim quote
+        {t.discussion.aiNote1}
+        <span className="ai-note-q">“ ”</span>
+        {t.discussion.aiNote2}
       </p>
 
       <div className="screen-scroll chat" ref={scrollRef}>
@@ -169,7 +173,7 @@ export function DiscussionScreen({ id }: { id: string }) {
       <div className="composer">
         <div className="composer-targets chiprow">
           <button type="button" className={`chip ${!target && !contextMode ? 'on' : ''}`} onClick={() => { setTarget(null); setContextMode(false); }}>
-            Everyone
+            {t.discussion.everyone}
           </button>
           {seats.map((f) => (
             <button key={f.id} type="button" className={`chip ${target === f.id && !contextMode ? 'on' : ''}`} onClick={() => { setTarget(f.id); setContextMode(false); inputRef.current?.focus(); }}>
@@ -177,17 +181,17 @@ export function DiscussionScreen({ id }: { id: string }) {
             </button>
           ))}
           <button type="button" className={`chip ${contextMode ? 'on' : ''}`} onClick={() => { setContextMode((v) => !v); inputRef.current?.focus(); }}>
-            {contextMode ? <IconX /> : <IconPlus />} Add context
+            {contextMode ? <IconX /> : <IconPlus />} {t.discussion.addContext}
           </button>
         </div>
         <form className="askbar composer-bar" onSubmit={onSubmit}>
           <textarea ref={inputRef} rows={1} placeholder={placeholder} value={text} onChange={(e) => setText(e.target.value)} onKeyDown={onKey} aria-label={placeholder} />
-          <button type="submit" className="sendbtn" aria-label="Send" disabled={!text.trim()}>
+          <button type="submit" className="sendbtn" aria-label={t.common.send} disabled={!text.trim()}>
             <IconArrowUp stroke={2.5} />
           </button>
         </form>
         <span className="hand discussion-hand" aria-hidden="true">
-          Different minds. A clearer you.
+          {t.discussion.hand}
         </span>
         <Owl color="violet" size={54} className="discussion-owl" />
       </div>

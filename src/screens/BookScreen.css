@@ -24,3 +24,5 @@
 .book-ideas { display: grid; gap: 8px; padding-left: 20px; list-style: decimal; font-size: 0.9375rem; line-height: 1.45; }
 .book-ideas li::marker { font-weight: 700; color: var(--yellow-2); }
 .book-summary .btn { margin-top: 6px; }
+.book-quote-gloss { margin: 8px 0 0; font-size: 0.9375rem; line-height: 1.5; color: var(--ink-3); }
+.book-quote-gloss .msg-source-tag { margin-right: 4px; }

@@ -26,6 +26,8 @@ export type Category =
 export interface Quote {
   text: string;
   source: { work: string; loc?: string; url?: string };
+  /** a translation shown under the verbatim line when the interface is in another language — never in its place */
+  gloss?: string;
 }
 
 export interface Figure {

@@ -4,6 +4,7 @@ import { figure } from '../content/figures';
 import { candidatesFor } from '../engine/council';
 import { Avatar } from './Avatar';
 import { Sheet } from './chrome';
+import { useT, fmt } from '../i18n/react';
 
 /* ============================================================
    Tap an avatar: who this is, the works their voice is drawn from, and
@@ -22,11 +23,12 @@ export function FigureSheet({
   onAsk: (figureId: string) => void;
   onReplace: (seat: number) => void;
 }) {
+  const t = useT();
   const f = figureId ? figure(figureId) : null;
   const seat = f ? session.seats.indexOf(f.id) : -1;
   const next = seat >= 0 ? candidatesFor(session, seat)[0] : undefined;
   return (
-    <Sheet open={!!f} onClose={onClose} label={f ? `About ${f.name}` : 'About'}>
+    <Sheet open={!!f} onClose={onClose} label={f ? fmt(t.figure.about, { name: f.name }) : t.figure.aboutPlain}>
       {f && (
         <div className="fig-sheet">
           <div className="fig-head">
@@ -39,7 +41,7 @@ export function FigureSheet({
           </div>
           <p className="fig-bio">{f.bio}</p>
           <div className="fig-works">
-            <span className="caps muted">Source works</span>
+            <span className="caps muted">{t.figure.sources}</span>
             <ul>
               {f.works.map((w) => (
                 <li key={w.title}>
@@ -56,17 +58,17 @@ export function FigureSheet({
               ))}
             </ul>
             <p className="micro muted">
-              An AI interpretation grounded in the works above. Lines shown as quotations are verbatim; everything else is paraphrase.
-              {f.portrait && ' Portrait via Wikimedia Commons — see credits.'}
+              {t.figure.note}
+              {f.portrait && t.figure.portrait}
             </p>
           </div>
           <div className="fig-actions">
             <button type="button" className="btn btn-dark" onClick={() => onAsk(f.id)}>
-              <IconMessage /> Ask {f.short} directly
+              <IconMessage /> {fmt(t.figure.ask, { name: f.short })}
             </button>
             {next && (
               <button type="button" className="btn btn-outline" onClick={() => onReplace(seat)}>
-                <IconSwitchHorizontal /> Replace with {figure(next).name}
+                <IconSwitchHorizontal /> {fmt(t.figure.replace, { name: figure(next).name })}
               </button>
             )}
           </div>

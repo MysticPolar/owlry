@@ -8,6 +8,7 @@ import { introsFor } from '../engine/council';
 import { Wordmark } from '../components/Wordmark';
 import { CouncilTable } from '../components/CouncilTable';
 import { Avatar } from '../components/Avatar';
+import { useT, fmt } from '../i18n/react';
 import './CouncilScreen.css';
 
 /* ============================================================
@@ -24,6 +25,7 @@ export function CouncilScreen() {
   const join = useStore((s) => s.joinDiscussion);
   const [text, setText] = useState('');
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const t = useT();
 
   const convening = active && active.stage === 'convening' ? active : null;
   const seats = convening ? convening.seats.map((id) => figure(id)) : [null, null, null];
@@ -66,7 +68,7 @@ export function CouncilScreen() {
         <button
           type="button"
           className="iconbtn"
-          aria-label={convening ? 'Ask something else' : 'Start over'}
+          aria-label={convening ? t.council.askElse : t.council.startOver}
           onClick={() => {
             setActive(null);
             setText('');
@@ -78,17 +80,17 @@ export function CouncilScreen() {
       </div>
       <div className="screen-scroll council-body nav-space">
         <div className="pad council-titles">
-          <h1 className="display council-title">The Council</h1>
-          <p className="muted council-sub">{convening ? `Three minds on “${convening.question}”` : 'Three minds walk into a question.'}</p>
+          <h1 className="display council-title">{t.council.title}</h1>
+          <p className="muted council-sub">{convening ? fmt(t.council.subAsked, { q: convening.question }) : t.council.sub}</p>
         </div>
         <div className="council-stage">
           <CouncilTable seats={seats} />
-          {!convening && <span className="hand council-hand">Great conversations start here.</span>}
+          {!convening && <span className="hand council-hand">{t.council.hand}</span>}
         </div>
 
         {convening ? (
           <div className={`pad intros ${showIntros ? 'show' : ''}`}>
-            <p className="caps intros-label">Your council</p>
+            <p className="caps intros-label">{t.council.yourCouncil}</p>
             {introsFor(convening).map(({ figureId, why }, i) => {
               const f = figure(figureId);
               return (
@@ -103,7 +105,7 @@ export function CouncilScreen() {
                 </div>
               );
             })}
-            <p className="micro-note">AI interpretations grounded in each thinker’s published work. Quotes are marked; the rest is paraphrase.</p>
+            <p className="micro-note">{t.council.note}</p>
             <button
               type="button"
               className="btn btn-primary"
@@ -112,23 +114,23 @@ export function CouncilScreen() {
                 navigate({ name: 'discussion', id: convening.id });
               }}
             >
-              Join the discussion
+              {t.council.join}
             </button>
           </div>
         ) : (
           <div className="pad council-ask">
-            <p className="council-prompt">What’s on your mind?</p>
+            <p className="council-prompt">{t.council.prompt}</p>
             <form className="askbar" onSubmit={onSubmit}>
               <textarea
                 ref={inputRef}
                 rows={1}
-                placeholder="Ask anything…"
+                placeholder={t.council.ph}
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 onKeyDown={onKey}
-                aria-label="Your question"
+                aria-label={t.council.ariaQ}
               />
-              <button type="submit" className="sendbtn" aria-label="Ask the council" disabled={!text.trim()}>
+              <button type="submit" className="sendbtn" aria-label={t.council.ariaAsk} disabled={!text.trim()}>
                 <IconArrowUp stroke={2.5} />
               </button>
             </form>

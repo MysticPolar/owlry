@@ -1,4 +1,5 @@
 import type { Axis } from '../content/types';
+import { useT, fmt } from '../i18n/react';
 
 /* ============================================================
    The reading-profile radar: six spokes for the six areas, a soft yellow
@@ -25,10 +26,12 @@ function pt(i: number, f: number): [number, number] {
 const ring = (f: number) => AXES.map((_, i) => pt(i, f).map((v) => v.toFixed(1)).join(',')).join(' ');
 
 export function RadarChart({ values }: { values: Record<Axis, number> }) {
+  const t = useT();
+  const label = (id: Axis) => t.profile.axes[id];
   const poly = AXES.map((a, i) => pt(i, Math.max(0.06, values[a.id])).map((v) => v.toFixed(1)).join(',')).join(' ');
-  const aria = AXES.map((a) => `${a.label} ${Math.round(values[a.id] * 100)}%`).join(', ');
+  const aria = AXES.map((a) => `${label(a.id)} ${Math.round(values[a.id] * 100)}%`).join(', ');
   return (
-    <svg className="radar" viewBox="0 0 380 280" role="img" aria-label={`Reading profile: ${aria}`}>
+    <svg className="radar" viewBox="0 0 380 280" role="img" aria-label={fmt(t.profile.radarAria, { values: aria })}>
       {[1, 0.75, 0.5, 0.25].map((f) => (
         <polygon key={f} points={ring(f)} fill={f === 1 ? 'var(--paper-2)' : 'none'} stroke="var(--line-2)" strokeWidth="1" />
       ))}
@@ -48,7 +51,7 @@ export function RadarChart({ values }: { values: Record<Axis, number> }) {
         const anchor = i === 0 || i === 3 ? 'middle' : i < 3 ? 'start' : 'end';
         return (
           <text key={a.id} x={x} y={y + 4} textAnchor={anchor} fontSize="11.5" fontWeight="600" fill="var(--ink-2)" fontFamily="var(--font-ui)">
-            {a.label}
+            {label(a.id)}
           </text>
         );
       })}

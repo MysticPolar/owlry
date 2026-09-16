@@ -73,6 +73,30 @@ The complete journey, interactive end to end, with realistic content:
   Seneca, Epictetus, Cal Newport, Ryan Holiday, Russell, Fogg,
   Thich Nhat Hanh, Walker, Housel, Gottman, de Botton, Bloom, Borges, Harari).
 
+## The Chinese version
+
+Everything the reader sees exists in Chinese: interface, the 43 thinkers, 45
+books and their guides, the 8 scripted councils, the six paths, the feed's
+seed posts and the four public-domain passages. The switch is in Settings and
+follows the browser on first visit.
+
+- `src/i18n/` — `Lang`, the active-language module (`getActiveLang`, `isZh`,
+  `fmt`), the `en`/`zh` UI dictionaries, and the `useT()` / `useLang()` hooks.
+  The app remounts on a switch (`key={lang}` on the desk) and the store
+  rebuilds every scripted council in the new language.
+- `src/content/zh/` — overrides per figure / book / council / area, merged
+  by the accessors in `src/content/*.ts` so screens never branch on language.
+  Chinese keywords are added to (not replacing) the English ones so matching
+  works for a question typed in either language.
+- `src/content/texts/zh/*.json` — the reader passages, paragraph-for-
+  paragraph with the English files (12/12/16/11), each with `basedOn`,
+  `source` and `url`. The reader shows a note that the Chinese is the app's
+  own rendering of that public-domain translation.
+- Quotes: the verbatim rule holds. A `Quote.gloss` is shown under the
+  original, marked 译文; nothing translated is ever presented as the quotation.
+- The language is a synced preference (`CloudState.lang`) and is sent with
+  every `council-chat` call.
+
 ## The backend phase
 
 Done in `docs/council-backend.md`: the live council (`council-chat`), accounts

@@ -5,6 +5,7 @@
    ============================================================ */
 import type { Area } from '../../content/types';
 import type { Highlight, Progress, TextSize } from '../../store/types';
+import type { Lang } from '../../i18n';
 
 export interface CloudState {
   v: 1;
@@ -14,6 +15,8 @@ export interface CloudState {
   interests: Area[];
   onboarded: boolean;
   textSize: TextSize;
+  /** absent in rows written before the language setting existed */
+  lang?: Lang;
   saved: string[];
   progress: Record<string, Progress>;
   bookmarks: Record<string, number[]>;
@@ -77,6 +80,7 @@ export function normalizeCloudState(raw: unknown): CloudState | null {
     interests: strings(raw.interests).filter((a): a is Area => AREAS.includes(a)),
     onboarded: raw.onboarded === true,
     textSize: raw.textSize === 'S' || raw.textSize === 'L' ? raw.textSize : 'M',
+    ...(raw.lang === 'zh' || raw.lang === 'en' ? { lang: raw.lang } : {}),
     saved: strings(raw.saved),
     progress,
     bookmarks,

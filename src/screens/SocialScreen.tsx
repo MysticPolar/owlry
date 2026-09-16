@@ -6,6 +6,7 @@ import { maybeBook } from '../content/books';
 import { timeAgo } from '../app/ids';
 import { PersonAvatar } from '../components/Avatar';
 import { Sheet } from '../components/chrome';
+import { useT } from '../i18n/react';
 import './SocialScreen.css';
 
 /* ============================================================
@@ -23,6 +24,7 @@ export function SocialScreen() {
   const showToast = useStore((s) => s.showToast);
   const [tab, setTab] = useState<'foryou' | 'following'>('foryou');
   const [compose, setCompose] = useState(false);
+  const t = useT();
 
   // signed in: the cloud feed is refreshed each time the tab opens (a no-op otherwise)
   useEffect(() => {
@@ -36,7 +38,7 @@ export function SocialScreen() {
       if (navigator.share) await navigator.share({ text });
       else {
         await navigator.clipboard.writeText(text);
-        showToast('Copied.');
+        showToast(t.common.copied);
       }
     } catch {
       /* dismissed */
@@ -48,19 +50,19 @@ export function SocialScreen() {
       <div className="social-head top-inset pad">
         <div className="social-tabs" role="tablist">
           <button type="button" role="tab" aria-selected={tab === 'foryou'} className={tab === 'foryou' ? 'on' : ''} onClick={() => setTab('foryou')}>
-            For You
+            {t.social.forYou}
           </button>
           <button type="button" role="tab" aria-selected={tab === 'following'} className={tab === 'following' ? 'on' : ''} onClick={() => setTab('following')}>
-            Following
+            {t.social.following}
           </button>
         </div>
-        <button type="button" className="social-plus" aria-label="Share a reflection" onClick={() => setCompose(true)}>
+        <button type="button" className="social-plus" aria-label={t.social.plus} onClick={() => setCompose(true)}>
           <IconPlus stroke={2.4} />
         </button>
       </div>
       <div className="screen-scroll nav-space feed">
         {shown.length === 0 && (
-          <p className="pad small muted" style={{ paddingTop: 20 }}>Follow a few readers and their reflections will show up here.</p>
+          <p className="pad small muted" style={{ paddingTop: 20 }}>{t.social.followEmpty}</p>
         )}
         {shown.map((p) => {
           const isLiked = liked.includes(p.id);
@@ -77,10 +79,10 @@ export function SocialScreen() {
                 </div>
                 {!p.mine && (
                   <button type="button" className={`btn btn-xs ${isFollowing ? 'btn-outline' : 'btn-dark'}`} onClick={() => toggleFollow(p.author.handle)}>
-                    {isFollowing ? 'Following' : 'Follow'}
+                    {isFollowing ? t.social.followingBtn : t.social.follow}
                   </button>
                 )}
-                <button type="button" className="iconbtn" aria-label="More">
+                <button type="button" className="iconbtn" aria-label={t.social.more}>
                   <IconDots />
                 </button>
               </header>
@@ -89,17 +91,17 @@ export function SocialScreen() {
                 <p className="quote-card-attr">{p.attribution}</p>
               </div>
               <div className="post-actions pad">
-                <button type="button" className={`post-action ${isLiked ? 'on' : ''}`} onClick={() => toggleLike(p.id)} aria-pressed={isLiked} aria-label="Like">
+                <button type="button" className={`post-action ${isLiked ? 'on' : ''}`} onClick={() => toggleLike(p.id)} aria-pressed={isLiked} aria-label={t.social.like}>
                   {isLiked ? <IconHeartFilled /> : <IconHeart />} <span>{p.likes}</span>
                 </button>
-                <button type="button" className="post-action" aria-label="Comments">
+                <button type="button" className="post-action" aria-label={t.social.comments}>
                   <IconMessageCircle /> <span>{p.comments}</span>
                 </button>
-                <button type="button" className="post-action" aria-label="Share" onClick={() => share(`“${p.quote}” — ${p.attribution}\n\n${p.caption}`)}>
+                <button type="button" className="post-action" aria-label={t.common.share} onClick={() => share(`“${p.quote}” — ${p.attribution}\n\n${p.caption}`)}>
                   <IconSend />
                 </button>
                 <span className="grow" />
-                <button type="button" className={`post-action ${isSaved ? 'on' : ''}`} aria-label="Save" aria-pressed={isSaved} onClick={() => toggleSavePost(p.id)}>
+                <button type="button" className={`post-action ${isSaved ? 'on' : ''}`} aria-label={t.social.save} aria-pressed={isSaved} onClick={() => toggleSavePost(p.id)}>
                   {isSaved ? <IconBookmarkFilled /> : <IconBookmark />}
                 </button>
               </div>
@@ -125,6 +127,7 @@ function ComposeSheet({ open, onClose }: { open: boolean; onClose: () => void })
   const [pick, setPick] = useState<string | null>(null);
   const [custom, setCustom] = useState('');
   const [caption, setCaption] = useState('');
+  const t = useT();
   const chosen = highlights.find((h) => h.id === pick);
   const quote = chosen?.text ?? custom.trim();
   const b = chosen ? maybeBook(chosen.bookId) : undefined;
@@ -134,22 +137,22 @@ function ComposeSheet({ open, onClose }: { open: boolean; onClose: () => void })
     addPost({
       quote,
       bookId: b?.id,
-      attribution: b ? `${b.title} · ${b.authorName}` : 'A passage I kept',
+      attribution: b ? `${b.title} · ${b.authorName}` : t.social.keptPassage,
       caption: caption.trim(),
-      prompt: 'What did this change for you?',
+      prompt: t.social.captionLabel,
     });
     setPick(null);
     setCustom('');
     setCaption('');
     onClose();
-    showToast('Shared with your readers.');
+    showToast(t.social.shared);
   };
 
   return (
-    <Sheet open={open} onClose={onClose} label="Share a reflection" tall>
+    <Sheet open={open} onClose={onClose} label={t.social.composeLabel} tall>
       <div className="compose">
-        <h2 className="title">Share a passage</h2>
-        <p className="small muted">Pick one of your highlights, or paste a line you kept.</p>
+        <h2 className="title">{t.social.composeTitle}</h2>
+        <p className="small muted">{t.social.composeSub}</p>
         {highlights.length > 0 && (
           <ul className="compose-picks">
             {highlights.slice(0, 5).map((h) => {
@@ -165,13 +168,13 @@ function ComposeSheet({ open, onClose }: { open: boolean; onClose: () => void })
             })}
           </ul>
         )}
-        {!chosen && <textarea className="input compose-quote" rows={3} placeholder="Or paste a passage…" value={custom} onChange={(e) => setCustom(e.target.value)} aria-label="Passage" />}
+        {!chosen && <textarea className="input compose-quote" rows={3} placeholder={t.social.composePh} value={custom} onChange={(e) => setCustom(e.target.value)} aria-label={t.social.passage} />}
         <label className="compose-label" htmlFor="compose-caption">
-          What did this change for you?
+          {t.social.captionLabel}
         </label>
-        <textarea id="compose-caption" className="input compose-caption" rows={3} placeholder="Your own words — a sentence is plenty." value={caption} onChange={(e) => setCaption(e.target.value)} />
+        <textarea id="compose-caption" className="input compose-caption" rows={3} placeholder={t.social.captionPh} value={caption} onChange={(e) => setCaption(e.target.value)} />
         <button type="button" className="btn btn-primary" disabled={!quote || !caption.trim()} onClick={post}>
-          Post
+          {t.social.post}
         </button>
       </div>
     </Sheet>

@@ -2,6 +2,7 @@ import { navigate } from '../app/router';
 import { useStore } from '../store/useStore';
 import { Wordmark } from '../components/Wordmark';
 import { Owl } from '../components/Owl';
+import { useT } from '../i18n/react';
 import './WelcomeScreen.css';
 
 /* ============================================================
@@ -11,36 +12,40 @@ import './WelcomeScreen.css';
    ============================================================ */
 export function WelcomeScreen() {
   const setOnboarded = useStore((s) => s.setOnboarded);
+  const t = useT();
+  const [l1, l2, l3, l4] = t.welcome.marquee;
   return (
     <div className="screen night welcome">
       <div className="welcome-spot" aria-hidden="true" />
       <div className="welcome-cone" aria-hidden="true" />
       <div className="welcome-head top-inset pad">
         <Wordmark size={28} />
-        <Owl color="orange" size={54} className="welcome-owl" title="An owl, perched in the corner" />
+        <Owl color="orange" size={54} className="welcome-owl" title={t.welcome.owl} />
       </div>
       <div className="welcome-hero pad">
         <h1 className="marquee">
-          Walk
+          {l1}
           <br />
-          with
+          {l2}
           <br />
-          Great
+          {l3}
           <br />
-          Minds<span className="dot">.</span>
+          {l4}
+          <span className="dot">.</span>
         </h1>
         <p className="welcome-sub">
-          Better questions.
-          <br />A richer you.
+          {t.welcome.sub1}
+          <br />
+          {t.welcome.sub2}
         </p>
         <Reader />
       </div>
       <div className="welcome-actions pad">
         <button type="button" className="btn btn-primary" onClick={() => navigate({ name: 'signup' })}>
-          Create an account
+          {t.welcome.create}
         </button>
         <button type="button" className="btn btn-outline" onClick={() => navigate({ name: 'signin' })}>
-          I already have an account
+          {t.welcome.have}
         </button>
         <button
           type="button"
@@ -50,9 +55,9 @@ export function WelcomeScreen() {
             navigate({ name: 'interests' });
           }}
         >
-          or explore without an account
+          {t.welcome.explore}
         </button>
-        <p className="caps welcome-foot">Same books. A brighter you.</p>
+        <p className="caps welcome-foot">{t.welcome.foot}</p>
       </div>
     </div>
   );

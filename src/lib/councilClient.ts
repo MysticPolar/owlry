@@ -16,6 +16,7 @@ import type { CouncilSession, Message, Segment, LiveOverrides } from '../store/t
 import { figure } from '../content/figures';
 import { maybeBook } from '../content/books';
 import { readingFor } from '../engine/council';
+import { getActiveLang } from '../i18n';
 
 export type LiveFallbackReason = 'backend-unavailable' | 'sign-in' | 'rate-limited' | 'auth-required' | 'invalid-response' | 'service-unavailable';
 
@@ -130,7 +131,7 @@ export async function liveCouncilReady(): Promise<boolean> {
 export async function liveOpen(session: CouncilSession): Promise<OpenResult | null> {
   if (!(await liveCouncilReady())) return null;
   try {
-    const data = (await invoke({ mode: 'open', question: session.question, area: session.area, seats: dossiers(session), lang: 'en' })) as {
+    const data = (await invoke({ mode: 'open', question: session.question, area: session.area, seats: dossiers(session), lang: getActiveLang() })) as {
       intros?: unknown;
       round1?: WireLine[];
       round2?: WireLine[];
@@ -202,7 +203,7 @@ export async function liveTurn(
       history: historyOf(session, userIdx < 0 ? session.messages.length : userIdx),
       context: session.context,
       passage,
-      lang: 'en',
+      lang: getActiveLang(),
     })) as { replies?: WireLine[] };
     if (!Array.isArray(data.replies)) throw new Error('council-chat contract: missing replies');
     const out: Record<string, Segment[]> = {};

@@ -3,6 +3,7 @@ import { IconHome, IconBook, IconBooks, IconUsers, IconUser, IconArrowLeft } fro
 import { navigate, goBack, type Route, type TabName } from '../app/router';
 import { useStore } from '../store/useStore';
 import { useModalFocus } from '../hooks/useModalFocus';
+import { useT, type Dict } from '../i18n/react';
 
 /* ============================================================
    The chrome: fake status bar (desktop frame only), bottom nav, top bar,
@@ -33,27 +34,28 @@ export function StatusBar() {
   );
 }
 
-const TABS: { name: TabName; label: string; icon: ReactNode; route: Route }[] = [
-  { name: 'council', label: 'Home', icon: <IconHome stroke={1.9} />, route: { name: 'council' } },
-  { name: 'reading', label: 'Reading', icon: <IconBook stroke={1.9} />, route: { name: 'reading' } },
-  { name: 'library', label: 'Library', icon: <IconBooks stroke={1.9} />, route: { name: 'library' } },
-  { name: 'social', label: 'Social', icon: <IconUsers stroke={1.9} />, route: { name: 'social' } },
-  { name: 'profile', label: 'Profile', icon: <IconUser stroke={1.9} />, route: { name: 'profile' } },
+const TABS: { name: TabName; label: keyof Dict['nav']; icon: ReactNode; route: Route }[] = [
+  { name: 'council', label: 'home', icon: <IconHome stroke={1.9} />, route: { name: 'council' } },
+  { name: 'reading', label: 'reading', icon: <IconBook stroke={1.9} />, route: { name: 'reading' } },
+  { name: 'library', label: 'library', icon: <IconBooks stroke={1.9} />, route: { name: 'library' } },
+  { name: 'social', label: 'social', icon: <IconUsers stroke={1.9} />, route: { name: 'social' } },
+  { name: 'profile', label: 'profile', icon: <IconUser stroke={1.9} />, route: { name: 'profile' } },
 ];
 
 export function Nav({ active }: { active: TabName }) {
+  const t = useT();
   return (
-    <nav className="nav" aria-label="Main">
-      {TABS.map((t) => (
+    <nav className="nav" aria-label={t.nav.main}>
+      {TABS.map((tab) => (
         <button
-          key={t.name}
+          key={tab.name}
           type="button"
-          className={t.name === active ? 'on' : ''}
-          aria-current={t.name === active ? 'page' : undefined}
-          onClick={() => navigate(t.route)}
+          className={tab.name === active ? 'on' : ''}
+          aria-current={tab.name === active ? 'page' : undefined}
+          onClick={() => navigate(tab.route)}
         >
-          {t.icon}
-          <span>{t.label}</span>
+          {tab.icon}
+          <span>{t.nav[tab.label]}</span>
         </button>
       ))}
     </nav>
@@ -75,12 +77,13 @@ export function TopBar({
   left?: ReactNode;
   className?: string;
 }) {
+  const t = useT();
   const showBack = onBack !== undefined || backFallback !== undefined;
   return (
     <div className={`topbar ${className}`}>
       {left ??
         (showBack ? (
-          <button type="button" className="iconbtn" aria-label="Back" onClick={() => (onBack ? onBack() : goBack(backFallback))}>
+          <button type="button" className="iconbtn" aria-label={t.common.back} onClick={() => (onBack ? onBack() : goBack(backFallback))}>
             <IconArrowLeft stroke={2} />
           </button>
         ) : (

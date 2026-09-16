@@ -5,6 +5,7 @@ import { maybeBook, book } from '../content/books';
 import { readingFor } from '../engine/council';
 import { timeAgo } from '../app/ids';
 import { Cover } from '../components/Cover';
+import { useT, fmt } from '../i18n/react';
 import './LibraryScreen.css';
 
 /* the Reading tab: resume the latest session, then what's recently open and what the councils suggested */
@@ -12,6 +13,7 @@ export function ReadingScreen() {
   const lastRead = useStore((s) => s.lastRead);
   const progress = useStore((s) => s.progress);
   const councils = useStore(selectCouncils);
+  const t = useT();
 
   const current = lastRead ? maybeBook(lastRead.bookId) : undefined;
   const recent = Object.entries(progress)
@@ -27,37 +29,37 @@ export function ReadingScreen() {
   return (
     <div className="screen library">
       <div className="lib-head top-inset pad">
-        <h1 className="display lib-title">Reading</h1>
+        <h1 className="display lib-title">{t.reading.title}</h1>
       </div>
       <div className="screen-scroll pad nav-space lib-body">
         {current ? (
-          <section className="card continue" aria-label="Continue reading">
+          <section className="card continue" aria-label={t.reading.continue}>
             <Cover book={current} width={72} />
             <div className="grow">
-              <span className="caps muted">Continue reading</span>
+              <span className="caps muted">{t.reading.continue}</span>
               <div className="continue-title">{current.title}</div>
               <div className="small muted">{current.authorName} · {current.text.heading}</div>
               <div className="progress-track">
                 <span style={{ width: `${Math.round((progress[current.id]?.pct ?? 0) * 100)}%` }} />
               </div>
               <button type="button" className="btn btn-primary btn-sm continue-btn" onClick={() => navigate({ name: 'read', id: current.id, council: lastRead?.councilId })}>
-                <IconPlayerPlay /> {Math.round((progress[current.id]?.pct ?? 0) * 100)}% — resume
+                <IconPlayerPlay /> {fmt(t.reading.resume, { pct: Math.round((progress[current.id]?.pct ?? 0) * 100) })}
               </button>
             </div>
           </section>
         ) : (
           <section className="card card-pad">
-            <p className="heading">Nothing open yet</p>
-            <p className="small muted" style={{ marginTop: 4 }}>Ask the council a question and it will hand you a chapter to start with.</p>
+            <p className="heading">{t.reading.nothing}</p>
+            <p className="small muted" style={{ marginTop: 4 }}>{t.reading.nothingSub}</p>
             <button type="button" className="btn btn-dark btn-sm" style={{ marginTop: 12 }} onClick={() => navigate({ name: 'council' })}>
-              Ask a question
+              {t.reading.askQ}
             </button>
           </section>
         )}
 
         {recent.length > 0 && (
           <section className="lib-section">
-            <h2 className="heading">Recently opened</h2>
+            <h2 className="heading">{t.reading.recent}</h2>
             <ul className="booklist">
               {recent.map(({ b, p }) => (
                 <li key={b.id}>
@@ -66,7 +68,7 @@ export function ReadingScreen() {
                     <span className="bookrow-text">
                       <span className="bookrow-title">{b.title}</span>
                       <span className="bookrow-sub">
-                        {b.authorName} · {p.status === 'completed' ? 'Completed' : `${Math.round(p.pct * 100)}%`} · {timeAgo(p.lastReadAt)}
+                        {b.authorName} · {p.status === 'completed' ? t.reading.completed : `${Math.round(p.pct * 100)}%`} · {timeAgo(p.lastReadAt)}
                       </span>
                     </span>
                     <IconChevronRight className="bookrow-chev" />
@@ -79,7 +81,7 @@ export function ReadingScreen() {
 
         {suggested.length > 0 && (
           <section className="lib-section">
-            <h2 className="heading">From your councils</h2>
+            <h2 className="heading">{t.reading.fromCouncils}</h2>
             <ul className="booklist">
               {suggested.map((r) => {
                 const b = book(r.bookId);
@@ -89,7 +91,7 @@ export function ReadingScreen() {
                       <Cover book={b} width={40} />
                       <span className="bookrow-text">
                         <span className="bookrow-title">{b.title}</span>
-                        <span className="bookrow-sub">Start with {b.start.label} · for “{r.question}”</span>
+                        <span className="bookrow-sub">{fmt(t.reading.startWithFor, { label: b.start.label, q: r.question })}</span>
                       </span>
                       <IconChevronRight className="bookrow-chev" />
                     </button>

@@ -61,6 +61,7 @@ export function mergeState(local: CloudState, cloud: CloudState): CloudState {
     interests: [...newer.interests],
     onboarded: local.onboarded || cloud.onboarded,
     textSize: newer.textSize,
+    ...(newer.lang ?? local.lang ?? cloud.lang ? { lang: newer.lang ?? local.lang ?? cloud.lang } : {}),
     saved: union(local.saved, cloud.saved),
     progress: mergeProgress(local.progress, cloud.progress),
     bookmarks: mergeBookmarks(local.bookmarks, cloud.bookmarks),

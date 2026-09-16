@@ -16,6 +16,8 @@ import type { Area, CouncilScript, SeatScript, AltScript } from '../content/type
 import { council, matchCouncil } from '../content/councils';
 import { figure } from '../content/figures';
 import { maybeBook } from '../content/books';
+import { fmt, getActiveLang } from '../i18n';
+import { UI } from '../i18n/ui';
 
 type SeatLike = SeatScript | AltScript;
 
@@ -244,7 +246,8 @@ export function replaceSeat(session: CouncilSession, seat: number, toFigureId?: 
     id: uid('m'),
     kind: 'system',
     sys: 'replace',
-    text: `${figure(to).name} joins the council, replacing ${figure(from).name}. The discussion and reading below reflect the new council.`,
+    text: fmt(UI[getActiveLang()].chat.sysReplace, { to: figure(to).name, from: figure(from).name }),
+    figures: { from, to },
     ts: Date.now(),
   };
   // announce at the current point of the conversation, before any un-revealed lines and the cards

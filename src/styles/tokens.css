@@ -99,3 +99,13 @@
 @supports (height: 100dvh) {
   :root { --app-h: 100dvh; }
 }
+
+/* Chinese: the Latin faces stay for their glyphs; system CJK faces fill in the rest */
+html[lang='zh-CN'] {
+  --font-display: 'Archivo', 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans CJK SC', 'Noto Sans SC', 'Source Han Sans SC', 'Microsoft YaHei', 'Inter', sans-serif;
+  --font-ui: 'Inter', 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans CJK SC', 'Noto Sans SC', 'Source Han Sans SC', 'Microsoft YaHei', sans-serif;
+  --font-read: 'Literata', 'Songti SC', 'Noto Serif CJK SC', 'Noto Serif SC', 'Source Han Serif SC', 'SimSun', serif;
+  --font-hand: 'Caveat', 'Kaiti SC', 'STKaiti', 'KaiTi', 'Noto Sans CJK SC', 'Noto Sans SC', cursive;
+}
+html[lang='zh-CN'] .caps { letter-spacing: 0.08em; }
+html[lang='zh-CN'] .marquee { letter-spacing: 0.04em; }

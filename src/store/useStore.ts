@@ -10,9 +10,16 @@ import { uid } from '../app/ids';
 import type { Area } from '../content/types';
 import type { CouncilSession, Highlight, Message, Post, Progress, Segment, TextSize, Toast, UserProfile } from './types';
 import * as engine from '../engine/council';
-import { seedPosts, FOLLOWING } from '../content/social';
+import { seedPosts, seedHighlights, FOLLOWING } from '../content/social';
 import { liveOpen, liveTurn } from '../lib/councilClient';
 import * as social from '../lib/social/api';
+import { council } from '../content/councils';
+import { detectLang, getActiveLang, setActiveLang, type Lang } from '../i18n';
+import { UI } from '../i18n/ui';
+
+// the content accessors read the active language; seed content for a first
+// visit follows the browser (the persisted choice, if any, is applied in main.tsx)
+setActiveLang(detectLang());
 
 export interface StoreState {
   user: UserProfile;
@@ -36,6 +43,8 @@ export interface StoreState {
 
   textSize: TextSize;
   toast: Toast | null;
+  /** the interface + content language; the councils' scripted lines are rebuilt when it changes */
+  lang: Lang;
   /** when a preference (interests, text size, profile, lastRead) last changed — newer wins when devices merge */
   prefsAt: number;
 
@@ -77,6 +86,7 @@ export interface StoreState {
 
   // --- prefs + ui
   setTextSize: (s: TextSize) => void;
+  setLang: (l: Lang) => void;
   showToast: (text: string, action?: Toast['action']) => void;
   dismissToast: () => void;
   resetDemo: () => void;
@@ -89,20 +99,10 @@ function seedState() {
   // a council from "two days ago", already summarised, so the library and profile have history to show
   let past = engine.createSession('What is a good life?', ['other'], 'good-life');
   past = { ...past, revealed: past.messages.length, stage: 'summarized', createdAt: now - 2 * 86400_000, updatedAt: now - 2 * 86400_000, saved: true };
+  const seeds = seedHighlights();
   const highlights: Highlight[] = [
-    {
-      id: 'h_seed1',
-      bookId: 'meditations',
-      text: 'Am I then yet unwilling to go about that, for which I myself was born and brought forth into this world?',
-      ts: now - 3 * 86400_000,
-    },
-    {
-      id: 'h_seed2',
-      bookId: 'atomic-habits',
-      text: 'Every action you take is a vote for the type of person you wish to become.',
-      ts: now - 6 * 86400_000,
-      note: 'Tuesday votes.',
-    },
+    { id: 'h_seed1', bookId: 'meditations', text: seeds.meditations, ts: now - 3 * 86400_000 },
+    { id: 'h_seed2', bookId: 'atomic-habits', text: seeds.atomicHabits, ts: now - 6 * 86400_000, note: seeds.note },
   ];
   return {
     user: DEMO_USER,
@@ -127,6 +127,7 @@ function seedState() {
     following: [...FOLLOWING],
     textSize: 'M' as TextSize,
     toast: null as Toast | null,
+    lang: getActiveLang(),
     prefsAt: 0,
   };
 }
@@ -371,7 +372,7 @@ export const useStore = create<StoreState>()(
               if (id) set((st) => ({ posts: st.posts.map((x) => (x.id === tempId ? { ...x, id } : x)) }));
             })
             .catch(() => {
-              set((st) => ({ posts: st.posts.filter((x) => x.id !== tempId), toast: { id: uid('t'), text: 'Couldn’t share that just now.' } }));
+              set((st) => ({ posts: st.posts.filter((x) => x.id !== tempId), toast: { id: uid('t'), text: UI[st.lang].social.cantShare } }));
             });
           return;
         }
@@ -406,6 +407,16 @@ export const useStore = create<StoreState>()(
         }),
 
       setTextSize: (textSize) => set({ textSize, prefsAt: Date.now() }),
+      setLang: (lang) => {
+        if (lang === get().lang && lang === getActiveLang()) return;
+        setActiveLang(lang);
+        // every scripted line, title and card is regenerated from the localised scripts; live lines stay as written
+        set((s) => {
+          const councils: Record<string, CouncilSession> = {};
+          for (const [id, c] of Object.entries(s.councils)) councils[id] = engine.rebuild({ ...c, title: council(c.scriptId).title });
+          return { lang, councils, prefsAt: Date.now() };
+        });
+      },
       showToast: (text, action) => set({ toast: { id: uid('t'), text, action } }),
       dismissToast: () => set({ toast: null }),
       resetDemo: () => set({ ...seedState() }),
