@@ -125,9 +125,15 @@ Everything that moves follows one rule: things arrive, they do not appear.
   the cascade possible. The asked question fades in under the title; the
   intro cards cascade when they are shown. Joining no longer empties the
   room for a frame: the discussion screen seats the council as it opens.
-- **The chat.** Every line arrives from just below (a figure, you, the
-  typing dots, the cards). A replaced seat's "new" tag pops. Both ask boxes
-  grow with what is typed. Once every line has landed, the chat closes with
+- **The chat.** A line's avatar and name are already on screen while it is
+  being typed; when it lands only the bubble moves, growing out of where the
+  dots were. The next line waits for a beat proportional to the last one, so
+  there is time to read. The chat follows the newest line only while you are
+  at the bottom; scroll up to re-read and nothing yanks you down — a "New
+  replies" pill offers the way back. A "Skip conversation" pill floats over
+  the end of the chat whenever lines are still arriving (the opening and
+  every follow-up) and lands everything at once. A replaced seat's "new" tag
+  pops. Both ask boxes grow with what is typed. Once every line has landed, the chat closes with
   two calls to action: start reading the best-start book, then — last and
   primary — the full summary.
 - **Reading.** Changing the text size keeps your place in the text, not the

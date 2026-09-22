@@ -374,3 +374,10 @@ export function typingDelay(m: Message): number {
   const len = (m.segments ?? []).reduce((n, s) => n + s.text.length, 0);
   return Math.min(1500, 500 + len * 3);
 }
+
+/** a beat to finish reading a figure's line before the next one starts typing (0 for anything else) */
+export function readingPause(m: Message): number {
+  if (m.kind !== 'figure') return 0;
+  const len = (m.segments ?? []).reduce((n, s) => n + s.text.length, 0);
+  return Math.min(900, Math.round(len * 2));
+}

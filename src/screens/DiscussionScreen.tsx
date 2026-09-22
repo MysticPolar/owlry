@@ -1,13 +1,14 @@
 import { useEffect, useLayoutEffect, useRef, useState, type FormEvent, type KeyboardEvent } from 'react';
-import { IconArrowUp, IconPlus, IconX } from '@tabler/icons-react';
+import { IconArrowUp, IconArrowDown, IconPlus, IconX, IconPlayerSkipForward } from '@tabler/icons-react';
 import { navigate } from '../app/router';
 import { useStore, selectCouncil } from '../store/useStore';
 import { figure } from '../content/figures';
-import { typingDelay, readingFor } from '../engine/council';
+import { typingDelay, readingPause, readingFor } from '../engine/council';
 import { book } from '../content/books';
 import { useKeyboardInset } from '../hooks/useKeyboardInset';
 import { useReduceMotion } from '../hooks/useReduceMotion';
 import { useAutoGrow } from '../hooks/useAutoGrow';
+import { usePresence } from '../hooks/usePresence';
 import { TopBar } from '../components/chrome';
 import { Avatar } from '../components/Avatar';
 import { FigureMessage, UserMessage, SystemMessage, Typing } from '../components/Chat';
@@ -57,16 +58,48 @@ export function DiscussionScreen({ id }: { id: string }) {
     const next = session.messages[revealed];
     // the live council is still writing this line — the typing indicator stays up until it lands
     if (session.pending?.includes(next.id)) return;
-    const delay = reduceMotion ? 120 : typingDelay(next);
+    // typing time for the next line, plus a moment to finish reading the last one
+    const prev = revealed > 0 ? session.messages[revealed - 1] : undefined;
+    const delay = reduceMotion ? 120 : typingDelay(next) + (prev ? readingPause(prev) : 0);
     const t = setTimeout(() => reveal(session.id), delay);
     return () => clearTimeout(t);
   }, [session?.id, revealed, total, reveal, reduceMotion, session?.pending]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // keep the newest line in view
-  useLayoutEffect(() => {
+  // follow the newest line — unless the reader has scrolled up to re-read, in which
+  // case nothing yanks them down and a pill offers the way back
+  const stick = useRef(true);
+  const following = useRef(false); // a smooth scroll to the bottom is in flight
+  const followTimer = useRef<number | null>(null);
+  const [unread, setUnread] = useState(false);
+  const toBottom = () => {
     const el = scrollRef.current;
-    if (el) el.scrollTo({ top: el.scrollHeight, behavior: reduceMotion ? 'auto' : 'smooth' });
-  }, [revealed, kb, reduceMotion]);
+    if (!el) return;
+    following.current = true;
+    el.scrollTo({ top: el.scrollHeight, behavior: reduceMotion ? 'auto' : 'smooth' });
+    // if the reader interrupts the glide, stop following after a beat
+    if (followTimer.current) clearTimeout(followTimer.current);
+    followTimer.current = window.setTimeout(() => { following.current = false; }, 900);
+  };
+  const onChatScroll = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const atBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 72;
+    if (following.current) {
+      // mid-glide positions are not the reader's choice
+      if (atBottom) { following.current = false; stick.current = true; setUnread(false); }
+      return;
+    }
+    stick.current = atBottom;
+    if (atBottom) setUnread(false);
+  };
+  useLayoutEffect(() => {
+    // a line landing while a glide is in flight re-targets it to the new bottom
+    if (stick.current || following.current) toBottom();
+    else setUnread(true);
+  }, [revealed, kb]); // eslint-disable-line react-hooks/exhaustive-deps
+  const playing = !!session && revealed < total;
+  const skipPill = usePresence(playing, 160);
+  const downPill = usePresence(unread, 160);
 
   if (!session) {
     return (
@@ -89,6 +122,7 @@ export function DiscussionScreen({ id }: { id: string }) {
   const submit = () => {
     const v = text.trim();
     if (!v) return;
+    stick.current = true; // your own line always comes into view
     if (contextMode) addContext(session.id, v);
     else sendFollowUp(session.id, v, target ?? undefined);
     setText('');
@@ -115,7 +149,7 @@ export function DiscussionScreen({ id }: { id: string }) {
   const placeholder = contextMode ? t.discussion.phContext : target ? fmt(t.discussion.phAsk, { name: figure(target).short }) : t.discussion.phShare;
 
   return (
-    <div className="screen discussion" style={kb ? { paddingBottom: kb } : undefined}>
+    <div className={`screen discussion ${skipPill.mounted || downPill.mounted ? 'has-pills' : ''}`} style={kb ? { paddingBottom: kb } : undefined}>
       <TopBar
         backFallback={{ name: 'council' }}
         title={
@@ -154,7 +188,8 @@ export function DiscussionScreen({ id }: { id: string }) {
         {t.discussion.aiNote2}
       </p>
 
-      <div className="screen-scroll chat" ref={scrollRef}>
+      <div className="chat-wrap">
+      <div className="screen-scroll chat" ref={scrollRef} onScroll={onChatScroll}>
         {visible.map((m) => {
           switch (m.kind) {
             case 'figure':
@@ -192,6 +227,35 @@ export function DiscussionScreen({ id }: { id: string }) {
           </div>
         )}
         <div className="chat-end" />
+      </div>
+      {/* floating over the end of the chat: the way down if you scrolled up, and a skip while lines are still arriving */}
+      <div className="chat-float">
+        {downPill.mounted && (
+          <button
+            type="button"
+            className={`chat-pill ${downPill.closing ? 'closing' : ''}`}
+            onClick={() => {
+              stick.current = true;
+              setUnread(false);
+              toBottom();
+            }}
+          >
+            <IconArrowDown stroke={2.2} /> {t.discussion.newBelow}
+          </button>
+        )}
+        {skipPill.mounted && (
+          <button
+            type="button"
+            className={`chat-pill skip ${skipPill.closing ? 'closing' : ''}`}
+            onClick={() => {
+              stick.current = true;
+              revealAll(session.id);
+            }}
+          >
+            <IconPlayerSkipForward stroke={2.2} /> {t.discussion.skip}
+          </button>
+        )}
+      </div>
       </div>
 
       <div className="composer">

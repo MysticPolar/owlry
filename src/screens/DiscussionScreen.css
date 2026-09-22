@@ -13,13 +13,31 @@
 /* the chat */
 .chat { padding: 14px 16px 8px; display: flex; flex-direction: column; gap: 14px; }
 .chat-end { height: 60px; flex: 0 0 auto; }
+.chat-wrap { position: relative; flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+/* the pills sit left of the owl; with two, "new replies" wraps above "skip" */
+.chat-float { position: absolute; left: 0; right: 0; bottom: 10px; z-index: 3; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; padding: 0 76px 0 12px; pointer-events: none; }
+.discussion.has-pills .discussion-hand { opacity: 0; }
+.discussion-hand { transition: opacity var(--dur); }
+.chat-pill {
+  pointer-events: auto; display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 0 14px;
+  border-radius: var(--r-pill); background: var(--ink); color: #fff; font-size: var(--t-label); font-weight: 700;
+  box-shadow: var(--shadow-float); animation: pop-in 200ms var(--ease-out) both; transform-origin: 50% 100%;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.chat-pill:active { transform: scale(0.95); }
+.chat-pill.closing { animation: pop-out 160ms var(--ease-out) both; pointer-events: none; }
+.chat-pill svg { width: 16px; height: 16px; }
+.chat-pill.skip { background: var(--paper); color: var(--ink); box-shadow: var(--shadow-float), inset 0 0 0 1px var(--line); }
 /* the close of the chat: read the book, then (last) the summary */
 .chat-cta { display: grid; gap: 10px; padding: 8px 4px 2px; animation: fade-up 400ms var(--ease-out) both; animation-delay: 200ms; }
 .chat-cta .caps { text-align: center; }
 .chat-pause { height: 8px; }
-/* every line arrives from just below: a figure's reply, your own, the typing dots, the cards */
-.msg { display: flex; gap: 10px; align-items: flex-start; animation: msg-in 280ms var(--ease-out) both; }
-@keyframes msg-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+/* A line's avatar and name are already on screen while it is being typed; when the
+   line lands, only the bubble moves — it grows out of where the dots were. */
+.msg { display: flex; gap: 10px; align-items: flex-start; }
+.msg-bubble, .msg-user-bubble, .msg-system > span { animation: bubble-in 320ms var(--ease-out) both; transform-origin: 0 0; }
+.msg-user-bubble { transform-origin: 100% 0; }
+@keyframes bubble-in { from { opacity: 0; transform: scale(0.96) translateY(6px); } to { opacity: 1; transform: none; } }
 .msg-avatar { flex: 0 0 auto; margin-top: 18px; border-radius: 50%; transition: transform var(--dur-fast) var(--ease-out); }
 button.msg-avatar:active { transform: scale(0.9); }
 .msg-body { flex: 1 1 auto; min-width: 0; display: grid; gap: 4px; }
@@ -50,7 +68,7 @@ button.msg-avatar:active { transform: scale(0.9); }
 @keyframes dot { 0%, 80%, 100% { transform: translateY(0); opacity: 0.5; } 40% { transform: translateY(-4px); opacity: 1; } }
 
 /* cards inside the chat */
-.council-card { padding: 16px; display: grid; gap: 12px; animation: screen-in 360ms var(--ease-out); }
+.council-card { padding: 16px; display: grid; gap: 12px; animation: fade-up 400ms var(--ease-out) both; }
 .council-card-title { font-family: var(--font-display); font-weight: 800; font-size: 1.125rem; letter-spacing: -0.015em; }
 .tk-section { display: grid; gap: 5px; }
 .tk-section p { font-size: 0.9375rem; line-height: 1.5; }
