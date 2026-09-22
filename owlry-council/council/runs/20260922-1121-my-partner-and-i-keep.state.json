@@ -1,0 +1,325 @@
+{
+ "id": "c",
+ "question": "My partner and I keep having the same fight about money. How do we stop?",
+ "category": "relationships",
+ "situation": "Together four years, one of us earns three times the other",
+ "N": 9,
+ "kind": "relationship",
+ "tension": "manage the recurring fight through better dialogue, or renegotiate the power gap underneath it",
+ "opening_seat": 1,
+ "seats": [
+  {
+   "seat": 1,
+   "slug": "john-gottman",
+   "name": "John Gottman",
+   "lived": "living",
+   "field": "relationship science",
+   "lens": "whether a conflict is solvable or perpetual",
+   "why": "found 69% of couple conflicts (often money) never resolve; teaches managing them, not solving them",
+   "books": [
+    {
+     "title": "The Seven Principles for Making Marriage Work",
+     "author": "John Gottman",
+     "year": 1999,
+     "read_free": null,
+     "buy": null
+    },
+    {
+     "title": "Why Marriages Succeed or Fail",
+     "author": "John Gottman",
+     "year": 1994,
+     "read_free": null,
+     "buy": null
+    },
+    {
+     "title": "What Makes Love Last?",
+     "author": "John Gottman",
+     "year": 2012,
+     "read_free": null,
+     "buy": null
+    },
+    {
+     "title": "The Relationship Cure",
+     "author": "John Gottman",
+     "year": 2001,
+     "read_free": null,
+     "buy": null
+    }
+   ]
+  },
+  {
+   "seat": 2,
+   "slug": "esther-perel",
+   "name": "Esther Perel",
+   "lived": "living",
+   "field": "couples therapy",
+   "lens": "what desire, autonomy, or power the fight is really about",
+   "why": "reads recurring money fights as stand-ins for autonomy and power, not the dollar amount",
+   "books": [
+    {
+     "title": "Mating in Captivity",
+     "author": "Esther Perel",
+     "year": 2006,
+     "read_free": null,
+     "buy": null
+    },
+    {
+     "title": "The State of Affairs",
+     "author": "Esther Perel",
+     "year": 2017,
+     "read_free": null,
+     "buy": null
+    },
+    {
+     "title": "Rethinking Infidelity (TED talk)",
+     "author": "Esther Perel",
+     "year": 2015,
+     "read_free": null,
+     "buy": null
+    },
+    {
+     "title": "Where Should We Begin?",
+     "author": "Esther Perel",
+     "year": 2017,
+     "read_free": null,
+     "buy": null
+    }
+   ]
+  },
+  {
+   "seat": 3,
+   "slug": "bell-hooks",
+   "name": "bell hooks",
+   "lived": "1952-2021",
+   "field": "love and social critic",
+   "lens": "whether the relationship's material terms are actually fair",
+   "why": "argued real love requires honesty and justice about money and power, not just harmony",
+   "books": [
+    {
+     "title": "All About Love: New Visions",
+     "author": "bell hooks",
+     "year": 2000,
+     "read_free": null,
+     "buy": null
+    },
+    {
+     "title": "Feminism Is for Everybody",
+     "author": "bell hooks",
+     "year": 2000,
+     "read_free": null,
+     "buy": null
+    },
+    {
+     "title": "The Will to Change: Men, Masculinity, and Love",
+     "author": "bell hooks",
+     "year": 2004,
+     "read_free": null,
+     "buy": null
+    },
+    {
+     "title": "Communion: The Female Search for Love",
+     "author": "bell hooks",
+     "year": 2002,
+     "read_free": null,
+     "buy": null
+    }
+   ]
+  }
+ ],
+ "castRaw": "{\"kind\":\"relationship\",\"tension\":\"manage the recurring fight through better dialogue, or renegotiate the power gap underneath it\",\"seats\":[{\"seat\":1,\"name\":\"John Gottman\",\"lived\":\"living\",\"field\":\"relationship science\",\"lens\":\"whether a conflict is solvable or perpetual\",\"why\":\"found 69% of couple conflicts (often money) never resolve; teaches managing them, not solving them\",\"books\":[{\"title\":\"The Seven Principles for Making Marriage Work\",\"author\":\"John Gottman\"}]},{\"seat\":2,\"name\":\"Esther Perel\",\"lived\":\"living\",\"field\":\"couples therapy\",\"lens\":\"what desire, autonomy, or power the fight is really about\",\"why\":\"reads recurring money fights as stand-ins for autonomy and power, not the dollar amount\",\"books\":[{\"title\":\"Mating in Captivity\",\"author\":\"Esther Perel\"}]},{\"seat\":3,\"name\":\"bell hooks\",\"lived\":\"1952-2021\",\"field\":\"love and social critic\",\"lens\":\"whether the relationship's material terms are actually fair\",\"why\":\"argued real love requires honesty and justice about money and power, not just harmony\",\"books\":[{\"title\":\"All About Love: New Visions\",\"author\":\"bell hooks\"}]}],\"opening_seat\":1}",
+ "screen": {
+  "verdicts": [
+   {
+    "name": "John Gottman",
+    "ok": true,
+    "reason": "Psychologist known for relationships research and ideas"
+   },
+   {
+    "name": "Esther Perel",
+    "ok": true,
+    "reason": "Therapist and relationship counselor known for her work"
+   },
+   {
+    "name": "bell hooks",
+    "ok": true,
+    "reason": "Author and social theorist; legacy in ideas"
+   }
+  ]
+ },
+ "timings": {
+  "cast": 25.6,
+  "screen": 9.5,
+  "forge": {
+   "john-gottman": 35.2,
+   "esther-perel": 31.6,
+   "bell-hooks": 45.4
+  },
+  "summary": 29.9
+ },
+ "calls": {
+  "cast": "a55342557cdf73910",
+  "screen": "a8ab1be806ff26882"
+ },
+ "turns": [
+  {
+   "turn": 1,
+   "speaker": "john-gottman",
+   "cycle": "positions",
+   "text": "Recurring money fights are what my research in The Seven Principles for Making Marriage Work calls perpetual problems, not solvable ones, since income imbalance is a fundamental difference in position, not a puzzle to solve once. Roughly sixty-nine percent of couple conflict is exactly this kind. The goal isn't ending the fight, it's building a dialogue about it that stays free of contempt and criticism, so the difference stops calcifying into gridlock.",
+   "tail": {
+    "position": "Stop trying to resolve it; build gridlocked dialogue that avoids contempt and criticism",
+    "move": "hold",
+    "open": "what a non-gridlocked dialogue about pay actually sounds like"
+   },
+   "words": 72,
+   "seconds": 3.4,
+   "raw": "Recurring money fights are what my research in The Seven Principles for Making Marriage Work calls perpetual problems, not solvable ones, since income imbalance is a fundamental difference in position, not a puzzle to solve once. Roughly sixty-nine percent of couple conflict is exactly this kind. The goal isn't ending the fight, it's building a dialogue about it that stays free of contempt and criticism, so the difference stops calcifying into gridlock.\n\nPOSITION: Stop trying to resolve it; build gridlocked dialogue that avoids contempt and criticism | MOVE: hold | OPEN: what a non-gridlocked dialogue about pay actually sounds like"
+  },
+  {
+   "turn": 2,
+   "speaker": "esther-perel",
+   "cycle": "positions",
+   "text": "Gottman's right that a three-to-one income gap won't dissolve into a solved puzzle, but \"manage it without contempt\" treats the gap as a fixed weather system you learn to dress for. I'd ask what the fight is actually protecting: usually it's not the number, it's who gets to feel like an adult making free choices and who feels like a dependent asking permission. That's not dialogue management, that's a live question about whose autonomy the household currently taxes.",
+   "tail": {
+    "position": "Ask what freedom the lower earner has quietly given up for money",
+    "move": "hold",
+    "open": "does either partner want out of caretaker role"
+   },
+   "words": 78,
+   "seconds": 3.2,
+   "raw": "Gottman's right that a three-to-one income gap won't dissolve into a solved puzzle, but \"manage it without contempt\" treats the gap as a fixed weather system you learn to dress for. I'd ask what the fight is actually protecting: usually it's not the number, it's who gets to feel like an adult making free choices and who feels like a dependent asking permission. That's not dialogue management, that's a live question about whose autonomy the household currently taxes.\n\nPOSITION: Ask what freedom the lower earner has quietly given up for money | MOVE: hold | OPEN: does either partner want out of caretaker role"
+  },
+  {
+   "turn": 3,
+   "speaker": "bell-hooks",
+   "cycle": "positions",
+   "text": "Perel is right that the fight is really about who gets to feel like a free adult and who feels like they're asking permission, but she stops at naming the feeling. In Feminism Is for Everybody I argue that feeling doesn't change until the economics do: a woman, or any lower earner, chooses freely only with real economic self-sufficiency, not just psychological validation inside continued dependency. So don't manage the autonomy question, settle it: put every dollar and every hour of unpaid labor on the table, named and shared, or call the arrangement accommodation, not love.",
+   "tail": {
+    "position": "Make earnings and unpaid labor fully visible and shared, not just discussed",
+    "move": "hold",
+    "open": "what counts as fair when incomes differ"
+   },
+   "words": 96,
+   "seconds": 6.9,
+   "raw": "Perel is right that the fight is really about who gets to feel like a free adult and who feels like they're asking permission, but she stops at naming the feeling. In Feminism Is for Everybody I argue that feeling doesn't change until the economics do: a woman, or any lower earner, chooses freely only with real economic self-sufficiency, not just psychological validation inside continued dependency. So don't manage the autonomy question, settle it: put every dollar and every hour of unpaid labor on the table, named and shared, or call the arrangement accommodation, not love.\n\nPOSITION: Make earnings and unpaid labor fully visible and shared, not just discussed | MOVE: hold | OPEN: what counts as fair when incomes differ"
+  },
+  {
+   "turn": 4,
+   "speaker": "john-gottman",
+   "cycle": "pressure",
+   "text": "hooks is right: \"manage without contempt\" can make an unfair split feel survivable instead of forcing it fair. I concede that. But her renegotiation is still a conversation, and harsh start-up predicts its failure whatever the terms. Put every dollar on the table — start that specific talk softly, or redistribution never gets discussed.",
+   "tail": {
+    "position": "Renegotiate the money terms, but start that talk softly",
+    "move": "shift",
+    "open": "who decides what counts as fair"
+   },
+   "words": 54,
+   "seconds": 21,
+   "raw": "hooks is right: \"manage without contempt\" can make an unfair split feel survivable instead of forcing it fair. I concede that. But her renegotiation is still a conversation, and harsh start-up predicts its failure whatever the terms. Put every dollar on the table — start that specific talk softly, or redistribution never gets discussed.\n\nPOSITION: Renegotiate the money terms, but start that talk softly | MOVE: shift | OPEN: who decides what counts as fair"
+  },
+  {
+   "turn": 5,
+   "speaker": "esther-perel",
+   "cycle": "pressure",
+   "text": "hooks says I stop at naming the feeling instead of moving money — fair, insight dressed as validation is still dependency. I concede: redistribution should be non-negotiable, not aspirational. But even with dollars split evenly, ask each other what you now feel free to spend or refuse without asking — that unnamed permission, not the ledger, keeps reigniting the fight.",
+   "tail": {
+    "position": "Redistribute the money, then ask what each now feels free to do without asking",
+    "move": "concede",
+    "open": "what happens if equal pay still feels like permission-asking"
+   },
+   "words": 60,
+   "seconds": 25.4,
+   "raw": "hooks says I stop at naming the feeling instead of moving money — fair, insight dressed as validation is still dependency. I concede: redistribution should be non-negotiable, not aspirational. But even with dollars split evenly, ask each other what you now feel free to spend or refuse without asking — that unnamed permission, not the ledger, keeps reigniting the fight.\nPOSITION: Redistribute the money, then ask what each now feels free to do without asking | MOVE: concede | OPEN: what happens if equal pay still feels like permission-asking"
+  },
+  {
+   "turn": 6,
+   "speaker": "bell-hooks",
+   "cycle": "pressure",
+   "text": "Perel's right that a split ledger still leaves an unnamed permission problem — that's real, but it doesn't undo my point, it completes it. Naming who owns what is what lets you stop asking. Gottman's soft-start-up caution stands: how you demand it matters. So: write the split down, dollars and unpaid hours both, on paper, this week.",
+   "tail": {
+    "position": "Put a written, equal split of money and unpaid labor on paper this week",
+    "move": "hold",
+    "open": "how to renegotiate gently without losing ground"
+   },
+   "words": 57,
+   "seconds": 17.1,
+   "raw": "Perel's right that a split ledger still leaves an unnamed permission problem — that's real, but it doesn't undo my point, it completes it. Naming who owns what is what lets you stop asking. Gottman's soft-start-up caution stands: how you demand it matters. So: write the split down, dollars and unpaid hours both, on paper, this week.\nPOSITION: Put a written, equal split of money and unpaid labor on paper this week | MOVE: hold | OPEN: how to renegotiate gently without losing ground"
+  },
+  {
+   "turn": 7,
+   "speaker": "john-gottman",
+   "cycle": "application",
+   "text": "hooks's call to write the full split down this week, dollars and unpaid hours both, is right for four years and a three-to-one gap. But the sitting is data: how you open it predicts whether it happens once or reignites the fight. Schedule it, start soft — name what you want to build, not what's owed — then list it together.",
+   "tail": {
+    "position": "Write the full split down this week, opened gently, not as an accusation",
+    "move": "hold",
+    "open": "how to renegotiate if one partner refuses the ledger"
+   },
+   "words": 61,
+   "seconds": 18.8,
+   "raw": "hooks's call to write the full split down this week, dollars and unpaid hours both, is right for four years and a three-to-one gap. But the sitting is data: how you open it predicts whether it happens once or reignites the fight. Schedule it, start soft — name what you want to build, not what's owed — then list it together.\n\nPOSITION: Write the full split down this week, opened gently, not as an accusation | MOVE: hold | OPEN: how to renegotiate if one partner refuses the ledger"
+  },
+  {
+   "turn": 8,
+   "speaker": "esther-perel",
+   "cycle": "application",
+   "text": "Gottman's right to script the opening, but before the ledger, do this: this week, each of you write down one thing you currently don't feel free to spend, refuse, or say without asking permission. Bring that list, not the dollar list, to the sit-down first — the numbers will divide easier once the permission is named.",
+   "tail": {
+    "position": "Before splitting dollars, each partner names one thing they don't feel free to do without asking",
+    "move": "hold",
+    "open": null
+   },
+   "words": 56,
+   "seconds": 11.8,
+   "raw": "Gottman's right to script the opening, but before the ledger, do this: this week, each of you write down one thing you currently don't feel free to spend, refuse, or say without asking permission. Bring that list, not the dollar list, to the sit-down first — the numbers will divide easier once the permission is named.\n\nPOSITION: Before splitting dollars, each partner names one thing they don't feel free to do without asking | MOVE: hold | OPEN: none"
+  },
+  {
+   "turn": 9,
+   "speaker": "bell-hooks",
+   "cycle": "application",
+   "text": "This week, before any numbers, each of you writes down what you don't feel free to spend, refuse, or say without asking — Perel's list. Bring both that and every dollar and unpaid hour to one soft-started sit-down. Write the split on paper. That paper, not the next fight, becomes your record of whether this is love or accommodation.",
+   "tail": {
+    "position": "This week, name the unspoken permissions, then write the full money-and-labor split on paper",
+    "move": "hold",
+    "open": null
+   },
+   "words": 59,
+   "seconds": 10.5,
+   "raw": "This week, before any numbers, each of you writes down what you don't feel free to spend, refuse, or say without asking — Perel's list. Bring both that and every dollar and unpaid hour to one soft-started sit-down. Write the split on paper. That paper, not the next fight, becomes your record of whether this is love or accommodation.\n\nPOSITION: This week, name the unspoken permissions, then write the full money-and-labor split on paper | MOVE: hold | OPEN: none"
+  }
+ ],
+ "startedAt": "2026-09-22T10:36:10.735Z",
+ "summaryRaw": "```json\n{\n  \"title\": \"How can we stop fighting about money with unequal income?\",\n  \"agree\": [\n    \"The gap won't dissolve; the fight stops when both partners feel free to spend and refuse without asking.\",\n    \"How you start the money talk predicts whether it solves the problem or reignites the same fight.\",\n    \"Naming unspoken fears about asking permission, then writing the financial and unpaid-labor split, addresses both feeling and reality.\"\n  ],\n  \"differ\": \"Gottman says managing the dialogue well lets you both live with the gap; hooks says the actual economics must become fair, not just the conversation. It comes down to whether you can feel free inside continued inequality, or whether material redistribution is non-negotiable.\",\n  \"fits\": \"Gottman's soft-start-up scripting prevents the talk from becoming accusatory. Perel's permission-naming (what you don't feel free to do without asking) uncovers what the ledger alone conceals. hooks ties both to a written record: the split on paper, not the next fight, shows whether this is love or accommodation.\",\n  \"next_step\": \"Each write one thing you can't spend or refuse without asking; bring it to a soft-opened talk about the full money-and-labor split.\",\n  \"books\": [\n    {\n      \"mind\": \"John Gottman\",\n      \"title\": \"The Seven Principles for Making Marriage Work\",\n      \"author\": \"John Gottman\",\n      \"why\": \"Builds dialogue that avoids gridlock and contempt, the foundation for renegotiating money.\"\n    },\n    {\n      \"mind\": \"Esther Perel\",\n      \"title\": \"Mating in Captivity\",\n      \"author\": \"Esther Perel\",\n      \"why\": \"Explores the autonomy and freedom each partner needs to feel like an adult in the relationship.\"\n    },\n    {\n      \"mind\": \"bell hooks\",\n      \"title\": \"All About Love: New Visions\",\n      \"author\": \"bell hooks\",\n      \"why\": \"Makes love material and equal; demands that fair economics, not just kind dialogue, support genuine partnership.\"\n    }\n  ]\n}\n```",
+ "summary": {
+  "title": "How can we stop fighting about money with unequal income?",
+  "agree": [
+   "The gap won't dissolve; the fight stops when both partners feel free to spend and refuse without asking.",
+   "How you start the money talk predicts whether it solves the problem or reignites the same fight.",
+   "Naming unspoken fears about asking permission, then writing the financial and unpaid-labor split, addresses both feeling and reality."
+  ],
+  "differ": "Gottman says managing the dialogue well lets you both live with the gap; hooks says the actual economics must become fair, not just the conversation. It comes down to whether you can feel free inside continued inequality, or whether material redistribution is non-negotiable.",
+  "fits": "Gottman's soft-start-up scripting prevents the talk from becoming accusatory. Perel's permission-naming (what you don't feel free to do without asking) uncovers what the ledger alone conceals. hooks ties both to a written record: the split on paper, not the next fight, shows whether this is love or accommodation.",
+  "next_step": "Each write one thing you can't spend or refuse without asking; bring it to a soft-opened talk about the full money-and-labor split.",
+  "books": [
+   {
+    "mind": "John Gottman",
+    "title": "The Seven Principles for Making Marriage Work",
+    "author": "John Gottman",
+    "why": "Builds dialogue that avoids gridlock and contempt, the foundation for renegotiating money."
+   },
+   {
+    "mind": "Esther Perel",
+    "title": "Mating in Captivity",
+    "author": "Esther Perel",
+    "why": "Explores the autonomy and freedom each partner needs to feel like an adult in the relationship."
+   },
+   {
+    "mind": "bell hooks",
+    "title": "All About Love: New Visions",
+    "author": "bell hooks",
+    "why": "Makes love material and equal; demands that fair economics, not just kind dialogue, support genuine partnership."
+   }
+  ]
+ },
+ "runFile": "council/runs/20260922-1121-my-partner-and-i-keep.md"
+}

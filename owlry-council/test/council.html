@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Council tester</title>
+<style>
+  :root { --bg:#faf4e6; --ink:#1a1a1a; --muted:#6b6660; --line:#e2d9c5; --card:#fff; --accent:#8a1c1c; --gold:#c9a227; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.5 Georgia, "Times New Roman", serif; }
+  header { padding:14px 20px; border-bottom:1px solid var(--line); display:flex; gap:12px; flex-wrap:wrap; align-items:center; background:#fff; }
+  header input, header select { font:14px system-ui; padding:6px 8px; border:1px solid var(--line); border-radius:6px; }
+  header button, main button { font:14px system-ui; padding:7px 12px; border:1px solid var(--ink); border-radius:6px; background:var(--ink); color:#fff; cursor:pointer; }
+  button.ghost { background:#fff; color:var(--ink); }
+  button:disabled { opacity:.5; cursor:default; }
+  main { max-width:760px; margin:0 auto; padding:20px; }
+  .ask textarea, .ask input, .reply input { width:100%; font:16px Georgia, serif; padding:10px; border:1px solid var(--line); border-radius:8px; background:#fff; margin-bottom:8px; }
+  .row { display:flex; gap:8px; align-items:center; }
+  .cast { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 16px; margin:16px 0; }
+  .cast .tension { color:var(--muted); font-style:italic; margin:0 0 8px; }
+  .seat { padding:6px 0; border-top:1px dashed var(--line); }
+  .seat:first-of-type { border-top:0; }
+  .seat b { display:block; }
+  .seat small { color:var(--muted); display:block; }
+  .bubble { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px 14px; margin:10px 0; }
+  .bubble .name { font:600 13px system-ui; color:var(--accent); letter-spacing:.02em; }
+  .bubble .cycle { font:12px system-ui; color:var(--muted); float:right; }
+  .bubble p { margin:6px 0 0; white-space:pre-wrap; }
+  .bubble .tail { font:12px ui-monospace, monospace; color:var(--muted); margin-top:8px; border-top:1px dotted var(--line); padding-top:6px; }
+  .bubble.reader { background:#f3ead4; }
+  .summary { background:#fff; border:2px solid var(--gold); border-radius:12px; padding:16px 18px; margin:18px 0; }
+  .summary h2 { margin:0 0 10px; font-size:20px; }
+  .summary h3 { margin:14px 0 4px; font:600 13px system-ui; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); }
+  .summary ul { margin:0; padding-left:18px; }
+  .summary a { color:var(--accent); }
+  .timing { font:13px ui-monospace, monospace; color:var(--muted); background:#fff; border:1px solid var(--line); border-radius:8px; padding:10px 12px; margin:12px 0; white-space:pre; }
+  .status { font:13px system-ui; color:var(--muted); margin:8px 0; }
+  .error { color:#a32d2d; font:14px system-ui; }
+</style>
+</head>
+<body>
+<header>
+  <input id="url" placeholder="https://xxxx.supabase.co" size="34" />
+  <input id="anon" placeholder="anon key" size="30" />
+  <input id="email" placeholder="test user email" size="22" />
+  <input id="password" placeholder="password" type="password" size="14" />
+  <button id="signin">Sign in</button>
+  <span id="who" class="status"></span>
+</header>
+
+<main>
+  <section class="ask">
+    <textarea id="question" rows="3" placeholder="Ask anything…"></textarea>
+    <input id="situation" placeholder="Anything about your situation they should know? (optional)" />
+    <div class="row">
+      <select id="category">
+        <option value="other">other</option><option value="health">health</option><option value="career">career</option>
+        <option value="investing">investing</option><option value="relationships">relationships</option><option value="literature">literature</option>
+      </select>
+      <button id="ask" disabled>Ask the council</button>
+      <button id="skip" class="ghost" style="display:none">Skip to the summary</button>
+      <label style="font:13px system-ui;color:var(--muted)"><input type="checkbox" id="showtails" /> show hidden tails</label>
+    </div>
+  </section>
+
+  <div id="status" class="status"></div>
+  <div id="cast"></div>
+  <div id="turns"></div>
+  <div id="summary"></div>
+  <section class="reply" id="replybox" style="display:none">
+    <div class="row"><input id="replytext" placeholder="Share your thoughts…" /><button id="send">Send</button></div>
+  </section>
+  <div id="timing" class="timing" style="display:none"></div>
+</main>
+
+<script type="module">
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+const $ = (id) => document.getElementById(id);
+const LS = "council-tester";
+try { const saved = JSON.parse(localStorage.getItem(LS) || "{}"); for (const k of ["url","anon","email"]) if (saved[k]) $(k).value = saved[k]; } catch {}
+
+let supabase = null, token = null, sessionId = null;
+let t0 = 0, timings = [], turnStart = {}, revealPaced = true, pending = [], revealedUpTo = 0, done = false;
+
+function log(label, ms) { timings.push([label, ms]); $("timing").style.display = "block"; $("timing").textContent = timings.map(([l, m]) => `${l.padEnd(22)} ${(m/1000).toFixed(1)} s`).join("\n"); }
+function status(s) { $("status").textContent = s; }
+function esc(s) { return String(s).replace(/[&<>]/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c])); }
+
+$("signin").onclick = async () => {
+  try {
+    localStorage.setItem(LS, JSON.stringify({ url: $("url").value, anon: $("anon").value, email: $("email").value }));
+    supabase = createClient($("url").value.trim(), $("anon").value.trim());
+    const { data, error } = await supabase.auth.signInWithPassword({ email: $("email").value.trim(), password: $("password").value });
+    if (error) throw error;
+    token = data.session.access_token;
+    $("who").textContent = `signed in as ${data.user.email}`;
+    $("ask").disabled = false;
+  } catch (e) { $("who").innerHTML = `<span class="error">${esc(e.message)}</span>`; }
+};
+
+async function stream(body, onEvent) {
+  const res = await fetch(`${$("url").value.trim()}/functions/v1/council`, {
+    method: "POST",
+    headers: { "content-type": "application/json", apikey: $("anon").value.trim(), Authorization: `Bearer ${token}` },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error(`${res.status} ${await res.text()}`);
+  const reader = res.body.getReader(); const dec = new TextDecoder(); let buf = "";
+  while (true) {
+    const { value, done: end } = await reader.read(); if (end) break;
+    buf += dec.decode(value, { stream: true });
+    let i; while ((i = buf.indexOf("\n\n")) >= 0) {
+      const chunk = buf.slice(0, i); buf = buf.slice(i + 2);
+      let ev = "message", data = "";
+      for (const line of chunk.split("\n")) { if (line.startsWith("event:")) ev = line.slice(6).trim(); else if (line.startsWith("data:")) data += line.slice(5).trim(); }
+      if (data) { try { onEvent(ev, JSON.parse(data)); } catch (e) { console.error(e); } }
+    }
+  }
+}
+
+function bubbleEl(turn) {
+  let el = document.getElementById(`t${turn}`);
+  if (!el) { el = document.createElement("div"); el.id = `t${turn}`; el.className = "bubble"; el.innerHTML = `<span class="cycle"></span><span class="name"></span><p></p><div class="tail" style="display:none"></div>`; $("turns").appendChild(el); }
+  return el;
+}
+
+function renderCast(d) {
+  $("cast").innerHTML = `<div class="cast"><p class="tension">${esc(d.tension || "")}</p>${(d.seats || []).map((s) => `<div class="seat"><b>${esc(s.name)}</b><small>${esc(s.why)}</small><small>${esc(s.intro)}</small></div>`).join("")}</div>`;
+}
+
+function renderSummary(s) {
+  const li = (a) => (Array.isArray(a) ? a : [a]).map((x) => `<li>${esc(x)}</li>`).join("");
+  $("summary").innerHTML = `<div class="summary"><h2>${esc(s.title)}</h2>
+    <h3>What they agree on</h3><ul>${li(s.agree)}</ul>
+    <h3>Where they differ</h3><ul>${li(s.differ)}</ul>
+    <h3>What fits your situation</h3><p>${esc(s.fits)}</p>
+    <h3>One next step</h3><p>${esc(s.next_step)}</p>
+    <h3>The books behind the conversation</h3><ul>${(s.books || []).map((b) => `<li><b>${esc(b.title)}</b> — ${esc(b.author)} · ${esc(b.why)} ${b.url ? `<a href="${b.url}" target="_blank" rel="noreferrer">${b.access === "read_free" ? "Read free" : "Get the book"}</a>` : ""}</li>`).join("")}</ul></div>`;
+}
+
+const handle = (ev, d) => {
+  const now = performance.now() - t0;
+  switch (ev) {
+    case "cast": sessionId = d.session_id; renderCast(d); log("council card", now); status("The council is taking their seats…"); break;
+    case "seats": renderCast({ tension: $("cast").querySelector(".tension")?.textContent, seats: d.seats }); break;
+    case "turn_start": { turnStart[d.turn] = now; const el = bubbleEl(d.turn); el.querySelector(".name").textContent = d.name; el.querySelector(".cycle").textContent = `turn ${d.turn} · ${d.cycle}`; if (d.turn === 1) $("skip").style.display = "inline-block"; status(`${d.name} is speaking…`); break; }
+    case "delta": { const el = bubbleEl(d.turn); if (!el.querySelector("p").dataset.first) { el.querySelector("p").dataset.first = "1"; if (d.turn === 1) log("first words", now); } el.querySelector("p").textContent += d.text; break; }
+    case "turn_end": { const el = bubbleEl(d.turn); el.querySelector("p").textContent = d.text; const tail = el.querySelector(".tail"); tail.textContent = `POSITION: ${d.position ?? "?"} | MOVE: ${d.move ?? "?"} | OPEN: ${d.open ?? "none"}`; tail.style.display = $("showtails").checked ? "block" : "none"; log(`turn ${d.turn} (${(now - (turnStart[d.turn] ?? now)) / 1000 | 0}s gen)`, now); break; }
+    case "summary": renderSummary(d); log("summary", now); break;
+    case "done": done = true; log("done", now); status("Done."); $("skip").style.display = "none"; $("replybox").style.display = "block"; break;
+    case "error": status(""); $("summary").innerHTML = `<p class="error">${esc(d.message)}</p>`; break;
+  }
+};
+
+$("showtails").onchange = () => document.querySelectorAll(".tail").forEach((t) => (t.style.display = $("showtails").checked ? "block" : "none"));
+$("skip").onclick = () => { $("skip").style.display = "none"; status("Skipping to the summary…"); if (sessionId && supabase) supabase.from("council_sessions").update({ skipped_at_turn: document.querySelectorAll(".bubble").length }).eq("id", sessionId).then(() => {}); };
+
+$("ask").onclick = async () => {
+  const question = $("question").value.trim(); if (!question) return;
+  $("cast").innerHTML = ""; $("turns").innerHTML = ""; $("summary").innerHTML = ""; $("replybox").style.display = "none"; timings = []; turnStart = {}; done = false;
+  $("ask").disabled = true; t0 = performance.now(); status("Casting…");
+  try { await stream({ action: "start", question, situation: $("situation").value.trim(), category: $("category").value }, handle); }
+  catch (e) { status(""); $("summary").innerHTML = `<p class="error">${esc(e.message)}</p>`; }
+  $("ask").disabled = false;
+};
+
+$("send").onclick = async () => {
+  const message = $("replytext").value.trim(); if (!message || !sessionId) return;
+  $("replytext").value = ""; const n = document.querySelectorAll(".bubble").length + 1;
+  const el = bubbleEl(n); el.classList.add("reader"); el.querySelector(".name").textContent = "You"; el.querySelector("p").textContent = message;
+  t0 = performance.now(); timings = [];
+  try { await stream({ action: "reply", session_id: sessionId, message }, handle); } catch (e) { $("summary").insertAdjacentHTML("beforeend", `<p class="error">${esc(e.message)}</p>`); }
+};
+</script>
+</body>
+</html>

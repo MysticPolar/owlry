@@ -1,0 +1,307 @@
+{
+ "id": "b",
+ "question": "I can't stop doomscrolling at night and I wake up tired. How do I actually fix this?",
+ "category": "health",
+ "situation": "Works from home, phone is the alarm clock",
+ "N": 9,
+ "kind": "habit",
+ "tension": "fight the urge with willpower, or redesign the environment so the urge can't act",
+ "opening_seat": 1,
+ "seats": [
+  {
+   "seat": 1,
+   "slug": "anna-lembke",
+   "name": "Anna Lembke",
+   "lived": "living",
+   "field": "addiction psychiatry",
+   "lens": "looks at the pleasure-pain balance driving compulsive scrolling",
+   "why": "Dopamine Nation explains why doomscrolling hijacks reward loops and how self-binding breaks them",
+   "books": [
+    {
+     "title": "Dopamine Nation",
+     "author": "Anna Lembke",
+     "year": 2021,
+     "read_free": null,
+     "buy": null
+    },
+    {
+     "title": "Drug Dealer, MD: How Doctors Were Duped, Patients Got Hooked, and Why It's So Hard to Stop",
+     "author": "Anna Lembke",
+     "year": 2016,
+     "read_free": null,
+     "buy": null
+    }
+   ]
+  },
+  {
+   "seat": 2,
+   "slug": "matthew-walker",
+   "name": "Matthew Walker",
+   "lived": "living",
+   "field": "sleep science",
+   "lens": "looks at what late-night screens do to circadian rhythm and sleep architecture",
+   "why": "Why We Sleep shows how pre-bed screen light and arousal fragment REM sleep and next-day energy",
+   "books": [
+    {
+     "title": "Why We Sleep",
+     "author": "Matthew Walker",
+     "year": 2017,
+     "read_free": null,
+     "buy": null
+    },
+    {
+     "title": "Sleep Is Your Superpower (TED Talk)",
+     "author": "Matthew Walker",
+     "year": 2019,
+     "read_free": null,
+     "buy": null
+    },
+    {
+     "title": "The Matt Walker Podcast",
+     "author": "Matthew Walker",
+     "year": 2021,
+     "read_free": null,
+     "buy": null
+    },
+    {
+     "title": "The Joe Rogan Experience (interview on sleep and technology)",
+     "author": "Matthew Walker",
+     "year": 2019,
+     "read_free": null,
+     "buy": null
+    }
+   ]
+  },
+  {
+   "seat": 3,
+   "slug": "james-clear",
+   "name": "James Clear",
+   "lived": "living",
+   "field": "habit formation",
+   "lens": "looks at the environmental cues that trigger and sustain a habit loop",
+   "why": "Atomic Habits' rule to make bad cues invisible, e.g. moving the phone out of reach at night",
+   "books": [
+    {
+     "title": "Atomic Habits",
+     "author": "James Clear",
+     "year": 2018,
+     "read_free": null,
+     "buy": null
+    },
+    {
+     "title": "Transform Your Habits",
+     "author": "James Clear",
+     "year": 2013,
+     "read_free": null,
+     "buy": null
+    },
+    {
+     "title": "Forget About Setting Goals. Focus on This Instead. (TEDxMileHigh)",
+     "author": "James Clear",
+     "year": 2016,
+     "read_free": null,
+     "buy": null
+    }
+   ]
+  }
+ ],
+ "castRaw": "{\"kind\":\"habit\",\"tension\":\"fight the urge with willpower, or redesign the environment so the urge can't act\",\"seats\":[{\"seat\":1,\"name\":\"Anna Lembke\",\"lived\":\"living\",\"field\":\"addiction psychiatry\",\"lens\":\"looks at the pleasure-pain balance driving compulsive scrolling\",\"why\":\"Dopamine Nation explains why doomscrolling hijacks reward loops and how self-binding breaks them\",\"books\":[{\"title\":\"Dopamine Nation\",\"author\":\"Anna Lembke\"}]},{\"seat\":2,\"name\":\"Matthew Walker\",\"lived\":\"living\",\"field\":\"sleep science\",\"lens\":\"looks at what late-night screens do to circadian rhythm and sleep architecture\",\"why\":\"Why We Sleep shows how pre-bed screen light and arousal fragment REM sleep and next-day energy\",\"books\":[{\"title\":\"Why We Sleep\",\"author\":\"Matthew Walker\"}]},{\"seat\":3,\"name\":\"James Clear\",\"lived\":\"living\",\"field\":\"habit formation\",\"lens\":\"looks at the environmental cues that trigger and sustain a habit loop\",\"why\":\"Atomic Habits' rule to make bad cues invisible, e.g. moving the phone out of reach at night\",\"books\":[{\"title\":\"Atomic Habits\",\"author\":\"James Clear\"}]}],\"opening_seat\":1}",
+ "screen": {
+  "verdicts": [
+   {
+    "name": "Anna Lembke",
+    "ok": true,
+    "reason": "Psychiatrist, author, addiction researcher, public figure"
+   },
+   {
+    "name": "Matthew Walker",
+    "ok": true,
+    "reason": "Neuroscientist, sleep researcher, author, public figure"
+   },
+   {
+    "name": "James Clear",
+    "ok": true,
+    "reason": "Author, productivity expert, public figure, bestselling author"
+   }
+  ]
+ },
+ "timings": {
+  "cast": 28.6,
+  "screen": 7.6,
+  "forge": {
+   "anna-lembke": 39.3,
+   "matthew-walker": 38.9,
+   "james-clear": 42.5
+  },
+  "summary": 49.2
+ },
+ "calls": {
+  "cast": "a35b08114c4c4b67e",
+  "screen": "abbd85cd8bdae42c9"
+ },
+ "turns": [
+  {
+   "turn": 1,
+   "speaker": "anna-lembke",
+   "cycle": "positions",
+   "text": "Dopamine Nation puts it plainly: your phone is a hypodermic needle, and each late-night refresh is a hit that borrows against tomorrow's baseline. The pull you feel at 11pm isn't weak character, it's a brain in withdrawal from its own reward system, and willpower loses that fight in the dark every time. So don't ask the urge to negotiate with itself. Self-binding: the phone sleeps outside the bedroom tonight, and you buy a five-dollar alarm clock this week.",
+   "tail": {
+    "position": "Remove the phone from the bedroom; buy a separate alarm clock",
+    "move": "hold",
+    "open": "what replaces the phone as morning routine trigger"
+   },
+   "words": 78,
+   "seconds": 3.4,
+   "raw": "Dopamine Nation puts it plainly: your phone is a hypodermic needle, and each late-night refresh is a hit that borrows against tomorrow's baseline. The pull you feel at 11pm isn't weak character, it's a brain in withdrawal from its own reward system, and willpower loses that fight in the dark every time. So don't ask the urge to negotiate with itself. Self-binding: the phone sleeps outside the bedroom tonight, and you buy a five-dollar alarm clock this week.\n\nPOSITION: Remove the phone from the bedroom; buy a separate alarm clock | MOVE: hold | OPEN: what replaces the phone as morning routine trigger"
+  },
+  {
+   "turn": 2,
+   "speaker": "matthew-walker",
+   "cycle": "positions",
+   "text": "Anna's right that self-binding beats willpower at 11pm, but her withdrawal framing undersells what's happening: blue-wavelength light hitting your retina tells your suprachiasmatic clock it's still daytime, delaying melatonin onset, so even after you put the phone down you're not yet sleepy. That's why you wake tired—you fall asleep late relative to your body clock and shortchange REM, which clusters late in the night. Buy the alarm clock, but anchor a fixed daily wake time too.",
+   "tail": {
+    "position": "Fix wake time first; melatonin delay from screens, not willpower, drives the fatigue",
+    "move": "hold",
+    "open": "how to enforce fixed wake time when working from home"
+   },
+   "words": 76,
+   "seconds": 17.1,
+   "raw": "Anna's right that self-binding beats willpower at 11pm, but her withdrawal framing undersells what's happening: blue-wavelength light hitting your retina tells your suprachiasmatic clock it's still daytime, delaying melatonin onset, so even after you put the phone down you're not yet sleepy. That's why you wake tired—you fall asleep late relative to your body clock and shortchange REM, which clusters late in the night. Buy the alarm clock, but anchor a fixed daily wake time too.\nPOSITION: Fix wake time first; melatonin delay from screens, not willpower, drives the fatigue | MOVE: hold | OPEN: how to enforce fixed wake time when working from home"
+  },
+  {
+   "turn": 3,
+   "speaker": "james-clear",
+   "cycle": "positions",
+   "text": "Walker's shift to anchoring a fixed wake time is the better fix, but it's still aimed at his body clock, not his environment. Circadian science tells him what late light does; it doesn't stop the phone from reaching him. The alarm clock swap isn't a side note, it's the actual mechanism: he can't doomscroll a device that isn't in the room. Put the charger in the kitchen tonight, set the wake time on the five-dollar clock, and the craving Anna describes never gets a screen to land on.",
+   "tail": {
+    "position": "Charge the phone in the kitchen; that removes the cue Anna and Matthew both still treat as fixed",
+    "move": "hold",
+    "open": "what replaces the phone as a wind-down cue"
+   },
+   "words": 88,
+   "seconds": 3.6,
+   "raw": "Walker's shift to anchoring a fixed wake time is the better fix, but it's still aimed at his body clock, not his environment. Circadian science tells him what late light does; it doesn't stop the phone from reaching him. The alarm clock swap isn't a side note, it's the actual mechanism: he can't doomscroll a device that isn't in the room. Put the charger in the kitchen tonight, set the wake time on the five-dollar clock, and the craving Anna describes never gets a screen to land on.\n\nPOSITION: Charge the phone in the kitchen; that removes the cue Anna and Matthew both still treat as fixed | MOVE: hold | OPEN: what replaces the phone as a wind-down cue"
+  },
+  {
+   "turn": 4,
+   "speaker": "anna-lembke",
+   "cycle": "pressure",
+   "text": "Walker says my withdrawal framing \"undersells\" what's happening, that it's circadian light delaying melatonin, not a dopamine debt. Fair on the tiredness — but that doesn't explain why he keeps refreshing past exhaustion; only the pleasure-pain scale does. I'll hold that. The move that matters: bind it totally — charger out, alarm bought, zero exceptions for thirty nights.",
+   "tail": {
+    "position": "Bind totally: phone out of the bedroom, zero exceptions, for thirty nights",
+    "move": "hold",
+    "open": "what to do when the pull hits anyway"
+   },
+   "words": 58,
+   "seconds": 24.4,
+   "raw": "Walker says my withdrawal framing \"undersells\" what's happening, that it's circadian light delaying melatonin, not a dopamine debt. Fair on the tiredness — but that doesn't explain why he keeps refreshing past exhaustion; only the pleasure-pain scale does. I'll hold that. The move that matters: bind it totally — charger out, alarm bought, zero exceptions for thirty nights.\n\nPOSITION: Bind totally: phone out of the bedroom, zero exceptions, for thirty nights | MOVE: hold | OPEN: what to do when the pull hits anyway"
+  },
+  {
+   "turn": 5,
+   "speaker": "matthew-walker",
+   "cycle": "pressure",
+   "text": "Clear's point lands: fixed wake time explains why I'm tired, not why I keep opening the app at midnight. Only removing the device does that. I shift: the kitchen charger isn't just habit design, it's my mechanism too, since a phone in the room still leaks light into the SCN. One move, two problems solved.",
+   "tail": {
+    "position": "Charger in the kitchen removes light and access, the one fix for both problems",
+    "move": "shift",
+    "open": "whether he'll hold zero exceptions for 30 nights"
+   },
+   "words": 55,
+   "seconds": 19.2,
+   "raw": "Clear's point lands: fixed wake time explains why I'm tired, not why I keep opening the app at midnight. Only removing the device does that. I shift: the kitchen charger isn't just habit design, it's my mechanism too, since a phone in the room still leaks light into the SCN. One move, two problems solved.\nPOSITION: Charger in the kitchen removes light and access, the one fix for both problems | MOVE: shift | OPEN: whether he'll hold zero exceptions for 30 nights"
+  },
+  {
+   "turn": 6,
+   "speaker": "james-clear",
+   "cycle": "pressure",
+   "text": "Lembke's 'thirty nights, zero exceptions' turns self-binding into a goal with a countdown — the exact goal-focus Atomic Habits warns against; systems, not day-counts, produce results. My claim needs that same fix: a charger moved once is a decision, not a system. Stack it — after I plug in my laptop, the phone charges in the kitchen. No countdown required.",
+   "tail": {
+    "position": "Habit-stack the phone charger to an existing nightly cue, skip the day-count",
+    "move": "hold",
+    "open": "whether he has an existing nightly cue to stack onto"
+   },
+   "words": 60,
+   "seconds": 61.3,
+   "raw": "Lembke's 'thirty nights, zero exceptions' turns self-binding into a goal with a countdown — the exact goal-focus Atomic Habits warns against; systems, not day-counts, produce results. My claim needs that same fix: a charger moved once is a decision, not a system. Stack it — after I plug in my laptop, the phone charges in the kitchen. No countdown required.\nPOSITION: Habit-stack the phone charger to an existing nightly cue, skip the day-count | MOVE: hold | OPEN: whether he has an existing nightly cue to stack onto"
+  },
+  {
+   "turn": 7,
+   "speaker": "anna-lembke",
+   "cycle": "application",
+   "text": "Clear says my thirty-night countdown turns self-binding into a goal, not a system; he's right that a date alone won't stick. So make it his stack, not my countdown: tonight, after you plug in your laptop, plug the phone in the kitchen too, buy the clock this week, and log wake time for thirty days as data, not deadline.",
+   "tail": {
+    "position": "Stack phone-charging after laptop-charging, in the kitchen, starting tonight",
+    "move": "shift",
+    "open": null
+   },
+   "words": 59,
+   "seconds": 11.8,
+   "raw": "Clear says my thirty-night countdown turns self-binding into a goal, not a system; he's right that a date alone won't stick. So make it his stack, not my countdown: tonight, after you plug in your laptop, plug the phone in the kitchen too, buy the clock this week, and log wake time for thirty days as data, not deadline.\nPOSITION: Stack phone-charging after laptop-charging, in the kitchen, starting tonight | MOVE: shift | OPEN: none"
+  },
+  {
+   "turn": 8,
+   "speaker": "matthew-walker",
+   "cycle": "application",
+   "text": "Lembke's right: stack it, not count it down. Tonight, plug the phone in the kitchen when you plug in your laptop; buy the clock this week. That one move keeps light out of the bedroom and the app out of reach, so REM gets the whole back half of the night.",
+   "tail": {
+    "position": "Charge the phone in the kitchen tonight, tied to your laptop routine",
+    "move": "hold",
+    "open": null
+   },
+   "words": 51,
+   "seconds": 16.5,
+   "raw": "Lembke's right: stack it, not count it down. Tonight, plug the phone in the kitchen when you plug in your laptop; buy the clock this week. That one move keeps light out of the bedroom and the app out of reach, so REM gets the whole back half of the night.\nPOSITION: Charge the phone in the kitchen tonight, tied to your laptop routine | MOVE: hold | OPEN: none"
+  },
+  {
+   "turn": 9,
+   "speaker": "james-clear",
+   "cycle": "application",
+   "text": "Plug the phone into the kitchen charger tonight, next to the laptop, and buy the five-dollar alarm clock this week. That single system removes the device from the room, which fixes both the light exposure and the compulsive reach at once—no countdown needed, just the new cue in place before bed.",
+   "tail": {
+    "position": "Move the phone charger to the kitchen tonight, alarm clock replaces it as bedroom cue",
+    "move": "hold",
+    "open": null
+   },
+   "words": 51,
+   "seconds": 2.4,
+   "raw": "Plug the phone into the kitchen charger tonight, next to the laptop, and buy the five-dollar alarm clock this week. That single system removes the device from the room, which fixes both the light exposure and the compulsive reach at once—no countdown needed, just the new cue in place before bed.\n\nPOSITION: Move the phone charger to the kitchen tonight, alarm clock replaces it as bedroom cue | MOVE: hold | OPEN: none"
+  }
+ ],
+ "startedAt": "2026-09-22T10:35:55.054Z",
+ "summaryRaw": "```json\n{\n  \"title\": \"How to fix nighttime doomscrolling and chronic fatigue\",\n  \"agree\": [\n    \"Phone must leave the bedroom; buy a separate alarm clock as replacement\",\n    \"Charge the phone in the kitchen, not the bedroom, to remove both the cue and the light\",\n    \"Self-binding through environmental design defeats willpower in the dark\"\n  ],\n  \"differ\": [\n    \"Anna vs Matthew on root cause — dopamine withdrawal driving compulsion vs circadian light delay causing REM loss. Both are right; they explain different problems: dopamine explains the reach, light explains the tiredness.\",\n    \"Anna vs James on method — Anna proposes thirty nights of zero exceptions; James argues stacking the charger move to your laptop routine, without a countdown. Anna shifts in turn 7 to accept habit-stacking over goal-focus.\"\n  ],\n  \"fits\": \"For someone working from home whose phone is the alarm clock, James's point in turns 6 and 9 is most practical: remove the device from the room entirely, and the compulsion has nowhere to land. Matthew's circadian fix—fixed wake time, light avoidance—restores REM sleep. Anna's binding commitment gets refined by Clear's stacking method: tonight, after plugging in your laptop, plug the phone into the kitchen charger. One cue replacement removes both the trigger and the light leak.\",\n  \"next_step\": \"Tonight: move phone charger to kitchen, stacked to laptop charger. Buy alarm clock this week. Set and keep a fixed wake time.\",\n  \"books\": [\n    {\n      \"mind\": \"Anna Lembke\",\n      \"title\": \"Dopamine Nation\",\n      \"author\": \"Anna Lembke\",\n      \"why\": \"Explains the compulsive reach for the phone as reward-system debt, not willpower failure\"\n    },\n    {\n      \"mind\": \"Matthew Walker\",\n      \"title\": \"Why We Sleep\",\n      \"author\": \"Matthew Walker\",\n      \"why\": \"Shows how blue light delays melatonin onset, shortchanging late-night REM and morning alertness\"\n    },\n    {\n      \"mind\": \"James Clear\",\n      \"title\": \"Atomic Habits\",\n      \"author\": \"James Clear\",\n      \"why\": \"Demonstrates how habit stacking and systems design outperform goal-focused willpower for lasting change\"\n    }\n  ]\n}\n```",
+ "summary": {
+  "title": "How to fix nighttime doomscrolling and chronic fatigue",
+  "agree": [
+   "Phone must leave the bedroom; buy a separate alarm clock as replacement",
+   "Charge the phone in the kitchen, not the bedroom, to remove both the cue and the light",
+   "Self-binding through environmental design defeats willpower in the dark"
+  ],
+  "differ": [
+   "Anna vs Matthew on root cause — dopamine withdrawal driving compulsion vs circadian light delay causing REM loss. Both are right; they explain different problems: dopamine explains the reach, light explains the tiredness.",
+   "Anna vs James on method — Anna proposes thirty nights of zero exceptions; James argues stacking the charger move to your laptop routine, without a countdown. Anna shifts in turn 7 to accept habit-stacking over goal-focus."
+  ],
+  "fits": "For someone working from home whose phone is the alarm clock, James's point in turns 6 and 9 is most practical: remove the device from the room entirely, and the compulsion has nowhere to land. Matthew's circadian fix—fixed wake time, light avoidance—restores REM sleep. Anna's binding commitment gets refined by Clear's stacking method: tonight, after plugging in your laptop, plug the phone into the kitchen charger. One cue replacement removes both the trigger and the light leak.",
+  "next_step": "Tonight: move phone charger to kitchen, stacked to laptop charger. Buy alarm clock this week. Set and keep a fixed wake time.",
+  "books": [
+   {
+    "mind": "Anna Lembke",
+    "title": "Dopamine Nation",
+    "author": "Anna Lembke",
+    "why": "Explains the compulsive reach for the phone as reward-system debt, not willpower failure"
+   },
+   {
+    "mind": "Matthew Walker",
+    "title": "Why We Sleep",
+    "author": "Matthew Walker",
+    "why": "Shows how blue light delays melatonin onset, shortchanging late-night REM and morning alertness"
+   },
+   {
+    "mind": "James Clear",
+    "title": "Atomic Habits",
+    "author": "James Clear",
+    "why": "Demonstrates how habit stacking and systems design outperform goal-focused willpower for lasting change"
+   }
+  ]
+ },
+ "runFile": "council/runs/20260922-1110-i-can-t-stop-doomscrolling-at.md"
+}
