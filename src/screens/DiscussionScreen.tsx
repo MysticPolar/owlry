@@ -6,6 +6,7 @@ import { figure } from '../content/figures';
 import { typingDelay } from '../engine/council';
 import { useKeyboardInset } from '../hooks/useKeyboardInset';
 import { useReduceMotion } from '../hooks/useReduceMotion';
+import { useAutoGrow } from '../hooks/useAutoGrow';
 import { TopBar } from '../components/chrome';
 import { Avatar } from '../components/Avatar';
 import { FigureMessage, UserMessage, SystemMessage, Typing } from '../components/Chat';
@@ -40,8 +41,9 @@ export function DiscussionScreen({ id }: { id: string }) {
   const [sheetFigure, setSheetFigure] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  useAutoGrow(inputRef, text);
 
-  // deep link straight into a convening council: treat it as joined
+  // a convening council is seated as this screen opens (the council screen leaves that to us)
   useEffect(() => {
     if (session?.stage === 'convening') join(session.id);
   }, [session?.id, session?.stage, join]);

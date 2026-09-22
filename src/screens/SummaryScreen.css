@@ -2,6 +2,21 @@
 .summary-owl { position: absolute; right: 22px; top: 58px; z-index: 5; pointer-events: none; }
 .phone.framed .summary-owl { top: 98px; }
 .summary-body { padding-top: 6px; padding-bottom: 16px; }
+/* the verdict is read top to bottom, so it arrives top to bottom */
+.summary-body > * { animation: fade-up 440ms var(--ease-out) both; }
+.summary-body > :nth-child(1) { animation-delay: 40ms; }
+.summary-body > :nth-child(2) { animation-delay: 90ms; }
+.summary-body > :nth-child(3) { animation-delay: 140ms; }
+.summary-body > :nth-child(4) { animation-delay: 190ms; }
+.summary-body > :nth-child(5) { animation-delay: 240ms; }
+.summary-body > :nth-child(6) { animation-delay: 290ms; }
+.summary-body > :nth-child(7) { animation-delay: 340ms; }
+.summary-body > :nth-child(8) { animation-delay: 390ms; }
+.summary-body > :nth-child(9) { animation-delay: 440ms; }
+.summary-body > :nth-child(10) { animation-delay: 490ms; }
+.summary-body > :nth-child(11) { animation-delay: 540ms; }
+.summary-body > :nth-child(n + 12) { animation-delay: 590ms; }
+.summary-actions { animation: fade-up 440ms var(--ease-out) both; animation-delay: 360ms; }
 .summary-title { font-size: 2rem; margin-top: 4px; padding-right: 96px; }
 .summary-lead { margin-top: 12px; font-size: 1.0625rem; line-height: 1.55; color: var(--ink-2); }
 .summary-h2 { margin-top: 24px; font-size: 1.25rem; }
@@ -14,7 +29,8 @@
 .summary-next p { font-size: 0.9375rem; line-height: 1.5; font-weight: 500; }
 .books-h2 { margin-top: 28px; }
 .summary-books { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 14px; }
-.summary-book { display: grid; justify-items: center; gap: 6px; width: 100%; text-align: center; }
+.summary-book { display: grid; justify-items: center; gap: 6px; width: 100%; text-align: center; transition: transform var(--dur-fast) var(--ease-out); }
+.summary-book:active { transform: scale(0.96); }
 .summary-cover { position: relative; }
 .summary-best { position: absolute; left: 50%; bottom: -8px; transform: translateX(-50%); display: inline-flex; align-items: center; gap: 3px; white-space: nowrap; font-size: 10px; font-weight: 800; background: var(--yellow); color: var(--yellow-ink); padding: 3px 8px; border-radius: var(--r-pill); box-shadow: var(--shadow-card); }
 .summary-best svg { width: 11px; height: 11px; }

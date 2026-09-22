@@ -6,6 +6,8 @@ import { maybeBook } from '../content/books';
 import { readingFor } from '../engine/council';
 import type { TextSize } from '../store/types';
 import { TopBar } from '../components/chrome';
+import { usePresence } from '../hooks/usePresence';
+import { useBump } from '../hooks/useBump';
 import { useT, fmt } from '../i18n/react';
 import './ReaderScreen.css';
 
@@ -38,7 +40,10 @@ export function ReaderScreen({ id, councilId }: { id: string; councilId?: string
   const [sel, setSel] = useState<{ text: string; x: number; y: number } | null>(null);
   const [pos, setPos] = useState(0);
   const [pct, setPct] = useState(progress?.pct ?? 0);
+  const pctRef = useRef(progress?.pct ?? 0);
   const restored = useRef(false);
+  const sizePop = usePresence(sizeOpen, 160);
+  const [markBump, bumpMark] = useBump();
 
   // restore the saved position once the text has laid out
   useLayoutEffect(() => {
@@ -55,6 +60,7 @@ export function ReaderScreen({ id, councilId }: { id: string; councilId?: string
     if (!el || !b) return;
     const max = Math.max(1, el.scrollHeight - el.clientHeight);
     const p = Math.min(1, Math.max(0, el.scrollTop / max));
+    pctRef.current = p;
     setPos(el.scrollTop);
     setPct(p);
     if (saveTimer.current) return;
@@ -69,6 +75,15 @@ export function ReaderScreen({ id, councilId }: { id: string; councilId?: string
       if (saveTimer.current) clearTimeout(saveTimer.current);
     };
   }, [onScroll]);
+
+  // a new text size reflows the page; stay at the same place in the text, not the same pixel
+  const sizeWas = useRef(textSize);
+  useLayoutEffect(() => {
+    if (sizeWas.current === textSize) return;
+    sizeWas.current = textSize;
+    const el = scrollRef.current;
+    if (el) el.scrollTop = pctRef.current * Math.max(1, el.scrollHeight - el.clientHeight);
+  }, [textSize]);
 
   // selection toolbar
   useEffect(() => {
@@ -151,14 +166,14 @@ export function ReaderScreen({ id, councilId }: { id: string; councilId?: string
             <button type="button" className={`iconbtn ${sizeOpen ? 'on' : ''}`} aria-label={t.reader.textSize} aria-expanded={sizeOpen} onClick={() => setSizeOpen((v) => !v)}>
               <IconTypography stroke={1.8} />
             </button>
-            <button type="button" className={`iconbtn ${nearBookmark ? 'on' : ''}`} aria-label={nearBookmark ? t.reader.removeBookmark : t.reader.bookmarkSpot} onClick={() => { toggleBookmark(b.id, pos); showToast(nearBookmark ? t.reader.bookmarkRemoved : t.reader.bookmarked); }}>
+            <button type="button" className={`iconbtn ${nearBookmark ? 'on' : ''} ${markBump ? 'bump' : ''}`} aria-label={nearBookmark ? t.reader.removeBookmark : t.reader.bookmarkSpot} onClick={() => { toggleBookmark(b.id, pos); bumpMark(); showToast(nearBookmark ? t.reader.bookmarkRemoved : t.reader.bookmarked); }}>
               {nearBookmark ? <IconBookmarkFilled /> : <IconBookmark stroke={1.8} />}
             </button>
           </>
         }
       />
-      {sizeOpen && (
-        <div className="size-pop" role="group" aria-label={t.reader.textSize}>
+      {sizePop.mounted && (
+        <div className={`size-pop ${sizePop.closing ? 'closing' : ''}`} role="group" aria-label={t.reader.textSize}>
           {SIZES.map((s) => (
             <button key={s} type="button" className={`size-btn size-btn-${s} ${textSize === s ? 'on' : ''}`} onClick={() => { setTextSize(s); setSizeOpen(false); }}>
               Aa

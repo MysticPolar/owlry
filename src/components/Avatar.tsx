@@ -14,6 +14,7 @@ export function Avatar({
   className?: string;
 }) {
   const [broken, setBroken] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   const showImg = figure.portrait && !broken;
   return (
     <span
@@ -22,7 +23,20 @@ export function Avatar({
       title={figure.name}
     >
       {showImg ? (
-        <img src={figure.portrait} alt="" width={size} height={size} loading="lazy" onError={() => setBroken(true)} />
+        // the colour disc shows first; the portrait fades over it once it has arrived
+        <img
+          src={figure.portrait}
+          alt=""
+          width={size}
+          height={size}
+          loading="lazy"
+          className={loaded ? 'loaded' : ''}
+          onLoad={() => setLoaded(true)}
+          ref={(el) => {
+            if (el?.complete && el.naturalWidth > 0) setLoaded(true);
+          }}
+          onError={() => setBroken(true)}
+        />
       ) : (
         <span className="mono" style={{ fontSize: Math.round(size * 0.42) }} aria-hidden="true">
           {figure.initials}

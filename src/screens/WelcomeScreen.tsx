@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import { navigate } from '../app/router';
 import { useStore } from '../store/useStore';
 import { Wordmark } from '../components/Wordmark';
@@ -13,7 +14,7 @@ import './WelcomeScreen.css';
 export function WelcomeScreen() {
   const setOnboarded = useStore((s) => s.setOnboarded);
   const t = useT();
-  const [l1, l2, l3, l4] = t.welcome.marquee;
+  const lines = t.welcome.marquee;
   return (
     <div className="screen night welcome">
       <div className="welcome-spot" aria-hidden="true" />
@@ -23,15 +24,14 @@ export function WelcomeScreen() {
         <Owl color="orange" size={54} className="welcome-owl" title={t.welcome.owl} />
       </div>
       <div className="welcome-hero pad">
+        {/* the marquee rises a line at a time, the period last */}
         <h1 className="marquee">
-          {l1}
-          <br />
-          {l2}
-          <br />
-          {l3}
-          <br />
-          {l4}
-          <span className="dot">.</span>
+          {lines.map((line, i) => (
+            <span key={i} className="marquee-line" style={{ '--i': i } as CSSProperties}>
+              {line}
+              {i === lines.length - 1 && <span className="dot">.</span>}
+            </span>
+          ))}
         </h1>
         <p className="welcome-sub">
           {t.welcome.sub1}

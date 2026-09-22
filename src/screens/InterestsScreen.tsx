@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type CSSProperties } from 'react';
 import { IconHeartbeat, IconBriefcase, IconChartBar, IconHeart, IconBook, IconMessageCircle, IconArrowRight, IconCheck } from '@tabler/icons-react';
 import { navigate } from '../app/router';
 import { useStore } from '../store/useStore';
@@ -59,10 +59,10 @@ export function InterestsScreen() {
           </span>
         </div>
         <ul className="tiles" role="list">
-          {areas.map((a) => {
+          {areas.map((a, i) => {
             const on = picked.includes(a.id);
             return (
-              <li key={a.id}>
+              <li key={a.id} style={{ '--i': i } as CSSProperties}>
                 <button type="button" className={`tile ${on ? 'on' : ''}`} aria-pressed={on} onClick={() => toggle(a.id)}>
                   <span className="tile-icon" style={{ color: ICONS[a.id].tint }}>
                     {ICONS[a.id].icon}

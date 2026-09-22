@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import { IconChevronRight, IconPlayerPlay } from '@tabler/icons-react';
 import { navigate } from '../app/router';
 import { useStore, selectCouncils } from '../store/useStore';
@@ -60,9 +61,9 @@ export function ReadingScreen() {
         {recent.length > 0 && (
           <section className="lib-section">
             <h2 className="heading">{t.reading.recent}</h2>
-            <ul className="booklist">
-              {recent.map(({ b, p }) => (
-                <li key={b.id}>
+            <ul className="booklist cascade">
+              {recent.map(({ b, p }, i) => (
+                <li key={b.id} style={{ '--i': i } as CSSProperties}>
                   <button type="button" className="bookrow" onClick={() => navigate({ name: 'read', id: b.id })}>
                     <Cover book={b} width={40} />
                     <span className="bookrow-text">

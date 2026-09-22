@@ -36,6 +36,13 @@ the session scratchpad and is not part of the repo.
   `supabase/functions/council-*`; design notes in `docs/council-backend.md`.
 - Screens → `src/screens/*.tsx` with a css file each; shared primitives in
   `src/styles/base.css` and `src/components/`.
+- Motion → `src/App.tsx` renders screens as layers (the old one stays under
+  the new one for `--dur-screen`; direction comes from the `DEPTH` table).
+  `src/hooks/usePresence.ts` keeps a sheet, toast or popover mounted for its
+  exit animation; `useBump.ts` pops an icon that was just toggled;
+  `useAutoGrow.ts` grows the ask boxes. Shared keyframes (`fade-up`, `pop`,
+  `pop-in/out`, `sheet-down`, `toast-out`) and the `.cascade` list helper
+  live in `base.css`.
 
 ## Rules of the house
 
@@ -55,3 +62,11 @@ the session scratchpad and is not part of the repo.
   painting cannot be fetched; keep it working.
 - Mustard yellow is for the primary action, the active nav item, the council
   room's ticker and the wordmark's period. Nothing else.
+- Motion: things arrive, they do not appear. Anything that mounts on a tap
+  gets an entrance (`fade-up`, `msg-in`, `sheet-up`) and anything that can
+  close gets an exit through `usePresence`. Animate `transform` and
+  `opacity` only, keep it under 450ms, use the tokens (`--dur`, `--dur-fast`,
+  `--dur-screen`, `--ease-out`, `--ease-spring`), and never give two states
+  of one element the same keyframe name (the browser will not restart it).
+  The global reduced-motion rule in `base.css` covers CSS; JS timing goes
+  through `useReduceMotion()`.

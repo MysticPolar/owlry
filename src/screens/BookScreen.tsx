@@ -8,6 +8,7 @@ import { readingFor } from '../engine/council';
 import { TopBar, Sheet } from '../components/chrome';
 import { Cover } from '../components/Cover';
 import { Owl } from '../components/Owl';
+import { useBump } from '../hooks/useBump';
 import { useT, fmt } from '../i18n/react';
 import './BookScreen.css';
 
@@ -24,6 +25,7 @@ export function BookScreen({ id, councilId }: { id: string; councilId?: string }
   const showToast = useStore((s) => s.showToast);
   const progress = useStore((s) => (b ? s.progress[b.id] : undefined));
   const [summaryOpen, setSummaryOpen] = useState(false);
+  const [saveBump, bumpSave] = useBump();
   const t = useT();
 
   if (!b) {
@@ -38,6 +40,7 @@ export function BookScreen({ id, councilId }: { id: string; councilId?: string }
   const rec = session ? readingFor(session).find((r) => r.bookId === b.id) : undefined;
   const isSaved = saved.includes(b.id);
   const onSave = () => {
+    bumpSave();
     toggleSaved(b.id);
     showToast(isSaved ? t.book.removed : t.book.savedLib);
   };
@@ -62,7 +65,7 @@ export function BookScreen({ id, councilId }: { id: string; councilId?: string }
         className="top-inset"
         right={
           <>
-            <button type="button" className={`iconbtn ${isSaved ? 'on' : ''}`} aria-label={isSaved ? t.book.ariaRemove : t.book.ariaSave} onClick={onSave}>
+            <button type="button" className={`iconbtn ${isSaved ? 'on' : ''} ${saveBump ? 'bump' : ''}`} aria-label={isSaved ? t.book.ariaRemove : t.book.ariaSave} onClick={onSave}>
               {isSaved ? <IconBookmarkFilled /> : <IconBookmark stroke={1.8} />}
             </button>
             <button type="button" className="iconbtn" aria-label={t.common.share} onClick={share}>

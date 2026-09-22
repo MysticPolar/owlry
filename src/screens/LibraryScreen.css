@@ -1,9 +1,6 @@
 .lib-head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 6px; }
 .lib-title { font-size: 1.9rem; }
-.lib-search { padding-bottom: 8px; }
-.seg { display: inline-flex; gap: 4px; padding: 4px; background: var(--paper-2); border-radius: var(--r-pill); }
-.seg button { min-height: 34px; padding: 0 16px; border-radius: var(--r-pill); font-size: var(--t-small); font-weight: 600; color: var(--mut); }
-.seg button.on { background: var(--ink); color: #fff; }
+.lib-search { padding-bottom: 8px; animation: fade-up 200ms var(--ease-out) both; }
 .lib-shelves { margin-top: 10px; padding-bottom: 6px; }
 .lib-body { padding-top: 10px; display: grid; gap: 16px; align-content: start; }
 .lib-empty { padding: 12px 4px; }
@@ -13,10 +10,11 @@
 .continue-title { font-family: var(--font-display); font-weight: 800; font-size: 1.0625rem; letter-spacing: -0.01em; }
 .continue-btn { margin-top: 8px; justify-self: start; }
 .progress-track { display: block; height: 4px; border-radius: 2px; background: var(--paper-2); overflow: hidden; margin-top: 6px; }
-.progress-track > span { display: block; height: 100%; background: var(--yellow); border-radius: 2px; }
+.progress-track > span { display: block; height: 100%; background: var(--yellow); border-radius: 2px; transition: width 600ms var(--ease-out); }
 
 .booklist { display: grid; }
-.bookrow { width: 100%; display: flex; gap: 12px; align-items: center; padding: 10px 4px; text-align: left; border-bottom: 1px solid var(--line); }
+.bookrow { width: 100%; display: flex; gap: 12px; align-items: center; padding: 10px 4px; text-align: left; border-bottom: 1px solid var(--line); border-radius: 10px; transition: background var(--dur-fast); }
+.bookrow:active { background: rgba(0, 0, 0, 0.04); }
 .bookrow:last-child { border-bottom: 0; }
 .bookrow-text { display: grid; gap: 2px; flex: 1 1 auto; min-width: 0; }
 .bookrow-title { font-weight: 700; font-size: 0.9375rem; line-height: 1.25; }
@@ -33,5 +31,6 @@
 .council-row-avatars .avatar:last-child { margin-right: 0; }
 .council-row-q { font-weight: 700; font-size: 0.9375rem; line-height: 1.3; }
 .highlight-row { width: 100%; display: grid; gap: 4px; padding: 12px 14px; text-align: left; border-left: 3px solid var(--yellow); }
+.lib-section { animation: fade-up 360ms var(--ease-out) both; animation-delay: 120ms; }
 .highlight-text { font-family: var(--font-read); font-style: italic; font-size: 0.9375rem; line-height: 1.5; color: var(--ink-2); }
 .highlight-note { color: var(--ink-2); font-weight: 500; }

@@ -23,9 +23,11 @@
   color: var(--night-text); text-shadow: 0 6px 30px rgba(0, 0, 0, 0.45);
 }
 @media (max-width: 560px) { .marquee { font-size: clamp(3.4rem, 18.5vw, 5rem); } }
-.welcome-sub { margin-top: 18px; font-size: 1.0625rem; line-height: 1.4; color: var(--night-mut); }
-.welcome-reader { position: absolute; right: 22px; bottom: -6px; opacity: 0.95; }
+.marquee-line { display: block; animation: marquee-rise 640ms var(--ease-out) both; animation-delay: calc(80ms + var(--i, 0) * 85ms); }
+@keyframes marquee-rise { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
+.welcome-sub { margin-top: 18px; font-size: 1.0625rem; line-height: 1.4; color: var(--night-mut); animation: fade-up 520ms var(--ease-out) both; animation-delay: 500ms; }
+.welcome-reader { position: absolute; right: 22px; bottom: -6px; opacity: 0.95; animation: fade-up 520ms var(--ease-out) both; animation-delay: 580ms; }
 
-.welcome-actions { position: relative; z-index: 1; display: grid; gap: 10px; padding-bottom: calc(var(--sab) + 18px); padding-top: 12px; }
+.welcome-actions { position: relative; z-index: 1; display: grid; gap: 10px; padding-bottom: calc(var(--sab) + 18px); padding-top: 12px; animation: fade-up 520ms var(--ease-out) both; animation-delay: 620ms; }
 .welcome-explore { justify-self: center; margin-top: 4px; color: var(--night-mut); }
 .welcome-foot { text-align: center; color: var(--night-mut); margin-top: 6px; }

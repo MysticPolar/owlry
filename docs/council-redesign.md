@@ -103,6 +103,38 @@ follows the browser on first visit.
 - The language is a synced preference (`CloudState.lang`) and is sent with
   every `council-chat` call.
 
+## Motion
+
+Everything that moves follows one rule: things arrive, they do not appear.
+
+- **Screens are layers.** `App.tsx` keeps the screen you are leaving mounted
+  underneath for one beat while the new one arrives on top, so there is never
+  a frame of bare cream or navy between two screens. Direction comes from
+  how deep each screen sits in the journey (`DEPTH`): deeper slides in from
+  the right, shallower from the left, a tab change just fades. The phone
+  clip also takes the destination room's colour.
+- **Exits.** Sheets slide back down, toasts slide back out, the reader's
+  text-size popover shrinks away — `usePresence()` keeps them mounted for the
+  duration. A toast can be tapped away.
+- **The council.** The painting fades onto the wall when it has loaded (and
+  is fetched quietly at boot). The three seats fill one by one — the empty
+  slot and the seated portrait have different keyframes, which is what makes
+  the cascade possible. The asked question fades in under the title; the
+  intro cards cascade when they are shown. Joining no longer empties the
+  room for a frame: the discussion screen seats the council as it opens.
+- **The chat.** Every line arrives from just below (a figure, you, the
+  typing dots, the cards). A replaced seat's "new" tag pops. Both ask boxes
+  grow with what is typed.
+- **Reading.** Changing the text size keeps your place in the text, not the
+  pixel. Bookmark, save and like icons pop when toggled, never on mount.
+- **Lists and reveals.** The welcome marquee rises a line at a time; interest
+  tiles, the summary's sections, the book page, the feed, the library and the
+  profile's milestones, timeline and badges cascade in; segmented controls
+  slide their pill; progress bars ease to their value. Every tappable thing
+  gives under the finger, and desktop hover states exist for the demo.
+- **Reduced motion** is honoured everywhere: the global rule zeroes CSS
+  durations, `useReduceMotion()` zeroes JS timings, and screens simply swap.
+
 ## The backend phase
 
 Done in `docs/council-backend.md`: the live council (`council-chat`), accounts

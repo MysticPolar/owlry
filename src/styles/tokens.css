@@ -31,6 +31,7 @@
   --line-2: #D9D3C5;
   --ink: #141414;
   --ink-2: #2E2D2A;
+  --ink-3: #4A4843;           /* glosses, secondary reading text */
   --mut: #6E6A62;             /* ≥4.5:1 on cream */
   --hint: #9B968C;            /* placeholders, decorative only */
 
@@ -90,10 +91,13 @@
   --app-h: 100vh;
   --nav-h: 64px;
 
-  /* motion */
+  /* motion — one ease for arrivals, one spring for things that land, one duration for state changes;
+     screens take a little longer (--dur-screen) because they move the whole frame */
   --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
   --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
   --dur: 220ms;
+  --dur-fast: 120ms;
+  --dur-screen: 300ms;
 }
 
 @supports (height: 100dvh) {

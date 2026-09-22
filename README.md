@@ -107,6 +107,13 @@ Design tokens follow the poster and the landing page: one mustard
 wordmark's period; navy and cream for the night screens (welcome, council);
 cream paper with white cards for everything after a question is asked.
 
+Motion is one system: screens are layers, so the one you leave stays under
+the one arriving (forward slides in from the right, back from the left, a tab
+change fades) and nothing ever flashes the bare frame; sheets and toasts leave
+the way they came; the council's seats, the chat's lines, the summary's
+sections and every list arrive in order; icons pop when they change state,
+never when a screen mounts. All of it honours the OS "reduce motion" setting.
+
 The council room itself is a painting — two pixel-aligned frames, the room at
 rest and the same room with beams through the window, cross-faded when the
 council sits down (`public/room/`, credited there). The three seats are

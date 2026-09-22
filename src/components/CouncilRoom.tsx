@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react';
+import { useState, type CSSProperties } from 'react';
 import type { Figure } from '../content/types';
 import { Avatar } from './Avatar';
 import { CouncilStageSet } from './CouncilStageSet';
@@ -7,6 +7,8 @@ import { useT, fmt } from '../i18n/react';
 /* resolved against the deploy base so the app also works under a sub-path (e.g. /council/) */
 const ROOM_BASE = `${import.meta.env.BASE_URL}room/council-room.webp`;
 const ROOM_BEAMS = `${import.meta.env.BASE_URL}room/council-room-beams.webp`;
+/** both paintings, for whoever wants to fetch them ahead of time */
+export const ROOM_ART = [ROOM_BASE, ROOM_BEAMS];
 
 /* ============================================================
    The council room: three wing chairs around a low table, the arched
@@ -35,6 +37,7 @@ export function CouncilRoom({
   onArtFail?: () => void;
 }) {
   const filled = seats.some(Boolean);
+  const [lit, setLit] = useState(false); // the base painting has arrived and faded in
   const t = useT();
   return (
     <div className={`table-wrap room ${drawn ? 'flat' : 'paint'} ${filled ? 'filled' : 'vacant'}`}>
@@ -42,7 +45,18 @@ export function CouncilRoom({
         <CouncilStageSet />
       ) : (
         <>
-          <img className="room-img base" src={ROOM_BASE} alt="" draggable={false} decoding="async" onError={onArtFail} />
+          <img
+            className={`room-img base ${lit ? 'loaded' : ''}`}
+            src={ROOM_BASE}
+            alt=""
+            draggable={false}
+            decoding="async"
+            onLoad={() => setLit(true)}
+            ref={(el) => {
+              if (el?.complete && el.naturalWidth > 0) setLit(true);
+            }}
+            onError={onArtFail}
+          />
           <img className="room-img beams" src={ROOM_BEAMS} alt="" draggable={false} decoding="async" aria-hidden="true" />
         </>
       )}

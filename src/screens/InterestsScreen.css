@@ -9,7 +9,7 @@
 }
 .tiles { display: grid; gap: 10px; margin-top: 22px; }
 @media (min-width: 561px) and (min-height: 1000px) { .tiles { grid-template-columns: 1fr 1fr; } }
-.tiles li { position: relative; }
+.tiles li { position: relative; animation: fade-up 420ms var(--ease-out) both; animation-delay: calc(60ms + var(--i, 0) * 45ms); }
 .tile {
   width: 100%; display: flex; align-items: center; gap: 14px; padding: 12px 14px; text-align: left;
   background: var(--paper); border-radius: var(--r-card); box-shadow: var(--shadow-card), inset 0 0 0 1px var(--line);

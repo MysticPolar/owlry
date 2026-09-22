@@ -1,8 +1,9 @@
 .social-head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
 .social-tabs { display: flex; gap: 18px; }
-.social-tabs button { font-family: var(--font-display); font-weight: 800; font-size: 1.125rem; letter-spacing: -0.015em; color: var(--hint); padding: 6px 0; border-bottom: 2px solid transparent; }
+.social-tabs button { font-family: var(--font-display); font-weight: 800; font-size: 1.125rem; letter-spacing: -0.015em; color: var(--hint); padding: 6px 0; border-bottom: 2px solid transparent; transition: color var(--dur), border-color var(--dur); }
 .social-tabs button.on { color: var(--ink); border-bottom-color: var(--ink); }
-.social-plus { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--ink); color: #fff; }
+.social-plus { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--ink); color: #fff; transition: transform var(--dur-fast) var(--ease-out); }
+.social-plus:active { transform: scale(0.92); }
 .social-plus svg { width: 22px; height: 22px; }
 .feed { display: grid; align-content: start; }
 .post { padding: 12px 0 6px; border-bottom: 1px solid var(--line); }
@@ -22,8 +23,10 @@
 .quote-card-text { font-family: var(--font-read); font-weight: 500; font-size: 1.2rem; line-height: 1.45; letter-spacing: -0.005em; position: relative; z-index: 1; text-wrap: pretty; }
 .quote-card-attr { font-size: var(--t-label); opacity: 0.85; font-weight: 500; position: relative; z-index: 1; }
 .post-actions { display: flex; align-items: center; gap: 14px; padding-top: 10px; }
-.post-action { display: inline-flex; align-items: center; gap: 5px; color: var(--ink); font-size: var(--t-label); font-weight: 600; min-height: 36px; }
-.post-action svg { width: 24px; height: 24px; }
+.post-action { display: inline-flex; align-items: center; gap: 5px; color: var(--ink); font-size: var(--t-label); font-weight: 600; min-height: 36px; transition: color var(--dur); }
+.post-action svg { width: 24px; height: 24px; transition: transform var(--dur-fast) var(--ease-out); }
+.post-action:active svg { transform: scale(0.86); }
+.post-action.bump svg { animation: pop 380ms var(--ease-spring); }
 .post-action.on { color: var(--tint-relationships); }
 .post-action.on svg { color: var(--tint-relationships); }
 .post-caption { padding-top: 2px; padding-bottom: 6px; display: grid; gap: 2px; }
@@ -33,7 +36,8 @@
 
 .compose { display: grid; gap: 10px; }
 .compose-picks { display: grid; gap: 8px; }
-.compose-pick { width: 100%; text-align: left; display: grid; gap: 2px; padding: 10px 12px; border-radius: 12px; background: var(--paper-2); box-shadow: inset 0 0 0 1px transparent; }
+.compose-pick { width: 100%; text-align: left; display: grid; gap: 2px; padding: 10px 12px; border-radius: 12px; background: var(--paper-2); box-shadow: inset 0 0 0 1px transparent; transition: background var(--dur), box-shadow var(--dur), transform var(--dur-fast) var(--ease-out); }
+.compose-pick:active { transform: scale(0.985); }
 .compose-pick.on { box-shadow: inset 0 0 0 2px var(--ink); background: var(--yellow-soft); }
 .compose-pick-text { font-family: var(--font-read); font-style: italic; font-size: var(--t-small); line-height: 1.45; }
 .compose-quote, .compose-caption { padding: 12px 14px; line-height: 1.45; min-height: 0; resize: none; }

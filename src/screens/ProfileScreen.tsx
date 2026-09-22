@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type CSSProperties } from 'react';
 import { IconSettings, IconCheck, IconLock } from '@tabler/icons-react';
 import { navigate } from '../app/router';
 import { useStore, selectCouncils } from '../store/useStore';
@@ -8,6 +8,7 @@ import { timeAgo } from '../app/ids';
 import { PersonAvatar } from '../components/Avatar';
 import { Owl } from '../components/Owl';
 import { RadarChart, AXES } from '../components/RadarChart';
+import { Seg } from '../components/Seg';
 import { useT, fmt } from '../i18n/react';
 import './ProfileScreen.css';
 
@@ -124,13 +125,13 @@ export function ProfileScreen() {
           </div>
         </div>
 
-        <div className="profile-tabs" role="tablist">
-          {(['insights', 'activity', 'badges'] as const).map((tb) => (
-            <button key={tb} type="button" role="tab" aria-selected={tab === tb} className={tab === tb ? 'on' : ''} onClick={() => setTab(tb)}>
-              {t.profile.tabs[tb]}
-            </button>
-          ))}
-        </div>
+        <Seg
+          tabs
+          className="wide tone-paper"
+          options={(['insights', 'activity', 'badges'] as const).map((tb) => ({ id: tb, label: t.profile.tabs[tb] }))}
+          value={tab}
+          onChange={setTab}
+        />
 
         {tab === 'insights' && (
           <>
@@ -141,9 +142,9 @@ export function ProfileScreen() {
             </section>
             <section className="profile-section">
               <h2 className="heading">{t.profile.milestones}</h2>
-              <ul className="milestones">
-                {milestones.map((m) => (
-                  <li key={m.label} className={m.done ? 'done' : ''}>
+              <ul className="milestones cascade">
+                {milestones.map((m, i) => (
+                  <li key={m.label} className={m.done ? 'done' : ''} style={{ '--i': i } as CSSProperties}>
                     <span className="ms-check">{m.done ? <IconCheck stroke={3} /> : null}</span>
                     <span className="grow">{m.label}</span>
                     <span className="small muted">{m.note}</span>
@@ -178,9 +179,9 @@ export function ProfileScreen() {
 
         {tab === 'activity' && (
           <section className="profile-section">
-            <ul className="timeline">
+            <ul className="timeline cascade">
               {activity.map((a, i) => (
-                <li key={i}>
+                <li key={i} style={{ '--i': i } as CSSProperties}>
                   <button type="button" onClick={a.onClick}>
                     <span className="tl-dot" />
                     <span className="grow">{a.text}</span>
@@ -195,9 +196,9 @@ export function ProfileScreen() {
 
         {tab === 'badges' && (
           <section className="profile-section">
-            <ul className="badges">
-              {badges.map((b) => (
-                <li key={b.name} className={b.done ? 'done' : ''}>
+            <ul className="badges cascade">
+              {badges.map((b, i) => (
+                <li key={b.name} className={b.done ? 'done' : ''} style={{ '--i': i } as CSSProperties}>
                   <span className="badge-owl">{b.done ? <Owl color={b.color} size={40} /> : <IconLock />}</span>
                   <span className="badge-name">{b.name}</span>
                 </li>

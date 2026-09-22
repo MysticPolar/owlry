@@ -1,8 +1,9 @@
-import { useEffect, useRef, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { IconHome, IconBook, IconBooks, IconUsers, IconUser, IconArrowLeft } from '@tabler/icons-react';
 import { navigate, goBack, type Route, type TabName } from '../app/router';
 import { useStore } from '../store/useStore';
 import { useModalFocus } from '../hooks/useModalFocus';
+import { usePresence } from '../hooks/usePresence';
 import { useT, type Dict } from '../i18n/react';
 
 /* ============================================================
@@ -97,7 +98,7 @@ export function TopBar({
   );
 }
 
-/** bottom sheet with focus trap + escape + backdrop tap */
+/** bottom sheet with focus trap + escape + backdrop tap; slides down again when it closes */
 export function Sheet({
   open,
   onClose,
@@ -112,16 +113,19 @@ export function Sheet({
   tall?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  useModalFocus(open, onClose, ref);
-  if (!open) return null;
+  const { mounted, closing } = usePresence(open, 240);
+  // the sheet's element exists one render after `open`; the trap has to wait for it
+  useModalFocus(open && mounted, onClose, ref);
+  if (!mounted) return null;
   return (
     <>
-      <div className="backdrop" onClick={onClose} />
+      <div className={`backdrop ${closing ? 'closing' : ''}`} onClick={onClose} />
       <div
-        className="sheet"
+        className={`sheet ${closing ? 'closing' : ''}`}
         role="dialog"
         aria-modal="true"
         aria-label={label}
+        aria-hidden={closing || undefined}
         ref={ref}
         tabIndex={-1}
         style={tall ? { maxHeight: '94%' } : undefined}
@@ -133,27 +137,35 @@ export function Sheet({
   );
 }
 
+/** one toast at a time; it slides in, can be tapped away, and slides out when it goes */
 export function ToastHost() {
   const toast = useStore((s) => s.toast);
   const dismiss = useStore((s) => s.dismissToast);
+  const { mounted, closing } = usePresence(!!toast, 220);
+  // keep the last toast's words on screen while it slides out
+  const [shown, setShown] = useState(toast);
+  useEffect(() => {
+    if (toast) setShown(toast);
+  }, [toast]);
   useEffect(() => {
     if (!toast) return;
     const t = setTimeout(dismiss, toast.action ? 7000 : 3200);
     return () => clearTimeout(t);
   }, [toast, dismiss]);
-  if (!toast) return null;
+  if (!mounted || !shown) return null;
   return (
-    <div className="toast" role="status">
-      <span className="grow">{toast.text}</span>
-      {toast.action && (
+    <div key={shown.id} className={`toast ${closing ? 'closing' : ''}`} role="status" onClick={() => dismiss()}>
+      <span className="grow">{shown.text}</span>
+      {shown.action && (
         <button
           type="button"
-          onClick={() => {
-            toast.action?.onClick();
+          onClick={(e) => {
+            e.stopPropagation();
+            shown.action?.onClick();
             dismiss();
           }}
         >
-          {toast.action.label}
+          {shown.action.label}
         </button>
       )}
     </div>

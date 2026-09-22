@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type CSSProperties } from 'react';
 import { IconHeart, IconHeartFilled, IconMessageCircle, IconSend, IconBookmark, IconBookmarkFilled, IconPlus, IconDots } from '@tabler/icons-react';
 import { useStore } from '../store/useStore';
 import { refreshFeed } from '../lib/sync';
@@ -24,6 +24,13 @@ export function SocialScreen() {
   const showToast = useStore((s) => s.showToast);
   const [tab, setTab] = useState<'foryou' | 'following'>('foryou');
   const [compose, setCompose] = useState(false);
+  // the icon that was just tapped pops once
+  const [bumped, setBumped] = useState<string | null>(null);
+  useEffect(() => {
+    if (!bumped) return;
+    const id = setTimeout(() => setBumped(null), 420);
+    return () => clearTimeout(id);
+  }, [bumped]);
   const t = useT();
 
   // signed in: the cloud feed is refreshed each time the tab opens (a no-op otherwise)
@@ -60,17 +67,17 @@ export function SocialScreen() {
           <IconPlus stroke={2.4} />
         </button>
       </div>
-      <div className="screen-scroll nav-space feed">
+      <div className="screen-scroll nav-space feed cascade">
         {shown.length === 0 && (
           <p className="pad small muted" style={{ paddingTop: 20 }}>{t.social.followEmpty}</p>
         )}
-        {shown.map((p) => {
+        {shown.map((p, i) => {
           const isLiked = liked.includes(p.id);
           const isSaved = savedPosts.includes(p.id);
           const b = maybeBook(p.bookId);
           const isFollowing = following.includes(p.author.handle);
           return (
-            <article key={p.id} className="post">
+            <article key={p.id} className="post" style={{ '--i': i } as CSSProperties}>
               <header className="post-head pad">
                 <PersonAvatar initial={p.author.initial} color={p.author.color} size={34} />
                 <div className="grow">
@@ -91,7 +98,7 @@ export function SocialScreen() {
                 <p className="quote-card-attr">{p.attribution}</p>
               </div>
               <div className="post-actions pad">
-                <button type="button" className={`post-action ${isLiked ? 'on' : ''}`} onClick={() => toggleLike(p.id)} aria-pressed={isLiked} aria-label={t.social.like}>
+                <button type="button" className={`post-action ${isLiked ? 'on' : ''} ${bumped === `like:${p.id}` ? 'bump' : ''}`} onClick={() => { toggleLike(p.id); setBumped(`like:${p.id}`); }} aria-pressed={isLiked} aria-label={t.social.like}>
                   {isLiked ? <IconHeartFilled /> : <IconHeart />} <span>{p.likes}</span>
                 </button>
                 <button type="button" className="post-action" aria-label={t.social.comments}>
@@ -101,7 +108,7 @@ export function SocialScreen() {
                   <IconSend />
                 </button>
                 <span className="grow" />
-                <button type="button" className={`post-action ${isSaved ? 'on' : ''}`} aria-label={t.social.save} aria-pressed={isSaved} onClick={() => toggleSavePost(p.id)}>
+                <button type="button" className={`post-action ${isSaved ? 'on' : ''} ${bumped === `save:${p.id}` ? 'bump' : ''}`} aria-label={t.social.save} aria-pressed={isSaved} onClick={() => { toggleSavePost(p.id); setBumped(`save:${p.id}`); }}>
                   {isSaved ? <IconBookmarkFilled /> : <IconBookmark />}
                 </button>
               </div>

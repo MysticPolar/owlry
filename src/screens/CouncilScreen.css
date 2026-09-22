@@ -20,6 +20,9 @@
   position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block;
   -webkit-user-drag: none; user-select: none;
 }
+/* the painting fades onto the wall once it has arrived, instead of popping */
+.room-img.base { opacity: 0; transition: opacity 360ms var(--ease-out); }
+.room-img.base.loaded { opacity: 1; }
 /* the beams come up when the council sits down */
 .room-img.beams { opacity: 0; transition: opacity 1.8s cubic-bezier(0.4, 0, 0.2, 1) 0.15s; will-change: opacity; }
 .table-wrap.filled .room-img.beams { opacity: 1; }
@@ -45,6 +48,7 @@
 .council-kicker.asked {
   text-transform: none; letter-spacing: 0.01em; font-size: 0.85rem; font-weight: 600;
   margin: 8px auto 0; max-width: 330px; line-height: 1.35; color: rgba(241, 235, 216, 0.9);
+  animation: fade-up 420ms var(--ease-out) both; animation-delay: 140ms;
 }
 .council-marquee {
   font-family: var(--font-display); font-weight: 900; font-stretch: 72%; font-size: 2.9rem;
@@ -64,8 +68,10 @@ html[lang='zh-CN'] .council-kicker { letter-spacing: 0.2em; }
 .council-flat .seat-0 { left: 17.9%; top: 55.2%; }
 .council-flat .seat-1 { left: 50%; top: 48.2%; }
 .council-flat .seat-2 { left: 82.1%; top: 55.2%; }
+/* a seat and an empty slot must not share a keyframe name: swapping one class for the other never restarts a same-named animation */
 .seat.on { animation: seat-in 480ms var(--ease-spring) both; }
-.seat.off { animation: seat-in 0.7s var(--ease-out) both; }
+.seat.off { animation: slot-in 0.7s var(--ease-out) both; }
+@keyframes slot-in { from { opacity: 0; transform: scale(0.6); } to { opacity: 1; transform: none; } }
 .seat-btn { display: grid; justify-items: center; gap: 4px; }
 .seat-name {
   font-size: var(--t-micro); font-weight: 700; color: var(--night-text); background: rgba(13, 17, 31, 0.7);
@@ -125,9 +131,9 @@ html[lang='zh-CN'] .ticker { font-stretch: 100%; font-size: 0.8rem; letter-spaci
 .suggestion {
   width: 100%; text-align: left; min-height: 44px; padding: 10px 16px; border-radius: var(--r-pill);
   background: var(--night-2); box-shadow: inset 0 0 0 1px var(--night-line); color: var(--night-text);
-  font-size: var(--t-small); font-weight: 500; transition: background var(--dur);
+  font-size: var(--t-small); font-weight: 500; transition: background var(--dur), transform var(--dur-fast) var(--ease-out);
 }
-.suggestion:active { background: var(--night-3); }
+.suggestion:active { background: var(--night-3); transform: scale(0.985); }
 .suggestion-text { display: block; }
 .council .suggestions { margin-top: 12px; gap: 9px; }
 .council .suggestion { min-height: 46px; padding: 9px 16px; font-size: 13.5px; line-height: 1.3; }
@@ -137,7 +143,10 @@ html[lang='zh-CN'] .council .suggestion { font-size: var(--t-small); }
 .intros { display: grid; gap: 10px; opacity: 0; transform: translateY(8px); transition: opacity 300ms var(--ease-out), transform 300ms var(--ease-out); margin-top: 2px; }
 .intros.show { opacity: 1; transform: none; }
 .intros-label { color: var(--night-mut); }
-.intro-card { display: flex; gap: 12px; padding: 12px 14px; align-items: flex-start; animation: screen-in 400ms var(--ease-out) both; }
+.intro-card { display: flex; gap: 12px; padding: 12px 14px; align-items: flex-start; opacity: 0; }
+/* the intro cards cascade when the intros are shown, not silently at mount */
+.intros.show .intro-card { animation: fade-up 420ms var(--ease-out) both; }
+.intros.show .micro-note, .intros.show .btn { animation: fade-up 420ms var(--ease-out) both; animation-delay: 380ms; }
 .intro-name { font-weight: 700; font-size: var(--t-body); }
 .intro-label { font-weight: 500; color: var(--night-mut); font-size: var(--t-small); }
 .intro-why { margin-top: 2px; color: var(--night-mut); line-height: 1.4; }
@@ -145,6 +154,7 @@ html[lang='zh-CN'] .council .suggestion { font-size: var(--t-small); }
 
 @media (prefers-reduced-motion: reduce) {
   .slot-halo, .seat.off, .ticker-track, .council-owl { animation: none; }
+  .intro-card { opacity: 1; }
   .slot-halo { opacity: 0.5; }
   .room-img.beams { transition: none; }
 }

@@ -12,11 +12,8 @@
 .level-name { font-family: var(--font-display); font-weight: 800; font-size: 1.125rem; letter-spacing: -0.015em; }
 .level-sub { font-size: var(--t-label); color: var(--night-mut); }
 .level-track { height: 5px; border-radius: 3px; background: rgba(255, 255, 255, 0.14); overflow: hidden; margin-top: 6px; }
-.level-track > span { display: block; height: 100%; background: var(--yellow); border-radius: 3px; }
-.profile-tabs { display: flex; gap: 4px; padding: 4px; background: var(--paper-2); border-radius: var(--r-pill); }
-.profile-tabs button { flex: 1; min-height: 34px; border-radius: var(--r-pill); font-size: var(--t-small); font-weight: 600; color: var(--mut); }
-.profile-tabs button.on { background: var(--paper); color: var(--ink); box-shadow: var(--shadow-card); }
-.profile-section { display: grid; gap: 10px; }
+.level-track > span { display: block; height: 100%; background: var(--yellow); border-radius: 3px; transition: width 700ms var(--ease-out); }
+.profile-section { display: grid; gap: 10px; animation: fade-up 300ms var(--ease-out) both; }
 .radar { width: 100%; max-width: 380px; margin: 0 auto; display: block; }
 .radar-data { animation: radar-in 600ms var(--ease-out) both; transform-origin: 190px 140px; }
 @keyframes radar-in { from { transform: scale(0.4); opacity: 0; } to { transform: none; opacity: 1; } }
@@ -29,7 +26,8 @@
 .ms-check svg { width: 13px; height: 13px; }
 .reflection { border-left-color: var(--ink); }
 .timeline { display: grid; }
-.timeline button { width: 100%; display: flex; align-items: center; gap: 10px; text-align: left; padding: 10px 4px; border-bottom: 1px solid var(--line); font-size: var(--t-small); }
+.timeline button { width: 100%; display: flex; align-items: center; gap: 10px; text-align: left; padding: 10px 4px; border-bottom: 1px solid var(--line); font-size: var(--t-small); border-radius: 10px; transition: background var(--dur-fast); }
+.timeline button:active { background: rgba(0, 0, 0, 0.04); }
 .tl-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--yellow); flex: 0 0 auto; box-shadow: 0 0 0 3px var(--yellow-soft); }
 .badges { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
 .badges li { display: grid; justify-items: center; gap: 6px; padding: 14px 8px; border-radius: 16px; background: var(--paper); box-shadow: var(--shadow-card); opacity: 0.55; }

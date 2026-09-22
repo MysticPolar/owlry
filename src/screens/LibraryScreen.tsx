@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type CSSProperties } from 'react';
 import { IconSearch, IconChevronRight, IconX, IconMessageCircle, IconHighlight } from '@tabler/icons-react';
 import { navigate } from '../app/router';
 import { useStore, selectCouncils } from '../store/useStore';
@@ -8,6 +8,7 @@ import { figure } from '../content/figures';
 import { timeAgo } from '../app/ids';
 import { Cover } from '../components/Cover';
 import { Avatar } from '../components/Avatar';
+import { Seg } from '../components/Seg';
 import { useT, fmt } from '../i18n/react';
 import './LibraryScreen.css';
 
@@ -62,13 +63,13 @@ export function LibraryScreen() {
         </div>
       )}
       <div className="pad">
-        <div className="seg" role="tablist" aria-label={t.library.filter}>
-          {(['all', 'reading', 'completed'] as Tab[]).map((tb) => (
-            <button key={tb} type="button" role="tab" aria-selected={tab === tb} className={tab === tb ? 'on' : ''} onClick={() => setTab(tb)}>
-              {tb === 'all' ? t.library.all : tb === 'reading' ? t.library.reading : t.library.completed}
-            </button>
-          ))}
-        </div>
+        <Seg
+          tabs
+          label={t.library.filter}
+          options={(['all', 'reading', 'completed'] as Tab[]).map((tb) => ({ id: tb, label: tb === 'all' ? t.library.all : tb === 'reading' ? t.library.reading : t.library.completed }))}
+          value={tab}
+          onChange={setTab}
+        />
         {shelves.length > 1 && (
           <div className="chiprow lib-shelves">
             <button type="button" className={`chip ${cat === 'All' ? 'on' : ''}`} onClick={() => setCat('All')}>
@@ -98,12 +99,12 @@ export function LibraryScreen() {
           </button>
         )}
 
-        <ul className="booklist">
-          {shown.map((b) => {
+        <ul className="booklist cascade">
+          {shown.map((b, i) => {
             const p = progress[b.id];
             const marks = bookmarks[b.id]?.length ?? 0;
             return (
-              <li key={b.id}>
+              <li key={b.id} style={{ '--i': i } as CSSProperties}>
                 <button type="button" className="bookrow" onClick={() => navigate({ name: 'book', id: b.id })}>
                   <Cover book={b} width={44} />
                   <span className="bookrow-text">

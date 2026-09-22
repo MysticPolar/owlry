@@ -2,12 +2,15 @@
 .reader-titles { display: grid; line-height: 1.15; }
 .reader-book { font-size: var(--t-label); }
 .reader-section { font-family: var(--font-ui); font-weight: 500; font-size: 11px; color: var(--mut); }
-.size-pop { position: absolute; right: 16px; top: calc(var(--sat) + 60px); z-index: 30; display: flex; gap: 4px; padding: 6px; background: var(--paper); border-radius: 14px; box-shadow: var(--shadow-float); }
+.size-pop { position: absolute; right: 16px; top: calc(var(--sat) + 60px); z-index: 30; display: flex; gap: 4px; padding: 6px; background: var(--paper); border-radius: 14px; box-shadow: var(--shadow-float); transform-origin: 88% 0; animation: pop-in 160ms var(--ease-out) both; }
+.size-pop.closing { animation: pop-out 140ms var(--ease-out) both; pointer-events: none; }
 .phone.framed .size-pop { top: 100px; }
 .size-btn { width: 44px; height: 40px; border-radius: 10px; font-family: var(--font-read); color: var(--mut); }
 .size-btn-S { font-size: 14px; }
 .size-btn-M { font-size: 18px; }
 .size-btn-L { font-size: 23px; }
+.size-btn { transition: background var(--dur-fast), color var(--dur-fast), transform var(--dur-fast) var(--ease-out); }
+.size-btn:active { transform: scale(0.94); }
 .size-btn.on { background: var(--ink); color: #fff; }
 
 .reader-scroll { position: relative; }
@@ -15,6 +18,7 @@
 .reader-note .caps { color: var(--ink-2); }
 .reader-note-x { position: absolute; right: 6px; top: 6px; width: 32px; height: 32px; display: grid; place-items: center; color: var(--ink-2); }
 .reader-note-x svg { width: 18px; height: 18px; }
+.reader-note { animation: fade-up 360ms var(--ease-out) both; }
 .reader-note .linkbtn { justify-self: start; color: var(--ink); }
 
 .reader-page { padding: 20px 24px 40px; max-width: 640px; margin: 0 auto; }

@@ -4,6 +4,7 @@ import { useStore } from '../store/useStore';
 import { useAuth } from '../store/useAuth';
 import type { TextSize } from '../store/types';
 import { TopBar } from '../components/chrome';
+import { Seg } from '../components/Seg';
 import { OwlRow } from '../components/Owl';
 import { saveProfile } from '../lib/auth/api';
 import { isBackendConfigured, isLiveCouncilConfigured } from '../lib/supabase';
@@ -64,13 +65,7 @@ export function SettingsScreen() {
           <h2 className="heading">{t.settings.language}</h2>
           <div className="row">
             <span className="grow small muted">{t.settings.languageSub}</span>
-            <div className="seg" role="group" aria-label={t.settings.language}>
-              {LANGS.map((l) => (
-                <button key={l.id} type="button" className={lang === l.id ? 'on' : ''} aria-pressed={lang === l.id} lang={l.id === 'zh' ? 'zh-CN' : 'en'} onClick={() => setLang(l.id)}>
-                  {l.native}
-                </button>
-              ))}
-            </div>
+            <Seg label={t.settings.language} options={LANGS.map((l) => ({ id: l.id, label: l.native, lang: l.id === 'zh' ? 'zh-CN' : 'en' }))} value={lang} onChange={setLang} />
           </div>
         </section>
         <section className="stack">
@@ -95,13 +90,7 @@ export function SettingsScreen() {
           <h2 className="heading">{t.settings.reading}</h2>
           <div className="row">
             <span className="grow">{t.settings.textSize}</span>
-            <div className="seg">
-              {(['S', 'M', 'L'] as TextSize[]).map((s) => (
-                <button key={s} type="button" className={textSize === s ? 'on' : ''} onClick={() => setTextSize(s)}>
-                  {s}
-                </button>
-              ))}
-            </div>
+            <Seg label={t.settings.textSize} options={(['S', 'M', 'L'] as TextSize[]).map((s) => ({ id: s, label: s }))} value={textSize} onChange={setTextSize} />
           </div>
         </section>
         <section className="stack">

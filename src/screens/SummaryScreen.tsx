@@ -8,6 +8,7 @@ import { TopBar } from '../components/chrome';
 import { Avatar } from '../components/Avatar';
 import { Cover } from '../components/Cover';
 import { Owl } from '../components/Owl';
+import { useBump } from '../hooks/useBump';
 import { useT, fmt } from '../i18n/react';
 import './SummaryScreen.css';
 
@@ -23,6 +24,7 @@ export function SummaryScreen({ id }: { id: string }) {
   const toggleSaved = useStore((s) => s.toggleSaved);
   const showToast = useStore((s) => s.showToast);
   const d = useT();
+  const [saveBump, bumpSave] = useBump();
 
   if (!session) {
     return (
@@ -36,6 +38,7 @@ export function SummaryScreen({ id }: { id: string }) {
   const recs = readingFor(session);
 
   const saveAll = () => {
+    bumpSave();
     setCouncilSaved(session.id, true);
     for (const r of recs) if (!saved.includes(r.bookId)) toggleSaved(r.bookId);
     showToast(d.summary.saved, { label: d.common.open, onClick: () => navigate({ name: 'library' }) });
@@ -60,7 +63,7 @@ export function SummaryScreen({ id }: { id: string }) {
         className="top-inset"
         right={
           <>
-            <button type="button" className={`iconbtn ${session.saved ? 'on' : ''}`} aria-label={session.saved ? d.summary.ariaSaved : d.summary.ariaSave} onClick={() => (session.saved ? setCouncilSaved(session.id, false) : saveAll())}>
+            <button type="button" className={`iconbtn ${session.saved ? 'on' : ''} ${saveBump ? 'bump' : ''}`} aria-label={session.saved ? d.summary.ariaSaved : d.summary.ariaSave} onClick={() => (session.saved ? (bumpSave(), setCouncilSaved(session.id, false)) : saveAll())}>
               {session.saved ? <IconBookmarkFilled /> : <IconBookmark stroke={1.8} />}
             </button>
             <button type="button" className="iconbtn" aria-label={d.common.share} onClick={share}>

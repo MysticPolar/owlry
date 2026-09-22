@@ -11,6 +11,8 @@ import { Ticker } from '../components/Ticker';
 import { Owl } from '../components/Owl';
 import { Avatar } from '../components/Avatar';
 import { useT, fmt } from '../i18n/react';
+import { useAutoGrow } from '../hooks/useAutoGrow';
+import { useReduceMotion } from '../hooks/useReduceMotion';
 import './CouncilScreen.css';
 
 /* ============================================================
@@ -25,10 +27,11 @@ export function CouncilScreen() {
   const activeId = useStore((s) => s.activeCouncilId);
   const active = useStore(selectCouncil(activeId));
   const setActive = useStore((s) => s.setActiveCouncil);
-  const join = useStore((s) => s.joinDiscussion);
   const [text, setText] = useState('');
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const reduce = useReduceMotion();
   const t = useT();
+  useAutoGrow(inputRef, text);
 
   const convening = active && active.stage === 'convening' ? active : null;
   const seats = convening ? convening.seats.map((id) => figure(id)) : [null, null, null];
@@ -64,7 +67,13 @@ export function CouncilScreen() {
       submit(text);
     }
   };
-  const focusAsk = () => inputRef.current?.focus();
+  // an empty chair, tapped: bring the ask box up under the finger
+  const focusAsk = () => {
+    const el = inputRef.current;
+    if (!el) return;
+    el.focus({ preventScroll: true });
+    el.scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' });
+  };
 
   const suggestions = suggestionsFor(interests);
 
@@ -128,10 +137,9 @@ export function CouncilScreen() {
             <button
               type="button"
               className="btn btn-primary"
-              onClick={() => {
-                join(convening.id);
-                navigate({ name: 'discussion', id: convening.id });
-              }}
+              // the discussion screen seats the council as it opens; joining here first would
+              // empty the room for a frame before the screen changes
+              onClick={() => navigate({ name: 'discussion', id: convening.id })}
             >
               {t.council.join}
             </button>
