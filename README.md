@@ -41,12 +41,13 @@ the relevant reading → save and return.
 | 5 | Summary | `#/summary/:id` | What they agree on, where they differ, what fits your situation, one next step, the three books; Save to Library / Continue |
 | 6 | Book | `#/book/:id?council=…` | Cover, tags, a verbatim epigraph, why it relates to your question, where to start; Start Reading / Read Book Summary / Save |
 | 7 | Reader (Screen 2) | `#/read/:id?council=…` | Literata, three text sizes, bookmarks, saved progress, highlight a passage or **bring it to the council** |
-| 8 | Library (Screen 3) | `#/library` | Continue reading, saved books by shelf, All / Reading / Completed, past councils, highlights |
+| 8 | Library (Screen 3, the second tab) | `#/library` | Where you left off with a resume button, your books by shelf (most recently opened first), All / Reading / Completed, what your councils suggested next, past councils, highlights |
 | 9 | Social (Screen 4) | `#/social` | For You / Following feed of passages + reflections; composer asks "What did this change for you?" |
 | 10 | Profile (Screen 5) | `#/profile` | Level card, milestones, six-axis reading radar, activity, badges, highlights & reflections |
 
-The Reading tab (`#/reading`) resumes the latest session; Settings
-(`#/settings`) edits the profile, text size, account and resets the demo data.
+The bottom nav has four tabs: Home (the council), Library, Social, Profile.
+`#/reading` still works and opens the library. Settings (`#/settings`) edits
+the profile, text size, account and resets the demo data.
 
 ## How the council works (and what is simulated)
 

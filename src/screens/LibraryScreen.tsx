@@ -1,10 +1,11 @@
 import { useMemo, useState, type CSSProperties } from 'react';
-import { IconSearch, IconChevronRight, IconX, IconMessageCircle, IconHighlight } from '@tabler/icons-react';
+import { IconSearch, IconChevronRight, IconX, IconMessageCircle, IconHighlight, IconPlayerPlay } from '@tabler/icons-react';
 import { navigate } from '../app/router';
 import { useStore, selectCouncils } from '../store/useStore';
-import { maybeBook, CATEGORIES } from '../content/books';
+import { maybeBook, book, CATEGORIES } from '../content/books';
 import type { Category } from '../content/types';
 import { figure } from '../content/figures';
+import { readingFor } from '../engine/council';
 import { timeAgo } from '../app/ids';
 import { Cover } from '../components/Cover';
 import { Avatar } from '../components/Avatar';
@@ -13,9 +14,10 @@ import { useT, fmt } from '../i18n/react';
 import './LibraryScreen.css';
 
 /* ============================================================
-   Screen 3 — Library. "Your growing collection."
-   Saved books by shelf, the latest session to resume, past councils to
-   revisit, and highlights.
+   The Library — the second tab. "Your growing collection."
+   Where you left off (with a resume button), your books by shelf with the
+   most recently opened first, what your councils suggested you read next,
+   past councils to revisit, and highlights.
    ============================================================ */
 type Tab = 'all' | 'reading' | 'completed';
 
@@ -32,9 +34,13 @@ export function LibraryScreen() {
   const [q, setQ] = useState('');
   const t = useT();
 
+  // saved and opened books, the ones you have been reading most recently first
   const books = useMemo(() => {
     const ids = new Set([...saved, ...Object.keys(progress)]);
-    return [...ids].map((id) => maybeBook(id)).filter((b): b is NonNullable<typeof b> => !!b);
+    return [...ids]
+      .map((id) => maybeBook(id))
+      .filter((b): b is NonNullable<typeof b> => !!b)
+      .sort((a, b) => (progress[b.id]?.lastReadAt ?? 0) - (progress[a.id]?.lastReadAt ?? 0));
   }, [saved, progress]);
   const shelves = useMemo(() => CATEGORIES.filter((c) => books.some((b) => b.category === c)), [books]);
   const qn = q.trim().toLowerCase();
@@ -47,7 +53,14 @@ export function LibraryScreen() {
     return true;
   });
   const current = lastRead ? maybeBook(lastRead.bookId) : undefined;
+  const currentPct = current ? Math.round((progress[current.id]?.pct ?? 0) * 100) : 0;
   const savedCouncils = councils.filter((c) => c.saved || c.stage === 'summarized' || c.messages.length > 8);
+  // what the councils suggested and you have not opened yet
+  const suggested = councils
+    .flatMap((c) => readingFor(c).map((r) => ({ ...r, councilId: c.id, question: c.question })))
+    .filter((r, i, arr) => !progress[r.bookId] && arr.findIndex((x) => x.bookId === r.bookId) === i)
+    .slice(0, 4);
+  const unfiltered = tab === 'all' && cat === 'All' && !qn;
 
   return (
     <div className="screen library">
@@ -84,19 +97,30 @@ export function LibraryScreen() {
         )}
       </div>
       <div className="screen-scroll pad nav-space lib-body">
-        {tab === 'all' && cat === 'All' && !qn && current && (
-          <button type="button" className="card continue" onClick={() => navigate({ name: 'read', id: current.id, council: lastRead?.councilId })}>
-            <Cover book={current} width={56} />
-            <span className="grow">
+        {unfiltered && current && (
+          <section className="card continue" aria-label={t.library.continueReading}>
+            <Cover book={current} width={72} />
+            <div className="grow">
               <span className="caps muted">{t.library.continueReading}</span>
-              <span className="continue-title">{current.title}</span>
-              <span className="small muted">{current.text.heading} · {Math.round((progress[current.id]?.pct ?? 0) * 100)}%</span>
+              <div className="continue-title">{current.title}</div>
+              <div className="small muted">{current.authorName} · {current.text.heading}</div>
               <span className="progress-track">
-                <span style={{ width: `${Math.round((progress[current.id]?.pct ?? 0) * 100)}%` }} />
+                <span style={{ width: `${currentPct}%` }} />
               </span>
-            </span>
-            <IconChevronRight className="bookrow-chev" />
-          </button>
+              <button type="button" className="btn btn-primary btn-sm continue-btn" onClick={() => navigate({ name: 'read', id: current.id, council: lastRead?.councilId })}>
+                <IconPlayerPlay /> {fmt(t.library.resume, { pct: currentPct })}
+              </button>
+            </div>
+          </section>
+        )}
+        {unfiltered && !current && books.length === 0 && (
+          <section className="card card-pad">
+            <p className="heading">{t.library.nothing}</p>
+            <p className="small muted" style={{ marginTop: 4 }}>{t.library.nothingSub}</p>
+            <button type="button" className="btn btn-dark btn-sm" style={{ marginTop: 12 }} onClick={() => navigate({ name: 'council' })}>
+              {t.library.askQ}
+            </button>
+          </section>
         )}
 
         <ul className="booklist cascade">
@@ -120,10 +144,35 @@ export function LibraryScreen() {
               </li>
             );
           })}
-          {shown.length === 0 && <li className="small muted lib-empty">{t.library.empty}</li>}
+          {shown.length === 0 && books.length > 0 && <li className="small muted lib-empty">{t.library.empty}</li>}
         </ul>
 
-        {!qn && tab === 'all' && savedCouncils.length > 0 && (
+        {unfiltered && suggested.length > 0 && (
+          <section className="lib-section">
+            <h2 className="heading">
+              <IconMessageCircle /> {t.library.fromCouncils}
+            </h2>
+            <ul className="booklist">
+              {suggested.map((r) => {
+                const b = book(r.bookId);
+                return (
+                  <li key={r.bookId}>
+                    <button type="button" className="bookrow" onClick={() => navigate({ name: 'book', id: b.id, council: r.councilId })}>
+                      <Cover book={b} width={40} />
+                      <span className="bookrow-text">
+                        <span className="bookrow-title">{b.title}</span>
+                        <span className="bookrow-sub">{fmt(t.library.startWithFor, { label: b.start.label, q: r.question })}</span>
+                      </span>
+                      <IconChevronRight className="bookrow-chev" />
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        )}
+
+        {unfiltered && savedCouncils.length > 0 && (
           <section className="lib-section">
             <h2 className="heading">
               <IconMessageCircle /> {t.library.councils}
@@ -152,7 +201,7 @@ export function LibraryScreen() {
           </section>
         )}
 
-        {!qn && tab === 'all' && highlights.length > 0 && (
+        {unfiltered && highlights.length > 0 && (
           <section className="lib-section">
             <h2 className="heading">
               <IconHighlight /> {t.library.highlights}

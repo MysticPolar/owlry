@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { IconHome, IconBook, IconBooks, IconUsers, IconUser, IconArrowLeft } from '@tabler/icons-react';
+import { IconHome, IconBooks, IconUsers, IconUser, IconArrowLeft } from '@tabler/icons-react';
 import { navigate, goBack, type Route, type TabName } from '../app/router';
 import { useStore } from '../store/useStore';
 import { useModalFocus } from '../hooks/useModalFocus';
@@ -37,7 +37,6 @@ export function StatusBar() {
 
 const TABS: { name: TabName; label: keyof Dict['nav']; icon: ReactNode; route: Route }[] = [
   { name: 'council', label: 'home', icon: <IconHome stroke={1.9} />, route: { name: 'council' } },
-  { name: 'reading', label: 'reading', icon: <IconBook stroke={1.9} />, route: { name: 'reading' } },
   { name: 'library', label: 'library', icon: <IconBooks stroke={1.9} />, route: { name: 'library' } },
   { name: 'social', label: 'social', icon: <IconUsers stroke={1.9} />, route: { name: 'social' } },
   { name: 'profile', label: 'profile', icon: <IconUser stroke={1.9} />, route: { name: 'profile' } },

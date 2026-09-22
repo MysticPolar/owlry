@@ -38,7 +38,10 @@ The complete journey, interactive end to end, with realistic content:
    selection toolbar: Highlight / To council / Copy with attribution. "To
    council" adds the passage to the most recent council and two figures
    respond (the book's author first if they are seated).
-7. **Library, Social, Profile** are lighter, as scoped, but real: saved books
+7. **Library, Social, Profile** are the other three tabs (the Reading tab
+   was folded into the Library, which is now the second tab: where you left
+   off with a resume button, your books most recently opened first, and what
+   the councils suggested next) — lighter, as scoped, but real: saved books
    by shelf with resume, past councils, highlights; a feed with likes, saves,
    follows and a composer that asks "What did this change for you?"; a profile
    with level, milestones, a six-axis radar derived from the books and

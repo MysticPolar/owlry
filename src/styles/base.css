@@ -271,7 +271,7 @@ button.card:active { transform: scale(0.985); }
 /* ---------- bottom nav ---------- */
 .nav {
   position: absolute; left: 0; right: 0; bottom: 0; z-index: 20;
-  display: grid; grid-template-columns: repeat(5, 1fr);
+  display: grid; grid-template-columns: repeat(4, 1fr);
   padding: 6px 8px calc(var(--sab) + 6px);
   background: color-mix(in srgb, var(--cream) 92%, transparent);
   backdrop-filter: saturate(160%) blur(14px); -webkit-backdrop-filter: saturate(160%) blur(14px);

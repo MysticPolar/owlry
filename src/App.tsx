@@ -12,7 +12,6 @@ import { DiscussionScreen } from './screens/DiscussionScreen';
 import { SummaryScreen } from './screens/SummaryScreen';
 import { BookScreen } from './screens/BookScreen';
 import { ReaderScreen } from './screens/ReaderScreen';
-import { ReadingScreen } from './screens/ReadingScreen';
 import { LibraryScreen } from './screens/LibraryScreen';
 import { SocialScreen } from './screens/SocialScreen';
 import { ProfileScreen } from './screens/ProfileScreen';
@@ -39,7 +38,6 @@ const DEPTH: Record<Route['name'], number> = {
   signin: 1,
   interests: 1,
   council: 2,
-  reading: 2,
   library: 2,
   social: 2,
   profile: 2,
@@ -73,8 +71,6 @@ function renderScreen(route: Route) {
       return <BookScreen id={route.id} councilId={route.council} />;
     case 'read':
       return <ReaderScreen id={route.id} councilId={route.council} />;
-    case 'reading':
-      return <ReadingScreen />;
     case 'library':
       return <LibraryScreen />;
     case 'social':

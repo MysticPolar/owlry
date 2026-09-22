@@ -7,7 +7,7 @@
 import type { Lang } from './index';
 
 const en = {
-  nav: { home: 'Home', reading: 'Reading', library: 'Library', social: 'Social', profile: 'Profile', main: 'Main' },
+  nav: { home: 'Home', library: 'Library', social: 'Social', profile: 'Profile', main: 'Main' },
   common: {
     back: 'Back',
     share: 'Share',
@@ -228,20 +228,14 @@ const en = {
     finished: 'Finished',
     progressSaved: 'Progress saved',
   },
-  reading: {
-    title: 'Reading',
-    continue: 'Continue reading',
+  library: {
+    title: 'My Library',
     resume: '{pct}% — resume',
     nothing: 'Nothing open yet',
     nothingSub: 'Ask the council a question and it will hand you a chapter to start with.',
     askQ: 'Ask a question',
-    recent: 'Recently opened',
-    completed: 'Completed',
     fromCouncils: 'From your councils',
     startWithFor: 'Start with {label} · for “{q}”',
-  },
-  library: {
-    title: 'My Library',
     search: 'Search',
     searchPh: 'Search your library',
     filter: 'Filter',
@@ -371,7 +365,7 @@ const en = {
 export type Dict = typeof en;
 
 const zh: Dict = {
-  nav: { home: '首页', reading: '阅读', library: '书房', social: '社区', profile: '我的', main: '主导航' },
+  nav: { home: '首页', library: '书房', social: '社区', profile: '我的', main: '主导航' },
   common: {
     back: '返回',
     share: '分享',
@@ -592,20 +586,14 @@ const zh: Dict = {
     finished: '已读完',
     progressSaved: '进度已保存',
   },
-  reading: {
-    title: '阅读',
-    continue: '继续阅读',
+  library: {
+    title: '我的书房',
     resume: '{pct}% —— 继续',
     nothing: '还没有打开的书',
     nothingSub: '向议事厅提一个问题，它会递给你一章作为开始。',
     askQ: '提一个问题',
-    recent: '最近打开',
-    completed: '已读完',
     fromCouncils: '来自你的议事',
     startWithFor: '从{label}开始 · 针对「{q}」',
-  },
-  library: {
-    title: '我的书房',
     search: '搜索',
     searchPh: '搜索你的书房',
     filter: '筛选',

@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
      #/summary/:id                   the takeaways + reading screen
      #/book/:id?council=:id          book detail modal (full screen)
      #/read/:id?council=:id          Screen 2 — the reader
-     #/reading  #/library  #/social  #/profile  #/settings
+     #/library  #/social  #/profile  #/settings   (#/reading is the library)
    ============================================================ */
 export type Route =
   | { name: 'welcome' }
@@ -22,13 +22,12 @@ export type Route =
   | { name: 'summary'; id: string }
   | { name: 'book'; id: string; council?: string }
   | { name: 'read'; id: string; council?: string }
-  | { name: 'reading' }
   | { name: 'library' }
   | { name: 'social' }
   | { name: 'profile' }
   | { name: 'settings' };
 
-export type TabName = 'council' | 'reading' | 'library' | 'social' | 'profile';
+export type TabName = 'council' | 'library' | 'social' | 'profile';
 
 export function parseRoute(hash: string): Route {
   const raw = hash.replace(/^#\/?/, '');
@@ -56,9 +55,9 @@ export function parseRoute(hash: string): Route {
     case 'book':
       return seg[1] ? { name: 'book', id: seg[1], council } : { name: 'library' };
     case 'read':
-      return seg[1] ? { name: 'read', id: seg[1], council } : { name: 'reading' };
-    case 'reading':
-      return { name: 'reading' };
+      return seg[1] ? { name: 'read', id: seg[1], council } : { name: 'library' };
+    case 'reading': // the old Reading tab lives in the library now
+      return { name: 'library' };
     case 'library':
       return { name: 'library' };
     case 'social':
@@ -123,8 +122,6 @@ export function tabFor(r: Route): TabName | undefined {
   switch (r.name) {
     case 'council':
       return 'council';
-    case 'reading':
-      return 'reading';
     case 'library':
       return 'library';
     case 'social':
