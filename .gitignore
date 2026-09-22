@@ -7,6 +7,9 @@ dist-ssr
 .env.*
 !.env.example
 
+# claude code worktrees live inside the repo; never commit a nested checkout
+.claude/worktrees/
+
 # editor
 .vscode/*
 !.vscode/extensions.json
