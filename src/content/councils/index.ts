@@ -70,9 +70,9 @@ export const AREAS: AreaMeta[] = [
     tagline: 'A healthier, happier you',
     councilId: 'health',
     suggestions: [
-      { text: 'Why can’t I stick to healthy habits?', councilId: 'health' },
-      { text: 'How can I be more disciplined?', councilId: 'discipline' },
-      { text: 'What is a good life?', councilId: 'good-life' },
+      { text: 'Why do I keep breaking promises to myself?', councilId: 'health' },
+      { text: 'Is discipline a trait, or a daily decision?', councilId: 'discipline' },
+      { text: 'What does it mean to live well?', councilId: 'good-life' },
     ],
   },
   {
@@ -81,9 +81,9 @@ export const AREAS: AreaMeta[] = [
     tagline: 'Build what matters',
     councilId: 'career',
     suggestions: [
-      { text: 'What does a meaningful career look like?', councilId: 'career' },
-      { text: 'How do I handle failure?', councilId: 'failure' },
-      { text: 'How can I be more disciplined?', councilId: 'discipline' },
+      { text: 'What work would I do if no one applauded?', councilId: 'career' },
+      { text: 'What is this failure trying to teach me?', councilId: 'failure' },
+      { text: 'Why don’t I do what I know I should?', councilId: 'discipline' },
     ],
   },
   {
@@ -92,9 +92,9 @@ export const AREAS: AreaMeta[] = [
     tagline: 'Make wiser decisions',
     councilId: 'investing',
     suggestions: [
-      { text: 'How should I start investing?', councilId: 'investing' },
-      { text: 'How do I handle a big loss?', councilId: 'failure' },
-      { text: 'How do I stop wanting more?', councilId: 'good-life' },
+      { text: 'Am I investing, or gambling with hope?', councilId: 'investing' },
+      { text: 'How do I take a loss without losing myself?', councilId: 'failure' },
+      { text: 'How much is enough?', councilId: 'good-life' },
     ],
   },
   {
@@ -103,9 +103,9 @@ export const AREAS: AreaMeta[] = [
     tagline: 'Deeper connections',
     councilId: 'relationships',
     suggestions: [
-      { text: 'How do I build deeper relationships?', councilId: 'relationships' },
-      { text: 'What is a good life?', councilId: 'good-life' },
-      { text: 'How do I handle rejection?', councilId: 'failure' },
+      { text: 'Do I love people, or just need them?', councilId: 'relationships' },
+      { text: 'What does it mean to live well?', councilId: 'good-life' },
+      { text: 'Can I be rejected without being diminished?', councilId: 'failure' },
     ],
   },
   {
@@ -114,9 +114,9 @@ export const AREAS: AreaMeta[] = [
     tagline: 'A richer mind',
     councilId: 'literature',
     suggestions: [
-      { text: 'How do I get more out of reading?', councilId: 'literature' },
-      { text: 'What is a good life?', councilId: 'good-life' },
-      { text: 'What does a meaningful career look like?', councilId: 'career' },
+      { text: 'How do I read so a book actually changes me?', councilId: 'literature' },
+      { text: 'How much is enough?', councilId: 'good-life' },
+      { text: 'What work is worth a whole life?', councilId: 'career' },
     ],
   },
   {
@@ -125,10 +125,10 @@ export const AREAS: AreaMeta[] = [
     tagline: 'Tell us what’s on your mind',
     councilId: 'good-life',
     suggestions: [
-      { text: 'How can I be more disciplined?', councilId: 'discipline' },
-      { text: 'What does a meaningful career look like?', councilId: 'career' },
-      { text: 'How do I handle failure?', councilId: 'failure' },
-      { text: 'What is a good life?', councilId: 'good-life' },
+      { text: 'Why don’t I do what I know I should?', councilId: 'discipline' },
+      { text: 'What work would I do if no one applauded?', councilId: 'career' },
+      { text: 'What is this failure trying to teach me?', councilId: 'failure' },
+      { text: 'What does it mean to live well?', councilId: 'good-life' },
     ],
   },
 ];

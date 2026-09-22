@@ -8,20 +8,20 @@
    and the period in the wordmark.
    ============================================================ */
 :root {
-  /* brand */
-  --yellow: #FFD100;
-  --yellow-2: #F0C200;        /* pressed */
+  /* brand — the landing page's mustard, not a pure yellow */
+  --yellow: #F6C347;
+  --yellow-2: #E6B237;        /* pressed */
   --yellow-soft: #FFF2B3;     /* highlight marker, chart fill */
   --yellow-ink: #141414;      /* text on yellow */
 
-  /* night room */
-  --night: #0F1013;
-  --night-2: #17181D;
-  --night-3: #21232A;
-  --night-line: rgba(255, 255, 255, 0.10);
-  --night-text: #F5F2EA;
-  --night-mut: #A7A49C;
-  --lamp: #F5B942;            /* the one warm bulb */
+  /* night room — navy and cream, as on the landing page and in the painting */
+  --night: #0D111F;
+  --night-2: #13182A;
+  --night-3: #1B2136;
+  --night-line: rgba(241, 235, 216, 0.12);
+  --night-text: #F1EBD8;
+  --night-mut: #A7A59E;
+  --lamp: #F6C347;            /* the one warm bulb */
 
   /* day room */
   --cream: #F6F3EC;

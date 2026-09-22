@@ -48,5 +48,10 @@ the session scratchpad and is not part of the repo.
 - A quote is never translated in place. Chinese shows the original plus a
   `gloss` marked 译文. Screens read strings through `useT()`, never literals.
 - Portraits must have a Wikimedia licence entry in `public/portraits/CREDITS.md`.
-- Yellow is for the primary action, the active nav item and the wordmark's
-  period. Nothing else.
+- The council room is the two paintings in `public/room/` (project artwork, not
+  Wikimedia). They are pixel-aligned so the beams can cross-fade, and the seat
+  positions in `CouncilScreen.css` are percentages of that frame — new art means
+  re-measuring them. `CouncilStageSet.tsx` is the drawn room used when the
+  painting cannot be fetched; keep it working.
+- Mustard yellow is for the primary action, the active nav item, the council
+  room's ticker and the wordmark's period. Nothing else.

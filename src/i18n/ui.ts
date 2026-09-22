@@ -94,6 +94,9 @@ const en = {
     ph: 'Ask anything…',
     ariaQ: 'Your question',
     ariaAsk: 'Ask the council',
+    seatEmptyAria: 'Empty seat — ask a question and a thinker will take it',
+    owl: 'An owl, ready to seat the council',
+    ticker: ['Now seating', 'Three minds', 'One question', 'A chapter after the show'],
   },
   discussion: {
     title: 'Discussion',
@@ -453,6 +456,9 @@ const zh: Dict = {
     ph: '问点什么…',
     ariaQ: '你的问题',
     ariaAsk: '向议事厅提问',
+    seatEmptyAria: '空位——提一个问题，就会有思想者入座',
+    owl: '一只猫头鹰，准备为议事厅引座',
+    ticker: ['现在入座', '三位智者', '一个问题', '散场后，读一章'],
   },
   discussion: {
     title: '讨论',

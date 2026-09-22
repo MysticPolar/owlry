@@ -36,7 +36,7 @@ the relevant reading → save and return.
 |---|--------|-------|--------------|
 | 1 | Welcome | `#/welcome` | Create an account, sign in, or explore without one |
 | 2 | Select interest | `#/interests` | Six tiles, multi-select, "Skip and ask a question" |
-| 3 | The Council (Screen 0) | `#/council` | Round table, three empty seats, "What's on your mind?", suggested questions. On submit the seats fill and each thinker is introduced with why they fit |
+| 3 | The Council (Screen 0) | `#/council` | The painted room fills the top of the screen: three wing chairs with an empty seat on each, the title over them, a ticker under them. "What's on your mind?", suggested questions. On submit the room lights up, the seats fill and each thinker is introduced with why they fit |
 | 4 | The Discussion (Screen 1) | `#/discussion/:id` | Group chat, two rounds with cross-replies, then the Takeaways and Reading cards. Follow up with everyone or one figure, add context, tap an avatar for background / sources / **Replace** (with undo) |
 | 5 | Summary | `#/summary/:id` | What they agree on, where they differ, what fits your situation, one next step, the three books; Save to Library / Continue |
 | 6 | Book | `#/book/:id?council=…` | Cover, tags, a verbatim epigraph, why it relates to your question, where to start; Start Reading / Read Book Summary / Save |
@@ -93,17 +93,26 @@ src/
   engine/       the simulated council (pure functions over content + session)
   store/        Zustand store persisted to localStorage (the backend seam)
   components/   chrome (status bar, nav, sheet, toast), owl, avatar, cover,
-                council table, chat, council cards, figure sheet, radar
+                council room + drawn stage set, ticker, chat, council cards,
+                figure sheet, radar
   screens/      one file (+ css) per screen
   styles/       fonts (self-hosted), tokens (the poster's palette), base
 public/
   portraits/    Wikimedia Commons portraits + CREDITS.md
+  room/         the two council-room paintings + CREDITS.md
 ```
 
-Design tokens follow the poster: one yellow (`--yellow`) for the primary
-action, the active nav item and the wordmark's period; a night room for the
-welcome and council screens; cream paper with white cards for everything
-after a question is asked. Display type is Archivo (its width axis gives the
+Design tokens follow the poster and the landing page: one mustard
+(`--yellow`) for the primary action, the active nav item, the ticker and the
+wordmark's period; navy and cream for the night screens (welcome, council);
+cream paper with white cards for everything after a question is asked.
+
+The council room itself is a painting — two pixel-aligned frames, the room at
+rest and the same room with beams through the window, cross-faded when the
+council sits down (`public/room/`, credited there). The three seats are
+percentages of that frame, so new art means re-measuring them in
+`CouncilScreen.css`. If the painting cannot be fetched, the room falls back to
+a drawn stage set in the owls' own language (`CouncilStageSet.tsx`). Display type is Archivo (its width axis gives the
 condensed marquee and the wide titles from one file), UI is Inter, the reader
 is Literata, margin notes are Caveat, the wordmark is Rubik.
 

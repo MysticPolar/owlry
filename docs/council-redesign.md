@@ -15,8 +15,8 @@ The complete journey, interactive end to end, with realistic content:
    "Skip and ask a question"). Interests personalise the suggested questions
    and can be changed later from the interests screen; the free-text matcher
    also gives a small bonus to councils in the chosen areas.
-2. **Convening.** On submit the three seats fill one by one and an intro card
-   explains why each perspective fits. The council is chosen by keyword
+2. **Convening.** On submit the room's beams come up, the three seats fill one
+   by one and an intro card explains why each perspective fits. The council is chosen by keyword
    matching against eight scripted councils (`content/councils`); a
    suggestion chip pins its council directly.
 3. **The discussion.** Two rounds: a distinct idea each, then a reply to
@@ -53,6 +53,12 @@ The complete journey, interactive end to end, with realistic content:
   1634) so the highlight in the seeded library matches the reader text.
 - The interest tiles are a single column at phone width (the poster) and two
   columns on tall/wide screens.
+- The council room is a painting rather than the poster's drawn table. The
+  poster's frame 3 was a line drawing; the room now fills the top of the
+  screen as art, with the marquee title over it and a mustard ticker under it,
+  and the drawn version survives as the fallback when the art cannot load.
+  The night palette moved with it: navy and cream, and the landing page's
+  mustard in place of the poster's pure yellow.
 - Social posts quote real lines from the books; the poster's "A calmer mind
   leads to a brighter life." became the poster's own reflection text rather
   than an attributed quote.

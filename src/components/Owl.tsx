@@ -8,7 +8,8 @@ import { useId } from 'react';
    ============================================================ */
 export type OwlColor = 'teal' | 'violet' | 'yellow' | 'orange' | 'green' | 'blue';
 
-const PAL: Record<OwlColor, { body: string; dark: string; light: string; belly: string }> = {
+/* also used by the drawn stage set in CouncilStageSet.tsx, so the chairs match the owls */
+export const OWL_PALETTE: Record<OwlColor, { body: string; dark: string; light: string; belly: string }> = {
   teal: { body: '#2FB8A6', dark: '#1B8B7C', light: '#8CE0D4', belly: '#D9F5EF' },
   violet: { body: '#8A5CE0', dark: '#6440B4', light: '#C0A6F2', belly: '#EDE4FB' },
   yellow: { body: '#FFC93C', dark: '#D99E14', light: '#FFE38F', belly: '#FFF4CF' },
@@ -33,7 +34,7 @@ export function Owl({
   title?: string;
 }) {
   const id = useId().replace(/:/g, '');
-  const p = PAL[color];
+  const p = OWL_PALETTE[color];
   const gid = `owl-g-${id}`;
   // in the peek pose the bottom of the body is hidden by whatever the owl sits behind
   const viewBox = pose === 'peek' ? '0 0 100 62' : '0 0 100 112';

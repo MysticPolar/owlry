@@ -20,7 +20,7 @@
 .marquee {
   font-family: var(--font-display); font-weight: 900; font-stretch: 72%;
   font-size: clamp(3.4rem, 19vw, 4.6rem); line-height: 0.9; letter-spacing: -0.005em; text-transform: uppercase;
-  color: #fff; text-shadow: 0 6px 30px rgba(0, 0, 0, 0.45);
+  color: var(--night-text); text-shadow: 0 6px 30px rgba(0, 0, 0, 0.45);
 }
 @media (max-width: 560px) { .marquee { font-size: clamp(3.4rem, 18.5vw, 5rem); } }
 .welcome-sub { margin-top: 18px; font-size: 1.0625rem; line-height: 1.4; color: var(--night-mut); }

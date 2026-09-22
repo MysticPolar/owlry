@@ -6,15 +6,18 @@ import { figure } from '../content/figures';
 import { suggestionsFor } from '../content/councils';
 import { introsFor } from '../engine/council';
 import { Wordmark } from '../components/Wordmark';
-import { CouncilTable } from '../components/CouncilTable';
+import { CouncilRoom } from '../components/CouncilRoom';
+import { Ticker } from '../components/Ticker';
+import { Owl } from '../components/Owl';
 import { Avatar } from '../components/Avatar';
 import { useT, fmt } from '../i18n/react';
 import './CouncilScreen.css';
 
 /* ============================================================
-   Screen 0 — Life's Council Room. "Ask. Listen. Grow."
-   Three empty seats, one lamp, a question. Once asked, the seats fill and
-   each thinker is introduced with why their perspective fits.
+   Screen 0 — Life's Council Room. The room fills the top of the screen
+   with the title over it and the ticker under it; three empty chairs wait
+   for a question. Once asked, the beams come up, the seats fill, and each
+   thinker is introduced with why their perspective fits.
    ============================================================ */
 export function CouncilScreen() {
   const interests = useStore((s) => s.interests);
@@ -29,6 +32,9 @@ export function CouncilScreen() {
 
   const convening = active && active.stage === 'convening' ? active : null;
   const seats = convening ? convening.seats.map((id) => figure(id)) : [null, null, null];
+
+  // if the painting cannot be fetched, the room is drawn instead
+  const [drawn, setDrawn] = useState(false);
 
   // the intro cards arrive after the seats have filled
   const [showIntros, setShowIntros] = useState(false);
@@ -58,13 +64,14 @@ export function CouncilScreen() {
       submit(text);
     }
   };
+  const focusAsk = () => inputRef.current?.focus();
 
   const suggestions = suggestionsFor(interests);
 
   return (
-    <div className="screen night council">
+    <div className={`screen night council ${drawn ? 'council-flat' : 'council-paint'}`}>
       <div className="council-head top-inset pad">
-        <Wordmark size={24} />
+        <Wordmark size={26} />
         <button
           type="button"
           className="iconbtn"
@@ -79,14 +86,26 @@ export function CouncilScreen() {
         </button>
       </div>
       <div className="screen-scroll council-body nav-space">
-        <div className="pad council-titles">
-          <h1 className="display council-title">{t.council.title}</h1>
-          <p className="muted council-sub">{convening ? fmt(t.council.subAsked, { q: convening.question }) : t.council.sub}</p>
-        </div>
         <div className="council-stage">
-          <CouncilTable seats={seats} />
-          {!convening && <span className="hand council-hand">{t.council.hand}</span>}
+          <CouncilRoom
+            seats={seats}
+            emptyAria={t.council.seatEmptyAria}
+            onEmptyTap={convening ? undefined : focusAsk}
+            drawn={drawn}
+            onArtFail={() => setDrawn(true)}
+          />
+          <div className="council-titles">
+            {!convening && <p className="council-kicker">{t.council.sub}</p>}
+            <h1 className="council-marquee">
+              {t.council.title}
+              <span className="dot">.</span>
+            </h1>
+            {convening && <p className="council-kicker asked">{fmt(t.council.subAsked, { q: convening.question })}</p>}
+          </div>
+          {!convening && <Owl color="teal" pose="peek" size={76} className="council-owl" title={t.council.owl} />}
+          {!convening && drawn && <span className="hand council-hand2">{t.council.hand}</span>}
         </div>
+        <Ticker items={t.council.ticker} />
 
         {convening ? (
           <div className={`pad intros ${showIntros ? 'show' : ''}`}>
@@ -138,7 +157,7 @@ export function CouncilScreen() {
               {suggestions.map((s) => (
                 <li key={s.text}>
                   <button type="button" className="suggestion" onClick={() => submit(s.text, s.councilId)}>
-                    {s.text}
+                    <span className="suggestion-text">{s.text}</span>
                   </button>
                 </li>
               ))}

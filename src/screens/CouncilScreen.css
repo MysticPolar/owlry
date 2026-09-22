@@ -1,27 +1,126 @@
-.council-head { display: flex; align-items: center; justify-content: space-between; }
-.council-titles { text-align: center; margin-top: 2px; }
-.council-title { font-size: 2.1rem; }
-.council-sub { margin-top: 4px; }
+/* ============================================================
+   Screen 0 — the council room. The painting runs full width at the top of
+   the screen; the head, the title and the owl sit over it; the ticker
+   closes it off and the ask sits on night navy underneath.
+   ============================================================ */
+.council .council-head {
+  position: absolute; top: 0; left: 0; right: 0; z-index: 6; pointer-events: none;
+  display: flex; align-items: center; justify-content: space-between;
+  padding-left: 22px; padding-right: 18px;
+}
+.council .council-head > * { pointer-events: auto; }
 
-.council-stage { position: relative; margin-top: 4px; }
-.council-hand { position: absolute; right: 18px; top: 26px; font-size: 1.05rem; transform: rotate(-7deg); max-width: 120px; white-space: normal; text-align: center; line-height: 1.05; }
+.council-stage { position: relative; margin-top: 0; }
 
-/* the table + seats */
-.table-wrap { position: relative; width: 100%; max-width: 360px; margin: 0 auto; aspect-ratio: 360 / 300; }
-.table-svg { width: 100%; height: 100%; display: block; }
+/* the room */
+.council .table-wrap { position: relative; width: 100%; max-width: none; margin: 0; overflow: hidden; background: var(--night); }
+.council-paint .table-wrap { aspect-ratio: 941 / 1020; }
+.council-flat .table-wrap { aspect-ratio: 390 / 380; }
+.room-img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block;
+  -webkit-user-drag: none; user-select: none;
+}
+/* the beams come up when the council sits down */
+.room-img.beams { opacity: 0; transition: opacity 1.8s cubic-bezier(0.4, 0, 0.2, 1) 0.15s; will-change: opacity; }
+.table-wrap.filled .room-img.beams { opacity: 1; }
+.table-wrap.vacant .room-img.beams { transition-duration: 1.1s; transition-delay: 0s; }
+.stage-svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.room-fade {
+  position: absolute; left: 0; right: 0; bottom: -1px; height: 14%;
+  background: linear-gradient(180deg, rgba(13, 17, 31, 0), rgba(13, 17, 31, 0.6) 55%, var(--night));
+}
+.council-flat .room-fade { height: 10%; }
+
+/* the title, over the room */
+.council-titles {
+  position: absolute; left: 0; right: 0; top: 0; z-index: 4; text-align: center; pointer-events: none;
+  margin: 0; padding: calc(var(--sat) + 64px) 20px 0;
+}
+.phone.framed .council-titles { padding-top: 104px; }
+.council-kicker {
+  font-family: var(--font-display); font-weight: 700; font-size: 0.66rem; letter-spacing: 0.22em;
+  text-transform: uppercase; color: rgba(241, 235, 216, 0.82); margin: 0 0 7px;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.8);
+}
+.council-kicker.asked {
+  text-transform: none; letter-spacing: 0.01em; font-size: 0.85rem; font-weight: 600;
+  margin: 8px auto 0; max-width: 330px; line-height: 1.35; color: rgba(241, 235, 216, 0.9);
+}
+.council-marquee {
+  font-family: var(--font-display); font-weight: 900; font-stretch: 72%; font-size: 2.9rem;
+  line-height: 0.95; letter-spacing: -0.005em; text-transform: uppercase; color: var(--night-text);
+  text-shadow: 0 0 30px rgba(241, 235, 216, 0.28), 0 6px 26px rgba(0, 0, 0, 0.55); margin: 0;
+}
+.council-marquee .dot { color: var(--yellow); }
+html[lang='zh-CN'] .council-marquee { font-stretch: 100%; font-size: 2.4rem; letter-spacing: 0.08em; }
+html[lang='zh-CN'] .council-kicker { letter-spacing: 0.2em; }
+
+/* the seats, one per chair — percentages of the painting's frame */
 .seat { position: absolute; width: 0; height: 0; display: grid; place-items: center; }
-.seat-0 { left: 14%; top: 66%; }
-.seat-1 { left: 50%; top: 40%; }
-.seat-2 { left: 86%; top: 66%; }
-.seat-empty { display: block; width: 14px; height: 14px; border-radius: 50%; background: rgba(255, 255, 255, 0.06); box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08); }
+.council .seat > .seat-btn, .council .seat > .seat-slot { transform: translate(-50%, -50%); }
+.council-paint .seat-0 { left: 15.9%; top: 67.6%; }
+.council-paint .seat-1 { left: 48.4%; top: 64.7%; }
+.council-paint .seat-2 { left: 82.9%; top: 67.6%; }
+.council-flat .seat-0 { left: 17.9%; top: 55.2%; }
+.council-flat .seat-1 { left: 50%; top: 48.2%; }
+.council-flat .seat-2 { left: 82.1%; top: 55.2%; }
 .seat.on { animation: seat-in 480ms var(--ease-spring) both; }
+.seat.off { animation: seat-in 0.7s var(--ease-out) both; }
 .seat-btn { display: grid; justify-items: center; gap: 4px; }
-.seat-name { font-size: var(--t-micro); font-weight: 700; color: var(--night-text); background: rgba(16, 17, 19, 0.7); padding: 2px 8px; border-radius: var(--r-pill); white-space: nowrap; }
+.seat-name {
+  font-size: var(--t-micro); font-weight: 700; color: var(--night-text); background: rgba(13, 17, 31, 0.7);
+  padding: 2px 8px; border-radius: var(--r-pill); white-space: nowrap;
+}
 @keyframes seat-in { from { opacity: 0; transform: translateY(14px) scale(0.6); } to { opacity: 1; transform: none; } }
 
+/* an empty seat: a ring with a plus that breathes until it is taken */
+.seat-slot {
+  display: grid; place-items: center; background: none; border: 0; padding: 0; margin: 0; color: inherit;
+  cursor: pointer; -webkit-tap-highlight-color: transparent;
+}
+.slot-svg { width: 44px; height: 44px; overflow: visible; transition: transform 0.12s var(--ease-out); }
+.seat-slot:active .slot-svg { transform: scale(0.94); }
+.slot-halo {
+  fill: rgba(246, 195, 71, 0.18); transform-box: fill-box; transform-origin: center;
+  animation: slot-breathe 3.2s ease-in-out infinite; animation-delay: calc(var(--i, 0) * 0.5s);
+}
+@keyframes slot-breathe {
+  0%, 100% { transform: scale(0.86); opacity: 0.3; }
+  50% { transform: scale(1.14); opacity: 0.85; }
+}
+.slot-disc { fill: rgba(13, 17, 31, 0.72); }
+.slot-ring { fill: none; stroke: var(--yellow); stroke-width: 2.4; }
+.slot-plus { fill: none; stroke: var(--yellow); stroke-width: 2.8; stroke-linecap: round; }
+
+/* the owl usher, and the aside it writes when the room is drawn */
+.council-owl {
+  position: absolute; right: 14px; bottom: -3px; z-index: 5;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.45)); animation: owl-bob 3.4s ease-in-out infinite;
+}
+.council-hand2 {
+  position: absolute; left: 18px; bottom: 16px; z-index: 5; font-size: 1rem; transform: rotate(-6deg);
+  max-width: 132px; white-space: normal; text-align: center; line-height: 1.05;
+}
+
+/* the ticker */
+.ticker {
+  position: relative; z-index: 6; overflow: hidden; background: var(--yellow); color: var(--yellow-ink);
+  height: 30px; display: flex; align-items: center; white-space: nowrap;
+  font-family: var(--font-display); font-weight: 800; font-stretch: 82%; font-size: 0.74rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+}
+.ticker-track { display: flex; width: max-content; animation: ticker 52s linear infinite; }
+.ticker-half { display: inline-flex; }
+.ticker-item { display: inline-flex; align-items: center; padding-left: 20px; }
+.ticker-dot { display: inline-block; width: 4px; height: 4px; border-radius: 50%; background: var(--yellow-ink); margin-left: 20px; opacity: 0.75; }
+@keyframes ticker { to { transform: translateX(-50%); } }
+html[lang='zh-CN'] .ticker { font-stretch: 100%; font-size: 0.8rem; letter-spacing: 0.26em; }
+
 /* the ask */
-.council-ask { margin-top: 2px; }
+.council-ask { margin-top: 14px; }
 .council-prompt { font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; letter-spacing: -0.01em; margin-bottom: 10px; color: var(--night-text); }
+.council .askbar { background: var(--night-2); box-shadow: inset 0 0 0 1px var(--night-line); min-height: 56px; }
+.council .askbar ::placeholder { color: #8F8E88; }
 .suggestions { display: grid; gap: 8px; margin-top: 14px; }
 .suggestion {
   width: 100%; text-align: left; min-height: 44px; padding: 10px 16px; border-radius: var(--r-pill);
@@ -29,6 +128,10 @@
   font-size: var(--t-small); font-weight: 500; transition: background var(--dur);
 }
 .suggestion:active { background: var(--night-3); }
+.suggestion-text { display: block; }
+.council .suggestions { margin-top: 12px; gap: 9px; }
+.council .suggestion { min-height: 46px; padding: 9px 16px; font-size: 13.5px; line-height: 1.3; }
+html[lang='zh-CN'] .council .suggestion { font-size: var(--t-small); }
 
 /* the introductions */
 .intros { display: grid; gap: 10px; opacity: 0; transform: translateY(8px); transition: opacity 300ms var(--ease-out), transform 300ms var(--ease-out); margin-top: 2px; }
@@ -39,3 +142,9 @@
 .intro-label { font-weight: 500; color: var(--night-mut); font-size: var(--t-small); }
 .intro-why { margin-top: 2px; color: var(--night-mut); line-height: 1.4; }
 .micro-note { font-size: var(--t-micro); color: var(--night-mut); line-height: 1.4; margin: 2px 4px 4px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .slot-halo, .seat.off, .ticker-track, .council-owl { animation: none; }
+  .slot-halo { opacity: 0.5; }
+  .room-img.beams { transition: none; }
+}
