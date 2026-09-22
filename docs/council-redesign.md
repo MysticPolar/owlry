@@ -124,7 +124,9 @@ Everything that moves follows one rule: things arrive, they do not appear.
   room for a frame: the discussion screen seats the council as it opens.
 - **The chat.** Every line arrives from just below (a figure, you, the
   typing dots, the cards). A replaced seat's "new" tag pops. Both ask boxes
-  grow with what is typed.
+  grow with what is typed. Once every line has landed, the chat closes with
+  two calls to action: start reading the best-start book, then — last and
+  primary — the full summary.
 - **Reading.** Changing the text size keeps your place in the text, not the
   pixel. Bookmark, save and like icons pop when toggled, never on mount.
 - **Lists and reveals.** The welcome marquee rises a line at a time; interest

@@ -3,7 +3,8 @@ import { IconArrowUp, IconPlus, IconX } from '@tabler/icons-react';
 import { navigate } from '../app/router';
 import { useStore, selectCouncil } from '../store/useStore';
 import { figure } from '../content/figures';
-import { typingDelay } from '../engine/council';
+import { typingDelay, readingFor } from '../engine/council';
+import { book } from '../content/books';
 import { useKeyboardInset } from '../hooks/useKeyboardInset';
 import { useReduceMotion } from '../hooks/useReduceMotion';
 import { useAutoGrow } from '../hooks/useAutoGrow';
@@ -81,6 +82,9 @@ export function DiscussionScreen({ id }: { id: string }) {
   const seats = session.seats.map((fid) => figure(fid));
   const visible = session.messages.slice(0, revealed);
   const nextMsg = revealed < total ? session.messages[revealed] : null;
+  // the chat's two calls to action, once the cards are in and nothing is still typing
+  const settled = revealed >= total && session.messages.some((m) => m.kind === 'reading');
+  const best = settled ? (readingFor(session).find((r) => r.bestStart) ?? readingFor(session)[0]) : undefined;
 
   const submit = () => {
     const v = text.trim();
@@ -169,6 +173,24 @@ export function DiscussionScreen({ id }: { id: string }) {
           <Typing figureId={nextMsg.kind === 'figure' ? nextMsg.figureId : undefined} onSkip={() => reveal(session.id)} />
         )}
         {nextMsg && nextMsg.kind !== 'figure' && nextMsg.kind !== 'system' && <div className="chat-pause" aria-hidden="true" />}
+        {best && (
+          <div className="chat-cta">
+            <p className="caps muted">{t.discussion.ctaKicker}</p>
+            <button type="button" className="btn btn-outline" onClick={() => navigate({ name: 'read', id: best.bookId, council: session.id })}>
+              {fmt(t.discussion.ctaRead, { title: book(best.bookId).title })}
+            </button>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => {
+                revealAll(session.id);
+                navigate({ name: 'summary', id: session.id });
+              }}
+            >
+              {t.discussion.ctaSummary}
+            </button>
+          </div>
+        )}
         <div className="chat-end" />
       </div>
 

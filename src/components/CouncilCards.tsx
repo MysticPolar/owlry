@@ -1,4 +1,4 @@
-import { IconArrowRight, IconStar } from '@tabler/icons-react';
+import { IconStar } from '@tabler/icons-react';
 import type { CouncilSession } from '../store/types';
 import { navigate } from '../app/router';
 import { figure } from '../content/figures';
@@ -53,11 +53,6 @@ export function TakeawaysCard({ session, full = false }: { session: CouncilSessi
         <span className="caps tk-label">{d.cards.next}</span>
         <p>{t.nextStep}</p>
       </div>
-      {!full && (
-        <button type="button" className="council-card-link" onClick={() => navigate({ name: 'summary', id: session.id })}>
-          {d.cards.viewSummary} <IconArrowRight />
-        </button>
-      )}
     </section>
   );
 }
