@@ -52,6 +52,21 @@ deno run -A scripts/turn.ts add reply.txt   # records the mind's reply + POSITIO
 
 See `council/runs/20260922-pmf-gtm-ai-consumer.md` for a complete run produced this way.
 
+## Live mode (any Claude Code session)
+
+The named agents load only when Claude Code starts inside this folder. From anywhere else, `scripts/live.ts` runs
+the same /council flow with general-purpose subagents (each prompt is the agent's body, a blank line, then the task),
+so you can ask a question in chat and watch the cast, the cards, each turn and the summary arrive with their timings:
+
+```bash
+deno run -A scripts/live.ts new "question" --category health --situation "..."
+```
+
+The runner never calls a model. It builds every task from `prompts.ts`, reads each reply and its wall time from the
+subagent's transcript, checks the subagent received exactly the prompt that was built, and prints after each step a
+block to show and the next call to make. The last step writes `council/runs/<id>.md` and rebuilds `index.html`.
+Commands are listed at the top of `scripts/live.ts`.
+
 ## Seeing results
 
 - Harness runs: `deno run --allow-read --allow-write scripts/view_runs.ts`, then open `council/runs/index.html`.
