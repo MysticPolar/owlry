@@ -64,7 +64,9 @@ deno run -A scripts/live.ts new "question" --category health --situation "..."
 
 The runner never calls a model. It builds every task from `prompts.ts`, reads each reply and its wall time from the
 subagent's transcript, checks the subagent received exactly the prompt that was built, and prints after each step a
-block to show and the next call to make. The last step writes `council/runs/<id>.md` and rebuilds `index.html`.
+block to show and the next call to make. The last step prints the run as the reader sees it in the app (tension,
+seats, bubbles without the hidden POSITION tails, the summary), then the harness timings and checks, writes
+`council/runs/<id>.md` and rebuilds `index.html`.
 Commands are listed at the top of `scripts/live.ts`.
 
 ## Seeing results

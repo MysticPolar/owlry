@@ -16,6 +16,7 @@
 //   deno run -A scripts/live.ts summary <agentId>       record the summary; writes council/runs/<id>.md and index.html
 //   deno run -A scripts/live.ts fail "note"             save what exists with a FAILED note
 //   deno run -A scripts/live.ts status | show | prompt  where the run stands | the run file so far | the pending prompts
+//   deno run -A scripts/live.ts reader                  the finished run as the reader sees it in the app (no tails, no timings)
 //
 // Record steps accept --reply <file> in place of <agentId> (no timing or prompt check then), and
 // --run <id> to pick a run other than the current one.
@@ -125,7 +126,7 @@ interface ParsedTurn {
 const USAGE = `usage:
   live.ts new "question" [--category c] [--situation "s"] [--turns 9] [--mind sonnet] [--fast haiku]
   live.ts cast <agentId> | screen <agentId> | forge <slug> <agentId> | turn <agentId> | summary <agentId>
-  live.ts fail "note" | status | show | prompt
+  live.ts fail "note" | status | show | prompt | reader
   (record steps take --reply <file> instead of an agentId; any step takes --run <id>)`;
 
 // ---------------------------------------------------------------------------
@@ -553,30 +554,6 @@ function turnBlock(t: LiveTurn, rec: CallRecord): string {
   }\n\n${t.text}\n\n\`${tailLine(t)}\``;
 }
 
-function summaryBlock(st: State, seconds: number | null): string {
-  const s = st.summary!;
-  return [
-    `**Summary** · ${fmt(seconds)}`,
-    "",
-    `### ${s.title ?? ""}`,
-    "",
-    "**What they agree on**",
-    ...s.agree.map((x) => `- ${x}`),
-    "",
-    "**Where they differ**",
-    ...s.differ.map((x) => `- ${x}`),
-    "",
-    "**What fits your situation**",
-    s.fits ?? "",
-    "",
-    "**One next step**",
-    s.next_step ?? "",
-    "",
-    "**The books behind the conversation**",
-    ...s.books.map((b) => `- *${b.title}* — ${b.author} · ${b.why}`),
-  ].join("\n");
-}
-
 /** One row per call in order, cached cards after the screen; parallel forges count once in the total. */
 function timings(st: State): { rows: [string, string][]; model: number; wall: string | null } {
   const rows: [string, string][] = [];
@@ -724,6 +701,56 @@ function verification(st: State): string[] {
   if (trailing.length) out.push(`Turns ${trailing.join(",")} have text after the POSITION line`);
   for (const n of st.notes) out.push(`Note: ${n}`);
   return out;
+}
+
+/** Mirrors index.ts introFor(): the line under each seat on the council card. */
+function introFor(name: string, books: { title: string; read_free?: string | null }[]): string {
+  const b = books[0];
+  const access = b?.read_free ? "read free" : b ? "get the book" : "";
+  return `${name} · an AI persona inspired by ${name}${b ? ` (${b.title})` : ""}${access ? ` · ${access}` : ""}`;
+}
+
+/** What the reader sees in CouncilRoom.tsx: the tension, the seats, the bubbles (tails hidden), the summary. */
+function readerView(st: State): string {
+  const L: string[] = [`> **You asked:** ${st.question}${st.situation ? `\n> **Your situation:** ${st.situation}` : ""}`, ""];
+  if (st.cast) L.push(`*${st.cast.tension}*`, "");
+  st.castSeats.forEach((cs, i) => {
+    const seat = st.seats[i];
+    const books = seat?.books ?? cs.books ?? [];
+    L.push(`**${seat?.name ?? cs.name}**  `, `${cs.why}  `, `<sub>${introFor(seat?.name ?? cs.name, books)}</sub>`, "");
+  });
+  if (st.turns.length) {
+    L.push("---", "");
+    for (const t of st.turns) L.push(`**${t.name}**`, "", t.text, "");
+  }
+  if (st.summary) {
+    const s = st.summary;
+    L.push(
+      "---",
+      "",
+      `## ${s.title ?? ""}`,
+      "",
+      "### What they agree on",
+      ...s.agree.map((x) => `- ${x}`),
+      "",
+      "### Where they differ",
+      ...s.differ.map((x) => `- ${x}`),
+      "",
+      "### What fits your situation",
+      s.fits ?? "",
+      "",
+      "### One next step",
+      s.next_step ?? "",
+      "",
+      "### The books behind the conversation",
+      ...s.books.map((b) => `- **${b.title}** — ${b.author} · ${b.why}`),
+      "",
+      "---",
+      "",
+      "`Share your thoughts…` **Send**",
+    );
+  }
+  return L.join("\n");
 }
 
 function runMarkdown(st: State): string {
@@ -1063,7 +1090,8 @@ async function cmdSummary(st: State, agentId: string | undefined, flags: Record<
   st.finishedAt = got.ts ?? new Date().toISOString();
   const file = await writeRun(st);
   await save(st);
-  show(`${summaryBlock(st, rec.seconds)}\n\n${latencyTable(st)}\n\n${checksLine(st)}`);
+  show(readerView(st));
+  console.log(`===== HARNESS =====\n**Summary** · ${fmt(rec.seconds)}\n\n${latencyTable(st)}\n\n${checksLine(st)}\n===== END HARNESS =====`);
   console.log(`RUN FILE ${file}`);
 }
 
@@ -1119,6 +1147,9 @@ if (import.meta.main) {
           break;
         case "show":
           console.log(runMarkdown(st));
+          break;
+        case "reader":
+          console.log(readerView(st));
           break;
         case "prompt":
           for (const p of st.pending) {
