@@ -7,53 +7,52 @@
 
    Additive + scoped: the palette lives under --pb-* names (zero
    collision with the legacy rig), and every new class is pb-*.
-   Discover / Library / Profile keep the old rig until their own
-   pass. Five rules: print palette only · flat construction (no
-   gradients/shadows/glows except the glass blur) · editorial type
-   roles · gold hairlines are the structure · ornament only at the
-   stage frame.
+   The house matches the council site: a cool night stage, a single
+   electric lamp (#FFD100) for signal, cream programme paper, and
+   portrait rings for the company. Velvet stays on the curtain.
+   Ornament is the frame — valance, beams, medallions — not the feed.
    ============================================================ */
 :root {
-  /* grounds */
-  --pb-stage:      #1A110D;  /* home ground, house dark */
-  --pb-bezel:      #0D0806;
+  /* grounds — council night, not espresso cafe */
+  --pb-stage:      #101114;
+  --pb-bezel:      #07080A;
 
-  /* paper */
-  --pb-paper:      #FBF3E2;
-  --pb-paper-dim:  #EFE6D0;
-  --pb-paper-line: #D8C6A2;
+  /* paper — the site's cream, airy enough to feel current */
+  --pb-paper:      #F6F3EC;
+  --pb-paper-dim:  #F0ECE3;
+  --pb-paper-line: #E7E2D7;
 
   /* ink (on paper) */
-  --pb-ink:        #241C14;
-  --pb-ink-soft:   #4A3F30;
-  --pb-ink-faint:  #6A5C4A;
-  --pb-ink-mute:   #726149;  /* darkened from #8A7A62 → AA (4.8:1) on paper-dim at 11–12px */
-  --pb-cap-ink:    #2A2018;
+  --pb-ink:        #141414;
+  --pb-ink-soft:   #2E2D2A;
+  --pb-ink-faint:  #6E6A62;
+  --pb-ink-mute:   #5C5852;  /* AA on paper-dim at the micro step */
+  --pb-cap-ink:    #141414;
 
-  /* velvet + brass */
+  /* velvet + the house lamp */
   --pb-error:       #A6342B;  /* destructive text on paper (AA on cream) */
   --pb-velvet:      #8C2431;
   --pb-velvet-deep: #671A24;
-  --pb-brass:       #D9A94F;
-  --pb-brass-rod:   #B08437;
-  --pb-brass-deep:  #8A6A33;
-  --pb-brass-ink:   #241505;
-  --pb-rule-gold:   #8A6A33;
+  --pb-brass:       #FFD100;  /* lamp: fills, rings, the wordmark period */
+  --pb-brass-rod:   #E6BC00;  /* curtain hardware, a step deeper than the bulb */
+  --pb-brass-deep:  #8A6A33;  /* ink-safe gold on cream */
+  --pb-brass-ink:   #141414;
+  --pb-rule-gold:   #C6A15A;
 
   /* cream (on stage) */
-  --pb-cream:       #F5E9D2;
-  --pb-cream-mute:  #B8A88E;
+  --pb-cream:       #F5F2EA;
+  --pb-cream-mute:  #A7A49C;
 
   /* candy (icon glyphs + numbers ONLY, never surfaces) */
   --pb-candy-crown: #F2B93B;  /* level */
   --pb-candy-bolt:  #6FCF3F;  /* XP */
   --pb-candy-drop:  #5BA8F5;  /* ink */
 
-  /* stage-side UI chrome */
-  --pb-chip-bg:  #2A1A12;
-  --pb-track:    #33221A;
-  --pb-tag-line: #4A3728;
-  --pb-tag-ink:  #C4B196;
+  /* stage-side UI chrome — night plates, not brown chips */
+  --pb-chip-bg:  #21232A;
+  --pb-track:    #2A2C33;
+  --pb-tag-line: #3A3D46;
+  --pb-tag-ink:  #C8C4BA;
 
   /* feed feedback */
   --pb-like:      #8A5A4A;
@@ -69,10 +68,12 @@
   --pb-owl-violet-ink: #5C4482;  /* violet text on paper */
   --pb-radar-fill:     rgba(123,94,167,.16);
 
-  /* glass (the one exception) */
-  --pb-glass-bg:   rgba(20,13,10,.74);
-  --pb-glass-line: rgba(217,169,79,.4);
-  --pb-nav-gold:   #E8C270;
+  /* glass (the lobby fixture) */
+  --pb-glass-bg:   rgba(15,16,19,.78);
+  --pb-glass-line: rgba(255,209,0,.42);
+  --pb-nav-gold:   #FFD100;
+  /* programme cards lift once under the lamp — the only shadow on paper */
+  --pb-card-lift:  0 10px 24px -16px rgba(0,0,0,.55);
 }
 
 /* the stage lighting fills the shared chrome (nav gutter) on every Playbill
@@ -96,7 +97,7 @@
 /* Playbill toast — espresso glass pill above the nav; unscoped so it stays
    on-theme even when fired over an overlay (Settings/Auth/Letter) */
 .app .toast {
-  background: rgba(20,13,10,.85); border: 1px solid rgba(217,169,79,.4);
+  background: rgba(15,16,19,.88); border: 1px solid var(--pb-glass-line);
   color: var(--pb-cream); box-shadow: none;
 }
 .app .toast .ti { color: var(--pb-brass); }
@@ -119,7 +120,28 @@
 }
 
 /* ---------- stage head ---------- */
-.pb-head { flex-shrink: 0; position: relative; z-index: 2; }
+.pb-head { flex-shrink: 0; position: relative; z-index: 2; overflow: hidden; }
+.pb-head > :not(.pb-beams) { position: relative; z-index: 1; }
+
+/* follow-spots under the valance — the council beams, on the playbill */
+.pb-beams {
+  position: absolute; left: 0; right: 0; top: 58px; height: 168px;
+  pointer-events: none; z-index: 0;
+}
+.pb-beams span {
+  position: absolute; top: 0; width: 36%; height: 100%;
+  background: linear-gradient(180deg, rgba(255,209,0,.4), rgba(255,209,0,0) 78%);
+  clip-path: polygon(40% 0, 60% 0, 100% 100%, 0 100%);
+  filter: blur(8px);
+}
+.pb-beams span:first-child { left: 10%; transform: rotate(-8deg); transform-origin: top center; }
+.pb-beams span:last-child { right: 10%; transform: rotate(8deg); transform-origin: top center; opacity: .75; }
+.pb-beams::after {
+  content: ""; position: absolute; left: 50%; top: 22px; width: 200px; height: 72px;
+  transform: translateX(-50%);
+  background: radial-gradient(50% 70% at 50% 40%, rgba(255,209,0,.32), transparent 72%);
+}
+.pb-home.collapsed .pb-beams { opacity: 0; transition: opacity .3s ease; }
 .pb-valance { display: block; width: 100%; height: auto; transition: margin-top .35s ease, opacity .3s ease; }
 .pb-hem { display: none; width: 100%; height: auto; }
 
@@ -180,7 +202,7 @@
   color: var(--pb-tag-ink); white-space: nowrap; background: none; cursor: pointer;
   transition: background .2s, color .2s, border-color .2s; touch-action: manipulation;
 }
-.pb-tag[aria-pressed="true"] { background: var(--pb-cream); border-color: var(--pb-cream); color: var(--pb-stage); font-weight: var(--fw-ui-semibold); }
+.pb-tag[aria-pressed="true"] { background: var(--pb-brass); border-color: var(--pb-brass); color: var(--pb-brass-ink); font-weight: var(--fw-ui-semibold); }
 .pb-rule { height: 1px; background: var(--pb-rule-gold); flex-shrink: 0; }
 
 /* collapsed state (M2) — tag row + rule never move */
@@ -204,8 +226,9 @@
 .pb-col.r { padding-top: 26px; }
 
 .pb-card {
-  display: block; width: 100%; background: var(--pb-paper); border-radius: 14px;
-  overflow: hidden; margin-bottom: 12px; transition: transform .18s ease;
+  display: block; width: 100%; background: var(--pb-paper); border-radius: 18px;
+  overflow: hidden; margin-bottom: 12px; box-shadow: var(--pb-card-lift);
+  transition: transform .18s ease;
 }
 .pb-card:active { transform: scale(.97); }
 /* the open action — cover + caption; a plain-looking button, no chrome.
@@ -220,7 +243,7 @@
    — strip the legacy border/shadow so the surface stays print-flat */
 .pb-cover { width: 100%; height: auto; aspect-ratio: 150 / 205; border: 0; border-radius: 4px; box-shadow: none; padding: 11px; font-size: var(--t-micro); }
 /* photos take a warm "printed on cream stock" tone (spine fallbacks stay pure) */
-.pb-cover .cover-img, .pb-cover-xs .cover-img { filter: sepia(.14) saturate(.92) contrast(.97); }
+.pb-cover .cover-img, .pb-cover-xs .cover-img { filter: none; }
 /* matte hairline over the artwork so mismatched real covers read as plates in a
    programme — a flat 1px border via generated content, NOT an inset shadow */
 .pb-cover::after, .pb-cover-xs::after {
@@ -333,7 +356,7 @@
   border-radius: 999px;
   background: var(--pb-glass-bg);
   -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
-  border:1px solid rgba(217,169,79,.3);
+  border:1px solid var(--pb-glass-line);
 }
 .pb-nv {
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
@@ -475,6 +498,15 @@ html[lang="zh-CN"] .pb-nv .lab {
 /* ============================================================
    ASK (Discover) — Scout's desk on the stage
    ============================================================ */
+#screen-discover::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 38%;
+  pointer-events: none; z-index: 0;
+  background:
+    linear-gradient(180deg, rgba(255,209,0,.34), rgba(255,209,0,.08) 42%, transparent 72%),
+    radial-gradient(55% 80% at 50% -8%, rgba(255,209,0,.42), transparent 64%);
+  transition: opacity .35s ease;
+}
+#screen-discover.chatting::before { opacity: .28; }
 #screen-discover {
   --ask-gutter: clamp(18px, 5.6vw, 24px);
   --ask-response-size: var(--t-reading);
@@ -573,7 +605,7 @@ html[lang="zh-CN"] .pb-nv .lab {
    the non-!important accents that layer cleanly on top */
 .calm .msg.owl .who { color: var(--pb-cream-mute); opacity: .72; }
 .calm .msg.owl .it { font-family: inherit; font-style: normal; color: inherit; }
-.calm .msg.owl .bk { color: var(--pb-cream); border-bottom-color: rgba(217,169,79,.66); background: none; }
+.calm .msg.owl .bk { color: var(--pb-cream); border-bottom-color: var(--pb-brass); background: none; }
 .calm .chat-excerpt { border-color: var(--pb-brass); background: none; color: var(--pb-cream); }
 .calm .tw-cur { background: var(--pb-brass); }
 
@@ -676,6 +708,9 @@ html[lang="zh-CN"] .pb-nv .lab {
 #screen-discover.before-ask .disc-head-right .owl.mini {
   grid-column: 2; grid-row: 1; justify-self: start;
   width: 44px; height: 48px; margin: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 28%, rgba(255,209,0,.28), #17181D 72%);
+  box-shadow: 0 0 0 2px var(--pb-stage), 0 0 0 3.5px var(--pb-brass);
 }
 #screen-discover.before-ask .disc-head-right .iconbtn.lite {
   grid-column: 5; grid-row: 1; justify-self: end;
@@ -717,7 +752,7 @@ html[lang="zh-CN"] .pb-nv .lab {
   flex: 0 0 auto; color: var(--pb-brass); font-size: var(--icon-md);
 }
 #screen-discover.before-ask #chiprow.starter .chip:active {
-  background: rgba(217,169,79,.08) !important; color: var(--pb-cream) !important;
+  background: color-mix(in srgb, var(--pb-brass) 12%, transparent) !important; color: var(--pb-cream) !important;
   transform: none !important;
 }
 #screen-discover.before-ask:is(.typing,.drafting) :is(.chip-hint,#chiprow.starter) {
@@ -745,7 +780,7 @@ html[lang="zh-CN"] .pb-nv .lab {
   position: absolute; z-index: 30; transform: translateX(-50%);
   display: flex; align-items: center; gap: 2px; padding: 4px;
   border-radius: 999px; background: rgba(20,13,10,.92);
-  border: 1px solid rgba(217,169,79,.4);
+  border: 1px solid var(--pb-glass-line);
   animation: pbSelIn .16s ease both;
 }
 @keyframes pbSelIn { from { opacity: 0; transform: translateX(-50%) translateY(4px); } to { opacity: 1; transform: translateX(-50%); } }
@@ -755,7 +790,7 @@ html[lang="zh-CN"] .pb-nv .lab {
   color: var(--pb-cream); font: 600 var(--t-micro) var(--font-chrome); letter-spacing: .4px;
   cursor: pointer; white-space: nowrap; touch-action: manipulation;
 }
-.pb-selbar button:active { background: rgba(217,169,79,.16); }
+.pb-selbar button:active { background: color-mix(in srgb, var(--pb-brass) 16%, transparent); }
 .pb-selbar button .ti { font-size: var(--icon-md); color: var(--pb-brass); }
 /* scout rides the Ask button, like peek's owl on the about-sheet CTA */
 .pb-selbar .pb-sel-owl { width: 19px; height: 20px; margin: -4px -1px; filter: none; }
@@ -948,7 +983,12 @@ html[lang="zh-CN"] .pb-nv .lab {
 #screen-profile .pname { color: var(--pb-cream); }
 #screen-profile .psub { color: var(--pb-cream-mute); letter-spacing: 1.5px; }
 /* Mirror joins the identity row in-flow (base .owl.mini is absolute) */
-#screen-profile .ig .owl.mini { position: static; margin-left: auto; width: 44px; height: 48px; flex: 0 0 auto; }
+#screen-profile .ig .owl.mini {
+  position: static; margin-left: auto; width: 48px; height: 52px; flex: 0 0 auto;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 28%, rgba(255,209,0,.28), #17181D 72%);
+  box-shadow: 0 0 0 2px var(--pb-stage), 0 0 0 3.5px var(--pb-brass);
+}
 #screen-profile .bio { color: var(--pb-cream); }
 #screen-profile .bio:empty::before { color: var(--pb-cream-mute); }
 #screen-profile .bio[contenteditable="true"] { outline-color: var(--pb-brass); }
@@ -1012,7 +1052,10 @@ html[lang="zh-CN"] .pb-nv .lab {
 .pb-psheet .prev-auth { color: var(--pb-ink-mute); }
 .pb-psheet .prev-note { color: var(--pb-brass-deep); }
 /* quotes */
-.pb-psheet .qcard { background: none; border: 1px solid var(--pb-paper-line); box-shadow: none; }
+.pb-psheet .qcard {
+  background: var(--pb-paper-dim); border: 0; border-left: 3px solid var(--pb-brass);
+  border-radius: 0 16px 16px 0; box-shadow: none;
+}
 .pb-psheet .q-text { color: var(--pb-cap-ink); }
 .pb-psheet .q-copy { background: var(--pb-paper-dim); border: 1px solid var(--pb-paper-line); }
 .pb-psheet .q-copy.done .ti { color: var(--pb-owl-moss-ink); }
@@ -1165,7 +1208,16 @@ html[lang="zh-CN"] .pb-nv .lab {
 
 /* soon pill + the cast + footer */
 .settings .soon { background: #E9D9A8; color: #5C4715; }
-.settings .cast-name { color: var(--pb-cream); }
+.settings .cast-cell {
+  background: transparent; border: 0; box-shadow: none; border-radius: 18px;
+  padding: 2px 0 8px;
+}
+.settings .cast-cell .owl {
+  width: 52px; height: 56px; border-radius: 50%;
+  background: radial-gradient(circle at 50% 28%, rgba(255,209,0,.3), #17181D 70%);
+  box-shadow: 0 0 0 2px var(--pb-stage), 0 0 0 3.5px var(--pb-brass);
+}
+.settings .cast-name { color: var(--pb-cream); margin-top: 6px; letter-spacing: .14em; }
 .settings .cast-job { color: var(--pb-cream-mute); }
 .settings .cast-sub { color: var(--pb-cream-mute); }
 .settings .owl { filter: none; }
@@ -1250,7 +1302,7 @@ body { overscroll-behavior: none; }
 
 /* --- 2.1 Auth: espresso stage + brass accents (the cream card is on-language) --- */
 .auth { background: linear-gradient(180deg, var(--pb-stage) 0%, #24170F 100%); color: var(--pb-cream); }
-.auth-glow { background: radial-gradient(50% 60% at 50% 40%, rgba(217,169,79,.18) 0%, transparent 70%); }
+.auth-glow { background: radial-gradient(50% 60% at 50% 40%, rgba(255,209,0,.18) 0%, transparent 70%); }
 .auth-close { color: var(--pb-cream-mute); border-color: var(--pb-tag-line); }
 .auth-tag { color: var(--pb-brass); }
 .auth-tabs button.on { background: var(--pb-brass); color: var(--pb-brass-ink); box-shadow: none; }
@@ -1263,8 +1315,8 @@ body { overscroll-behavior: none; }
 /* --- 2.2 MirrorRoom: espresso stage, keep the Mirror's violet, drop the yellows --- */
 .mroom { background: linear-gradient(180deg, var(--pb-stage) 0%, #221610 100%); }
 .mr-cur { background: var(--pb-brass); }
-.mr-dia.goal { border-color: rgba(217,169,79,.6); }
-.mr-dia.goal.on { background: var(--pb-brass); border-color: var(--pb-brass); box-shadow: 0 0 11px rgba(217,169,79,.55); }
+.mr-dia.goal { border-color: color-mix(in srgb, var(--pb-brass) 60%, transparent); }
+.mr-dia.goal.on { background: var(--pb-brass); border-color: var(--pb-brass); box-shadow: 0 0 11px rgba(255,209,0,.4); }
 
 /* --- 2.3 IntroCard: keep the dark glass card + its per-owl accent stripe; just
    drop the yellows on the caret + button (its side borders are already brass-family) --- */

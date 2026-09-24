@@ -101,7 +101,7 @@ export function readerThemeColors(theme: ReaderTheme, dimmer: number): ReaderThe
       ink: '#E8E0D0',
       mute: '#A89880',
       rule: 'rgba(138,106,51,.45)',
-      accent: '#D9A94F',
+      accent: '#FFD100',
     };
   }
   if (theme === 'sepia') {

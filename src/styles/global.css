@@ -11,7 +11,7 @@
 
 :root{
   /* -------- house -------- */
-  --yellow:#FFC017;            /* candle gold — the house light   */
+  --yellow:#FFD100;            /* house lamp — the council bulb    */
   --gold:#775008;              /* contrast-safe text gold on cream  */
   --letter:#FBF4E1;            /* letter paper — never changes     */
   --letter-ink:#241B0E;
@@ -103,19 +103,19 @@
 *{box-sizing:border-box}
 html{
   width:100%;height:var(--app-h);overflow:hidden;
-  background:var(--pb-stage,#1A110D);
+  background:var(--pb-stage,#101114);
   overscroll-behavior:none;
 }
 body{
   width:100%;height:100%;min-height:0;
   margin:0;padding:0;overflow:hidden;overscroll-behavior:none;
-  background:var(--pb-stage,#1A110D);
-  color:#EFE7D2;
+  background:var(--pb-stage,#101114);
+  color:#F5F2EA;
   font-family:var(--font-chrome); -webkit-font-smoothing:antialiased;
 }
 #root{
   width:100%;height:100%;min-height:0;overflow:hidden;
-  background:var(--pb-stage,#1A110D);
+  background:var(--pb-stage,#101114);
 }
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
 /* the display utility. Fraunces at 400 reads thin at poster sizes, and the
@@ -625,8 +625,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
   border-radius:999px;color:var(--mut);font:var(--fw-ui-semibold) var(--t-micro)/1 var(--font-chrome);
   letter-spacing:.08em;white-space:nowrap}
 .owl-state-pill.live{border-color:rgba(43,166,146,.62);color:var(--teal)}
-.owl-state-pill.sign-in{border-color:rgba(217,169,79,.65);color:var(--yellow)}
-.owl-state-pill.ink-dry{border-color:rgba(217,169,79,.48);color:var(--gold)}
+.owl-state-pill.sign-in{border-color:color-mix(in srgb, var(--yellow) 65%, transparent);color:var(--yellow)}
+.owl-state-pill.ink-dry{border-color:color-mix(in srgb, var(--yellow) 48%, transparent);color:var(--gold)}
 .owl-state-pill.fallback{border-color:rgba(216,72,30,.58);color:var(--ember)}
 /* the description under a control label. 2px read as one blob with the label;
    4px lets them separate without breaking the pair. */
@@ -714,8 +714,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
   --violet:#7451CC;--violet-l:#B29AEF;--violet-d:#452B93;
   --moss:#156D44;--moss-l:#5FB183;--moss-d:#0C4A2C;
   --sclera:#FFF9E9;--irisC:#4A2F14;--beakC:#E9A238;--oShadow:rgba(40,26,8,.2);--specs:#2A2013}
-.onboard[data-onbnight]{background:linear-gradient(180deg,#0D111F 0%,#151B31 100%);color:#F2EBD7;
-  --stage:#0D111F;--stage2:#151B31;--surface:#1B2239;--ink:#F2EBD7;--mut:#A9AEC4;--fade:#767C97;
+.onboard[data-onbnight]{background:radial-gradient(55% 42% at 72% 0%, rgba(255,209,0,.16), transparent 62%), #101114;color:#F5F2EA;
+  --stage:#101114;--stage2:#17181D;--surface:#21232A;--ink:#F5F2EA;--mut:#A7A49C;--fade:#8E8B84;
   --line:rgba(255,213,105,.13);--line2:rgba(255,213,105,.26);--ghost:rgba(243,235,215,.05);
   --glowT:0 0 22px rgba(255,192,23,.30);
   --ember:#FF6A38;--ember-l:#FFA57E;--ember-d:#B33A12;
@@ -788,6 +788,11 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline
 .ob-shead{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:6px;margin-bottom:4px}
 .ob-num{font-size:var(--t-display);line-height:1;color:var(--acc)}
 .ob-oname{font-size:var(--t-micro);font-weight:600;letter-spacing:.32em;text-transform:uppercase;color:var(--mut)}
+.ob-perch::before{
+  content:"";position:absolute;left:50%;top:58%;width:min(168px,44vw);height:min(168px,44vw);
+  transform:translate(-50%,-50%);border-radius:50%;z-index:-1;pointer-events:none;
+  background:radial-gradient(circle, rgba(255,209,0,.18), transparent 68%);
+  box-shadow:0 0 0 1.5px rgba(255,209,0,.55)}
 .ob-perch{position:relative;z-index:1;margin:8px 0 2px;
   opacity:0;transform:translateY(46px) rotate(var(--rot,0deg)) scale(.96);
   transition:opacity .65s cubic-bezier(.2,.9,.25,1.05),transform .65s cubic-bezier(.2,.9,.25,1.05)}
@@ -2000,7 +2005,7 @@ button.reader-sync-status:focus-visible{outline-color:var(--reader-accent)}
   font-size:var(--t-micro) !important;font-weight:var(--fw-ui-semibold) !important;letter-spacing:.02em !important;
   color:var(--pb-cream) !important;box-shadow:none !important}
 .calm #chiprow.starter .chip:active{
-  background:rgba(217,169,79,.14) !important;border-color:var(--pb-brass) !important;
+  background:color-mix(in srgb, var(--pb-brass) 14%, transparent) !important;border-color:var(--pb-brass) !important;
   color:var(--pb-cream) !important;transform:translateY(1px) !important}
 
 /* -- phaseh: the shelf rail -- */

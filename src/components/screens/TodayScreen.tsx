@@ -273,6 +273,7 @@ export function TodayScreen() {
       id="screen-today"
     >
       <div className="pb-head">
+        <div className="pb-beams" aria-hidden="true"><span /><span /></div>
         <CurtainValance />
         <CurtainHem />
         <h1 className="pb-marquee" aria-label={t.marqueeAria}>
