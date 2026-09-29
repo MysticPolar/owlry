@@ -12,7 +12,9 @@ mobile-first, fully usable offline with simulated council conversations.
 
 There is no test runner yet; the engine is pure and small enough to check by
 driving the app. A Playwright journey script used during the build lives in
-the session scratchpad and is not part of the repo.
+the session scratchpad and is not part of the repo. The edge functions
+typecheck with `deno check --node-modules-dir=none supabase/functions/<fn>/index.ts`
+(Deno 2; the flag keeps it away from the app's `node_modules`).
 
 ## Where things are
 
@@ -32,8 +34,12 @@ the session scratchpad and is not part of the repo.
   `merge.ts`, or it is dropped on sign-in.
 - Backend seams → `src/lib/` (`supabase.ts` is null without env keys; auth,
   sync, social, the live council all no-op on null). Server side lives in
-  `supabase/migrations/20260915120000_owlry_council.sql` and
+  `supabase/migrations/2026*_owlry_council*.sql` and
   `supabase/functions/council-*`; design notes in `docs/council-backend.md`.
+  `council-chat` also recalls thinkers and books the catalogue lacks from the
+  model (modes `cast` / `figure` / `book`, prompts in
+  `_shared/council/prompts.ts`, cached in `owlry_council_minds`); a recalled
+  quote is `attributed`, never `verbatim`.
 - Screens → `src/screens/*.tsx` with a css file each; shared primitives in
   `src/styles/base.css` and `src/components/`.
 - Motion → `src/App.tsx` renders screens as layers (the old one stays under

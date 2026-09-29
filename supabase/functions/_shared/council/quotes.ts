@@ -7,12 +7,20 @@
 // back is matched against the dossier the client sent. A match is replaced
 // by the canonical text + source; anything else is demoted to plain text
 // (still the figure's paraphrase, just not shown as their words).
+//
+// A dossier quote can itself come from the model (council-chat mode
+// "figure" recalls a thinker's lines from training data). Those are
+// matched the same way — the council may copy them — but the segment that
+// comes out carries `attributed: true`, and the client labels it so. The
+// word "verbatim" stays reserved for the curated catalogue.
 // ============================================================
 import type { WireLine, WireSegment } from './schemas.ts';
 
 export interface DossierQuote {
   text: string;
   source: { work: string; loc?: string; url?: string };
+  /** where the words were checked: the curated catalogue (the default), or recalled by the model and unverified */
+  provenance?: 'curated' | 'model';
 }
 
 export interface Dossier {
@@ -45,7 +53,9 @@ function canonical(seg: WireSegment, quotes: DossierQuote[]): WireSegment {
   const want = normalizeQuote(seg.text);
   const hit = want ? quotes.find((q) => normalizeQuote(q.text) === want) : undefined;
   if (!hit) return { kind: 'text', text: seg.text, source: null };
-  return { kind: 'quote', text: hit.text, source: { work: hit.source.work, loc: hit.source.loc ?? null } };
+  const out: WireSegment = { kind: 'quote', text: hit.text, source: { work: hit.source.work, loc: hit.source.loc ?? null } };
+  if (hit.provenance === 'model') out.attributed = true;
+  return out;
 }
 
 /** apply the rule to every line; drops empty segments and lines for unknown seats */

@@ -154,7 +154,10 @@ additive and namespaced `owlry_council_*` — see `docs/council-backend.md`.
 - **Live council** — `supabase/functions/council-chat` writes the opening and
   every later turn (Gemini, JSON-schema output, the verbatim-quote rule
   enforced server- and client-side). The scripted council is shown first and
-  stands in whenever the live one can't be reached.
+  stands in whenever the live one can't be reached. For a question the
+  catalogue has no council for, the same function casts three real thinkers
+  and recalls their cards and books from the model's own knowledge; a quote
+  recalled that way is shown as *attributed*, never as *verbatim*.
 - **Accounts + sync** — `council-signup` creates the account; `src/lib/sync/`
   merges what you did as a guest with your cloud state (compare-and-swap on a
   revision, as `owlry_progress` does) and keeps every council in its own row.

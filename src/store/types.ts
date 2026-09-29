@@ -10,6 +10,8 @@ export interface Segment {
   text: string;
   /** for quotes: where the words come from (verbatim) */
   source?: { work: string; loc?: string; url?: string };
+  /** the words were recalled by the model (a thinker outside the curated catalogue) and are not verified: shown as "attributed", never as "verbatim" */
+  attributed?: boolean;
 }
 
 /** which scripted line a figure message was generated from — used to regenerate a seat after "Replace" */

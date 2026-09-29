@@ -21,9 +21,11 @@ name: Deploy Supabase backend
 # two functions: council-chat (JWT-gated) and council-signup (public — it
 # creates the account). They deploy with everything else; to deploy them
 # from the Council branch before it lands on the live branch, run this
-# workflow from the Actions tab with that branch selected. Optional secret
-# COUNCIL_INVITE_REQUIRED=false (Edge Functions → Secrets) opens sign-up
-# without an invite code.
+# workflow from the Actions tab with that branch selected. Optional secrets
+# (Edge Functions → Secrets): COUNCIL_INVITE_REQUIRED=false opens sign-up
+# without an invite code; COUNCIL_DAILY_CAP caps council-chat's Gemini calls
+# per day across all readers (default 1500); COUNCIL_RECALL_MODEL points the
+# thinker/book recall modes at another Gemini model.
 
 on:
   workflow_dispatch:
@@ -41,6 +43,7 @@ on:
       - "supabase/migrations/20260728170100_owlry_migrate_balance.sql"
       - "supabase/migrations/20260730120000_owlry_36_rows.sql"
       - "supabase/migrations/20260915120000_owlry_council.sql"
+      - "supabase/migrations/20260929120000_owlry_council_minds.sql"
 
 concurrency:
   group: supabase-backend
@@ -73,6 +76,7 @@ jobs:
             supabase/migrations/20260728170100_owlry_migrate_balance.sql
             supabase/migrations/20260730120000_owlry_36_rows.sql
             supabase/migrations/20260915120000_owlry_council.sql
+            supabase/migrations/20260929120000_owlry_council_minds.sql
           )
           for migration in "${migrations[@]}"; do
             payload="$RUNNER_TEMP/$(basename "$migration").json"
@@ -101,6 +105,13 @@ jobs:
               --header "apikey: $SUPABASE_ANON_KEY" \
               --header "Authorization: Bearer $SUPABASE_ANON_KEY"
           done
+          # the minds cache has no user_id column
+          curl \
+            --fail-with-body \
+            --request GET \
+            --url "https://$SUPABASE_PROJECT_REF.supabase.co/rest/v1/owlry_council_minds?select=key&limit=0" \
+            --header "apikey: $SUPABASE_ANON_KEY" \
+            --header "Authorization: Bearer $SUPABASE_ANON_KEY"
       - name: Verify progress and upload schema
         env:
           SUPABASE_ANON_KEY: ${{ vars.VITE_SUPABASE_ANON_KEY }}

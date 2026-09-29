@@ -8,6 +8,9 @@ import { useT, fmt } from '../i18n/react';
 /* ============================================================
    Chat rendering. Verbatim quotes get a distinct block with a source
    link; everything else is the figure's paraphrase and looks like chat.
+   A quote the live council recalled for a thinker outside the curated
+   catalogue keeps the block but is tagged "attributed" — the word
+   "verbatim" is reserved for lines the catalogue has checked.
    ============================================================ */
 export function SegmentsView({ segments, figureId }: { segments: Segment[]; figureId?: string }) {
   const t = useT();
@@ -38,7 +41,7 @@ export function SegmentsView({ segments, figureId }: { segments: Segment[]; figu
                     {s.source.loc ? `, ${s.source.loc}` : ''}
                   </>
                 )}
-                <span className="msg-source-tag">{t.common.verbatim}</span>
+                <span className="msg-source-tag">{s.attributed ? t.common.attributed : t.common.verbatim}</span>
               </span>
             )}
           </blockquote>
