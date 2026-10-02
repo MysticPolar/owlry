@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IconBookmark, IconBookmarkFilled, IconShare, IconExternalLink } from '@tabler/icons-react';
 import { navigate } from '../app/router';
-import { useStore, selectCouncil } from '../store/useStore';
+import { useStore, selectCouncil, selectMindUnavailable } from '../store/useStore';
 import { maybeBook } from '../content/books';
 import { figure } from '../content/figures';
 import { readingFor } from '../engine/council';
@@ -9,7 +9,7 @@ import { TopBar, Sheet } from '../components/chrome';
 import { Cover } from '../components/Cover';
 import { Owl } from '../components/Owl';
 import { useBump } from '../hooks/useBump';
-import { useT, fmt } from '../i18n/react';
+import { useT, useLang, fmt } from '../i18n/react';
 import './BookScreen.css';
 
 /* ============================================================
@@ -24,6 +24,17 @@ export function BookScreen({ id, councilId }: { id: string; councilId?: string }
   const toggleSaved = useStore((s) => s.toggleSaved);
   const showToast = useStore((s) => s.showToast);
   const progress = useStore((s) => (b ? s.progress[b.id] : undefined));
+  // a recalled book's card lands in the store's `minds`, not in a session: subscribing is what turns the arriving note into the card
+  useStore((s) => s.minds);
+  const ensureBook = useStore((s) => s.ensureBook);
+  const unavailable = useStore(selectMindUnavailable('book', id));
+  const recalled = !!b?.recalled;
+  // the card is asked for here, when the page is reached — and again in a new language, where the other language's card
+  // stands in meanwhile; ensureBook returns at once when the card for this language is already here
+  const lang = useLang();
+  useEffect(() => {
+    if (recalled) void ensureBook(id);
+  }, [recalled, id, lang, ensureBook]);
   const [summaryOpen, setSummaryOpen] = useState(false);
   const [saveBump, bumpSave] = useBump();
   const t = useT();
@@ -78,7 +89,12 @@ export function BookScreen({ id, councilId }: { id: string; councilId?: string }
         <div className="book-hero">
           <Cover book={b} width={136} className="book-cover" />
           <h1 className="title book-title">{b.title}</h1>
-          <p className="book-author">{b.authorName}</p>
+          <p className="book-author">
+            {b.authorName}
+            {/* a recalled book has no curated cover to date it; the year the cast gave stays on the line once the card lands */}
+            {b.recalled && b.year !== 0 && ` · ${b.year < 0 ? fmt(t.common.bc, { year: -b.year }) : b.year}`}
+          </p>
+          {b.pending && <p className="book-arriving">{unavailable ? t.book.unavailable : t.book.arriving}</p>}
           <div className="book-tags">
             {b.tags.map((tg) => (
               <span key={tg} className="tag">
@@ -103,7 +119,8 @@ export function BookScreen({ id, councilId }: { id: string; councilId?: string }
                   <IconExternalLink />
                 </a>
               )}
-              <span className="msg-source-tag">{t.common.verbatim}</span>
+              {/* a recalled book's epigraph is the model's memory of it: attributed, never verbatim */}
+              <span className="msg-source-tag">{b.recalled ? t.common.attributed : t.common.verbatim}</span>
             </footer>
           </blockquote>
         )}
@@ -116,6 +133,8 @@ export function BookScreen({ id, councilId }: { id: string; councilId?: string }
           </section>
         )}
 
+        {/* a recalled card may name no section to start from: then there is no start card, and the reader opens on the guide itself */}
+        {!b.pending && b.start.label && (
         <section className="card book-start">
           <span className="caps muted">{t.book.startHere}</span>
           <p className="book-start-title">
@@ -126,16 +145,23 @@ export function BookScreen({ id, councilId }: { id: string; councilId?: string }
             <p className="small book-progress">{progress.status === 'completed' ? t.book.completed : fmt(t.book.pctRead, { pct: Math.round(progress.pct * 100) })}</p>
           )}
         </section>
+        )}
 
-        <p className="book-blurb">{b.blurb}</p>
+        {b.blurb && <p className="book-blurb">{b.blurb}</p>}
       </div>
       <div className="book-actions pad">
-        <button type="button" className="btn btn-primary" onClick={startReading}>
-          {progress && progress.pct > 0 && progress.status !== 'completed' ? t.book.continueReading : t.book.startReading}
-        </button>
-        <button type="button" className="btn btn-outline" onClick={() => setSummaryOpen(true)}>
-          {t.book.readSummary}
-        </button>
+        {/* nothing to read or summarise until the card is here; saving and sharing work on the title alone.
+            On a recalled book the two buttons land after the page, once the card does, so they get an entrance */}
+        {!b.pending && (
+          <button type="button" className={`btn btn-primary ${b.recalled ? 'book-landed' : ''}`} onClick={startReading}>
+            {progress && progress.pct > 0 && progress.status !== 'completed' ? t.book.continueReading : t.book.startReading}
+          </button>
+        )}
+        {!b.pending && (
+          <button type="button" className={`btn btn-outline ${b.recalled ? 'book-landed' : ''}`} onClick={() => setSummaryOpen(true)}>
+            {t.book.readSummary}
+          </button>
+        )}
         <button type="button" className="linkbtn book-save" onClick={onSave}>
           {isSaved ? t.book.savedTick : t.book.saveLib}
         </button>
@@ -151,7 +177,10 @@ export function BookScreen({ id, councilId }: { id: string; councilId?: string }
         <div className="book-summary">
           <span className="caps muted">{t.book.bookSummary}</span>
           <h2 className="title">{b.title}</h2>
-          <p className="small muted">{b.authorName} · {b.year < 0 ? fmt(t.common.bc, { year: -b.year }) : b.year}</p>
+          <p className="small muted">
+            {b.authorName}
+            {b.year !== 0 && ` · ${b.year < 0 ? fmt(t.common.bc, { year: -b.year }) : b.year}`}
+          </p>
           <p className="book-summary-gist">{b.summary.gist}</p>
           <span className="caps muted">{t.book.mainIdeas}</span>
           <ol className="book-ideas">
@@ -160,7 +189,7 @@ export function BookScreen({ id, councilId }: { id: string; councilId?: string }
             ))}
           </ol>
           <button type="button" className="btn btn-primary" onClick={startReading}>
-            {fmt(t.book.read, { label: b.start.label })}
+            {b.start.label ? fmt(t.book.read, { label: b.start.label }) : t.book.startReading}
           </button>
         </div>
       </Sheet>

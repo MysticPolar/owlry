@@ -163,11 +163,13 @@ export function suggestionsFor(areas: Area[]): { text: string; councilId: string
 }
 
 /**
- * Pick the council for a free-text question: keyword hits weighted by
- * specificity, a small bonus for the reader's chosen areas, and a sensible
- * default when nothing matches.
+ * Score the scripted councils against a free-text question: keyword hits
+ * weighted by specificity, a small bonus for the reader's chosen areas. The
+ * script is the best hit, or the sensible default with a score of 0 — which
+ * is how the store knows no script covers the question and the live
+ * council should cast one.
  */
-export function matchCouncil(question: string, areas: Area[]): CouncilScript {
+export function matchScore(question: string, areas: Area[]): { script: CouncilScript; score: number } {
   const qn = question.toLowerCase();
   let best: CouncilScript | null = null;
   let bestScore = 0;
@@ -183,7 +185,12 @@ export function matchCouncil(question: string, areas: Area[]): CouncilScript {
       bestScore = score;
     }
   }
-  if (best) return best;
+  if (best) return { script: best, score: bestScore };
   const first = areas[0];
-  return first ? council(areaMeta(first).councilId) : GOOD_LIFE;
+  return { script: first ? council(areaMeta(first).councilId) : GOOD_LIFE, score: 0 };
+}
+
+/** the council for a free-text question — the best keyword match, else the default for the reader's first area */
+export function matchCouncil(question: string, areas: Area[]): CouncilScript {
+  return matchScore(question, areas).script;
 }

@@ -25,6 +25,8 @@ export function SummaryScreen({ id }: { id: string }) {
   const showToast = useStore((s) => s.showToast);
   const d = useT();
   const [saveBump, bumpSave] = useBump();
+  // a recalled book's card lands in `minds`, not in the session: subscribing fills in its "Start with" line when it does
+  useStore((s) => s.minds);
 
   if (!session) {
     return (
@@ -137,7 +139,8 @@ export function SummaryScreen({ id }: { id: string }) {
             const b = book(r.bookId);
             return (
               <li key={r.bookId}>
-                <b>{b.title}</b> — {r.why} <span className="muted">{fmt(d.summary.startWith, { label: b.start.label, title: b.start.title })}</span>
+                <b>{b.title}</b> — {r.why}{' '}
+                {b.start.label && <span className="muted">{fmt(d.summary.startWith, { label: b.start.label, title: b.start.title })}</span>}
               </li>
             );
           })}

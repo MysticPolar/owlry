@@ -1,10 +1,12 @@
+import { useEffect } from 'react';
 import { IconExternalLink, IconMessage, IconSwitchHorizontal } from '@tabler/icons-react';
 import type { CouncilSession } from '../store/types';
+import { useStore, selectMindUnavailable } from '../store/useStore';
 import { figure } from '../content/figures';
 import { candidatesFor } from '../engine/council';
 import { Avatar } from './Avatar';
 import { Sheet } from './chrome';
-import { useT, fmt } from '../i18n/react';
+import { useT, useLang, fmt } from '../i18n/react';
 
 /* ============================================================
    Tap an avatar: who this is, the works their voice is drawn from, and
@@ -24,9 +26,19 @@ export function FigureSheet({
   onReplace: (seat: number) => void;
 }) {
   const t = useT();
+  const lang = useLang();
+  const ensureAlternates = useStore((s) => s.ensureAlternates);
   const f = figureId ? figure(figureId) : null;
   const seat = f ? session.seats.indexOf(f.id) : -1;
   const next = seat >= 0 ? candidatesFor(session, seat)[0] : undefined;
+  // a placeholder whose card was asked for and could not be had: the note says so instead of promising one
+  const unavailable = useStore(selectMindUnavailable('figure', f?.id ?? ''));
+  // a cast council has no alternates until the live council is asked for them, once, when a card is first opened; the Replace
+  // button arrives with the answer (and stays away if there is none). The alternates' own cards are asked for here too, lazily
+  const onCast = !!figureId && !!session.cast;
+  useEffect(() => {
+    if (onCast) void ensureAlternates(session.id);
+  }, [onCast, session.id, lang, ensureAlternates]);
   return (
     <Sheet open={!!f} onClose={onClose} label={f ? fmt(t.figure.about, { name: f.name }) : t.figure.aboutPlain}>
       {f && (
@@ -39,9 +51,15 @@ export function FigureSheet({
               <span className="tag fig-label">{f.label}</span>
             </div>
           </div>
-          <p className="fig-bio">{f.bio}</p>
+          {/* distinct keys, so the bio that replaces the note mounts afresh and gets its own entrance */}
+          {f.pending ? (
+            <p key="arriving" className="fig-bio fig-arriving">{unavailable ? t.figure.unavailable : t.figure.arriving}</p>
+          ) : (
+            <p key="bio" className={`fig-bio ${f.recalled ? 'fig-bio-landed' : ''}`}>{f.bio}</p>
+          )}
           <div className="fig-works">
             <span className="caps muted">{t.figure.sources}</span>
+            {f.works.length > 0 && (
             <ul>
               {f.works.map((w) => (
                 <li key={w.title}>
@@ -57,17 +75,20 @@ export function FigureSheet({
                 </li>
               ))}
             </ul>
+            )}
             <p className="micro muted">
               {t.figure.note}
               {f.portrait && t.figure.portrait}
             </p>
+            {f.recalled && !f.pending && <p className="micro muted fig-recalled">{t.figure.recalled}</p>}
           </div>
           <div className="fig-actions">
             <button type="button" className="btn btn-dark" onClick={() => onAsk(f.id)}>
               <IconMessage /> {fmt(t.figure.ask, { name: f.short })}
             </button>
             {next && (
-              <button type="button" className="btn btn-outline" onClick={() => onReplace(seat)}>
+              // on a cast session the button lands after the sheet, so it needs an entrance of its own
+              <button type="button" className={`btn btn-outline ${session.cast ? 'fig-replace' : ''}`} onClick={() => onReplace(seat)}>
                 <IconSwitchHorizontal /> {fmt(t.figure.replace, { name: figure(next).name })}
               </button>
             )}

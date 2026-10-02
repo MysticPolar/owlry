@@ -230,19 +230,14 @@ unchanged.
 - ~~The live council is English-only on the client.~~ The client now sends the
   reader's language (`lang` in `CloudState`, chosen in Settings) with every
   call.
-- **Recalled minds are not wired into the store yet.** The seams exist
-  (`liveCast`, `liveFigure`, `liveBook` in `src/lib/councilClient.ts`) and the
-  chat already labels an attributed quote, but a council still starts from a
-  scripted match and every seat must be a curated figure. The next step:
-  a `minds` slice in the store (recalled figures and books by id, per
-  language, persisted and named in `src/lib/sync/types.ts` + `merge.ts`, with
-  a `version` bump); `figure()` / `maybeBook()` falling back to it; a session
-  created from a cast (no script: intros, both rounds and the cards come from
-  the live opening, `generic` slots and the recalled `voice` lines stand in
-  when it fails); Replace candidates from a second `cast` with `avoid`; the
-  seam sending a recalled seat as a dossier with `provenance: "model"`
-  (`dossierOf` in `_shared/council/minds.ts` is the shape); the library and
-  the reader showing a recalled book's guide as `kind: "guide"`.
+- **Recalled minds are wired in** (`docs/council-orchestration.md`): a typed
+  question no script covers is cast live, the recalled cards sit behind
+  `figure()` / `book()` through the registry in `src/content/minds.ts`, and the
+  chat, the figure sheet and the book page label them. Still open there: the
+  cards are device-local (re-asked from the server cache on another device,
+  lazily, as screens are reached); a cast's title stays in the language it was
+  asked in; the `known` list sent to `cast` is capped at forty names by the
+  function, so the catalogue's order decides who is offered.
 - After a Replace, only the opening (two rounds + cards) is regenerated live;
   later follow-ups fall back to the script for the new seat.
 - Comments on posts are a count in the UI and nothing else yet.

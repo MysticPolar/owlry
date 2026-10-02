@@ -98,6 +98,7 @@ const en = {
     seatEmptyAria: 'Empty seat — ask a question and a thinker will take it',
     owl: 'An owl, ready to seat the council',
     ticker: ['Now seating', 'Three minds', 'One question', 'A chapter after the show'],
+    casting: 'Seating the council…',
   },
   discussion: {
     title: 'Discussion',
@@ -178,6 +179,9 @@ const en = {
     ask: 'Ask {name} directly',
     replace: 'Replace with {name}',
     seatAria: '{name}, {label}',
+    recalled: 'Recalled by the model from its reading of this thinker, not from our checked catalogue — its quotations are marked “attributed”, not verbatim.',
+    arriving: 'Their card is on its way — a moment.',
+    unavailable: 'The live council could not write their card; they speak in paraphrase here.',
   },
   book: {
     title: 'Book',
@@ -204,6 +208,23 @@ const en = {
     mainIdeas: 'Main ideas',
     read: 'Read {label}',
     coverAria: '{title} by {author}',
+    arriving: 'The book’s card is on its way — its summary and reading guide will appear here.',
+    guideNote: 'An Owlry reading guide to this section — not the book’s text. Open your copy alongside it.',
+    unavailable: 'The live council could not write this book’s card; the title stands on its own.',
+  },
+  /** the council the model cast for a question no script covers: what the synthesised script says until the live council writes it */
+  cast: {
+    bookWhy: 'The work {short}’s seat speaks from.',
+    commonGround: 'The live council writes this council’s summary; until it answers, begin with the book marked best start.',
+    fits: 'These three were seated for your question in particular; what fits your situation is what each said to it above.',
+    nextStep: 'Open the book marked best start and read the section it points to.',
+    /** a recalled thinker's lines for unscripted moments while their card is still on its way */
+    voice: {
+      followUp: ['You ask "{q}". Let me answer from what I actually wrote rather than from a slogan: take the idea, apply it to your case, and see what it changes.'],
+      context: ['Given that {ctx}, my answer narrows rather than changes — the same idea, held closer to your situation.'],
+      passage: ['"{passage}" — from {book}. Read it once more, slowly; the argument is in the second half of the sentence.'],
+      direct: ['You ask me directly, so I will be plain: "{q}" is a question my work answers only in part, and I will tell you which part.'],
+    },
   },
   reader: {
     title: 'Reader',
@@ -222,6 +243,7 @@ const en = {
     backToCouncil: 'Back to the council',
     guide: 'Reading guide · ',
     end: 'End of section',
+    noGuide: 'The card came without a reading guide for this section; its summary is on the book page.',
     findFull: 'Find the full book',
     highlight: 'Highlight',
     toCouncil: 'To council',
@@ -239,6 +261,8 @@ const en = {
     askQ: 'Ask a question',
     fromCouncils: 'From your councils',
     startWithFor: 'Start with {label} · for “{q}”',
+    /** a recalled book whose card has not named a section yet */
+    forQuestion: 'For “{q}”',
     search: 'Search',
     searchPh: 'Search your library',
     filter: 'Filter',
@@ -459,6 +483,7 @@ const zh: Dict = {
     seatEmptyAria: '空位——提一个问题，就会有思想者入座',
     owl: '一只猫头鹰，准备为议事厅引座',
     ticker: ['现在入座', '三位智者', '一个问题', '散场后，读一章'],
+    casting: '正在为议事厅引座…',
   },
   discussion: {
     title: '讨论',
@@ -539,6 +564,9 @@ const zh: Dict = {
     ask: '直接问 {name}',
     replace: '换成 {name}',
     seatAria: '{name}，{label}',
+    recalled: '这张名片由模型凭其对这位思想者的阅读回忆而成，不在我们核实过的目录中——其引文标注为「据传」，而非原文。',
+    arriving: '名片正在路上——稍等片刻。',
+    unavailable: '议事厅写不出这张名片；在这里，这位只以转述发言。',
   },
   book: {
     title: '书',
@@ -565,6 +593,21 @@ const zh: Dict = {
     mainIdeas: '核心观点',
     read: '阅读{label}',
     coverAria: '《{title}》，{author} 著',
+    arriving: '这本书的名片正在路上——摘要与阅读指南会出现在这里。',
+    guideNote: '本节为 Owlry 阅读指南——并非书的正文。请对照你手中的书阅读。',
+    unavailable: '议事厅写不出这本书的名片；这里只有书名。',
+  },
+  cast: {
+    bookWhy: '{short}的席位所依据的著作。',
+    commonGround: '这次议事的结论由议事厅实时写成；在它回答之前，先从标为最佳起点的那本书开始。',
+    fits: '这三位是专为你的问题入座的；对你的处境最合适的，就是上面各自对它说的话。',
+    nextStep: '打开标为最佳起点的那本书，读它所指向的那一节。',
+    voice: {
+      followUp: ['你问「{q}」。让我从我真正写过的东西出发来回答，而不是从口号出发：拿起那个想法，放到你的处境里，看它改变了什么。'],
+      context: ['既然{ctx}，我的回答不是改变，而是收窄——同一个想法，贴着你的处境再说一遍。'],
+      passage: ['「{passage}」——出自{book}。再慢慢读一遍；论证藏在句子的后半段。'],
+      direct: ['你直接问我，那我就直说：「{q}」这个问题，我的著作只回答了一部分，我会告诉你是哪一部分。'],
+    },
   },
   reader: {
     title: '阅读',
@@ -583,6 +626,7 @@ const zh: Dict = {
     backToCouncil: '回到议事厅',
     guide: '阅读指南 · ',
     end: '本节完',
+    noGuide: '这张名片没有附带本节的阅读指南；摘要在书的页面上。',
     findFull: '查找全书',
     highlight: '划线',
     toCouncil: '带去议事厅',
@@ -600,6 +644,7 @@ const zh: Dict = {
     askQ: '提一个问题',
     fromCouncils: '来自你的议事',
     startWithFor: '从{label}开始 · 针对「{q}」',
+    forQuestion: '针对「{q}」',
     search: '搜索',
     searchPh: '搜索你的书房',
     filter: '筛选',

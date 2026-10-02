@@ -28,6 +28,8 @@ export function LibraryScreen() {
   const highlights = useStore((s) => s.highlights);
   const bookmarks = useStore((s) => s.bookmarks);
   const councils = useStore(selectCouncils);
+  // recalled books resolve through the registry; their cards land in `minds`, so the shelf follows that too
+  useStore((s) => s.minds);
   const [tab, setTab] = useState<Tab>('all');
   const [cat, setCat] = useState<Category | 'All'>('All');
   const [searchOpen, setSearchOpen] = useState(false);
@@ -103,7 +105,10 @@ export function LibraryScreen() {
             <div className="grow">
               <span className="caps muted">{t.library.continueReading}</span>
               <div className="continue-title">{current.title}</div>
-              <div className="small muted">{current.authorName} · {current.text.heading}</div>
+              <div className="small muted">
+                {current.authorName}
+                {current.text.heading && ` · ${current.text.heading}`}
+              </div>
               <span className="progress-track">
                 <span style={{ width: `${currentPct}%` }} />
               </span>
@@ -161,7 +166,7 @@ export function LibraryScreen() {
                       <Cover book={b} width={40} />
                       <span className="bookrow-text">
                         <span className="bookrow-title">{b.title}</span>
-                        <span className="bookrow-sub">{fmt(t.library.startWithFor, { label: b.start.label, q: r.question })}</span>
+                        <span className="bookrow-sub">{b.start.label ? fmt(t.library.startWithFor, { label: b.start.label, q: r.question }) : fmt(t.library.forQuestion, { q: r.question })}</span>
                       </span>
                       <IconChevronRight className="bookrow-chev" />
                     </button>

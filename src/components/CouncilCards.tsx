@@ -1,12 +1,14 @@
+import { useEffect } from 'react';
 import { IconStar } from '@tabler/icons-react';
 import type { CouncilSession } from '../store/types';
 import { navigate } from '../app/router';
+import { useStore } from '../store/useStore';
 import { figure } from '../content/figures';
 import { book } from '../content/books';
 import { takeawaysFor, readingFor } from '../engine/council';
 import { Avatar } from './Avatar';
 import { Cover } from './Cover';
-import { useT, fmt } from '../i18n/react';
+import { useT, useLang, fmt } from '../i18n/react';
 
 /* ============================================================
    Card 1 — Your Council's Takeaways · Card 2 — Reading for Your Question
@@ -60,6 +62,16 @@ export function TakeawaysCard({ session, full = false }: { session: CouncilSessi
 export function ReadingCard({ session, full = false }: { session: CouncilSession; full?: boolean }) {
   const recs = readingFor(session);
   const d = useT();
+  // a recalled book's card lands in `minds`, not in the session: this is what fills in its "Start with" line
+  useStore((s) => s.minds);
+  // and it is asked for here, when the card is reached — not when the session was cast — in the language the card reads in
+  // (ensureBook returns at once when that language's card is already here)
+  const ensureBook = useStore((s) => s.ensureBook);
+  const lang = useLang();
+  const recalledIds = recs.filter((r) => book(r.bookId).recalled).map((r) => r.bookId).join(' ');
+  useEffect(() => {
+    for (const id of recalledIds.split(' ')) if (id) void ensureBook(id);
+  }, [recalledIds, lang, ensureBook]);
   return (
     <section className={`card council-card reading ${full ? 'full' : ''}`} aria-label={d.cards.readingAria}>
       {!full && <h3 className="council-card-title">{d.cards.readingTitle}</h3>}
@@ -81,9 +93,11 @@ export function ReadingCard({ session, full = false }: { session: CouncilSession
                     </span>
                   )}
                   <span className="rec-why">{r.why}</span>
-                  <span className="rec-start">
-                    {d.cards.startWith} <b>{b.start.label}</b> — {b.start.title}
-                  </span>
+                  {b.start.label && (
+                    <span className="rec-start">
+                      {d.cards.startWith} <b>{b.start.label}</b> — {b.start.title}
+                    </span>
+                  )}
                 </span>
               </button>
             </li>

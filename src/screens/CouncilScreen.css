@@ -56,6 +56,13 @@
   text-shadow: 0 0 30px rgba(241, 235, 216, 0.28), 0 6px 26px rgba(0, 0, 0, 0.55); margin: 0;
 }
 .council-marquee .dot { color: var(--yellow); }
+/* the live council is seating a question no script covers: a quiet line under the question, in cream, never mustard */
+.council-casting {
+  margin: 10px auto 0; font-size: var(--t-small); font-weight: 500; letter-spacing: 0.02em;
+  color: rgba(241, 235, 216, 0.72); text-shadow: 0 1px 8px rgba(0, 0, 0, 0.8);
+  animation: fade-up 420ms var(--ease-out) both; animation-delay: 320ms;
+}
+.council-wait { min-height: 120px; }
 html[lang='zh-CN'] .council-marquee { font-stretch: 100%; font-size: 2.4rem; letter-spacing: 0.08em; }
 html[lang='zh-CN'] .council-kicker { letter-spacing: 0.2em; }
 

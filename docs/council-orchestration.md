@@ -232,3 +232,30 @@ the guide exactly as a curated guide, with the dictionary note.
    screen: the scripted default, a placeholder card, an "arriving" note, the
    synthesised script.
 4. `npm run typecheck` and `npm run build` pass.
+
+## 10. As built (2 October 2026)
+
+Where the implementation departed from the sections above, on purpose:
+
+- The persist `version` stays at 1: the `minds` slice is additive and the
+  default merge fills it from the seed, while a bump would make the build
+  before it drop the whole blob (persist has no migrate there).
+- While casting, the ask box and the suggestions are hidden under the ticker;
+  the head's refresh button (`cancelCasting`) is the way out, and a newer ask
+  abandons a late cast by itself. The cast itself is capped at 20 s, the cards
+  at 12 s, and a page that is unloading never seats the scripted fallback.
+- Cards are fetched lazily, not eagerly: the active session's seats when it is
+  on screen, an alternate's card when a sheet opens, a book's card when the
+  reading card, the book page or the reader is reached — so a sync pull or a
+  language switch never bursts the hourly quota. At most three recall calls
+  are in flight at once.
+- A thinker or book the model does not know (`404`) is remembered in
+  `minds.unavailable` for a day; the sheet and the book page say so instead of
+  promising a card.
+- A cast seat with no book title speaks without a book: no placeholder, no
+  reading entry.
+- The Replace recast is tried once per session; a failed or empty one leaves
+  the button away.
+- The smoke journey that proves all of this against a mocked `council-chat`
+  lives in the session scratchpad (`pw/orchestration.mjs`), as the other
+  Playwright scripts do.

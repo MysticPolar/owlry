@@ -91,6 +91,8 @@ function applySessions(cloud: CouncilSession[]) {
   } finally {
     applying = false;
   }
+  // a cast session from another device names its thinkers and books; the cards themselves are re-asked for (server cache hits, mostly)
+  useStore.getState().ensureMindsFor(cloud);
 }
 
 /* ---------- push ---------- */
@@ -141,6 +143,9 @@ async function pushNow(): Promise<void> {
 
 /* ---------- attach / detach ---------- */
 
+/* the keys of the store that travel in CloudState. `minds` (the recalled cards) is deliberately not one of them: the
+   server keeps every card in owlry_council_minds, so another device simply re-asks and hits the cache at no quota —
+   a session carries the ids (its `cast`), and ensureMindsFor fills them in. `casting` is transient and never leaves the tab. */
 const STATE_KEYS: (keyof StoreState)[] = ['prefsAt', 'user', 'interests', 'onboarded', 'textSize', 'lang', 'saved', 'progress', 'bookmarks', 'highlights', 'lastRead', 'liked', 'savedPosts', 'following'];
 
 function watchStore() {

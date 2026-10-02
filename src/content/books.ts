@@ -3,6 +3,7 @@ import { BOOKS_1 } from './books-1';
 import { BOOKS_2 } from './books-2';
 import { isZh } from '../i18n';
 import { BOOKS_ZH } from './zh/books';
+import { mindBook } from './minds';
 
 export const BOOKS: Book[] = [...BOOKS_1, ...BOOKS_2];
 const BY_ID = new Map(BOOKS.map((b) => [b.id, b]));
@@ -30,15 +31,25 @@ function localized(b: Book): Book {
   return out;
 }
 
+/** true for a book of the curated catalogue (a recalled one lives in the minds registry) */
+export const isCuratedBook = (id: string): boolean => BY_ID.has(id);
+
 export function book(id: string): Book {
   const b = BY_ID.get(id);
-  if (!b) throw new Error(`unknown book: ${id}`);
+  if (!b) {
+    // not ours: a card the model recalled, or the placeholder a cast left while it is on its way
+    const m = mindBook(id);
+    if (!m) throw new Error(`unknown book: ${id}`);
+    return m;
+  }
   return isZh() ? localized(b) : b;
 }
 
 export function maybeBook(id: string | undefined): Book | undefined {
-  const b = id ? BY_ID.get(id) : undefined;
-  return b && isZh() ? localized(b) : b;
+  if (!id) return undefined;
+  const b = BY_ID.get(id);
+  if (!b) return mindBook(id);
+  return isZh() ? localized(b) : b;
 }
 
 export const CATEGORIES: Category[] = [

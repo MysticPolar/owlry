@@ -8,6 +8,8 @@ import type { Figure } from './types';
 import { PORTRAITS } from './portraits';
 import { isZh } from '../i18n';
 import { FIGURES_ZH } from './zh/figures';
+import { mindFigure, registerFigureColors } from './minds';
+import { slug } from '../lib/minds';
 
 const OL = (isbn: string) => `https://openlibrary.org/isbn/${isbn}`;
 
@@ -1132,6 +1134,25 @@ const RAW: Omit<Figure, 'portrait'>[] = [
 export const FIGURES: Figure[] = RAW.map((f) => ({ ...f, portrait: PORTRAITS[f.id] }));
 const BY_ID = new Map(FIGURES.map((f) => [f.id, f]));
 
+/** the curated names in English — what the live cast is told it may seat, and asked to write back exactly.
+   council-chat keeps the first forty of them, so the catalogue's order decides who is offered; a thinker past the
+   cap is still resolved to their curated entry by `curatedFigureId` when the model names them on its own. */
+export const CURATED_FIGURE_NAMES: string[] = RAW.map((f) => f.name);
+
+/** the English entry, whatever the interface language; undefined for a recalled id */
+export const curatedFigure = (id: string): Figure | undefined => BY_ID.get(id);
+
+/* a cast seat resolved to the catalogue: by id, or by the slug of either name against the slug of each curated name,
+   so a thinker whose curated id is not the plain slug of their name still keeps their verified quotes */
+const BY_SLUG = new Map(FIGURES.map((f) => [slug(f.name), f.id]));
+export function curatedFigureId(seat: { id: string; name: string; canonicalName: string }): string | undefined {
+  if (BY_ID.has(seat.id)) return seat.id;
+  return BY_SLUG.get(slug(seat.canonicalName)) ?? BY_SLUG.get(slug(seat.name));
+}
+
+// a recalled avatar is painted from the same palette as the curated ones
+registerFigureColors(FIGURES.map((f) => f.color));
+
 /* the Chinese rendering of a figure: the override's words over the English source, built once per figure */
 const ZH_CACHE = new Map<string, Figure>();
 function localized(f: Figure): Figure {
@@ -1157,6 +1178,11 @@ function localized(f: Figure): Figure {
 
 export function figure(id: string): Figure {
   const f = BY_ID.get(id);
-  if (!f) throw new Error(`unknown figure: ${id}`);
+  if (!f) {
+    // not ours: a card the model recalled, or the placeholder a cast left while it is on its way
+    const m = mindFigure(id);
+    if (!m) throw new Error(`unknown figure: ${id}`);
+    return m;
+  }
   return isZh() ? localized(f) : f;
 }

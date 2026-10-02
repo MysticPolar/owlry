@@ -11,6 +11,10 @@
 .book-cover { margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 18px 34px rgba(0, 0, 0, 0.22); border-radius: 8px; }
 .book-title { font-size: 1.5rem; }
 .book-author { color: var(--mut); font-size: var(--t-small); }
+/* a recalled book before its card: the note takes the summary's place, arriving like the rest of the hero */
+.book-arriving { max-width: 300px; margin-top: 6px; font-size: var(--t-small); line-height: 1.5; color: var(--mut); font-style: italic; }
+/* and the two actions, which mount when the card lands */
+.book-landed { animation: fade-up var(--dur) var(--ease-out) both; }
 .book-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 6px; }
 .book-quote { margin: 20px 0 0; padding: 0 6px; text-align: center; }
 .book-quote p { font-family: var(--font-read); font-size: 1.0625rem; line-height: 1.55; color: var(--ink-2); font-style: italic; }

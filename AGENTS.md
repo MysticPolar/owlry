@@ -39,7 +39,11 @@ typecheck with `deno check --node-modules-dir=none supabase/functions/<fn>/index
   `council-chat` also recalls thinkers and books the catalogue lacks from the
   model (modes `cast` / `figure` / `book`, prompts in
   `_shared/council/prompts.ts`, cached in `owlry_council_minds`); a recalled
-  quote is `attributed`, never `verbatim`.
+  quote is `attributed`, never `verbatim`. On the client those cards sit in
+  the registry `src/content/minds.ts` behind `figure()` / `book()`, the store
+  holds them in its `minds` slice (device-local, not synced), and a cast
+  session carries its `cast` so the engine can synthesise its script —
+  `docs/council-orchestration.md` is the map.
 - Screens → `src/screens/*.tsx` with a css file each; shared primitives in
   `src/styles/base.css` and `src/components/`.
 - Motion → `src/App.tsx` renders screens as layers (the old one stays under

@@ -48,9 +48,11 @@ export interface OpenResult {
 
 function dossiers(session: CouncilSession) {
   const recs = readingFor(session);
-  return session.seats.map((id, i) => {
+  return session.seats.map((id) => {
     const f = figure(id);
-    const b = maybeBook(recs[i]?.bookId);
+    // a recalled seat's book may itself be recalled: `book` falls back to the registry's card or placeholder, so the title is always
+    // known — and a seat the cast gave no book has no rec at all, so the rec is found by thinker, not by seat
+    const b = maybeBook(recs.find((r) => r.figureId === id)?.bookId);
     return {
       id: f.id,
       name: f.name,
@@ -59,7 +61,8 @@ function dossiers(session: CouncilSession) {
       label: f.label,
       bio: f.bio,
       works: f.works.map((w) => ({ title: w.title, year: w.year })),
-      quotes: f.quotes.map((q) => ({ text: q.text, source: { work: q.source.work, loc: q.source.loc } })),
+      // a recalled thinker's quotes are the model's recollection: the function may copy them, but tags them "attributed"
+      quotes: f.quotes.map((q) => ({ text: q.text, source: { work: q.source.work, loc: q.source.loc }, ...(f.recalled ? { provenance: 'model' as const } : {}) })),
       bookId: b?.id ?? '',
       bookTitle: b?.title ?? '',
     };
@@ -81,7 +84,8 @@ function normalizeQuote(s: string): string {
 
 function toSegments(line: WireLine, figureId: string): Segment[] | null {
   if (!Array.isArray(line.segments)) return null;
-  const quotes = figure(figureId).quotes;
+  const f = figure(figureId);
+  const quotes = f.quotes;
   const out: Segment[] = [];
   for (const s of line.segments) {
     if (!s || typeof s.text !== 'string' || !s.text.trim()) continue;
@@ -89,7 +93,9 @@ function toSegments(line: WireLine, figureId: string): Segment[] | null {
     if (s.kind === 'quote') {
       const hit = quotes.find((q) => normalizeQuote(q.text) === normalizeQuote(text));
       if (hit) {
-        out.push({ kind: 'quote', text: hit.text, source: hit.source, ...(s.attributed ? { attributed: true } : {}) });
+        // a recalled thinker has no verified quotes at all: whatever matched is "attributed", whether or not the server said so
+        const attributed = !!s.attributed || !!f.recalled;
+        out.push({ kind: 'quote', text: hit.text, source: hit.source, ...(attributed ? { attributed: true } : {}) });
         continue;
       }
     }
@@ -231,10 +237,16 @@ export async function liveTurn(
 /* ---------- minds from the model: cast, figure, book ----------
    The three recall modes of council-chat, for a question the scripted
    catalogue has no council for. They return cards, not lines: the store
-   decides what to do with a thinker who is not in src/content (that
-   wiring is the next step — see docs/council-backend.md). A card's quotes
-   are the model's recollection and carry provenance "model"; when they
-   reach the chat they render as "attributed", never as "verbatim". */
+   (castCouncil, ensureFigure, ensureBook in src/store/useStore.ts) seats
+   the cast and registers the cards in the minds registry behind
+   `figure()` / `book()`, so no screen learns where a thinker came from
+   — see docs/council-orchestration.md. A card's quotes are the model's
+   recollection and carry provenance "model"; when they reach the chat
+   they render as "attributed", never as "verbatim".
+
+   The language is handed in by the caller, never read here after an
+   await: the store keys a card by the language it asked in, and the
+   reader may switch while the request is out. */
 
 export interface MindSeat {
   /** the id the seat would have — equal to a curated figure's id when the model seated one of ours */
@@ -402,10 +414,10 @@ function isUnknown(error: unknown): boolean {
 }
 
 /** three real thinkers for a question, one book each — `known` are the names of our curated figures, `avoid` seats already heard */
-export async function liveCast(question: string, area: string, opts: { known?: string[]; avoid?: string[] } = {}): Promise<MindCast | null> {
+export async function liveCast(question: string, area: string, opts: { known?: string[]; avoid?: string[] } = {}, lang: Lang = getActiveLang()): Promise<MindCast | null> {
   if (!(await liveCouncilReady())) return null;
   try {
-    const data = (await invoke({ mode: 'cast', question, area, known: opts.known ?? [], avoid: opts.avoid ?? [], lang: getActiveLang() })) as { title?: unknown; seats?: unknown };
+    const data = (await invoke({ mode: 'cast', question, area, known: opts.known ?? [], avoid: opts.avoid ?? [], lang })) as { title?: unknown; seats?: unknown };
     const seats = (Array.isArray(data.seats) ? data.seats : []).map(mindSeat).filter((s): s is MindSeat => s !== null);
     if (seats.length !== 3) throw new Error('council-chat contract: cast needs three seats');
     lastFallback = null;
@@ -417,32 +429,37 @@ export async function liveCast(question: string, area: string, opts: { known?: s
   }
 }
 
-/** a thinker's card from the model's knowledge; null when unknown or unreachable. `hint` disambiguates (a cast seat's role) */
-export async function liveFigure(name: string, hint = ''): Promise<MindFigure | null> {
+/** the model does not know this thinker or book — an answer, not a failure, so the caller stops asking */
+export type Unknown = 'unknown';
+
+/** a thinker's card from the model's knowledge; 'unknown' when it has none, null when unreachable. `hint` disambiguates (a cast seat's role) */
+export async function liveFigure(name: string, hint = '', lang: Lang = getActiveLang()): Promise<MindFigure | Unknown | null> {
   if (!(await liveCouncilReady())) return null;
   try {
-    const data = (await invoke({ mode: 'figure', name, hint, lang: getActiveLang() })) as { figure?: unknown };
+    const data = (await invoke({ mode: 'figure', name, hint, lang })) as { figure?: unknown };
     const figure = mindFigure(data.figure);
     lastFallback = null;
     return figure;
   } catch (err) {
-    if (!isUnknown(err)) lastFallback = reasonFor(err);
     devWarn('[council] figure recall failed:', err);
+    if (isUnknown(err)) return 'unknown';
+    lastFallback = reasonFor(err);
     return null;
   }
 }
 
-/** a book's card and reading guide from the model's knowledge; null when unknown or unreachable */
-export async function liveBook(title: string, author: string, hint = ''): Promise<MindBook | null> {
+/** a book's card and reading guide from the model's knowledge; 'unknown' when it has none, null when unreachable */
+export async function liveBook(title: string, author: string, hint = '', lang: Lang = getActiveLang()): Promise<MindBook | Unknown | null> {
   if (!(await liveCouncilReady())) return null;
   try {
-    const data = (await invoke({ mode: 'book', title, author, hint, lang: getActiveLang() })) as { book?: unknown };
+    const data = (await invoke({ mode: 'book', title, author, hint, lang })) as { book?: unknown };
     const book = mindBook(data.book);
     lastFallback = null;
     return book;
   } catch (err) {
-    if (!isUnknown(err)) lastFallback = reasonFor(err);
     devWarn('[council] book recall failed:', err);
+    if (isUnknown(err)) return 'unknown';
+    lastFallback = reasonFor(err);
     return null;
   }
 }

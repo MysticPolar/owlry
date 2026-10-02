@@ -27,6 +27,9 @@ export function CouncilScreen() {
   const activeId = useStore((s) => s.activeCouncilId);
   const active = useStore(selectCouncil(activeId));
   const setActive = useStore((s) => s.setActiveCouncil);
+  // a question no script covers, while the live council seats it: the seats keep breathing, the kicker shows the question
+  const casting = useStore((s) => s.casting);
+  const cancelCasting = useStore((s) => s.cancelCasting);
   const [text, setText] = useState('');
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const reduce = useReduceMotion();
@@ -35,6 +38,8 @@ export function CouncilScreen() {
 
   const convening = active && active.stage === 'convening' ? active : null;
   const seats = convening ? convening.seats.map((id) => figure(id)) : [null, null, null];
+  // the room is answering a question: a council is seated, or one is being seated
+  const asked = convening?.question ?? casting?.question ?? null;
 
   // if the painting cannot be fetched, the room is drawn instead
   const [drawn, setDrawn] = useState(false);
@@ -87,6 +92,7 @@ export function CouncilScreen() {
           aria-label={convening ? t.council.askElse : t.council.startOver}
           onClick={() => {
             setActive(null);
+            cancelCasting();
             setText('');
             inputRef.current?.focus();
           }}
@@ -99,20 +105,25 @@ export function CouncilScreen() {
           <CouncilRoom
             seats={seats}
             emptyAria={t.council.seatEmptyAria}
-            onEmptyTap={convening ? undefined : focusAsk}
+            onEmptyTap={asked ? undefined : focusAsk}
             drawn={drawn}
             onArtFail={() => setDrawn(true)}
           />
           <div className="council-titles">
-            {!convening && <p className="council-kicker">{t.council.sub}</p>}
+            {!asked && <p className="council-kicker">{t.council.sub}</p>}
             <h1 className="council-marquee">
               {t.council.title}
               <span className="dot">.</span>
             </h1>
-            {convening && <p className="council-kicker asked">{fmt(t.council.subAsked, { q: convening.question })}</p>}
+            {asked && <p className="council-kicker asked">{fmt(t.council.subAsked, { q: asked })}</p>}
+            {casting && !convening && (
+              <p className="council-casting" role="status">
+                {t.council.casting}
+              </p>
+            )}
           </div>
           {!convening && <Owl color="teal" pose="peek" size={76} className="council-owl" title={t.council.owl} />}
-          {!convening && drawn && <span className="hand council-hand2">{t.council.hand}</span>}
+          {!asked && drawn && <span className="hand council-hand2">{t.council.hand}</span>}
         </div>
         <Ticker items={t.council.ticker} />
 
@@ -144,6 +155,9 @@ export function CouncilScreen() {
               {t.council.join}
             </button>
           </div>
+        ) : casting ? (
+          // the ask has been taken; nothing to do but watch the seats fill (the head's button starts over)
+          <div className="pad council-wait" aria-hidden="true" />
         ) : (
           <div className="pad council-ask">
             <p className="council-prompt">{t.council.prompt}</p>

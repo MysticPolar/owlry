@@ -26,6 +26,8 @@
 .reader-heading { font-family: var(--font-read); font-weight: 600; font-size: 1.6rem; letter-spacing: -0.01em; line-height: 1.2; }
 .reader-provenance { margin-top: 8px; font-size: var(--t-micro); color: var(--mut); line-height: 1.4; }
 .reader-provenance.guide { color: #8A5A00; background: #FFF6D6; padding: 8px 10px; border-radius: 8px; }
+/* a recalled guide that has not landed yet */
+.reader-arriving { margin-top: 24px; font-family: var(--font-read); font-style: italic; color: var(--mut); line-height: 1.5; animation: fade-up var(--dur) var(--ease-out) both; }
 .reader-text { margin-top: 20px; font-family: var(--font-read); color: #1F1D1A; display: grid; gap: 1.1em; }
 .reader-text p { font-size: 1.0625rem; line-height: 1.72; font-variation-settings: 'opsz' 14; hanging-punctuation: first; text-wrap: pretty; }
 .size-S .reader-text p { font-size: 0.9375rem; line-height: 1.68; }

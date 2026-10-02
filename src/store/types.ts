@@ -66,6 +66,34 @@ export interface Replacement {
   ts: number;
   /** the live words the replacement discarded, so Undo can put them back without another call */
   restore?: { live?: LiveOverrides; lines: Record<string, Segment[]> };
+  /** on a cast session: the seat that left, so Undo can seat them again */
+  castSeat?: CastSeat;
+}
+
+/** one seat of a council the model cast for a question the scripts do not cover (council-chat mode `cast`) */
+export interface CastSeat {
+  /** a curated figure's id when the model seated one of ours, else the server's slug of the name */
+  id: string;
+  name: string;
+  canonicalName: string;
+  short: string;
+  label: string;
+  role: string;
+  /** intro card: why this perspective fits the question */
+  why: string;
+  /** round one, in the thinker's voice */
+  stance: string;
+  /** the curated book, or `${keyOf(title)}--${figureId}` for one the catalogue lacks */
+  bookId: string;
+  bookTitle: string;
+  bookYear: string;
+}
+
+export interface CastInfo {
+  title: string;
+  seats: [CastSeat, CastSeat, CastSeat];
+  /** a later cast with `avoid` = the seats; any alternate can take any seat */
+  alternates: CastSeat[];
 }
 
 export interface CouncilSession {
@@ -90,6 +118,8 @@ export interface CouncilSession {
   live?: LiveOverrides;
   /** message ids still waiting for the live council's words — playback pauses on them (never persisted to the cloud) */
   pending?: string[];
+  /** set when the model cast the seats (scriptId 'cast'): the engine synthesises the script from it */
+  cast?: CastInfo;
 }
 
 export interface Progress {

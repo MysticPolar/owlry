@@ -15,7 +15,7 @@ import { FigureMessage, UserMessage, SystemMessage, Typing } from '../components
 import { TakeawaysCard, ReadingCard } from '../components/CouncilCards';
 import { FigureSheet } from '../components/FigureSheet';
 import { Owl } from '../components/Owl';
-import { useT, fmt } from '../i18n/react';
+import { useT, useLang, fmt } from '../i18n/react';
 import './DiscussionScreen.css';
 
 /* ============================================================
@@ -33,6 +33,7 @@ export function DiscussionScreen({ id }: { id: string }) {
   const replaceSeat = useStore((s) => s.replaceSeat);
   const undoReplace = useStore((s) => s.undoReplace);
   const showToast = useStore((s) => s.showToast);
+  const ensureSeats = useStore((s) => s.ensureSeats);
   const reduceMotion = useReduceMotion();
   const kb = useKeyboardInset();
   const t = useT();
@@ -49,6 +50,11 @@ export function DiscussionScreen({ id }: { id: string }) {
   useEffect(() => {
     if (session?.stage === 'convening') join(session.id);
   }, [session?.id, session?.stage, join]);
+  // a cast session's seats get their cards now that they are on screen (and again in a new language)
+  const lang = useLang();
+  useEffect(() => {
+    if (session?.cast) ensureSeats(session.id);
+  }, [session?.id, session?.cast, lang, ensureSeats]);
 
   // playback: reveal the next message after a short "typing" pause
   const revealed = session?.revealed ?? 0;
@@ -211,7 +217,8 @@ export function DiscussionScreen({ id }: { id: string }) {
         {best && (
           <div className="chat-cta">
             <p className="caps muted">{t.discussion.ctaKicker}</p>
-            <button type="button" className="btn btn-outline" onClick={() => navigate({ name: 'read', id: best.bookId, council: session.id })}>
+            {/* a recalled book still on its way has no text to read yet: its page shows the arriving note instead of an empty reader */}
+            <button type="button" className="btn btn-outline" onClick={() => navigate({ name: book(best.bookId).pending ? 'book' : 'read', id: best.bookId, council: session.id })}>
               {fmt(t.discussion.ctaRead, { title: book(best.bookId).title })}
             </button>
             <button

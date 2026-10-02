@@ -54,6 +54,10 @@ export interface Figure {
     passage: string[];
     direct: string[];
   };
+  /** the card was recalled by the model (council-chat mode `figure`), not written for the catalogue: its quotes render as "attributed" */
+  recalled?: boolean;
+  /** a placeholder built from a cast seat while the card is still on its way: no bio, no quotes, dictionary voice */
+  pending?: boolean;
 }
 
 export interface ReadingText {
@@ -82,6 +86,10 @@ export interface Book {
   /** the recommended place to begin */
   start: { label: string; title: string; why: string };
   text: ReadingText;
+  /** the card was recalled by the model (council-chat mode `book`): the guide is its reading, the epigraph "attributed" */
+  recalled?: boolean;
+  /** a placeholder from a cast seat — title, author and year only — until the card lands */
+  pending?: boolean;
 }
 
 /* ---------- scripted councils ---------- */

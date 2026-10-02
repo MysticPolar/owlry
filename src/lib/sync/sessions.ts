@@ -4,10 +4,11 @@
    A session is edited on one device at a time, so per-session last-write-
    wins (by the client's updatedAt) is enough; `revealed` takes the max so a
    discussion never "un-plays". The transient `pending` list never leaves
-   the device.
+   the device. A cast session's `cast` travels in the payload, so another
+   device can register its placeholders and re-ask for the cards.
    ============================================================ */
 import { supabase } from '../supabase';
-import type { CouncilSession } from '../../store/types';
+import type { CastInfo, CastSeat, CouncilSession } from '../../store/types';
 
 const TABLE = 'owlry_council_sessions';
 const AREAS = ['health', 'career', 'investing', 'relationships', 'literature', 'other'];
@@ -35,6 +36,7 @@ function toRow(s: CouncilSession, uid: string) {
     followUps: rest.followUps,
     revealed: rest.revealed,
     live: rest.live ?? null,
+    cast: rest.cast ?? null,
     createdAt: rest.createdAt,
     updatedAt: rest.updatedAt,
   };
@@ -53,8 +55,40 @@ function toRow(s: CouncilSession, uid: string) {
   };
 }
 
+const isObj = (v: unknown): v is Record<string, unknown> => !!v && typeof v === 'object' && !Array.isArray(v);
+const str = (v: unknown): string => (typeof v === 'string' ? v : '');
+
+function castSeatOf(v: unknown): CastSeat | null {
+  if (!isObj(v) || !str(v.id) || !str(v.name)) return null;
+  return {
+    id: str(v.id),
+    name: str(v.name),
+    canonicalName: str(v.canonicalName) || str(v.name),
+    short: str(v.short) || str(v.name),
+    label: str(v.label),
+    role: str(v.role),
+    why: str(v.why),
+    stance: str(v.stance),
+    bookId: str(v.bookId),
+    bookTitle: str(v.bookTitle),
+    bookYear: str(v.bookYear),
+  };
+}
+
+/** a cast from another device's payload, or nothing — a session without one simply reads as scripted */
+function castOf(v: unknown): CastInfo | undefined {
+  if (!isObj(v)) return undefined;
+  const seats = (Array.isArray(v.seats) ? v.seats : []).map(castSeatOf).filter((s): s is CastSeat => s !== null);
+  if (seats.length !== 3) return undefined;
+  const alternates = (Array.isArray(v.alternates) ? v.alternates : []).map(castSeatOf).filter((s): s is CastSeat => s !== null);
+  return { title: str(v.title), seats: seats as CastInfo['seats'], alternates };
+}
+
 function fromRow(r: Row): CouncilSession | null {
   const p = r.payload ?? {};
+  const cast = castOf(p.cast);
+  // a cast session is only readable with its cast: there is no script of that name to fall back on
+  if (r.script_id === 'cast' && !cast) return null;
   const seats = Array.isArray(r.seats) ? r.seats.filter((x): x is string => typeof x === 'string') : [];
   if (seats.length !== 3 || !Array.isArray(p.messages)) return null;
   const stage = ['convening', 'introduced', 'live', 'summarized'].includes(r.stage) ? (r.stage as CouncilSession['stage']) : 'summarized';
@@ -76,6 +110,7 @@ function fromRow(r: Row): CouncilSession | null {
     saved: !!r.saved,
     ...(r.source === 'live' ? { source: 'live' as const } : {}),
     ...(p.live && typeof p.live === 'object' ? { live: p.live as CouncilSession['live'] } : {}),
+    ...(cast ? { cast } : {}),
   };
 }
 

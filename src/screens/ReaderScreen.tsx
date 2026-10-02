@@ -8,7 +8,7 @@ import type { TextSize } from '../store/types';
 import { TopBar } from '../components/chrome';
 import { usePresence } from '../hooks/usePresence';
 import { useBump } from '../hooks/useBump';
-import { useT, fmt } from '../i18n/react';
+import { useT, useLang, fmt } from '../i18n/react';
 import './ReaderScreen.css';
 
 /* ============================================================
@@ -31,6 +31,15 @@ export function ReaderScreen({ id, councilId }: { id: string; councilId?: string
   const addHighlight = useStore((s) => s.addHighlight);
   const bringPassage = useStore((s) => s.bringPassage);
   const showToast = useStore((s) => s.showToast);
+  // a recalled book's guide lands in `minds`, not in a session: subscribing is what replaces the arriving note with the text
+  useStore((s) => s.minds);
+  const ensureBook = useStore((s) => s.ensureBook);
+  const recalled = !!b?.recalled;
+  // asked for when the reader is reached, in the language it reads in; the other language's guide stands in until then
+  const lang = useLang();
+  useEffect(() => {
+    if (recalled) void ensureBook(id);
+  }, [recalled, id, lang, ensureBook]);
   const t = useT();
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -63,7 +72,8 @@ export function ReaderScreen({ id, councilId }: { id: string; councilId?: string
     pctRef.current = p;
     setPos(el.scrollTop);
     setPct(p);
-    if (saveTimer.current) return;
+    // an empty page is not reading: a book still waiting for its card records no progress (it would top "Continue reading")
+    if (b.pending || saveTimer.current) return;
     saveTimer.current = window.setTimeout(() => {
       saveTimer.current = null;
       setProgress(b.id, p, el.scrollTop, councilId);
@@ -157,7 +167,7 @@ export function ReaderScreen({ id, councilId }: { id: string; councilId?: string
         title={
           <span className="reader-titles">
             <span className="reader-book">{b.title}</span>
-            <span className="reader-section">{b.text.heading}</span>
+            <span className="reader-section">{b.text.heading || b.title}</span>
           </span>
         }
         className="top-inset"
@@ -197,7 +207,7 @@ export function ReaderScreen({ id, councilId }: { id: string; councilId?: string
         )}
         <div className="reader-page">
           <p className="caps muted reader-kicker">{b.title} · {b.authorName}</p>
-          <h1 className="reader-heading">{b.text.heading}</h1>
+          <h1 className="reader-heading">{b.text.heading || b.title}</h1>
           <p className={`reader-provenance ${b.text.kind === 'guide' ? 'guide' : ''}`}>
             {b.text.kind === 'guide' ? t.reader.guide : ''}
             {b.text.note}
@@ -207,6 +217,10 @@ export function ReaderScreen({ id, councilId }: { id: string; councilId?: string
               <p key={i}>{markHighlights(p, bookHighlights)}</p>
             ))}
           </div>
+          {b.pending && <p className="reader-arriving">{t.book.arriving}</p>}
+          {/* a card that came without guide paragraphs: the gist stands in, or a note that says there is none */}
+          {!b.pending && b.text.paragraphs.length === 0 && <p className="reader-arriving">{b.summary.gist || t.reader.noGuide}</p>}
+          {!b.pending && (
           <div className="reader-end">
             <span className="caps muted">{t.reader.end}</span>
             {b.isbn && (
@@ -215,6 +229,7 @@ export function ReaderScreen({ id, councilId }: { id: string; councilId?: string
               </a>
             )}
           </div>
+          )}
         </div>
         {sel && (
           <div className="sel-tools" style={{ left: Math.max(90, Math.min(sel.x, (scrollRef.current?.clientWidth ?? 390) - 90)), top: Math.max(8, sel.y + (scrollRef.current?.scrollTop ?? 0) - 52) }} role="toolbar" aria-label={t.reader.selection}>

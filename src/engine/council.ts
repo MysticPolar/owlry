@@ -11,7 +11,7 @@
    with a call and keep the message shape.
    ============================================================ */
 import { uid } from '../app/ids';
-import type { CouncilSession, Message, Segment, Slot } from '../store/types';
+import type { CastInfo, CastSeat, CouncilSession, Message, Segment, Slot } from '../store/types';
 import type { Area, CouncilScript, SeatScript, AltScript } from '../content/types';
 import { council, matchCouncil } from '../content/councils';
 import { figure } from '../content/figures';
@@ -51,7 +51,47 @@ export function seatScript(script: CouncilScript, seat: number, figureId: string
 }
 
 export function scriptFor(session: CouncilSession): CouncilScript {
-  return council(session.scriptId);
+  return session.cast ? castScript(session.cast, session.question, session.area) : council(session.scriptId);
+}
+
+/** the id a session carries when the model cast its seats; there is no script of that name in the registry */
+export const CAST_SCRIPT_ID = 'cast';
+
+/**
+ * A script synthesised from a cast, so every derived view (intros, cards,
+ * reading, candidates) keeps working unchanged for a council no script was
+ * written for. Round one is the seat's stance, round two the thinker's own
+ * follow-up line on the question; the takeaways are the dictionary's honest
+ * generic lines, which the live opening overrides when it answers.
+ */
+export function castScript(cast: CastInfo, question: string, area: Area): CouncilScript {
+  const t = UI[getActiveLang()].cast;
+  const seatIds = cast.seats.map((s) => s.id);
+  const seatOf = (s: CastSeat, bestStart: boolean): AltScript => {
+    const f = figure(s.id);
+    return {
+      figureId: s.id,
+      why: s.why,
+      bookId: s.bookId,
+      bookWhy: fmt(t.bookWhy, { short: f.short }),
+      ...(bestStart ? { bestStart } : {}),
+      r1: [{ kind: 'text', text: s.stance }],
+      r2: [{ kind: 'text', text: fill(f.voice.followUp[0] ?? '', seatIds, { q: question }) }],
+      differs: s.label,
+    };
+  };
+  const alternates = cast.alternates.map((a) => seatOf(a, false));
+  return {
+    id: CAST_SCRIPT_ID,
+    area,
+    question,
+    title: cast.title,
+    keywords: [],
+    seats: [seatOf(cast.seats[0], true), seatOf(cast.seats[1], false), seatOf(cast.seats[2], false)],
+    // any alternate can take any seat
+    alternates: [alternates, alternates, alternates],
+    takeaways: { commonGround: t.commonGround, fits: t.fits, nextStep: t.nextStep },
+  };
 }
 
 /** who could take this seat next: unseated alternates, then the original if they were replaced */
@@ -156,6 +196,16 @@ export function rebuild(session: CouncilSession): CouncilSession {
 
 export function createSession(question: string, areas: Area[], councilId?: string): CouncilSession {
   const script = councilId ? council(councilId) : matchCouncil(question, areas);
+  return newSession(script, question, script.area);
+}
+
+/** a session for the seats the model cast — same shape, the script synthesised from the cast on every rebuild */
+export function createCastSession(question: string, area: Area, cast: CastInfo): CouncilSession {
+  const q = question.trim();
+  return newSession(castScript(cast, q, area), q, area, { cast });
+}
+
+function newSession(script: CouncilScript, question: string, area: Area, extra: Partial<CouncilSession> = {}): CouncilSession {
   const seats = script.seats.map((s) => s.figureId) as [string, string, string];
   const now = Date.now();
   const q = question.trim();
@@ -171,7 +221,7 @@ export function createSession(question: string, areas: Area[], councilId?: strin
     scriptId: script.id,
     question: q,
     title: script.title,
-    area: script.area,
+    area,
     seats,
     replaced: [],
     messages,
@@ -182,6 +232,7 @@ export function createSession(question: string, areas: Area[], councilId?: strin
     createdAt: now,
     updatedAt: now,
     saved: false,
+    ...extra,
   });
 }
 
@@ -240,6 +291,17 @@ export function replaceSeat(session: CouncilSession, seat: number, toFigureId?: 
   const from = session.seats[seat];
   const to = toFigureId ?? candidatesFor(session, seat)[0];
   if (!to || to === from) return session;
+  // on a cast session the alternate's seat moves into the cast; the one leaving is kept on the replacement for Undo
+  let cast = session.cast;
+  let castSeat: CastSeat | undefined;
+  if (cast) {
+    const next = cast.alternates.find((a) => a.id === to);
+    if (!next) return session;
+    castSeat = cast.seats[seat];
+    const seatsNow = [...cast.seats] as CastInfo['seats'];
+    seatsNow[seat] = next;
+    cast = { ...cast, seats: seatsNow, alternates: [...cast.alternates.filter((a) => a.id !== to), castSeat] };
+  }
   const seats = [...session.seats] as [string, string, string];
   seats[seat] = to;
   const sys: Message = {
@@ -256,10 +318,11 @@ export function replaceSeat(session: CouncilSession, seat: number, toFigureId?: 
   messages.splice(at, 0, sys);
   return rebuild({
     ...session,
+    ...(cast ? { cast } : {}),
     seats,
     messages,
     revealed: session.revealed >= at ? session.revealed + 1 : session.revealed,
-    replaced: [...session.replaced, { seat, from, to, ts: Date.now() }],
+    replaced: [...session.replaced, { seat, from, to, ts: Date.now(), ...(castSeat ? { castSeat } : {}) }],
     updatedAt: Date.now(),
   });
 }
@@ -269,6 +332,14 @@ export function undoReplace(session: CouncilSession): CouncilSession {
   if (!last) return session;
   const seats = [...session.seats] as [string, string, string];
   seats[last.seat] = last.from;
+  // the cast takes the old seat back; whoever leaves goes back among the alternates
+  let cast = session.cast;
+  if (cast && last.castSeat) {
+    const leaving = cast.seats[last.seat];
+    const seatsNow = [...cast.seats] as CastInfo['seats'];
+    seatsNow[last.seat] = last.castSeat;
+    cast = { ...cast, seats: seatsNow, alternates: [...cast.alternates.filter((a) => a.id !== last.from), leaving] };
+  }
   // drop the latest "joins the council" notice
   let idx = -1;
   for (let i = session.messages.length - 1; i >= 0; i--) {
@@ -280,6 +351,7 @@ export function undoReplace(session: CouncilSession): CouncilSession {
   const messages = session.messages.filter((_, i) => i !== idx);
   return rebuild({
     ...session,
+    ...(cast ? { cast } : {}),
     seats,
     messages,
     revealed: idx >= 0 && idx < session.revealed ? session.revealed - 1 : session.revealed,
@@ -346,8 +418,10 @@ export function readingFor(session: CouncilSession): ReadingRec[] {
     const l = live?.reading[i];
     return { bookId: ss.bookId, figureId: fid, why: l?.why || ss.bookWhy, bestStart: live ? !!l?.bestStart : !!ss.bestStart };
   });
-  if (!recs.some((r) => r.bestStart)) recs[0].bestStart = true;
-  return recs;
+  // a cast seat the model gave no book for speaks without one: nothing to read, nothing to list
+  const withBook = recs.filter((r) => r.bookId);
+  if (withBook.length && !withBook.some((r) => r.bestStart)) withBook[0].bestStart = true;
+  return withBook;
 }
 
 export function introsFor(session: CouncilSession): { figureId: string; why: string }[] {

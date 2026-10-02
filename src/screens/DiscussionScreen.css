@@ -108,6 +108,10 @@ button.msg-avatar:active { transform: scale(0.9); }
 .fig-works a svg { width: 14px; height: 14px; color: var(--mut); }
 .micro { font-size: var(--t-micro); line-height: 1.4; }
 .fig-actions { display: grid; gap: 8px; margin-top: 4px; }
+/* what arrives after the sheet — the Replace button once a cast has alternates, the notes of a recalled or still-arriving card,
+   and a recalled bio, which lands in the note's place */
+.fig-replace, .fig-arriving, .fig-recalled, .fig-bio-landed { animation: fade-up var(--dur) var(--ease-out) both; }
+.fig-arriving { color: var(--mut); font-style: italic; }
 
 /* two-line header, like the poster */
 .disc-title { display: grid; line-height: 1.1; }
