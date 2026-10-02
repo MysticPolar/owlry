@@ -1,0 +1,655 @@
+{
+ "id": "20261002-0740-how-do-i-erase-brain",
+ "question": "how do I erase brain fog really?",
+ "situation": "",
+ "category": "other",
+ "total": 9,
+ "models": {
+  "mind": null,
+  "fast": null
+ },
+ "createdAt": "2026-10-02T07:40:05.888Z",
+ "finishedAt": "2026-10-02T07:50:22.703Z",
+ "status": "done",
+ "failed": null,
+ "pending": [],
+ "attempt": 1,
+ "exclude": [],
+ "cast": {
+  "kind": "diagnosis",
+  "tension": "Engineer the fog away with sleep and focus, or stop fighting and observe it?",
+  "seats": [
+   {
+    "seat": 1,
+    "name": "Matthew Walker",
+    "lived": "living",
+    "field": "Sleep neuroscience",
+    "lens": "Whether sleep debt is quietly starving your memory and clarity",
+    "why": "Documented how sleep loss degrades attention, memory, and mood in Why We Sleep",
+    "books": [
+     {
+      "title": "Why We Sleep",
+      "author": "Matthew Walker"
+     }
+    ]
+   },
+   {
+    "seat": 2,
+    "name": "Cal Newport",
+    "lived": "living",
+    "field": "Focus and attention",
+    "lens": "Whether constant switching and notifications fragment your attention into fog",
+    "why": "Wrote Deep Work on how fragmented attention erodes clear, sustained thinking",
+    "books": [
+     {
+      "title": "Deep Work",
+      "author": "Cal Newport"
+     },
+     {
+      "title": "Digital Minimalism",
+      "author": "Cal Newport"
+     }
+    ]
+   },
+   {
+    "seat": 3,
+    "name": "Jon Kabat-Zinn",
+    "lived": "living",
+    "field": "Mindfulness-based stress reduction",
+    "lens": "What happens when you stop fighting the fog and attend to it",
+    "why": "Built MBSR on meeting mental haze with attention rather than struggle",
+    "books": [
+     {
+      "title": "Wherever You Go, There You Are",
+      "author": "Jon Kabat-Zinn"
+     },
+     {
+      "title": "Full Catastrophe Living",
+      "author": "Jon Kabat-Zinn"
+     }
+    ]
+   }
+  ],
+  "opening_seat": 1
+ },
+ "castSeats": [
+  {
+   "seat": 1,
+   "name": "Matthew Walker",
+   "lived": "living",
+   "field": "Sleep neuroscience",
+   "lens": "Whether sleep debt is quietly starving your memory and clarity",
+   "why": "Documented how sleep loss degrades attention, memory, and mood in Why We Sleep",
+   "books": [
+    {
+     "title": "Why We Sleep",
+     "author": "Matthew Walker"
+    }
+   ]
+  },
+  {
+   "seat": 2,
+   "name": "Cal Newport",
+   "lived": "living",
+   "field": "Focus and attention",
+   "lens": "Whether constant switching and notifications fragment your attention into fog",
+   "why": "Wrote Deep Work on how fragmented attention erodes clear, sustained thinking",
+   "books": [
+    {
+     "title": "Deep Work",
+     "author": "Cal Newport"
+    },
+    {
+     "title": "Digital Minimalism",
+     "author": "Cal Newport"
+    }
+   ]
+  },
+  {
+   "seat": 3,
+   "name": "Jon Kabat-Zinn",
+   "lived": "living",
+   "field": "Mindfulness-based stress reduction",
+   "lens": "What happens when you stop fighting the fog and attend to it",
+   "why": "Built MBSR on meeting mental haze with attention rather than struggle",
+   "books": [
+    {
+     "title": "Wherever You Go, There You Are",
+     "author": "Jon Kabat-Zinn"
+    },
+    {
+     "title": "Full Catastrophe Living",
+     "author": "Jon Kabat-Zinn"
+    }
+   ]
+  }
+ ],
+ "opening": 1,
+ "screen": {
+  "verdicts": [
+   {
+    "name": "Matthew Walker",
+    "ok": true,
+    "reason": "Sleep scientist, neuroscience researcher known for work"
+   },
+   {
+    "name": "Cal Newport",
+    "ok": true,
+    "reason": "Computer scientist, author on productivity and technology"
+   },
+   {
+    "name": "Jon Kabat-Zinn",
+    "ok": true,
+    "reason": "Molecular biologist, mindfulness researcher and author"
+   }
+  ]
+ },
+ "cards": {
+  "matthew-walker": "cached",
+  "cal-newport": "forged",
+  "jon-kabat-zinn": "forged"
+ },
+ "seats": [
+  {
+   "seat": 1,
+   "slug": "matthew-walker",
+   "name": "Matthew Walker",
+   "lived": "living",
+   "field": "Sleep neuroscience",
+   "lens": "Whether sleep debt is quietly starving your memory and clarity",
+   "why": "Documented how sleep loss degrades attention, memory, and mood in Why We Sleep",
+   "intro": "",
+   "books": [
+    {
+     "title": "Why We Sleep",
+     "author": "Matthew Walker",
+     "year": 2017,
+     "read_free": null,
+     "buy": null
+    },
+    {
+     "title": "Sleep Is Your Superpower (TED Talk)",
+     "author": "Matthew Walker",
+     "year": 2019,
+     "read_free": null,
+     "buy": null
+    },
+    {
+     "title": "The Matt Walker Podcast",
+     "author": "Matthew Walker",
+     "year": 2021,
+     "read_free": null,
+     "buy": null
+    },
+    {
+     "title": "The Joe Rogan Experience (interview on sleep and technology)",
+     "author": "Matthew Walker",
+     "year": 2019,
+     "read_free": null,
+     "buy": null
+    }
+   ]
+  },
+  {
+   "seat": 2,
+   "slug": "cal-newport",
+   "name": "Cal Newport",
+   "lived": "living",
+   "field": "Focus and attention",
+   "lens": "Whether constant switching and notifications fragment your attention into fog",
+   "why": "Wrote Deep Work on how fragmented attention erodes clear, sustained thinking",
+   "intro": "",
+   "books": [
+    {
+     "title": "Deep Work",
+     "author": "Cal Newport",
+     "year": 2016,
+     "read_free": null,
+     "buy": null
+    },
+    {
+     "title": "Digital Minimalism",
+     "author": "Cal Newport",
+     "year": 2019,
+     "read_free": null,
+     "buy": null
+    },
+    {
+     "title": "A World Without Email: Reimagining Work in an Age of Communication Overload",
+     "author": "Cal Newport",
+     "year": 2021,
+     "read_free": null,
+     "buy": null
+    },
+    {
+     "title": "Slow Productivity: The Lost Art of Accomplishment Without Burnout",
+     "author": "Cal Newport",
+     "year": 2024,
+     "read_free": null,
+     "buy": null
+    }
+   ]
+  },
+  {
+   "seat": 3,
+   "slug": "jon-kabat-zinn",
+   "name": "Jon Kabat-Zinn",
+   "lived": "living",
+   "field": "Mindfulness-based stress reduction",
+   "lens": "What happens when you stop fighting the fog and attend to it",
+   "why": "Built MBSR on meeting mental haze with attention rather than struggle",
+   "intro": "",
+   "books": [
+    {
+     "title": "Wherever You Go, There You Are",
+     "author": "Jon Kabat-Zinn",
+     "year": 1994,
+     "read_free": null,
+     "buy": null
+    },
+    {
+     "title": "Full Catastrophe Living",
+     "author": "Jon Kabat-Zinn",
+     "year": 1990,
+     "read_free": null,
+     "buy": null
+    },
+    {
+     "title": "Coming to Our Senses",
+     "author": "Jon Kabat-Zinn",
+     "year": 2005,
+     "read_free": null,
+     "buy": null
+    },
+    {
+     "title": "Mindfulness for Beginners",
+     "author": "Jon Kabat-Zinn",
+     "year": 2012,
+     "read_free": null,
+     "buy": null
+    }
+   ]
+  }
+ ],
+ "turns": [
+  {
+   "turn": 1,
+   "speaker": "matthew-walker",
+   "cycle": "positions",
+   "text": "In Why We Sleep, I laid out what short sleep does: the prefrontal cortex loses its grip, and the deep NREM cleanup that clears metabolic waste runs incomplete, so a thin residue of fog accumulates night over night. Daytime focus can't erase that. Fix the input: a fixed wake time including weekends, seven to nine hours, phone out of the bedroom. If fog persists after three weeks, see a doctor about sleep apnea.",
+   "tail": {
+    "position": "Engineer fog away first through fixed wake time, seven to nine hours, no bedroom phone",
+    "move": "hold",
+    "open": "whether observing fog helps once sleep is repaired"
+   },
+   "name": "Matthew Walker",
+   "words": 73,
+   "cap": 80,
+   "seconds": 10.3,
+   "raw": "In Why We Sleep, I laid out what short sleep does: the prefrontal cortex loses its grip, and the deep NREM cleanup that clears metabolic waste runs incomplete, so a thin residue of fog accumulates night over night. Daytime focus can't erase that. Fix the input: a fixed wake time including weekends, seven to nine hours, phone out of the bedroom. If fog persists after three weeks, see a doctor about sleep apnea.\nPOSITION: Engineer fog away first through fixed wake time, seven to nine hours, no bedroom phone | MOVE: hold | OPEN: whether observing fog helps once sleep is repaired",
+   "tailRaw": "POSITION: Engineer fog away first through fixed wake time, seven to nine hours, no bedroom phone | MOVE: hold | OPEN: whether observing fog helps once sleep is repaired",
+   "firstMatchDiffers": false,
+   "trailing": null
+  },
+  {
+   "turn": 2,
+   "speaker": "cal-newport",
+   "cycle": "positions",
+   "text": "Matthew Walker says persistent fog is accumulated sleep debt, so fix the input: fixed wake time, seven to nine hours. Sleep matters, but it misses a second source. In Deep Work I described attention residue, from Sophie Leroy's research: each switch leaves part of your mind on the previous task, so a rested person checking messages constantly still works in haze. For one week, protect two ninety-minute blocks daily, phone elsewhere, inbox closed, and rate clarity afterward.",
+   "tail": {
+    "position": "Sleep is necessary, but attention residue from constant switching sustains fog; protect unbroken blocks for a week",
+    "move": "hold",
+    "open": "how much of the fog is sleep versus switching"
+   },
+   "name": "Cal Newport",
+   "words": 77,
+   "cap": 80,
+   "seconds": 15.1,
+   "raw": "Matthew Walker says persistent fog is accumulated sleep debt, so fix the input: fixed wake time, seven to nine hours. Sleep matters, but it misses a second source. In Deep Work I described attention residue, from Sophie Leroy's research: each switch leaves part of your mind on the previous task, so a rested person checking messages constantly still works in haze. For one week, protect two ninety-minute blocks daily, phone elsewhere, inbox closed, and rate clarity afterward.\nPOSITION: Sleep is necessary, but attention residue from constant switching sustains fog; protect unbroken blocks for a week | MOVE: hold | OPEN: how much of the fog is sleep versus switching",
+   "tailRaw": "POSITION: Sleep is necessary, but attention residue from constant switching sustains fog; protect unbroken blocks for a week | MOVE: hold | OPEN: how much of the fog is sleep versus switching",
+   "firstMatchDiffers": false,
+   "trailing": null
+  },
+  {
+   "turn": 3,
+   "speaker": "jon-kabat-zinn",
+   "cycle": "positions",
+   "text": "Cal Newport says protected ninety-minute blocks will clear the haze that constant switching leaves behind. Try them, as an experiment. But right now, as you read this, notice where the fog sits in your body and what you say to yourself about it. Wanting it erased adds a second layer of strain, like resisting pain, and that layer is the part you can drop today, before any schedule changes.",
+   "tail": {
+    "position": "Watch the fog kindly first; the struggle to erase it is the part that adds suffering",
+    "move": "hold",
+    "open": "does attention alone address real sleep debt"
+   },
+   "name": "Jon Kabat-Zinn",
+   "words": 69,
+   "cap": 80,
+   "seconds": 13.5,
+   "raw": "Cal Newport says protected ninety-minute blocks will clear the haze that constant switching leaves behind. Try them, as an experiment. But right now, as you read this, notice where the fog sits in your body and what you say to yourself about it. Wanting it erased adds a second layer of strain, like resisting pain, and that layer is the part you can drop today, before any schedule changes.\nPOSITION: Watch the fog kindly first; the struggle to erase it is the part that adds suffering | MOVE: hold | OPEN: does attention alone address real sleep debt",
+   "tailRaw": "POSITION: Watch the fog kindly first; the struggle to erase it is the part that adds suffering | MOVE: hold | OPEN: does attention alone address real sleep debt",
+   "firstMatchDiffers": false,
+   "trailing": null
+  },
+  {
+   "turn": 4,
+   "speaker": "matthew-walker",
+   "cycle": "pressure",
+   "text": "Cal Newport says a rested person who keeps switching still works in haze, and I concede that: my claim that daytime focus can't erase fog was too tidy. Jon Kabat-Zinn's strain layer is partly sleep too, since short sleep weakens prefrontal control over the amygdala. So change one lever first: fixed wake time, two weeks, then add blocks.",
+   "tail": {
+    "position": "Fix wake time for two weeks first, then add focus blocks; sleep is one of two fog sources",
+    "move": "shift",
+    "open": "how to tell which lever worked after two weeks"
+   },
+   "name": "Matthew Walker",
+   "words": 58,
+   "cap": 60,
+   "seconds": 11.5,
+   "raw": "Cal Newport says a rested person who keeps switching still works in haze, and I concede that: my claim that daytime focus can't erase fog was too tidy. Jon Kabat-Zinn's strain layer is partly sleep too, since short sleep weakens prefrontal control over the amygdala. So change one lever first: fixed wake time, two weeks, then add blocks.\nPOSITION: Fix wake time for two weeks first, then add focus blocks; sleep is one of two fog sources | MOVE: shift | OPEN: how to tell which lever worked after two weeks",
+   "tailRaw": "POSITION: Fix wake time for two weeks first, then add focus blocks; sleep is one of two fog sources | MOVE: shift | OPEN: how to tell which lever worked after two weeks",
+   "firstMatchDiffers": false,
+   "trailing": null
+  },
+  {
+   "turn": 5,
+   "speaker": "cal-newport",
+   "cycle": "pressure",
+   "text": "Matthew Walker says change one lever first, wake time for two weeks, then add blocks. That damages my claim most: my one-week block test would be confounded with whatever sleep you recover. I shift. Fix the wake time for ten days, score clarity each evening one to five, then add the two blocks. The scores show which lever worked.",
+   "tail": {
+    "position": "Fix wake time ten days, score clarity daily, then add two protected blocks and compare",
+    "move": "shift",
+    "open": "whether daily clarity scoring becomes another layer of strain"
+   },
+   "name": "Cal Newport",
+   "words": 59,
+   "cap": 60,
+   "seconds": 11.9,
+   "raw": "Matthew Walker says change one lever first, wake time for two weeks, then add blocks. That damages my claim most: my one-week block test would be confounded with whatever sleep you recover. I shift. Fix the wake time for ten days, score clarity each evening one to five, then add the two blocks. The scores show which lever worked.\nPOSITION: Fix wake time ten days, score clarity daily, then add two protected blocks and compare | MOVE: shift | OPEN: whether daily clarity scoring becomes another layer of strain",
+   "tailRaw": "POSITION: Fix wake time ten days, score clarity daily, then add two protected blocks and compare | MOVE: shift | OPEN: whether daily clarity scoring becomes another layer of strain",
+   "firstMatchDiffers": false,
+   "trailing": null
+  },
+  {
+   "turn": 6,
+   "speaker": "jon-kabat-zinn",
+   "cycle": "pressure",
+   "text": "Matthew Walker says my strain layer is partly sleep, since short sleep weakens prefrontal control. That damages me most, and I shift: I treated the struggle as pure habit. Keep Cal Newport's ten days, but beside the one-to-five clarity score, write one line each evening: did I fight the fog today?",
+   "tail": {
+    "position": "Ten days fixed wake time, scoring clarity and also whether you fought the fog, then add blocks",
+    "move": "shift",
+    "open": "whether scoring clarity itself feeds striving"
+   },
+   "name": "Jon Kabat-Zinn",
+   "words": 51,
+   "cap": 60,
+   "seconds": 9.8,
+   "raw": "Matthew Walker says my strain layer is partly sleep, since short sleep weakens prefrontal control. That damages me most, and I shift: I treated the struggle as pure habit. Keep Cal Newport's ten days, but beside the one-to-five clarity score, write one line each evening: did I fight the fog today?\n\nPOSITION: Ten days fixed wake time, scoring clarity and also whether you fought the fog, then add blocks | MOVE: shift | OPEN: whether scoring clarity itself feeds striving",
+   "tailRaw": "POSITION: Ten days fixed wake time, scoring clarity and also whether you fought the fog, then add blocks | MOVE: shift | OPEN: whether scoring clarity itself feeds striving",
+   "firstMatchDiffers": false,
+   "trailing": null
+  },
+  {
+   "turn": 7,
+   "speaker": "matthew-walker",
+   "cycle": "application",
+   "text": "Your brain's clock learns from the one anchor you give it, the moment light hits your eyes after waking. So tonight, choose a wake time you can hold seven days a week, set one alarm, and put the phone outside the bedroom. Jon Kabat-Zinn's one-line evening note and Cal Newport's one-to-five score then tell you what changed.",
+   "tail": {
+    "position": "Fix one wake time for ten days, phone out of the bedroom, and score clarity nightly",
+    "move": "hold",
+    "open": null
+   },
+   "name": "Matthew Walker",
+   "words": 57,
+   "cap": 60,
+   "seconds": 7.5,
+   "raw": "Your brain's clock learns from the one anchor you give it, the moment light hits your eyes after waking. So tonight, choose a wake time you can hold seven days a week, set one alarm, and put the phone outside the bedroom. Jon Kabat-Zinn's one-line evening note and Cal Newport's one-to-five score then tell you what changed.\nPOSITION: Fix one wake time for ten days, phone out of the bedroom, and score clarity nightly | MOVE: hold | OPEN: none",
+   "tailRaw": "POSITION: Fix one wake time for ten days, phone out of the bedroom, and score clarity nightly | MOVE: hold | OPEN: none",
+   "firstMatchDiffers": false,
+   "trailing": null
+  },
+  {
+   "turn": 8,
+   "speaker": "cal-newport",
+   "cycle": "application",
+   "text": "Matthew Walker's fixed wake time is the right first lever, because it changes only one variable. Tonight, set one alarm, phone outside the bedroom. Then each evening, score clarity one to five, adding Jon Kabat-Zinn's line about fighting the fog. After ten days, add two ninety-minute blocks, and the scores will show which lever mattered.",
+   "tail": {
+    "position": "Fix one wake time tonight, score clarity daily for ten days, then add two ninety-minute focus blocks",
+    "move": "hold",
+    "open": null
+   },
+   "name": "Cal Newport",
+   "words": 55,
+   "cap": 60,
+   "seconds": 8.7,
+   "raw": "Matthew Walker's fixed wake time is the right first lever, because it changes only one variable. Tonight, set one alarm, phone outside the bedroom. Then each evening, score clarity one to five, adding Jon Kabat-Zinn's line about fighting the fog. After ten days, add two ninety-minute blocks, and the scores will show which lever mattered.\nPOSITION: Fix one wake time tonight, score clarity daily for ten days, then add two ninety-minute focus blocks | MOVE: hold | OPEN: none",
+   "tailRaw": "POSITION: Fix one wake time tonight, score clarity daily for ten days, then add two ninety-minute focus blocks | MOVE: hold | OPEN: none",
+   "firstMatchDiffers": false,
+   "trailing": null
+  },
+  {
+   "turn": 9,
+   "speaker": "jon-kabat-zinn",
+   "cycle": "application",
+   "text": "Matthew Walker says fix the wake time first, since it changes a single variable. Do that, but his plan leaves out the fight. Tomorrow, before reaching for the phone, feel the fog in your body for three breaths, kindly, without trying to clear it. That evening, write one line: did I fight it?",
+   "tail": {
+    "position": "Fix one wake time tonight, then each evening note whether you fought the fog",
+    "move": "hold",
+    "open": "whether the struggle eases as sleep steadies"
+   },
+   "name": "Jon Kabat-Zinn",
+   "words": 53,
+   "cap": 60,
+   "seconds": 9.8,
+   "raw": "Matthew Walker says fix the wake time first, since it changes a single variable. Do that, but his plan leaves out the fight. Tomorrow, before reaching for the phone, feel the fog in your body for three breaths, kindly, without trying to clear it. That evening, write one line: did I fight it?\nPOSITION: Fix one wake time tonight, then each evening note whether you fought the fog | MOVE: hold | OPEN: whether the struggle eases as sleep steadies",
+   "tailRaw": "POSITION: Fix one wake time tonight, then each evening note whether you fought the fog | MOVE: hold | OPEN: whether the struggle eases as sleep steadies",
+   "firstMatchDiffers": false,
+   "trailing": null
+  }
+ ],
+ "summary": {
+  "title": "Clear brain fog: stabilize sleep first, then focus or notice",
+  "agree": [
+   "Fixed wake time anchors your brain's clock; keep it seven days a week (all three minds)",
+   "Score clarity nightly one to five and note whether you fought the fog (Cal Newport and Jon Kabat-Zinn)",
+   "Add two protected ninety-minute focus blocks after ten days of stable sleep (Matthew Walker and Cal Newport)"
+  ],
+  "differ": [
+   "Matthew Walker and Cal Newport differ on which lever matters most: Matthew emphasizes sleep debt, Cal emphasizes attention residue from constant switching. By turn four they converge—both matter, fix sleep first.",
+   "Jon Kabat-Zinn's separate point: the struggle to erase fog is itself suffering. His kindly noticing and Cal/Matthew's behavioral shifts address different layers; both can help."
+  ],
+  "fits": "Matthew Walker anchors the plan in one fixed wake time (turn seven); Cal Newport shifts to agree, calling it the right first lever because it changes only one variable (turn eight). Jon Kabat-Zinn adds the inner shift: feel the fog kindly for three breaths each morning, then each evening score whether you fought it (turn nine). Tell us one thing: when you try this ten-day experiment, which change reaches your clarity first?",
+  "next_step": "Set one fixed wake time tonight, phone outside bedroom. Tomorrow feel the fog kindly for three breaths. Each evening score clarity one to five.",
+  "books": [
+   {
+    "mind": "Matthew Walker",
+    "title": "Why We Sleep",
+    "author": "Matthew Walker",
+    "why": "Deep NREM sleep clears metabolic waste from the brain; incomplete cleanup leaves fog residue"
+   },
+   {
+    "mind": "Cal Newport",
+    "title": "Deep Work",
+    "author": "Cal Newport",
+    "why": "Attention residue from constant task-switching sustains fog even in a rested mind"
+   },
+   {
+    "mind": "Jon Kabat-Zinn",
+    "title": "Wherever You Go, There You Are",
+    "author": "Jon Kabat-Zinn",
+    "why": "Wanting to erase fog adds strain; kindly noticing dissolves that second layer"
+   }
+  ]
+ },
+ "summaryRaw": "```json\n{\n  \"title\": \"Clear brain fog: stabilize sleep first, then focus or notice\",\n  \"agree\": [\n    \"Fixed wake time anchors your brain's clock; keep it seven days a week (all three minds)\",\n    \"Score clarity nightly one to five and note whether you fought the fog (Cal Newport and Jon Kabat-Zinn)\",\n    \"Add two protected ninety-minute focus blocks after ten days of stable sleep (Matthew Walker and Cal Newport)\"\n  ],\n  \"differ\": [\n    \"Matthew Walker and Cal Newport differ on which lever matters most: Matthew emphasizes sleep debt, Cal emphasizes attention residue from constant switching. By turn four they converge—both matter, fix sleep first.\",\n    \"Jon Kabat-Zinn's separate point: the struggle to erase fog is itself suffering. His kindly noticing and Cal/Matthew's behavioral shifts address different layers; both can help.\"\n  ],\n  \"fits\": \"Matthew Walker anchors the plan in one fixed wake time (turn seven); Cal Newport shifts to agree, calling it the right first lever because it changes only one variable (turn eight). Jon Kabat-Zinn adds the inner shift: feel the fog kindly for three breaths each morning, then each evening score whether you fought it (turn nine). Tell us one thing: when you try this ten-day experiment, which change reaches your clarity first?\",\n  \"next_step\": \"Set one fixed wake time tonight, phone outside bedroom. Tomorrow feel the fog kindly for three breaths. Each evening score clarity one to five.\",\n  \"books\": [\n    {\n      \"mind\": \"Matthew Walker\",\n      \"title\": \"Why We Sleep\",\n      \"author\": \"Matthew Walker\",\n      \"why\": \"Deep NREM sleep clears metabolic waste from the brain; incomplete cleanup leaves fog residue\"\n    },\n    {\n      \"mind\": \"Cal Newport\",\n      \"title\": \"Deep Work\",\n      \"author\": \"Cal Newport\",\n      \"why\": \"Attention residue from constant task-switching sustains fog even in a rested mind\"\n    },\n    {\n      \"mind\": \"Jon Kabat-Zinn\",\n      \"title\": \"Wherever You Go, There You Are\",\n      \"author\": \"Jon Kabat-Zinn\",\n      \"why\": \"Wanting to erase fog adds strain; kindly noticing dissolves that second layer\"\n    }\n  ]\n}\n```",
+ "calls": [
+  {
+   "step": "cast 1",
+   "model": "sonnet",
+   "agentId": "aec94f4421744de46",
+   "seconds": 12.2,
+   "start": "2026-10-02T07:40:22.665Z",
+   "end": "2026-10-02T07:40:34.880Z",
+   "promptExact": true,
+   "wrapped": false,
+   "tools": [],
+   "ok": true
+  },
+  {
+   "step": "screen 1",
+   "model": "haiku",
+   "agentId": "ab0ed9792569be966",
+   "seconds": 6.9,
+   "start": "2026-10-02T07:40:44.248Z",
+   "end": "2026-10-02T07:40:51.180Z",
+   "promptExact": true,
+   "wrapped": true,
+   "tools": [],
+   "ok": true
+  },
+  {
+   "step": "forge cal-newport",
+   "model": "sonnet",
+   "agentId": "a921fe89c75e7e6e4",
+   "seconds": 33.8,
+   "start": "2026-10-02T07:41:07.421Z",
+   "end": "2026-10-02T07:41:41.267Z",
+   "promptExact": true,
+   "wrapped": false,
+   "tools": [],
+   "ok": true
+  },
+  {
+   "step": "forge jon-kabat-zinn",
+   "model": "sonnet",
+   "agentId": "a6a02cc3389cd9115",
+   "seconds": 47.1,
+   "start": "2026-10-02T07:41:07.431Z",
+   "end": "2026-10-02T07:41:54.560Z",
+   "promptExact": true,
+   "wrapped": false,
+   "tools": [],
+   "ok": true
+  },
+  {
+   "step": "turn 1",
+   "model": "sonnet",
+   "agentId": "ae3aa2f019df79c26",
+   "seconds": 10.3,
+   "start": "2026-10-02T07:42:22.220Z",
+   "end": "2026-10-02T07:42:32.556Z",
+   "promptExact": true,
+   "wrapped": false,
+   "tools": [],
+   "ok": true
+  },
+  {
+   "step": "turn 2",
+   "model": "sonnet",
+   "agentId": "aa767bc50ac594d4a",
+   "seconds": 15.1,
+   "start": "2026-10-02T07:42:59.294Z",
+   "end": "2026-10-02T07:43:14.434Z",
+   "promptExact": true,
+   "wrapped": false,
+   "tools": [],
+   "ok": true
+  },
+  {
+   "step": "turn 3",
+   "model": "sonnet",
+   "agentId": "ad596dea908d74ab3",
+   "seconds": 13.5,
+   "start": "2026-10-02T07:43:46.874Z",
+   "end": "2026-10-02T07:44:00.359Z",
+   "promptExact": true,
+   "wrapped": false,
+   "tools": [],
+   "ok": true
+  },
+  {
+   "step": "turn 4",
+   "model": "sonnet",
+   "agentId": "a2ef1b1260140596b",
+   "seconds": 11.5,
+   "start": "2026-10-02T07:44:28.599Z",
+   "end": "2026-10-02T07:44:40.106Z",
+   "promptExact": true,
+   "wrapped": false,
+   "tools": [],
+   "ok": true
+  },
+  {
+   "step": "turn 5",
+   "model": "sonnet",
+   "agentId": "a5f2047796d376a0e",
+   "seconds": 11.9,
+   "start": "2026-10-02T07:45:11.845Z",
+   "end": "2026-10-02T07:45:23.794Z",
+   "promptExact": true,
+   "wrapped": false,
+   "tools": [],
+   "ok": true
+  },
+  {
+   "step": "turn 6",
+   "model": "sonnet",
+   "agentId": "a35708ea81eac9630",
+   "seconds": 9.8,
+   "start": "2026-10-02T07:45:54.301Z",
+   "end": "2026-10-02T07:46:04.135Z",
+   "promptExact": true,
+   "wrapped": false,
+   "tools": [],
+   "ok": true
+  },
+  {
+   "step": "turn 7",
+   "model": "sonnet",
+   "agentId": "ad30efa3b80830410",
+   "seconds": 7.5,
+   "start": "2026-10-02T07:46:35.543Z",
+   "end": "2026-10-02T07:46:43.005Z",
+   "promptExact": true,
+   "wrapped": false,
+   "tools": [],
+   "ok": true
+  },
+  {
+   "step": "turn 8",
+   "model": "sonnet",
+   "agentId": "aa5ceb8416d69cb5c",
+   "seconds": 8.7,
+   "start": "2026-10-02T07:47:15.035Z",
+   "end": "2026-10-02T07:47:23.727Z",
+   "promptExact": true,
+   "wrapped": false,
+   "tools": [],
+   "ok": true
+  },
+  {
+   "step": "turn 9",
+   "model": "sonnet",
+   "agentId": "ab93d13c63f15e5d9",
+   "seconds": 9.8,
+   "start": "2026-10-02T07:47:58.580Z",
+   "end": "2026-10-02T07:48:08.353Z",
+   "promptExact": true,
+   "wrapped": false,
+   "tools": [],
+   "ok": true
+  },
+  {
+   "step": "summary",
+   "model": "haiku",
+   "agentId": "a5d61a22b4095bf19",
+   "seconds": 108,
+   "start": "2026-10-02T07:48:34.729Z",
+   "end": "2026-10-02T07:50:22.703Z",
+   "promptExact": true,
+   "wrapped": false,
+   "tools": [],
+   "ok": true
+  }
+ ],
+ "notes": [
+  "summarizer wrapped its JSON in code fences (parsed anyway)"
+ ]
+}
