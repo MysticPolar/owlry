@@ -181,8 +181,9 @@ The switch-on sequence, in order:
 3. Edge Function secrets: `GEMINI_API_KEY` is already there for `owl-chat`;
    add `COUNCIL_INVITE_REQUIRED=false` to open sign-up, and optionally
    `COUNCIL_DAILY_CAP` and `COUNCIL_RECALL_MODEL`.
-4. Set the repository variable `COUNCIL_BACKEND=on` and re-run the preview
-   workflow, so `/council/` builds with the Supabase keys.
+4. The preview workflow now builds `/council/` with the Supabase keys by
+   default; set the repository variable `COUNCIL_BACKEND=off` to get the
+   offline prototype back.
 5. Smoke-test in this order, each with a signed-in session's JWT as the
    bearer: `cast` for a question outside the eight scripts; `figure` for one
    of its seats (send the cast seat's `role` as `hint`); the same `figure`
