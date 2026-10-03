@@ -7,6 +7,7 @@ import { TopBar } from '../components/chrome';
 import { Seg } from '../components/Seg';
 import { OwlRow } from '../components/Owl';
 import { saveProfile } from '../lib/auth/api';
+import { SignInForm } from '../components/SignInForm';
 import { isBackendConfigured, isLiveCouncilConfigured } from '../lib/supabase';
 import { useT, fmt } from '../i18n/react';
 import { LANGS } from '../i18n';
@@ -101,23 +102,20 @@ export function SettingsScreen() {
                 ? fmt(t.settings.signedInSync, { name: `${user.name}${user.email ? ` (${user.email})` : ''}` })
                 : fmt(t.settings.signedInProto, { name: user.name })
               : backend
-                ? t.settings.guestSync
+                ? t.settings.guestActions
                 : t.settings.guest}
           </p>
           {user.signedIn ? (
             <button type="button" className="btn btn-outline btn-sm" onClick={() => void doSignOut()}>
               {t.settings.signOut}
             </button>
+          ) : backend ? (
+            // a guest who already has an account signs in right here; the welcome screen is long gone
+            <SignInForm onDone={() => showToast(t.settings.signedInNow)} />
           ) : (
-            // a guest who already has an account needs a way in that is not the welcome screen
-            <div className="row" style={{ gap: 8, flexWrap: 'wrap' }}>
-              <button type="button" className="btn btn-dark btn-sm" onClick={() => navigate({ name: 'signin' })}>
-                {t.settings.signIn}
-              </button>
-              <button type="button" className="btn btn-outline btn-sm" onClick={() => navigate({ name: 'signup' })}>
-                {t.settings.createAccount}
-              </button>
-            </div>
+            <button type="button" className="btn btn-dark btn-sm" onClick={() => navigate({ name: 'signup' })}>
+              {t.settings.createAccount}
+            </button>
           )}
           <button type="button" className="btn btn-outline btn-sm" onClick={() => { resetDemo(); showToast(t.settings.resetDone); navigate({ name: 'welcome' }); }}>
             {t.settings.resetDemo}

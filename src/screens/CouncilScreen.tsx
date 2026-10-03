@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from 'react';
-import { IconArrowUp, IconRefresh } from '@tabler/icons-react';
+import { IconArrowUp, IconCompass, IconRefresh } from '@tabler/icons-react';
 import { navigate } from '../app/router';
 import { useStore, selectCouncil } from '../store/useStore';
 import { figure } from '../content/figures';
@@ -86,6 +86,11 @@ export function CouncilScreen() {
     <div className={`screen night council ${drawn ? 'council-flat' : 'council-paint'}`}>
       <div className="council-head top-inset pad">
         <Wordmark size={26} />
+        <span className="council-head-actions">
+        {/* back to the paths: the interests screen the journey began on */}
+        <button type="button" className="iconbtn" aria-label={t.council.paths} onClick={() => navigate({ name: 'interests' })}>
+          <IconCompass stroke={2} />
+        </button>
         <button
           type="button"
           className="iconbtn"
@@ -99,6 +104,7 @@ export function CouncilScreen() {
         >
           <IconRefresh stroke={2} />
         </button>
+        </span>
       </div>
       <div className="screen-scroll council-body nav-space">
         <div className="council-stage">
@@ -184,6 +190,9 @@ export function CouncilScreen() {
                 </li>
               ))}
             </ul>
+            <button type="button" className="linkbtn council-paths-link" onClick={() => navigate({ name: 'interests' })}>
+              <IconCompass /> {t.council.pathsLink}
+            </button>
           </div>
         )}
       </div>

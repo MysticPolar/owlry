@@ -188,6 +188,10 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .btn-xs { min-height: 34px; padding: 0 14px; font-size: var(--t-label); width: auto; }
 .linkbtn { font-weight: 600; color: var(--mut); text-decoration: underline; text-underline-offset: 3px; }
 
+/* the sign-in form inside Settings (the full auth screen has its own, on night) */
+.signin-form { gap: 10px; }
+.signin-error { color: #A8321E; margin: -2px 0 0; animation: fade-up 300ms var(--ease-out) both; }
+
 /* ---------- chips ---------- */
 .chip {
   display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 0 14px;
