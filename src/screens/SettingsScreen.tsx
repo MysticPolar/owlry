@@ -109,9 +109,15 @@ export function SettingsScreen() {
               {t.settings.signOut}
             </button>
           ) : (
-            <button type="button" className="btn btn-dark btn-sm" onClick={() => navigate({ name: 'signup' })}>
-              {t.settings.createAccount}
-            </button>
+            // a guest who already has an account needs a way in that is not the welcome screen
+            <div className="row" style={{ gap: 8, flexWrap: 'wrap' }}>
+              <button type="button" className="btn btn-dark btn-sm" onClick={() => navigate({ name: 'signin' })}>
+                {t.settings.signIn}
+              </button>
+              <button type="button" className="btn btn-outline btn-sm" onClick={() => navigate({ name: 'signup' })}>
+                {t.settings.createAccount}
+              </button>
+            </div>
           )}
           <button type="button" className="btn btn-outline btn-sm" onClick={() => { resetDemo(); showToast(t.settings.resetDone); navigate({ name: 'welcome' }); }}>
             {t.settings.resetDemo}
