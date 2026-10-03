@@ -1,5 +1,6 @@
 import { DIMS, type RadarDim } from '../../content/profile';
 import { useLang, useT } from '../../i18n/react';
+import { radarCeiling, radarFraction } from '../../lib/pillars/radarScale';
 
 const RCX = 176;
 const RCY = 132;
@@ -26,6 +27,8 @@ const ringPts = (f: number, n: number) =>
  * the data group so the CSS pop animation (.radar.go #rg) re-runs.
  * Pass `dims` for a signed-in snapshot; omit to keep the guest seed.
  * Geometry follows dims.length (five life pillars → pentagon).
+ * Drawing uses stepped ceilings (see radarScale) so early scores read
+ * clearly without hugging the outer ring; labels keep absolute counts.
  */
 export function RadarChart({
   replayKey,
@@ -37,12 +40,16 @@ export function RadarChart({
   const t = useT();
   const dims = dimsProp ?? DIMS[useLang()];
   const n = Math.max(1, dims.length);
+  const peak = Math.max(0, ...dims.map(([, v]) => v));
+  const ceiling = radarCeiling(peak);
   const anch = n === 5 ? ANCH5 : dims.map((_, i) => {
     // fallback for unexpected lengths: top/bottom middle, right start, left end
     if (i === 0 || i === Math.floor(n / 2)) return 'middle' as const;
     return i < n / 2 ? 'start' as const : 'end' as const;
   });
-  const dataPoints = dims.map(([, v], i) => rpt(i, v / 100, n).map((x) => x.toFixed(1)).join(',')).join(' ');
+  const dataPoints = dims
+    .map(([, v], i) => rpt(i, radarFraction(v, ceiling), n).map((x) => x.toFixed(1)).join(','))
+    .join(' ');
   const aria = t.profile.radarAria(dims.map(([name, v]) => `${name} ${v}`).join(', '));
 
   return (
@@ -74,7 +81,7 @@ export function RadarChart({
           strokeLinejoin="round"
         />
         {dims.map(([, v], i) => {
-          const [x, y] = rpt(i, v / 100, n);
+          const [x, y] = rpt(i, radarFraction(v, ceiling), n);
           return (
             <rect
               key={i}

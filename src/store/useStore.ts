@@ -41,7 +41,8 @@ import {
 } from '../lib/bookRegistry';
 import type { DynamicRegistryScope } from '../lib/bookRegistry';
 import { supabase, isBackendConfigured, isLiveOwlConfigured } from '../lib/supabase';
-import { getSnapshot } from '../lib/economy/api';
+import { ensureBookDimension, getSnapshot } from '../lib/economy/api';
+import { pillarForBook } from '../lib/pillars/pillarForBook';
 import { applyAction, derive, emptyDaily, localDay, settleInk, tzOffsetMinutes } from '../lib/economy/engine';
 import type { ActionContext, EconomyState, EngineResult } from '../lib/economy/engine';
 import { clearQueue, enqueue, flush } from '../lib/economy/queue';
@@ -741,6 +742,13 @@ async function refreshSnapshot(): Promise<void> {
   }
 }
 
+/** Classify saved books onto Mirror shelves so radar isn't stuck at wonder/zero. */
+async function retagSavedPillars(savedIds: readonly BookRef[]): Promise<void> {
+  if (!isBackendConfigured() || savedIds.length === 0) return;
+  await Promise.all(savedIds.map((id) => ensureBookDimension(id, pillarForBook(id))));
+  await refreshSnapshot();
+}
+
 /** the store's strings in the reader's language (call inside actions only) */
 const L = (prefs: Prefs) => tOf(prefs.lang ?? 'en').store;
 
@@ -1360,6 +1368,10 @@ export const useStore = create<Store>()(
       // and the shelf reads it whether or not the reader is signed in
       const { quotedIds } = st;
       if (!quotedIds.includes(book)) set({ quotedIds: [...quotedIds, book] });
+      // tag the pillar before the quote row lands so radar can score it
+      if (st.authUser && isBackendConfigured()) {
+        void ensureBookDimension(book, pillarForBook(book));
+      }
       get().econ('quote_keep', { bookId: book, hash: lineHash(line), text: line });
     },
     startAsk: (id) => {
@@ -1417,6 +1429,11 @@ export const useStore = create<Store>()(
           savedAt: { ...savedAt, [id as string]: Date.now() },
           libraryBooks: remembered,
         });
+        // Scout/open-world books aren't in the catalog seed — tag before save
+        // so the radar join has a shelf to credit.
+        if (get().authUser && isBackendConfigured()) {
+          void ensureBookDimension(id, pillarForBook(id));
+        }
         get().econ('save', { bookId: id }); // the strip carries the +5
       }
     },
@@ -2053,6 +2070,8 @@ export const useStore = create<Store>()(
         });
         void backfillLegacyPositionFingerprints(userId);
         void get().hydrateChat();
+        // Scout saves often land without a catalog dimension — retag so Mirror moves
+        void retagSavedPillars(next.savedIds);
         await saveLocal(userId, next);
         if (!transitionIsCurrent()) return;
         // A failed pull is not the same as an empty account. cloudPush performs
