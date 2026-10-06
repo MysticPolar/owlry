@@ -17,3 +17,9 @@ dev-dist
 
 # typescript incremental build info
 *.tsbuildinfo
+
+# claude code worktrees live inside the repo; never commit a nested checkout
+.claude/worktrees/
+
+# single-file builds (vite.standalone.config.ts)
+dist-standalone/
