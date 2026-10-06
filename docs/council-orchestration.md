@@ -1,5 +1,9 @@
 # The council, orchestrated
 
+> Since 6 October 2026 the Council's front end lives in `main` under
+> `src/council/`; client paths in this note (`src/lib/…`, `src/store/…`,
+> `src/screens/…`) are relative to that folder. `supabase/` paths are unchanged.
+
 *How the five calls of `council-chat` are sequenced behind the screens of the
 mockup, and what the client does when any of them fails. Companion to
 `council-backend.md` (the server) and `council-prompts.md` (the words). The

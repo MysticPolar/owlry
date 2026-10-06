@@ -1,5 +1,11 @@
 # The Council preview on GitHub Pages
 
+> **Superseded on 6 October 2026.** Both apps now ship from `main` in one
+> build (`deploy.yml`): Owlry at `/`, the Council at `/council/`. The root
+> app's `vite.config.ts` carries the `/council/` denylist itself, so the
+> patch and escape-shim scripts below are retired. Kept as the history of
+> the service-worker clash.
+
 The redesign is reviewed at **https://app.owlry.ai/council/** while the classic
 app stays live at the root. One repository gets one Pages site, so the preview
 workflow (`.github/workflows/council-preview.yml`) builds both and publishes

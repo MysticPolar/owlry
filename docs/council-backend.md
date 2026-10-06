@@ -1,5 +1,9 @@
 # The Council Room — backend
 
+> Since 6 October 2026 the Council's front end lives in `main` under
+> `src/council/`; client paths in this note (`src/lib/…`, `src/store/…`,
+> `src/screens/…`) are relative to that folder. `supabase/` paths are unchanged.
+
 *The Council is the classic owlry with a new visual and a new entry point:
 instead of one owl at a desk, three thinkers at a table. The library, the
 reading, the profile are the same product, so the backend is the same
@@ -220,20 +224,28 @@ unchanged.
 
 ## Deploying
 
+Since 6 October 2026 the Council lives in `main` under `src/council/` and
+ships with Owlry from one build (see `src/council/AGENTS.md`). The
+`/council/` preview workflow and its service-worker patch are retired.
+
 1. `Deploy Supabase backend` (`.github/workflows/owl-chat-deploy.yml`) applies
-   the migration and deploys both functions alongside the classic ones. It
-   runs on push to the live branch; to deploy from the Council branch, run it
-   from the Actions tab with the branch selected. It needs the existing
-   `SUPABASE_ACCESS_TOKEN` secret and `SUPABASE_PROJECT_REF` variable.
+   the migrations and deploys the council functions alongside the classic
+   ones. It runs on pushes to `main` that touch `supabase/functions/**`, the
+   listed migrations or the workflow itself, and from the Actions tab. It
+   needs the existing `SUPABASE_ACCESS_TOKEN` secret and
+   `SUPABASE_PROJECT_REF` variable.
 2. `GEMINI_API_KEY` is already a function secret for `owl-chat`; `council-chat`
    reads the same one. Set `COUNCIL_INVITE_REQUIRED=false` there to open
    sign-up.
-3. Set the repository variable `COUNCIL_BACKEND=on` and re-run the Pages
-   workflow: the `/council/` preview then builds with the same Supabase keys as
-   the root app. Until then the preview stays the offline prototype, so it
-   never points at tables that don't exist yet.
+3. `Deploy app.owlry.ai to GitHub Pages` (`.github/workflows/deploy.yml`)
+   builds the Council with the same Supabase keys as the root app; set
+   `VITE_COUNCIL_LIVE=off` at build time to keep the scripted councils. It
+   also needs the repository variable `VITE_COUNCIL_ACCESS_HASH` (the access
+   code's SHA-256, see `.env.example`).
 4. Apple / Google sign-in buttons call `signInWithOAuth`; they work once the
-   provider is enabled in the Supabase dashboard and say so until then.
+   provider is enabled in the Supabase dashboard and
+   `https://app.owlry.ai/council/**` is in the Auth redirect allow-list, and
+   say so until then.
 
 ## Not done yet / open
 

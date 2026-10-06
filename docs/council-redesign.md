@@ -1,5 +1,9 @@
 # The Council redesign — front-end notes
 
+> Since 6 October 2026 the Council's front end lives in `main` under
+> `src/council/`; client paths in this note (`src/lib/…`, `src/store/…`,
+> `src/screens/…`) are relative to that folder. `supabase/` paths are unchanged.
+
 *Companion to the "Walk with Great Minds." poster. This documents the choices
 made while turning the nine frames into a working prototype, so the backend
 phase and later design passes know what is deliberate.*
