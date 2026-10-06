@@ -1,0 +1,2744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Owlry — Standalone · Jul 2026 (synced to app)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter+Tight:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   OWLRY — "OWL THEATRE" design system
+   one theatre, two lighting rigs:
+   matinée (day) · evening show (night)
+   voice: Anton (shout) · Fraunces (whisper) · Inter Tight (label)
+   cast:  Scout ember · Peek teal · Scribe quill
+          Mirror violet · Keeper moss · house gold #FFC017
+   ============================================================ */
+
+:root{
+  /* -------- house -------- */
+  --yellow:#FFC017;            /* candle gold — the house light   */
+  --gold:#A8730A;              /* deep gold for small text on cream */
+  --letter:#FBF4E1;            /* letter paper — never changes     */
+  --letter-ink:#241B0E;
+  --belly:#F4E6C4;
+
+  /* -------- matinée (day rig) -------- */
+  --stage:#F1E6CC;
+  --stage2:#E9DCBB;
+  --surface:#FBF5E5;
+  --surface2:#F2E9D0;
+  --ink:#221A0E;
+  --mut:#6F6452;
+  --fade:#9C8F77;
+  --line:rgba(34,26,14,.16);
+  --line2:rgba(34,26,14,.30);
+  --track:#E4D7B4;
+  --shadow:0 12px 26px -16px rgba(64,44,10,.42);
+  --shadow-sm:0 6px 14px -8px rgba(64,44,10,.32);
+  --ghost:rgba(34,26,14,.055);
+  --glowT:none;
+  --starc:#B8860B;
+  --letterGlow:0 16px 30px -16px rgba(64,44,10,.45);
+  --navbg:rgba(251,245,229,.86);
+  --wxc:#6F6452;
+
+  /* -------- cast (day feathers) -------- */
+  --ember:#D8481E;  --ember-l:#FF9163; --ember-d:#93290C;
+  --teal:#177E71;   --teal-l:#5CC0B1;  --teal-d:#0B5348;
+  --quill:#3A55B4;  --quill-l:#7E93E6; --quill-d:#1F326E;
+  --violet:#7451CC; --violet-l:#B29AEF;--violet-d:#452B93;
+  --moss:#156D44;   --moss-l:#5FB183;  --moss-d:#0C4A2C;
+  --radarFill:rgba(116,81,204,.16);
+
+  /* -------- owl anatomy -------- */
+  --sclera:#FFF9E9;
+  --irisC:#4A2F14;
+  --beakC:#E9A238;
+  --oShadow:rgba(40,26,8,.20);
+  --specs:#2A2013;
+
+  /* -------- legacy aliases (JS-built markup) -------- */
+  --cream:var(--surface);
+  --paper:var(--track);
+  --paper2:var(--line2);
+  --green:var(--moss);
+}
+
+/* -------- evening show (night rig) -------- */
+.app[data-mode="night"]{
+  --stage:#0D111F;
+  --stage2:#151B31;
+  --surface:#1B2239;
+  --surface2:#232C4A;
+  --ink:#F2EBD7;
+  --mut:#A9AEC4;
+  --fade:#767C97;
+  --line:rgba(255,213,105,.13);
+  --line2:rgba(255,213,105,.26);
+  --track:#252E4D;
+  --shadow:0 16px 34px -16px rgba(0,0,0,.68);
+  --shadow-sm:0 8px 18px -10px rgba(0,0,0,.6);
+  --ghost:rgba(243,235,215,.05);
+  --gold:#FFC017;
+  --glowT:0 0 22px rgba(255,192,23,.30);
+  --starc:#FFC017;
+  --letterGlow:0 0 0 1px rgba(255,192,23,.22),
+               0 22px 44px -18px rgba(0,0,0,.8),
+               0 0 38px -6px rgba(255,192,23,.26);
+  --navbg:rgba(20,26,46,.78);
+  --wxc:#E6EAF6;
+
+  --ember:#FF6A38;  --ember-l:#FFA57E; --ember-d:#B33A12;
+  --teal:#3FBFAD;   --teal-l:#8BE3D5;  --teal-d:#177E71;
+  --quill:#8AA0F2;  --quill-l:#BCCAFB; --quill-d:#4B63C4;
+  --violet:#A68AF0; --violet-l:#CDBBF8;--violet-d:#6D4AC9;
+  --moss:#3FA872;   --moss-l:#7ED0A5;  --moss-d:#1C6B44;
+  --radarFill:rgba(166,138,240,.20);
+
+  --sclera:#FFF3C9;
+  --irisC:#FFC017;
+  --beakC:#F2B14E;
+  --oShadow:rgba(0,0,0,.45);
+  --specs:#EFE5C6;
+}
+
+/* ============================================================
+   base
+   ============================================================ */
+*{box-sizing:border-box}
+body{
+  margin:0; min-height:100vh; padding:34px 16px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  background:radial-gradient(120% 90% at 50% 0%, #1B160D 0%, #0B0906 62%, #060504 100%);
+  color:#EFE7D2;
+  font-family:'Inter Tight',sans-serif; -webkit-font-smoothing:antialiased;
+}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.d{font-family:'Anton',sans-serif;font-weight:400;letter-spacing:.02em}
+.b{font-family:'Inter Tight',sans-serif}
+.it{font-family:'Fraunces',Georgia,serif;font-style:italic;font-weight:430}
+.gdot{color:var(--yellow)}
+svg.ti{display:inline-block;vertical-align:-.12em;flex:0 0 auto}
+button{font-family:inherit;color:inherit}
+button:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline-offset:2px}
+
+.page{display:flex;flex-direction:column;align-items:center;gap:18px}
+.caption{margin:0;text-align:center;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#7E7660}
+.phone{
+  width:380px;max-width:100%;background:#07070C;border-radius:40px;padding:9px;
+  border:1px solid rgba(255,192,23,.16);
+  box-shadow:0 40px 90px -34px rgba(0,0,0,.9), 0 0 70px -30px rgba(255,192,23,.22);
+}
+.app{
+  position:relative;height:800px;display:flex;flex-direction:column;overflow:hidden;
+  background:linear-gradient(180deg,var(--stage) 0%,var(--stage2) 100%);
+  border-radius:32px;color:var(--ink);
+  transition:background .45s ease,color .45s ease;
+}
+
+/* ---------- status bar ---------- */
+.status{position:relative;z-index:9;display:flex;justify-content:space-between;align-items:center;padding:14px 26px 2px;font-size:13px;font-weight:700}
+.status .icons{display:flex;gap:6px;align-items:center}
+
+/* ---------- screens ---------- */
+.screens{position:relative;flex:1;min-height:0}
+.screen{position:absolute;inset:0;display:none;flex-direction:column;overflow-y:auto;overflow-x:hidden;padding-bottom:104px;scrollbar-width:none}
+.screen::-webkit-scrollbar{display:none}
+.screen.on{display:flex}
+.pad-h{position:relative;padding:22px 22px 0}
+
+/* ---------- ghost glyphs (the script on the scenery) ---------- */
+.ghost{
+  position:absolute;z-index:0;pointer-events:none;user-select:none;
+  font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;
+  color:var(--ghost);line-height:1;letter-spacing:.01em;
+  transition:color .45s ease;
+}
+.pad-h .ghost{font-size:94px;right:-30px;top:0}
+
+/* ---------- masthead ---------- */
+.mast{position:relative;z-index:2;padding:12px 22px 0;display:flex;align-items:baseline;justify-content:space-between}
+.logo{font-size:25px;display:inline-flex;align-items:baseline;transform:skewX(-8deg);letter-spacing:.03em}
+.wx{position:relative;display:inline-flex;margin-left:10px;transform:translateY(-6px) skewX(8deg);padding:2px;background:none;border:0;cursor:pointer;border-radius:6px;color:var(--wxc)}
+.wx .ti{font-size:17px;display:inline-block}
+.wx.mode{margin-left:4px;color:var(--gold)}
+.wx-fx{position:absolute;left:-6px;right:-8px;top:-4px;bottom:-6px;pointer-events:none}
+.dt{font-size:10px;color:var(--fade);font-weight:800;letter-spacing:1.6px}
+
+/* weather micro-animations */
+.drop{position:absolute;top:0;width:2px;height:6px;border-radius:2px;background:var(--wxc);opacity:0}
+.drop:nth-child(1){left:4px}
+.drop:nth-child(2){left:13px;animation-delay:.35s !important}
+.drop:nth-child(3){left:22px;animation-delay:.7s !important}
+[data-wx="rain"] .drop{animation:drop 1.1s linear infinite}
+@keyframes drop{0%{transform:translateY(0);opacity:0}15%{opacity:.85}80%{opacity:.85}100%{transform:translateY(22px);opacity:0}}
+.flake{position:absolute;top:0;width:3px;height:3px;border-radius:50%;background:var(--wxc);opacity:0}
+.flake:nth-child(4){left:5px}
+.flake:nth-child(5){left:14px;animation-delay:.6s !important}
+.flake:nth-child(6){left:23px;animation-delay:1.2s !important}
+[data-wx="snow"] .flake{animation:flake 1.9s ease-in infinite}
+@keyframes flake{0%{transform:translate(0,0);opacity:0}20%{opacity:.85}55%{transform:translate(-3px,12px)}100%{transform:translate(2px,22px);opacity:0}}
+.star{position:absolute;width:3px;height:3px;background:var(--starc);transform:rotate(45deg);opacity:0}
+.star:nth-child(7){left:-2px;top:4px}
+.star:nth-child(8){left:26px;top:-1px;animation-delay:.8s !important}
+[data-wx="night"] .star{animation:twinkle 1.6s ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:0;transform:rotate(45deg) scale(.6)}50%{opacity:.95;transform:rotate(45deg) scale(1)}}
+[data-wx="sun"] .wx .ti{animation:spin 16s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+[data-wx="cloud"] .wx .ti{animation:drift 3.6s ease-in-out infinite}
+@keyframes drift{0%,100%{transform:translateX(0)}50%{transform:translateX(3px)}}
+
+/* ---------- stats capsule ---------- */
+.stats{
+  display:flex;align-items:center;gap:12px;margin:14px 22px 0;padding:11px 13px;
+  background:var(--surface);border:1px solid var(--line);border-radius:18px;
+  box-shadow:var(--shadow-sm);position:relative;z-index:2;
+  transition:background .45s ease,border-color .45s ease;
+}
+.avatar{flex:0 0 36px;width:36px;height:36px;border-radius:12px;background:var(--yellow);color:#241B0E;display:flex;align-items:center;justify-content:center;font-size:16px}
+.bars{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
+.brow{display:flex;align-items:center;gap:9px}
+.blab{font-size:12px;letter-spacing:.08em;min-width:34px;color:var(--ink)}
+.track{flex:1;height:6px;background:var(--track);border-radius:3px;overflow:hidden}
+.fill{height:100%;border-radius:3px;transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.fill.xp{background:linear-gradient(90deg,var(--yellow),#FFD866)}
+.fill.ink{background:var(--quill)}
+.bval{font-size:11px;color:var(--mut);font-weight:700;letter-spacing:.3px;min-width:46px;white-space:nowrap;text-align:right}
+.coins{flex:0 0 auto;display:flex;align-items:center;gap:5px;font-size:14px;font-weight:800;font-family:'Anton',sans-serif;letter-spacing:.05em}
+.coins .ti{font-size:16px;color:var(--yellow)}
+
+/* ============================================================
+   the marquee (today) — the one loud thing
+   ============================================================ */
+.marquee{position:relative;z-index:2;padding:20px 22px 0;flex:0 0 auto}
+.mq{
+  position:relative;z-index:1;margin:0;
+  font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;
+  font-size:57px;line-height:.92;letter-spacing:.015em;color:var(--ink);
+  text-shadow:var(--glowT);
+}
+.mq > span{display:block;animation:mqIn .62s cubic-bezier(.18,.9,.24,1.04) both}
+.mq > span + span{margin-left:36px;animation-delay:.07s}
+@keyframes mqIn{from{opacity:0;transform:translateY(20px) skewX(-9deg)}to{opacity:1;transform:none}}
+.mq-sub{position:relative;z-index:1;margin-top:9px;font-size:13.5px;color:var(--mut);animation:mqIn .62s .14s cubic-bezier(.18,.9,.24,1.04) both}
+
+/* the hero owl — perched on the incoming letter */
+.owl{display:block;pointer-events:none}
+.owl.hero{
+  position:absolute;right:8px;bottom:-52px;width:118px;height:128px;z-index:3;
+  filter:drop-shadow(0 10px 14px rgba(0,0,0,.22));
+  animation:swoop .8s cubic-bezier(.2,.9,.25,1.05) both, perch 4.2s 1s ease-in-out infinite;
+}
+@keyframes swoop{from{opacity:0;transform:translate(44px,-56px) rotate(10deg)}to{opacity:1;transform:translate(0,0) rotate(-4deg)}}
+@keyframes perch{0%,100%{transform:rotate(-4deg) translateY(0)}50%{transform:rotate(-3deg) translateY(-3px)}}
+.owl.mini{position:absolute;right:20px;top:2px;width:56px;height:60px;z-index:2;filter:drop-shadow(0 6px 8px rgba(0,0,0,.2))}
+.app[data-mode="night"] .owl{filter:drop-shadow(0 8px 12px rgba(0,0,0,.5)) drop-shadow(0 0 12px rgba(255,192,23,.28))}
+
+/* ---------- section marquees ---------- */
+.headline{padding:26px 22px 0}
+.hl{position:relative;z-index:1;display:inline-flex;align-items:flex-start;font-size:40px;line-height:.95;text-transform:uppercase;text-shadow:var(--glowT)}
+.hl .u{position:absolute;left:1px;top:-9px;width:30px;height:5px;background:var(--yellow);transform:skewX(-24deg);border-radius:1px}
+.hl .t{position:relative}
+.hl.sm{font-size:30px}
+.hl.sm .u{height:4px;top:-8px}
+.screen.on .hl{animation:mqIn .5s cubic-bezier(.18,.9,.24,1.04) both}
+
+
+/* ============================================================
+   the letter (today's pick card) — always paper, always lit
+   ============================================================ */
+.pick-wrap{position:relative;z-index:1;padding:20px 22px 0}
+.card{
+  --ink:var(--letter-ink); --mut:#6E6250; --fade:#9C8F77;
+  position:relative;display:flex;gap:14px;color:var(--letter-ink);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.5), rgba(255,255,255,0) 26%),
+    var(--letter);
+  border:1px solid rgba(60,44,16,.18);border-radius:16px;
+  box-shadow:var(--letterGlow);
+  padding:18px 16px 16px;
+  transition:box-shadow .45s ease;
+}
+.card::before{ /* postmark rule along the top */
+  content:"";position:absolute;left:14px;right:14px;top:8px;height:1px;
+  background:repeating-linear-gradient(90deg,rgba(60,44,16,.28) 0 6px,transparent 6px 12px);
+}
+.card.swap{animation:swapIn .26s ease}
+@keyframes swapIn{from{opacity:0;transform:translateX(var(--fx,18px))}to{opacity:1;transform:none}}
+.lk{font-size:8.5px;font-weight:800;letter-spacing:2.2px;color:var(--gold);text-transform:uppercase;margin-bottom:5px}
+.save{width:32px;height:32px;flex:0 0 32px;display:flex;align-items:center;justify-content:center;background:var(--surface2);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow-sm);padding:0;cursor:pointer;color:var(--ink)}
+.card .save{background:#F1E7CB;border-color:rgba(60,44,16,.2);color:#3A2C14;box-shadow:none}
+.save .ti{font-size:16px}
+.save.on .ti{color:var(--ember);animation:pop .35s ease}
+@keyframes pop{50%{transform:scale(1.4)}}
+.sheet .save{position:absolute;top:12px;right:12px;z-index:3}
+.card .save{position:absolute;right:12px;bottom:12px;z-index:3}
+.cover{display:flex;flex-direction:column;justify-content:flex-end;border:1px solid rgba(0,0,0,.28);border-radius:4px;color:#EFE6C2;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.08), 2px 3px 8px rgba(0,0,0,.24)}
+.cover .it{line-height:1.15}
+.cover-lg{width:100px;height:148px;flex:0 0 100px;padding:10px;font-size:12px}
+.cover-md{width:84px;height:124px;flex:0 0 84px;padding:9px;font-size:11px}
+.cover-sm{width:82px;height:118px;padding:9px;font-size:11px}
+.cover-xs{width:44px;height:64px;flex:0 0 44px;padding:5px;font-size:8px}
+.cover-g{width:100%;aspect-ratio:5/7.2;padding:9px;font-size:11px}
+.pick-info{flex:1;min-width:0;padding-right:20px}
+.ttl{font-size:20px;line-height:1.04;letter-spacing:.02em}
+.auth{font-size:12.5px;color:var(--mut);margin-top:4px;font-weight:600}
+.quote{border-left:3px solid var(--yellow);padding:2px 0 2px 10px;margin-top:11px;font-size:13px;line-height:1.5}
+.btn{
+  display:inline-flex;align-items:center;gap:7px;margin-top:13px;
+  background:var(--yellow);color:#241B0E;border:0;border-radius:11px;
+  box-shadow:0 3px 0 rgba(90,62,6,.35), var(--shadow-sm);
+  padding:10px 16px 9px;font-family:'Anton',sans-serif;font-size:12.5px;font-weight:400;letter-spacing:.12em;cursor:pointer;
+}
+.btn .ti{font-size:14px}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line2);box-shadow:none}
+.card .btn.ghost,.letter .btn.ghost,.reader .btn.ghost{color:var(--letter-ink);border-color:rgba(60,44,16,.3)}
+.btn:active,.save:active,.iconbtn:active,.chip:active{transform:translateY(2px);box-shadow:none}
+
+/* ---------- dots ---------- */
+.dots{position:relative;z-index:1;display:flex;align-items:center;justify-content:flex-end;gap:7px;padding:16px 26px 0}
+.dot{width:14px;height:3px;border:0;padding:0;background:var(--line2);border-radius:2px;cursor:pointer;transition:width .25s,height .25s,background .25s,border-radius .25s}
+.dot.on{width:7px;height:7px;border-radius:50%;background:var(--yellow);box-shadow:0 0 8px rgba(255,192,23,.5)}
+
+/* ---------- sections & shelf ---------- */
+.sec{padding:24px 0 0;position:relative;z-index:1}
+.sec-head{display:flex;align-items:center;justify-content:space-between;padding:0 22px 12px}
+.sec-title{font-size:16px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink)}
+.all{background:none;border:0;padding:0;font-size:10.5px;font-weight:800;color:var(--gold);letter-spacing:1.2px;cursor:pointer}
+.shelf{display:flex;gap:16px;overflow-x:auto;padding:2px 22px 8px;scrollbar-width:none}
+.shelf::-webkit-scrollbar{display:none}
+.sh-item{flex:0 0 82px;background:none;border:0;padding:0;text-align:left;cursor:pointer;color:var(--ink)}
+.sh-title{font-size:12.5px;margin-top:8px;line-height:1.2;letter-spacing:.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mini-track{height:4px;background:var(--track);border-radius:2px;margin-top:6px;overflow:hidden}
+.mini-fill{height:100%;background:var(--yellow);transition:width .4s}
+.mini-pct{font-size:11px;color:var(--fade);margin-top:4px;font-weight:700}
+.ph{flex:0 0 82px;opacity:.35}
+
+/* ---------- discover (scout's desk) ---------- */
+.search{display:flex;align-items:center;gap:9px;margin-top:16px;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow-sm);padding:11px 13px}
+.search .ti{font-size:16px;color:var(--ember)}
+.search input{flex:1;min-width:0;border:0;outline:0;background:transparent;font:600 13px 'Inter Tight',sans-serif;color:var(--ink)}
+.search input::placeholder{color:var(--fade)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:14px 22px 0;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;background:var(--surface);border:1px solid var(--line2);border-radius:999px;box-shadow:none;padding:7px 13px;font-size:10.5px;font-weight:800;letter-spacing:.8px;cursor:pointer;color:var(--ink)}
+.chip.on{background:var(--ember);border-color:transparent;color:#FFF6E8}
+#screen-library .chip.on{background:var(--moss)}
+#screen-profile .chip.on{background:var(--violet)}
+.chip.grow{flex:1;display:flex;justify-content:center}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px 12px;padding:18px 22px 0}
+.g-item{position:relative;background:none;border:0;padding:0;text-align:left;cursor:pointer;color:var(--ink)}
+.g-title{font-size:12.5px;margin-top:7px;line-height:1.2;letter-spacing:.03em}
+.g-auth{font-size:9.5px;color:var(--fade);font-weight:700;margin-top:2px;letter-spacing:.4px}
+.g-heart{position:absolute;top:6px;right:6px;z-index:2;width:20px;height:20px;display:flex;align-items:center;justify-content:center;background:var(--yellow);color:#241B0E;border-radius:7px;animation:pop .35s ease;box-shadow:0 2px 5px rgba(0,0,0,.3)}
+.g-heart .ti{font-size:11px}
+.empty{padding:44px 22px;text-align:center;color:var(--mut)}
+.empty .ti{font-size:36px;color:var(--fade);opacity:.5}
+.empty .d{font-size:16px;margin-top:10px;color:var(--ink);letter-spacing:.05em;text-transform:uppercase}
+.empty p{font-size:12px;line-height:1.5;max-width:210px;margin:6px auto 0}
+
+#screen-discover{overflow:hidden;padding-bottom:88px}
+.tray{position:relative;z-index:1;padding:12px 22px 0}
+.tray-card{position:relative;display:flex;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow-sm);padding:12px}
+.tray-card .save{position:absolute;top:10px;right:10px}
+.tray-empty{display:flex;align-items:center;justify-content:center;min-height:72px;background:transparent;border:1px dashed var(--line2);box-shadow:none;color:var(--fade);font-size:12px;font-weight:700;letter-spacing:.4px}
+.tray-info{flex:1;min-width:0;padding-right:32px}
+.tray-ttl{font-size:14.5px;line-height:1.15;letter-spacing:.03em}
+.tray-auth{font-size:11px;color:var(--mut);font-weight:600;margin-top:2px}
+.tray-btns{display:flex;gap:8px;margin-top:9px;flex-wrap:wrap}
+.btn.xs{padding:6px 10px 5px;font-size:10px;letter-spacing:.1em;margin-top:0}
+.strip{display:flex;align-items:center;gap:10px;padding:10px 22px 0}
+.strip-label{flex:0 0 auto;font-size:9px;font-weight:800;letter-spacing:1.4px;color:var(--fade)}
+.strip-row{display:flex;gap:6px;overflow-x:auto;flex:1;min-width:0;scrollbar-width:none}
+.strip-row::-webkit-scrollbar{display:none}
+.spinelet{flex:0 0 26px;width:26px;height:38px;border:1px solid rgba(0,0,0,.3);border-radius:3px;padding:0;cursor:pointer;box-shadow:1px 2px 4px rgba(0,0,0,.25)}
+.chat{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:14px 18px;scrollbar-width:none;position:relative;z-index:1}
+.chat::-webkit-scrollbar{display:none}
+.msg{max-width:84%;font-size:13px;line-height:1.5;padding:10px 13px;border:1px solid var(--line);border-radius:15px}
+.msg.owl{align-self:flex-start;background:var(--surface);box-shadow:var(--shadow-sm);border-bottom-left-radius:4px}
+.msg.me{align-self:flex-end;background:var(--ink);color:var(--stage);border-color:transparent;border-bottom-right-radius:4px;font-weight:600}
+.bk{font-weight:800;cursor:pointer;background:linear-gradient(transparent 62%,rgba(255,192,23,.75) 0);padding:0 1px;color:var(--ink)}
+.lettercard{
+  --ink:var(--letter-ink);
+  align-self:flex-start;display:flex;align-items:center;gap:10px;max-width:88%;
+  background:var(--letter);color:var(--letter-ink);
+  border:1px solid rgba(60,44,16,.2);border-radius:13px;box-shadow:var(--letterGlow);
+  padding:10px 12px;cursor:pointer;text-align:left;
+}
+.stamp{width:30px;height:30px;flex:0 0 30px;display:flex;align-items:center;justify-content:center;background:var(--yellow);color:#241B0E;border:0;border-radius:8px;box-shadow:inset -1px -2px 2px rgba(0,0,0,.18)}
+.stamp .ti{font-size:15px}
+.lc-t{font-size:12.5px;letter-spacing:.03em}
+.lc-s{font-size:10px;color:#6E6250;font-weight:600}
+.tdots{display:inline-flex;gap:3px;padding:3px 2px}
+.tdots span{width:5px;height:5px;border-radius:50%;background:var(--mut);animation:blink 1s infinite}
+.tdots span:nth-child(2){animation-delay:.15s}
+.tdots span:nth-child(3){animation-delay:.3s}
+@keyframes blink{0%,80%,100%{opacity:.25}40%{opacity:1}}
+.chips.cz{padding:8px 18px;flex:0 0 auto}
+.composer{display:flex;align-items:center;gap:8px;padding:0 18px;flex:0 0 auto}
+.search.cz{margin-top:0;flex:1}
+
+/* ============================================================
+   the peek & the reader — always paper (a lit page)
+   ============================================================ */
+.letter,.reader{
+  --ink:var(--letter-ink); --mut:#6E6250; --fade:#9F927A;
+  --surface:#FFFCF0; --surface2:#F3EACD; --line:rgba(60,44,16,.16); --line2:rgba(60,44,16,.32);
+  --track:#EADFBE; --gold:#A8730A;
+  position:absolute;inset:0;z-index:8;display:flex;flex-direction:column;
+  background:var(--letter);color:var(--letter-ink);padding-top:44px;
+  transform:translateY(103%);transition:transform .32s cubic-bezier(.2,.9,.25,1);
+}
+.letter.on,.reader.on{transform:none}
+.l-top,.r-top{display:flex;align-items:center;gap:10px;padding:6px 14px 10px;border-bottom:1px solid rgba(60,44,16,.22)}
+.l-top .iconbtn,.r-top .iconbtn{width:32px;height:32px;flex:0 0 32px}
+.l-top .d{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;text-align:center;font-size:13px;letter-spacing:.28em}
+.l-top .owl.mini,.qhead .owl.mini{position:static;width:30px;height:32px;flex:0 0 30px}
+.l-body{flex:1;overflow-y:auto;padding:20px 22px 30px;scrollbar-width:none}
+.l-body::-webkit-scrollbar{display:none}
+.l-kick{font-size:9px;font-weight:800;letter-spacing:2.4px;color:var(--gold)}
+.l-ttl{font-size:27px;line-height:1.02;letter-spacing:.02em;margin-top:6px;text-transform:uppercase}
+.l-auth{font-size:12px;color:var(--mut);font-weight:600;margin-top:4px}
+.l-res{border-left:3px solid var(--yellow);padding:2px 0 2px 10px;margin-top:14px;font-size:14.5px;line-height:1.55}
+.l-sec{font-size:9.5px;font-weight:800;letter-spacing:2px;color:var(--gold);margin:20px 0 8px;padding-top:14px;border-top:1px dashed rgba(60,44,16,.3)}
+.l-chap{font-size:17px;letter-spacing:.02em}
+.l-p{margin:0 0 10px;font-family:'Fraunces',Georgia,serif;font-weight:420;font-size:13.5px;line-height:1.72}
+.l-ins{margin-bottom:14px}
+.l-ins-t{font-size:14px;margin-bottom:4px;letter-spacing:.03em}
+.l-tag{font-family:'Inter Tight',sans-serif;font-style:normal;font-size:9px;font-weight:800;letter-spacing:1.2px;color:var(--ember);text-transform:uppercase;margin-right:5px}
+.l-q{margin:8px 0 12px;padding:10px 13px;background:#FFFCF0;border:1px solid rgba(60,44,16,.2);border-left:3px solid var(--yellow);border-radius:9px;box-shadow:var(--shadow-sm);font-size:13px;line-height:1.55}
+.l-q small{display:block;margin-top:5px;font-family:'Inter Tight',sans-serif;font-style:normal;font-weight:700;font-size:9px;letter-spacing:1px;color:var(--mut)}
+.fr-row{display:flex;align-items:center;gap:10px;width:100%;background:#FFFCF0;border:1px solid rgba(60,44,16,.2);border-radius:11px;box-shadow:var(--shadow-sm);padding:10px;margin-bottom:10px;cursor:pointer;text-align:left;color:var(--letter-ink)}
+.fr-why{display:block;font-size:11.5px;color:var(--mut);line-height:1.4;margin-top:3px;font-weight:500}
+.l-btnrow{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.l-sign{margin-top:18px;font-size:13.5px;color:var(--mut)}
+
+/* ---------- library (the keep) ---------- */
+.seg{display:flex;gap:8px;padding:16px 22px 0;position:relative;z-index:1}
+.list{display:flex;flex-direction:column;gap:12px;padding:16px 22px 0}
+.rowc{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow-sm);padding:12px}
+.rinfo{flex:1;min-width:0}
+.rtitle{font-size:14.5px;line-height:1.15;letter-spacing:.03em}
+.rauth{font-size:11px;color:var(--mut);font-weight:600;margin-top:2px}
+.rbar{display:flex;align-items:center;gap:8px;margin-top:8px}
+.rbar .mini-pct{margin:0;min-width:32px;text-align:right}
+.fin{display:flex;align-items:center;gap:7px;margin-top:8px;font-size:10.5px;font-weight:800;letter-spacing:.8px;color:var(--moss)}
+.done-badge{width:22px;height:22px;flex:0 0 22px;display:flex;align-items:center;justify-content:center;background:var(--moss);color:#F4EFDF;border:0;border-radius:7px}
+.done-badge .ti{font-size:12px;color:#F4EFDF}
+.iconbtn{width:34px;height:34px;flex:0 0 34px;display:flex;align-items:center;justify-content:center;background:var(--yellow);color:#241B0E;border:0;border-radius:10px;box-shadow:0 2px 0 rgba(90,62,6,.3);cursor:pointer;padding:0}
+.iconbtn .ti{font-size:15px}
+.iconbtn.lite{background:var(--surface2);color:var(--ink);border:1px solid var(--line);box-shadow:none}
+.letter .iconbtn.lite,.reader .iconbtn.lite{background:#F1E7CB;color:#3A2C14;border-color:rgba(60,44,16,.2)}
+.iconbtn[disabled]{opacity:.35;pointer-events:none}
+
+/* ---------- profile (mirror's room) ---------- */
+.pcard{position:relative;z-index:1;background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:16px;margin:18px 22px 0}
+.prof{display:flex;align-items:center;gap:14px}
+.avatar.lg{flex:0 0 56px;width:56px;height:56px;border-radius:16px;font-size:24px}
+.pname{font-size:22px;letter-spacing:.04em;text-transform:uppercase}
+.psub{font-size:10.5px;color:var(--fade);font-weight:800;letter-spacing:1px;margin-top:3px;text-transform:uppercase}
+.streak{display:flex;align-items:center;gap:12px}
+.flamebox{width:40px;height:40px;flex:0 0 40px;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 35% 30%,#FFD866,var(--yellow) 70%);color:#241B0E;border:0;border-radius:12px;box-shadow:0 0 14px rgba(255,192,23,.4)}
+.flamebox .ti{font-size:20px}
+.stk-t{font-size:17px;letter-spacing:.04em;text-transform:uppercase}
+.stk-s{font-size:11px;color:var(--mut);font-weight:600;margin-top:1px}
+.wkdots{display:flex;gap:5px;margin-left:auto}
+.wd{width:9px;height:9px;border-radius:50%;background:var(--track)}
+.wd.on{background:var(--yellow)}
+.wd.today{background:var(--violet);box-shadow:0 0 0 2px var(--surface),0 0 0 3.5px var(--violet)}
+.snum{font-size:24px;letter-spacing:.03em}
+.slab{font-size:9.5px;color:var(--fade);font-weight:800;letter-spacing:1.2px;margin-top:2px}
+.chart-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:12px}
+.chart-head .d{font-size:14px;letter-spacing:.06em;text-transform:uppercase}
+.chart-head span{font-size:11px;color:var(--fade);font-weight:700}
+.week7{display:flex;gap:8px;height:78px}
+.day{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px}
+.vtrack{position:relative;width:100%;flex:1;background:var(--track);border-radius:5px;overflow:hidden}
+.vfill{position:absolute;left:0;right:0;bottom:0;background:var(--yellow);border-radius:4px 4px 0 0}
+.vfill.today{background:var(--violet)}
+.dlet{font-size:9px;font-weight:800;color:var(--fade);letter-spacing:.5px}
+.achgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:14px 22px 0;position:relative;z-index:1}
+.ach{display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow-sm);padding:12px 4px;text-align:center}
+.ach .ti{font-size:18px;color:var(--yellow)}
+.ach .al{font-size:8.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--mut)}
+.ach.lock{border-style:dashed;box-shadow:none;opacity:.5}
+.ach.lock .ti{color:var(--mut)}
+
+.pdiv{border-top:1px dashed var(--line2);margin:12px 0}
+.tpanel{display:none}
+.tpanel.on{display:block}
+.tpanel.swap{animation:swapIn .26s ease}
+.rep-grid{display:grid;grid-template-columns:1fr 1fr;margin-top:2px}
+.rcell{padding:9px 6px}
+.rcell:nth-child(odd){border-right:1px dashed var(--line2)}
+.rcell:nth-child(-n+2){border-bottom:1px dashed var(--line2)}
+.rcell:nth-child(even){padding-left:14px}
+.radar-svg{display:block;width:100%;max-width:300px;margin:2px auto 0}
+#rg{transform-box:view-box;transform-origin:176px 132px}
+.radar.go #rg{animation:radarPop .55s cubic-bezier(.2,.9,.25,1) both}
+@keyframes radarPop{from{transform:scale(.12);opacity:0}to{transform:scale(1);opacity:1}}
+.radar-note{margin:10px 2px 0;font-size:12.5px;line-height:1.45;color:var(--mut);text-align:center}
+.cal-week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:6px}
+.cal-week span{text-align:center;font-size:9px;font-weight:800;letter-spacing:.5px;color:var(--fade)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cd{position:relative;aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;background:transparent;border:1px solid transparent;border-radius:10px;padding:0;color:var(--mut);cursor:default}
+.cd.off{opacity:.32}
+.cd.rec{background:var(--surface2);border-color:var(--line2);box-shadow:var(--shadow-sm);color:var(--ink);cursor:pointer}
+.cd.rec::after{content:'';position:absolute;bottom:4px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:var(--violet)}
+.cd.rec:active{transform:translateY(2px);box-shadow:none}
+.cd.today{outline:2px solid var(--violet);outline-offset:2px}
+.cd.sel{background:var(--violet);border-color:transparent;color:#FBF7EC}
+.cd.sel::after{background:var(--yellow)}
+.cal-foot{display:flex;align-items:center;gap:6px;margin-top:12px;font-size:10px;font-weight:700;letter-spacing:.4px;color:var(--fade)}
+.cal-foot i{width:5px;height:5px;border-radius:50%;background:var(--violet)}
+.rec-kick{display:flex;align-items:center;gap:8px}
+.rec-kick .k{font-size:10px;font-weight:800;letter-spacing:2px;color:var(--fade)}
+.rec-lab{font-size:9px;font-weight:800;letter-spacing:1.4px;color:var(--violet);margin:13px 0 6px}
+.ask{display:inline-block;max-width:100%;background:var(--ink);color:var(--stage);border:0;border-radius:14px;border-bottom-left-radius:4px;box-shadow:var(--shadow-sm);padding:9px 13px;font-size:13px;font-weight:600;line-height:1.45}
+.prev-row{display:flex;align-items:center;gap:12px}
+.prev-ttl{font-size:14.5px;line-height:1.15;letter-spacing:.03em}
+.prev-auth{font-size:11px;color:var(--mut);font-weight:600;margin-top:2px}
+.prev-note{font-size:10px;font-weight:800;letter-spacing:.8px;color:var(--gold);margin-top:6px;text-transform:uppercase}
+#recCard.swap{animation:swapIn .26s ease}
+.qlist{display:flex;flex-direction:column;gap:12px;padding:12px 22px 0;position:relative;z-index:1}
+.qcard{position:relative;background:var(--letter);color:var(--letter-ink);border:1px solid rgba(60,44,16,.18);border-radius:13px;box-shadow:var(--letterGlow);padding:12px}
+.q-top{display:flex;gap:10px}
+.q-stamp{width:30px;height:30px;flex:0 0 30px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(0,0,0,.25);border-radius:8px;color:#EFE6C2}
+.q-stamp .ti{font-size:14px}
+.q-text{flex:1;min-width:0;padding-right:30px;font-size:13.5px;line-height:1.55;font-family:'Fraunces',Georgia,serif;font-weight:430}
+.q-copy{position:absolute;top:10px;right:10px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:#F1E7CB;border:1px solid rgba(60,44,16,.22);border-radius:8px;padding:0;cursor:pointer;color:#3A2C14}
+.q-copy .ti{font-size:13px}
+.q-copy.done .ti{color:var(--moss);animation:pop .35s ease}
+.q-meta{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-top:10px;padding-top:8px;border-top:1px dashed rgba(60,44,16,.3)}
+.q-by{font-size:9px;font-weight:800;letter-spacing:.8px;color:#6E6250;text-transform:uppercase}
+.q-date{font-size:9px;font-weight:800;letter-spacing:.8px;color:#9F927A;text-transform:uppercase;white-space:nowrap}
+.qhead{display:flex;align-items:center;gap:8px}
+
+/* ---------- about sheet ---------- */
+.sheet{max-height:86%;overflow-y:auto;scrollbar-width:none}
+.sheet::-webkit-scrollbar{display:none}
+.tray-intro{margin-top:6px;font-size:11.5px;line-height:1.45;color:var(--mut);font-weight:500;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.bk-intro{margin:12px 0 0;font-size:13px;line-height:1.6;font-family:'Fraunces',Georgia,serif;font-weight:430;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
+.rate{display:flex;align-items:center;gap:5px;margin-top:8px;font-size:12.5px;font-weight:800}
+.rate .ti{font-size:14px;color:var(--yellow)}
+.rate small{font-size:10px;font-weight:700;color:var(--fade);letter-spacing:.8px}
+.sh-sec{display:flex;align-items:center;gap:8px;font-size:9.5px;font-weight:800;letter-spacing:2px;color:var(--gold);margin:16px 0 8px;padding-top:12px;border-top:1px dashed var(--line2)}
+.soon{background:var(--yellow);border:0;border-radius:999px;padding:2px 8px;font-size:8.5px;font-weight:800;letter-spacing:1px;color:#241B0E}
+.auth-name{font-size:16px;letter-spacing:.04em;text-transform:uppercase}
+.bk-bio{margin:5px 0 10px;font-size:12.5px;line-height:1.5;color:var(--mut);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.link-row{display:flex;align-items:center;gap:9px;width:100%;background:var(--surface2);border:1px solid var(--line);border-radius:11px;box-shadow:none;padding:10px 12px;font-size:11.5px;font-weight:800;letter-spacing:.4px;margin-bottom:8px;text-align:left;cursor:pointer;color:var(--ink)}
+.link-row .ti{font-size:14px}
+.link-row .ext{margin-left:auto;color:var(--mut)}
+.link-row:active{transform:translateY(2px)}
+.sv-note{font-size:11.5px;color:var(--fade);font-weight:600;line-height:1.5}
+
+/* ---------- bottom nav — the cast roster capsule ---------- */
+.nav{
+  position:absolute;left:16px;right:16px;bottom:14px;z-index:5;
+  display:flex;padding:8px 6px;
+  background:var(--navbg);
+  -webkit-backdrop-filter:blur(16px) saturate(1.2);backdrop-filter:blur(16px) saturate(1.2);
+  border:1px solid var(--line);border-radius:999px;
+  box-shadow:var(--shadow);
+  transition:background .45s ease,border-color .45s ease;
+}
+.nv{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:0;padding:0;cursor:pointer;color:var(--mut)}
+.pill{width:44px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:999px;transition:background .25s}
+.nv .ti{font-size:19px}
+.nv .lab{font-size:10px;font-weight:700;letter-spacing:.8px}
+.nv.on{color:var(--ink)}
+.nv.on .pill .ti{font-size:16px;color:#241B0E}
+.nv.on .lab{font-family:'Anton',sans-serif;font-weight:400;letter-spacing:.12em;text-transform:uppercase}
+.nv.on[data-tab="today"] .pill{background:var(--yellow);box-shadow:0 0 12px rgba(255,192,23,.45)}
+.nv.on[data-tab="discover"] .pill{background:var(--ember);box-shadow:0 0 12px rgba(224,84,38,.4)}
+.nv.on[data-tab="discover"] .pill .ti,.nv.on[data-tab="library"] .pill .ti,.nv.on[data-tab="profile"] .pill .ti{color:#FFF6E4}
+.nv.on[data-tab="library"] .pill{background:var(--moss);box-shadow:0 0 12px rgba(43,150,96,.4)}
+.nv.on[data-tab="profile"] .pill{background:var(--violet);box-shadow:0 0 12px rgba(140,100,235,.42)}
+
+/* ---------- backdrop, sheet, reader, toast, burst ---------- */
+.backdrop{position:absolute;inset:0;z-index:6;background:rgba(6,7,14,.55);opacity:0;pointer-events:none;transition:opacity .25s}
+.backdrop.on{opacity:1;pointer-events:auto}
+.sheet{position:absolute;left:8px;right:8px;bottom:8px;z-index:9;background:var(--surface);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);padding:16px;transform:translateY(130%);transition:transform .3s cubic-bezier(.2,.9,.25,1)}
+.sheet.on{transform:none}
+.sh-flex{display:flex;gap:14px;padding-right:6px}
+.sh-info{flex:1;min-width:0}
+.btnrow{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.btnrow .btn{margin-top:0}
+
+.r-mid{flex:1;min-width:0;text-align:center}
+.r-title{font-size:14px;letter-spacing:.06em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-transform:uppercase}
+.r-auth{font-size:9.5px;color:#9F927A;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;margin-top:2px}
+.r-body{flex:1;overflow-y:auto;padding:22px 24px;scrollbar-width:none;cursor:pointer}
+.r-body::-webkit-scrollbar{display:none}
+.r-body.swap{animation:swapIn .22s ease}
+.r-chap{font-size:10px;font-weight:800;letter-spacing:2.4px;color:var(--gold);margin-bottom:14px}
+.r-body p{margin:0 0 16px;font-family:'Fraunces',Georgia,serif;font-weight:430;font-size:15px;line-height:1.8}
+.r-body p:first-of-type::first-letter{float:left;margin:6px 9px 0 0;font-family:'Anton',sans-serif;font-weight:400;font-size:42px;line-height:.82;color:var(--ember)}
+.r-foot{display:flex;align-items:center;gap:12px;background:#FFFCF0;border-top:1px solid rgba(60,44,16,.2);padding:12px 16px 18px}
+.r-prog{flex:1}
+.r-page{font-size:10px;font-weight:800;letter-spacing:1.2px;color:#9F927A;text-align:center;margin-bottom:6px}
+.r-prog .track{height:6px;display:flex}
+
+.toast{
+  position:absolute;left:50%;bottom:96px;z-index:20;display:flex;align-items:center;gap:8px;
+  background:rgba(16,13,7,.92);color:#F5EDD8;border:1px solid rgba(255,192,23,.3);border-radius:12px;
+  box-shadow:0 10px 26px -10px rgba(0,0,0,.6);
+  padding:10px 15px;font-size:11px;font-weight:800;letter-spacing:.4px;white-space:nowrap;
+  opacity:0;pointer-events:none;transform:translate(-50%,14px);transition:opacity .25s,transform .25s;
+}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.toast .ti{font-size:15px;color:var(--yellow)}
+.burst-layer{position:absolute;inset:0;z-index:21;pointer-events:none}
+.spark{position:absolute;width:6px;height:6px;border-radius:1px;background:var(--yellow);box-shadow:0 0 6px rgba(255,192,23,.6);animation:fly .7s ease-out forwards}
+@keyframes fly{to{transform:translate(var(--dx),var(--dy)) rotate(160deg);opacity:0}}
+
+@media (max-width:420px){body{padding:18px 8px}}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none !important;transition:none !important}
+}
+
+
+/* ============================================================
+   PATCHES synced from production app (Jul 2026)
+   ============================================================ */
+.soon{background:var(--yellow);border:0;border-radius:999px;padding:2px 8px;font-size:8.5px;font-weight:800;letter-spacing:1px;color:#241B0E}
+.disc-head{display:flex;align-items:center;justify-content:space-between;position:relative;padding:22px 22px 0}
+.disc-head .hl{position:relative;z-index:1}
+.disc-head .ghost{position:absolute;right:-30px;top:0;font-size:94px;pointer-events:none}
+.disc-head-right{display:flex;align-items:center;gap:8px;position:relative;z-index:2}
+.disc-head-right .owl.mini{position:static}
+.set-gear{position:absolute;right:18px;top:22px;z-index:3;width:32px;height:32px}
+
+/* Scout's two desks */
+.deskrow{display:flex;gap:6px;padding:10px 22px 0;position:relative;z-index:2}
+.deskchip{flex:0 0 auto;background:var(--surface);border:1px solid var(--line2);border-radius:999px;
+  padding:6px 13px;font-family:'Anton',sans-serif;font-weight:400;font-size:10px;letter-spacing:.12em;
+  color:var(--mut);cursor:pointer;transition:background .25s ease,color .25s ease}
+.deskchip.on{background:var(--ember);border-color:transparent;color:#FFF6E8}
+#screen-discover{transition:background .45s ease}
+#screen-discover[data-desk="pro"]{
+  background:linear-gradient(180deg,#171A23 0%,#10131B 100%);
+  --surface:#20242F;--surface2:#272C3A;--ink:#E9E7E0;--mut:#9BA1AE;--fade:#6E7480;
+  --line:rgba(150,165,200,.14);--line2:rgba(150,165,200,.30);--track:#262B37;
+  --ghost:rgba(233,231,224,.045);--shadow-sm:0 8px 18px -10px rgba(0,0,0,.55);
+}
+
+/* Settings */
+.settings{position:absolute;inset:0;z-index:12;display:flex;flex-direction:column;
+  background:linear-gradient(180deg,var(--stage) 0%,var(--stage2) 100%);color:var(--ink);
+  transform:translateY(100%);opacity:0;pointer-events:none;
+  transition:transform .34s cubic-bezier(.2,.8,.2,1),opacity .34s ease}
+.settings.on{transform:none;opacity:1;pointer-events:auto}
+.settings .l-top{flex:0 0 auto;background:transparent;border-bottom:1px solid var(--line)}
+.set-body{flex:1;min-height:0;overflow-y:auto;padding:2px 20px 40px;scrollbar-width:none}
+.set-body::-webkit-scrollbar{display:none}
+.set-row{display:flex;align-items:center;gap:14px;padding:14px 2px;border-bottom:1px solid var(--line)}
+.set-info{flex:1;min-width:0}
+.set-lab{font-size:14px;letter-spacing:.01em}
+.set-sub{font-size:11.5px;color:var(--mut);margin-top:2px;line-height:1.4}
+.tgl{flex:0 0 auto;width:44px;height:26px;border-radius:999px;border:1px solid var(--line2);
+  background:var(--track);position:relative;cursor:pointer;padding:0}
+.tgl.on{background:var(--yellow);border-color:var(--yellow)}
+.tgl-knob{position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;
+  background:#FBF5E5;box-shadow:0 1px 3px rgba(0,0,0,.35);transition:transform .2s}
+.tgl.on .tgl-knob{transform:translateX(18px)}
+.seg-inline{flex:0 0 auto;display:flex;gap:4px;background:var(--track);border:1px solid var(--line);border-radius:999px;padding:3px}
+.segchip{border:0;background:none;color:var(--mut);font-family:'Anton',sans-serif;
+  font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:5px 11px;border-radius:999px;cursor:pointer}
+.segchip.on{background:var(--yellow);color:#241B0E}
+.set-card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;margin:12px 0;box-shadow:var(--shadow-sm)}
+.set-foot{margin-top:24px;text-align:center;font-size:11px;color:var(--fade)}
+.link-row.danger{color:var(--ember)}
+.btn.danger{background:var(--ember);color:#fff}
+.cast-row{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:12px 0 2px}
+.cast-cell{background:var(--surface);border:1px solid var(--line);border-radius:12px;
+  padding:9px 2px 7px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;color:inherit}
+.cast-cell .owl{position:static;width:40px;height:44px;pointer-events:none}
+.cast-name{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase}
+.cast-job{font-size:8px;color:var(--mut);letter-spacing:.02em;white-space:nowrap}
+.cast-sub{margin:8px 2px 0;text-align:center}
+
+/* Opening night */
+.onboard{position:absolute;inset:0;z-index:14;display:none;flex-direction:column;align-items:center;
+  justify-content:center;gap:14px;padding:26px;overflow:hidden;
+  background:linear-gradient(180deg,#0D111F 0%,#151B31 100%);color:#F2EBD7;
+  --surface:#1B2239;--line:rgba(255,213,105,.13);--line2:rgba(255,213,105,.26);--mut:#A9AEC4;
+  --radarFill:rgba(166,138,240,.20);--violet:#A68AF0}
+.onboard.on{display:flex}
+.ob-glow{position:absolute;left:50%;top:-90px;width:340px;height:280px;transform:translateX(-50%);
+  background:radial-gradient(50% 60% at 50% 40%, rgba(255,192,23,.22) 0%, transparent 70%);pointer-events:none}
+.ob-skip{position:absolute;top:16px;right:16px;z-index:3;display:flex;align-items:center;gap:5px;
+  background:none;border:0;color:var(--mut);font-size:10.5px;font-weight:800;letter-spacing:.8px;cursor:pointer}
+.ob-marquee{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;z-index:1}
+.ob-marquee>span:first-child{font-size:54px;transform:skewX(-8deg)}
+.ob-tag{font-size:15px;letter-spacing:.35em;color:#FFC017}
+.ob-curtain{position:absolute;inset:0;z-index:2;animation:curtainRise 1.5s cubic-bezier(.6,.05,.35,1) .55s forwards}
+.ob-velvet{position:absolute;inset:0;background:repeating-linear-gradient(90deg,#6E1620 0 26px,#8A2230 26px 54px,#5C1119 54px 80px)}
+.ob-fringe{position:absolute;left:0;right:0;bottom:-14px;height:16px;
+  background:repeating-linear-gradient(90deg,#FFC017 0 5px,#A8730A 5px 10px);border-radius:0 0 4px 4px}
+@keyframes curtainRise{to{transform:translateY(-104%)}}
+.curtain-brief{position:absolute;inset:0;z-index:15;pointer-events:none;
+  animation:curtainRise .9s cubic-bezier(.6,.05,.35,1) .15s forwards}
+.ob-card{position:relative;z-index:1;width:100%;max-width:300px;background:var(--letter,#FBF4E1);
+  color:#241B0E;border-radius:16px;padding:20px 18px;box-shadow:0 22px 44px -18px rgba(0,0,0,.8);
+  display:flex;flex-direction:column;gap:13px}
+.ob-h{font-size:21px;letter-spacing:.02em;margin-top:-4px}
+.ob-row{display:flex;gap:11px;align-items:flex-start;font-size:12.5px;line-height:1.55}
+.ob-row .stamp{flex:0 0 30px;width:30px;height:30px;border-radius:50%;background:#F2E9D0;border:1px solid rgba(34,26,14,.16);
+  display:flex;align-items:center;justify-content:center}
+.ob-row .stamp .ti{font-size:14px;color:var(--ember,#D8481E)}
+.ob-row b.d{font-weight:400;letter-spacing:.06em}
+.ob-next{align-self:center;margin-top:6px}
+.ob-stage{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:14px;width:100%;max-width:320px}
+.ob-owl .owl.hero{position:static;width:130px;height:141px}
+.ob-lines{display:flex;flex-direction:column;gap:9px;width:100%}
+.ob-chips{flex-wrap:wrap;justify-content:center;overflow:visible;padding:0}
+.ob-scene{display:none;width:100%;justify-content:center;align-items:center;flex-direction:column;gap:14px}
+.ob-scene.on{display:flex}
+.ob-mirror{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
+.ob-radar{width:150px;height:155px}
+.l-caret{display:inline-block;width:2px;height:14px;margin-left:2px;background:var(--gold);vertical-align:-2px;animation:blink 1s steps(1) infinite}
+
+/* Memory tab (demo) */
+.mem-card .gate-label{font-size:9.5px;font-weight:800;letter-spacing:1.6px;color:var(--gold);text-transform:uppercase;margin-bottom:6px}
+.mem-card .gate-area{width:100%;min-height:64px;background:var(--surface2);border:1px solid var(--line);border-radius:12px;
+  padding:10px 12px;font-size:13px;line-height:1.45;color:var(--ink);resize:vertical;font-family:inherit}
+.mem-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.mem-chip{background:var(--surface);border:1px solid var(--line2);border-radius:999px;padding:5px 10px;
+  font-size:11px;font-weight:700;color:var(--ink)}
+.mem-sec{margin-top:16px}
+
+/* Mobile full-bleed (production ≤560px) */
+@media (max-width: 560px){
+  body{padding:0;background:#07070C;align-items:stretch;justify-content:flex-start}
+  .page{gap:0;width:100%}
+  .caption{display:none}
+  .phone{width:100%;max-width:none;padding:0;border-radius:0;border:0;box-shadow:none;background:transparent}
+  .app{height:100vh;height:100dvh;border-radius:0;padding-top:env(safe-area-inset-top)}
+  .status{display:none}
+  .nav{bottom:calc(10px + env(safe-area-inset-bottom))}
+  .screen{padding-bottom:calc(104px + env(safe-area-inset-bottom))}
+  #screen-discover{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
+  .mq{font-size:clamp(42px, 15vw, 57px)}
+  .pad-h .ghost,.disc-head .ghost{font-size:clamp(64px, 25vw, 94px)}
+  .logo{font-size:clamp(21px, 6.6vw, 25px)}
+  .ob-marquee>span:first-child{font-size:clamp(40px, 14vw, 54px)}
+}
+
+</style>
+</head>
+<body>
+<!-- ============ THE CAST (owl defs) ============ -->
+<svg class="owldefs" width="0" height="0" style="position:absolute" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="fluff" x="-25%" y="-25%" width="150%" height="150%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="8" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="4.5"/>
+    </filter>
+    <filter id="fluff2" x="-35%" y="-35%" width="170%" height="170%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.5" numOctaves="2" seed="4" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="9"/>
+    </filter>
+    <radialGradient id="g-scout" cx="0.42" cy="0.28" r="0.95">
+      <stop offset="0" stop-color="var(--ember-l,#FF9163)"/>
+      <stop offset="0.58" stop-color="var(--ember,#D8481E)"/>
+      <stop offset="1" stop-color="var(--ember-d,#93290C)"/>
+    </radialGradient>
+    <radialGradient id="g-peek" cx="0.42" cy="0.28" r="0.95">
+      <stop offset="0" stop-color="var(--teal-l,#5CC0B1)"/>
+      <stop offset="0.58" stop-color="var(--teal,#177E71)"/>
+      <stop offset="1" stop-color="var(--teal-d,#0B5348)"/>
+    </radialGradient>
+    <radialGradient id="g-scribe" cx="0.42" cy="0.28" r="0.95">
+      <stop offset="0" stop-color="var(--quill-l,#7E93E6)"/>
+      <stop offset="0.58" stop-color="var(--quill,#3A55B4)"/>
+      <stop offset="1" stop-color="var(--quill-d,#1F326E)"/>
+    </radialGradient>
+    <radialGradient id="g-mirror" cx="0.42" cy="0.28" r="0.95">
+      <stop offset="0" stop-color="var(--violet-l,#B29AEF)"/>
+      <stop offset="0.58" stop-color="var(--violet,#7451CC)"/>
+      <stop offset="1" stop-color="var(--violet-d,#452B93)"/>
+    </radialGradient>
+    <radialGradient id="g-keeper" cx="0.42" cy="0.28" r="0.95">
+      <stop offset="0" stop-color="var(--moss-l,#5FB183)"/>
+      <stop offset="0.58" stop-color="var(--moss,#156D44)"/>
+      <stop offset="1" stop-color="var(--moss-d,#0C4A2C)"/>
+    </radialGradient>
+    <radialGradient id="g-belly" cx="0.5" cy="0.3" r="0.9">
+      <stop offset="0" stop-color="#FBF0D6"/>
+      <stop offset="0.7" stop-color="var(--belly,#F4E6C4)"/>
+      <stop offset="1" stop-color="#E2D1A6"/>
+    </radialGradient>
+  </defs>
+
+  <!-- SCOUT · finds your next book · overeager, ear tufts up -->
+  <symbol id="owl-scout" viewBox="0 0 120 130">
+    <ellipse cx="60" cy="122" rx="28" ry="5.5" fill="var(--oShadow,rgba(40,26,8,.2))"/>
+    <g filter="url(#fluff2)">
+      <path d="M32,28 L22,7 L45,17 Z" fill="url(#g-scout)"/>
+      <path d="M88,28 L98,7 L75,17 Z" fill="url(#g-scout)"/>
+    </g>
+    <g filter="url(#fluff)">
+      <path d="M60,15 C89,15 98,45 98,74 C98,103 82,119 60,119 C38,119 22,103 22,74 C22,45 31,15 60,15 Z" fill="url(#g-scout)"/>
+      <path d="M23,62 C13,82 19,102 34,111 C27,95 27,76 31,60 Z" fill="var(--ember-d,#93290C)"/>
+      <path d="M97,62 C107,82 101,102 86,111 C93,95 93,76 89,60 Z" fill="var(--ember-d,#93290C)"/>
+      <ellipse cx="60" cy="87" rx="24" ry="26" fill="url(#g-belly)"/>
+    </g>
+    <circle cx="44" cy="52" r="16.5" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
+    <circle cx="76" cy="52" r="16.5" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
+    <circle cx="44.5" cy="53" r="8.6" fill="var(--irisC,#4A2F14)"/>
+    <circle cx="75.5" cy="53" r="8.6" fill="var(--irisC,#4A2F14)"/>
+    <circle cx="44.5" cy="53" r="4" fill="#17110B"/>
+    <circle cx="75.5" cy="53" r="4" fill="#17110B"/>
+    <circle cx="48" cy="49.4" r="2.7" fill="#FFFFFF"/>
+    <circle cx="79" cy="49.4" r="2.7" fill="#FFFFFF"/>
+    <circle cx="41.6" cy="56" r="1.3" fill="rgba(255,255,255,.85)"/>
+    <circle cx="72.6" cy="56" r="1.3" fill="rgba(255,255,255,.85)"/>
+    <g transform="translate(27.5,35.5)">
+      <rect width="33" height="33.5" rx="15" fill="url(#g-scout)" transform="scale(1 0.05)">
+        <animateTransform attributeName="transform" type="scale"
+          values="1 0.05;1 0.05;1 1;1 0.05;1 0.05" keyTimes="0;0.9;0.94;0.98;1"
+          dur="5.4s" repeatCount="indefinite"/>
+      </rect>
+    </g>
+    <g transform="translate(59.5,35.5)">
+      <rect width="33" height="33.5" rx="15" fill="url(#g-scout)" transform="scale(1 0.05)">
+        <animateTransform attributeName="transform" type="scale"
+          values="1 0.05;1 0.05;1 1;1 0.05;1 0.05" keyTimes="0;0.9;0.94;0.98;1"
+          dur="5.4s" repeatCount="indefinite"/>
+      </rect>
+    </g>
+    <path d="M60,61 L53.5,67 Q60,75 66.5,67 Z" fill="var(--beakC,#E9A238)" stroke="rgba(0,0,0,.18)" stroke-width="1"/>
+    <path d="M45,118 q4,7 9,0 M66,118 q4,7 9,0" stroke="var(--beakC,#E9A238)" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </symbol>
+
+  <symbol id="owl-scout-pro" viewBox="0 0 120 130">
+    <ellipse cx="56" cy="122" rx="28" ry="5.5" fill="var(--oShadow,rgba(40,26,8,.2))"/>
+    <g transform="rotate(-8 60 120)">
+      <g filter="url(#fluff2)">
+        <path d="M41,26 L37,6 L54,16 Z" fill="url(#g-scout)"/>
+        <path d="M79,26 L83,6 L66,16 Z" fill="url(#g-scout)"/>
+      </g>
+      <g filter="url(#fluff)">
+        <path d="M60,16 C80,16 95,44 96,76 C97,103 81,119 60,119 C39,119 23,103 24,76 C25,44 40,16 60,16 Z" fill="url(#g-scout)"/>
+        <ellipse cx="60" cy="88" rx="23" ry="25" fill="url(#g-belly)"/>
+      </g>
+      <!-- the suit: smooth tailored panels (cloth, not feathers) -->
+      <path d="M27,60 C13,80 15,102 31,114 C37,117 43,118 47,118 L47,88 C37,84 30,74 29,62 Z"
+        fill="#232936" stroke="rgba(0,0,0,.28)" stroke-width="0.9"/>
+      <!-- the fan, in office colours, tucked under the right sleeve -->
+      <g stroke="rgba(0,0,0,.25)" stroke-width="1">
+        <rect x="88" y="74" width="8" height="30" rx="1.5" fill="var(--gold,#A8730A)" transform="rotate(20 92 100)"/>
+        <rect x="92" y="74" width="8" height="30" rx="1.5" fill="#8B95A8" transform="rotate(40 96 100)"/>
+        <rect x="96" y="74" width="8" height="30" rx="1.5" fill="#2B3240" transform="rotate(60 100 100)"/>
+      </g>
+      <path d="M93,60 C107,80 105,102 89,114 C83,117 77,118 73,118 L73,88 C83,84 90,74 91,62 Z"
+        fill="#232936" stroke="rgba(0,0,0,.28)" stroke-width="0.9"/>
+      <!-- lapels, shirt collar, tie, and a gold pocket square -->
+      <g stroke="rgba(0,0,0,.2)" stroke-width="0.8">
+        <path d="M60,70 L45,95 L53,99 L60,82 Z" fill="#1E232E" stroke="#46506A"/>
+        <path d="M60,70 L75,95 L67,99 L60,82 Z" fill="#1E232E" stroke="#46506A"/>
+        <path d="M48,66 L60,72 L52,79 Z" fill="#FBF5E5"/>
+        <path d="M72,66 L60,72 L68,79 Z" fill="#FBF5E5"/>
+        <path d="M55.5,71 L64.5,71 L62.5,78 L57.5,78 Z" fill="var(--ember-d,#93290C)"/>
+        <path d="M57.5,78 L62.5,78 L66,97 L60,104 L54,97 Z" fill="var(--ember-d,#93290C)"/>
+        <line x1="58.5" y1="84" x2="61.5" y2="84" stroke="rgba(255,246,232,.4)" stroke-width="1.4"/>
+        <path d="M37,98 l7.5,-2.6 l-1.3,7 z" fill="var(--yellow,#FFC017)"/>
+      </g>
+      <circle cx="44" cy="50" r="17" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
+      <circle cx="76" cy="50" r="17" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
+      <circle cx="44.5" cy="51.5" r="9" fill="var(--irisC,#4A2F14)"/>
+      <circle cx="75.5" cy="51.5" r="9" fill="var(--irisC,#4A2F14)"/>
+      <circle cx="44.5" cy="51.5" r="4.2" fill="#17110B"/>
+      <circle cx="75.5" cy="51.5" r="4.2" fill="#17110B"/>
+      <circle cx="48.2" cy="47.6" r="2.9" fill="#FFFFFF"/>
+      <circle cx="79.2" cy="47.6" r="2.9" fill="#FFFFFF"/>
+      <circle cx="41.4" cy="54.8" r="1.4" fill="rgba(255,255,255,.85)"/>
+      <circle cx="72.4" cy="54.8" r="1.4" fill="rgba(255,255,255,.85)"/>
+      <g transform="translate(26.5,32.5)">
+        <rect width="35" height="35.5" rx="16" fill="url(#g-scout)" transform="scale(1 0.05)">
+          <animateTransform attributeName="transform" type="scale"
+            values="1 0.05;1 0.05;1 1;1 0.05;1 0.05" keyTimes="0;0.9;0.94;0.98;1"
+            dur="5.4s" repeatCount="indefinite"/>
+        </rect>
+      </g>
+      <g transform="translate(58.5,32.5)">
+        <rect width="35" height="35.5" rx="16" fill="url(#g-scout)" transform="scale(1 0.05)">
+          <animateTransform attributeName="transform" type="scale"
+            values="1 0.05;1 0.05;1 1;1 0.05;1 0.05" keyTimes="0;0.9;0.94;0.98;1"
+            dur="5.4s" repeatCount="indefinite"/>
+        </rect>
+      </g>
+      <path d="M60,59.5 L53.5,65.5 Q60,73.5 66.5,65.5 Z" fill="var(--beakC,#E9A238)" stroke="rgba(0,0,0,.18)" stroke-width="1"/>
+      <path d="M45,118 q4,7 9,0 M66,118 q4,7 9,0" stroke="var(--beakC,#E9A238)" stroke-width="3" fill="none" stroke-linecap="round"/>
+    </g>
+  </symbol>
+
+  <!-- PEEK · previews everything, finishes nothing · one wing raised -->
+  <symbol id="owl-peek" viewBox="0 0 120 130">
+    <g transform="translate(60,66) scale(0.9) translate(-60,-66)">
+      <ellipse cx="60" cy="120" rx="27" ry="5.5" fill="var(--oShadow,rgba(40,26,8,.2))"/>
+      <g filter="url(#fluff)">
+        <path d="M60,20 C86,20 94,46 94,74 C94,100 79,116 60,116 C41,116 26,100 26,74 C26,46 34,20 60,20 Z" fill="url(#g-peek)"/>
+        <path d="M94,64 C103,82 98,100 85,108 C91,93 91,76 87,62 Z" fill="var(--teal-d,#0B5348)"/>
+        <ellipse cx="62" cy="86" rx="22" ry="24" fill="url(#g-belly)"/>
+      </g>
+      <circle cx="41" cy="57" r="11" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
+      <circle cx="41.5" cy="58" r="5.8" fill="var(--irisC,#4A2F14)"/>
+      <circle cx="41.5" cy="58" r="2.7" fill="#17110B"/>
+      <circle cx="43.8" cy="55.6" r="1.6" fill="#FFFFFF"/>
+      <circle cx="77" cy="50" r="17.5" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
+      <circle cx="76.5" cy="51" r="9.2" fill="var(--irisC,#4A2F14)"/>
+      <circle cx="76.5" cy="51" r="4.4" fill="#17110B"/>
+      <circle cx="80.4" cy="47" r="2.9" fill="#FFFFFF"/>
+      <circle cx="73" cy="54.4" r="1.4" fill="rgba(255,255,255,.85)"/>
+      <g transform="translate(59.5,32.5)">
+        <rect width="35" height="35.5" rx="16" fill="url(#g-peek)" transform="scale(1 0.05)">
+          <animateTransform attributeName="transform" type="scale"
+            values="1 0.05;1 0.05;1 1;1 0.05;1 0.05" keyTimes="0;0.86;0.9;0.94;1"
+            dur="4.6s" repeatCount="indefinite"/>
+        </rect>
+      </g>
+      <path d="M60,63 L54,69 Q60,76.5 66,69 Z" fill="var(--beakC,#E9A238)" stroke="rgba(0,0,0,.18)" stroke-width="1"/>
+      <g filter="url(#fluff)">
+        <path d="M24,62 C12,40 28,22 46,30 C39,40 36,51 39,63 C33,66 27,65 24,62 Z" fill="url(#g-peek)"/>
+      </g>
+      <path d="M46,115 q4,7 9,0 M66,115 q4,7 9,0" stroke="var(--beakC,#E9A238)" stroke-width="3" fill="none" stroke-linecap="round"/>
+    </g>
+  </symbol>
+
+  <!-- SCRIBE · remembers every line · spectacles and a quill -->
+  <symbol id="owl-scribe" viewBox="0 0 120 130">
+    <ellipse cx="60" cy="123" rx="27" ry="5.5" fill="var(--oShadow,rgba(40,26,8,.2))"/>
+    <g filter="url(#fluff)">
+      <path d="M60,12 C85,12 92,44 92,76 C92,104 78,120 60,120 C42,120 28,104 28,76 C28,44 35,12 60,12 Z" fill="url(#g-scribe)"/>
+      <path d="M29,60 C20,80 25,100 38,110 C32,94 32,75 35,58 Z" fill="var(--quill-d,#1F326E)"/>
+      <ellipse cx="60" cy="90" rx="22" ry="24" fill="url(#g-belly)"/>
+    </g>
+    <g transform="rotate(18 90 82)">
+      <line x1="90" y1="100" x2="90" y2="55" stroke="var(--beakC,#E9A238)" stroke-width="2"/>
+      <path d="M90,55 C84,63 83,77 89,89 C95,77 96,63 90,55 Z" fill="var(--quill-l,#7E93E6)" stroke="var(--quill-d,#1F326E)" stroke-width="1"/>
+    </g>
+    <circle cx="44" cy="50" r="13.5" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
+    <circle cx="76" cy="50" r="13.5" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
+    <circle cx="44.5" cy="51" r="7.4" fill="var(--irisC,#4A2F14)"/>
+    <circle cx="75.5" cy="51" r="7.4" fill="var(--irisC,#4A2F14)"/>
+    <circle cx="44.5" cy="51" r="3.4" fill="#17110B"/>
+    <circle cx="75.5" cy="51" r="3.4" fill="#17110B"/>
+    <circle cx="47.4" cy="47.8" r="2.2" fill="#FFFFFF"/>
+    <circle cx="78.4" cy="47.8" r="2.2" fill="#FFFFFF"/>
+    <g transform="translate(30.5,36.5)">
+      <rect width="27" height="27.5" rx="12" fill="url(#g-scribe)" transform="scale(1 0.05)">
+        <animateTransform attributeName="transform" type="scale"
+          values="1 0.05;1 0.05;1 1;1 0.05;1 0.05" keyTimes="0;0.92;0.95;0.98;1"
+          dur="6.2s" repeatCount="indefinite"/>
+      </rect>
+    </g>
+    <g transform="translate(62.5,36.5)">
+      <rect width="27" height="27.5" rx="12" fill="url(#g-scribe)" transform="scale(1 0.05)">
+        <animateTransform attributeName="transform" type="scale"
+          values="1 0.05;1 0.05;1 1;1 0.05;1 0.05" keyTimes="0;0.92;0.95;0.98;1"
+          dur="6.2s" repeatCount="indefinite"/>
+      </rect>
+    </g>
+    <circle cx="44" cy="50" r="15.5" fill="none" stroke="var(--specs,#2A2013)" stroke-width="2.6"/>
+    <circle cx="76" cy="50" r="15.5" fill="none" stroke="var(--specs,#2A2013)" stroke-width="2.6"/>
+    <path d="M59.5,50 L60.5,50" stroke="var(--specs,#2A2013)" stroke-width="2.6"/>
+    <path d="M28.5,48 L23,44.5 M91.5,48 L97,44.5" stroke="var(--specs,#2A2013)" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M60,60 L54,66 Q60,73.5 66,66 Z" fill="var(--beakC,#E9A238)" stroke="rgba(0,0,0,.18)" stroke-width="1"/>
+    <path d="M46,119 q4,7 9,0 M66,119 q4,7 9,0" stroke="var(--beakC,#E9A238)" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- MIRROR · draws your reading identity · calm half-lidded gaze -->
+  <symbol id="owl-mirror" viewBox="0 0 120 130">
+    <ellipse cx="60" cy="121" rx="27" ry="5.5" fill="var(--oShadow,rgba(40,26,8,.2))"/>
+    <g filter="url(#fluff)">
+      <path d="M60,16 C84,16 92,46 92,76 C92,102 78,117 60,117 C42,117 28,102 28,76 C28,46 36,16 60,16 Z" fill="url(#g-mirror)"/>
+      <path d="M29,62 C20,82 25,101 38,110 C32,94 32,76 35,60 Z" fill="var(--violet-d,#452B93)"/>
+      <path d="M91,62 C100,82 95,101 82,110 C88,94 88,76 85,60 Z" fill="var(--violet-d,#452B93)"/>
+      <ellipse cx="60" cy="87" rx="23" ry="25" fill="url(#g-belly)"/>
+    </g>
+    <path d="M50,82 a12,12 0 1 0 17,5 a9.5,9.5 0 1 1 -17,-5 Z" fill="var(--violet-d,#452B93)" opacity="0.8"/>
+    <circle cx="44" cy="52" r="15" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
+    <circle cx="76" cy="52" r="15" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
+    <circle cx="44.5" cy="54" r="8" fill="var(--irisC,#4A2F14)"/>
+    <circle cx="75.5" cy="54" r="8" fill="var(--irisC,#4A2F14)"/>
+    <circle cx="44.5" cy="54" r="3.6" fill="#17110B"/>
+    <circle cx="75.5" cy="54" r="3.6" fill="#17110B"/>
+    <circle cx="47.6" cy="51" r="2.2" fill="#FFFFFF"/>
+    <circle cx="78.6" cy="51" r="2.2" fill="#FFFFFF"/>
+    <g transform="translate(29,37)">
+      <rect width="30" height="30" rx="14" fill="url(#g-mirror)" transform="scale(1 0.46)"/>
+    </g>
+    <g transform="translate(61,37)">
+      <rect width="30" height="30" rx="14" fill="url(#g-mirror)" transform="scale(1 0.46)"/>
+    </g>
+    <path d="M60,62 L54.5,67.5 Q60,74.5 65.5,67.5 Z" fill="var(--beakC,#E9A238)" stroke="rgba(0,0,0,.18)" stroke-width="1"/>
+    <path d="M46,116 q4,7 9,0 M66,116 q4,7 9,0" stroke="var(--beakC,#E9A238)" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- KEEPER · counts everything twice · brow tufts and a little book -->
+  <symbol id="owl-keeper" viewBox="0 0 120 130">
+    <ellipse cx="60" cy="122" rx="33" ry="6" fill="var(--oShadow,rgba(40,26,8,.2))"/>
+    <g filter="url(#fluff)">
+      <path d="M60,18 C92,18 102,48 102,78 C102,104 84,118 60,118 C36,118 18,104 18,78 C18,48 28,18 60,18 Z" fill="url(#g-keeper)"/>
+      <path d="M19,64 C10,84 16,103 32,112 C25,96 25,78 29,62 Z" fill="var(--moss-d,#0C4A2C)"/>
+      <path d="M101,64 C110,84 104,103 88,112 C95,96 95,78 91,62 Z" fill="var(--moss-d,#0C4A2C)"/>
+      <ellipse cx="60" cy="88" rx="28" ry="26" fill="url(#g-belly)"/>
+    </g>
+    <g filter="url(#fluff2)">
+      <path d="M30,40 Q44,29 57,37 L55,43 Q44,37 33,45 Z" fill="var(--moss-d,#0C4A2C)"/>
+      <path d="M90,40 Q76,29 63,37 L65,43 Q76,37 87,45 Z" fill="var(--moss-d,#0C4A2C)"/>
+    </g>
+    <circle cx="45" cy="54" r="13" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
+    <circle cx="75" cy="54" r="13" fill="var(--sclera,#FFF9E9)" stroke="rgba(0,0,0,.14)" stroke-width="1"/>
+    <circle cx="45.5" cy="55" r="7" fill="var(--irisC,#4A2F14)"/>
+    <circle cx="74.5" cy="55" r="7" fill="var(--irisC,#4A2F14)"/>
+    <circle cx="45.5" cy="55" r="3.2" fill="#17110B"/>
+    <circle cx="74.5" cy="55" r="3.2" fill="#17110B"/>
+    <circle cx="48.2" cy="52" r="2" fill="#FFFFFF"/>
+    <circle cx="77.2" cy="52" r="2" fill="#FFFFFF"/>
+    <g transform="translate(32,41)">
+      <rect width="26" height="26.5" rx="12" fill="url(#g-keeper)" transform="scale(1 0.05)">
+        <animateTransform attributeName="transform" type="scale"
+          values="1 0.05;1 0.05;1 1;1 0.05;1 0.05" keyTimes="0;0.93;0.955;0.98;1"
+          dur="7.1s" repeatCount="indefinite"/>
+      </rect>
+    </g>
+    <g transform="translate(62,41)">
+      <rect width="26" height="26.5" rx="12" fill="url(#g-keeper)" transform="scale(1 0.05)">
+        <animateTransform attributeName="transform" type="scale"
+          values="1 0.05;1 0.05;1 1;1 0.05;1 0.05" keyTimes="0;0.93;0.955;0.98;1"
+          dur="7.1s" repeatCount="indefinite"/>
+      </rect>
+    </g>
+    <path d="M60,64 L54,70 Q60,77 66,70 Z" fill="var(--beakC,#E9A238)" stroke="rgba(0,0,0,.18)" stroke-width="1"/>
+    <g transform="rotate(-8 84 96)">
+      <rect x="73" y="88" width="22" height="16" rx="2" fill="var(--ember,#D8481E)" stroke="rgba(0,0,0,.22)" stroke-width="1"/>
+      <rect x="75.5" y="90.5" width="17" height="11" fill="url(#g-belly)"/>
+      <line x1="84" y1="90.5" x2="84" y2="101.5" stroke="rgba(0,0,0,.25)" stroke-width="1"/>
+    </g>
+    <path d="M45,117 q4,7 9,0 M67,117 q4,7 9,0" stroke="var(--beakC,#E9A238)" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </symbol>
+</svg>
+<!-- ============ ICON SPRITE (self-contained, no CDN) ============ -->
+<svg class="icondefs" width="0" height="0" style="position:absolute" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+<symbol id="i-arrow-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M5 12l14 0" /> <path d="M5 12l6 6" /> <path d="M5 12l6 -6" /></symbol>
+<symbol id="i-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M5 12l14 0" /> <path d="M13 18l6 -6" /> <path d="M13 6l6 6" /></symbol>
+<symbol id="i-battery-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M6 7h11a2 2 0 0 1 2 2v.5a.5 .5 0 0 0 .5 .5a.5 .5 0 0 1 .5 .5v3a.5 .5 0 0 1 -.5 .5a.5 .5 0 0 0 -.5 .5v.5a2 2 0 0 1 -2 2h-11a2 2 0 0 1 -2 -2v-6a2 2 0 0 1 2 -2" /> <path d="M7 10l0 4" /> <path d="M10 10l0 4" /> <path d="M13 10l0 4" /></symbol>
+<symbol id="i-book-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M19 4v16h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12z" /> <path d="M19 16h-12a2 2 0 0 0 -2 2" /> <path d="M9 8h6" /></symbol>
+<symbol id="i-books" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M5 4m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z" /> <path d="M9 4m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z" /> <path d="M5 8h4" /> <path d="M9 16h4" /> <path d="M13.803 4.56l2.184 -.53c.562 -.135 1.133 .19 1.282 .732l3.695 13.418a1.02 1.02 0 0 1 -.634 1.219l-.133 .041l-2.184 .53c-.562 .135 -1.133 -.19 -1.282 -.732l-3.695 -13.418a1.02 1.02 0 0 1 .634 -1.219l.133 -.041z" /> <path d="M14 9l4 -1" /> <path d="M16 16l3.923 -.98" /></symbol>
+<symbol id="i-calendar-event" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M4 5m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /> <path d="M16 3l0 4" /> <path d="M8 3l0 4" /> <path d="M4 11l16 0" /> <path d="M8 15h2v2h-2z" /></symbol>
+<symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M5 12l5 5l10 -10" /></symbol>
+<symbol id="i-chevron-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M15 6l-6 6l6 6" /></symbol>
+<symbol id="i-chevron-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M9 6l6 6l-6 6" /></symbol>
+<symbol id="i-cloud" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M6.657 18c-2.572 0 -4.657 -2.007 -4.657 -4.483c0 -2.475 2.085 -4.482 4.657 -4.482c.393 -1.762 1.794 -3.2 3.675 -3.773c1.88 -.572 3.956 -.193 5.444 1c1.488 1.19 2.162 3.007 1.77 4.769h.99c1.913 0 3.464 1.56 3.464 3.486c0 1.927 -1.551 3.487 -3.465 3.487h-11.878" /></symbol>
+<symbol id="i-cloud-rain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M7 18a4.6 4.4 0 0 1 0 -9a5 4.5 0 0 1 11 2h1a3.5 3.5 0 0 1 0 7" /> <path d="M11 13v2m0 3v2m4 -5v2m0 3v2" /></symbol>
+<symbol id="i-coin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /> <path d="M14.8 9a2 2 0 0 0 -1.8 -1h-2a2 2 0 1 0 0 4h2a2 2 0 1 1 0 4h-2a2 2 0 0 1 -1.8 -1" /> <path d="M12 7v10" /></symbol>
+<symbol id="i-compass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M8 16l2 -6l6 -2l-2 6l-6 2" /> <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /> <path d="M12 3l0 2" /> <path d="M12 19l0 2" /> <path d="M3 12l2 0" /> <path d="M19 12l2 0" /></symbol>
+<symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" /> <path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" /></symbol>
+<symbol id="i-external-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6" /> <path d="M11 13l9 -9" /> <path d="M15 4h5v5" /></symbol>
+<symbol id="i-feather" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M4 20l10 -10m0 -5v5h5m-9 -1v5h5m-9 -1v5h5m-5 -5l4 -4l4 -4" /> <path d="M19 10c.638 -.636 1 -1.515 1 -2.486a3.515 3.515 0 0 0 -3.517 -3.514c-.97 0 -1.847 .367 -2.483 1m-3 13l4 -4l4 -4" /></symbol>
+<symbol id="i-flame" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M12 10.941c2.333 -3.308 .167 -7.823 -1 -8.941c0 3.395 -2.235 5.299 -3.667 6.706c-1.43 1.408 -2.333 3.621 -2.333 5.588c0 3.704 3.134 6.706 7 6.706s7 -3.002 7 -6.706c0 -1.712 -1.232 -4.403 -2.333 -5.588c-2.084 3.353 -3.257 3.353 -4.667 2.235" /></symbol>
+<symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></symbol>
+<symbol id="i-heart-broken" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /> <path d="M12 6l-2 4l4 3l-2 4v3" /></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6z" /> <path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" /> <path d="M8 11v-4a4 4 0 1 1 8 0v4" /></symbol>
+<symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /> <path d="M3 7l9 6l9 -6" /></symbol>
+<symbol id="i-mail-opened" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M3 9l9 6l9 -6l-9 -6l-9 6" /> <path d="M21 9v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10" /> <path d="M3 19l6 -6" /> <path d="M15 13l6 6" /></symbol>
+<symbol id="i-microphone-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M15 12.9a5 5 0 1 0 -3.902 -3.9" /> <path d="M15 12.9l-3.902 -3.899l-7.513 8.584a2 2 0 1 0 2.827 2.83l8.588 -7.515z" /></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" /></symbol>
+<symbol id="i-moon-stars" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" /> <path d="M17 4a2 2 0 0 0 2 2a2 2 0 0 0 -2 2a2 2 0 0 0 -2 -2a2 2 0 0 0 2 -2" /> <path d="M19 11h2m-1 -1v2" /></symbol>
+<symbol id="i-pencil" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" /> <path d="M13.5 6.5l4 4" /></symbol>
+<symbol id="i-player-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M7 4v16l13 -8z" /></symbol>
+<symbol id="i-quote" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M10 11h-4a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h3a1 1 0 0 1 1 1v6c0 2.667 -1.333 4.333 -4 5" /> <path d="M19 11h-4a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h3a1 1 0 0 1 1 1v6c0 2.667 -1.333 4.333 -4 5" /></symbol>
+<symbol id="i-radar-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /> <path d="M15.51 15.56a5 5 0 1 0 -3.51 1.44" /> <path d="M18.832 17.86a9 9 0 1 0 -6.832 3.14" /> <path d="M12 12v9" /></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /> <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></symbol>
+<symbol id="i-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M10 14l11 -11" /> <path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5" /></symbol>
+<symbol id="i-snowflake" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M10 4l2 1l2 -1" /> <path d="M12 2v6.5l3 1.72" /> <path d="M17.928 6.268l.134 2.232l1.866 1.232" /> <path d="M20.66 7l-5.629 3.25l.01 3.458" /> <path d="M19.928 14.268l-1.866 1.232l-.134 2.232" /> <path d="M20.66 17l-5.629 -3.25l-2.99 1.738" /> <path d="M14 20l-2 -1l-2 1" /> <path d="M12 22v-6.5l-3 -1.72" /> <path d="M6.072 17.732l-.134 -2.232l-1.866 -1.232" /> <path d="M3.34 17l5.629 -3.25l-.01 -3.458" /> <path d="M4.072 9.732l1.866 -1.232l.134 -2.232" /> <path d="M3.34 7l5.629 3.25l2.99 -1.738" /></symbol>
+<symbol id="i-sparkles" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M16 18a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2zm0 -12a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2zm-7 12a6 6 0 0 1 6 -6a6 6 0 0 1 -6 -6a6 6 0 0 1 -6 6a6 6 0 0 1 6 6z" /></symbol>
+<symbol id="i-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" /> <path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" /></symbol>
+<symbol id="i-trophy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M8 21l8 0" /> <path d="M12 17l0 4" /> <path d="M7 4l10 0" /> <path d="M17 4v8a5 5 0 0 1 -10 0v-8" /> <path d="M5 9m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /> <path d="M19 9m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /></symbol>
+<symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /> <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /></symbol>
+<symbol id="i-wifi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M12 18l.01 0" /> <path d="M9.172 15.172a4 4 0 0 1 5.656 0" /> <path d="M6.343 12.343a8 8 0 0 1 11.314 0" /> <path d="M3.515 9.515c4.686 -4.687 12.284 -4.687 17 0" /></symbol>
+<symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M18 6l-12 12" /> <path d="M6 6l12 12" /></symbol>
+<symbol id="i-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" /> <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" /></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" /> <path d="M12 7v5l3 3" /></symbol>
+<symbol id="i-shield-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M12 3a12 12 0 0 0 8.5 3a12 12 0 0 1 -8.5 15a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3" /> <path d="M12 11m-1 0a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" /> <path d="M12 12l0 2.5" /></symbol>
+<symbol id="i-file-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M14 3v4a1 1 0 0 0 1 1h4" /> <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /> <path d="M9 9l1 0" /> <path d="M9 13l6 0" /> <path d="M9 17l6 0" /></symbol>
+<symbol id="i-history" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 8l0 4l2 2"/><path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5"/></symbol>
+</svg>
+
+<!-- Owlry standalone · generated Jul 11 2026 from owlry-owl-theatre.html + production app deltas -->
+<h1 class="sr-only">Owlry — standalone HTML synced to the production app: five-owl cast, matinée/evening lighting, Scout desks, peeks, settings, and opening night</h1>
+<div class="page">
+  <div class="phone">
+    <div class="app b" id="app" data-wx="rain" data-mode="night">
+
+      <div class="status">
+        <span id="stime">9:41</span>
+        <span class="icons">
+          <svg class="ti ti-wifi" width="1em" height="1em" style="font-size:15px" aria-hidden="true"><use href="#i-wifi"></use></svg>
+          <svg class="ti ti-battery-3" width="1em" height="1em" style="font-size:17px" aria-hidden="true"><use href="#i-battery-3"></use></svg>
+        </span>
+      </div>
+
+      <div class="screens">
+
+        <!-- ============ TODAY ============ -->
+        <section class="screen on" id="screen-today">
+
+          <div class="mast">
+            <div class="logo d">
+              <span>owlry<span class="gdot">.</span></span>
+              <button class="wx" id="wxBtn" aria-label="Weather: rainy day reads. Tap to change">
+                <svg class="ti" width="1em" height="1em" id="wxIcon" aria-hidden="true"><use id="wxUse" href="#i-cloud-rain"></use></svg>
+                <span class="wx-fx" aria-hidden="true">
+                  <span class="drop"></span><span class="drop"></span><span class="drop"></span>
+                  <span class="flake"></span><span class="flake"></span><span class="flake"></span>
+                  <span class="star"></span><span class="star"></span>
+                </span>
+              </button>
+              <button class="wx mode" id="modeBtn" aria-label="Lighting"><svg class="ti ti-sun" width="1em" height="1em" aria-hidden="true"><use href="#i-sun"></use></svg></button>
+            </div>
+            <span class="dt" id="dt">WED. JUN 10 &middot; 9:41 AM</span>
+          </div>
+
+          <div class="stats">
+            <div class="avatar d">M</div>
+            <div class="bars">
+              <div class="brow">
+                <span class="blab d" id="lvLab">LV 7</span>
+                <div class="track"><div class="fill xp" id="xpFill" style="width:65%"></div></div>
+                <span class="bval" id="xpVal">260 XP</span>
+              </div>
+              <div class="brow">
+                <span class="blab d">INK</span>
+                <div class="track"><div class="fill ink" id="inkFill" style="width:70%"></div></div>
+                <span class="bval" id="inkVal">84/120</span>
+              </div>
+            </div>
+            <div class="coins"><svg class="ti ti-coin" width="1em" height="1em" aria-hidden="true"><use href="#i-coin"></use></svg><span id="coinVal">240</span></div>
+          </div>
+
+          <div class="marquee">
+            <h2 class="mq" aria-label="Today's post">
+              <span>today's</span>
+              <span>post<span class="gdot">.</span></span>
+            </h2>
+            <div class="mq-sub it">delivered while you slept.</div>
+            <svg class="owl hero" viewBox="0 0 120 130" aria-hidden="true"><use href="#owl-scout"></use></svg>
+          </div>
+
+          <div class="pick-wrap">
+            <div class="card" id="pickCard"></div>
+          </div>
+
+          <div class="dots" id="dotsRow"></div>
+
+          <div class="sec">
+            <div class="sec-head">
+              <div class="sec-title d">pick up where you left off</div>
+              <button class="all" data-tab="library">ALL &rarr;</button>
+            </div>
+            <div class="shelf" id="shelf"></div>
+          </div>
+
+        </section>
+
+        <!-- ============ DISCOVER ============ -->
+        <section class="screen" id="screen-discover" data-desk="all">
+          <div class="pad-h disc-head" style="padding-bottom:2px">
+            <span class="ghost" aria-hidden="true">Scout</span>
+            <h1 class="hl sm d"><span class="u"></span><span class="t">discover<span class="gdot">.</span></span></h1>
+            <div class="disc-head-right">
+              <svg class="owl mini" id="discOwl" viewBox="0 0 120 130" aria-hidden="true"><use id="discOwlUse" href="#owl-scout"></use></svg>
+              <button class="iconbtn lite" id="histBtn" aria-label="Chat history" title="Chat history">
+                <svg class="ti ti-history" width="1em" height="1em" aria-hidden="true"><use href="#i-history"></use></svg>
+              </button>
+            </div>
+          </div>
+          <div class="deskrow" role="tablist" aria-label="Scout's desk">
+            <button class="deskchip on" role="tab" aria-selected="true" data-desk="all">EVERYTHING</button>
+            <button class="deskchip" role="tab" aria-selected="false" data-desk="pro">NON-FICTION</button>
+          </div>
+          <div class="tray" id="tray"></div>
+          <div class="strip" id="stripRow"></div>
+          <div class="chat" id="chat" role="log" aria-live="polite"></div>
+          <div class="chips cz" id="chiprow"></div>
+          <div class="composer">
+            <div class="search cz">
+              <svg class="ti ti-feather" width="1em" height="1em" aria-hidden="true"><use href="#i-feather"></use></svg>
+              <input id="qIn" type="text" placeholder="tell scout what&rsquo;s going on&hellip;" aria-label="Message scout">
+            </div>
+            <button class="iconbtn" id="sendBtn" aria-label="Send"><svg class="ti ti-send" width="1em" height="1em" aria-hidden="true"><use href="#i-send"></use></svg></button>
+          </div>
+        </section>
+
+        <!-- ============ LIBRARY ============ -->
+        <section class="screen" id="screen-library">
+          <div class="pad-h">
+            <span class="ghost" aria-hidden="true">Keeper</span>
+            <div class="hl sm d"><span class="u"></span><span class="t">library<span class="gdot">.</span></span></div>
+            <svg class="owl mini" viewBox="0 0 120 130" aria-hidden="true"><use href="#owl-keeper"></use></svg>
+          </div>
+          <div class="seg" id="segRow"></div>
+          <div id="libBody"></div>
+        </section>
+
+        <!-- ============ PROFILE ============ -->
+        <section class="screen" id="screen-profile">
+          <div class="pad-h">
+            <span class="ghost" aria-hidden="true">Mirror</span>
+            <div class="hl sm d"><span class="u"></span><span class="t">profile<span class="gdot">.</span></span></div>
+            <svg class="owl mini" viewBox="0 0 120 130" aria-hidden="true"><use href="#owl-mirror"></use></svg>
+            <button class="iconbtn lite set-gear" id="settingsBtn" aria-label="Settings">
+              <svg class="ti ti-settings" width="1em" height="1em" aria-hidden="true"><use href="#i-settings"></use></svg>
+            </button>
+          </div>
+
+          <div class="pcard">
+            <div class="prof">
+              <div class="avatar lg d">M</div>
+              <div>
+                <div class="pname d">Mira</div>
+                <div class="psub" id="psub">LV 7 BIBLIOPHILE &middot; 240 COINS</div>
+              </div>
+            </div>
+            <div class="pdiv"></div>
+            <div class="streak">
+              <div class="flamebox"><svg class="ti ti-flame" width="1em" height="1em" aria-hidden="true"><use href="#i-flame"></use></svg></div>
+              <div>
+                <div class="stk-t d">12-day streak</div>
+                <div class="stk-s">keep it kindled</div>
+              </div>
+              <div class="wkdots" aria-label="Reading streak, all 7 days this week">
+                <span class="wd on"></span><span class="wd on"></span><span class="wd today"></span>
+                <span class="wd on"></span><span class="wd on"></span><span class="wd on"></span><span class="wd on"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="seg" role="tablist" aria-label="Profile sections">
+            <button class="chip grow on" id="tabbtn-stats" role="tab" aria-selected="true" aria-controls="tab-stats" data-ptab="stats"><svg class="ti ti-radar-2" width="1em" height="1em" aria-hidden="true"><use href="#i-radar-2"></use></svg>stats</button>
+            <button class="chip grow" id="tabbtn-cal" role="tab" aria-selected="false" aria-controls="tab-cal" data-ptab="cal"><svg class="ti ti-calendar-event" width="1em" height="1em" aria-hidden="true"><use href="#i-calendar-event"></use></svg>calendar</button>
+            <button class="chip grow" id="tabbtn-quotes" role="tab" aria-selected="false" aria-controls="tab-quotes" data-ptab="quotes"><svg class="ti ti-quote" width="1em" height="1em" aria-hidden="true"><use href="#i-quote"></use></svg>quotes</button>
+            <button class="chip grow" id="tabbtn-mem" role="tab" aria-selected="false" aria-controls="tab-mem" data-ptab="mem"><svg class="ti ti-feather" width="1em" height="1em" aria-hidden="true"><use href="#i-feather"></use></svg>memory</button>
+          </div>
+
+          <!-- tab 1 · stats: one reading report card -->
+          <div class="tpanel on" id="tab-stats" role="tabpanel" aria-labelledby="tabbtn-stats">
+            <div class="pcard radar" id="radarCard">
+              <div class="chart-head"><div class="d">reading balance</div><span>six shelves of you</span></div>
+              <svg class="radar-svg" id="radarSvg" viewBox="0 0 352 264" role="img"
+                   aria-label="Radar chart of reading balance: health 62, wealth 48, relationship 71, career 76, mindset 85, fiction 94"></svg>
+              <p class="radar-note it">fiction is carrying the team &mdash; wealth could use a chapter.</p>
+              <div class="pdiv"></div>
+              <div class="rep-grid">
+                <div class="rcell"><div class="snum d">23</div><div class="slab">BOOKS READ</div></div>
+                <div class="rcell"><div class="snum d">6,412</div><div class="slab">PAGES TURNED</div></div>
+                <div class="rcell"><div class="snum d">84h</div><div class="slab">TIME READING</div></div>
+                <div class="rcell"><div class="snum d">132</div><div class="slab">HIGHLIGHTS</div></div>
+              </div>
+              <div class="pdiv"></div>
+              <div class="chart-head"><div class="d">this week</div><span>3h 56m</span></div>
+              <div class="week7">
+                <div class="day"><div class="vtrack"><div class="vfill" style="height:38%"></div></div><span class="dlet">M</span></div>
+                <div class="day"><div class="vtrack"><div class="vfill" style="height:62%"></div></div><span class="dlet">T</span></div>
+                <div class="day"><div class="vtrack"><div class="vfill today" style="height:48%"></div></div><span class="dlet">W</span></div>
+                <div class="day"><div class="vtrack"><div class="vfill" style="height:75%"></div></div><span class="dlet">T</span></div>
+                <div class="day"><div class="vtrack"><div class="vfill" style="height:30%"></div></div><span class="dlet">F</span></div>
+                <div class="day"><div class="vtrack"><div class="vfill" style="height:15%"></div></div><span class="dlet">S</span></div>
+                <div class="day"><div class="vtrack"><div class="vfill" style="height:88%"></div></div><span class="dlet">S</span></div>
+              </div>
+            </div>
+            <div class="achgrid">
+              <div class="ach"><svg class="ti ti-flame" width="1em" height="1em" aria-hidden="true"><use href="#i-flame"></use></svg><span class="al">7-day streak</span></div>
+              <div class="ach"><svg class="ti ti-moon" width="1em" height="1em" aria-hidden="true"><use href="#i-moon"></use></svg><span class="al">night owl</span></div>
+              <div class="ach"><svg class="ti ti-books" width="1em" height="1em" aria-hidden="true"><use href="#i-books"></use></svg><span class="al">20 books</span></div>
+              <div class="ach lock"><svg class="ti ti-lock" width="1em" height="1em" aria-hidden="true"><use href="#i-lock"></use></svg><span class="al">marathon</span></div>
+            </div>
+          </div>
+
+          <!-- tab 2 · owl-post calendar -->
+          <div class="tpanel" id="tab-cal" role="tabpanel" aria-labelledby="tabbtn-cal">
+            <div class="pcard">
+              <div class="chart-head"><div class="d">june</div><span id="calCount"></span></div>
+              <div class="cal-week" aria-hidden="true">
+                <span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
+              </div>
+              <div class="cal-grid" id="calGrid"></div>
+              <div class="cal-foot"><i aria-hidden="true"></i>a day you asked the owl &amp; peeked a pick</div>
+            </div>
+            <div class="pcard" id="recCard" aria-live="polite"></div>
+          </div>
+
+          <!-- tab 3 · saved quotes -->
+          <div class="tpanel" id="tab-quotes" role="tabpanel" aria-labelledby="tabbtn-quotes">
+            <div class="sec">
+              <div class="sec-head">
+                <div class="qhead"><svg class="owl mini" viewBox="0 0 120 130" aria-hidden="true"><use href="#owl-scribe"></use></svg><div class="sec-title d">tucked away</div></div>
+                <span id="qCount" style="font-size:11px;color:var(--fade);font-weight:700"></span>
+              </div>
+              <div class="qlist" id="qList" style="padding-top:0"></div>
+            </div>
+          </div>
+
+          <!-- tab 4 · memory (demo — signed-in in production) -->
+          <div class="tpanel" id="tab-mem" role="tabpanel" aria-labelledby="tabbtn-mem">
+            <div class="pcard mem-card">
+              <div class="chart-head"><div class="d">what the owl remembers</div><span>signed-in demo</span></div>
+              <div class="mem-sec">
+                <div class="gate-label">who you are</div>
+                <div class="gate-area" contenteditable="true">a night reader who keeps a soft spot for island myths and stubborn heroines</div>
+              </div>
+              <div class="mem-sec">
+                <div class="gate-label">what you're working through lately</div>
+                <div class="gate-area" contenteditable="true">learning to close the day without doomscrolling</div>
+              </div>
+              <div class="mem-sec">
+                <div class="gate-label">what you love</div>
+                <div class="mem-chips">
+                  <span class="mem-chip">quiet literary fiction</span>
+                  <span class="mem-chip">practical non-fiction</span>
+                  <span class="mem-chip">short chapters</span>
+                </div>
+              </div>
+              <div class="mem-sec">
+                <div class="gate-label">what to avoid</div>
+                <div class="mem-chips">
+                  <span class="mem-chip">gore</span>
+                  <span class="mem-chip">dense theory</span>
+                </div>
+              </div>
+              <div class="mem-sec">
+                <div class="gate-label">why you read</div>
+                <div class="mem-chips">
+                  <span class="mem-chip">wind down</span>
+                  <span class="mem-chip">grow a habit</span>
+                  <span class="mem-chip">find language for feelings</span>
+                </div>
+              </div>
+              <button class="link-row danger" style="margin-top:18px" data-ext="1">
+                <svg class="ti ti-refresh" width="1em" height="1em" aria-hidden="true"><use href="#i-refresh"></use></svg>
+                forget everything
+              </button>
+            </div>
+          </div>
+        </section>
+
+      </div><!-- /.screens -->
+
+      <!-- ============ BOTTOM NAV ============ -->
+      <nav class="nav" aria-label="Primary">
+        <button class="nv on" data-tab="today" aria-current="page">
+          <span class="pill"><svg class="ti ti-book-2" width="1em" height="1em" aria-hidden="true"><use href="#i-book-2"></use></svg></span>
+          <span class="lab">today</span>
+        </button>
+        <button class="nv" data-tab="discover">
+          <span class="pill"><svg class="ti ti-compass" width="1em" height="1em" aria-hidden="true"><use href="#i-compass"></use></svg></span>
+          <span class="lab">discover</span>
+        </button>
+        <button class="nv" data-tab="library">
+          <span class="pill"><svg class="ti ti-books" width="1em" height="1em" aria-hidden="true"><use href="#i-books"></use></svg></span>
+          <span class="lab">library</span>
+        </button>
+        <button class="nv" data-tab="profile">
+          <span class="pill"><svg class="ti ti-user" width="1em" height="1em" aria-hidden="true"><use href="#i-user"></use></svg></span>
+          <span class="lab">profile</span>
+        </button>
+      </nav>
+
+      <!-- ============ OVERLAYS ============ -->
+      <div class="backdrop" id="backdrop"></div>
+      <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Book details"></div>
+
+      <div class="reader" id="reader" role="dialog" aria-modal="true" aria-label="Reader">
+        <div class="r-top">
+          <button class="iconbtn lite" id="rBack" aria-label="Close reader"><svg class="ti ti-arrow-left" width="1em" height="1em" aria-hidden="true"><use href="#i-arrow-left"></use></svg></button>
+          <div class="r-mid">
+            <div class="r-title d" id="rTitle"></div>
+            <div class="r-auth" id="rAuth"></div>
+          </div>
+          <button class="save" id="rHeart" style="position:static" aria-label="Save to library" aria-pressed="false"><svg class="ti ti-heart" width="1em" height="1em" aria-hidden="true"><use href="#i-heart"></use></svg></button>
+        </div>
+        <div class="r-body" id="rBody"></div>
+        <div class="r-foot">
+          <button class="iconbtn lite" id="rPrev" aria-label="Previous page"><svg class="ti ti-chevron-left" width="1em" height="1em" aria-hidden="true"><use href="#i-chevron-left"></use></svg></button>
+          <div class="r-prog">
+            <div class="r-page" id="rPage"></div>
+            <div class="track"><div class="fill xp" id="rFill" style="width:0%"></div></div>
+          </div>
+          <button class="iconbtn" id="rNext" aria-label="Next page"><svg class="ti ti-chevron-right" width="1em" height="1em" aria-hidden="true"><use href="#i-chevron-right"></use></svg></button>
+        </div>
+      </div>
+
+      <div class="letter" id="letter" role="dialog" aria-modal="true" aria-label="Peek">
+        <div class="l-top">
+          <button class="iconbtn lite" data-close="1" aria-label="Close peek"><svg class="ti ti-arrow-left" width="1em" height="1em" aria-hidden="true"><use href="#i-arrow-left"></use></svg></button>
+          <div class="d"><svg class="owl mini" viewBox="0 0 120 130" aria-hidden="true"><use href="#owl-peek"></use></svg>OWL POST</div>
+          <button class="save" id="ltHeart" style="position:static" aria-label="Save to library" aria-pressed="false"><svg class="ti ti-heart" width="1em" height="1em" aria-hidden="true"><use href="#i-heart"></use></svg></button>
+        </div>
+        <div class="l-body" id="ltBody"></div>
+      </div>
+
+      
+      <!-- ============ SETTINGS ============ -->
+      <div class="settings" id="settings" role="dialog" aria-modal="true" aria-label="Settings">
+        <div class="l-top">
+          <button class="iconbtn lite" id="settingsClose" aria-label="Close settings"><svg class="ti ti-arrow-left" width="1em" height="1em" aria-hidden="true"><use href="#i-arrow-left"></use></svg></button>
+          <div class="d">SETTINGS</div>
+          <span style="flex:0 0 32px" aria-hidden="true"></span>
+        </div>
+        <div class="set-body">
+          <h1 class="hl sm d" style="margin-top:4px"><span class="u"></span><span class="t">settings<span class="gdot">.</span></span></h1>
+
+          <div class="sh-sec">READING</div>
+          <div class="set-row">
+            <div class="set-info"><div class="set-lab d">text size</div><div class="set-sub">how the reader sets its pages</div></div>
+            <div class="seg-inline" id="scaleSeg">
+              <button class="segchip" data-scale="sm">S</button>
+              <button class="segchip on" data-scale="md">M</button>
+              <button class="segchip" data-scale="lg">L</button>
+            </div>
+          </div>
+          <div class="set-row">
+            <div class="set-info"><div class="set-lab d">reduce motion</div><div class="set-sub">calm the swipes and pops</div></div>
+            <button class="tgl" id="tglMotion" role="switch" aria-checked="false" aria-label="Reduce motion"><span class="tgl-knob"></span></button>
+          </div>
+
+          <div class="sh-sec">THE OWL</div>
+          <div class="set-row">
+            <div class="set-info"><div class="set-lab d">live owl</div><div class="set-sub">off is the classic mockup brain (this file)</div></div>
+            <button class="tgl" id="tglLive" role="switch" aria-checked="false" aria-label="Live owl"><span class="tgl-knob"></span></button>
+          </div>
+
+          <div class="sh-sec">REMINDERS</div>
+          <div class="set-row">
+            <div class="set-info"><div class="set-lab d">daily reading nudge <span class="soon">SOON</span></div><div class="set-sub">a gentle owl at your reading hour</div></div>
+            <button class="tgl" role="switch" aria-checked="false" aria-label="Daily reading nudge"><span class="tgl-knob"></span></button>
+          </div>
+          <div class="set-row">
+            <div class="set-info"><div class="set-lab d">page-turn sounds <span class="soon">SOON</span></div><div class="set-sub">a soft paper whisper as you read</div></div>
+            <button class="tgl" role="switch" aria-checked="false" aria-label="Page-turn sounds"><span class="tgl-knob"></span></button>
+          </div>
+
+          <div class="sh-sec">ACCOUNT</div>
+          <div class="set-card">
+            <div class="prof">
+              <div class="avatar lg d">M</div>
+              <div>
+                <div class="pname d">Mira</div>
+                <div class="psub">LV 7 BIBLIOPHILE · 240 COINS</div>
+              </div>
+            </div>
+          </div>
+          <button class="link-row" id="authBtn"><svg class="ti ti-user" width="1em" height="1em" aria-hidden="true"><use href="#i-user"></use></svg>sign in or create account<svg class="ti ti-chevron-right ext" width="1em" height="1em" aria-hidden="true"><use href="#i-chevron-right"></use></svg></button>
+
+          <div class="sh-sec">DATA</div>
+          <button class="link-row danger" id="resetBtn"><svg class="ti ti-refresh" width="1em" height="1em" aria-hidden="true"><use href="#i-refresh"></use></svg>reset reading progress<svg class="ti ti-chevron-right ext" width="1em" height="1em" aria-hidden="true"><use href="#i-chevron-right"></use></svg></button>
+
+          <div class="sh-sec">THE COMPANY</div>
+          <div class="cast-row" id="castRow">
+            <button class="cast-cell" data-cast="scout"><svg class="owl cast" viewBox="0 0 120 130"><use href="#owl-scout"></use></svg><span class="cast-name d" style="color:var(--ember)">scout</span><span class="cast-job">postmaster</span></button>
+            <button class="cast-cell" data-cast="keeper"><svg class="owl cast" viewBox="0 0 120 130"><use href="#owl-keeper"></use></svg><span class="cast-name d" style="color:var(--moss)">keeper</span><span class="cast-job">the shelves</span></button>
+            <button class="cast-cell" data-cast="scribe"><svg class="owl cast" viewBox="0 0 120 130"><use href="#owl-scribe"></use></svg><span class="cast-name d" style="color:var(--quill)">scribe</span><span class="cast-job">the archive</span></button>
+            <button class="cast-cell" data-cast="peek"><svg class="owl cast" viewBox="0 0 120 130"><use href="#owl-peek"></use></svg><span class="cast-name d" style="color:var(--teal)">peek</span><span class="cast-job">first chapters</span></button>
+            <button class="cast-cell" data-cast="mirror"><svg class="owl cast" viewBox="0 0 120 130"><use href="#owl-mirror"></use></svg><span class="cast-name d" style="color:var(--violet)">mirror</span><span class="cast-job">the radar</span></button>
+          </div>
+          <div class="set-sub cast-sub it">the owlery's company — found by scout, in this order.</div>
+
+          <div class="sh-sec">ABOUT</div>
+          <button class="link-row" id="replayOnboard"><svg class="ti ti-player-play" width="1em" height="1em" aria-hidden="true"><use href="#i-player-play"></use></svg>watch opening night again<svg class="ti ti-chevron-right ext" width="1em" height="1em" aria-hidden="true"><use href="#i-chevron-right"></use></svg></button>
+          <button class="link-row" data-ext="1"><svg class="ti ti-shield-lock" width="1em" height="1em" aria-hidden="true"><use href="#i-shield-lock"></use></svg>privacy<svg class="ti ti-external-link ext" width="1em" height="1em" aria-hidden="true"><use href="#i-external-link"></use></svg></button>
+          <button class="link-row" data-ext="1"><svg class="ti ti-file-text" width="1em" height="1em" aria-hidden="true"><use href="#i-file-text"></use></svg>terms<svg class="ti ti-external-link ext" width="1em" height="1em" aria-hidden="true"><use href="#i-external-link"></use></svg></button>
+          <div class="set-foot it">owlry v0.1.0 — sorted with care, the owl post office<span class="gdot">.</span></div>
+        </div>
+      </div>
+
+      <!-- ============ OPENING NIGHT ============ -->
+      <div class="onboard" id="onboard" role="dialog" aria-modal="true" aria-label="Opening night">
+        <div class="ob-glow" aria-hidden="true"></div>
+        <button class="ob-skip" id="obSkip">skip to the desk <svg class="ti ti-arrow-right" width="1em" height="1em" aria-hidden="true"><use href="#i-arrow-right"></use></svg></button>
+
+        <div class="ob-scene on" data-scene="curtain">
+          <div class="ob-marquee d"><span>owlry<span class="gdot">.</span></span><span class="ob-tag">READ BETTER.</span></div>
+          <div class="ob-curtain" aria-hidden="true"><div class="ob-velvet"></div><div class="ob-fringe"></div></div>
+        </div>
+
+        <div class="ob-scene" data-scene="loop">
+          <div class="ob-card">
+            <div class="l-kick">THE PROGRAMME · No 1</div>
+            <div class="ob-h d">how the owlery works</div>
+            <div class="ob-row"><span class="stamp"><svg class="ti" width="1em" height="1em"><use href="#i-feather"></use></svg></span><span><b class="d">ASK</b> — tell scout what's going on.</span></div>
+            <div class="ob-row"><span class="stamp"><svg class="ti" width="1em" height="1em"><use href="#i-mail-opened"></use></svg></span><span><b class="d">PEEK</b> — open what scout sends you: the right book, the right chapter.</span></div>
+            <div class="ob-row"><span class="stamp"><svg class="ti" width="1em" height="1em"><use href="#i-radar-2"></use></svg></span><span><b class="d">GROW</b> — save what stays with you; your reading identity takes shape.</span></div>
+            <button class="btn ob-next" data-ob="economy">NEXT <svg class="ti ti-arrow-right" width="1em" height="1em"><use href="#i-arrow-right"></use></svg></button>
+          </div>
+        </div>
+
+        <div class="ob-scene" data-scene="economy">
+          <div class="ob-card">
+            <div class="l-kick">THE PROGRAMME · No 2</div>
+            <div class="ob-h d">the house economy</div>
+            <div class="ob-row"><span class="stamp"><svg class="ti" width="1em" height="1em"><use href="#i-pencil"></use></svg></span><span>asks and peeks spend <b class="d">INK</b>.</span></div>
+            <div class="ob-row"><span class="stamp"><svg class="ti" width="1em" height="1em"><use href="#i-sparkles"></use></svg></span><span>every ask and peek pays back in <b class="d">XP</b> — your seat moves closer to the stage.</span></div>
+            <div class="ob-row"><span class="stamp"><svg class="ti" width="1em" height="1em"><use href="#i-book-2"></use></svg></span><span>reading pages <b class="d">refills the well</b>. the loop feeds itself.</span></div>
+            <button class="btn ob-next" data-ob="scout">MEET THE POSTMASTER <svg class="ti ti-arrow-right" width="1em" height="1em"><use href="#i-arrow-right"></use></svg></button>
+          </div>
+        </div>
+
+        <div class="ob-scene" data-scene="scout">
+          <div class="ob-stage">
+            <div class="ob-owl"><svg class="owl hero" viewBox="0 0 120 130"><use href="#owl-scout"></use></svg></div>
+            <div class="ob-lines">
+              <div class="msg owl">evening. i'm scout — the postmaster.</div>
+              <div class="msg owl">this was a theatre once. now it sorts the world's unread mail — every book is a letter that hasn't found its reader.</div>
+            </div>
+            <div class="chips ob-chips cz">
+              <button class="chip" data-mood="wws">REST</button>
+              <button class="chip" data-mood="deep">NEED FOCUS</button>
+              <button class="chip" data-mood="pema">HEARTACHE</button>
+              <button class="chip" data-mood="bird">OVERWHELMED</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="ob-scene" data-scene="mirror">
+          <div class="ob-stage ob-mirror">
+            <svg class="owl mini" viewBox="0 0 120 130"><use href="#owl-mirror"></use></svg>
+            <div class="ob-h d" style="color:#F2EBD7">your reading identity</div>
+            <p class="it" style="color:var(--mut);max-width:260px;font-size:13px">mirror draws the radar as you ask, peek, and grow. tonight is only the first plot.</p>
+            <svg viewBox="0 0 120 124" class="ob-radar" aria-hidden="true">
+              <polygon points="60,18 98,41 98,83 60,106 22,83 22,41" fill="none" stroke="var(--line2)" stroke-width="1"/>
+              <polygon points="60,29 87,45 87,79 60,95 33,79 33,45" fill="none" stroke="var(--line2)" stroke-width="1"/>
+              <polygon points="60,24 95,44 88,84 60,98 34,80 28,42" fill="var(--radarFill)" stroke="var(--violet)" stroke-width="2.5" stroke-linejoin="round"/>
+            </svg>
+            <button class="btn ob-next" id="obFinish">OPEN YOUR PEEK <svg class="ti ti-mail" width="1em" height="1em"><use href="#i-mail"></use></svg></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="curtain-brief" id="curtainBrief" aria-hidden="true" style="display:none">
+        <div class="ob-velvet"></div>
+        <div class="ob-fringe"></div>
+      </div>
+
+      <div class="toast" id="toast" role="status" aria-live="polite"></div>
+      <div class="burst-layer" id="burst"></div>
+
+    </div><!-- /.app -->
+  </div><!-- /.phone -->
+  <p class="caption">tap the sun for the matin&eacute;e &middot; swipe the post &middot; ask scout &middot; open settings from profile</p>
+</div>
+
+<script>
+/* ============================================================
+   owlry — interactive mockup logic
+   ============================================================ */
+const $ = id => document.getElementById(id);
+const app = $('app');
+
+/* ---------- data (all taglines & reader prose are original) ---------- */
+const B = {
+  gentle:   {t:'A Gentle Madness', a:'Nicholas Basbanes', c:'#2F5757', s:'A Gentle<br>Madness', q:'For people who love books the way one loves the rain.', n:368, g:'history'},
+  snow:     {t:'The Snow Child', a:'Eowyn Ivey', c:'#2A3852', s:'Snow<br>Child', q:'A wish made of winter walks out of the woods.', n:312, g:'fiction'},
+  piranesi: {t:'Piranesi', a:'Susanna Clarke', c:'#B98A2A', tc:'#1A1A1A', s:'Piranesi', q:'The house is vast. The tide keeps its own hours.', n:272, g:'fiction'},
+  goldfinch:{t:'The Goldfinch', a:'Donna Tartt', c:'#56324B', s:'Goldfinch', q:'One small painting, carried through a whole life.', n:771, g:'fiction'},
+  pachinko: {t:'Pachinko', a:'Min Jin Lee', c:'#B98A2A', tc:'#1A1A1A', s:'Pachinko', q:'Four generations betting on a kinder hand.', n:490, g:'fiction'},
+  tranq:    {t:'Sea of Tranquility', a:'Emily St. John Mandel', c:'#2A3852', s:'Tranquility', q:'A note of violin, looping through the centuries.', n:255, g:'scifi'},
+  cuckoo:   {t:'Cloud Cuckoo Land', a:'Anthony Doerr', c:'#2F5757', s:'Cloud,<br>Cuckoo', q:'One old story, passed hand to hand across time.', n:626, g:'fiction'},
+  rose:     {t:'The Name of the Rose', a:'Umberto Eco', c:'#7A2E2E', s:'The Rose', q:'A labyrinth of shelves with a body at its heart.', n:512, g:'mystery'},
+  hail:     {t:'Project Hail Mary', a:'Andy Weir', c:'#3D405B', s:'Hail Mary', q:'He wakes alone between stars with a job to do.', n:476, g:'scifi'},
+  circe:    {t:'Circe', a:'Madeline Miller', c:'#B98A2A', tc:'#1A1A1A', s:'Circe', q:'Exiled to an island, she learns what her power is for.', n:393, g:'fiction'},
+  sleep:    {t:'The Big Sleep', a:'Raymond Chandler', c:'#403B33', s:'Big Sleep', q:'Rain, neon, and a case that will not stay closed.', n:231, g:'mystery'},
+  kindred:  {t:'Kindred', a:'Octavia E. Butler', c:'#56324B', s:'Kindred', q:'The past keeps pulling her back — literally.', n:264, g:'scifi'},
+  remains:  {t:'The Remains of the Day', a:'Kazuo Ishiguro', c:'#5E7A55', s:'Remains', q:'A butler measures his life in unspoken things.', n:258, g:'fiction'},
+  spqr:     {t:'SPQR', a:'Mary Beard', c:'#8A5A2B', s:'SPQR', q:'Rome, from muddy village to master of the map.', n:608, g:'history'},
+  beach:    {t:'Beach Read', a:'Emily Henry', c:'#B85C4A', s:'Beach<br>Read', q:'Two rival writers, one shared porch, zero chill.', n:384, g:'romance'},
+  oldman:   {t:'The Old Man and the Sea', a:'Ernest Hemingway', c:'#2F5757', s:'Old Man,<br>Sea', q:'An old fisherman, a great fish, a long way home.', n:128, g:'fiction'},
+  none:     {t:'And Then There Were None', a:'Agatha Christie', c:'#7A2E2E', s:'None', q:'Ten strangers, one island, a counting rhyme.', n:272, g:'mystery'},
+  wws:      {t:'Why We Sleep', a:'Matthew Walker', c:'#2A3852', s:'Why We<br>Sleep', q:'An owner\'s manual for the sleeping third of your life.', n:368, g:'life'},
+  medit:    {t:'Meditations', a:'Marcus Aurelius', c:'#403B33', s:'Meditations', q:'An emperor\'s notes to himself, still warm after eighteen centuries.', n:304, g:'life'},
+  deep:     {t:'Deep Work', a:'Cal Newport', c:'#2F5757', s:'Deep<br>Work', q:'Four focused hours beat forty scattered ones.', n:296, g:'life'},
+  atomic:   {t:'Atomic Habits', a:'James Clear', c:'#56324B', s:'Atomic<br>Habits', q:'Tiny votes, cast daily, for the person you\'re becoming.', n:320, g:'life'},
+  pema:     {t:'When Things Fall Apart', a:'Pema Chödrön', c:'#5E7A55', s:'Fall<br>Apart', q:'Heart advice for the exact moment the ground gives way.', n:176, g:'life'},
+  frankl:   {t:'Man\'s Search for Meaning', a:'Viktor E. Frankl', c:'#7A2E2E', s:'Meaning', q:'What remains when everything else is taken.', n:165, g:'life'},
+  bird:     {t:'Bird by Bird', a:'Anne Lamott', c:'#B98A2A', tc:'#1A1A1A', s:'Bird by<br>Bird', q:'Instructions on writing and life, one small thing at a time.', n:237, g:'life'}
+};
+
+/* about-sheet metadata: r = rating shown as goodreads, i = book intro, w = who the author is */
+const BMETA = {
+  gentle:   {r:'4.0', i:`Basbanes follows the grand obsessives of book collecting — the scholars, rogues, and millionaires who built great libraries one auction at a time, and occasionally stole for them. Part history, part detective story, it runs from ancient Alexandria to modern rare-book rooms. A love letter to bibliomania, written from inside the affliction.`, w:`Nicholas Basbanes is an American journalist and former literary editor who has spent three decades writing about book culture, libraries, and the people devoted to them.`},
+  snow:     {r:'4.0', i:`Alaska, 1920: Jack and Mabel, childless and wearing thin against the wilderness, build a girl out of snow on the first storm of winter. By morning the snow child is gone — and a wild, golden-haired girl is moving through the trees. A homestead novel braided with an old Russian fairy tale, tender and cold-bright.`, w:`Eowyn Ivey grew up and still lives in Alaska, where she worked as a bookseller; this debut made her a Pulitzer Prize finalist.`},
+  piranesi: {r:'4.2', i:`Piranesi lives in a house of infinite halls, where clouds drift through the upper floors and tides flood the staircases. He keeps careful journals, tends the bones of the dead, and believes he understands his world — until evidence appears of a person he cannot remember. A locked-room mystery the size of a universe.`, w:`Susanna Clarke is the British author of Jonathan Strange &amp; Mr Norrell; Piranesi, written after years of illness, won the Women's Prize for Fiction.`},
+  goldfinch:{r:'3.9', i:`Theo Decker is thirteen when a bombing at the museum kills his mother — and leaves a small Dutch painting of a goldfinch in his hands. The picture follows him through Park Avenue drawing rooms, Las Vegas suburbs, and the antiques underworld. A Dickensian epic about grief, luck, and the things we refuse to let go.`, w:`Donna Tartt publishes roughly one novel a decade — The Secret History, The Little Friend — and won the Pulitzer Prize for Fiction for The Goldfinch.`},
+  pachinko: {r:'4.3', i:`In 1910s Korea, a fisherman's daughter named Sunja makes one choice that exiles her family to Japan for four generations. Through war, poverty, and the pachinko parlors that promise a way up, her descendants fight to belong in a country that won't claim them. A patient, devastating family saga.`, w:`Min Jin Lee is a Korean-American novelist and essayist; Pachinko was a National Book Award finalist and took her nearly three decades to finish.`},
+  tranq:    {r:'4.0', i:`A young exile in 1912 hears a violin under a Vancouver Island maple — the same notes a novelist hears centuries later in a moon colony's airship terminal. An anomaly is folding time, and one detective is sent to walk through it. A slim, gleaming puzzle about what's real and why it matters anyway.`, w:`Emily St. John Mandel is the Canadian author of Station Eleven and The Glass Hotel; her novels keep finding music inside collapse.`},
+  cuckoo:   {r:'4.0', i:`One battered Greek tale — a shepherd who longs to become a bird and reach a city in the clouds — passes from a doomed Constantinople, to a small-town Idaho library under threat, to a starship generations from Earth. Five lives, one story, and the keepers who refuse to let it die. A novel about why we save books at all.`, w:`Anthony Doerr won the Pulitzer Prize for All the Light We Cannot See; he writes intricate, big-hearted novels from Boise, Idaho.`},
+  rose:     {r:'4.1', i:`Italy, 1327: monks are dying inside a wealthy abbey, and Brother William of Baskerville — part friar, part proto-detective — is asked to find out why. Every clue leads back to the labyrinthine library and a book someone will kill to keep unread. A medieval murder mystery built by a philosopher.`, w:`Umberto Eco was an Italian semiotician and philosopher; this, his first novel, sold tens of millions of copies worldwide.`},
+  hail:     {r:'4.5', i:`Ryland Grace wakes from a coma alone on a spaceship with no memory of who he is — only that everyone on Earth dies if he fails. What follows is science as survival: experiment by experiment, he works the problem of a sun that is quietly dimming. Funny, nerdy, and unexpectedly moving.`, w:`Andy Weir, a former software engineer, self-published The Martian before it became a phenomenon; he writes problem-solvers with calculators and heart.`},
+  circe:    {r:'4.2', i:`Born a nymph in the halls of the sun god, Circe is banished to an island for the crime of witchcraft. There she masters her craft alone — and crosses paths with the Minotaur, Daedalus, and a storm-tossed Odysseus. A goddess's coming-of-age, told in a voice like honey over iron.`, w:`Madeline Miller taught Latin and Greek for over a decade; her debut, The Song of Achilles, won the Orange Prize for Fiction.`},
+  sleep:    {r:'4.0', i:`Private detective Philip Marlowe is hired by a dying general to deal with a blackmailer, and the case immediately grows teeth: gambling debts, a missing husband, and two dangerous daughters. Los Angeles rain has never been wetter, or wittier. The novel that built American noir.`, w:`Raymond Chandler turned to crime writing in his forties and gave detective fiction its style; Marlowe is still the genre's measuring stick.`},
+  kindred:  {r:'4.3', i:`Dana, a Black writer in 1976 California, is wrenched without warning into antebellum Maryland — again and again — to save the life of the white boy who will become her ancestor. Each crossing lasts longer and costs more. A time-travel novel wielded like a scalpel.`, w:`Octavia E. Butler was the first science-fiction writer awarded a MacArthur "genius" grant; she wrote the future with unflinching clarity.`},
+  remains:  {r:'4.1', i:`Stevens, an English butler of the old school, takes a 1956 motoring trip to visit the housekeeper he worked beside for decades. Mile by mile, his perfect professional memories begin to show their seams — his late employer's politics, and everything he never said to Miss Kenton. Heartbreak in white gloves.`, w:`Kazuo Ishiguro won the Booker Prize for this novel and the Nobel Prize in Literature in 2017; nobody writes restraint like him.`},
+  spqr:     {r:'4.1', i:`Beard retells Rome's first thousand years — from the myth of Romulus to the day citizenship was handed to every free person in the empire. Fewer marble heroes, more real people: how Romans ate, voted, joked, and argued about what Rome even was. History that talks back.`, w:`Mary Beard is a Cambridge classicist and broadcaster, and Britain's best-known voice on the ancient world.`},
+  beach:    {r:'4.0', i:`January writes happy endings; her new neighbor Gus writes prize-winning misery — and both are blocked. The deal: swap genres for one summer and see who breaks first. Underneath the banter is a tender book about grief and what romance is actually for.`, w:`Emily Henry writes the beach reads other writers take on vacation; several of her rom-coms have opened at number one.`},
+  oldman:   {r:'3.8', i:`Santiago has gone eighty-four days without a fish when he rows far out and hooks the marlin of his life. What follows is two days of struggle between an old man, a great fish, and the sea's last test of him. Spare, salt-bright, and built to outlast its century.`, w:`Ernest Hemingway won the Pulitzer Prize for this short novel, cited again when he received the Nobel Prize in 1954.`},
+  none:     {r:'4.3', i:`Ten strangers are lured to an island mansion by a host who never appears — and a gramophone voice accuses each of them of murder. One by one, in the manner of an old counting rhyme, they begin to die. The best-selling mystery novel ever written, and still the trap door of the genre.`, w:`Agatha Christie remains the best-selling novelist of all time; she built the puzzle mystery, then sealed every exit with this one.`},
+  wws:      {r:'4.3', i:`Walker makes the case that sleep is the most powerful health, mood, and performance lever we have — then explains, study by study, what the brain is doing in the dark. Dreams, caffeine, alcohol, all-nighters: each gets its reckoning. The rare science book that changes bedtime the same night.`, w:`Matthew Walker is a professor of neuroscience and psychology at UC Berkeley, where he directs the Center for Human Sleep Science.`},
+  medit:    {r:'4.3', i:`The private notebook of a Roman emperor: reminders to himself about duty, anger, mortality, and getting out of bed. It was never meant for readers, which is exactly why it works — no performance, just a powerful man talking himself into being good. Eighteen centuries old, and somehow about your Tuesday.`, w:`Marcus Aurelius ruled Rome from 161 to 180 CE and wrote these notes while on campaign; history's closest thing to a philosopher-king.`},
+  deep:     {r:'4.2', i:`Newport argues that focused, undistracted work is becoming both rarer and more valuable — a superpower hiding in plain sight. Then he gets practical: rituals, scheduling philosophies, grand gestures, and quitting the shallow noise. A training manual for attention.`, w:`Cal Newport is a computer science professor at Georgetown and the author of Digital Minimalism; he has never had a social media account.`},
+  atomic:   {r:'4.3', i:`Clear's case is that transformation is overrated and accumulation is everything: get one percent better, daily, and let compounding do the rest. The method runs through identity, environment design, and four simple laws of behavior. The most borrowed habits playbook of the decade.`, w:`James Clear distilled years of his habits newsletter into this book; it has sold more than twenty million copies worldwide.`},
+  pema:     {r:'4.2', i:`Talks given by a Buddhist nun for the exact moments life caves in: heartbreak, fear, groundlessness. Her advice runs opposite to instinct — stop running, lean in, make friends with the mess. Gentle, unsentimental, and endlessly re-readable.`, w:`Pema Chödrön is an American Buddhist nun and senior teacher at Gampo Abbey, Nova Scotia; she studied under Chögyam Trungpa.`},
+  frankl:   {r:'4.4', i:`A psychiatrist's account of surviving the Nazi camps, and the school of therapy he built from what he witnessed: that humans can endure almost anything if it means something. Part memoir, part map out of despair. One of the most quietly life-altering books ever written.`, w:`Viktor E. Frankl was a Viennese psychiatrist and Holocaust survivor; he founded logotherapy, the "third Viennese school" of psychotherapy.`},
+  bird:     {r:'4.2', i:`Lamott's instructions on writing and life: terrible first drafts, one-inch picture frames, the radio station of self-doubt, and taking everything bird by bird. Half craft manual, half stand-up set, all mercy. The book writers hand each other like medicine.`, w:`Anne Lamott is an American essayist and novelist; this book grew out of the writing classes she taught, and named a generation's process.`}
+};
+
+const PICKS = ['gentle','snow','piranesi'];
+let readingIds  = ['goldfinch','pachinko','tranq'];
+let finishedIds = ['oldman','none'];
+const savedIds  = new Set(['circe']);
+const pagesRead = {goldfinch:463, pachinko:118, tranq:224};
+
+const WX = [
+  {k:'rain',  i:'ti-cloud-rain', l:'rainy day reads'},
+  {k:'cloud', i:'ti-cloud',      l:'overcast & cozy'},
+  {k:'sun',   i:'ti-sun',        l:'clear-sky pages'},
+  {k:'snow',  i:'ti-snowflake',  l:'snow-day stack'},
+  {k:'night', i:'ti-moon-stars', l:'night owl hours'}
+];
+
+/* original placeholder prose, cycled through the reader */
+const PAGES = [
+  ["The rain had been falling since before the shop opened, a patient, unhurried rain that made the windows look like old glass. Inside, the lamps were lit early and the smell of paper rose from the shelves the way warmth rises from bread.",
+   "Nobody came in for the first hour, which suited the owner fine. There were three crates of estate books to sort, and sorting was best done slowly, with tea, while the gutters ticked overhead like a clock that had given up on minutes."],
+  ["The ledger sat open on the counter, its columns inked in a hand so careful it seemed to apologize for every figure. Sold: one atlas, water-damaged. Acquired: forty-one novels, one box of letters, a dictionary missing its own definition of the word lost.",
+   "By the radiator, the shop cat had claimed the warmest chair and defended it with nothing but sleep. Outside, umbrellas moved past the window like a parade of small dark planets."],
+  ["The letter arrived on a Tuesday, slipped between the pages of a returned book as though it had grown there. The paper was thin, the handwriting urgent, and it said only this: Come at once. Bring the green notebook. Tell no one but the dog.",
+   "She read it three times standing up and a fourth time sitting down. The dog, to his credit, told no one."],
+  ["Morning came scrubbed clean by the storm, the whole street smelling of slate and bakery smoke. She walked fast, the green notebook under one arm, rehearsing questions she had no intention of asking politely.",
+   "Her grandmother used to say that a good book and a good secret were the same thing: both were just waiting for the right person to open them. She had never believed it until now."],
+  ["The library stood at the top of the hill, exactly where libraries should stand, with the town arranged below it like an audience. The doors were open. The reading room was empty except for the light.",
+   "On the third shelf of the third case, where she had not left it, sat the green notebook's twin. She took a breath, the kind you take before the first page of anything, and reached for it."]
+];
+
+/* ---------- state ---------- */
+const state = {xp:260, xpMax:400, ink:84, inkMax:120, coins:240, lv:7, wx:0, pick:0, inkDone:false};
+let libTab = 'reading';
+const rdr = {id:null, p:1};
+
+/* ---------- tiny helpers ---------- */
+const pct = id => Math.min(100, Math.round((pagesRead[id]||0) / B[id].n * 100));
+const coverHTML = (id, cls) => {
+  const b = B[id];
+  return `<div class="cover ${cls}" style="background:${b.c}"><div class="it" style="color:${b.tc||'#E8E0BC'}">${b.s}</div></div>`;
+};
+
+let toastTimer = null;
+function toast(icon, msg){
+  const t = $('toast');
+  t.innerHTML = `<svg class="ti" width="1em" height="1em" aria-hidden="true"><use href="#i-${icon.slice(3)}"></use></svg><span>${msg}</span>`;
+  t.classList.add('on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('on'), 2000);
+}
+
+function burst(el){
+  const layer = $('burst'), a = app.getBoundingClientRect(), r = el.getBoundingClientRect();
+  const cx = r.width ? r.left - a.left + r.width/2 : a.width/2;
+  const cy = r.width ? r.top - a.top + r.height/2 : a.height*0.4;
+  for(let i=0;i<10;i++){
+    const s = document.createElement('span');
+    s.className = 'spark';
+    s.style.left = cx+'px'; s.style.top = cy+'px';
+    s.style.background = i%2 ? 'var(--ember)' : 'var(--yellow)';
+    s.style.setProperty('--dx', (Math.random()*68-34).toFixed(0)+'px');
+    s.style.setProperty('--dy', (-10-Math.random()*34).toFixed(0)+'px');
+    layer.appendChild(s);
+    setTimeout(() => s.remove(), 750);
+  }
+}
+
+/* ---------- stats & rewards ---------- */
+function renderStats(){
+  $('lvLab').textContent = 'LV ' + state.lv;
+  $('xpFill').style.width = (state.xp/state.xpMax*100) + '%';
+  $('xpVal').textContent = state.xp + ' XP';
+  $('inkFill').style.width = (state.ink/state.inkMax*100) + '%';
+  $('inkVal').textContent = state.ink + '/' + state.inkMax;
+  $('coinVal').textContent = state.coins;
+  $('psub').textContent = `LV ${state.lv} BIBLIOPHILE \u00B7 ${state.coins} COINS`;
+}
+
+function addXP(n){
+  state.xp += n;
+  while(state.xp >= state.xpMax){
+    state.xp -= state.xpMax;
+    state.lv++;
+    toast('ti-sparkles', 'level up! LV ' + state.lv);
+    burst($('lvLab'));
+  }
+  renderStats();
+}
+
+function addInk(n){
+  state.ink = Math.min(state.ink + n, state.inkMax);
+  if(state.ink >= state.inkMax && !state.inkDone){
+    state.inkDone = true;
+    state.coins += 50;
+    toast('ti-coin', 'daily ink full \u00B7 +50 coins');
+  }
+  renderStats();
+}
+
+/* ---------- weather masthead ---------- */
+function applyWX(){
+  const w = WX[state.wx];
+  app.dataset.wx = w.k;
+  $('wxUse').setAttribute('href', '#i-' + w.i.slice(3));
+  $('wxBtn').setAttribute('aria-label', `Weather: ${w.l}. Tap to change`);
+}
+$('wxBtn').addEventListener('click', () => {
+  state.wx = (state.wx + 1) % WX.length;
+  applyWX();
+  toast(WX[state.wx].i, WX[state.wx].l);
+});
+
+/* ---------- today's pick carousel ---------- */
+function renderPick(animate){
+  const id = PICKS[state.pick], b = B[id], saved = savedIds.has(id);
+  const card = $('pickCard');
+  card.innerHTML = `
+    <button class="save ${saved?'on':''}" data-save="${id}" aria-label="Save to library" aria-pressed="${saved}"><svg class="ti ti-heart" width="1em" height="1em" aria-hidden="true"><use href="#i-heart"></use></svg></button>
+    ${coverHTML(id,'cover-lg')}
+    <div class="pick-info">
+      <div class="lk">owl post &middot; n&ordm; ${state.pick+1} of ${PICKS.length}</div>
+      <div class="ttl d">${b.t}</div>
+      <div class="auth">${b.a}</div>
+      <div class="quote it">"${b.q}"</div>
+      <button class="btn" data-open="${id}">${pagesRead[id] ? 'RESUME' : 'OPEN'} <svg class="ti ti-arrow-right" width="1em" height="1em" aria-hidden="true"><use href="#i-arrow-right"></use></svg></button>
+    </div>`;
+  if(animate){ card.classList.remove('swap'); void card.offsetWidth; card.classList.add('swap'); }
+}
+
+function renderDots(){
+  $('dotsRow').innerHTML = PICKS.map((_,i) =>
+    `<button class="dot ${i===state.pick?'on':''}" data-dot="${i}" aria-label="Show pick ${i+1} of ${PICKS.length}"></button>`).join('');
+}
+
+function setPick(i){
+  state.pick = (i + PICKS.length) % PICKS.length;
+  renderPick(true);
+  renderDots();
+}
+
+let swipeX = null;
+$('pickCard').addEventListener('pointerdown', e => { swipeX = e.clientX; });
+$('pickCard').addEventListener('pointerup', e => {
+  if(swipeX === null) return;
+  const dx = e.clientX - swipeX; swipeX = null;
+  if(Math.abs(dx) > 40) setPick(state.pick + (dx < 0 ? 1 : -1));
+});
+
+/* ---------- saving ---------- */
+function toggleSave(id){
+  if(savedIds.has(id)){
+    savedIds.delete(id);
+    toast('ti-heart-broken', 'removed from library');
+  } else {
+    savedIds.add(id);
+    toast('ti-heart', 'saved to library \u00B7 +5 XP');
+    addXP(5);
+  }
+  renderPick(false);
+  renderTray();
+  renderStrip();
+  renderLibrary();
+  if($('sheet').classList.contains('on')) renderSheet($('sheet').dataset.id);
+  if($('reader').classList.contains('on') && rdr.id) syncRHeart();
+  if($('letter').classList.contains('on') && ltId) syncLtHeart();
+}
+
+function syncRHeart(){
+  const on = savedIds.has(rdr.id);
+  $('rHeart').classList.toggle('on', on);
+  $('rHeart').setAttribute('aria-pressed', on);
+}
+
+/* ---------- continue shelf ---------- */
+function renderShelf(){
+  $('shelf').innerHTML = readingIds.map(id => {
+    const b = B[id], p = pct(id);
+    return `<button class="sh-item" data-open="${id}">
+      ${coverHTML(id,'cover-sm')}
+      <div class="sh-title d">${b.t}</div>
+      <div class="mini-track"><div class="mini-fill" style="width:${p}%"></div></div>
+      <div class="mini-pct">${p}%</div>
+    </button>`;
+  }).join('') + `<div class="ph"><div class="cover cover-sm" style="background:#5E7A55"></div></div>`;
+}
+
+/* ---------- owl post: vibe-reading chat ---------- */
+const FLAVOR = {rain:'the rain is doing its best work out there', cloud:'a soft grey blanket of a sky today', sun:'sun on the shelves, dust in the light', snow:'snow is hushing the whole street', night:'the lamps are lit and the street has gone quiet'};
+const SAL = {morning:'good morning.', afternoon:'good afternoon.', evening:'good evening.', night:'late hours, hm?'};
+const START_CHIPS = {
+  morning:   ['fresh start today','build a habit','need focus','surprise me'],
+  afternoon: ['feeling stuck','build a habit','something lighter','surprise me'],
+  evening:   ['wind down','feeling blue','cozy escape','surprise me'],
+  night:     ["can't sleep",'big life question','cozy escape','surprise me']
+};
+const AFTER_CHIPS = ['go deeper','something lighter','more like this','new vibe'];
+function dayPart(){ const h = new Date().getHours(); return h<5 ? 'night' : h<12 ? 'morning' : h<18 ? 'afternoon' : 'evening'; }
+
+/* Reading letters: faithful paraphrases of each book's real arguments & examples.
+   Quotes are kept rare, short, and only where confidently genuine. */
+const GUIDES = {
+  wws: {
+    say:`ah, the wide-awake hours. i've sorted a peek for you — {{b}}, on the two clocks you're fighting tonight.`,
+    res:`It's late, your mind won't dim, and sleep keeps slipping just out of reach.`,
+    chap:`Caffeine, Jet Lag, and Melatonin`,
+    core:`Walker's argument in this chapter is that falling asleep isn't one switch but two independent systems that must agree: a circadian clock that times your wakefulness, and a chemical pressure — adenosine — that builds for every minute you're awake. Most modern sleeplessness, he says, comes from accidentally setting these two against each other, and caffeine is the most common saboteur, because it doesn't remove sleep pressure; it only hides it from you.`,
+    ins:[
+      {t:`Sleepiness is a chemical debt, not a mood`,
+       r:`Adenosine accumulates from the moment you wake; high concentration is felt as sleep pressure. Walker's point is that the debt can be masked but never negotiated — it waits.`,
+       ex:`He describes the caffeine crash: when the drug clears the receptors it was blocking, the whole accumulated backlog of adenosine lands at once, leaving you sleepier than before the cup.`},
+      {t:`Caffeine outstays its welcome by hours`,
+       r:`With a half-life of roughly five to seven hours, an afternoon coffee is still half-active deep into the night — quietly raising the drawbridge that sleep needs lowered.`,
+       ex:`Walker notes the trap most people miss: even decaf carries a real fraction of caffeine, so the evening "harmless" cup isn't quite harmless.`},
+      {t:`Melatonin starts the race; it doesn't run it`,
+       r:`Melatonin only announces to the brain that darkness has arrived — it times sleep rather than generates it, which is why it can't simply be swallowed as a cure.`,
+       ex:`He compares it to the timing official at an Olympic race, and uses jet lag as proof: traveling east is harder because you're asking your clock to shorten a day it wants to stretch.`}
+    ],
+    close:`So tonight's sleeplessness isn't a character flaw — it's two systems out of sync, and both respond to small, boring adjustments far better than to effort.`,
+    take:[`Protect the last eight to ten hours before bed from caffeine — it's arithmetic, not willpower.`,`Dim the evening: light tells your clock the race hasn't started yet.`],
+    ask:[`What time was today's last coffee — and what time did your brain actually clock out?`,`If sleep is two systems, which one are you fighting tonight: pressure, or timing?`],
+    fr:[{id:'medit', why:`if the real obstacle is the 3 a.m. thoughts rather than the chemistry`},
+        {id:'piranesi', why:`a quiet, dreamlike novel to drift through instead`},
+        {id:'tranq', why:`slim and time-bending — sized for exactly one night`}]
+  },
+  medit: {
+    say:`a fresh morning deserves an old voice. your peek opens {{b}} — book five, the getting-out-of-bed argument itself.`,
+    res:`A new morning, and you want it to count for something.`,
+    chap:`Book Five`,
+    core:`Book Five opens with Marcus arguing himself out of bed: you were not made for warmth under blankets but for the work of a human being, the way bees were made for the hive. The deeper claim running through the book is that a day is shaped less by its events than by the thoughts you dye it with — so the morning's first task is choosing the dye on purpose.`,
+    ins:[
+      {t:`Get up like it's your nature`,
+       r:`He reasons from purpose: everything in nature performs its task without complaint, and refusing the morning is refusing your own design — comfort is not what you are for.`,
+       ex:`In 5.1 he points to the bees, the birds and the plants, each already at work, and asks why a person should be the one exception.`,
+       q:{t:`I am rising to the work of a human being.`, by:`MARCUS AURELIUS, MEDITATIONS 5.1`}},
+      {t:`The soul takes the color of its thoughts`,
+       r:`In 5.16 he argues that habitual thinking hardens into character: attention is the dye, the mind is the cloth, and repetition does the soaking.`,
+       ex:`His remedy is to keep ready a few strong thoughts to dip the mind in — such as: wherever it is possible to live, it is possible to live well.`},
+      {t:`Obstacles are fuel`,
+       r:`In 5.20 he claims the mind can convert whatever blocks an action into material for action — the blocked road becomes the road.`,
+       ex:`His own example is people: difficult ones exist to be taught or endured, and either way they become part of the morning's work rather than an interruption of it.`}
+    ],
+    close:`A fresh start, Marcus would say, isn't a feeling you wait for; it's the first deliberate thought of the day, chosen like clothing.`,
+    take:[`Win the first argument of the day — the one with the blanket.`,`Pick the day's dye on purpose: one sentence you'll think on repeat.`],
+    ask:[`What would today look like if you treated it as work you were built for?`,`Which recurring obstacle could you reclassify, starting this morning, as material?`],
+    fr:[{id:'atomic', why:`if the fresh start should harden into a system`},
+        {id:'deep', why:`if today needs four protected hours, not vibes`},
+        {id:'circe', why:`if you'd rather watch someone rebuild a life from exile`}]
+  },
+  deep: {
+    say:`stuck usually isn't a you problem — it's a room problem. i've written you a peek on {{b}}.`,
+    res:`Busy all day, blocked all the same — your attention is everywhere except the thing.`,
+    chap:`Rule #1: Work Deeply`,
+    core:`Newport's claim is that focus is not a virtue you summon but an environment you construct. Willpower, he argues, is a finite battery that loses every open-ended fight with distraction — so the chapter's case is to stop relying on intention and start relying on architecture: choose a philosophy of depth, build rituals around it, and make your commitments expensive enough that quitting feels absurd.`,
+    ins:[
+      {t:`Choose a philosophy of depth`,
+       r:`He lays out four scheduling modes — monastic, bimodal, rhythmic, journalistic — and insists the failure isn't lacking discipline but borrowing a mode that doesn't fit your actual life.`,
+       ex:`Carl Jung is his bimodal example: running a busy Zurich practice, then withdrawing to his stone tower at Bollingen for stretches of undisturbed thinking.`},
+      {t:`Make a grand gesture`,
+       r:`A radical or costly change of setting signals importance to your own mind; the expense itself does psychological work.`,
+       ex:`He tells of J.K. Rowling checking into a grand Edinburgh hotel suite to finish the final Harry Potter book when home had too many distractions.`},
+      {t:`End with a shutdown ritual`,
+       r:`Unfinished loops keep pulling at attention after hours — Newport leans on the Zeigarnik effect — so a strict closing routine of reviewing and planning lets the brain actually release the day.`,
+       ex:`His own ritual ends with a spoken phrase — "shutdown complete" — silly on purpose, and effective for exactly that reason.`}
+    ],
+    close:`Being stuck rarely means you lack discipline — it usually means your environment is voting against you. Change the architecture and the focus follows.`,
+    take:[`Schedule depth like a meeting with someone you'd hate to disappoint.`,`Close every day with a real shutdown — unfinished loops are tomorrow's fog.`],
+    ask:[`Which of the four philosophies fits your actual week — not your fantasy week?`,`What's your version of the hotel room: the gesture that makes the work non-optional?`],
+    fr:[{id:'atomic', why:`if the problem is starting at all — shrink it`},
+        {id:'bird', why:`if the block is a first draft refusing to be bad`},
+        {id:'medit', why:`stoic ballast for the distracted hours`}]
+  },
+  atomic: {
+    say:`forget motivation; let's talk identity. your peek opens {{b}} to the chapter on becoming the person first.`,
+    res:`You don't want a burst of motivation — you want to become someone who doesn't need one.`,
+    chap:`How Your Habits Shape Your Identity (and Vice Versa)`,
+    core:`Clear argues that most change fails because it aims at outcomes — lose the weight, write the book — instead of identity: become a healthy person, become a writer. Behavior that contradicts self-image never lasts, so the chapter flips the order. Decide who you want to be, then let small actions pile up as evidence, until the identity is simply true.`,
+    ins:[
+      {t:`Outcomes are lagging; identity leads`,
+       r:`He draws three layers — outcomes, processes, identity — and argues change only sticks when it starts at the core, because we defend who we believe we are.`,
+       ex:`His example is two smokers offered a cigarette: one says "I'm trying to quit," still a smoker fighting himself; the other says "I'm not a smoker," and there is no fight.`},
+      {t:`Every action is a ballot`,
+       r:`No single rep transforms you — but each one casts a vote for a type of person, and the votes compound into self-belief faster than any pep talk.`,
+       ex:`One page doesn't finish a book, he notes, but it elects "writer" a little harder each day; the goal of a habit is the evidence it leaves behind.`},
+      {t:`Two steps: decide, then prove`,
+       r:`The method is almost embarrassingly small: choose the identity, then design wins tiny enough that you cannot lose them, each one confirming the choice.`,
+       ex:`Clear's compass question does the steering — when unsure, ask what the person you're becoming would do, and let that decide the next small action.`}
+    ],
+    close:`You asked how to change; the chapter's answer is to stop chasing the result and start collecting evidence of the person.`,
+    take:[`Swap the goal for a person: who is someone that does this easily?`,`Make the next vote tiny enough that you can't lose it.`],
+    ask:[`What identity are your current habits voting for — honestly?`,`What's the smallest action this week that proves the person you're choosing?`],
+    fr:[{id:'deep', why:`once the who is set, this builds the hours`},
+        {id:'medit', why:`the ancient version of identity-first`},
+        {id:'wws', why:`if the keystone habit should be sleep`}]
+  },
+  pema: {
+    say:`i'm sorry it aches. come sit by the radiator — your peek is {{b}}, on staying when everything says run.`,
+    res:`Something has cracked — and every instinct says run from the feeling.`,
+    chap:`Intimacy with Fear`,
+    core:`Chödrön opens with the moment her own life collapsed, and makes the radical claim of the whole book: the rawness we flee is the doorway. Fear is not a verdict that something is wrong with us; it is the sensation of getting close to the truth. Healing, she argues, begins not when the pain ends but when we stop abandoning ourselves in the middle of it.`,
+    ins:[
+      {t:`Stay — that's the whole instruction`,
+       r:`Suffering doubles when we treat feelings as emergencies to escape; staying present, even badly, turns panic back into information.`,
+       ex:`She recounts the day her marriage ended without warning — the familiar world dissolving in seconds — and the strange, wide-awake clarity she found inside the wreckage.`},
+      {t:`Fear is a compass, not an alarm`,
+       r:`Fear shows up reliably at the edge of honesty, which makes it useful: flinching is human, but fleeing is optional, and the direction of the fear marks the direction of the truth.`,
+       ex:`She points to meditators and warriors alike who are taught to move toward fear and get to know it, rather than win against it.`,
+       q:{t:`Fear is a natural reaction to moving closer to the truth.`, by:`PEMA CHÖDRÖN, WHEN THINGS FALL APART`}},
+      {t:`Make friends with yourself first`,
+       r:`She calls it maitri — unconditional friendliness toward your own mess. Compassion that excludes yourself collapses; this friendship is the ground everything else stands on.`,
+       ex:`The practice she describes is meditation not as self-improvement but as getting to know the one person you can't leave — gently, the way you'd sit with a frightened friend.`}
+    ],
+    close:`Nothing here asks you to feel better on schedule. It only asks you not to leave yourself while it hurts — that is where the ground re-forms.`,
+    take:[`When it surges, name it and stay ninety extra seconds before reaching for the exit.`,`Treat yourself as you would the friend who showed up crying.`],
+    ask:[`What truth is this fear standing closest to?`,`Where do you abandon yourself first — and what would staying look like there?`],
+    fr:[{id:'frankl', why:`when the question underneath is "what for?"`},
+        {id:'snow', why:`a wintry novel about longing made visible`},
+        {id:'bird', why:`gentle, funny company for putting life on paper`}]
+  },
+  frankl: {
+    say:`the big question. for that, only one book will do: {{b}}. the peek's inside.`,
+    res:`The question isn't how to feel better — it's what any of this is for.`,
+    chap:`Part One: Experiences in a Concentration Camp`,
+    core:`Frankl's testimony argues that when everything is stripped away, one freedom remains: choosing your stance toward what happens. In the camps, he observed, survival tracked neither strength nor optimism but a "why" — a person, a task, a future that needed you. Meaning, he insists, is not found by interrogating life for answers; it is answered by what life is asking of you.`,
+    ins:[
+      {t:`A why can carry any how`,
+       r:`Prisoners with something unfinished — a child waiting, a work to complete — endured what broke others. Purpose, in his account, is structurally load-bearing.`,
+       ex:`Frankl's own why was the manuscript taken from him on arrival; he kept rewriting it in his head and on stolen scraps of paper, and credits it with keeping him alive.`,
+       q:{t:`He who has a why to live for can bear almost any how.`, by:`NIETZSCHE, AS FRANKL QUOTES HIM`}},
+      {t:`Hope with a due date is dangerous`,
+       r:`Hope pinned to a deadline collapses when the date passes; meaning has to be unconditional, not calendar-shaped.`,
+       ex:`He tells of a fellow prisoner who dreamed the war would end for him on March 30th. When the day came and went, the man's strength left him, and he died within days.`},
+      {t:`The last human freedom`,
+       r:`Circumstances decide much, Frankl concedes — but not the final attitude. Even there, some chose generosity, and the choosing itself was meaning.`,
+       ex:`He remembers men who walked through the huts comforting others and giving away their last piece of bread — and his own trick of imagining himself in a warm lecture hall, describing the psychology of the camp, turning suffering into study.`}
+    ],
+    close:`Your question — what is this for — may be pointing the wrong direction. Let something concrete ask it of you instead, and answer with your days.`,
+    take:[`Stop interrogating life for meaning; let one concrete responsibility answer back.`,`Anchor hope to something dateless — a person or a task, not a deadline.`],
+    ask:[`Who or what, specifically, needs you to come through this?`,`If your situation had an assignment hidden in it, what would it be teaching you to do?`],
+    fr:[{id:'pema', why:`for the staying-power the heart needs meanwhile`},
+        {id:'medit', why:`the emperor's field manual for attitude`},
+        {id:'remains', why:`a novel about a life measured too late — and what to do sooner`}]
+  },
+  bird: {
+    say:`deep breath. your peek is {{b}} — permission, in writing, to do this one bird at a time.`,
+    res:`The project is a mountain, the deadline is breathing, and you can't even start.`,
+    chap:`Shitty First Drafts`,
+    core:`Lamott's argument is that paralysis comes from demanding the final version first. All good writing — all good anything — begins with a draft so bad nobody will ever see it; the first pass exists only to give the second pass something to fix. Perfectionism, she says, is the voice of the oppressor, and the cure is permission, granted daily, to be briefly terrible.`,
+    ins:[
+      {t:`Down drafts before up drafts`,
+       r:`Her sequence — the down draft (just get it down), the up draft (fix it up), the dental draft (check every tooth) — turns one impossible task into three small ones.`,
+       ex:`She describes writing her food reviews by pouring out pages of unusable rambling first, then finding the real opening sitting quietly in the middle of the mess the next day.`},
+      {t:`Bird by bird`,
+       r:`Scale creates the panic; sequence dissolves it. You never have to do the whole thing — only the next small unit.`,
+       ex:`The title comes from her ten-year-old brother, frozen the night before a long-overdue report on birds, and their father sitting down beside him with the advice that named the book.`,
+       q:{t:`Bird by bird, buddy. Just take it bird by bird.`, by:`ANNE LAMOTT, BIRD BY BIRD`}},
+      {t:`The one-inch picture frame`,
+       r:`When the whole is unbearable, describe only what fits in one inch: one scene, one memory, one paragraph. The frame is a contract with your panic.`,
+       ex:`She keeps an actual one-inch picture frame on her desk as the standing reminder that an inch is all that's ever being asked.`}
+    ],
+    close:`The mountain isn't the assignment. The next bird is. Lower the standard, shrink the frame, and let the bad version buy you the good one.`,
+    take:[`Lower the bar until you trip over it: today's only job is the down draft.`,`Shrink the assignment to one inch and do only that.`],
+    ask:[`What's the bird directly in front of you — the single next unit?`,`Whose approval is the perfectionism performing for, and are they even real?`],
+    fr:[{id:'deep', why:`for building the hours the drafts live in`},
+        {id:'atomic', why:`if starting is always the hard part`},
+        {id:'pema', why:`when the panic needs tending before the pages`}]
+  }
+};
+
+const FPOOL = {rain:['piranesi','snow','goldfinch'], cloud:['remains','pachinko','cuckoo'], sun:['beach','circe','hail'], snow:['snow','cuckoo','tranq'], night:['tranq','kindred','sleep']};
+const FNOTE = {piranesi:'a dreamlike house with its own tides', snow:'a wintry hush of a story', goldfinch:'one painting, one long ride', remains:'quiet, devastating, butler-shaped', pachinko:'four generations to disappear into', cuckoo:'one story passed across centuries', beach:'rivals, a porch, zero chill', circe:'an island and a witch finding her nerve', hail:'a lone astronaut with a job to do', tranq:'slim and time-bending', kindred:'the past with a grip', sleep:'rain, neon, and a case'};
+
+const INTENTS = [
+  {re:/surprise|random|anything|dealer/, k:'__surprise'},
+  {re:/light|fun|escape|cozy|quick|short|easy|laugh|romance|novel|story|fiction/, k:'__fiction'},
+  {re:/sleep|insom|bed|tired|awake|3 ?a\.?m|wind down|rest|night/, k:'wws'},
+  {re:/morning|fresh|new (day|chapter|leaf|start)|monday|wake/, k:'medit'},
+  {re:/habit|routine|discipline|consisten|improve|better|change m|quit/, k:'atomic'},
+  {re:/stuck|focus|procrast|distract|concentrat|deep|productiv|attention/, k:'deep'},
+  {re:/sad|blue|heart|break ?up|lonel|cry|hurt|anx|fall(ing)? apart|worried|fear|grief/, k:'pema'},
+  {re:/meaning|purpose|why|lost|empty|pointless|direction|what.*for|big life/, k:'frankl'},
+  {re:/overwhelm|too much|deadline|stress|paraly|can.?t (start|begin)|writ|project/, k:'bird'}
+];
+
+let collected = [], lastBatch = null, lastGuide = null, lastKind = null, ltId = null;
+const usedGuides = new Set(), openedLetters = new Set();
+let busy = false, fIdx = 0;
+
+const escq = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const linkB = id => `<span class="bk" data-sheet="${id}">${B[id].t}</span>`;
+const chatEl = () => $('chat');
+
+function scrollChat(){ const c = chatEl(); c.scrollTop = c.scrollHeight; }
+function addMsg(who, html){
+  const m = document.createElement('div');
+  m.className = 'msg ' + who;
+  m.innerHTML = html;
+  chatEl().appendChild(m);
+  scrollChat();
+  return m;
+}
+function addLetterCard(id){
+  const c = document.createElement('button');
+  c.className = 'lettercard';
+  c.dataset.letter = id;
+  c.innerHTML = `<span class="stamp"><svg class="ti ti-feather" width="1em" height="1em" aria-hidden="true"><use href="#i-feather"></use></svg></span>
+    <span><span class="lc-t d">a peek has arrived</span><br><span class="lc-s">${B[id].t} — tap to open</span></span>`;
+  chatEl().appendChild(c);
+  scrollChat();
+}
+function setChips(arr){
+  $('chiprow').innerHTML = (arr||[]).map(c => `<button class="chip" data-say="${c}">${c.toUpperCase()}</button>`).join('');
+}
+
+/* tray (latest pick) + strip (every rec this session) */
+function renderTray(){
+  const tray = $('tray');
+  if(!lastBatch){
+    tray.innerHTML = `<div class="tray-card tray-empty">scout's picks will perch here</div>`;
+    return;
+  }
+  const id = lastBatch.main, b = B[id], m = BMETA[id], saved = savedIds.has(id);
+  tray.innerHTML = `<div class="tray-card">
+    <button class="save ${saved?'on':''}" data-save="${id}" aria-label="Save to library" aria-pressed="${saved}"><svg class="ti ti-heart" width="1em" height="1em" aria-hidden="true"><use href="#i-heart"></use></svg></button>
+    ${coverHTML(id,'cover-xs')}
+    <div class="tray-info">
+      <div class="tray-ttl d">${b.t}</div>
+      <div class="tray-auth">${b.a} \u00B7 ${b.n} pages</div>
+      <div class="tray-intro">${m ? m.i : b.q}</div>
+      <div class="tray-btns">
+        <button class="btn xs ghost" data-sheet="${id}">ABOUT</button>
+        ${GUIDES[id] ? `<button class="btn xs" data-letter="${id}">PEEK <svg class="ti ti-mail" width="1em" height="1em" aria-hidden="true"><use href="#i-mail"></use></svg></button>`
+                     : `<button class="btn xs" data-open="${id}">OPEN <svg class="ti ti-arrow-right" width="1em" height="1em" aria-hidden="true"><use href="#i-arrow-right"></use></svg></button>`}
+      </div>
+    </div>
+  </div>`;
+}
+function renderStrip(){
+  const s = $('stripRow');
+  if(!collected.length){ s.innerHTML = ''; return; }
+  s.innerHTML = `<span class="strip-label">SHELF \u00B7 ${collected.length}</span>
+    <div class="strip-row">${collected.map(id =>
+      `<button class="spinelet" style="background:${B[id].c}" data-sheet="${id}" aria-label="${B[id].t}" title="${B[id].t}"></button>`).join('')}</div>`;
+}
+function collect(batch){
+  [batch.main, ...(batch.also||[])].forEach(id => { if(!collected.includes(id)) collected.unshift(id); });
+}
+
+/* the simulated brain */
+function guideReply(k){
+  const g = GUIDES[k];
+  lastGuide = k; lastKind = 'guide'; usedGuides.add(k);
+  return {msgs:[g.say.replace('{{b}}', linkB(k))], letter:k,
+          batch:{main:k, also:g.fr.map(f => f.id)}, chips:AFTER_CHIPS};
+}
+function fictionReply(){
+  const pool = FPOOL[WX[state.wx].k];
+  const a = pool[fIdx % pool.length], b2 = pool[(fIdx+1) % pool.length];
+  fIdx++; lastKind = 'fiction'; lastGuide = null;
+  return {msgs:[`easy does it — no homework, just pages. try ${linkB(a)} (${FNOTE[a]}), or ${linkB(b2)} (${FNOTE[b2]}).`],
+          batch:{main:a, also:[b2]}, chips:['more like this','new vibe','surprise me']};
+}
+function deeperReply(){
+  const g = GUIDES[lastGuide];
+  return {msgs:[`from the same peek, something to sit with: <span class="it">\u201C${g.ask[0]}\u201D</span> — no rush.`], chips:AFTER_CHIPS};
+}
+function moreReply(){
+  if(lastKind === 'fiction' || !lastGuide) return fictionReply();
+  const g = GUIDES[lastGuide], fr = g.fr;
+  return {msgs:[`from the same desk: ${fr.map(f => `${linkB(f.id)} — ${f.why}`).join('; ')}.`],
+          batch:{main:fr[0].id, also:fr.slice(1).map(f => f.id)}, chips:AFTER_CHIPS};
+}
+function fallbackReply(fresh){
+  return {msgs:[fresh ? `clean slate, then. what's the weather inside — rest, focus, heartache, or escape?`
+                      : `tell me a little more — what's the shape of it: rest, focus, heartache, or escape?`],
+          chips:['rest','need focus','feeling blue','cozy escape']};
+}
+function pickSurprise(){
+  const keys = Object.keys(GUIDES);
+  const unused = keys.filter(k => !usedGuides.has(k));
+  const src = unused.length ? unused : keys;
+  return src[Math.floor(Math.random() * src.length)];
+}
+function brain(t){
+  t = t.toLowerCase();
+  if(t.includes('go deeper') && lastGuide) return deeperReply();
+  if(t.includes('more like this')) return moreReply();
+  if(t.includes('new vibe')) return fallbackReply(true);
+  for(const it of INTENTS){
+    if(it.re.test(t)){
+      if(it.k === '__surprise') return guideReply(pickSurprise());
+      if(it.k === '__fiction') return fictionReply();
+      return guideReply(it.k);
+    }
+  }
+  return fallbackReply(false);
+}
+
+function send(text){
+  text = (text||'').trim();
+  if(!text || busy) return;
+  busy = true;
+  $('qIn').value = '';
+  addMsg('me', escq(text));
+  setChips([]);
+  const ty = addMsg('owl', '<span class="tdots"><span></span><span></span><span></span></span>');
+  setTimeout(() => {
+    ty.remove();
+    const r = brain(text);
+    r.msgs.forEach(m => addMsg('owl', m));
+    if(r.letter) addLetterCard(r.letter);
+    if(r.batch){ lastBatch = r.batch; collect(r.batch); renderTray(); renderStrip(); }
+    setChips(r.chips);
+    scrollChat();
+    busy = false;
+  }, 850);
+}
+
+$('sendBtn').addEventListener('click', () => send($('qIn').value));
+$('qIn').addEventListener('keydown', e => { if(e.key === 'Enter') send($('qIn').value); });
+
+/* the peek overlay */
+function syncLtHeart(){
+  const on = savedIds.has(ltId);
+  $('ltHeart').classList.toggle('on', on);
+  $('ltHeart').setAttribute('aria-pressed', on);
+}
+function openLetter(id){
+  const g = GUIDES[id]; if(!g) return;
+  ltId = id;
+  const b = B[id], saved = savedIds.has(id);
+  $('ltBody').innerHTML = `
+    <div class="l-kick">OWL POST \u00B7 PEEK</div>
+    <div class="l-ttl d">${b.t}</div>
+    <div class="l-auth">${b.a} \u00B7 ${b.n} pages</div>
+    <div class="l-res it">${g.res}</div>
+    <div class="l-sec">RECOMMENDED CHAPTER</div>
+    <div class="l-chap d">\u201C${g.chap}\u201D</div>
+    <div class="l-sec">1 \u00B7 THE CORE IDEA</div>
+    <p class="l-p">${g.core}</p>
+    <div class="l-sec">2 \u00B7 INSIGHTS FROM THE CHAPTER</div>
+    ${g.ins.map((n,i) => `<div class="l-ins">
+      <div class="l-ins-t d">${i+1}. ${n.t}</div>
+      <p class="l-p">${n.r}</p>
+      <p class="l-p"><span class="l-tag">from the book</span>${n.ex}</p>
+      ${n.q ? `<div class="l-q it">\u201C${n.q.t}\u201D<small>${n.q.by}</small></div>` : ''}
+    </div>`).join('')}
+    <div class="l-sec">3 \u00B7 CLOSING REFLECTION</div>
+    <p class="l-p">${g.close}</p>
+    ${g.take.map(t => `<p class="l-p"><span class="l-tag">take with you</span>${t}</p>`).join('')}
+    ${g.ask.map(t => `<p class="l-p it"><span class="l-tag">to sit with</span>${t}</p>`).join('')}
+    <div class="l-sec">FURTHER READING</div>
+    ${g.fr.map(f => { const fb = B[f.id]; return `<button class="fr-row" data-sheet="${f.id}">
+      ${coverHTML(f.id,'cover-xs')}
+      <span><span class="rtitle d">${fb.t}</span><span class="rauth" style="display:block">${fb.a}</span><span class="fr-why">${f.why}</span></span>
+    </button>`; }).join('')}
+    <div class="l-btnrow">
+      <button class="btn" data-open="${id}">OPEN <svg class="ti ti-arrow-right" width="1em" height="1em" aria-hidden="true"><use href="#i-arrow-right"></use></svg></button>
+      <button class="btn ghost" data-save="${id}" aria-pressed="${saved}">${saved ? 'SAVED <svg class="ti ti-check" width="1em" height="1em" aria-hidden="true"><use href="#i-check"></use></svg>' : 'SAVE <svg class="ti ti-heart" width="1em" height="1em" aria-hidden="true"><use href="#i-heart"></use></svg>'}</button>
+    </div>
+    <div class="l-sign it">— sorted with care, the owl post office</div>`;
+  syncLtHeart();
+  $('ltBody').scrollTop = 0;
+  $('letter').classList.add('on');
+  if(!openedLetters.has(id)){
+    openedLetters.add(id);
+    toast('ti-mail-opened', 'a letter, opened \u00B7 +5 XP');
+    addXP(5);
+  }
+}
+function closeLetter(){ $('letter').classList.remove('on'); }
+$('ltHeart').addEventListener('click', () => { if(ltId) toggleSave(ltId); });
+
+function initChat(){
+  const dp = dayPart();
+  addMsg('owl', `${SAL[dp]} ${FLAVOR[WX[state.wx].k]}. scout here, at the post desk — tell me what's going on, and i'll sort you a peek.`);
+  setChips(START_CHIPS[dp]);
+  renderTray();
+  renderStrip();
+}
+
+/* ---------- detail sheet ---------- */
+function renderSheet(id){
+  const b = B[id], m = BMETA[id] || {}, saved = savedIds.has(id), sheet = $('sheet');
+  sheet.dataset.id = id;
+  sheet.innerHTML = `
+    <button class="save" data-close="1" aria-label="Close details"><svg class="ti ti-x" width="1em" height="1em" aria-hidden="true"><use href="#i-x"></use></svg></button>
+    <div class="sh-flex">
+      ${coverHTML(id,'cover-md')}
+      <div class="sh-info">
+        <div class="ttl d">${b.t}</div>
+        <div class="auth">${b.a} \u00B7 ${b.n} pages</div>
+        <div class="rate"><svg class="ti ti-star" width="1em" height="1em" aria-hidden="true"><use href="#i-star"></use></svg>${m.r || '4.0'}<small>&nbsp;GOODREADS</small></div>
+      </div>
+    </div>
+    <p class="bk-intro">${m.i || b.q}</p>
+    <div class="btnrow">
+      ${GUIDES[id] ? `<button class="btn" data-letter="${id}">PEEK <svg class="ti ti-mail" width="1em" height="1em" aria-hidden="true"><use href="#i-mail"></use></svg></button>` : ''}
+      <button class="btn ${GUIDES[id] ? 'ghost' : ''}" data-open="${id}">${pagesRead[id] ? 'RESUME' : 'OPEN'} <svg class="ti ti-arrow-right" width="1em" height="1em" aria-hidden="true"><use href="#i-arrow-right"></use></svg></button>
+      <button class="btn ghost" data-save="${id}" aria-pressed="${saved}">${saved ? 'SAVED <svg class="ti ti-check" width="1em" height="1em" aria-hidden="true"><use href="#i-check"></use></svg>' : 'SAVE <svg class="ti ti-heart" width="1em" height="1em" aria-hidden="true"><use href="#i-heart"></use></svg>'}</button>
+    </div>
+    <div class="sh-sec">THE AUTHOR</div>
+    <div class="auth-name d">${b.a}</div>
+    <p class="bk-bio">${m.w || ''}</p>
+    <button class="link-row" data-ext="1"><svg class="ti ti-microphone-2" width="1em" height="1em" aria-hidden="true"><use href="#i-microphone-2"></use></svg>interviews<i class="ti ti-external-link ext" aria-hidden="true"></i></button>
+    <button class="link-row" data-ext="1"><svg class="ti ti-pencil" width="1em" height="1em" aria-hidden="true"><use href="#i-pencil"></use></svg>essays &amp; blog posts<i class="ti ti-external-link ext" aria-hidden="true"></i></button>
+    <div class="sh-sec">SOCIAL REVIEWS <span class="soon">COMING SOON</span></div>
+    <p class="sv-note">what fellow readers underlined, argued with, and loved — landing in a future issue.</p>`;
+}
+
+function openSheet(id){
+  renderSheet(id);
+  $('sheet').classList.add('on');
+  $('backdrop').classList.add('on');
+}
+function closeSheet(){
+  $('sheet').classList.remove('on');
+  $('backdrop').classList.remove('on');
+}
+$('backdrop').addEventListener('click', closeSheet);
+
+/* ---------- library ---------- */
+function renderLibrary(){
+  const segs = [['reading', `READING \u00B7 ${readingIds.length}`],
+                ['saved',   `SAVED \u00B7 ${savedIds.size}`],
+                ['finished',`FINISHED \u00B7 ${finishedIds.length}`]];
+  $('segRow').innerHTML = segs.map(([k,l]) =>
+    `<button class="chip grow ${libTab===k?'on':''}" data-seg="${k}">${l}</button>`).join('');
+
+  const body = $('libBody');
+  if(libTab === 'reading'){
+    body.innerHTML = `<div class="list">` + readingIds.map(id => {
+      const b = B[id], p = pct(id);
+      return `<div class="rowc">
+        ${coverHTML(id,'cover-xs')}
+        <div class="rinfo">
+          <div class="rtitle d">${b.t}</div>
+          <div class="rauth">${b.a}</div>
+          <div class="rbar"><div class="mini-track"><div class="mini-fill" style="width:${p}%"></div></div><span class="mini-pct">${p}%</span></div>
+        </div>
+        <button class="iconbtn" data-open="${id}" aria-label="Resume ${b.t}"><svg class="ti ti-player-play" width="1em" height="1em" aria-hidden="true"><use href="#i-player-play"></use></svg></button>
+      </div>`;
+    }).join('') + `</div>`;
+  } else if(libTab === 'saved'){
+    const ids = [...savedIds];
+    body.innerHTML = ids.length ? `<div class="grid">` + ids.map(id => {
+      const b = B[id];
+      return `<button class="g-item" data-sheet="${id}">
+        <span class="g-heart"><svg class="ti ti-heart" width="1em" height="1em" aria-hidden="true"><use href="#i-heart"></use></svg></span>
+        ${coverHTML(id,'cover-g')}
+        <div class="g-title d">${b.t}</div>
+        <div class="g-auth">${b.a.toUpperCase()}</div>
+      </button>`;
+    }).join('') + `</div>` : `<div class="empty">
+        <svg class="ti ti-heart" width="1em" height="1em" aria-hidden="true"><use href="#i-heart"></use></svg>
+        <div class="d">nothing saved yet</div>
+        <p>tap the \u2665 on any book to keep it here.</p>
+      </div>`;
+  } else {
+    body.innerHTML = `<div class="list">` + finishedIds.map(id => {
+      const b = B[id];
+      return `<div class="rowc">
+        ${coverHTML(id,'cover-xs')}
+        <div class="rinfo">
+          <div class="rtitle d">${b.t}</div>
+          <div class="rauth">${b.a}</div>
+          <div class="fin"><span class="done-badge"><svg class="ti ti-check" width="1em" height="1em" aria-hidden="true"><use href="#i-check"></use></svg></span>FINISHED</div>
+        </div>
+        <button class="iconbtn lite" data-open="${id}" data-page="1" aria-label="Read ${b.t} again"><svg class="ti ti-refresh" width="1em" height="1em" aria-hidden="true"><use href="#i-refresh"></use></svg></button>
+      </div>`;
+    }).join('') + `</div>`;
+  }
+}
+
+/* ---------- reader ---------- */
+function ensureReading(id){
+  finishedIds = finishedIds.filter(x => x !== id);
+  if(!readingIds.includes(id)) readingIds.unshift(id);
+}
+
+function openReader(id, page){
+  rdr.id = id;
+  ensureReading(id);
+  if(page){ pagesRead[id] = page - 1; }
+  rdr.p = Math.min(Math.max(page || (pagesRead[id]||0) + 1, 1), B[id].n);
+  $('rTitle').textContent = B[id].t;
+  $('rAuth').textContent = B[id].a.toUpperCase();
+  syncRHeart();
+  $('reader').classList.add('on');
+  renderPage(0);
+}
+
+function renderPage(dir){
+  const b = B[rdr.id], body = $('rBody');
+  const spread = PAGES[(rdr.p - 1) % PAGES.length];
+  body.innerHTML = `<div class="r-chap">CHAPTER ${Math.ceil(rdr.p/24)}</div>` + spread.map(t => `<p>${t}</p>`).join('');
+  body.scrollTop = 0;
+  if(dir !== 0){ body.classList.remove('swap'); void body.offsetWidth; body.classList.add('swap'); }
+  $('rPage').textContent = `p. ${rdr.p} of ${b.n}`;
+  $('rFill').style.width = (rdr.p / b.n * 100) + '%';
+  $('rPrev').disabled = rdr.p <= 1;
+  const last = rdr.p >= b.n;
+  $('rNext').innerHTML = `<i class="ti ${last ? 'ti-check' : 'ti-chevron-right'}" aria-hidden="true"></i>`;
+  $('rNext').setAttribute('aria-label', last ? 'Finish book' : 'Next page');
+}
+
+function nextPage(){
+  const b = B[rdr.id];
+  if(rdr.p >= b.n){ finishBook(); return; }
+  rdr.p++;
+  pagesRead[rdr.id] = Math.max(pagesRead[rdr.id]||0, rdr.p - 1);
+  addXP(2); addInk(2);
+  renderPage(1);
+}
+function prevPage(){
+  if(rdr.p <= 1) return;
+  rdr.p--;
+  renderPage(-1);
+}
+
+function finishBook(){
+  const id = rdr.id;
+  pagesRead[id] = B[id].n;
+  readingIds = readingIds.filter(x => x !== id);
+  if(!finishedIds.includes(id)) finishedIds.unshift(id);
+  closeReader();
+  toast('ti-trophy', 'finished! +40 XP');
+  addXP(40);
+}
+
+function closeReader(){
+  $('reader').classList.remove('on');
+  renderShelf();
+  renderLibrary();
+  renderPick(false);
+}
+
+$('rBack').addEventListener('click', closeReader);
+$('rPrev').addEventListener('click', prevPage);
+$('rNext').addEventListener('click', nextPage);
+$('rHeart').addEventListener('click', () => toggleSave(rdr.id));
+$('rBody').addEventListener('click', e => {
+  const r = e.currentTarget.getBoundingClientRect(), x = e.clientX - r.left;
+  if(x < r.width * 0.3) prevPage();
+  else if(x > r.width * 0.7) nextPage();
+});
+
+/* ---------- profile: radar, calendar, quotes, tabs ---------- */
+const DIMS = [['health',62],['wealth',48],['relationship',71],['career',76],['mindset',85],['fiction',94]];
+const SVGNS = 'http://www.w3.org/2000/svg';
+const RCX = 176, RCY = 132, RR = 84, RLR = 104;
+const rpt = (i, f) => { const a = (Math.PI/180)*(i*60-90); return [RCX + RR*f*Math.cos(a), RCY + RR*f*Math.sin(a)]; };
+const ringPts = f => DIMS.map((_, i) => rpt(i, f).map(n => n.toFixed(1)).join(',')).join(' ');
+function mk(tag, attrs){ const e = document.createElementNS(SVGNS, tag); for(const k in attrs) e.setAttribute(k, attrs[k]); return e; }
+
+function buildRadar(){
+  const svg = $('radarSvg');
+  svg.appendChild(mk('polygon', {points:ringPts(1), fill:'var(--surface2)', stroke:'var(--line2)', 'stroke-width':1.5}));
+  [.75,.5,.25].forEach(f =>
+    svg.appendChild(mk('polygon', {points:ringPts(f), fill:'none', stroke:'var(--paper2)', 'stroke-width':1.5}))
+  );
+  DIMS.forEach((_, i) => {
+    const [x, y] = rpt(i, 1);
+    svg.appendChild(mk('line', {x1:RCX, y1:RCY, x2:x.toFixed(1), y2:y.toFixed(1), stroke:'var(--paper2)', 'stroke-width':1.5}));
+  });
+  const g = mk('g', {id:'rg'});
+  g.appendChild(mk('polygon', {
+    points: DIMS.map(([_, v], i) => rpt(i, v/100).map(n => n.toFixed(1)).join(',')).join(' '),
+    fill:'var(--radarFill)', stroke:'var(--violet)', 'stroke-width':2.5, 'stroke-linejoin':'round'
+  }));
+  DIMS.forEach(([_, v], i) => {
+    const [x, y] = rpt(i, v/100);
+    g.appendChild(mk('rect', {
+      x:-4, y:-4, width:8, height:8, rx:1.5,
+      transform:`translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(45)`,
+      fill:'var(--yellow)', stroke:'var(--ink)', 'stroke-width':1.5
+    }));
+  });
+  svg.appendChild(g);
+  const ANCH = ['middle','start','start','middle','end','end'];
+  DIMS.forEach(([name, v], i) => {
+    const a = (Math.PI/180)*(i*60-90);
+    const lx = RCX + RLR*Math.cos(a), ly = RCY + RLR*Math.sin(a);
+    let ny, vy;
+    if(i === 0){ ny = 20; vy = 34; }
+    else if(i === 3){ ny = ly + 2; vy = ly + 16; }
+    else { ny = ly - 3; vy = ly + 11; }
+    const nm = mk('text', {x:lx.toFixed(1), y:ny.toFixed(1), 'text-anchor':ANCH[i], fill:'var(--fade)',
+      style:'font:800 8.5px "Inter Tight",sans-serif;letter-spacing:1px;text-transform:uppercase'});
+    nm.textContent = name.toUpperCase();
+    const vl = mk('text', {x:lx.toFixed(1), y:vy.toFixed(1), 'text-anchor':ANCH[i], fill:'var(--ink)',
+      style:'font:400 14px "Anton",sans-serif'});
+    vl.textContent = v;
+    svg.appendChild(nm); svg.appendChild(vl);
+  });
+}
+function replayRadar(){
+  const c = $('radarCard');
+  c.classList.remove('go');
+  void c.offsetWidth;
+  c.classList.add('go');
+}
+
+/* owl-post calendar — june, today = 11 */
+const CTODAY = 11, CDAYS = 30;
+const RECS = {
+  2:  {q:'something quiet for a rainy tuesday?', book:'snow'},
+  5:  {q:'a book to fix my sleep schedule?',     book:'wws'},
+  8:  {q:'stoic, but make it gentle.',           book:'medit'},
+  10: {q:'a mystery that smells like rain?',     book:'sleep'},
+  11: {q:'one strange, beautiful world, please.',book:'piranesi'}
+};
+let selDay = CTODAY;
+function buildCal(){
+  const grid = $('calGrid');
+  grid.innerHTML = '';
+  for(let d = 1; d <= CDAYS; d++){
+    const b = document.createElement('button');
+    b.className = 'cd';
+    b.textContent = d;
+    const rec = RECS[d];
+    if(d === CTODAY) b.classList.add('today');
+    if(d > CTODAY){ b.classList.add('off'); b.disabled = true; }
+    if(rec){
+      b.classList.add('rec');
+      b.setAttribute('aria-label', `june ${d} — asked the owl, peeked ${B[rec.book].t}`);
+      b.setAttribute('aria-pressed', d === selDay);
+      b.addEventListener('click', () => selectDay(d));
+    } else {
+      b.disabled = true;
+      b.setAttribute('aria-label', `june ${d}`);
+    }
+    if(d === selDay) b.classList.add('sel');
+    grid.appendChild(b);
+  }
+  $('calCount').textContent = Object.keys(RECS).length + ' owl posts';
+}
+function selectDay(d){
+  selDay = d;
+  document.querySelectorAll('.cd').forEach((b, i) => {
+    const on = i + 1 === d;
+    b.classList.toggle('sel', on);
+    if(b.classList.contains('rec')) b.setAttribute('aria-pressed', on);
+  });
+  renderRec(true);
+}
+function renderRec(animate){
+  const rec = RECS[selDay], bk = B[rec.book];
+  const card = $('recCard');
+  card.innerHTML = `
+    <div class="rec-kick">
+      <div class="stamp"><svg class="ti ti-mail" width="1em" height="1em" aria-hidden="true"><use href="#i-mail"></use></svg></div>
+      <span class="k">OWL POST &middot; JUN ${selDay}</span>
+    </div>
+    <div class="rec-lab">YOU ASKED</div>
+    <div class="ask">${rec.q}</div>
+    <div class="rec-lab">YOU PEEKED</div>
+    <div class="prev-row">
+      ${coverHTML(rec.book, 'cover-xs')}
+      <div>
+        <div class="prev-ttl d">${bk.t}</div>
+        <div class="prev-auth">${bk.a}</div>
+        <div class="prev-note">first pages, by owl</div>
+      </div>
+    </div>`;
+  card.classList.remove('swap');
+  if(animate){ void card.offsetWidth; card.classList.add('swap'); }
+}
+
+/* saved quotes */
+const QUOTES = [
+  {x:'The house is vast. The tide keeps its own hours.',             book:'piranesi', d:'jun 9'},
+  {x:'Confine yourself to the present.',                             book:'medit',    d:'jun 6'},
+  {x:'A wish made of winter walks out of the woods.',                book:'snow',     d:'jun 2'},
+  {x:'Tiny votes, cast daily, for the person you\u2019re becoming.', book:'atomic',   d:'may 28'},
+  {x:'Rain, neon, and a case that will not stay closed.',            book:'sleep',    d:'may 19'}
+];
+function buildQuotes(){
+  const list = $('qList');
+  QUOTES.forEach(q => {
+    const bk = B[q.book];
+    const card = document.createElement('article');
+    card.className = 'qcard';
+    card.innerHTML = `
+      <div class="q-top">
+        <div class="q-stamp" style="background:${bk.c};color:${bk.tc||'#E8E0BC'}"><svg class="ti ti-quote" width="1em" height="1em" aria-hidden="true"><use href="#i-quote"></use></svg></div>
+        <div class="q-text it">&ldquo;${q.x}&rdquo;</div>
+      </div>
+      <button class="q-copy" aria-label="Copy quote"><svg class="ti ti-copy" width="1em" height="1em" aria-hidden="true"><use href="#i-copy"></use></svg></button>
+      <div class="q-meta">
+        <span class="q-by">${bk.a} &middot; ${bk.t}</span>
+        <span class="q-date">kept ${q.d}</span>
+      </div>`;
+    card.querySelector('.q-copy').addEventListener('click', async e => {
+      const btn = e.currentTarget;
+      try{
+        await navigator.clipboard.writeText(`\u201C${q.x}\u201D \u2014 ${bk.a}, ${bk.t}`);
+        toast('ti-copy', 'quote copied');
+      }catch(_){
+        toast('ti-copy', 'quote ready to keep');
+      }
+      btn.classList.remove('done'); void btn.offsetWidth; btn.classList.add('done');
+    });
+    list.appendChild(card);
+  });
+  $('qCount').textContent = QUOTES.length + ' quotes kept';
+}
+
+/* profile tab switching */
+const PPANELS = {stats:'tab-stats', cal:'tab-cal', quotes:'tab-quotes', mem:'tab-mem'};
+function setPTab(key){
+  document.querySelectorAll('[data-ptab]').forEach(c => {
+    const on = c.dataset.ptab === key;
+    c.classList.toggle('on', on);
+    c.setAttribute('aria-selected', on);
+  });
+  Object.entries(PPANELS).forEach(([k, id]) => {
+    const p = $(id), on = k === key;
+    p.classList.toggle('on', on);
+    p.classList.remove('swap');
+    if(on){ void p.offsetWidth; p.classList.add('swap'); }
+  });
+  if(key === 'stats') replayRadar();
+  $('screen-profile').scrollTo({top:0, behavior:'smooth'});
+}
+
+/* ---------- tabs ---------- */
+function setTab(t){
+  document.querySelectorAll('.nv').forEach(n => {
+    const on = n.dataset.tab === t;
+    n.classList.toggle('on', on);
+    if(on) n.setAttribute('aria-current','page'); else n.removeAttribute('aria-current');
+  });
+  document.querySelectorAll('.screen').forEach(s => s.classList.toggle('on', s.id === 'screen-' + t));
+  if(t === 'discover'){ const c = $('chat'); c.scrollTop = c.scrollHeight; }
+  if(t === 'library') renderLibrary();
+  if(t === 'profile') replayRadar();
+}
+
+/* ---------- one delegated click handler ---------- */
+app.addEventListener('click', e => {
+  const el = e.target.closest('[data-close],[data-save],[data-dot],[data-say],[data-seg],[data-ptab],[data-ext],[data-sheet],[data-letter],[data-open],[data-tab]');
+  if(!el) return;
+  const d = el.dataset;
+  if('close' in d){ closeSheet(); closeLetter(); return; }
+  if('save' in d){ toggleSave(d.save); return; }
+  if('dot' in d){ setPick(+d.dot); return; }
+  if('say' in d){ send(d.say); return; }
+  if('seg' in d){ libTab = d.seg; renderLibrary(); return; }
+  if('ptab' in d){ setPTab(d.ptab); return; }
+  if('ext' in d){ toast('ti-external-link', 'opens outside this mockup'); return; }
+  if('sheet' in d){ openSheet(d.sheet); return; }
+  if('letter' in d){ closeSheet(); openLetter(d.letter); return; }
+  if('open' in d){ closeSheet(); closeLetter(); openReader(d.open, d.page ? +d.page : undefined); return; }
+  if('tab' in d){ setTab(d.tab); }
+});
+
+/* ---------- live clock ---------- */
+function tick(){
+  const DAYS = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+  const MONS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  const d = new Date();
+  const h = d.getHours(), h12 = h % 12 || 12, mm = String(d.getMinutes()).padStart(2,'0');
+  const ap = h >= 12 ? 'PM' : 'AM';
+  $('stime').textContent = `${h12}:${mm}`;
+  $('dt').textContent = `${DAYS[d.getDay()]}. ${MONS[d.getMonth()]} ${d.getDate()} \u00B7 ${h12}:${mm} ${ap}`;
+}
+
+/* ---------- init ---------- */
+applyWX();
+renderStats();
+renderPick(false);
+renderDots();
+renderShelf();
+initChat();
+renderLibrary();
+buildRadar();
+buildCal();
+renderRec(false);
+buildQuotes();
+tick();
+setInterval(tick, 15000);
+
+/* ============ owl theatre: lighting rig + entrances ============ */
+const modeBtn = $('modeBtn');
+function setMode(m){
+  app.dataset.mode = m;
+  modeBtn.querySelector('use').setAttribute('href', m === 'night' ? '#i-sun' : '#i-moon-stars');
+  modeBtn.setAttribute('aria-label', m === 'night'
+    ? 'Lighting: evening show. Tap for the matin\u00e9e'
+    : 'Lighting: matin\u00e9e. Tap for the evening show');
+}
+modeBtn.addEventListener('click', () => {
+  const m = app.dataset.mode === 'night' ? 'day' : 'night';
+  setMode(m);
+  toast(m === 'night' ? 'ti-moon-stars' : 'ti-sun', m === 'night' ? 'the evening show' : 'the matin\u00e9e');
+});
+setMode(app.dataset.mode || 'night');
+
+
+/* ============================================================
+   APP SYNC PATCHES — desks, settings, opening night, memory
+   ============================================================ */
+const prefs = { scale: 'md', reduceMotion: false, liveOwl: false, onboarded: localStorage.getItem('owlry_onboarded') === '1' };
+let deskMode = 'all';
+const PRO_GUIDES = new Set(['wws','medit','deep','atomic','pema','frankl','bird']);
+const CAST_LINES = {
+  scout: 'okay okay okay — this one first.',
+  keeper: 'i counted twice.',
+  scribe: 'page 118. not 117.',
+  peek: 'just the first chapter.',
+  mirror: '…'
+};
+const PRO_CHIPS = ['need focus','build a habit','career','money'];
+const ALL_SWITCH = ['rest','cozy escape','feeling stuck','surprise me'];
+
+function setDesk(mode){
+  deskMode = mode;
+  const disc = $('screen-discover');
+  disc.dataset.desk = mode;
+  disc.querySelectorAll('.deskchip').forEach(b => {
+    const on = b.dataset.desk === mode;
+    b.classList.toggle('on', on);
+    b.setAttribute('aria-selected', on ? 'true' : 'false');
+  });
+  const use = $('discOwlUse');
+  if(use) use.setAttribute('href', mode === 'pro' ? '#owl-scout-pro' : '#owl-scout');
+  const q = $('qIn');
+  if(q) q.placeholder = mode === 'pro' ? "tell scout what you're solving…" : "tell scout what's going on…";
+  setChips(mode === 'pro' ? PRO_CHIPS : START_CHIPS[dayPart()]);
+  toast(mode === 'pro' ? 'ti-feather' : 'ti-compass', mode === 'pro' ? 'office hours. what are we solving?' : 'the whole desk — fiction & life');
+}
+
+/* gate fiction away from the pro desk */
+const _brain = brain;
+brain = function(t){
+  const r = _brain(t);
+  if(deskMode === 'pro' && r.letter && !PRO_GUIDES.has(r.letter)){
+    return {msgs:["office hours stay on the non-fiction shelf — try 'need focus', 'habits', or 'meaning'."], chips:PRO_CHIPS};
+  }
+  if(deskMode === 'pro' && !r.letter && /fiction|cozy|escape|light/i.test(t) && !/surprise/i.test(t)){
+    return {msgs:["that's a whole-desk ask. switch to EVERYTHING and i'll sort fiction."], chips:ALL_SWITCH};
+  }
+  return r;
+};
+
+function openSettings(){ $('settings').classList.add('on'); }
+function closeSettings(){ $('settings').classList.remove('on'); }
+
+function showObScene(name){
+  document.querySelectorAll('#onboard .ob-scene').forEach(s => s.classList.toggle('on', s.dataset.scene === name));
+  $('obSkip').style.display = name === 'curtain' ? 'none' : '';
+}
+function openOnboarding(){
+  closeSettings();
+  $('onboard').classList.add('on');
+  showObScene('curtain');
+  setTimeout(() => { if($('onboard').classList.contains('on')) showObScene('loop'); }, 2100);
+}
+function finishOnboarding(openPeekId){
+  $('onboard').classList.remove('on');
+  prefs.onboarded = true;
+  localStorage.setItem('owlry_onboarded','1');
+  if(openPeekId){ setTab('discover'); openLetter(openPeekId); }
+}
+function playCurtainBrief(){
+  if(!prefs.onboarded || prefs.reduceMotion) return;
+  const el = $('curtainBrief');
+  el.style.display = 'block';
+  el.style.animation = 'none'; void el.offsetWidth;
+  el.style.animation = '';
+  setTimeout(() => { el.style.display = 'none'; }, 1300);
+}
+
+$('settingsBtn').addEventListener('click', openSettings);
+$('settingsClose').addEventListener('click', closeSettings);
+$('histBtn').addEventListener('click', () => toast('ti-history', 'chat history needs a signed-in account'));
+$('authBtn').addEventListener('click', () => toast('ti-user', "members' door — invite-gated in the live app"));
+$('resetBtn').addEventListener('click', () => {
+  if(!confirm('Clear XP, ink, coins, shelves & reading progress?')) return;
+  state.xp = 0; state.lv = 1; state.ink = 40; state.coins = 0; state.inkDone = false;
+  savedIds.clear(); Object.keys(pagesRead).forEach(k => delete pagesRead[k]);
+  readingIds.length = 0; finishedIds.length = 0;
+  renderStats(); renderShelf(); renderLibrary(); closeSettings();
+  toast('ti-refresh', 'reset. keeper looked away.');
+});
+$('replayOnboard').addEventListener('click', openOnboarding);
+$('obSkip').addEventListener('click', () => finishOnboarding());
+$('obFinish').addEventListener('click', () => finishOnboarding(window.__obMood || 'wws'));
+
+document.querySelectorAll('[data-desk]').forEach(b => {
+  if(b.classList.contains('deskchip')) b.addEventListener('click', () => setDesk(b.dataset.desk));
+});
+document.querySelectorAll('#castRow [data-cast]').forEach(b => {
+  b.addEventListener('click', () => toast('ti-feather', CAST_LINES[b.dataset.cast] || '…'));
+});
+document.querySelectorAll('#scaleSeg [data-scale]').forEach(b => {
+  b.addEventListener('click', () => {
+    prefs.scale = b.dataset.scale;
+    document.querySelectorAll('#scaleSeg [data-scale]').forEach(x => x.classList.toggle('on', x === b));
+    app.style.setProperty('--reader-scale', ({sm:0.9, md:1, lg:1.15})[prefs.scale]);
+  });
+});
+function wireTgl(id, key, onMsg, offMsg){
+  const el = $(id); if(!el) return;
+  el.addEventListener('click', () => {
+    prefs[key] = !prefs[key];
+    el.classList.toggle('on', prefs[key]);
+    el.setAttribute('aria-checked', prefs[key] ? 'true' : 'false');
+    if(key === 'reduceMotion') app.classList.toggle('no-motion', prefs[key]);
+    if(onMsg) toast('ti-feather', prefs[key] ? onMsg : offMsg);
+  });
+}
+wireTgl('tglMotion', 'reduceMotion');
+wireTgl('tglLive', 'liveOwl', 'the live owl is at the desk', 'classic owl — the original mockup');
+
+document.querySelectorAll('#onboard [data-ob]').forEach(b => {
+  b.addEventListener('click', () => showObScene(b.dataset.ob));
+});
+document.querySelectorAll('#onboard [data-mood]').forEach(b => {
+  b.addEventListener('click', () => {
+    window.__obMood = b.dataset.mood;
+    showObScene('mirror');
+  });
+});
+
+/* first-run opening night vs brief curtain */
+if(!prefs.onboarded){
+  openOnboarding();
+} else {
+  playCurtainBrief();
+}
+
+
+/* replay the entrance when a screen takes the stage */
+document.querySelectorAll('.nv').forEach(b => b.addEventListener('click', () => {
+  setTimeout(() => {
+    const s = document.querySelector('.screen.on');
+    if(!s) return;
+    s.querySelectorAll('.mq > span, .mq-sub, .hl, .owl.hero').forEach(el => {
+      el.style.animation = 'none'; void el.offsetWidth; el.style.animation = '';
+    });
+  }, 10);
+}));
+</script>
+</body>
+</html>
