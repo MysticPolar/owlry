@@ -1,233 +1,319 @@
 import { useMemo, useState, type CSSProperties } from 'react';
-import { IconSearch, IconChevronRight, IconX, IconMessageCircle, IconHighlight, IconPlayerPlay } from '@tabler/icons-react';
+import { IconSearch, IconChevronRight } from '@tabler/icons-react';
 import { navigate } from '../app/router';
 import { useStore, selectCouncils } from '../store/useStore';
-import { maybeBook, book, CATEGORIES } from '../content/books';
-import type { Category } from '../content/types';
+import type { Highlight, Progress } from '../store/types';
+import { maybeBook, CATEGORIES } from '../content/books';
+import type { Book, Category } from '../content/types';
 import { figure } from '../content/figures';
 import { readingFor } from '../engine/council';
 import { timeAgo } from '../app/ids';
+import { AppBar } from '../components/chrome';
 import { Cover } from '../components/Cover';
 import { Avatar } from '../components/Avatar';
-import { Seg } from '../components/Seg';
-import { useT, fmt } from '../i18n/react';
+import { usePresence } from '../hooks/usePresence';
+import { useT, useLang, fmt } from '../i18n/react';
 import './LibraryScreen.css';
 
 /* ============================================================
-   The Library — the second tab. "Your growing collection."
-   Where you left off (with a resume button), your books by shelf with the
-   most recently opened first, what your councils suggested you read next,
-   past councils to revisit, and highlights.
+   The Library — the second tab. "My library."
+   Where you left off, your books most recently opened first (by shelf, or
+   searched), what your councils suggested you read next, the councils
+   themselves to revisit, and your highlights. The chips are the shelves:
+   every category you hold a book in, plus "Councils", which keeps only the
+   two council sections.
    ============================================================ */
-type Tab = 'all' | 'reading' | 'completed';
+type Shelf = 'all' | 'councils' | Category;
+
+/** cut a question to fit a row's sub line, on a word boundary */
+const trunc = (s: string, n: number) => (s.length > n ? s.slice(0, n).replace(/\s+\S*$/, '') + '…' : s);
+
+/** the .rv stagger: the blocks arrive top to bottom */
+const delay = (n: number): CSSProperties => ({ animationDelay: `${n * 60}ms` });
+const cascade = (i: number) => ({ '--i': i }) as CSSProperties;
+
+interface Rec {
+  bookId: string;
+  councilId: string;
+  question: string;
+}
+
+interface Suggestion {
+  book: Book;
+  councilId: string;
+  question: string;
+}
+
+const Chev = () => <IconChevronRight className="chev" stroke={2} aria-hidden="true" />;
 
 export function LibraryScreen() {
   const saved = useStore((s) => s.saved);
   const progress = useStore((s) => s.progress);
+  const bookmarks = useStore((s) => s.bookmarks);
   const lastRead = useStore((s) => s.lastRead);
   const highlights = useStore((s) => s.highlights);
-  const bookmarks = useStore((s) => s.bookmarks);
   const councils = useStore(selectCouncils);
   // recalled books resolve through the registry; their cards land in `minds`, so the shelf follows that too
-  useStore((s) => s.minds);
-  const [tab, setTab] = useState<Tab>('all');
-  const [cat, setCat] = useState<Category | 'All'>('All');
+  const minds = useStore((s) => s.minds);
+  const lang = useLang();
+  const [shelf, setShelf] = useState<Shelf>('all');
   const [searchOpen, setSearchOpen] = useState(false);
   const [q, setQ] = useState('');
+  // the search field stays mounted for its exit
+  const search = usePresence(searchOpen, 220);
   const t = useT();
 
   // saved and opened books, the ones you have been reading most recently first
+  // (maybeBook reads the language and the recalled cards, so both are inputs)
   const books = useMemo(() => {
+    void minds;
+    void lang;
     const ids = new Set([...saved, ...Object.keys(progress)]);
     return [...ids]
       .map((id) => maybeBook(id))
-      .filter((b): b is NonNullable<typeof b> => !!b)
+      .filter((b): b is Book => !!b)
       .sort((a, b) => (progress[b.id]?.lastReadAt ?? 0) - (progress[a.id]?.lastReadAt ?? 0));
-  }, [saved, progress]);
+  }, [saved, progress, minds, lang]);
   const shelves = useMemo(() => CATEGORIES.filter((c) => books.some((b) => b.category === c)), [books]);
+
+  // every book a council handed over, in council order (a cast council synthesises its script, so keep this off the keystroke path)
+  const recs = useMemo<Rec[]>(() => {
+    void minds;
+    void lang;
+    return councils.flatMap((c) => readingFor(c).map((r) => ({ bookId: r.bookId, councilId: c.id, question: c.question })));
+  }, [councils, minds, lang]);
+
+  const councilShelf = shelf === 'councils';
   const qn = q.trim().toLowerCase();
-  const shown = books.filter((b) => {
-    const p = progress[b.id];
-    if (tab === 'reading' && !(p && p.status === 'reading' && p.pct > 0)) return false;
-    if (tab === 'completed' && p?.status !== 'completed') return false;
-    if (cat !== 'All' && b.category !== cat) return false;
-    if (qn && !`${b.title} ${b.authorName} ${b.tags.join(' ')}`.toLowerCase().includes(qn)) return false;
-    return true;
-  });
+  const hit = (...parts: (string | undefined)[]) => !qn || parts.join(' ').toLowerCase().includes(qn);
+  const hitBook = (b: Book, ...more: (string | undefined)[]) => hit(b.title, b.authorName, t.library.categories[b.category], ...b.tags, ...more);
+  const onShelf = (b: Book | undefined) => shelf === 'all' || councilShelf || (!!b && b.category === shelf);
+  const subOf = (b: Book, p: Progress | undefined) => {
+    let out = '';
+    if (p?.status === 'completed') out += ` · ${t.library.completed}`;
+    else if (p) {
+      const pct = Math.round(p.pct * 100);
+      if (pct > 0) out += ` · ${pct}%`;
+    }
+    const marks = bookmarks[b.id]?.length ?? 0;
+    if (marks) out += ` · ${fmt(marks > 1 ? t.library.bookmarks : t.library.bookmark, { n: marks })}`;
+    return out;
+  };
+
+  // where you left off — shown above the rows, which then leave it out
   const current = lastRead ? maybeBook(lastRead.bookId) : undefined;
   const currentPct = current ? Math.round((progress[current.id]?.pct ?? 0) * 100) : 0;
+  const empty = books.length === 0;
+  const showContinue = !!current && !councilShelf && !qn;
+  const matching = councilShelf ? [] : books.filter((b) => onShelf(b) && hitBook(b));
+  const rows = matching.filter((b) => !(showContinue && b.id === current?.id));
+  // "Nothing here yet." only when the shelf or the search found nothing, not when the one match is the card above
+  const showRecent = !councilShelf && !empty && (rows.length > 0 || matching.length === 0);
+
+  // what the councils suggested and you have not opened yet, one row per book
+  const suggested: Suggestion[] = [];
+  const seen = new Set<string>();
+  for (const r of recs) {
+    if (suggested.length >= 4) break;
+    if (progress[r.bookId] || seen.has(r.bookId)) continue;
+    const book = maybeBook(r.bookId);
+    if (!book || !onShelf(book) || !hitBook(book, r.question)) continue;
+    seen.add(r.bookId);
+    suggested.push({ book, councilId: r.councilId, question: r.question });
+  }
+
+  // the councils worth coming back to: saved, finished, or well under way
   const savedCouncils = councils.filter((c) => c.saved || c.stage === 'summarized' || c.messages.length > 8);
-  // what the councils suggested and you have not opened yet
-  const suggested = councils
-    .flatMap((c) => readingFor(c).map((r) => ({ ...r, councilId: c.id, question: c.question })))
-    .filter((r, i, arr) => !progress[r.bookId] && arr.findIndex((x) => x.bookId === r.bookId) === i)
-    .slice(0, 4);
-  const unfiltered = tab === 'all' && cat === 'All' && !qn;
+  const shownCouncils = shelf === 'all' || councilShelf ? savedCouncils.filter((c) => hit(c.question, ...c.seats.map((fid) => figure(fid).short))) : [];
+
+  const shownHighlights: { h: Highlight; book: Book | undefined }[] = councilShelf
+    ? []
+    : highlights
+        .map((h) => ({ h, book: maybeBook(h.bookId) }))
+        .filter(({ h, book }) => onShelf(book) && hit(h.text, h.note, book?.title, book?.authorName))
+        .slice(0, 8);
+
+  const chips: { id: Shelf; label: string }[] = [
+    { id: 'all', label: t.library.allShelves },
+    { id: 'councils', label: t.library.councilsChip },
+    ...shelves.map((c) => ({ id: c as Shelf, label: t.library.categories[c] })),
+  ];
+
+  const toggleSearch = () => {
+    setSearchOpen((v) => !v);
+    setQ('');
+  };
 
   return (
     <div className="screen library">
-      <div className="lib-head top-inset pad">
-        <h1 className="display lib-title">{t.library.title}</h1>
-        <button type="button" className={`iconbtn ${searchOpen ? 'on' : ''}`} aria-label={t.library.search} onClick={() => { setSearchOpen((v) => !v); setQ(''); }}>
-          {searchOpen ? <IconX stroke={2} /> : <IconSearch stroke={2} />}
-        </button>
-      </div>
-      {searchOpen && (
-        <div className="pad lib-search">
-          <input className="input" placeholder={t.library.searchPh} value={q} onChange={(e) => setQ(e.target.value)} autoFocus aria-label={t.library.searchPh} />
+      <AppBar />
+      <div className="content">
+        <div className="lib-head rv" style={delay(0)}>
+          <h1 className="lead">{t.library.title}</h1>
+          <button type="button" className={`iconbtn ghost ${searchOpen ? 'on' : ''}`} aria-label={t.library.search} aria-pressed={searchOpen} onClick={toggleSearch}>
+            <IconSearch stroke={1.8} />
+          </button>
         </div>
-      )}
-      <div className="pad">
-        <Seg
-          tabs
-          label={t.library.filter}
-          options={(['all', 'reading', 'completed'] as Tab[]).map((tb) => ({ id: tb, label: tb === 'all' ? t.library.all : tb === 'reading' ? t.library.reading : t.library.completed }))}
-          value={tab}
-          onChange={setTab}
-        />
-        {shelves.length > 1 && (
-          <div className="chiprow lib-shelves">
-            <button type="button" className={`chip ${cat === 'All' ? 'on' : ''}`} onClick={() => setCat('All')}>
-              {t.library.allShelves}
-            </button>
-            {shelves.map((c) => (
-              <button key={c} type="button" className={`chip ${cat === c ? 'on' : ''}`} onClick={() => setCat(c)}>
-                {t.library.categories[c]}
+        {search.mounted && (
+          <div className={`lib-search ${search.closing ? 'closing' : 'in'}`}>
+            <input
+              className="input"
+              type="text"
+              enterKeyHint="search"
+              placeholder={t.library.searchPh}
+              aria-label={t.library.searchPh}
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Escape') toggleSearch();
+                else if (e.key === 'Enter') e.currentTarget.blur();
+              }}
+              disabled={search.closing}
+              autoFocus
+            />
+          </div>
+        )}
+        <div className="chips-wrap rv" style={delay(1)}>
+          <div className="chips">
+            {chips.map((c) => (
+              <button key={c.id} type="button" className={`chip ${shelf === c.id ? 'on' : ''}`} aria-pressed={shelf === c.id} onClick={() => setShelf(c.id)}>
+                {c.label}
               </button>
             ))}
           </div>
-        )}
-      </div>
-      <div className="screen-scroll pad nav-space lib-body">
-        {unfiltered && current && (
-          <section className="card continue" aria-label={t.library.continueReading}>
-            <Cover book={current} width={72} />
-            <div className="grow">
-              <span className="caps muted">{t.library.continueReading}</span>
-              <div className="continue-title">{current.title}</div>
-              <div className="small muted">
-                {current.authorName}
-                {current.text.heading && ` · ${current.text.heading}`}
-              </div>
-              <span className="progress-track">
-                <span style={{ width: `${currentPct}%` }} />
-              </span>
-              <button type="button" className="btn btn-primary btn-sm continue-btn" onClick={() => navigate({ name: 'read', id: current.id, council: lastRead?.councilId })}>
-                <IconPlayerPlay /> {fmt(t.library.resume, { pct: currentPct })}
-              </button>
-            </div>
-          </section>
-        )}
-        {unfiltered && !current && books.length === 0 && (
-          <section className="card card-pad">
-            <p className="heading">{t.library.nothing}</p>
-            <p className="small muted" style={{ marginTop: 4 }}>{t.library.nothingSub}</p>
-            <button type="button" className="btn btn-dark btn-sm" style={{ marginTop: 12 }} onClick={() => navigate({ name: 'council' })}>
+        </div>
+
+        {/* an empty library: nothing saved, nothing opened */}
+        {empty && !councilShelf && (
+          <div className="card lib-nothing rv" style={delay(2)}>
+            <p className="lib-nothing-title">{t.library.nothingOpen}</p>
+            <p className="bookrow-sub">{t.library.nothingOpenSub}</p>
+            <button type="button" className="btn dark sm" onClick={() => navigate({ name: 'council' })}>
               {t.library.askQ}
             </button>
-          </section>
+          </div>
         )}
 
-        <ul className="booklist cascade">
-          {shown.map((b, i) => {
-            const p = progress[b.id];
-            const marks = bookmarks[b.id]?.length ?? 0;
-            return (
-              <li key={b.id} style={{ '--i': i } as CSSProperties}>
-                <button type="button" className="bookrow" onClick={() => navigate({ name: 'book', id: b.id })}>
-                  <Cover book={b} width={44} />
-                  <span className="bookrow-text">
-                    <span className="bookrow-title">{b.title}</span>
-                    <span className="bookrow-sub">
+        {/* continue reading */}
+        {showContinue && current && (
+          <button type="button" className="card continue rv" style={delay(2)} onClick={() => navigate({ name: 'read', id: current.id, council: lastRead?.councilId })}>
+            <Cover book={current} width={70} height={100} />
+            <div className="grow">
+              <div className="caps">{t.library.continueReading}</div>
+              <div className="continue-title">{current.title}</div>
+              <div className="bookrow-sub">
+                {current.text.heading || current.authorName} · {currentPct}%
+              </div>
+              <div className="progress-track" aria-hidden="true">
+                <span style={{ width: `${currentPct}%` }} />
+              </div>
+            </div>
+            <Chev />
+          </button>
+        )}
+
+        {/* recently opened: the shelf chip and the search narrow it */}
+        {showRecent && (
+          <div className="lib-section rv" style={delay(3)}>
+            <div className="act">{t.library.recentlyOpened}</div>
+            <div className="cascade">
+              {rows.map((b, i) => (
+                <button key={b.id} type="button" className="bookrow" style={cascade(i)} onClick={() => navigate({ name: 'book', id: b.id })}>
+                  <Cover book={b} width={44} height={64} />
+                  <div className="bookrow-text">
+                    <div className="bookrow-title">{b.title}</div>
+                    <div className="bookrow-sub">
                       {b.authorName} · {t.library.categories[b.category]}
-                      {p ? ` · ${p.status === 'completed' ? t.library.completed : `${Math.round(p.pct * 100)}%`}` : ''}
-                      {marks ? ` · ${fmt(marks > 1 ? t.library.bookmarks : t.library.bookmark, { n: marks })}` : ''}
-                    </span>
-                  </span>
-                  <IconChevronRight className="bookrow-chev" />
+                      {subOf(b, progress[b.id])}
+                    </div>
+                  </div>
+                  <Chev />
                 </button>
-              </li>
-            );
-          })}
-          {shown.length === 0 && books.length > 0 && <li className="small muted lib-empty">{t.library.empty}</li>}
-        </ul>
-
-        {unfiltered && suggested.length > 0 && (
-          <section className="lib-section">
-            <h2 className="heading">
-              <IconMessageCircle /> {t.library.fromCouncils}
-            </h2>
-            <ul className="booklist">
-              {suggested.map((r) => {
-                const b = book(r.bookId);
-                return (
-                  <li key={r.bookId}>
-                    <button type="button" className="bookrow" onClick={() => navigate({ name: 'book', id: b.id, council: r.councilId })}>
-                      <Cover book={b} width={40} />
-                      <span className="bookrow-text">
-                        <span className="bookrow-title">{b.title}</span>
-                        <span className="bookrow-sub">{b.start.label ? fmt(t.library.startWithFor, { label: b.start.label, q: r.question }) : fmt(t.library.forQuestion, { q: r.question })}</span>
-                      </span>
-                      <IconChevronRight className="bookrow-chev" />
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          </section>
+              ))}
+              {rows.length === 0 && <p className="muted lib-empty">{t.library.nothing}</p>}
+            </div>
+          </div>
         )}
 
-        {unfiltered && savedCouncils.length > 0 && (
-          <section className="lib-section">
-            <h2 className="heading">
-              <IconMessageCircle /> {t.library.councils}
-            </h2>
-            <ul className="stack">
-              {savedCouncils.map((c) => (
-                <li key={c.id}>
-                  <button type="button" className="card council-row" onClick={() => navigate({ name: c.stage === 'summarized' ? 'summary' : 'discussion', id: c.id })}>
-                    <span className="council-row-avatars">
-                      {c.seats.map((fid) => (
-                        <Avatar key={fid} figure={figure(fid)} size={28} />
+        {/* from your councils */}
+        {suggested.length > 0 && (
+          <div className="lib-section rv" style={delay(4)}>
+            <div className="act">{t.library.fromCouncils}</div>
+            <div className="cascade">
+              {suggested.map(({ book, councilId, question }, i) => (
+                <button key={book.id} type="button" className="bookrow" style={cascade(i)} onClick={() => navigate({ name: 'book', id: book.id, council: councilId })}>
+                  <Cover book={book} width={44} height={64} />
+                  <div className="bookrow-text">
+                    <div className="bookrow-title">{book.title}</div>
+                    <div className="bookrow-sub">
+                      {book.start.label
+                        ? fmt(t.library.fromCouncilSub, { q: trunc(question, 38), label: book.start.label })
+                        : fmt(t.library.fromCouncilSubNoLabel, { q: trunc(question, 38) })}
+                    </div>
+                  </div>
+                  <Chev />
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* your councils */}
+        {(shownCouncils.length > 0 || (councilShelf && suggested.length === 0)) && (
+          <div className="lib-section rv" style={delay(5)}>
+            <div className="act">{t.library.councils}</div>
+            <div className="lib-list cascade">
+              {shownCouncils.map((c, i) => {
+                const seats = c.seats.map((fid) => figure(fid));
+                return (
+                  <button
+                    key={c.id}
+                    type="button"
+                    className="card council-row"
+                    style={cascade(i)}
+                    onClick={() => navigate(c.stage === 'summarized' ? { name: 'summary', id: c.id } : { name: 'stands', id: c.id })}
+                  >
+                    <span className="stack-meds" aria-hidden="true">
+                      {seats.map((f, seat) => (
+                        <Avatar key={`${f.id}-${seat}`} figure={f} size={28} seat={seat} />
                       ))}
                     </span>
-                    <span className="grow">
-                      <span className="council-row-q">“{c.question}”</span>
-                      <span className="small muted">
-                        {c.seats.map((fid) => figure(fid).short).join(', ')} · {timeAgo(c.updatedAt)}
+                    <div className="grow">
+                      <div className="council-row-q">“{c.question}”</div>
+                      <div className="bookrow-sub">
+                        {seats.map((f) => f.short).join(t.library.nameSep)} · {timeAgo(c.updatedAt)}
                         {c.stage !== 'summarized' ? t.library.inProgress : ''}
-                      </span>
-                    </span>
-                    <IconChevronRight className="bookrow-chev" />
+                      </div>
+                    </div>
+                    <Chev />
                   </button>
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
-
-        {unfiltered && highlights.length > 0 && (
-          <section className="lib-section">
-            <h2 className="heading">
-              <IconHighlight /> {t.library.highlights}
-            </h2>
-            <ul className="stack">
-              {highlights.slice(0, 8).map((h) => {
-                const b = maybeBook(h.bookId);
-                return (
-                  <li key={h.id}>
-                    <button type="button" className="card highlight-row" onClick={() => navigate({ name: 'read', id: h.bookId, council: h.councilId })}>
-                      <span className="highlight-text">“{h.text}”</span>
-                      <span className="small muted">
-                        {b?.title} · {b?.authorName} · {timeAgo(h.ts)}
-                      </span>
-                      {h.note && <span className="small highlight-note">{h.note}</span>}
-                    </button>
-                  </li>
                 );
               })}
-            </ul>
-          </section>
+              {shownCouncils.length === 0 && <p className="muted lib-empty">{t.library.nothing}</p>}
+            </div>
+          </div>
+        )}
+
+        {/* highlights */}
+        {shownHighlights.length > 0 && (
+          <div className="lib-section rv" style={delay(6)}>
+            <div className="act">{t.library.highlights}</div>
+            <div className="lib-list cascade">
+              {shownHighlights.map(({ h, book }, i) => (
+                <button
+                  key={h.id}
+                  type="button"
+                  className="card highlight-row"
+                  style={cascade(i)}
+                  onClick={() => navigate({ name: 'read', id: h.bookId, council: h.councilId })}
+                >
+                  <div className="highlight-text">“{h.text}”</div>
+                  <div className="bookrow-sub">{[book?.title, book?.authorName, timeAgo(h.ts)].filter(Boolean).join(' · ')}</div>
+                  {h.note && <div className="highlight-note">{h.note}</div>}
+                </button>
+              ))}
+            </div>
+          </div>
         )}
       </div>
     </div>

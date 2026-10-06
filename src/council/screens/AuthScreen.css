@@ -1,9 +1,14 @@
-.auth-form { display: grid; gap: 14px; align-content: start; padding-bottom: calc(var(--sab) + 24px); }
-.auth-title { margin-top: 6px; }
-.auth-social { display: grid; gap: 10px; margin-top: 8px; }
-.auth-or { display: flex; align-items: center; gap: 12px; color: var(--night-mut); margin: 4px 0; }
-.auth-or::before, .auth-or::after { content: ''; flex: 1; height: 1px; background: var(--night-line); }
-.auth-submit { margin-top: 6px; }
-.auth-guest { justify-self: center; color: var(--night-mut); }
-.auth-note { text-align: center; }
-.auth-error { color: #FFB4A8; margin: -4px 0 0; }
+/* sign-up / sign-in (screens/AuthScreen.tsx): the v14 form primitives stacked under a serif lead */
+.auth-form { display: grid; gap: 14px; align-content: start; padding-bottom: calc(24px + var(--sab)); }
+.auth-form .auth-title { margin: 4px 0 0; } /* outranks h1.lead */
+.auth-sub { margin-bottom: 0; }
+.auth-social { display: grid; gap: 10px; margin-top: 4px; }
+/* "or with email": a rule either side of the caps */
+.auth-or { display: flex; align-items: center; gap: 12px; margin: 2px 0; }
+.auth-or::before, .auth-or::after { content: ''; flex: 1 1 auto; height: 1px; background: var(--line); }
+.auth-fields { display: grid; gap: 14px; }
+.auth-submit { margin-top: 4px; }
+.auth-note { text-align: center; line-height: 1.45; }
+/* "No account yet? Create one" — the link keeps a 40px touch target inside a line of small text */
+.auth-switch { text-align: center; margin: -4px 0; }
+.auth-switch .linkbtn { display: inline-flex; align-items: center; min-height: 40px; padding: 0 4px; color: var(--ink); }

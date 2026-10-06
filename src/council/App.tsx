@@ -3,13 +3,14 @@ import { useRoute, tabFor, navigate, parseRoute, routeHref, type Route } from '.
 import { useStore } from './store/useStore';
 import { useReduceMotion } from './hooks/useReduceMotion';
 import { Nav, StatusBar, ToastHost } from './components/chrome';
-import { ROOM_ART } from './components/CouncilRoom';
 import { WelcomeScreen } from './screens/WelcomeScreen';
 import { AuthScreen } from './screens/AuthScreen';
 import { InterestsScreen } from './screens/InterestsScreen';
 import { CouncilScreen } from './screens/CouncilScreen';
-import { DiscussionScreen } from './screens/DiscussionScreen';
+import { StandsScreen } from './screens/StandsScreen';
+import { DebateScreen } from './screens/DebateScreen';
 import { SummaryScreen } from './screens/SummaryScreen';
+import { OneScreen } from './screens/OneScreen';
 import { BookScreen } from './screens/BookScreen';
 import { ReaderScreen } from './screens/ReaderScreen';
 import { LibraryScreen } from './screens/LibraryScreen';
@@ -42,10 +43,12 @@ const DEPTH: Record<Route['name'], number> = {
   social: 2,
   profile: 2,
   settings: 3,
-  discussion: 3,
-  summary: 4,
-  book: 5,
-  read: 6,
+  stands: 3,
+  debate: 4,
+  summary: 5,
+  one: 6,
+  book: 6,
+  read: 7,
 };
 type Dir = 'fwd' | 'back' | 'flat';
 type Layer = { key: string; route: Route; dir: Dir; out: boolean };
@@ -63,10 +66,14 @@ function renderScreen(route: Route) {
       return <InterestsScreen />;
     case 'council':
       return <CouncilScreen />;
-    case 'discussion':
-      return <DiscussionScreen id={route.id} />;
+    case 'stands':
+      return <StandsScreen id={route.id} />;
+    case 'debate':
+      return <DebateScreen id={route.id} />;
     case 'summary':
       return <SummaryScreen id={route.id} />;
+    case 'one':
+      return <OneScreen id={route.id} figureId={route.figure} />;
     case 'book':
       return <BookScreen id={route.id} councilId={route.council} />;
     case 'read':
@@ -82,8 +89,8 @@ function renderScreen(route: Route) {
   }
 }
 
-/* screens that keep their own scroll position (the reader restores where you were; the chat follows the newest line) */
-const OWN_SCROLL = new Set<Route['name']>(['read', 'discussion']);
+/* screens that keep their own scroll position (the reader restores where you were; the one-on-one follows the newest line) */
+const OWN_SCROLL = new Set<Route['name']>(['read', 'one']);
 
 export function App() {
   const route = useRoute();
@@ -94,21 +101,13 @@ export function App() {
 
   // Every visit starts by choosing a path: a plain open (or a tab URL) lands on the
   // interest screen — the welcome screen only on the very first visit. Deep links
-  // into a discussion, summary, book or reader still open directly.
+  // into an act, a summary, a book or the reader still open directly.
   useEffect(() => {
     const first = parseRoute(location.hash);
     const isTab = !location.hash || tabFor(first) !== undefined;
     if (!onboarded) navigate({ name: 'welcome' }, { replace: true });
     else if (isTab) navigate({ name: 'interests' }, { replace: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // the paintings of the council room, fetched quietly so the room is on the wall before anyone walks in
-  useEffect(() => {
-    const t = setTimeout(() => {
-      for (const src of ROOM_ART) new Image().src = src;
-    }, 800);
-    return () => clearTimeout(t);
   }, []);
 
   /* ---- screen layers: the old screen stays underneath while the new one arrives ---- */
@@ -138,7 +137,7 @@ export function App() {
   useEffect(() => {
     const onScroll = (e: Event) => {
       const el = e.target;
-      if (!(el instanceof HTMLElement) || !el.classList.contains('screen-scroll') || el.closest('.screen-layer.out')) return;
+      if (!(el instanceof HTMLElement) || !el.classList.contains('content') || el.closest('.screen-layer.out')) return;
       scrollMemo.current.set(location.hash, el.scrollTop);
     };
     document.addEventListener('scroll', onScroll, true);
@@ -146,19 +145,17 @@ export function App() {
   }, []);
   useLayoutEffect(() => {
     if (OWN_SCROLL.has(inLayer.route.name)) return;
-    const el = document.querySelector<HTMLElement>('.screen-layer.in .screen-scroll');
+    const el = document.querySelector<HTMLElement>('.screen-layer.in .content');
     if (el) el.scrollTop = scrollMemo.current.get(routeHref(inLayer.route)) ?? 0;
   }, [inLayer.key]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const tab = tabFor(route);
-  const night = route.name === 'welcome' || route.name === 'council' || route.name === 'signup' || route.name === 'signin';
 
   return (
     // keyed by language: a switch remounts every screen, so memoised content re-reads the localised catalogue
     <div className="desk" key={lang}>
       <div className={`phone ${framed ? 'framed' : ''}`}>
-        {framed && <div className="notch" aria-hidden="true" />}
-        <div className={`screen-clip ${night ? 'night' : ''} ${tab ? '' : 'no-nav'}`}>
+        <div className={`screen-clip ${tab ? 'with-nav' : 'no-nav'}`}>
           {framed && <StatusBar />}
           {layers.map((l) => (
             <div

@@ -118,3 +118,10 @@ export const useAuth = create<AuthStore>((set, get) => ({
     set({ user: null, status: 'guest', error: null });
   },
 }));
+
+// the reader backed out of the provider's page: the restored page must not keep the buttons disabled
+if (typeof window !== 'undefined') {
+  window.addEventListener('pageshow', (e) => {
+    if (e.persisted && useAuth.getState().busy) useAuth.setState({ busy: false });
+  });
+}

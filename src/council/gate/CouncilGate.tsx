@@ -5,7 +5,9 @@ import { grantCouncilAccess } from './access';
 import './CouncilGate.css';
 
 /* The door in front of the Council (see access.ts). Its copy lives here
-   rather than in i18n/ui.ts so the whole gate leaves in one folder. */
+   rather than in i18n/ui.ts so the whole gate leaves in one folder. It
+   renders standalone (main.tsx shows it before the app boots), so it
+   draws its own desk, phone and screen with the shared primitives. */
 const COPY = {
   en: {
     title: 'The Council is by invitation.',
@@ -44,16 +46,16 @@ export function CouncilGate({ onOpen }: { onOpen: () => void }) {
   return (
     <div className="desk">
       <div className="phone">
-        <div className="screen-clip night no-nav">
-          <div className="screen night gate">
-            <form className="screen-scroll pad gate-form cascade" onSubmit={submit}>
-              <span style={{ '--i': 0 } as CSSProperties}>
-                <Wordmark size={24} />
+        <div className="screen-clip no-nav">
+          <div className="screen gate">
+            <form className="content gate-form cascade" onSubmit={(e) => void submit(e)}>
+              <span className="gate-wordmark" style={{ '--i': 0 } as CSSProperties}>
+                <Wordmark />
               </span>
               <h1 className="display" style={{ '--i': 1 } as CSSProperties}>
                 {t.title}
               </h1>
-              <p className="muted" style={{ '--i': 2 } as CSSProperties}>
+              <p className="sub gate-sub" style={{ '--i': 2 } as CSSProperties}>
                 {t.sub}
               </p>
               <div className="field" style={{ '--i': 3 } as CSSProperties}>
@@ -74,11 +76,11 @@ export function CouncilGate({ onOpen }: { onOpen: () => void }) {
                 />
               </div>
               {wrong && (
-                <p className="small gate-error" role="alert">
+                <p className="form-error" role="alert">
                   {t.wrong}
                 </p>
               )}
-              <button type="submit" className="btn btn-primary" disabled={busy || !code.trim()} style={{ '--i': 4 } as CSSProperties}>
+              <button type="submit" className="btn gold" disabled={busy || !code.trim()} style={{ '--i': 4 } as CSSProperties}>
                 {busy ? t.busy : t.enter}
               </button>
             </form>

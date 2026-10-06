@@ -4,7 +4,7 @@
    row each in owlry_council_sessions (see sessions.ts).
    ============================================================ */
 import type { Area } from '../../content/types';
-import type { Highlight, Progress, TextSize } from '../../store/types';
+import type { Highlight, Progress, SavedStep, TextSize } from '../../store/types';
 import type { Lang } from '../../i18n';
 
 export interface CloudState {
@@ -25,6 +25,8 @@ export interface CloudState {
   liked: string[];
   savedPosts: string[];
   following: string[];
+  /** next steps kept from summaries; absent in rows written before they existed */
+  steps?: SavedStep[];
 }
 
 const isObj = (v: unknown): v is Record<string, unknown> => !!v && typeof v === 'object' && !Array.isArray(v);
@@ -65,6 +67,18 @@ export function normalizeCloudState(raw: unknown): CloudState | null {
           ...(typeof h.councilId === 'string' ? { councilId: h.councilId } : {}),
         }))
     : [];
+  const steps: SavedStep[] = Array.isArray(raw.steps)
+    ? raw.steps
+        .filter(isObj)
+        .filter((x) => typeof x.id === 'string' && typeof x.councilId === 'string' && typeof x.text === 'string')
+        .map((x) => ({
+          id: x.id as string,
+          councilId: x.councilId as string,
+          text: x.text as string,
+          question: typeof x.question === 'string' ? x.question : '',
+          ts: typeof x.ts === 'number' ? x.ts : 0,
+        }))
+    : [];
   const lr = isObj(raw.lastRead) && typeof raw.lastRead.bookId === 'string'
     ? { bookId: raw.lastRead.bookId, ...(typeof raw.lastRead.councilId === 'string' ? { councilId: raw.lastRead.councilId } : {}) }
     : null;
@@ -89,5 +103,6 @@ export function normalizeCloudState(raw: unknown): CloudState | null {
     liked: strings(raw.liked),
     savedPosts: strings(raw.savedPosts),
     following: strings(raw.following),
+    steps,
   };
 }

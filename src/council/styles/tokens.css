@@ -1,115 +1,125 @@
 /* ============================================================
-   owlry — design tokens, lifted from the "Walk with Great Minds." poster.
+   owlry · The Council · design tokens (v14)
 
-   Two rooms: the NIGHT room (welcome, the council table) is near-black with
-   one warm lamp; the DAY room (everything after a question is asked) is
-   cream paper with white cards. Yellow is the only brand colour and it is
-   used for exactly three things: the primary action, the active nav item,
-   and the period in the wordmark.
+   Two lighting rigs: EVENING (dark) and MATINÉE (light). Every screen
+   reads from the same tokens, so a rig is a whole look, never a mix.
+   The rig is a `data-rig` attribute on <html> (app/rig.ts sets it from
+   the reader's choice, else the OS colour scheme).
+
+   Type: Fraunces (the page), Inter Tight (the house), Anton (wordmark
+   and the poster titles only).
+
+   Gold is for the primary action, the active nav item, the wordmark's
+   period and the stage lights. Nothing else.
    ============================================================ */
 :root {
-  /* brand — the landing page's mustard, not a pure yellow */
-  --yellow: #F6C347;
-  --yellow-2: #E6B237;        /* pressed */
-  --yellow-soft: #FFF2B3;     /* highlight marker, chart fill */
-  --yellow-ink: #141414;      /* text on yellow */
+  /* brand + stage */
+  --gold: #FFC017;
+  --gold-deep: #8A6D00;        /* gold as a UI colour on the light rig (contrast) */
+  --gold-ink: #1A1A1A;         /* text on gold */
+  --brass: #C9B37A;            /* the rail, the medallion rims */
+  --velvet: #8E2F2F;           /* the curtain */
+  --cream: #F3EAD6;            /* text on the stage, whatever the rig */
 
-  /* night room — navy and cream, as on the landing page and in the painting */
-  --night: #0D111F;
-  --night-2: #13182A;
-  --night-3: #1B2136;
-  --night-line: rgba(241, 235, 216, 0.12);
-  --night-text: #F1EBD8;
-  --night-mut: #A7A59E;
-  --lamp: #F6C347;            /* the one warm bulb */
+  /* the three seats: centre, left, right */
+  --ember: #D2603C;
+  --quill: #4F6BD8;
+  --moss: #3C9A6E;
+  --seat-0: var(--ember);
+  --seat-1: var(--quill);
+  --seat-2: var(--moss);
 
-  /* day room */
-  --cream: #F6F3EC;
-  --paper: #FFFFFF;
-  --paper-2: #F0ECE3;
-  --line: #E7E2D7;
-  --line-2: #D9D3C5;
-  --ink: #141414;
-  --ink-2: #2E2D2A;
-  --ink-3: #4A4843;           /* glosses, secondary reading text */
-  --mut: #6E6A62;             /* ≥4.5:1 on cream */
-  --hint: #9B968C;            /* placeholders, decorative only */
+  /* book jackets and the welcome's light: the same under both rigs */
+  --shadow-cover: 0 1px 2px rgba(0, 0, 0, 0.25);
+  --shadow-jacket: 0 2px 4px rgba(0, 0, 0, 0.25), 0 12px 24px rgba(0, 0, 0, 0.28);
+  --gold-cone: linear-gradient(200deg, rgba(255, 192, 23, 0.22), rgba(255, 192, 23, 0.08) 40%, rgba(255, 192, 23, 0) 78%);
 
-  /* the five owls */
-  --owl-teal: #2FB8A6;
-  --owl-violet: #8A5CE0;
+  /* the stage is lit the same under both rigs */
+  --stage: #141A33;
+  --stage-floor: #1A2140;
+  --table: #1F2850;
+
+  /* the owls (category page, profile) */
+  --owl-teal: #66B9AB;
+  --owl-violet: #937CD9;
   --owl-yellow: #FFC93C;
-  --owl-orange: #F5883A;
-  --owl-green: #4DB36B;
-  --owl-blue: #4C86F5;
+  --owl-orange: #EC7E55;
+  --owl-green: #7BB081;
+  --owl-blue: #7C8CDB;
 
-  /* interest tints */
-  --tint-health: #35A56B;
-  --tint-career: #B07A2A;
-  --tint-investing: #2E9E63;
-  --tint-relationships: #E2483C;
-  --tint-literature: #24304A;
-  --tint-other: #4A4844;
-
-  /* shape */
-  --r-card: 18px;
-  --r-card-lg: 24px;
-  --r-input: 22px;
-  --r-pill: 999px;
-  --shadow-card: 0 1px 2px rgba(20, 20, 20, 0.05), 0 6px 20px rgba(20, 20, 20, 0.06);
-  --shadow-float: 0 12px 40px rgba(0, 0, 0, 0.18);
+  /* motion — one ease for arrivals, one spring for things that land */
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-out: var(--ease);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+  --dur: 220ms;
+  --dur-fast: 120ms;
+  --dur-screen: 300ms;
 
   /* type */
-  --font-display: 'Archivo', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  --font-read: 'Literata', Georgia, 'Times New Roman', serif;
-  --font-hand: 'Caveat', 'Segoe Print', 'Bradley Hand', cursive;
-  --font-wordmark: 'Rubik', 'Archivo', 'Inter', sans-serif;
-
-  --t-marquee: clamp(2.75rem, 12vw, 3.6rem); /* WALK WITH GREAT MINDS. */
-  --t-display: 2rem;      /* 32 — screen titles */
-  --t-title: 1.375rem;    /* 22 — card / modal titles */
-  --t-heading: 1.0625rem; /* 17 — section heads */
-  --t-body: 1rem;         /* 16 — never smaller for inputs (iOS zoom) */
-  --t-small: 0.875rem;    /* 14 */
-  --t-label: 0.8125rem;   /* 13 */
-  --t-micro: 0.75rem;     /* 12 — the floor */
-
-  --lh-display: 1.02;
-  --lh-tight: 1.2;
-  --lh-ui: 1.45;
-  --lh-read: 1.7;
-
-  --track-display: -0.035em;
-  --track-title: -0.02em;
-  --track-label: 0.02em;
-  --track-caps: 0.14em;
+  --font-ui: 'Inter Tight', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-wordmark: 'Anton', Impact, sans-serif;
 
   /* safe areas + viewport */
   --sat: env(safe-area-inset-top, 0px);
   --sab: env(safe-area-inset-bottom, 0px);
   --app-h: 100vh;
   --nav-h: 64px;
-
-  /* motion — one ease for arrivals, one spring for things that land, one duration for state changes;
-     screens take a little longer (--dur-screen) because they move the whole frame */
-  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
-  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
-  --dur: 220ms;
-  --dur-fast: 120ms;
-  --dur-screen: 300ms;
 }
 
 @supports (height: 100dvh) {
   :root { --app-h: 100dvh; }
 }
 
+/* ---------- the rigs ---------- */
+[data-rig='evening'] {
+  --page: #070B17;             /* the desk behind the phone */
+  --bg: #0B1020;               /* the screen */
+  --surface: #121A31;          /* cards, boxes */
+  --surface2: #1A2340;         /* pressed, pills, tracks */
+  --ink: #F3EAD6;
+  --muted: #A49FB3;
+  --line: #273150;
+  --line-2: #344066;
+  --glass: rgba(11, 16, 32, 0.78);
+  --device: #0A0A0A;
+  --shadow: 0 30px 80px rgba(0, 0, 0, 0.65);
+  --soft: rgba(255, 192, 23, 0.14);   /* a gold wash */
+  --onink: #0B1020;            /* text on an ink-coloured surface */
+  --gold-ui: var(--gold);      /* gold used as a UI colour (active, borders) */
+  --num: var(--brass);         /* the numerals in the suggestion list */
+  --error: #FF9A7A;
+  color-scheme: dark;
+}
+[data-rig='matinee'] {
+  --page: #E9E1CC;
+  --bg: #F4EEDF;
+  --surface: #FBF7EC;
+  --surface2: #ECE4CF;
+  --ink: #1A1A1A;
+  --muted: #6E685B;
+  --line: #D9D0B6;
+  --line-2: #C7BC9E;
+  --glass: rgba(244, 238, 223, 0.82);
+  --device: #1A1A1A;
+  --shadow: 0 30px 80px rgba(70, 50, 10, 0.22);
+  --soft: rgba(255, 192, 23, 0.22);
+  --onink: #F4EEDF;
+  --gold-ui: var(--gold-deep);
+  --num: rgba(26, 26, 26, 0.62);
+  --error: #A8321E;
+  color-scheme: light;
+}
+
 /* Chinese: the Latin faces stay for their glyphs; system CJK faces fill in the rest */
 html[lang='zh-CN'] {
-  --font-display: 'Archivo', 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans CJK SC', 'Noto Sans SC', 'Source Han Sans SC', 'Microsoft YaHei', 'Inter', sans-serif;
-  --font-ui: 'Inter', 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans CJK SC', 'Noto Sans SC', 'Source Han Sans SC', 'Microsoft YaHei', sans-serif;
-  --font-read: 'Literata', 'Songti SC', 'Noto Serif CJK SC', 'Noto Serif SC', 'Source Han Serif SC', 'SimSun', serif;
-  --font-hand: 'Caveat', 'Kaiti SC', 'STKaiti', 'KaiTi', 'Noto Sans CJK SC', 'Noto Sans SC', cursive;
+  --font-ui: 'Inter Tight', 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans CJK SC', 'Noto Sans SC', 'Source Han Sans SC', 'Microsoft YaHei', system-ui, sans-serif;
+  --font-serif: 'Fraunces', 'Songti SC', 'Noto Serif CJK SC', 'Noto Serif SC', 'Source Han Serif SC', 'SimSun', Georgia, serif;
+  --font-wordmark: 'Anton', 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans CJK SC', Impact, sans-serif;
 }
-html[lang='zh-CN'] .caps { letter-spacing: 0.08em; }
-html[lang='zh-CN'] .marquee { letter-spacing: 0.04em; }
+html[lang='zh-CN'] .caps,
+html[lang='zh-CN'] .act,
+html[lang='zh-CN'] .showlabel,
+html[lang='zh-CN'] .steplabels { letter-spacing: 0.08em; }
+html[lang='zh-CN'] .display,
+html[lang='zh-CN'] .marquee-title { letter-spacing: 0.04em; }

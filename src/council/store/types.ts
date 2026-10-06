@@ -37,6 +37,8 @@ export interface Message {
   variant?: number;
   /** for regenerating: the user text this message replied to */
   replyTo?: string;
+  /** the seats this line addresses by name (the script's {0} {1} {2}), so the debate can say "to Marcus" and draw the reply line */
+  to?: number[];
   segments?: Segment[];
   /** user + system messages */
   text?: string;
@@ -129,6 +131,15 @@ export interface Progress {
   pos: number;
   lastReadAt: number;
   status: 'reading' | 'completed';
+}
+
+/** a council's "one next step" the reader kept — it lands among the milestones on the profile */
+export interface SavedStep {
+  id: string;
+  councilId: string;
+  text: string;
+  question: string;
+  ts: number;
 }
 
 export interface Highlight {

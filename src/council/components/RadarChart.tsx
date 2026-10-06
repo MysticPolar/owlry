@@ -2,8 +2,12 @@ import type { Axis } from '../content/types';
 import { useT, fmt } from '../i18n/react';
 
 /* ============================================================
-   The reading-profile radar: six spokes for the six areas, a soft yellow
-   fill. It describes what you read, not who you are.
+   The reading-profile radar (the v14 mockup's radarSVG): six spokes for
+   the six areas, three rings, a soft gold area with a dot on each spoke,
+   the area names outside the rim. It describes what you read, not who
+   you are. Every stroke and fill is a class read from the rig's tokens
+   (ProfileScreen.css: .radar .grid / .area / .pt / text), so it reads
+   under both lighting rigs.
    ============================================================ */
 export const AXES: { id: Axis; label: string }[] = [
   { id: 'philosophy', label: 'Philosophy' },
@@ -14,43 +18,46 @@ export const AXES: { id: Axis; label: string }[] = [
   { id: 'literature', label: 'Literature' },
 ];
 
-const CX = 190;
-const CY = 140;
-const R = 92;
-const LR = 116;
+const CX = 165;
+const CY = 150;
+const R = 100;
+/** the labels sit this far outside the rim */
+const LABEL_R = R + 26;
+const RINGS = [0.33, 0.66, 1];
+/** an empty spoke still shows a dot just off the centre, so the shape never collapses to a point */
+const FLOOR = 0.06;
 
-function pt(i: number, f: number): [number, number] {
-  const a = (Math.PI / 180) * (i * 60 - 90);
-  return [CX + R * f * Math.cos(a), CY + R * f * Math.sin(a)];
+function pt(i: number, r: number): [number, number] {
+  const a = -Math.PI / 2 + (i * 2 * Math.PI) / AXES.length;
+  return [CX + r * Math.cos(a), CY + r * Math.sin(a)];
 }
-const ring = (f: number) => AXES.map((_, i) => pt(i, f).map((v) => v.toFixed(1)).join(',')).join(' ');
+const pts = (r: (i: number) => number) => AXES.map((_, i) => pt(i, r(i)).map((v) => v.toFixed(1)).join(',')).join(' ');
 
 export function RadarChart({ values }: { values: Record<Axis, number> }) {
   const t = useT();
   const label = (id: Axis) => t.profile.axes[id];
-  const poly = AXES.map((a, i) => pt(i, Math.max(0.06, values[a.id])).map((v) => v.toFixed(1)).join(',')).join(' ');
-  const aria = AXES.map((a) => `${label(a.id)} ${Math.round(values[a.id] * 100)}%`).join(', ');
+  const v = (i: number) => Math.max(FLOOR, Math.min(1, values[AXES[i].id] || 0));
+  const aria = AXES.map((a) => `${label(a.id)} ${Math.round((values[a.id] || 0) * 100)}%`).join(', ');
   return (
-    <svg className="radar" viewBox="0 0 380 280" role="img" aria-label={fmt(t.profile.radarAria, { values: aria })}>
-      {[1, 0.75, 0.5, 0.25].map((f) => (
-        <polygon key={f} points={ring(f)} fill={f === 1 ? 'var(--paper-2)' : 'none'} stroke="var(--line-2)" strokeWidth="1" />
+    <svg className="radar" viewBox="0 0 330 300" role="img" aria-label={fmt(t.profile.radarAria, { values: aria })}>
+      {RINGS.map((f) => (
+        <polygon key={f} className="grid" points={pts(() => R * f)} />
       ))}
-      {AXES.map((_, i) => {
-        const [x, y] = pt(i, 1);
-        return <line key={i} x1={CX} y1={CY} x2={x} y2={y} stroke="var(--line-2)" strokeWidth="1" />;
-      })}
-      <polygon points={poly} fill="rgba(255, 209, 0, 0.55)" stroke="var(--yellow-2)" strokeWidth="2" strokeLinejoin="round" className="radar-data" />
       {AXES.map((a, i) => {
-        const [x, y] = pt(i, Math.max(0.06, values[a.id]));
-        return <circle key={a.id} cx={x} cy={y} r="3.5" fill="var(--yellow-2)" stroke="#fff" strokeWidth="1.5" />;
+        const [x, y] = pt(i, R);
+        return <line key={a.id} className="grid" x1={CX} y1={CY} x2={x.toFixed(1)} y2={y.toFixed(1)} />;
       })}
+      <g className="radar-data">
+        <polygon className="area" points={pts((i) => R * v(i))} />
+        {AXES.map((a, i) => {
+          const [x, y] = pt(i, R * v(i));
+          return <circle key={a.id} className="pt" cx={x.toFixed(1)} cy={y.toFixed(1)} r="4" />;
+        })}
+      </g>
       {AXES.map((a, i) => {
-        const ang = (Math.PI / 180) * (i * 60 - 90);
-        const x = CX + LR * Math.cos(ang);
-        const y = CY + LR * Math.sin(ang);
-        const anchor = i === 0 || i === 3 ? 'middle' : i < 3 ? 'start' : 'end';
+        const [x, y] = pt(i, LABEL_R);
         return (
-          <text key={a.id} x={x} y={y + 4} textAnchor={anchor} fontSize="11.5" fontWeight="600" fill="var(--ink-2)" fontFamily="var(--font-ui)">
+          <text key={a.id} x={x.toFixed(1)} y={y.toFixed(1)} textAnchor="middle" dominantBaseline="middle">
             {label(a.id)}
           </text>
         );

@@ -1,0 +1,31 @@
+/* ============================================================
+   One on one (mockup V.one): the seat's head, the thread (the reader's
+   .msg-me bubbles and the thinker's .line entries, a touch smaller than
+   in the debate), and the suggestion row after the latest reply. The
+   ask bar's primitives are in base.css.
+   ============================================================ */
+.one .onehead { display: flex; align-items: center; gap: 14px; padding: 6px 0 14px; border-bottom: 1px solid var(--line); }
+.one .onehead .nm { font-family: var(--font-serif); font-weight: 600; font-size: 20px; }
+.one .onehead .meta { font-size: 12px; color: var(--muted); margin-top: 3px; }
+.one .empty { margin-top: 16px; }
+.one .line .speech { font-size: 17.5px; }
+/* the mockup's who line is the medallion and the name: in a thread of two, "to you" says nothing */
+.one .line .who .to { display: none; }
+/* the dots hold the reply's place where the line will land, and arrive with the reader's message */
+.one .content > .thinking { justify-content: flex-start; margin-top: 14px; animation: fade-up var(--dur) var(--ease) backwards; }
+
+/* "From <the seat's book>" under a reply that carries no verbatim source of its own: opens the book's page */
+.one .src.book-src { position: relative; text-align: left; }
+.one .src.book-src::after { content: ''; position: absolute; inset: -12px -8px; }
+
+/* the suggestion row under the latest reply */
+.one .sug { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.one .sug button { font-family: inherit; font-size: 13px; min-height: 40px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--ink); transition: border-color var(--dur), transform var(--dur-fast) var(--ease); }
+.one .sug button:active { transform: scale(0.96); }
+.one .sug button.dark { background: var(--ink); color: var(--onink); border-color: var(--ink); }
+@media (hover: hover) { .one .sug button:hover { border-color: var(--gold-ui); } }
+.one .tail { height: 10px; }
+
+/* the addressee chips are 36px tall (the mockup); their hit area reaches 40px into the row's bottom padding */
+.one .askbar .chip { position: relative; }
+.one .askbar .chip::after { content: ''; position: absolute; inset: 0 0 -4px; }

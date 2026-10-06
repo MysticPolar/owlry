@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-rig="evening">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content" />
-<title>owlry — Walk with Great Minds</title>
-<meta name="description" content="Bring a real question to a council of three great minds. Different perspectives. A clearer you." />
-<meta name="theme-color" content="#101114" />
+<title>owlry — The Council</title>
+<meta name="description" content="Ask a question. Three great minds debate it and hand you one book each." />
+<meta name="theme-color" content="#070B17" />
 <meta name="color-scheme" content="dark light" />
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -16,8 +16,18 @@
 <link rel="icon" href="./owl.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="./apple-touch-icon.svg" />
 <!-- Fonts are self-hosted and subset (styles/fonts.css): no third-party request. -->
-<link rel="preload" href="./fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="preload" href="./fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="./fonts/inter-tight-var-latin.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="./fonts/fraunces-var-latin.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="./fonts/anton-latin.woff2" as="font" type="font/woff2" crossorigin />
+<script>
+  // the lighting rig before the first paint: the reader's choice from the store's blob, else the OS scheme (app/rig.ts keeps it in step)
+  (function () {
+    var rig = null;
+    try { var s = JSON.parse(localStorage.getItem('owlry-council-v1') || 'null'); rig = s && s.state && s.state.rig; } catch (e) {}
+    if (rig !== 'evening' && rig !== 'matinee') rig = matchMedia('(prefers-color-scheme: light)').matches ? 'matinee' : 'evening';
+    document.documentElement.dataset.rig = rig;
+  })();
+</script>
 </head>
 <body>
 <div id="root"></div>

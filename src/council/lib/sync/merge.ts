@@ -14,7 +14,7 @@
    an explicit literal, so anything omitted is silently dropped on login.
    ============================================================ */
 import type { CloudState } from './types';
-import type { Highlight, Progress } from '../../store/types';
+import type { Highlight, Progress, SavedStep } from '../../store/types';
 
 const union = <T>(a: T[], b: T[]): T[] => Array.from(new Set([...a, ...b]));
 
@@ -52,6 +52,12 @@ function mergeHighlights(a: Highlight[], b: Highlight[]): Highlight[] {
   return Array.from(byId.values()).sort((x, y) => y.ts - x.ts);
 }
 
+function mergeSteps(a: SavedStep[], b: SavedStep[]): SavedStep[] {
+  const byId = new Map<string, SavedStep>();
+  for (const s of [...b, ...a]) byId.set(s.id, s);
+  return Array.from(byId.values()).sort((x, y) => y.ts - x.ts);
+}
+
 export function mergeState(local: CloudState, cloud: CloudState): CloudState {
   const newer = local.prefsAt >= cloud.prefsAt ? local : cloud;
   return {
@@ -70,6 +76,7 @@ export function mergeState(local: CloudState, cloud: CloudState): CloudState {
     liked: union(local.liked, cloud.liked),
     savedPosts: union(local.savedPosts, cloud.savedPosts),
     following: union(local.following, cloud.following),
+    steps: mergeSteps(local.steps ?? [], cloud.steps ?? []),
   };
 }
 

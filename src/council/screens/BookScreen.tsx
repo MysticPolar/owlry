@@ -4,19 +4,31 @@ import { navigate } from '../app/router';
 import { useStore, selectCouncil, selectMindUnavailable } from '../store/useStore';
 import { maybeBook } from '../content/books';
 import { figure } from '../content/figures';
+import type { Book } from '../content/types';
 import { readingFor } from '../engine/council';
-import { TopBar, Sheet } from '../components/chrome';
+import { AppBar, Sheet } from '../components/chrome';
 import { Cover } from '../components/Cover';
-import { Owl } from '../components/Owl';
 import { useBump } from '../hooks/useBump';
 import { useT, useLang, fmt } from '../i18n/react';
 import './BookScreen.css';
 
 /* ============================================================
-   Book detail — "Open a book. A new perspective."
-   Cover, tags, an epigraph, why it relates to your question, where to
-   start, and the two primary actions.
+   The book (v14). The jacket beside the title, author and tags; where to
+   start (and, when it was opened from a council, why this seat handed it
+   to you); the book's epigraph with its tag; the blurb. The footer reads
+   the guide, opens the summary sheet, and links out to the book or keeps
+   it in the library. A book a cast seat named arrives as a title only and
+   fills in when the live council has written its card.
    ============================================================ */
+
+/** the book on Open Library (the mockup's `bookUrl`): its ISBN page, else a search by title and author — a recalled
+ *  card, or a cast's placeholder, has no ISBN, and the link out still works on the title alone */
+const bookUrl = (b: Book): string =>
+  b.isbn ? `https://openlibrary.org/isbn/${b.isbn}` : `https://openlibrary.org/search?q=${encodeURIComponent(`${b.title} ${b.authorName}`)}`;
+
+/** the mockup's `trunc`: cut at a word, add an ellipsis */
+const trunc = (s: string, n: number) => (s.length > n ? `${s.slice(0, n).replace(/\s+\S*$/, '')}…` : s);
+
 export function BookScreen({ id, councilId }: { id: string; councilId?: string }) {
   const b = maybeBook(id);
   const session = useStore(selectCouncil(councilId));
@@ -41,22 +53,32 @@ export function BookScreen({ id, councilId }: { id: string; councilId?: string }
 
   if (!b) {
     return (
-      <div className="screen">
-        <TopBar backFallback={{ name: 'library' }} title={t.book.title} className="top-inset" />
-        <p className="pad muted" style={{ paddingTop: 24 }}>{t.book.missing}</p>
+      <div className="screen book-screen">
+        <AppBar back={{ name: 'library' }} label={t.book.title} />
+        <div className="content">
+          <p className="sub rv">{t.book.missing}</p>
+        </div>
       </div>
     );
   }
-  const author = figure(b.authorId);
+
   const rec = session ? readingFor(session).find((r) => r.bookId === b.id) : undefined;
   const isSaved = saved.includes(b.id);
+  const olUrl = bookUrl(b);
+  const quoteUrl = b.quote?.source.url || olUrl;
+  const pct = progress ? Math.round(progress.pct * 100) : 0;
+  const reading = pct > 0 && progress?.status !== 'completed';
+
   const onSave = () => {
     bumpSave();
     toggleSaved(b.id);
     showToast(isSaved ? t.book.removed : t.book.savedLib);
   };
   const share = async () => {
-    const text = fmt(t.book.shareText, { title: b.title, author: b.authorName, blurb: b.blurb });
+    // a cast's placeholder has no blurb yet: then just the title and the author
+    const text = b.blurb
+      ? fmt(t.book.shareText, { title: b.title, author: b.authorName, blurb: b.blurb })
+      : fmt(t.book.coverAria, { title: b.title, author: b.authorName });
     try {
       if (navigator.share) await navigator.share({ title: b.title, text });
       else {
@@ -69,14 +91,27 @@ export function BookScreen({ id, councilId }: { id: string; councilId?: string }
   };
   const startReading = () => navigate({ name: 'read', id: b.id, council: councilId });
 
+  // "Book V — At dawn…"; a recalled card may name no section, and then the guide's own heading stands in
+  const ttl = b.start.label ? (b.start.title ? `${b.start.label} — ${b.start.title}` : b.start.label) : b.text.heading;
+  // the same rounded figure as the gold button's "Continue": a sliver under 0.5% is not progress, and never "0% read"
+  const progressLine = progress?.status === 'completed' ? t.book.completed : pct > 0 ? fmt(t.book.pctRead, { pct }) : '';
+  const showPanel = !b.pending && !!(rec || ttl || b.start.why || progressLine);
+  const year = b.year < 0 ? fmt(t.common.bc, { year: -b.year }) : String(b.year);
+  // the two actions on a recalled book mount after the page, once its card lands, so they get an entrance
+  const landed = b.recalled ? 'book-landed' : '';
+
   return (
-    <div className="screen bookscreen">
-      <TopBar
-        backFallback={councilId ? { name: 'summary', id: councilId } : { name: 'library' }}
-        className="top-inset"
+    <div className="screen book-screen">
+      <AppBar
+        back={councilId ? { name: 'summary', id: councilId } : { name: 'library' }}
         right={
           <>
-            <button type="button" className={`iconbtn ${isSaved ? 'on' : ''} ${saveBump ? 'bump' : ''}`} aria-label={isSaved ? t.book.ariaRemove : t.book.ariaSave} onClick={onSave}>
+            <button
+              type="button"
+              className={`iconbtn ${isSaved ? 'on' : ''} ${saveBump ? 'bump' : ''}`}
+              aria-label={isSaved ? t.book.ariaRemove : t.book.ariaSave}
+              onClick={onSave}
+            >
               {isSaved ? <IconBookmarkFilled /> : <IconBookmark stroke={1.8} />}
             </button>
             <button type="button" className="iconbtn" aria-label={t.common.share} onClick={share}>
@@ -85,111 +120,113 @@ export function BookScreen({ id, councilId }: { id: string; councilId?: string }
           </>
         }
       />
-      <div className="screen-scroll pad book-body">
-        <div className="book-hero">
-          <Cover book={b} width={136} className="book-cover" />
-          <h1 className="title book-title">{b.title}</h1>
-          <p className="book-author">
-            {b.authorName}
-            {/* a recalled book has no curated cover to date it; the year the cast gave stays on the line once the card lands */}
-            {b.recalled && b.year !== 0 && ` · ${b.year < 0 ? fmt(t.common.bc, { year: -b.year }) : b.year}`}
-          </p>
-          {b.pending && <p className="book-arriving">{unavailable ? t.book.unavailable : t.book.arriving}</p>}
-          <div className="book-tags">
-            {b.tags.map((tg) => (
-              <span key={tg} className="tag">
-                {tg}
-              </span>
-            ))}
+      <div className="content">
+        <div className="book-head rv">
+          <Cover book={b} width={107} height={160} size="L" className="book-cover" />
+          <div className="book-meta">
+            <h1 className="book-title">{b.title}</h1>
+            <div className="book-author">
+              {b.authorName}
+              {/* a recalled book has no curated cover to date it; the year the cast gave stays on the line */}
+              {b.recalled && b.year !== 0 && ` · ${year}`}
+            </div>
+            {b.tags.length > 0 && <div className="book-tags">{b.tags.join(' · ')}</div>}
           </div>
         </div>
 
+        {b.pending ? (
+          <p className="book-arriving rv" style={{ animationDelay: '.06s' }}>
+            {unavailable ? t.book.unavailable : t.book.arriving}
+          </p>
+        ) : (
+          showPanel && (
+            <div className="panel rv" style={{ animationDelay: '.06s' }}>
+              <div className="act">{t.book.startHere}</div>
+              {ttl && <div className="ttl">{ttl}</div>}
+              {rec && session ? (
+                <>
+                  <p>{rec.why}</p>
+                  <p className="q">{fmt(t.book.recommended, { name: figure(rec.figureId).short, q: trunc(session.question, 70) })}</p>
+                </>
+              ) : (
+                b.start.why && <p className="q">{b.start.why}</p>
+              )}
+              {progressLine && <p className="book-progress">{progressLine}</p>}
+            </div>
+          )
+        )}
+
         {b.quote && (
-          <blockquote className="book-quote">
+          <div className="book-quote rv" style={{ animationDelay: '.12s' }}>
             <p>“{b.quote.text}”</p>
             {b.quote.gloss && (
               <p className="book-quote-gloss">
-                <span className="msg-source-tag">{t.common.translation}</span> {b.quote.gloss}
+                <span className="vtag">{t.common.translation}</span> {b.quote.gloss}
               </p>
             )}
             <footer>
               — {b.authorName}
-              {b.quote.source.url && (
-                <a href={b.quote.source.url} target="_blank" rel="noreferrer" aria-label={t.common.source}>
-                  <IconExternalLink />
-                </a>
-              )}
+              <a href={quoteUrl} target="_blank" rel="noopener noreferrer" aria-label={t.common.source}>
+                <IconExternalLink stroke={2} />
+              </a>
               {/* a recalled book's epigraph is the model's memory of it: attributed, never verbatim */}
-              <span className="msg-source-tag">{b.recalled ? t.common.attributed : t.common.verbatim}</span>
+              <span className="vtag">{b.recalled ? t.common.attributed : t.common.verbatim}</span>
             </footer>
-          </blockquote>
+          </div>
         )}
 
-        {rec && session && (
-          <section className="card book-why">
-            <span className="caps muted">{t.book.why}</span>
-            <p>{rec.why}</p>
-            <p className="small muted">{fmt(t.book.recommended, { q: session.question, name: author.short })}</p>
-          </section>
-        )}
-
-        {/* a recalled card may name no section to start from: then there is no start card, and the reader opens on the guide itself */}
-        {!b.pending && b.start.label && (
-        <section className="card book-start">
-          <span className="caps muted">{t.book.startHere}</span>
-          <p className="book-start-title">
-            <b>{b.start.label}</b> — {b.start.title}
+        {b.blurb && (
+          <p className="book-blurb rv" style={{ animationDelay: '.16s' }}>
+            {b.blurb}
           </p>
-          <p className="small muted">{b.start.why}</p>
-          {progress && progress.pct > 0 && (
-            <p className="small book-progress">{progress.status === 'completed' ? t.book.completed : fmt(t.book.pctRead, { pct: Math.round(progress.pct * 100) })}</p>
-          )}
-        </section>
         )}
-
-        {b.blurb && <p className="book-blurb">{b.blurb}</p>}
       </div>
-      <div className="book-actions pad">
-        {/* nothing to read or summarise until the card is here; saving and sharing work on the title alone.
-            On a recalled book the two buttons land after the page, once the card does, so they get an entrance */}
-        {!b.pending && (
-          <button type="button" className={`btn btn-primary ${b.recalled ? 'book-landed' : ''}`} onClick={startReading}>
-            {progress && progress.pct > 0 && progress.status !== 'completed' ? t.book.continueReading : t.book.startReading}
-          </button>
-        )}
-        {!b.pending && (
-          <button type="button" className={`btn btn-outline ${b.recalled ? 'book-landed' : ''}`} onClick={() => setSummaryOpen(true)}>
-            {t.book.readSummary}
-          </button>
-        )}
-        <button type="button" className="linkbtn book-save" onClick={onSave}>
-          {isSaved ? t.book.savedTick : t.book.saveLib}
-        </button>
-        <span className="hand book-hand" aria-hidden="true">
-          {t.book.hand1}
-          <br />
-          {t.book.hand2}
-        </span>
-        <Owl color="yellow" size={62} className="book-owl" />
+
+      <div className="footer">
+        <div className="stack">
+          {/* nothing to read or summarise until the card is here; saving and the link out work on the title alone */}
+          {!b.pending && (
+            <button type="button" className={`btn gold ${landed}`} onClick={startReading}>
+              {reading ? t.book.continueGuide : t.book.readGuide}
+            </button>
+          )}
+          {!b.pending && (
+            <button type="button" className={`btn ghost ${landed}`} onClick={() => setSummaryOpen(true)}>
+              {t.book.bookSummary}
+            </button>
+          )}
+          <div className="book-links">
+            <a className="btn text" href={olUrl} target="_blank" rel="noopener noreferrer">
+              {t.book.getBook} <IconExternalLink stroke={2} />
+            </a>
+            <button type="button" className="btn text" onClick={onSave}>
+              {isSaved ? t.book.savedTick : t.book.saveLib}
+            </button>
+          </div>
+        </div>
       </div>
 
       <Sheet open={summaryOpen} onClose={() => setSummaryOpen(false)} label={fmt(t.book.summaryOf, { title: b.title })} tall>
         <div className="book-summary">
-          <span className="caps muted">{t.book.bookSummary}</span>
-          <h2 className="title">{b.title}</h2>
-          <p className="small muted">
+          <div className="act">{t.book.bookSummary}</div>
+          <h2 className="book-summary-title">{b.title}</h2>
+          <p className="book-summary-by">
             {b.authorName}
-            {b.year !== 0 && ` · ${b.year < 0 ? fmt(t.common.bc, { year: -b.year }) : b.year}`}
+            {b.year !== 0 && ` · ${year}`}
           </p>
-          <p className="book-summary-gist">{b.summary.gist}</p>
-          <span className="caps muted">{t.book.mainIdeas}</span>
-          <ol className="book-ideas">
-            {b.summary.ideas.map((idea, i) => (
-              <li key={i}>{idea}</li>
-            ))}
-          </ol>
-          <button type="button" className="btn btn-primary" onClick={startReading}>
-            {b.start.label ? fmt(t.book.read, { label: b.start.label }) : t.book.startReading}
+          {b.summary.gist && <p className="book-summary-gist">{b.summary.gist}</p>}
+          {b.summary.ideas.length > 0 && (
+            <>
+              <div className="act">{t.book.mainIdeas}</div>
+              <ol className="book-ideas">
+                {b.summary.ideas.map((idea, i) => (
+                  <li key={i}>{idea}</li>
+                ))}
+              </ol>
+            </>
+          )}
+          <button type="button" className="btn gold" onClick={startReading}>
+            {b.start.label ? fmt(t.book.read, { label: b.start.label }) : t.book.readGuide}
           </button>
         </div>
       </Sheet>

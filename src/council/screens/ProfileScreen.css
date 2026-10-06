@@ -1,39 +1,106 @@
-.profile { overflow: hidden; }
-.profile-head { display: flex; justify-content: space-between; align-items: center; }
-.profile-body { display: grid; gap: 16px; align-content: start; padding-top: 4px; }
+/* ============================================================
+   The profile (v14). The medallion and handle, the three counts, the
+   level card (Mirror on the stage's own dark, whatever the rig), the
+   tab row, then the tabs: the reading profile (radar or numbers),
+   milestones, kept next steps, highlights; the activity list; badges.
+   Chrome, cards, the seg, rows and the .rv / .cascade entrances come
+   from base.css; these are the profile's own rules, as the mockup draws
+   them. The radar's paint (components/RadarChart.tsx) lives here too.
+   ============================================================ */
+.profile-screen .act { margin: 0; }
+
+/* who you are */
 .profile-id { display: flex; gap: 14px; align-items: center; }
-.profile-handle { font-family: var(--font-display); font-weight: 800; font-size: 1.25rem; letter-spacing: -0.015em; }
-.profile-stats { display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; }
-.profile-stats li { display: grid; }
-.profile-stats b { font-family: var(--font-display); font-weight: 800; font-size: 1.25rem; letter-spacing: -0.02em; }
-.profile-stats span { font-size: var(--t-label); color: var(--mut); }
-.level-card { display: flex; gap: 14px; align-items: center; padding: 14px 16px; border-radius: 18px; background: var(--night); color: var(--night-text); }
-.level-card .grow { display: grid; gap: 2px; }
-.level-name { font-family: var(--font-display); font-weight: 800; font-size: 1.125rem; letter-spacing: -0.015em; }
-.level-sub { font-size: var(--t-label); color: var(--night-mut); }
-.level-track { height: 5px; border-radius: 3px; background: rgba(255, 255, 255, 0.14); overflow: hidden; margin-top: 6px; }
-.level-track > span { display: block; height: 100%; background: var(--yellow); border-radius: 3px; transition: width 700ms var(--ease-out); }
-.profile-section { display: grid; gap: 10px; animation: fade-up 300ms var(--ease-out) both; }
-.radar { width: 100%; max-width: 380px; margin: 0 auto; display: block; }
-.radar-data { animation: radar-in 600ms var(--ease-out) both; transform-origin: 190px 140px; }
-@keyframes radar-in { from { transform: scale(0.4); opacity: 0; } to { transform: none; opacity: 1; } }
-.profile-note { text-align: center; }
-.milestones { display: grid; gap: 8px; }
-.milestones li { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 12px; background: var(--paper); box-shadow: var(--shadow-card); font-size: var(--t-small); font-weight: 500; }
-.milestones li.done { color: var(--ink); }
-.ms-check { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; background: var(--paper-2); color: var(--yellow-ink); flex: 0 0 auto; }
-.milestones li.done .ms-check { background: var(--yellow); }
-.ms-check svg { width: 13px; height: 13px; }
-.reflection { border-left-color: var(--ink); }
-.timeline { display: grid; }
-.timeline button { width: 100%; display: flex; align-items: center; gap: 10px; text-align: left; padding: 10px 4px; border-bottom: 1px solid var(--line); font-size: var(--t-small); border-radius: 10px; transition: background var(--dur-fast); }
-.timeline button:active { background: rgba(0, 0, 0, 0.04); }
-.tl-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--yellow); flex: 0 0 auto; box-shadow: 0 0 0 3px var(--yellow-soft); }
-.badges { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-.badges li { display: grid; justify-items: center; gap: 6px; padding: 14px 8px; border-radius: 16px; background: var(--paper); box-shadow: var(--shadow-card); opacity: 0.55; }
-.badges li.done { opacity: 1; }
-.badge-owl { height: 48px; display: grid; place-items: center; color: var(--hint); }
-.badge-owl svg { width: 28px; height: 28px; }
-.badge-owl .owl { width: 44px; height: auto; }
-.badge-name { font-size: var(--t-label); font-weight: 700; text-align: center; }
-.profile-owl { position: absolute; right: 14px; bottom: calc(var(--nav-h) + var(--sab) - 4px); pointer-events: none; z-index: 1; }
+.profile-id .med { width: 64px; height: 64px; color: var(--gold-ink); font-family: var(--font-wordmark); font-weight: 400; font-size: 26px; }
+.profile-handle { font-family: var(--font-serif); font-weight: 600; font-size: 24px; line-height: 1; overflow-wrap: anywhere; }
+.profile-bio { margin-top: 6px; color: var(--muted); font-size: 15px; font-family: var(--font-serif); }
+
+/* the three counts */
+.profile-stats { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; margin-top: 18px; }
+.profile-stats li { display: grid; gap: 4px; }
+.profile-stats b { font-family: var(--font-serif); font-weight: 600; font-size: 26px; line-height: 1; }
+.profile-stats span { font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+
+/* the level card sits on the stage's paint under both rigs, so its text is the stage's cream */
+.level-card { display: flex; gap: 14px; align-items: center; padding: 14px 16px; border-radius: 18px; background: var(--stage); color: var(--cream); margin-top: 18px; border: 1px solid var(--line); }
+.level-card .owl { flex: none; }
+.level-card .grow { flex: 1 1 auto; min-width: 0; }
+.level-name { font-family: var(--font-serif); font-weight: 600; font-size: 20px; line-height: 1; }
+.level-sub { margin-top: 5px; font-size: 13px; color: color-mix(in srgb, var(--cream) 62%, var(--stage)); }
+.level-track { height: 5px; border-radius: 3px; background: color-mix(in srgb, var(--cream) 14%, transparent); overflow: hidden; margin-top: 10px; }
+.level-track > span { display: block; height: 100%; background: var(--gold); border-radius: 3px; transform-origin: left; animation: level-fill 420ms var(--ease) 240ms both; }
+@keyframes level-fill { from { transform: scaleX(0); } to { transform: none; } }
+
+/* the tab row (the Seg, drawn as the mockup's .profile-tabs pill row) */
+.profile-tabs-seg { margin-top: 18px; }
+
+/* the tabs' sections */
+.profile-section { margin-top: 20px; display: grid; gap: 10px; }
+.profile-list { display: grid; gap: 8px; }
+.profile-empty { font-size: 14px; padding: 4px 2px; }
+
+/* insights: the reading profile */
+.insight-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.insight-head .seg { margin: 0; flex: none; }
+/* the compact seg draws 32px buttons (the mockup); their hit area reaches the seg's full 40px */
+.insight-head .seg button::after { content: ''; position: absolute; inset: -4px 0; }
+.radar-btn { width: 100%; display: block; border-radius: 16px; transition: opacity var(--dur-fast); }
+.radar-btn:active { opacity: 0.85; }
+.radar-note { text-align: center; font-size: 14px; line-height: 1.45; color: var(--muted); padding: 0 10px; font-family: var(--font-serif); }
+/* the chart and the numbers trade places with a short arrival. `backwards`, not `both`: a fill that outlives the
+   arrival would pin opacity/transform and swallow the radar's :active press */
+.swap-in { animation: fade-up var(--dur) var(--ease) backwards; }
+/* the same for the tappable rows that cascade in (base's .cascade fills `both`, which pins button.card:active's scale) */
+.profile-list.cascade > * { animation-fill-mode: backwards; }
+
+.radar { display: block; width: 100%; max-width: 330px; margin: 0 auto; overflow: visible; }
+.radar text { font-family: var(--font-ui); font-size: 12px; font-weight: 600; fill: var(--ink); }
+.radar .grid { stroke: var(--line-2); fill: none; }
+.radar .area { fill: var(--soft); stroke: var(--gold-ui); stroke-width: 2; stroke-linejoin: round; }
+.radar .pt { fill: var(--surface); stroke: var(--gold-ui); stroke-width: 2; }
+.radar-data { transform-origin: 165px 150px; animation: radar-in 420ms var(--ease) both; }
+@keyframes radar-in { from { opacity: 0; transform: scale(0.6); } to { opacity: 1; transform: none; } }
+
+.rp { list-style: none; display: grid; gap: 9px; }
+.rp li { display: grid; grid-template-columns: 104px 1fr 44px; align-items: center; gap: 10px; font-size: 14px; }
+.rp .bar { height: 6px; border-radius: 3px; background: var(--surface2); overflow: hidden; }
+.rp .bar span { display: block; height: 100%; background: var(--gold-ui); border-radius: 3px; }
+.rp .n { text-align: right; color: var(--muted); font-size: 12.5px; font-weight: 600; }
+.profile-screen .set-fine { font-size: 12.5px; line-height: 1.5; color: var(--muted); }
+
+/* milestones */
+.milestones { list-style: none; display: grid; gap: 8px; }
+.milestones li { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); font-size: 14.5px; }
+.milestones li .grow { flex: 1 1 auto; }
+.milestones li .n { color: var(--muted); font-size: 12.5px; font-weight: 600; flex: none; }
+.ms-check { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--surface2); color: transparent; flex: none; }
+.ms-check svg { width: 14px; height: 14px; }
+.milestones li.done .ms-check { background: var(--gold); color: var(--gold-ink); }
+
+/* the next steps kept from councils' summaries */
+.kept-row { width: 100%; display: grid; gap: 4px; padding: 12px 14px; text-align: left; color: var(--ink); }
+.kept-text { font-family: var(--font-serif); font-size: 15.5px; line-height: 1.45; }
+
+/* highlights & reflections (the library draws the same rows) */
+.profile-screen .highlight-row { width: 100%; display: grid; gap: 4px; padding: 12px 14px; text-align: left; border-left: 3px solid var(--gold-ui); color: var(--ink); }
+.profile-screen .highlight-text { font-family: var(--font-serif); font-size: 15.5px; line-height: 1.5; }
+.profile-screen .highlight-row.reflection { border-left-color: var(--ink); }
+
+/* activity */
+.activity { list-style: none; }
+.activity.profile-section { gap: 0; }
+.activity li { border-bottom: 1px solid var(--line); }
+.activity-row { width: 100%; display: flex; gap: 12px; padding: 12px 0; text-align: left; font-size: 14.5px; line-height: 1.4; color: var(--ink); }
+button.activity-row { transition: background var(--dur-fast); }
+button.activity-row:active { background: var(--surface); }
+.activity .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--gold-ui); box-shadow: 0 0 0 3px var(--soft); margin-top: 6px; flex: none; }
+.activity time { display: block; font-size: 11.5px; color: var(--muted); font-weight: 600; margin-top: 2px; }
+.activity li.profile-empty { border-bottom: 0; padding: 12px 2px; }
+
+/* badges */
+.badges { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.badges li { display: grid; justify-items: center; gap: 6px; padding: 14px 8px; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); text-align: center; font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.badges li.done { color: var(--ink); }
+.badges li .b { width: 40px; height: 40px; border-radius: 50%; background: var(--surface2); display: grid; place-items: center; color: var(--muted); }
+.badges li.done .b { background: var(--gold); color: var(--gold-ink); }
+.badges li .b svg { width: 20px; height: 20px; }

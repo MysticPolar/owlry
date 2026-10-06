@@ -10,6 +10,16 @@ mockup, and what the client does when any of them fails. Companion to
 rule throughout is the one the app was built on: the room never goes dark —
 every call has a fallback that is already on screen.*
 
+> **Screens since the v14 interface (6 October 2026).** The calls below are
+> unchanged; the screens that make them were re-flowed. "Council room" is now
+> the room (`#/council`: the ask box under the drawn stage); its "intro cards"
+> are *Act I — Stands* (`#/stands/:id`); the group-chat "Discussion" became
+> *Act II — Debate* (`#/debate/:id`, one line at a time) for the opening and
+> every whole-council follow-up, and the one-on-one (`#/one/:id/:figure`) for
+> a direct question. Follow-ups are asked from the Summary's bar; "added
+> context" has no affordance in v14 (the store still supports it). See
+> `docs/council-redesign.md`, "The v14 interface".
+
 ## The flow, screen by screen
 
 ```
@@ -246,7 +256,10 @@ Where the implementation departed from the sections above, on purpose:
   before it drop the whole blob (persist has no migrate there).
 - While casting, the ask box and the suggestions are hidden under the ticker;
   the head's refresh button (`cancelCasting`) is the way out, and a newer ask
-  abandons a late cast by itself. The cast itself is capped at 20 s, the cards
+  abandons a late cast by itself. *(v14: the curtain closes over the empty
+  seats and the footer shows "Casting the council" until the seats are in,
+  then Act I opens the curtain on them; leaving the room is the way out, and
+  a cast that fails restores the question to the ask box.)* The cast itself is capped at 20 s, the cards
   at 12 s, and a page that is unloading never seats the scripted fallback.
 - Cards are fetched lazily, not eagerly: the active session's seats when it is
   on screen, an alternate's card when a sheet opens, a book's card when the

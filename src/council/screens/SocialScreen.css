@@ -1,44 +1,64 @@
-.social-head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+/* ============================================================
+   The Social tab (v14). The two feed tabs with the gold plus, the posts
+   (a reader, the passage on its book's colour, the actions, the words),
+   and the compose sheet's highlight picks. Medallions, buttons, fields,
+   the sheet and the cascade come from base.css; these are the mockup's
+   social rules, as it draws them.
+   ============================================================ */
+
+/* the head: For You / Following, and the plus */
+.social-head { display: flex; align-items: center; justify-content: space-between; padding: 0 0 8px; border-bottom: 1px solid var(--line); }
 .social-tabs { display: flex; gap: 18px; }
-.social-tabs button { font-family: var(--font-display); font-weight: 800; font-size: 1.125rem; letter-spacing: -0.015em; color: var(--hint); padding: 6px 0; border-bottom: 2px solid transparent; transition: color var(--dur), border-color var(--dur); }
-.social-tabs button.on { color: var(--ink); border-bottom-color: var(--ink); }
-.social-plus { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--ink); color: #fff; transition: transform var(--dur-fast) var(--ease-out); }
+.social-tabs button { font-family: var(--font-serif); font-weight: 600; font-size: 20px; color: var(--muted); padding: 6px 0; border-bottom: 2px solid transparent; transition: color var(--dur), border-color var(--dur); }
+.social-tabs button.on { color: var(--ink); border-bottom-color: var(--gold-ui); }
+.social-plus { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--gold); color: var(--gold-ink); transition: transform var(--dur-fast) var(--ease); }
 .social-plus:active { transform: scale(0.92); }
 .social-plus svg { width: 22px; height: 22px; }
-.feed { display: grid; align-content: start; }
+
+/* the feed */
+.feed-empty { padding: 16px 4px; }
 .post { padding: 12px 0 6px; border-bottom: 1px solid var(--line); }
 .post-head { display: flex; align-items: center; gap: 10px; padding-bottom: 10px; }
-.post-handle { font-weight: 700; font-size: var(--t-small); }
-.post-time { font-size: 11px; color: var(--mut); }
+.post-head .grow { flex: 1 1 auto; min-width: 0; }
+.post-handle { font-weight: 600; font-size: 14px; }
+.post-time { font-size: 11px; color: var(--muted); }
+.post-follow.btn.sm { min-height: 36px; padding: 0 13px; position: relative; }
+.post-follow.btn.following { color: var(--muted); }
+/* the reader's own medallion is the profile's: gold, its initial in gold-ink */
+.post-head .med.mine { color: var(--gold-ink); }
+
+/* the passage card: a deep flat colour with an inset hairline, set per post as --qc / --qc-fg
+   (a dark jacket as it is with its own foreground; a pale jacket or no book, a deep tone of it in cream) */
 .quote-card {
-  --qc: #2B2A33;
-  margin: 0 20px; aspect-ratio: 1 / 0.92; border-radius: 18px; padding: 26px 22px; display: flex; flex-direction: column; justify-content: center; gap: 12px;
-  background:
-    radial-gradient(120% 80% at 10% 0%, rgba(255, 255, 255, 0.16), transparent 55%),
-    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 28px),
-    linear-gradient(160deg, color-mix(in srgb, var(--qc) 88%, #fff) 0%, var(--qc) 60%, color-mix(in srgb, var(--qc) 70%, #000) 100%);
-  color: #FFF8EC; box-shadow: var(--shadow-card); position: relative; overflow: hidden;
+  --qc: var(--stage);
+  --qc-fg: var(--cream);
+  border-radius: 18px; padding: 28px 24px; min-height: 150px; display: flex; flex-direction: column; justify-content: center; gap: 12px;
+  background: var(--qc); color: var(--qc-fg);
+  outline: 1px solid color-mix(in srgb, var(--qc-fg) 30%, transparent); outline-offset: -10px;
 }
-.quote-card::after { content: ''; position: absolute; right: -30px; bottom: -40px; width: 160px; height: 200px; border-radius: 8px; background: rgba(255, 255, 255, 0.06); transform: rotate(-14deg); }
-.quote-card-text { font-family: var(--font-read); font-weight: 500; font-size: 1.2rem; line-height: 1.45; letter-spacing: -0.005em; position: relative; z-index: 1; text-wrap: pretty; }
-.quote-card-attr { font-size: var(--t-label); opacity: 0.85; font-weight: 500; position: relative; z-index: 1; }
+.quote-card-text { font-family: var(--font-serif); font-weight: 500; font-size: 20px; line-height: 1.42; text-wrap: pretty; }
+.quote-card-attr { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.82; font-weight: 600; }
+html[lang='zh-CN'] .quote-card-attr { letter-spacing: 0.08em; }
+
+/* the actions: like, comments, share; the bookmark on the right. A toggled icon pops once (.bump) */
 .post-actions { display: flex; align-items: center; gap: 14px; padding-top: 10px; }
-.post-action { display: inline-flex; align-items: center; gap: 5px; color: var(--ink); font-size: var(--t-label); font-weight: 600; min-height: 36px; transition: color var(--dur); }
-.post-action svg { width: 24px; height: 24px; transition: transform var(--dur-fast) var(--ease-out); }
+.post-action { position: relative; display: inline-flex; align-items: center; gap: 5px; color: var(--ink); font-size: 13px; font-weight: 600; min-height: 36px; transition: color var(--dur); }
+/* the mockup draws these at 36px (and the share and save icons 22px wide); the hit area reaches 40+ around them */
+.post-action::after, .post-follow.btn.sm::after { content: ''; position: absolute; inset: -4px -9px; }
+.post-action svg { width: 22px; height: 22px; transition: transform var(--dur-fast) var(--ease); }
 .post-action:active svg { transform: scale(0.86); }
 .post-action.bump svg { animation: pop 380ms var(--ease-spring); }
-.post-action.on { color: var(--tint-relationships); }
-.post-action.on svg { color: var(--tint-relationships); }
-.post-caption { padding-top: 2px; padding-bottom: 6px; display: grid; gap: 2px; }
-.post-prompt { font-size: 11px; color: var(--mut); font-style: italic; }
-.post-caption p { font-size: var(--t-small); line-height: 1.45; }
-.post-caption b { font-weight: 700; }
+.post-action.on, .post-action.on svg { color: var(--ember); }
+.post-action.right { margin-left: auto; }
+.post-caption { padding: 2px 0 6px; display: grid; gap: 3px; }
+.post-caption p { font-size: 14px; line-height: 1.45; }
 
-.compose { display: grid; gap: 10px; }
-.compose-picks { display: grid; gap: 8px; }
-.compose-pick { width: 100%; text-align: left; display: grid; gap: 2px; padding: 10px 12px; border-radius: 12px; background: var(--paper-2); box-shadow: inset 0 0 0 1px transparent; transition: background var(--dur), box-shadow var(--dur), transform var(--dur-fast) var(--ease-out); }
+/* the compose sheet */
+.compose { display: grid; gap: 8px; margin-top: 8px; }
+.compose-pick { width: 100%; text-align: left; display: grid; gap: 2px; padding: 10px 12px; border-radius: 12px; background: var(--surface2); border: 1.5px solid transparent; color: var(--ink); transition: border-color var(--dur), background var(--dur), transform var(--dur-fast) var(--ease); }
 .compose-pick:active { transform: scale(0.985); }
-.compose-pick.on { box-shadow: inset 0 0 0 2px var(--ink); background: var(--yellow-soft); }
-.compose-pick-text { font-family: var(--font-read); font-style: italic; font-size: var(--t-small); line-height: 1.45; }
-.compose-quote, .compose-caption { padding: 12px 14px; line-height: 1.45; min-height: 0; resize: none; }
-.compose-label { font-family: var(--font-display); font-weight: 800; font-size: 1.0625rem; letter-spacing: -0.01em; margin-top: 4px; }
+.compose-pick.on { border-color: var(--gold-ui); background: var(--soft); }
+.compose-pick-text { font-family: var(--font-serif); font-size: 14px; line-height: 1.45; }
+/* the paste field arrives when no highlight is picked */
+.compose-paste { animation: fade-up var(--dur) var(--ease) both; }
+.compose-paste.closing { animation: fade-out 120ms var(--ease) both; pointer-events: none; }

@@ -3,8 +3,7 @@ import { IconBrandApple, IconBrandGoogle } from '@tabler/icons-react';
 import { navigate } from '../app/router';
 import { useStore } from '../store/useStore';
 import { useAuth } from '../store/useAuth';
-import { TopBar } from '../components/chrome';
-import { Wordmark } from '../components/Wordmark';
+import { AppBar } from '../components/chrome';
 import { useT } from '../i18n/react';
 import './AuthScreen.css';
 
@@ -31,7 +30,12 @@ export function AuthScreen({ mode }: { mode: 'signup' | 'signin' }) {
   const [password, setPassword] = useState('');
   const [invite, setInvite] = useState('');
 
-  useEffect(() => clearError, [mode, clearError]);
+  // an error belongs to the attempt that raised it: a stale one (Settings' sign-in form, the other mode) is
+  // cleared on arrival, and this screen's own is cleared when it leaves
+  useEffect(() => {
+    clearError();
+    return clearError;
+  }, [mode, clearError]);
 
   const afterAuth = () => {
     setOnboarded(true);
@@ -63,64 +67,83 @@ export function AuthScreen({ mode }: { mode: 'signup' | 'signin' }) {
     await oauth(provider);
   };
 
+  const guest = () => {
+    setOnboarded(true);
+    navigate({ name: 'interests' }, { replace: true });
+  };
+
+  // the welcome only offers "Sign in", so each mode links to the other (replace: back still returns to where you came from)
+  const switchMode = () => navigate(mode === 'signup' ? { name: 'signin' } : { name: 'signup' }, { replace: true });
+
   return (
-    <div className="screen night auth">
-      <TopBar backFallback={{ name: 'welcome' }} className="top-inset" />
-      <form className="screen-scroll pad auth-form" onSubmit={submit}>
-        <Wordmark size={24} />
-        <h1 className="display auth-title">{mode === 'signup' ? t.auth.titleSignup : t.auth.titleSignin}</h1>
-        <p className="muted">{mode === 'signup' ? t.auth.subSignup : t.auth.subSignin}</p>
-        <div className="auth-social">
-          <button type="button" className="btn btn-dark" disabled={busy} onClick={() => social('apple')}>
-            <IconBrandApple /> {t.auth.apple}
+    <div className="screen auth">
+      <AppBar back={{ name: 'welcome' }} />
+      <form className="content auth-form" onSubmit={(e) => void submit(e)}>
+        <h1 className="lead auth-title rv">{mode === 'signup' ? t.auth.titleSignup : t.auth.titleSignin}</h1>
+        <p className="sub auth-sub rv" style={{ animationDelay: '.06s' }}>
+          {mode === 'signup' ? t.auth.subSignup : t.auth.subSignin}
+        </p>
+        <div className="auth-social rv" style={{ animationDelay: '.12s' }}>
+          <button type="button" className="btn dark" disabled={busy} onClick={() => void social('apple')}>
+            <IconBrandApple stroke={1.8} /> {t.auth.apple}
           </button>
-          <button type="button" className="btn btn-outline" disabled={busy} onClick={() => social('google')}>
-            <IconBrandGoogle /> {t.auth.google}
+          <button type="button" className="btn ghost" disabled={busy} onClick={() => void social('google')}>
+            <IconBrandGoogle stroke={1.8} /> {t.auth.google}
           </button>
         </div>
-        <div className="auth-or caps">{t.auth.or}</div>
-        {mode === 'signup' && (
-          <div className="field">
-            <label htmlFor="auth-name">{t.auth.name}</label>
-            <input id="auth-name" className="input" value={name} onChange={(e) => setName(e.target.value)} placeholder={t.auth.namePh} autoComplete="name" />
-          </div>
-        )}
-        <div className="field">
-          <label htmlFor="auth-email">{t.auth.email}</label>
-          <input id="auth-email" className="input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder={t.auth.emailPh} autoComplete="email" required={available} />
+        <div className="auth-or caps rv" style={{ animationDelay: '.18s' }}>
+          {t.auth.or}
         </div>
-        <div className="field">
-          <label htmlFor="auth-pass">{t.auth.password}</label>
-          <input
-            id="auth-pass"
-            className="input"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="••••••••"
-            autoComplete={mode === 'signup' ? 'new-password' : 'current-password'}
-            minLength={available ? 8 : undefined}
-            required={available}
-          />
-        </div>
-        {mode === 'signup' && available && (
+        <div className="auth-fields rv" style={{ animationDelay: '.24s' }}>
+          {mode === 'signup' && (
+            <div className="field">
+              <label htmlFor="auth-name">{t.auth.name}</label>
+              <input id="auth-name" className="input" value={name} onChange={(e) => setName(e.target.value)} placeholder={t.auth.namePh} autoComplete="name" />
+            </div>
+          )}
           <div className="field">
-            <label htmlFor="auth-invite">{t.auth.invite}</label>
-            <input id="auth-invite" className="input" value={invite} onChange={(e) => setInvite(e.target.value.toUpperCase())} placeholder={t.auth.invitePh} autoComplete="off" autoCapitalize="characters" />
+            <label htmlFor="auth-email">{t.auth.email}</label>
+            <input id="auth-email" className="input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder={t.auth.emailPh} autoComplete="email" required={available} />
           </div>
-        )}
-        {error && (
-          <p className="small auth-error" role="alert">
-            {error}
+          <div className="field">
+            <label htmlFor="auth-pass">{t.auth.password}</label>
+            <input
+              id="auth-pass"
+              className="input"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              autoComplete={mode === 'signup' ? 'new-password' : 'current-password'}
+              minLength={available ? 8 : undefined}
+              required={available}
+            />
+          </div>
+          {mode === 'signup' && available && (
+            <div className="field">
+              <label htmlFor="auth-invite">{t.auth.invite}</label>
+              <input id="auth-invite" className="input" value={invite} onChange={(e) => setInvite(e.target.value.toUpperCase())} placeholder={t.auth.invitePh} autoComplete="off" autoCapitalize="characters" />
+            </div>
+          )}
+          {error && (
+            <p key={error} className="form-error" role="alert">
+              {error}
+            </p>
+          )}
+          <button type="submit" className="btn gold auth-submit" disabled={busy}>
+            {busy ? t.auth.busy : mode === 'signup' ? t.auth.submitSignup : t.auth.submitSignin}
+          </button>
+          <p className="small muted auth-switch">
+            {mode === 'signup' ? t.auth.haveAccount : t.auth.noAccount}
+            <button type="button" className="linkbtn" onClick={switchMode}>
+              {mode === 'signup' ? t.auth.toSignin : t.auth.toSignup}
+            </button>
           </p>
-        )}
-        <button type="submit" className="btn btn-primary auth-submit" disabled={busy}>
-          {busy ? t.auth.busy : mode === 'signup' ? t.auth.submitSignup : t.auth.submitSignin}
-        </button>
-        <button type="button" className="linkbtn auth-guest" onClick={() => { setOnboarded(true); navigate({ name: 'interests' }, { replace: true }); }}>
-          {t.auth.guest}
-        </button>
-        <p className="small muted auth-note">{available ? t.auth.noteBackend : t.auth.noteProto}</p>
+          <button type="button" className="btn text" onClick={guest}>
+            {t.auth.guest}
+          </button>
+          <p className="small muted auth-note">{available ? t.auth.noteBackend : t.auth.noteProto}</p>
+        </div>
       </form>
     </div>
   );

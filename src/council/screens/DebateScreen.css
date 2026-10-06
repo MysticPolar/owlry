@@ -1,0 +1,43 @@
+/* ============================================================
+   Act II — the Debate (screens/DebateScreen.tsx): the progress segments,
+   the tap-to-advance pair, the arrows with the auto-play ring, and the
+   switch. The stage, the line of speech and the grey context strip are
+   shared (components/Stage.css, styles/base.css).
+   ============================================================ */
+.debate .debate-stage { flex: none; cursor: pointer; }
+
+/* progress: one segment per line */
+.debate .segs { display: flex; gap: 3px; }
+.debate .segs i { flex: 1; height: 4px; border-radius: 2px; background: var(--line); transition: background 0.4s; }
+.debate .segs i.done { background: var(--gold-ui); }
+
+/* the pair: the context strip and the line, one tap target */
+.debate .pair { margin-top: 10px; cursor: pointer; outline: none; }
+/* the mockup outlines it in --gold; the house uses --gold-ui for a UI border so the matinée rig keeps contrast */
+.debate .pair:focus-visible { outline: 2px solid var(--gold-ui); outline-offset: 6px; border-radius: 8px; }
+/* the strip's medallion keeps the mockup's 9px initials (Avatar sets the size inline) */
+.debate .ctx .med .mono { font-size: 9px; }
+
+/* the arrows */
+.debate .arrows { display: flex; justify-content: center; gap: 18px; padding-top: 2px; }
+.debate .arrow { position: relative; width: 54px; height: 54px; border-radius: 50%; border: 1px solid var(--line); background: transparent; color: var(--ink); display: flex; align-items: center; justify-content: center; transition: background 0.2s, transform 0.15s var(--ease); }
+.debate .arrow.primary { background: var(--surface); color: var(--ink); border-color: var(--line-2); }
+.debate .arrow:active { transform: scale(0.95); }
+.debate .arrow svg { width: 18px; height: 18px; }
+/* the auto-play ring runs round the next arrow once per line */
+.debate .arrow .timer { position: absolute; inset: -4px; width: auto; height: auto; }
+.debate .arrow .timer circle { fill: none; stroke: var(--gold); stroke-width: 2.5; stroke-dasharray: 182; stroke-dashoffset: 182; transform: rotate(-90deg); transform-origin: center; animation: ring var(--pace, 9s) linear forwards; }
+@keyframes ring { to { stroke-dashoffset: 0; } }
+.debate .arrowrow { display: flex; align-items: center; gap: 14px; padding: 0 4px 8px; }
+.debate .arrowrow .arrows { flex: 1 1 auto; justify-content: flex-start; gap: 12px; padding: 0; }
+
+/* the footer's states arrive rather than appear: the arrows back once a line lands, "… is writing" on a tap that has
+   to wait, "Lowering the curtain" on the way out (each is its own element, so each mount plays it afresh) */
+.debate .footer .arrowrow, .debate .footer > .thinking { animation: fadein var(--dur) var(--ease) backwards; }
+
+/* the auto-play switch */
+.debate .autop { display: inline-flex; align-items: center; gap: 9px; min-height: 44px; padding: 0 6px; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--muted); border-radius: 10px; }
+.debate .sw { width: 34px; height: 20px; border-radius: 10px; background: var(--line-2); position: relative; transition: background 0.2s; flex: none; }
+.debate .sw::after { content: ''; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: var(--ink); transition: transform 0.2s var(--ease); }
+.debate .sw.on { background: var(--gold); }
+.debate .sw.on::after { transform: translateX(14px); background: var(--gold-ink); }

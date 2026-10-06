@@ -15,11 +15,14 @@ export function coverUrl(book: Book, size: 'S' | 'M' | 'L' = 'M'): string | null
 export function Cover({
   book,
   width = 64,
+  height: heightProp,
   className = '',
   size,
 }: {
   book: Book;
   width?: number;
+  /** the mockup's covers are not all 2:3 (50×70, 44×64, 70×100); omit for width × 1.5 */
+  height?: number;
   className?: string;
   size?: 'S' | 'M' | 'L';
 }) {
@@ -27,7 +30,7 @@ export function Cover({
   const [loaded, setLoaded] = useState(false);
   const [broken, setBroken] = useState(false);
   const url = coverUrl(book, size ?? (width > 120 ? 'L' : 'M'));
-  const height = Math.round(width * 1.5);
+  const height = heightProp ?? Math.round(width * 1.5);
   return (
     <span
       className={`cover ${className}`}

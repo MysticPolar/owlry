@@ -1,6 +1,8 @@
-/* the door in front of the Council (gate/CouncilGate.tsx) — the auth screen's night room, one field */
+/* the door in front of the Council (gate/CouncilGate.tsx) — one field, centred, the v14 primitives; it cascades in */
 .gate-form {
-  display: grid; gap: 14px; align-content: center;
+  /* safe: on a short screen (landscape, a keyboard) the top must stay scrollable rather than overflow upwards */
+  display: grid; gap: 14px; align-content: center; align-content: safe center;
   padding-top: calc(var(--sat) + 24px); padding-bottom: calc(var(--sab) + 24px);
 }
-.gate-error { color: #FFB4A8; margin: -4px 0 0; animation: fade-up 300ms var(--ease-out) both; }
+.gate-wordmark { display: block; }
+.gate-sub { margin-bottom: 0; }

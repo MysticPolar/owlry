@@ -1,0 +1,23 @@
+/* ============================================================
+   Settings (v14): sections of rows under small caps headings. The
+   lighting row's two-button pill, the notes and the fine print are the
+   screen's own; fields, buttons and the seg come from base.css.
+   ============================================================ */
+.set-section { margin-top: 22px; display: grid; gap: 10px; }
+.set-section h2.act { margin: 0; font-weight: 400; }
+/* wraps on a narrow phone (320px): the control drops under its label, flush right */
+.set-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 15px; }
+.set-row > :last-child { margin-left: auto; }
+.set-row > span:first-child { min-width: 0; }
+.set-row .seg { flex: none; }
+.set-note { font-family: var(--font-serif); font-size: 15px; line-height: 1.55; }
+.set-fine { font-size: 12.5px; line-height: 1.5; color: var(--muted); }
+.set-fine code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.92em; overflow-wrap: anywhere; }
+.set-save { justify-self: start; }
+.set-end { height: 16px; }
+
+/* the lighting: evening and matinée side by side, the one in effect inked */
+.rigrow { display: inline-flex; gap: 4px; padding: 4px; background: var(--surface2); border-radius: 999px; flex: none; }
+.rigrow button { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 14px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); transition: background var(--dur) var(--ease), color var(--dur); }
+.rigrow button.on { background: var(--ink); color: var(--onink); }
+.rigrow button svg { width: 14px; height: 14px; }

@@ -8,6 +8,7 @@ import { App } from './App';
 import { bootBackend } from './lib/backend';
 import { useStore } from './store/useStore';
 import { setActiveLang } from './i18n';
+import { watchRig } from './app/rig';
 import { CouncilGate } from './gate/CouncilGate';
 import { grantFromUrl, hasCouncilAccess } from './gate/access';
 
@@ -16,6 +17,8 @@ setActiveLang(useStore.getState().lang);
 useStore.subscribe((s, prev) => {
   if (s.lang !== prev.lang) setActiveLang(s.lang);
 });
+// the lighting rig on <html> before anything paints, then kept in step with the store and the OS
+watchRig();
 
 const root = createRoot(document.getElementById('root')!);
 

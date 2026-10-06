@@ -1,22 +1,32 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { IconBookmark, IconBookmarkFilled, IconTypography, IconHighlight, IconUsers, IconCopy, IconX, IconExternalLink } from '@tabler/icons-react';
 import { navigate } from '../app/router';
 import { useStore, selectCouncil } from '../store/useStore';
 import { maybeBook } from '../content/books';
 import { readingFor } from '../engine/council';
 import type { TextSize } from '../store/types';
-import { TopBar } from '../components/chrome';
+import type { Book } from '../content/types';
+import { AppBar } from '../components/chrome';
 import { usePresence } from '../hooks/usePresence';
 import { useBump } from '../hooks/useBump';
 import { useT, useLang, fmt } from '../i18n/react';
 import './ReaderScreen.css';
 
 /* ============================================================
-   Screen 2 — Reading. Quiet typography, adjustable size, bookmarks,
-   saved progress, and a selection toolbar to highlight a passage or
-   bring it back to the council.
+   The reader (v14). The book and the section in the app bar, the text
+   size and a bookmark beside them; the page — kicker, heading, what the
+   text is (an Owlry reading guide, or a public-domain translation and
+   who made it), the paragraphs with your highlights marked, the end of
+   the section and the way to the full book; a thin progress bar under it
+   all. Select a passage to highlight it, copy it, or take it to the
+   council. Opened from a council, a panel on top says why this section.
    ============================================================ */
 const SIZES: TextSize[] = ['S', 'M', 'L'];
+type Sel = { text: string; x: number; y: number };
+
+/** the book on Open Library: its ISBN page, else a search by title and author (a recalled card has no ISBN) */
+const bookUrl = (b: Book): string =>
+  b.isbn ? `https://openlibrary.org/isbn/${b.isbn}` : `https://openlibrary.org/search?q=${encodeURIComponent(`${b.title} ${b.authorName}`)}`;
 
 export function ReaderScreen({ id, councilId }: { id: string; councilId?: string }) {
   const b = maybeBook(id);
@@ -25,7 +35,7 @@ export function ReaderScreen({ id, councilId }: { id: string; councilId?: string
   const setTextSize = useStore((s) => s.setTextSize);
   const progress = useStore((s) => (b ? s.progress[b.id] : undefined));
   const setProgress = useStore((s) => s.setProgress);
-  const bookmarks = useStore((s) => (b ? (s.bookmarks[b.id] ?? []) : []));
+  const bookmarks = useStore((s) => (b ? s.bookmarks[b.id] : undefined));
   const toggleBookmark = useStore((s) => s.toggleBookmark);
   const highlights = useStore((s) => s.highlights);
   const addHighlight = useStore((s) => s.addHighlight);
@@ -45,16 +55,24 @@ export function ReaderScreen({ id, councilId }: { id: string; councilId?: string
   const scrollRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const [noteOpen, setNoteOpen] = useState(true);
+  const note = usePresence(noteOpen, 220);
   const [sizeOpen, setSizeOpen] = useState(false);
-  const [sel, setSel] = useState<{ text: string; x: number; y: number } | null>(null);
-  const [pos, setPos] = useState(0);
+  const sizePop = usePresence(sizeOpen, 120);
+  const [sel, setSel] = useState<Sel | null>(null);
+  // the toolbar keeps its last place while it fades out
+  const [selShown, setSelShown] = useState<Sel | null>(null);
+  const selPresence = usePresence(!!sel, 120);
+  useEffect(() => {
+    if (sel) setSelShown(sel);
+  }, [sel]);
+  const [pos, setPos] = useState(progress?.pos ?? 0);
   const [pct, setPct] = useState(progress?.pct ?? 0);
   const pctRef = useRef(progress?.pct ?? 0);
-  const restored = useRef(false);
-  const sizePop = usePresence(sizeOpen, 160);
+  const posRef = useRef(progress?.pos ?? 0);
   const [markBump, bumpMark] = useBump();
 
   // restore the saved position once the text has laid out
+  const restored = useRef(false);
   useLayoutEffect(() => {
     const el = scrollRef.current;
     if (!el || restored.current || !b) return;
@@ -62,29 +80,41 @@ export function ReaderScreen({ id, councilId }: { id: string; councilId?: string
     if (progress?.pos) el.scrollTop = progress.pos;
   }, [b, progress?.pos]);
 
-  // save progress as you read (throttled)
+  // save progress as you read: at most every 600ms, and once more when the reader closes. The saver reads the
+  // latest render through a ref, so the timer never holds a stale book or council
   const saveTimer = useRef<number | null>(null);
-  const onScroll = useCallback(() => {
+  const save = useRef<() => void>(() => {});
+  save.current = () => {
+    saveTimer.current = null;
+    // an empty page is not reading: a book still waiting for its card records no progress (it would top "Continue reading")
+    if (!b || b.pending) return;
+    setProgress(b.id, pctRef.current, posRef.current, councilId);
+  };
+  const onScroll = () => {
     const el = scrollRef.current;
-    if (!el || !b) return;
+    if (!el) return;
     const max = Math.max(1, el.scrollHeight - el.clientHeight);
     const p = Math.min(1, Math.max(0, el.scrollTop / max));
     pctRef.current = p;
+    posRef.current = el.scrollTop;
     setPos(el.scrollTop);
     setPct(p);
-    // an empty page is not reading: a book still waiting for its card records no progress (it would top "Continue reading")
-    if (b.pending || saveTimer.current) return;
-    saveTimer.current = window.setTimeout(() => {
-      saveTimer.current = null;
-      setProgress(b.id, p, el.scrollTop, councilId);
-    }, 600);
-  }, [b, councilId, setProgress]);
-  useEffect(() => {
-    onScroll();
+    if (!saveTimer.current) saveTimer.current = window.setTimeout(() => save.current(), 600);
+  };
+  const onScrollRef = useRef(onScroll);
+  onScrollRef.current = onScroll;
+  // a layout effect, after the restore above: the strip is measured before the first paint, so a book read to the
+  // end and reopened at the top does not flash "100% · Finished" and shrink
+  useLayoutEffect(() => {
+    // opening the reader counts as reading: measure where it opened (and keep that as the last read)
+    onScrollRef.current();
     return () => {
-      if (saveTimer.current) clearTimeout(saveTimer.current);
+      if (saveTimer.current) {
+        clearTimeout(saveTimer.current);
+        save.current();
+      }
     };
-  }, [onScroll]);
+  }, []);
 
   // a new text size reflows the page; stay at the same place in the text, not the same pixel
   const sizeWas = useRef(textSize);
@@ -95,7 +125,7 @@ export function ReaderScreen({ id, councilId }: { id: string; councilId?: string
     if (el) el.scrollTop = pctRef.current * Math.max(1, el.scrollHeight - el.clientHeight);
   }, [textSize]);
 
-  // selection toolbar
+  // the selection toolbar follows a selection inside the text
   useEffect(() => {
     const handle = () => {
       const s = window.getSelection();
@@ -109,74 +139,110 @@ export function ReaderScreen({ id, councilId }: { id: string; councilId?: string
         setSel(null);
         return;
       }
+      const el = scrollRef.current;
+      if (!el) return;
+      // in the page's own coordinates (the toolbar scrolls with the text); the layout effect below keeps it on screen
       const rect = s.getRangeAt(0).getBoundingClientRect();
-      const host = scrollRef.current?.getBoundingClientRect();
-      if (!host) return;
-      setSel({ text, x: rect.left + rect.width / 2 - host.left, y: rect.top - host.top });
+      const host = el.getBoundingClientRect();
+      setSel({ text, x: rect.left + rect.width / 2 - host.left, y: Math.max(8, rect.top - host.top + el.scrollTop - 54) });
     };
     document.addEventListener('selectionchange', handle);
     return () => document.removeEventListener('selectionchange', handle);
   }, []);
 
+  // centred over the selection, but never past the page's edges: clamp by the toolbar's own width (it differs by language)
+  const toolsRef = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    const bar = toolsRef.current;
+    const el = scrollRef.current;
+    if (!bar || !el || !selShown) return;
+    const half = bar.offsetWidth / 2 + 8;
+    bar.style.left = `${Math.max(half, Math.min(selShown.x, el.clientWidth - half))}px`;
+  }, [selShown, selPresence.mounted]);
+
   if (!b) {
     return (
-      <div className="screen">
-        <TopBar backFallback={{ name: 'library' }} title={t.reader.title} className="top-inset" />
-        <p className="pad muted" style={{ paddingTop: 24 }}>{t.reader.missing}</p>
+      <div className="screen reader-screen">
+        <AppBar back={{ name: 'library' }} label={t.reader.title} />
+        <div className="content">
+          <p className="sub rv">{t.reader.missing}</p>
+        </div>
       </div>
     );
   }
 
   const rec = session ? readingFor(session).find((r) => r.bookId === b.id) : undefined;
   const bookHighlights = highlights.filter((h) => h.bookId === b.id).map((h) => h.text);
-  const nearBookmark = bookmarks.some((p) => Math.abs(p - pos) < 40);
+  const nearBookmark = (bookmarks ?? []).some((p) => Math.abs(p - pos) < 40);
+  const heading = b.text.heading || b.title;
+  const shownPct = Math.round(pct * 100);
+  const olUrl = bookUrl(b);
 
+  const clearSel = () => {
+    window.getSelection()?.removeAllRanges();
+    setSel(null);
+  };
   const doHighlight = () => {
     if (!sel) return;
     addHighlight(b.id, sel.text, councilId);
-    window.getSelection()?.removeAllRanges();
-    setSel(null);
+    clearSel();
     showToast(t.reader.highlightSaved);
   };
   const doCouncil = () => {
     if (!sel) return;
     const passage = sel.text;
     addHighlight(b.id, passage, councilId);
-    window.getSelection()?.removeAllRanges();
-    setSel(null);
+    clearSel();
     const target = bringPassage(b.id, passage);
-    if (target) navigate({ name: 'discussion', id: target });
+    if (target) navigate({ name: 'debate', id: target });
     else showToast(t.reader.askFirst);
   };
   const doCopy = async () => {
     if (!sel) return;
     try {
-      await navigator.clipboard.writeText(`“${sel.text}” — ${b.title}, ${b.authorName}`);
+      await navigator.clipboard.writeText(fmt(t.reader.copyFormat, { text: sel.text, title: b.title, author: b.authorName }));
       showToast(t.reader.copiedAttr);
     } catch {
       showToast(t.reader.copyNA);
     }
-    window.getSelection()?.removeAllRanges();
-    setSel(null);
+    clearSel();
+  };
+  const onBookmark = () => {
+    toggleBookmark(b.id, posRef.current);
+    bumpMark();
+    showToast(nearBookmark ? t.reader.bookmarkRemoved : t.reader.bookmarked);
   };
 
+  const tools = selShown && selPresence.mounted ? selShown : null;
+
   return (
-    <div className={`screen reader size-${textSize}`}>
-      <TopBar
-        backFallback={{ name: 'book', id: b.id, council: councilId }}
-        title={
-          <span className="reader-titles">
-            <span className="reader-book">{b.title}</span>
-            <span className="reader-section">{b.text.heading || b.title}</span>
-          </span>
+    <div className="screen reader-screen">
+      <AppBar
+        back={{ name: 'book', id: b.id, council: councilId }}
+        rig={false}
+        centre={
+          <div className="grow reader-titles">
+            <div className="reader-book">{b.title}</div>
+            <div className="reader-section">{heading}</div>
+          </div>
         }
-        className="top-inset"
         right={
           <>
-            <button type="button" className={`iconbtn ${sizeOpen ? 'on' : ''}`} aria-label={t.reader.textSize} aria-expanded={sizeOpen} onClick={() => setSizeOpen((v) => !v)}>
+            <button
+              type="button"
+              className={`iconbtn ${sizeOpen ? 'on' : ''}`}
+              aria-label={t.reader.textSize}
+              aria-expanded={sizeOpen}
+              onClick={() => setSizeOpen((v) => !v)}
+            >
               <IconTypography stroke={1.8} />
             </button>
-            <button type="button" className={`iconbtn ${nearBookmark ? 'on' : ''} ${markBump ? 'bump' : ''}`} aria-label={nearBookmark ? t.reader.removeBookmark : t.reader.bookmarkSpot} onClick={() => { toggleBookmark(b.id, pos); bumpMark(); showToast(nearBookmark ? t.reader.bookmarkRemoved : t.reader.bookmarked); }}>
+            <button
+              type="button"
+              className={`iconbtn ${nearBookmark ? 'on' : ''} ${markBump ? 'bump' : ''}`}
+              aria-label={nearBookmark ? t.reader.removeBookmark : t.reader.bookmarkSpot}
+              onClick={onBookmark}
+            >
               {nearBookmark ? <IconBookmarkFilled /> : <IconBookmark stroke={1.8} />}
             </button>
           </>
@@ -185,34 +251,52 @@ export function ReaderScreen({ id, councilId }: { id: string; councilId?: string
       {sizePop.mounted && (
         <div className={`size-pop ${sizePop.closing ? 'closing' : ''}`} role="group" aria-label={t.reader.textSize}>
           {SIZES.map((s) => (
-            <button key={s} type="button" className={`size-btn size-btn-${s} ${textSize === s ? 'on' : ''}`} onClick={() => { setTextSize(s); setSizeOpen(false); }}>
-              Aa
+            <button
+              key={s}
+              type="button"
+              className={textSize === s ? 'on' : ''}
+              aria-pressed={textSize === s}
+              aria-label={t.common.sizes[s]}
+              onClick={() => {
+                setTextSize(s);
+                setSizeOpen(false);
+              }}
+            >
+              {s}
             </button>
           ))}
         </div>
       )}
-      <div className="screen-scroll reader-scroll" ref={scrollRef} onScroll={onScroll}>
-        {rec && session && noteOpen && (
-          <aside className="reader-note">
-            <button type="button" className="reader-note-x" aria-label={t.common.dismiss} onClick={() => setNoteOpen(false)}>
-              <IconX />
+
+      <div className="content" ref={scrollRef} onScroll={onScroll}>
+        {rec && session && note.mounted && (
+          <aside className={`panel reader-why rv ${note.closing ? 'closing' : ''}`}>
+            <button type="button" className="reader-why-x" aria-label={t.common.dismiss} onClick={() => setNoteOpen(false)}>
+              <IconX stroke={2} />
             </button>
-            <span className="caps">{t.reader.whySection}</span>
+            <div className="act">{t.reader.whySection}</div>
             <p>{rec.why}</p>
-            <p className="small muted">{fmt(t.reader.youAsked, { q: session.question })}</p>
-            <button type="button" className="linkbtn" onClick={() => navigate({ name: 'discussion', id: session.id })}>
+            <p className="q">{fmt(t.reader.youAsked, { q: session.question })}</p>
+            <button type="button" className="linkbtn reader-why-back" onClick={() => navigate({ name: 'summary', id: session.id })}>
               {t.reader.backToCouncil}
             </button>
           </aside>
         )}
         <div className="reader-page">
-          <p className="caps muted reader-kicker">{b.title} · {b.authorName}</p>
-          <h1 className="reader-heading">{b.text.heading || b.title}</h1>
-          <p className={`reader-provenance ${b.text.kind === 'guide' ? 'guide' : ''}`}>
-            {b.text.kind === 'guide' ? t.reader.guide : ''}
-            {b.text.note}
-          </p>
-          <div className="reader-text" ref={textRef}>
+          <div className="reader-kicker">
+            {b.title} · {b.authorName}
+          </div>
+          <h1 className="reader-heading">{heading}</h1>
+          {/* a guide says it is not the book; a public-domain passage names its translator */}
+          {b.text.kind === 'guide' ? (
+            <div className="reader-guide">
+              <b>{t.reader.guideLabel}</b>
+              {t.reader.guideTail}
+            </div>
+          ) : (
+            b.text.note && <div className="reader-guide">{b.text.note}</div>
+          )}
+          <div className={`reader-text sz-${textSize.toLowerCase()}`} ref={textRef}>
             {b.text.paragraphs.map((p, i) => (
               <p key={i}>{markHighlights(p, bookHighlights)}</p>
             ))}
@@ -221,45 +305,50 @@ export function ReaderScreen({ id, councilId }: { id: string; councilId?: string
           {/* a card that came without guide paragraphs: the gist stands in, or a note that says there is none */}
           {!b.pending && b.text.paragraphs.length === 0 && <p className="reader-arriving">{b.summary.gist || t.reader.noGuide}</p>}
           {!b.pending && (
-          <div className="reader-end">
-            <span className="caps muted">{t.reader.end}</span>
-            {b.isbn && (
-              <a className="reader-ol" href={`https://openlibrary.org/isbn/${b.isbn}`} target="_blank" rel="noreferrer">
-                {t.reader.findFull} <IconExternalLink />
+            <div className="reader-end">
+              <div className="caps">{t.reader.end}</div>
+              <a className="reader-ol" href={olUrl} target="_blank" rel="noopener noreferrer">
+                {t.reader.findFull} <IconExternalLink stroke={2} />
               </a>
-            )}
-          </div>
+            </div>
           )}
         </div>
-        {sel && (
-          <div className="sel-tools" style={{ left: Math.max(90, Math.min(sel.x, (scrollRef.current?.clientWidth ?? 390) - 90)), top: Math.max(8, sel.y + (scrollRef.current?.scrollTop ?? 0) - 52) }} role="toolbar" aria-label={t.reader.selection}>
+        {tools && (
+          <div
+            ref={toolsRef}
+            className={`sel-tools ${selPresence.closing ? 'closing' : ''}`}
+            style={{ left: tools.x, top: tools.y }}
+            role="toolbar"
+            aria-label={t.reader.selection}
+            // pressing a button must not clear the selection it acts on (the toolbar would fade before the click lands)
+            onMouseDown={(e) => e.preventDefault()}
+          >
             <button type="button" onClick={doHighlight}>
-              <IconHighlight /> {t.reader.highlight}
+              <IconHighlight stroke={1.8} /> {t.reader.highlight}
             </button>
             <button type="button" onClick={doCouncil}>
-              <IconUsers /> {t.reader.toCouncil}
+              <IconUsers stroke={1.8} /> {t.reader.toCouncil}
             </button>
             <button type="button" onClick={doCopy} aria-label={t.reader.copy}>
-              <IconCopy />
+              <IconCopy stroke={1.8} />
             </button>
           </div>
         )}
       </div>
-      <div className="reader-progress" aria-label={fmt(t.reader.pctRead, { pct: Math.round(pct * 100) })}>
-        <span className="reader-bar" style={{ width: `${Math.round(pct * 100)}%` }} />
-        <span className="reader-progress-text">
-          {Math.round(pct * 100)}% · {pct >= 0.98 ? t.reader.finished : t.reader.progressSaved}
-        </span>
+
+      <div className="reader-progress" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={shownPct} aria-label={fmt(t.reader.pctRead, { pct: shownPct })}>
+        <span className="reader-bar" style={{ transform: `scaleX(${pct})` }} />
+        <span className="reader-progress-text">{shownPct > 0 ? `${shownPct}% · ${pct >= 0.98 ? t.reader.finished : t.reader.progressSaved}` : ''}</span>
       </div>
     </div>
   );
 }
 
 /* wrap saved highlights in <mark>; plain substring matching is enough for a section this size */
-function markHighlights(text: string, highlights: string[]): React.ReactNode {
+function markHighlights(text: string, highlights: string[]): ReactNode {
   const hits = highlights.filter((h) => h && text.includes(h));
   if (!hits.length) return text;
-  const parts: React.ReactNode[] = [];
+  const parts: ReactNode[] = [];
   let rest = text;
   let k = 0;
   while (rest.length) {

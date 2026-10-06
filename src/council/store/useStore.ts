@@ -8,7 +8,8 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { uid } from '../app/ids';
 import type { Area } from '../content/types';
-import type { CastInfo, CastSeat, CouncilSession, Highlight, Message, Post, Progress, Segment, TextSize, Toast, UserProfile } from './types';
+import type { CastInfo, CastSeat, CouncilSession, Highlight, Message, Post, Progress, SavedStep, Segment, TextSize, Toast, UserProfile } from './types';
+import type { Rig } from '../app/rig';
 import * as engine from '../engine/council';
 import { seedPosts, seedHighlights, FOLLOWING } from '../content/social';
 import { liveBook, liveCast, liveFigure, liveOpen, liveTurn, type MindBook, type MindFigure, type MindSeat } from '../lib/councilClient';
@@ -63,7 +64,12 @@ export interface StoreState {
   savedPosts: string[];
   following: string[];
 
+  /** the next steps kept from councils' summaries (synced with the library) */
+  steps: SavedStep[];
+
   textSize: TextSize;
+  /** the lighting rig the reader chose; null follows the OS colour scheme (device-local, never synced) */
+  rig: Rig | null;
   toast: Toast | null;
   /** the interface + content language; the councils' scripted lines are rebuilt when it changes */
   lang: Lang;
@@ -112,6 +118,9 @@ export interface StoreState {
   toggleBookmark: (bookId: string, pos: number) => void;
   addHighlight: (bookId: string, text: string, councilId?: string) => Highlight;
   removeHighlight: (id: string) => void;
+  /** keep a council's next step (once per council) */
+  saveStep: (councilId: string) => SavedStep | null;
+  removeStep: (id: string) => void;
 
   // --- social
   addPost: (p: Omit<Post, 'id' | 'ts' | 'likes' | 'comments' | 'mine' | 'author'>) => void;
@@ -123,6 +132,7 @@ export interface StoreState {
 
   // --- prefs + ui
   setTextSize: (s: TextSize) => void;
+  setRig: (r: Rig) => void;
   setLang: (l: Lang) => void;
   showToast: (text: string, action?: Toast['action']) => void;
   dismissToast: () => void;
@@ -164,7 +174,9 @@ function seedState() {
     liked: [] as string[],
     savedPosts: [] as string[],
     following: [...FOLLOWING],
+    steps: [] as SavedStep[],
     textSize: 'M' as TextSize,
+    rig: null as Rig | null,
     toast: null as Toast | null,
     lang: getActiveLang(),
     prefsAt: 0,
@@ -642,6 +654,17 @@ export const useStore = create<StoreState>()(
         return h;
       },
       removeHighlight: (id) => set((s) => ({ highlights: s.highlights.filter((h) => h.id !== id) })),
+      saveStep: (councilId) => {
+        const s = get();
+        const c = s.councils[councilId];
+        if (!c) return null;
+        const had = s.steps.find((x) => x.councilId === councilId);
+        if (had) return had;
+        const step: SavedStep = { id: uid('s'), councilId, text: engine.takeawaysFor(c).nextStep, question: c.question, ts: Date.now() };
+        set((st) => ({ steps: [step, ...st.steps] }));
+        return step;
+      },
+      removeStep: (id) => set((s) => ({ steps: s.steps.filter((x) => x.id !== id) })),
 
       addPost: (p) => {
         const s = get();
@@ -653,7 +676,7 @@ export const useStore = create<StoreState>()(
           comments: 0,
           mine: true,
           remote,
-          author: { handle: s.user.handle, name: s.user.name, color: '#FFD100', initial: s.user.initial },
+          author: { handle: s.user.handle, name: s.user.name, color: '#FFC017', initial: s.user.initial },
         });
         if (s.user.id) {
           // signed in: the post lives in the cloud feed; shown at once, taken back if the write fails
@@ -700,6 +723,7 @@ export const useStore = create<StoreState>()(
         }),
 
       setTextSize: (textSize) => set({ textSize, prefsAt: Date.now() }),
+      setRig: (rig) => set({ rig }),
       setLang: (lang) => {
         if (lang === get().lang && lang === getActiveLang()) return;
         setActiveLang(lang);
@@ -707,14 +731,26 @@ export const useStore = create<StoreState>()(
         set((s) => {
           const councils: Record<string, CouncilSession> = {};
           for (const [id, c] of Object.entries(s.councils)) councils[id] = engine.rebuild({ ...c, title: c.cast ? c.title : council(c.scriptId).title });
-          return { lang, councils, prefsAt: Date.now() };
+          // the demo's seed posts and highlights were written in the language of the first visit: they follow the switch
+          // (same ids in both languages; likes, comments and times stay)
+          const seeds = new Map(seedPosts().map((x) => [x.id, x]));
+          const posts = s.posts.map((x) => {
+            const z = !x.remote && !x.mine ? seeds.get(x.id) : undefined;
+            return z ? { ...x, quote: z.quote, attribution: z.attribution, caption: z.caption, prompt: z.prompt, author: { ...x.author, name: z.author.name } } : x;
+          });
+          const sh = seedHighlights();
+          const highlights = s.highlights.map((h) =>
+            h.id === 'h_seed1' ? { ...h, text: sh.meditations } : h.id === 'h_seed2' ? { ...h, text: sh.atomicHabits, note: sh.note } : h,
+          );
+          return { lang, councils, posts, highlights, prefsAt: Date.now() };
         });
         // the recalled cards in the new language (server cache hits, mostly)
         get().ensureMindsFor(Object.values(get().councils));
       },
       showToast: (text, action) => set({ toast: { id: uid('t'), text, action } }),
       dismissToast: () => set({ toast: null }),
-      resetDemo: () => set({ ...seedState() }),
+      // the lighting rig is a device setting, not demo data: it stays
+      resetDemo: () => set({ ...seedState(), rig: get().rig }),
     }),
     {
       name: 'owlry-council-v1',
@@ -757,4 +793,11 @@ useStore.subscribe((s, prev) => {
 
 /* ---------- selectors ---------- */
 export const selectCouncil = (id: string | null | undefined) => (s: StoreState) => (id ? s.councils[id] : undefined);
-export const selectCouncils = (s: StoreState) => s.councilOrder.map((id) => s.councils[id]).filter(Boolean);
+/* the same array back while the councils have not changed, so a screen that selects it re-renders only when they do */
+let councilsMemo: { order: string[]; councils: Record<string, CouncilSession>; list: CouncilSession[] } | null = null;
+export const selectCouncils = (s: StoreState): CouncilSession[] => {
+  if (councilsMemo && councilsMemo.order === s.councilOrder && councilsMemo.councils === s.councils) return councilsMemo.list;
+  const list = s.councilOrder.map((id) => s.councils[id]).filter(Boolean);
+  councilsMemo = { order: s.councilOrder, councils: s.councils, list };
+  return list;
+};

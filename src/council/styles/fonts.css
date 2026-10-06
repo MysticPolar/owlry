@@ -1,48 +1,37 @@
 /* ============================================================
-   owlry — self-hosted, latin-subset webfonts (SIL OFL, via Google Fonts)
+   owlry · The Council — self-hosted, latin-subset webfonts (SIL OFL)
 
-   Archivo  · display + headings. Variable width axis (62–125%) gives both
-              the poster's condensed WALK WITH GREAT MINDS. marquee and the
-              wide, heavy section titles from one file.
-   Inter    · UI and body copy.
-   Literata · the reader (optical-size axis: text at small sizes, display
-              at pull-quote sizes).
-   Caveat   · the handwritten margin notes ("Pick a path. Or a few!").
-   Rubik    · the wordmark only (chunky rounded lowercase "owlry.").
+   Fraunces    · the page: speech, headings, the reader. Variable optical
+                 size (9–144) and weight (300–900), roman and italic.
+   Inter Tight · the house: UI, labels, buttons. Variable weight (400–700).
+   Anton       · the wordmark and the poster titles only.
+   No third-party request: the files live next to this stylesheet.
    ============================================================ */
 @font-face {
-  font-family: 'Archivo';
+  font-family: 'Fraunces';
   font-style: normal;
-  font-weight: 100 900;
-  font-stretch: 62% 125%;
+  font-weight: 300 900;
   font-display: swap;
-  src: url('../fonts/archivo-var-latin.woff2') format('woff2');
+  src: url('../fonts/fraunces-var-latin.woff2') format('woff2');
 }
 @font-face {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 100 900;
+  font-family: 'Fraunces';
+  font-style: italic;
+  font-weight: 300 900;
   font-display: swap;
-  src: url('../fonts/inter-var-latin.woff2') format('woff2');
+  src: url('../fonts/fraunces-italic-var-latin.woff2') format('woff2');
 }
 @font-face {
-  font-family: 'Literata';
-  font-style: normal;
-  font-weight: 200 900;
-  font-display: swap;
-  src: url('../fonts/literata-var-latin.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Caveat';
+  font-family: 'Inter Tight';
   font-style: normal;
   font-weight: 400 700;
   font-display: swap;
-  src: url('../fonts/caveat-var-latin.woff2') format('woff2');
+  src: url('../fonts/inter-tight-var-latin.woff2') format('woff2');
 }
 @font-face {
-  font-family: 'Rubik';
+  font-family: 'Anton';
   font-style: normal;
-  font-weight: 900;
+  font-weight: 400;
   font-display: swap;
-  src: url('../fonts/rubik-900-latin.woff2') format('woff2');
+  src: url('../fonts/anton-latin.woff2') format('woff2');
 }

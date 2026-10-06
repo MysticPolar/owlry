@@ -49,6 +49,7 @@ function toCloud(s: StoreState): CloudState {
     liked: s.liked,
     savedPosts: s.savedPosts,
     following: s.following,
+    steps: s.steps,
   };
 }
 
@@ -69,6 +70,7 @@ function applyCloud(c: CloudState) {
       liked: c.liked,
       savedPosts: c.savedPosts,
       following: c.following,
+      steps: c.steps ?? [],
     }));
     // the language travels with the account; switching rebuilds the scripted councils
     if (c.lang && c.lang !== useStore.getState().lang) useStore.getState().setLang(c.lang);
@@ -146,7 +148,7 @@ async function pushNow(): Promise<void> {
 /* the keys of the store that travel in CloudState. `minds` (the recalled cards) is deliberately not one of them: the
    server keeps every card in owlry_council_minds, so another device simply re-asks and hits the cache at no quota —
    a session carries the ids (its `cast`), and ensureMindsFor fills them in. `casting` is transient and never leaves the tab. */
-const STATE_KEYS: (keyof StoreState)[] = ['prefsAt', 'user', 'interests', 'onboarded', 'textSize', 'lang', 'saved', 'progress', 'bookmarks', 'highlights', 'lastRead', 'liked', 'savedPosts', 'following'];
+const STATE_KEYS: (keyof StoreState)[] = ['prefsAt', 'user', 'interests', 'onboarded', 'textSize', 'lang', 'saved', 'progress', 'bookmarks', 'highlights', 'lastRead', 'liked', 'savedPosts', 'following', 'steps'];
 
 function watchStore() {
   useStore.subscribe((s, prev) => {

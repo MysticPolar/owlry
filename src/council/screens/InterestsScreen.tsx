@@ -1,25 +1,27 @@
-import { useState, type CSSProperties } from 'react';
+import { useState, type ReactNode } from 'react';
 import { IconHeartbeat, IconBriefcase, IconChartBar, IconHeart, IconBook, IconMessageCircle, IconArrowRight, IconCheck } from '@tabler/icons-react';
 import { navigate } from '../app/router';
 import { useStore } from '../store/useStore';
 import type { Area } from '../content/types';
 import { areasList } from '../content/councils';
-import { TopBar } from '../components/chrome';
+import { AppBar } from '../components/chrome';
 import { Owl } from '../components/Owl';
 import { useT } from '../i18n/react';
 import './InterestsScreen.css';
 
 /* ============================================================
-   2. Select interest — "Choose what moves you."
-   Six tiles, multi-select, a handwritten nudge, a teal owl peeking in.
+   Interests — "What are you curious about?" Six tiles, multi-select,
+   saved interests already ticked; Continue (or Skip) keeps the picks,
+   marks the reader onboarded and opens the room. The teal owl peeks
+   over the footer.
    ============================================================ */
-const ICONS: Record<Area, { icon: React.ReactNode; tint: string }> = {
-  health: { icon: <IconHeartbeat stroke={2} />, tint: 'var(--tint-health)' },
-  career: { icon: <IconBriefcase stroke={2} />, tint: 'var(--tint-career)' },
-  investing: { icon: <IconChartBar stroke={2} />, tint: 'var(--tint-investing)' },
-  relationships: { icon: <IconHeart stroke={2} />, tint: 'var(--tint-relationships)' },
-  literature: { icon: <IconBook stroke={2} />, tint: 'var(--tint-literature)' },
-  other: { icon: <IconMessageCircle stroke={2} />, tint: 'var(--tint-other)' },
+const ICONS: Record<Area, ReactNode> = {
+  health: <IconHeartbeat stroke={1.8} />,
+  career: <IconBriefcase stroke={1.8} />,
+  investing: <IconChartBar stroke={1.8} />,
+  relationships: <IconHeart stroke={1.8} />,
+  literature: <IconBook stroke={1.8} />,
+  other: <IconMessageCircle stroke={1.8} />,
 };
 
 export function InterestsScreen() {
@@ -27,46 +29,35 @@ export function InterestsScreen() {
   const setInterests = useStore((s) => s.setInterests);
   const setOnboarded = useStore((s) => s.setOnboarded);
   const onboarded = useStore((s) => s.onboarded);
-  const [picked, setPicked] = useState<Area[]>(interests);
-  const [lastPicked, setLastPicked] = useState<Area | null>(null);
+  // saved interests start ticked; an id no tile shows (older or synced data) is dropped, so Continue never counts an invisible pick
+  const [picked, setPicked] = useState<Area[]>(() => interests.filter((a) => a in ICONS));
   const t = useT();
   const areas = areasList();
 
-  const toggle = (a: Area) => {
-    setPicked((p) => (p.includes(a) ? p.filter((x) => x !== a) : [...p, a]));
-    setLastPicked(picked.includes(a) ? null : a);
-  };
-  const go = (areas: Area[]) => {
-    setInterests(areas);
+  const toggle = (a: Area) => setPicked((p) => (p.includes(a) ? p.filter((x) => x !== a) : [...p, a]));
+  // both buttons: keep whatever is ticked (a returning reader's saved interests stay), then the room
+  const go = () => {
+    setInterests(picked);
     setOnboarded(true);
     navigate({ name: 'council' }, { replace: true });
   };
 
   return (
     <div className="screen interests">
-      <TopBar backFallback={onboarded ? { name: 'council' } : { name: 'welcome' }} className="top-inset" />
-      <div className="screen-scroll pad interests-body">
-        <div className="interests-titlerow">
-          <h1 className="display interests-title">
-            {t.interests.title1}
-            <br />
-            {t.interests.title2}
-          </h1>
-          <span className="hand interests-hand">
-            {t.interests.hand1}
-            <br />
-            {t.interests.hand2}
-          </span>
-        </div>
-        <ul className="tiles" role="list">
-          {areas.map((a, i) => {
+      <AppBar back={onboarded ? { name: 'council' } : { name: 'welcome' }} />
+      <div className="content">
+        <h1 className="display interests-title rv">
+          {t.interests.title1}
+          <br />
+          {t.interests.title2}
+        </h1>
+        <ul className="tiles rv" role="list">
+          {areas.map((a) => {
             const on = picked.includes(a.id);
             return (
-              <li key={a.id} style={{ '--i': i } as CSSProperties}>
+              <li key={a.id}>
                 <button type="button" className={`tile ${on ? 'on' : ''}`} aria-pressed={on} onClick={() => toggle(a.id)}>
-                  <span className="tile-icon" style={{ color: ICONS[a.id].tint }}>
-                    {ICONS[a.id].icon}
-                  </span>
+                  <span className="tile-icon">{ICONS[a.id]}</span>
                   <span className="tile-text">
                     <span className="tile-title">{a.title}</span>
                     <span className="tile-sub">{a.tagline}</span>
@@ -75,21 +66,22 @@ export function InterestsScreen() {
                     <IconCheck stroke={3} />
                   </span>
                 </button>
-                {lastPicked === a.id && <span className="hand pop interests-good">{t.interests.good}</span>}
               </li>
             );
           })}
         </ul>
       </div>
-      <div className="interests-actions pad">
-        <button type="button" className="btn btn-dark" disabled={picked.length === 0} onClick={() => go(picked)}>
-          {t.interests.continue} <IconArrowRight />
-        </button>
-        <button type="button" className="linkbtn" onClick={() => go(picked)}>
-          {t.interests.skip}
-        </button>
+      <div className="footer interests">
+        <div className="stack">
+          <button type="button" className="btn gold" disabled={picked.length === 0} onClick={go}>
+            {t.interests.continue} <IconArrowRight stroke={2.4} />
+          </button>
+          <button type="button" className="btn text" onClick={go}>
+            {t.interests.skip}
+          </button>
+        </div>
+        <Owl color="teal" size={92} pose="peek" className="interests-owl" title={t.interests.owl} />
       </div>
-      <Owl color="teal" size={92} pose="peek" className="interests-owl" title={t.interests.owl} />
     </div>
   );
 }

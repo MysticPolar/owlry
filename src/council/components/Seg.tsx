@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 
-export type SegOption<T extends string> = { id: T; label: string; lang?: string };
+export type SegOption<T extends string> = { id: T; label: string; lang?: string; /** a spoken name when the label is a letter */ aria?: string };
 
 /* ============================================================
    A segmented control whose active pill slides to the chosen option
@@ -54,6 +54,7 @@ export function Seg<T extends string>({
             className={on ? 'on' : ''}
             data-on={on ? 'true' : 'false'}
             lang={o.lang}
+            aria-label={o.aria}
             onClick={() => onChange(o.id)}
           >
             {o.label}

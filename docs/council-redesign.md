@@ -158,3 +158,35 @@ every council, and the shared feed — all on the classic owlry project, all
 optional (the prototype above is what runs with no keys). Still open: real
 book text (reading guides are placeholders for licensed excerpts or the
 reader's own ebook; the classic app's foliate-js reader is the candidate).
+
+## The v14 interface (October 2026)
+
+The front end was re-flowed to the "owlry · The Council · v14" mockup; the
+store, engine, content, backend and Chinese layer are unchanged underneath.
+
+- **One journey, three acts.** The room (`#/council`) is the ask box over a
+  drawn stage with three empty seats (or the last council in them). Casting a
+  council closes a velvet curtain over the seats; *Act I — Stands*
+  (`#/stands/:id`) opens it on the three thinkers, one card each with their
+  stance and the book their seat argues from, and a swap arrow per seat; *Act
+  II — Debate* (`#/debate/:id`) plays the council one line at a time with a
+  spotlight on the speaker and reply lines to whoever is addressed (the
+  reader taps or turns on auto-play; the curtain lowers at the end); *Act III
+  — Summary* (`#/summary/:id`) is the verdict, "Read next", where they
+  differ, one next step (which can be kept as a milestone) and the transcript,
+  with the follow-up bar underneath. A follow-up to the council replays Acts
+  I–II as a new cycle; a question to one seat opens the one-on-one
+  (`#/one/:id/:figure`). The old group chat is gone (`#/discussion/:id`
+  opens Act I).
+- **Two lighting rigs.** Evening (dark) and matinée (light), toggled from
+  the app bar's sun/moon or Settings; every colour is a token
+  (`styles/tokens.css`), the stage keeps its own paint under both.
+- **Type.** Fraunces for the page, Inter Tight for the house, Anton for the
+  wordmark and poster titles; self-hosted latin subsets.
+- **The stage** replaced the paintings: `components/Stage.tsx` draws the set
+  in SVG in three geometries, so the curtain, the spotlight and the reply
+  lines are real elements rather than art. The "drawn fallback" of the
+  painting era is therefore gone too.
+- What the mockup stubbed is wired to the real thing: sign-in, the live
+  council (lines still being written show "{name} is writing" and the debate
+  waits), cast sessions with recalled cards, sync, Chinese.

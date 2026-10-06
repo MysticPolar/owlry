@@ -1,8 +1,8 @@
-/* the logotype: chunky lowercase "owlry" with the yellow period */
-export function Wordmark({ size = 26, className = '' }: { size?: number; className?: string }) {
+/* the logotype: "owlry" in Anton, skewed, with the gold period */
+export function Wordmark({ size, className = '' }: { size?: number; className?: string }) {
   return (
-    <span className={`wordmark ${className}`} style={{ fontSize: size }} aria-label="owlry" role="img">
-      owlry<span className="wordmark-dot" aria-hidden="true">.</span>
+    <span className={`wordmark ${className}`} style={size ? { fontSize: size } : undefined} aria-label="owlry" role="img">
+      owlry<i aria-hidden="true">.</i>
     </span>
   );
 }

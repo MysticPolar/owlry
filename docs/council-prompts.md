@@ -2,6 +2,16 @@
 
 *Generated from `supabase/functions/_shared/council/prompts.ts` with sample inputs (`scripts/render-prompts.ts`); the code is the source of truth. The JSON shape each call must return is forced by the schemas in `schemas.ts`; the post-processing that follows is in `quotes.ts` (the verbatim gate) and `minds.ts` (the recall cards).*
 
+> **Screens since the v14 interface (6 October 2026).** The calls below are
+> unchanged; the screens that make them were re-flowed. "Council room" is now
+> the room (`#/council`: the ask box under the drawn stage); its "intro cards"
+> are *Act I — Stands* (`#/stands/:id`); the group-chat "Discussion" became
+> *Act II — Debate* (`#/debate/:id`, one line at a time) for the opening and
+> every whole-council follow-up, and the one-on-one (`#/one/:id/:figure`) for
+> a direct question. Follow-ups are asked from the Summary's bar; "added
+> context" has no affordance in v14 (the store still supports it). See
+> `docs/council-redesign.md`, "The v14 interface".
+
 | Screen in the mockup | Call | Prompt | Model |
 | --- | --- | --- | --- |
 | Council room — the seats fill for a question the scripts do not cover | `cast` | `KNOWLEDGE_SYSTEM` + `castUser` | voice model, Flash-Lite fallback |

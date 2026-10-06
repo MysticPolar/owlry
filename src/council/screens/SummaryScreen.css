@@ -1,40 +1,53 @@
-.summary { overflow: hidden; }
-.summary-owl { position: absolute; right: 22px; top: 58px; z-index: 5; pointer-events: none; }
-.phone.framed .summary-owl { top: 98px; }
-.summary-body { padding-top: 6px; padding-bottom: 16px; }
-/* the verdict is read top to bottom, so it arrives top to bottom */
-.summary-body > * { animation: fade-up 440ms var(--ease-out) both; }
-.summary-body > :nth-child(1) { animation-delay: 40ms; }
-.summary-body > :nth-child(2) { animation-delay: 90ms; }
-.summary-body > :nth-child(3) { animation-delay: 140ms; }
-.summary-body > :nth-child(4) { animation-delay: 190ms; }
-.summary-body > :nth-child(5) { animation-delay: 240ms; }
-.summary-body > :nth-child(6) { animation-delay: 290ms; }
-.summary-body > :nth-child(7) { animation-delay: 340ms; }
-.summary-body > :nth-child(8) { animation-delay: 390ms; }
-.summary-body > :nth-child(9) { animation-delay: 440ms; }
-.summary-body > :nth-child(10) { animation-delay: 490ms; }
-.summary-body > :nth-child(11) { animation-delay: 540ms; }
-.summary-body > :nth-child(n + 12) { animation-delay: 590ms; }
-.summary-actions { animation: fade-up 440ms var(--ease-out) both; animation-delay: 360ms; }
-.summary-title { font-size: 2rem; margin-top: 4px; padding-right: 96px; }
-.summary-lead { margin-top: 12px; font-size: 1.0625rem; line-height: 1.55; color: var(--ink-2); }
-.summary-h2 { margin-top: 24px; font-size: 1.25rem; }
-.summary-diffs { display: grid; gap: 12px; margin-top: 10px; }
-.summary-diffs li { display: flex; gap: 12px; align-items: flex-start; font-size: 0.9375rem; line-height: 1.45; }
-.summary-diffs .avatar { margin-top: 2px; }
-.summary-p { margin-top: 8px; font-size: 0.9375rem; line-height: 1.55; }
-.summary-ctx { margin-top: 8px; }
-.summary-next { margin-top: 18px; background: var(--yellow-soft); border-radius: 16px; padding: 14px 16px; display: grid; gap: 6px; }
-.summary-next p { font-size: 0.9375rem; line-height: 1.5; font-weight: 500; }
-.books-h2 { margin-top: 28px; }
-.summary-books { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 14px; }
-.summary-book { display: grid; justify-items: center; gap: 6px; width: 100%; text-align: center; transition: transform var(--dur-fast) var(--ease-out); }
-.summary-book:active { transform: scale(0.96); }
-.summary-cover { position: relative; }
-.summary-best { position: absolute; left: 50%; bottom: -8px; transform: translateX(-50%); display: inline-flex; align-items: center; gap: 3px; white-space: nowrap; font-size: 10px; font-weight: 800; background: var(--yellow); color: var(--yellow-ink); padding: 3px 8px; border-radius: var(--r-pill); box-shadow: var(--shadow-card); }
-.summary-best svg { width: 11px; height: 11px; }
-.summary-book-title { margin-top: 8px; font-size: var(--t-label); font-weight: 700; line-height: 1.2; }
-.summary-book-author { font-size: 11px; color: var(--mut); line-height: 1.2; }
-.summary-whys { display: grid; gap: 8px; margin-top: 18px; font-size: var(--t-small); line-height: 1.45; color: var(--ink-2); }
-.summary-actions { display: grid; gap: 10px; padding-top: 10px; padding-bottom: calc(var(--sab) + 16px); border-top: 1px solid var(--line); background: var(--cream); }
+/* ============================================================
+   Act III — the programme (mockup V.summary). The question line, the
+   verdict, the "Read next" rows, where they differ, the next step and
+   the transcript. The ask bar's primitives (.chips.who, .chatbar) are
+   in base.css; these are the summary's own levels.
+   ============================================================ */
+.summary .summary-q { font-size: 13.5px; margin: 4px 0 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* sections */
+.summary .sec { padding: 15px 0; border-top: 1px solid var(--line); }
+.summary .sec:first-child { border-top: none; }
+.summary .sec .k { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+.summary .sec .v { font-family: var(--font-serif); font-size: 17px; line-height: 1.45; margin-top: 7px; }
+.summary .sec .v b { font-weight: 600; }
+.summary .sec.lead-sec { padding-top: 4px; }
+.summary .sec.lead-sec .v { font-size: 19px; line-height: 1.4; }
+.summary .added { margin-top: 10px; display: grid; gap: 4px; font-family: var(--font-serif); font-size: 14px; line-height: 1.45; color: var(--muted); }
+.summary .casting { font-size: 13px; margin: 10px 0 0; }
+
+/* read next */
+.summary h2.read-next { font-size: 22px; margin: 10px 0 0; }
+.summary .rn { display: flex; gap: 12px; align-items: center; width: 100%; text-align: left; color: var(--ink); padding: 10px 0; border-bottom: 1px solid var(--line); transition: background var(--dur-fast); }
+.summary .rn:active { background: var(--surface); }
+.summary .rn .grow { flex: 1 1 auto; min-width: 0; display: grid; gap: 2px; }
+.summary .rn .pk { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700; color: var(--gold-ui); }
+.summary .rn .t { font-family: var(--font-serif); font-weight: 600; font-size: 16px; line-height: 1.25; }
+.summary .rn .a { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.summary .rn .w { font-family: var(--font-serif); font-size: 13px; color: var(--muted); line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.summary .readbtn { flex: none; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; background: var(--gold); color: var(--gold-ink); border: none; border-radius: 999px; padding: 0 16px; font-family: inherit; font-weight: 700; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
+.summary .readbtn.outline { background: transparent; color: var(--ink); border: 1px solid var(--line-2); }
+
+/* where they differ */
+.summary .sec.differ { border-top: none; padding-top: 18px; }
+.summary .sec.differ .diff { display: flex; gap: 10px; align-items: flex-start; margin-top: 8px; }
+
+/* one next step */
+.summary .sec.next { background: var(--soft); margin: 14px 0 0; padding: 15px 18px 16px; border-radius: 18px; border-top-color: transparent; }
+.summary .sec.next .k { color: var(--ink); }
+.summary .sec.next .act2 { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 10px; }
+.summary .sec.next .lands { font-weight: 500; letter-spacing: 0.06em; text-transform: none; font-size: 12.5px; }
+
+/* the transcript */
+.summary .btn.text.tr { margin-top: 10px; }
+.summary .transcript .line { padding: 14px 0; border-top: 1px solid var(--line); margin-top: 0; }
+.summary .transcript .speech { font-size: 15.5px; margin-top: 8px; }
+.summary .transcript .thinking { justify-content: flex-start; border-top: 1px solid var(--line); }
+/* it arrives with .rv and fades out when hidden (usePresence keeps it for the exit) */
+.summary .transcript.closing { animation: fade-out var(--dur) var(--ease) both; pointer-events: none; }
+.summary .tail { height: 6px; }
+
+/* the addressee chips are 36px tall (the mockup); their hit area reaches 40px into the row's bottom padding */
+.summary .askbar .chip { position: relative; }
+.summary .askbar .chip::after { content: ''; position: absolute; inset: 0 0 -4px; }

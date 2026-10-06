@@ -1,25 +1,25 @@
 import { useId } from 'react';
 
 /* ============================================================
-   The owls — five colours, one drawing. Round body, big eyes, small
-   tufts, a yellow beak; the poster's mascots reduced to flat shapes with
-   one radial highlight so they still read as little rounded characters.
-   `pose="peek"` is the owl looking over an edge (welcome, summary).
+   The owls — the poster's cast, with crayon edges (a turbulence filter
+   roughens the fur). Only two of them appear in the Council: the teal one
+   peeking over the categories, and the violet one, Mirror, who keeps the
+   reading profile. `pose="peek"` crops the body at the bottom.
    ============================================================ */
-export type OwlColor = 'teal' | 'violet' | 'yellow' | 'orange' | 'green' | 'blue';
+export type OwlColor = 'teal' | 'orange' | 'green' | 'violet' | 'blue';
 
-/* also used by the drawn stage set in CouncilStageSet.tsx, so the chairs match the owls */
-export const OWL_PALETTE: Record<OwlColor, { body: string; dark: string; light: string; belly: string }> = {
-  teal: { body: '#2FB8A6', dark: '#1B8B7C', light: '#8CE0D4', belly: '#D9F5EF' },
-  violet: { body: '#8A5CE0', dark: '#6440B4', light: '#C0A6F2', belly: '#EDE4FB' },
-  yellow: { body: '#FFC93C', dark: '#D99E14', light: '#FFE38F', belly: '#FFF4CF' },
-  orange: { body: '#F5883A', dark: '#CB6218', light: '#FFB980', belly: '#FFE7D2' },
-  green: { body: '#4DB36B', dark: '#2F8A4E', light: '#95DBA8', belly: '#DDF5E3' },
-  blue: { body: '#4C86F5', dark: '#2C5FC4', light: '#9DBEFF', belly: '#E0EAFF' },
+export const OWL_PALETTE: Record<OwlColor, { body: string; dark: string; light: string; seed: number }> = {
+  teal: { body: '#66B9AB', dark: '#3E8A7D', light: '#8FD1C4', seed: 3 },
+  orange: { body: '#EC7E55', dark: '#A9492A', light: '#F4A27F', seed: 7 },
+  green: { body: '#7BB081', dark: '#3B6E4C', light: '#A2CAA5', seed: 11 },
+  violet: { body: '#937CD9', dark: '#5C449C', light: '#B9A7EF', seed: 5 },
+  blue: { body: '#7C8CDB', dark: '#4A58A8', light: '#AAB4E8', seed: 9 },
 };
 
+const BODY = 'M50 13 C73 13 88 34 88 62 C88 90 71 106 50 106 C29 106 12 90 12 62 C12 34 27 13 50 13 Z';
+
 export function Owl({
-  color = 'yellow',
+  color = 'teal',
   size = 64,
   pose = 'sit',
   className = '',
@@ -34,75 +34,103 @@ export function Owl({
   title?: string;
 }) {
   const id = useId().replace(/:/g, '');
-  const p = OWL_PALETTE[color];
-  const gid = `owl-g-${id}`;
-  // in the peek pose the bottom of the body is hidden by whatever the owl sits behind
-  const viewBox = pose === 'peek' ? '0 0 100 62' : '0 0 100 112';
-  const h = pose === 'peek' ? Math.round(size * 0.62) : Math.round(size * 1.12);
+  const s = OWL_PALETTE[color];
+  const F = `owlf-${id}`;
+  const C = `owlc-${id}`;
+  const peek = pose === 'peek';
+  const viewBox = peek ? '0 0 100 62' : '0 0 100 112';
+  const h = Math.round(peek ? size * 0.62 : size * 1.12);
+  const eyes: [number, number][] = [
+    [36, 37.2],
+    [64, 62.8],
+  ];
   return (
     <svg
       className={`owl owl-${color} ${className}`}
       width={size}
       height={h}
       viewBox={viewBox}
-      style={style}
+      style={{ overflow: peek ? 'hidden' : 'visible', ...style }}
       role={title ? 'img' : undefined}
       aria-label={title}
       aria-hidden={title ? undefined : true}
       focusable="false"
     >
       <defs>
-        <radialGradient id={gid} cx="0.38" cy="0.25" r="0.9">
-          <stop offset="0" stopColor={p.light} />
-          <stop offset="0.55" stopColor={p.body} />
-          <stop offset="1" stopColor={p.dark} />
-        </radialGradient>
+        <clipPath id={C}>
+          <path d={BODY} />
+        </clipPath>
+        <filter id={F} x="-12%" y="-12%" width="124%" height="124%" colorInterpolationFilters="sRGB">
+          <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves={2} seed={s.seed} result="w" />
+          <feDisplacementMap in="SourceGraphic" in2="w" scale={3} xChannelSelector="R" yChannelSelector="G" result="r" />
+          <feTurbulence type="fractalNoise" baseFrequency="1.1 0.42" numOctaves={2} seed={s.seed + 20} result="g" />
+          <feColorMatrix in="g" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0.9 0 0 0 -0.58" result="sp" />
+          <feComposite in="sp" in2="r" operator="in" result="spi" />
+          <feBlend in="spi" in2="r" mode="multiply" />
+        </filter>
+        <filter id={`${F}b`} x="-12%" y="-12%" width="124%" height="124%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves={2} seed={s.seed + 2} result="w" />
+          <feDisplacementMap in="SourceGraphic" in2="w" scale={2.4} xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+        {peek && (
+          <clipPath id={`${C}p`}>
+            <rect x={-10} y={-10} width={120} height={72} />
+          </clipPath>
+        )}
       </defs>
-      {/* ear tufts */}
-      <path d="M26 30 L19 8 L41 22 Z" fill={p.dark} />
-      <path d="M74 30 L81 8 L59 22 Z" fill={p.dark} />
-      {/* wings */}
-      <ellipse cx="15" cy="70" rx="9" ry="22" fill={p.dark} transform="rotate(12 15 70)" />
-      <ellipse cx="85" cy="70" rx="9" ry="22" fill={p.dark} transform="rotate(-12 85 70)" />
-      {/* body */}
-      <ellipse cx="50" cy="62" rx="36" ry="41" fill={`url(#${gid})`} />
-      {/* belly scallops */}
-      <g fill={p.belly} opacity="0.95">
-        <ellipse cx="50" cy="84" rx="21" ry="17" />
-        <circle cx="42" cy="76" r="5" fill={p.light} opacity="0.8" />
-        <circle cx="58" cy="76" r="5" fill={p.light} opacity="0.8" />
-        <circle cx="50" cy="84" r="5" fill={p.light} opacity="0.8" />
-      </g>
-      {/* eyes */}
-      <circle cx="36" cy="46" r="15.5" fill={p.dark} opacity="0.35" />
-      <circle cx="64" cy="46" r="15.5" fill={p.dark} opacity="0.35" />
-      <circle cx="36" cy="46" r="14" fill="#fff" />
-      <circle cx="64" cy="46" r="14" fill="#fff" />
-      <circle cx="37.5" cy="47.5" r="7.5" fill="#15151A" />
-      <circle cx="65.5" cy="47.5" r="7.5" fill="#15151A" />
-      <circle cx="40.5" cy="44" r="2.6" fill="#fff" />
-      <circle cx="68.5" cy="44" r="2.6" fill="#fff" />
-      {/* beak */}
-      <path d="M44.5 57 L55.5 57 L50 67 Z" fill="#F7A82A" />
-      {/* feet */}
-      {pose === 'sit' && (
-        <g fill="#F7A82A">
-          <ellipse cx="38" cy="104" rx="8" ry="4.5" />
-          <ellipse cx="62" cy="104" rx="8" ry="4.5" />
+      <g clipPath={peek ? `url(#${C}p)` : undefined}>
+        {!peek && <ellipse cx={50} cy={107.5} rx={27} ry={3.6} fill="#000" opacity={0.16} />}
+        <g filter={`url(#${F})`}>
+          {color === 'orange' && (
+            <>
+              <path d="M25 31 C20 23 18 14 21 5 C27 12 33 16 40 19 C33 22 28 26 25 31 Z" fill={s.body} />
+              <path d="M75 31 C80 23 82 14 79 5 C73 12 67 16 60 19 C67 22 72 26 75 31 Z" fill={s.body} />
+            </>
+          )}
+          <path d={BODY} fill={s.body} />
+          <g clipPath={`url(#${C})`}>
+            <path d="M8 54 C19 55 27 66 29 80 C31 93 26 103 18 108 L4 108 Z" fill={s.dark} opacity={0.85} />
+            <path d="M92 54 C81 55 73 66 71 80 C69 93 74 103 82 108 L96 108 Z" fill={s.dark} opacity={0.85} />
+            <ellipse cx={41} cy={27} rx={25} ry={15} fill={s.light} opacity={0.32} />
+          </g>
+          {color === 'teal' && (
+            <>
+              <path d="M27 25 C30 14 43 9 56 10.5 C66 11.8 72 16.5 73 22 C63 18.5 45 18.5 27 25 Z" fill={s.dark} />
+              <path d="M27 25 C24 23.5 21 24 18.5 26 C22 27.8 25 27.6 27 25 Z" fill={s.dark} />
+            </>
+          )}
         </g>
-      )}
+        <g filter={`url(#${F}b)`}>
+          <path d="M50 55 C65 55 74 67 74 81 C74 96 64 104 50 104 C36 104 26 96 26 81 C26 67 35 55 50 55 Z" fill="#F5EACB" />
+        </g>
+        {eyes.map(([cx, px]) => (
+          <g key={cx}>
+            <circle cx={cx} cy={42} r={13.6} fill="#FBF3DC" />
+            <circle cx={cx} cy={42} r={13.6} fill="none" stroke={s.dark} strokeOpacity={0.28} strokeWidth={1.2} />
+            <circle cx={px} cy={43} r={7.4} fill="#EDB23C" />
+            <circle cx={px} cy={43.2} r={4} fill="#1C1611" />
+            <circle cx={px + 2.5} cy={40.3} r={1.9} fill="#fff" />
+          </g>
+        ))}
+        {color === 'violet' && (
+          <>
+            {[36, 64].map((cx) => (
+              <g key={cx}>
+                <path d={`M${cx - 14.4} 42.5 A14.4 14.4 0 0 1 ${cx + 14.4} 42.5 Z`} fill={s.light} />
+                <path d={`M${cx - 14.4} 42.5 L${cx + 14.4} 42.5`} stroke={s.dark} strokeWidth={1.6} strokeLinecap="round" />
+              </g>
+            ))}
+            <path d="M55.5 88.5 A10 10 0 1 1 47 73 A7.6 7.6 0 1 0 55.5 88.5 Z" fill={s.body} />
+          </>
+        )}
+        <path d="M45.6 52.6 Q50 51.4 54.4 52.6 L50.7 59.8 Q50 60.9 49.3 59.8 Z" fill="#E7A94A" />
+        {!peek && (
+          <g stroke="#E7A94A" strokeWidth={2.7} strokeLinecap="round" strokeLinejoin="round" fill="none">
+            <path d="M33.5 103.6 q2.2 4.2 4.4 0 q2.2 4.2 4.4 0" />
+            <path d="M57.7 103.6 q2.2 4.2 4.4 0 q2.2 4.2 4.4 0" />
+          </g>
+        )}
+      </g>
     </svg>
-  );
-}
-
-/** the five owls in a row — "five owls at your service" */
-export function OwlRow({ size = 34 }: { size?: number }) {
-  const colors: OwlColor[] = ['green', 'orange', 'yellow', 'violet', 'teal'];
-  return (
-    <span className="owlrow" aria-hidden="true">
-      {colors.map((c) => (
-        <Owl key={c} color={c} size={size} />
-      ))}
-    </span>
   );
 }

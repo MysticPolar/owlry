@@ -118,8 +118,21 @@ function fillSegments(segs: Segment[], seats: readonly string[], vars: Vars): Se
 
 const shorten = (s: string, n = 160) => (s.length > n ? s.slice(0, n - 1).trimEnd() + '…' : s);
 
+/** the seats a scripted line names ({0} {1} {2}), other than the speaker's own — who the line is addressed to */
+function addressees(segs: Segment[], seat: number): number[] {
+  const out = new Set<number>();
+  for (const s of segs) {
+    if (s.kind !== 'text') continue;
+    for (const m of s.text.matchAll(/\{(\d)\}/g)) {
+      const i = Number(m[1]);
+      if (i !== seat && i >= 0 && i < 3) out.add(i);
+    }
+  }
+  return [...out];
+}
+
 /** the lines a seat speaks for a given slot — scripted when we have them, the figure's generic voice otherwise */
-function figureLines(script: CouncilScript, seats: readonly string[], seat: number, slot: Slot, variant: number, vars: Vars): Segment[] {
+function figureLines(script: CouncilScript, seats: readonly string[], seat: number, slot: Slot, variant: number, vars: Vars): { segments: Segment[]; to: number[] } {
   const fid = seats[seat];
   const ss = seatScript(script, seat, fid);
   const v = figure(fid).voice;
@@ -150,7 +163,7 @@ function figureLines(script: CouncilScript, seats: readonly string[], seat: numb
     default:
       segs = pick(v.followUp);
   }
-  return fillSegments(segs, seats, vars);
+  return { segments: fillSegments(segs, seats, vars), to: addressees(segs, seat) };
 }
 
 function varsFor(m: Message): Vars {
@@ -187,9 +200,68 @@ export function rebuild(session: CouncilSession): CouncilSession {
     // live words belong to the thinker who said them — a replaced seat falls back to the script
     const live = m.live && m.figureId === figureId ? m.live : undefined;
     const scripted = figureLines(script, session.seats, m.seat, m.slot, m.variant ?? 0, varsFor(m));
-    return { ...m, figureId, live, segments: live ?? scripted };
+    // who the line addresses follows the script even when the live council wrote the words: the turn's shape is the same
+    return { ...m, figureId, live, segments: live ?? scripted.segments, to: scripted.to };
   });
   return { ...session, messages };
+}
+
+/* ---------- the acts ----------
+   The debate shows a council one line at a time, a cycle per question: the
+   opening (the reader's question, rounds one and two), then one cycle per
+   whole-council follow-up or added context. Direct asks are threads of
+   their own, one per seat, read on the one-on-one screen. */
+
+export interface Cycle {
+  /** the user message that opened it (the question, a follow-up, added context) */
+  prompt: Message;
+  /** the figure lines spoken in reply, in order */
+  lines: Message[];
+  /** index of the first line in session.messages */
+  start: number;
+}
+
+export function cyclesFor(session: CouncilSession): Cycle[] {
+  const out: Cycle[] = [];
+  let cur: Cycle | null = null;
+  session.messages.forEach((m, i) => {
+    if (m.kind === 'user') {
+      // a direct ask opens a thread, not a cycle; its reply is skipped below
+      if (m.target) {
+        cur = null;
+        return;
+      }
+      cur = { prompt: m, lines: [], start: i + 1 };
+      out.push(cur);
+      return;
+    }
+    if (m.kind === 'figure' && cur && m.slot !== 'direct') cur.lines.push(m);
+  });
+  return out;
+}
+
+/** the one-on-one with a seat: the reader's direct asks to that thinker and the replies, in order */
+export function threadFor(session: CouncilSession, figureId: string): Message[] {
+  const out: Message[] = [];
+  session.messages.forEach((m, i) => {
+    if (m.kind === 'user' && m.target === figureId) {
+      out.push(m);
+      const reply = session.messages[i + 1];
+      if (reply && reply.kind === 'figure' && reply.slot === 'direct' && reply.figureId === figureId) out.push(reply);
+    }
+  });
+  return out;
+}
+
+/** the index in session.messages of the line that `line` answers: the most recent earlier line by someone it addresses */
+export function answeredBy(cycle: Cycle, n: number): Message | null {
+  const l = cycle.lines[n];
+  if (!l || !l.to?.length) return null;
+  for (let j = n - 1; j >= 0; j--) {
+    const seat = cycle.lines[j].seat;
+    if (seat !== undefined && l.to.includes(seat)) return cycle.lines[j];
+  }
+  return null;
 }
 
 /* ---------- sessions ---------- */
@@ -243,8 +315,10 @@ function withMessages(session: CouncilSession, added: Message[]): CouncilSession
 /** a follow-up to the whole council (scripted rounds, then generic voice) or to one figure */
 export function followUp(session: CouncilSession, text: string, target?: string): CouncilSession {
   const q = text.trim();
-  const user: Message = { id: uid('m'), kind: 'user', userKind: 'followup', text: q, target, ts: Date.now() };
-  if (target && session.seats.includes(target)) {
+  // a target who has left the council (replaced meanwhile) is not addressed: the question goes to everyone
+  const seated = !!target && session.seats.includes(target);
+  const user: Message = { id: uid('m'), kind: 'user', userKind: 'followup', text: q, ...(seated ? { target } : {}), ts: Date.now() };
+  if (seated && target) {
     const seat = session.seats.indexOf(target);
     const variant = session.messages.filter((m) => m.kind === 'figure' && m.slot === 'direct' && m.seat === seat).length;
     return withMessages(session, [user, figureMsg(session.seats, seat, 'direct', variant, { q })]);

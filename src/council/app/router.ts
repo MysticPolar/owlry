@@ -2,15 +2,20 @@ import { useEffect, useState } from 'react';
 
 /* ============================================================
    A tiny hash router. Every screen is a URL so the whole journey is
-   deep-linkable and the browser back button works like a phone's.
+   deep-linkable and the browser back button works like a phone's. It
+   never reads location.pathname, so every deep link is /council/#/… and
+   GitHub Pages needs no 404 fallback.
 
      #/welcome  #/signup  #/signin  #/interests
-     #/council                       Screen 0 — Life's Council Room
-     #/discussion/:id                Screen 1 — the group chat
-     #/summary/:id                   the takeaways + reading screen
-     #/book/:id?council=:id          book detail modal (full screen)
-     #/read/:id?council=:id          Screen 2 — the reader
-     #/library  #/social  #/profile  #/settings   (#/reading is the library)
+     #/council                       the room: ask a question
+     #/stands/:id                    Act I   — three minds, one book each
+     #/debate/:id                    Act II  — one line at a time
+     #/summary/:id                   Act III — the verdict and the books
+     #/one/:id/:figure               one on one with a seat
+     #/book/:id?council=:id          book page
+     #/read/:id?council=:id          the reader
+     #/library  #/social  #/profile  #/settings
+     (#/discussion/:id, the old chat, opens Act I; #/reading is the library)
    ============================================================ */
 export type Route =
   | { name: 'welcome' }
@@ -18,8 +23,10 @@ export type Route =
   | { name: 'signin' }
   | { name: 'interests' }
   | { name: 'council' }
-  | { name: 'discussion'; id: string }
+  | { name: 'stands'; id: string }
+  | { name: 'debate'; id: string }
   | { name: 'summary'; id: string }
+  | { name: 'one'; id: string; figure: string }
   | { name: 'book'; id: string; council?: string }
   | { name: 'read'; id: string; council?: string }
   | { name: 'library' }
@@ -32,7 +39,7 @@ export type TabName = 'council' | 'library' | 'social' | 'profile';
 export function parseRoute(hash: string): Route {
   const raw = hash.replace(/^#\/?/, '');
   const [pathPart, queryPart] = raw.split('?');
-  const seg = pathPart.split('/').filter(Boolean);
+  const seg = pathPart.split('/').filter(Boolean).map(decodeURIComponent);
   const q = new URLSearchParams(queryPart ?? '');
   const council = q.get('council') ?? undefined;
   switch (seg[0]) {
@@ -48,10 +55,15 @@ export function parseRoute(hash: string): Route {
       return { name: 'interests' };
     case 'council':
       return { name: 'council' };
-    case 'discussion':
-      return seg[1] ? { name: 'discussion', id: seg[1] } : { name: 'council' };
+    case 'stands':
+    case 'discussion': // the old chat screen
+      return seg[1] ? { name: 'stands', id: seg[1] } : { name: 'council' };
+    case 'debate':
+      return seg[1] ? { name: 'debate', id: seg[1] } : { name: 'council' };
     case 'summary':
       return seg[1] ? { name: 'summary', id: seg[1] } : { name: 'council' };
+    case 'one':
+      return seg[1] && seg[2] ? { name: 'one', id: seg[1], figure: seg[2] } : seg[1] ? { name: 'summary', id: seg[1] } : { name: 'council' };
     case 'book':
       return seg[1] ? { name: 'book', id: seg[1], council } : { name: 'library' };
     case 'read':
@@ -73,10 +85,14 @@ export function parseRoute(hash: string): Route {
 
 export function routeHref(r: Route): string {
   switch (r.name) {
-    case 'discussion':
-      return `#/discussion/${r.id}`;
+    case 'stands':
+      return `#/stands/${r.id}`;
+    case 'debate':
+      return `#/debate/${r.id}`;
     case 'summary':
       return `#/summary/${r.id}`;
+    case 'one':
+      return `#/one/${r.id}/${encodeURIComponent(r.figure)}`;
     case 'book':
       return `#/book/${r.id}${r.council ? `?council=${r.council}` : ''}`;
     case 'read':
@@ -86,33 +102,37 @@ export function routeHref(r: Route): string {
   }
 }
 
+/* every entry the app pushes carries how deep into the app it is, so back never walks out of it */
+type NavState = { councilDepth?: number } | null;
+const depth = (): number => ((history.state as NavState)?.councilDepth ?? 0);
+
 export function navigate(r: Route, opts: { replace?: boolean } = {}) {
   const href = routeHref(r);
-  if (opts.replace) {
-    history.replaceState(null, '', href);
-    window.dispatchEvent(new HashChangeEvent('hashchange'));
-  } else {
-    location.hash = href;
-  }
+  if (opts.replace) history.replaceState(history.state, '', href);
+  else history.pushState({ councilDepth: depth() + 1 }, '', href);
+  window.dispatchEvent(new HashChangeEvent('hashchange'));
 }
 
-/** Phone-style back: real history when we have it, otherwise a sensible parent. */
+/** Phone-style back: the previous screen when the app put one there, otherwise a sensible parent (never another site). */
 export function goBack(fallback: Route = { name: 'council' }) {
-  if (history.length > 1 && document.referrer !== '' || history.state?.owlry) {
-    history.back();
-  } else if (history.length > 1) {
-    history.back();
-  } else {
-    navigate(fallback, { replace: true });
-  }
+  if (depth() > 0) history.back();
+  else navigate(fallback, { replace: true });
 }
 
 export function useRoute(): Route {
   const [route, setRoute] = useState<Route>(() => parseRoute(location.hash));
   useEffect(() => {
-    const on = () => setRoute(parseRoute(location.hash));
+    const on = () => setRoute((prev) => {
+      const next = parseRoute(location.hash);
+      return routeHref(next) === routeHref(prev) ? prev : next;
+    });
+    // back/forward between pushed entries fires popstate (and, in most browsers, hashchange too)
     window.addEventListener('hashchange', on);
-    return () => window.removeEventListener('hashchange', on);
+    window.addEventListener('popstate', on);
+    return () => {
+      window.removeEventListener('hashchange', on);
+      window.removeEventListener('popstate', on);
+    };
   }, []);
   return route;
 }

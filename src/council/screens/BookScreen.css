@@ -1,39 +1,49 @@
-.bookscreen { overflow: hidden; }
-.book-body { padding-bottom: 12px; }
-.book-hero { display: grid; justify-items: center; text-align: center; gap: 6px; padding-top: 6px; }
-.book-hero > * { animation: fade-up 440ms var(--ease-out) both; }
-.book-hero > :nth-child(2) { animation-delay: 60ms; }
-.book-hero > :nth-child(3) { animation-delay: 110ms; }
-.book-hero > :nth-child(4) { animation-delay: 160ms; }
-.book-quote, .book-why, .book-start, .book-blurb { animation: fade-up 440ms var(--ease-out) both; animation-delay: 220ms; }
-.book-start { animation-delay: 280ms; }
-.book-blurb { animation-delay: 340ms; }
-.book-cover { margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 18px 34px rgba(0, 0, 0, 0.22); border-radius: 8px; }
-.book-title { font-size: 1.5rem; }
-.book-author { color: var(--mut); font-size: var(--t-small); }
-/* a recalled book before its card: the note takes the summary's place, arriving like the rest of the hero */
-.book-arriving { max-width: 300px; margin-top: 6px; font-size: var(--t-small); line-height: 1.5; color: var(--mut); font-style: italic; }
-/* and the two actions, which mount when the card lands */
-.book-landed { animation: fade-up var(--dur) var(--ease-out) both; }
-.book-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 6px; }
-.book-quote { margin: 20px 0 0; padding: 0 6px; text-align: center; }
-.book-quote p { font-family: var(--font-read); font-size: 1.0625rem; line-height: 1.55; color: var(--ink-2); font-style: italic; }
-.book-quote footer { margin-top: 8px; font-size: var(--t-label); color: var(--mut); display: inline-flex; gap: 8px; align-items: center; }
-.book-quote footer a { display: inline-grid; color: var(--mut); }
+/* ============================================================
+   The book (v14). The head (jacket + title, author, tags), the "Start
+   here" panel, the epigraph, the blurb, and the summary sheet. Buttons,
+   covers, the footer stack and the tag come from base.css; these are the
+   book's own rules, as the mockup draws them.
+   ============================================================ */
+.book-head { display: flex; gap: 16px; align-items: flex-start; padding-top: 4px; }
+.book-cover { width: 107px; height: 160px; border-radius: 6px; flex: none; box-shadow: var(--shadow-jacket); }
+.book-cover::after { display: none; }
+.book-meta { flex: 1 1 auto; min-width: 0; display: grid; gap: 6px; align-content: center; min-height: 160px; }
+.book-title { font-family: var(--font-serif); font-weight: 600; font-size: 24px; line-height: 1.1; letter-spacing: -0.012em; }
+.book-author { font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+.book-tags { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+
+/* the epigraph; Chinese shows the original, then the gloss marked 译文 */
+.book-quote { margin-top: 18px; padding: 16px 4px 0; border-top: 1px solid var(--line); text-align: left; }
+.book-quote p { font-family: var(--font-serif); font-weight: 500; font-size: 17px; line-height: 1.5; font-style: italic; }
+.book-quote p.book-quote-gloss { margin-top: 8px; font-style: normal; font-weight: 400; font-size: 14.5px; color: var(--muted); }
+.book-quote-gloss .vtag { margin-right: 4px; }
+.book-quote footer { margin-top: 10px; font-size: 12px; color: var(--muted); display: inline-flex; gap: 8px; align-items: center; }
+.book-quote footer a { position: relative; display: inline-grid; color: var(--muted); }
+/* a 40px touch target around the 14px source icon, without moving it */
+.book-quote footer a::before { content: ''; position: absolute; inset: -13px; }
 .book-quote footer a svg { width: 14px; height: 14px; }
-.book-why, .book-start { margin-top: 16px; padding: 14px 16px; display: grid; gap: 6px; }
-.book-why p:first-of-type { font-size: 0.9375rem; line-height: 1.5; }
-.book-start-title { font-size: 0.9375rem; line-height: 1.4; }
-.book-progress { font-weight: 600; color: var(--ink-2); }
-.book-blurb { margin-top: 16px; font-size: var(--t-small); line-height: 1.5; color: var(--mut); }
-.book-actions { position: relative; display: grid; gap: 10px; padding-top: 10px; padding-bottom: calc(var(--sab) + 14px); border-top: 1px solid var(--line); background: var(--cream); }
-.book-save { justify-self: center; min-height: 40px; display: inline-flex; align-items: center; }
-.book-hand { position: absolute; left: 22px; bottom: calc(var(--sab) + 12px); font-size: 1rem; line-height: 1; text-align: center; pointer-events: none; }
-.book-owl { position: absolute; right: 14px; bottom: calc(var(--sab) + 2px); pointer-events: none; }
+
+/* the "Start here" panel: .panel itself is in base.css (the reader's "Why this section" is one too) */
+.panel .book-progress { font-size: 13px; font-weight: 600; }
+.book-blurb { margin-top: 16px; font-family: var(--font-serif); font-size: 15px; line-height: 1.55; color: var(--muted); }
+
+/* a recalled book before its card: the note stands where the panel will */
+.book-arriving { margin-top: 16px; font-family: var(--font-serif); font-style: italic; font-size: 14.5px; line-height: 1.5; color: var(--muted); }
+/* and the two actions, which mount when the card lands (backwards, not both: a held end state would override the
+   button's :active press) */
+.book-landed { animation: fade-up var(--dur) var(--ease) backwards; }
+
+/* the footer's last row: the link out and the library toggle, side by side */
+.book-links { display: flex; gap: 6px; justify-content: center; }
+.book-links .btn.text { width: auto; padding-top: 6px; padding-bottom: 6px; min-height: 40px; }
+.book-links .btn.text svg { width: 13px; height: 13px; }
+
+/* the summary sheet */
 .book-summary { display: grid; gap: 10px; }
-.book-summary-gist { font-size: 0.9375rem; line-height: 1.55; }
-.book-ideas { display: grid; gap: 8px; padding-left: 20px; list-style: decimal; font-size: 0.9375rem; line-height: 1.45; }
-.book-ideas li::marker { font-weight: 700; color: var(--yellow-2); }
+.book-summary .act { margin: 6px 0 0; }
+.book-summary-title { font-family: var(--font-serif); font-weight: 600; font-size: 22px; line-height: 1.15; letter-spacing: -0.01em; }
+.book-summary-by { font-size: 13px; color: var(--muted); }
+.book-summary-gist { font-family: var(--font-serif); font-size: 15.5px; line-height: 1.55; }
+.book-ideas { display: grid; gap: 8px; padding-left: 20px; list-style: decimal; font-family: var(--font-serif); font-size: 15px; line-height: 1.45; }
+.book-ideas li::marker { font-family: var(--font-serif); font-weight: 600; color: var(--num); }
 .book-summary .btn { margin-top: 6px; }
-.book-quote-gloss { margin: 8px 0 0; font-size: 0.9375rem; line-height: 1.5; color: var(--ink-3); }
-.book-quote-gloss .msg-source-tag { margin-right: 4px; }
