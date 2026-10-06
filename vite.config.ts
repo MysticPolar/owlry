@@ -37,6 +37,13 @@ export default defineConfig({
         ],
       },
       workbox: {
+        // The Council Room is its own page under /council/ (vite.council.config.ts,
+        // built after this one into dist/council/). This worker's scope is the
+        // whole origin, so keep /council/ out of its navigation fallback — or every
+        // browser that has opened Owlry gets the Owlry page there — and out of the
+        // precache.
+        navigateFallbackDenylist: [/^\/council(\/|$)/],
+        globIgnores: ['council/**'],
         // precache modern web fonts only; legacy ttf/eot fallbacks are served
         // on demand and would blow past the precache size limit
         // Fonts are self-hosted now, so they are precached by this glob rather

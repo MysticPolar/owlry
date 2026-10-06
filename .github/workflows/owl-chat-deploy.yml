@@ -16,11 +16,19 @@ name: Deploy Supabase backend
 # owl-chat + owl-peek are JWT-gated (default); book-proxy and
 # signup-with-invite are public (--no-verify-jwt) because guests call them
 # before a session exists.
+#
+# The Council Room (docs/council-backend.md) adds two additive migrations and
+# two functions: council-chat (JWT-gated) and council-signup (public — it
+# creates the account). They deploy with everything else. Optional secrets
+# (Edge Functions → Secrets): COUNCIL_INVITE_REQUIRED=false opens sign-up
+# without an invite code; COUNCIL_DAILY_CAP caps council-chat's Gemini calls
+# per day across all readers (default 1500); COUNCIL_RECALL_MODEL points the
+# thinker/book recall modes at another Gemini model.
 
 on:
   workflow_dispatch:
   push:
-    branches: [renovation/homescreen]
+    branches: [main]
     paths:
       - ".github/workflows/owl-chat-deploy.yml"
       - "supabase/functions/**"
@@ -32,6 +40,8 @@ on:
       - "supabase/migrations/20260728170000_owlry_season_ledger.sql"
       - "supabase/migrations/20260728170100_owlry_migrate_balance.sql"
       - "supabase/migrations/20260730120000_owlry_36_rows.sql"
+      - "supabase/migrations/20260915120000_owlry_council.sql"
+      - "supabase/migrations/20260929120000_owlry_council_minds.sql"
 
 concurrency:
   group: supabase-backend
@@ -63,6 +73,8 @@ jobs:
             supabase/migrations/20260728170000_owlry_season_ledger.sql
             supabase/migrations/20260728170100_owlry_migrate_balance.sql
             supabase/migrations/20260730120000_owlry_36_rows.sql
+            supabase/migrations/20260915120000_owlry_council.sql
+            supabase/migrations/20260929120000_owlry_council_minds.sql
           )
           for migration in "${migrations[@]}"; do
             payload="$RUNNER_TEMP/$(basename "$migration").json"
@@ -77,6 +89,27 @@ jobs:
               --header "Content-Type: application/json" \
               --data-binary "@$payload"
           done
+      - name: Verify the Council schema
+        env:
+          SUPABASE_ANON_KEY: ${{ vars.VITE_SUPABASE_ANON_KEY }}
+          SUPABASE_PROJECT_REF: ${{ vars.SUPABASE_PROJECT_REF }}
+        run: |
+          set -euo pipefail
+          for table in owlry_council_state owlry_council_sessions owlry_council_profiles owlry_council_posts; do
+            curl \
+              --fail-with-body \
+              --request GET \
+              --url "https://$SUPABASE_PROJECT_REF.supabase.co/rest/v1/$table?select=user_id&limit=0" \
+              --header "apikey: $SUPABASE_ANON_KEY" \
+              --header "Authorization: Bearer $SUPABASE_ANON_KEY"
+          done
+          # the minds cache has no user_id column
+          curl \
+            --fail-with-body \
+            --request GET \
+            --url "https://$SUPABASE_PROJECT_REF.supabase.co/rest/v1/owlry_council_minds?select=key&limit=0" \
+            --header "apikey: $SUPABASE_ANON_KEY" \
+            --header "Authorization: Bearer $SUPABASE_ANON_KEY"
       - name: Verify progress and upload schema
         env:
           SUPABASE_ANON_KEY: ${{ vars.VITE_SUPABASE_ANON_KEY }}
@@ -114,6 +147,16 @@ jobs:
           SUPABASE_PROJECT_REF: ${{ vars.SUPABASE_PROJECT_REF }}
       - name: Deploy signup-with-invite (public — no JWT)
         run: supabase functions deploy signup-with-invite --no-verify-jwt --project-ref "$SUPABASE_PROJECT_REF"
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_REF: ${{ vars.SUPABASE_PROJECT_REF }}
+      - name: Deploy council-chat
+        run: supabase functions deploy council-chat --project-ref "$SUPABASE_PROJECT_REF"
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_REF: ${{ vars.SUPABASE_PROJECT_REF }}
+      - name: Deploy council-signup (public — no JWT)
+        run: supabase functions deploy council-signup --no-verify-jwt --project-ref "$SUPABASE_PROJECT_REF"
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
           SUPABASE_PROJECT_REF: ${{ vars.SUPABASE_PROJECT_REF }}

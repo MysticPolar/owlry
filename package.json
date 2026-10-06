@@ -7,17 +7,19 @@
   "scripts": {
     "dev": "vite",
     "dev:host": "vite --host",
-    "build": "tsc -b && vite build",
+    "dev:council": "vite --config vite.council.config.ts",
+    "build": "tsc -b && vite build && vite build --config vite.council.config.ts",
+    "build:council": "vite build --config vite.council.config.ts",
     "preview": "vite preview",
     "preview:host": "vite preview --host",
     "typecheck": "tsc -b",
-    "test": "tsx scripts/owl-smoke.ts && tsx scripts/owl-contract-smoke.ts && tsx scripts/owl-wire-v2-smoke.ts && tsx scripts/owl-status-smoke.ts && tsx scripts/memory-merge-smoke.ts && tsx scripts/chat-hydrate-smoke.ts && tsx scripts/store-smoke.ts && tsx scripts/economy-smoke.ts && tsx scripts/sync-smoke.ts && tsx scripts/ebook-fingerprint-smoke.ts && tsx scripts/book-proxy-smoke.ts && tsx scripts/gbooks-smoke.ts && tsx scripts/pillar-smoke.ts && tsx scripts/shelf-rank-smoke.ts && tsx scripts/econ-owl-smoke.ts",
+    "test": "tsx scripts/owl-smoke.ts && tsx scripts/owl-contract-smoke.ts && tsx scripts/owl-wire-v2-smoke.ts && tsx scripts/owl-status-smoke.ts && tsx scripts/memory-merge-smoke.ts && tsx scripts/chat-hydrate-smoke.ts && tsx scripts/store-smoke.ts && tsx scripts/economy-smoke.ts && tsx scripts/sync-smoke.ts && tsx scripts/ebook-fingerprint-smoke.ts && tsx scripts/book-proxy-smoke.ts && tsx scripts/gbooks-smoke.ts && tsx scripts/pillar-smoke.ts && tsx scripts/shelf-rank-smoke.ts && tsx scripts/econ-owl-smoke.ts && tsx scripts/council-boundary-smoke.ts",
     "books:enrich": "tsx scripts/enrich-books.ts",
     "bench": "tsx scripts/owl-bench.ts",
     "lint:css": "stylelint \"src/styles/*.css\""
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.110.1",
+    "@supabase/supabase-js": "^2.116.0",
     "@tabler/icons-react": "^3.44.0",
     "idb-keyval": "^6.2.1",
     "pdfjs-dist": "^6.0.227",
@@ -27,6 +29,7 @@
   },
   "devDependencies": {
     "@tabler/icons-webfont": "^3.24.0",
+    "@types/node": "^22.20.2",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",

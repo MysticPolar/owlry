@@ -1,0 +1,201 @@
+import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from 'react';
+import { IconArrowUp, IconCompass, IconRefresh } from '@tabler/icons-react';
+import { navigate } from '../app/router';
+import { useStore, selectCouncil } from '../store/useStore';
+import { figure } from '../content/figures';
+import { suggestionsFor } from '../content/councils';
+import { introsFor } from '../engine/council';
+import { Wordmark } from '../components/Wordmark';
+import { CouncilRoom } from '../components/CouncilRoom';
+import { Ticker } from '../components/Ticker';
+import { Owl } from '../components/Owl';
+import { Avatar } from '../components/Avatar';
+import { useT, fmt } from '../i18n/react';
+import { useAutoGrow } from '../hooks/useAutoGrow';
+import { useReduceMotion } from '../hooks/useReduceMotion';
+import './CouncilScreen.css';
+
+/* ============================================================
+   Screen 0 — Life's Council Room. The room fills the top of the screen
+   with the title over it and the ticker under it; three empty chairs wait
+   for a question. Once asked, the beams come up, the seats fill, and each
+   thinker is introduced with why their perspective fits.
+   ============================================================ */
+export function CouncilScreen() {
+  const interests = useStore((s) => s.interests);
+  const ask = useStore((s) => s.ask);
+  const activeId = useStore((s) => s.activeCouncilId);
+  const active = useStore(selectCouncil(activeId));
+  const setActive = useStore((s) => s.setActiveCouncil);
+  // a question no script covers, while the live council seats it: the seats keep breathing, the kicker shows the question
+  const casting = useStore((s) => s.casting);
+  const cancelCasting = useStore((s) => s.cancelCasting);
+  const [text, setText] = useState('');
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const reduce = useReduceMotion();
+  const t = useT();
+  useAutoGrow(inputRef, text);
+
+  const convening = active && active.stage === 'convening' ? active : null;
+  const seats = convening ? convening.seats.map((id) => figure(id)) : [null, null, null];
+  // the room is answering a question: a council is seated, or one is being seated
+  const asked = convening?.question ?? casting?.question ?? null;
+
+  // if the painting cannot be fetched, the room is drawn instead
+  const [drawn, setDrawn] = useState(false);
+
+  // the intro cards arrive after the seats have filled
+  const [showIntros, setShowIntros] = useState(false);
+  useEffect(() => {
+    if (!convening) {
+      setShowIntros(false);
+      return;
+    }
+    const t = setTimeout(() => setShowIntros(true), 1350);
+    return () => clearTimeout(t);
+  }, [convening?.id]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const submit = (q: string, councilId?: string) => {
+    const question = q.trim();
+    if (!question) return;
+    ask(question, councilId);
+    setText('');
+    inputRef.current?.blur();
+  };
+  const onSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    submit(text);
+  };
+  const onKey = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      submit(text);
+    }
+  };
+  // an empty chair, tapped: bring the ask box up under the finger
+  const focusAsk = () => {
+    const el = inputRef.current;
+    if (!el) return;
+    el.focus({ preventScroll: true });
+    el.scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' });
+  };
+
+  const suggestions = suggestionsFor(interests);
+
+  return (
+    <div className={`screen night council ${drawn ? 'council-flat' : 'council-paint'}`}>
+      <div className="council-head top-inset pad">
+        <Wordmark size={26} />
+        <span className="council-head-actions">
+        {/* back to the paths: the interests screen the journey began on */}
+        <button type="button" className="iconbtn" aria-label={t.council.paths} onClick={() => navigate({ name: 'interests' })}>
+          <IconCompass stroke={2} />
+        </button>
+        <button
+          type="button"
+          className="iconbtn"
+          aria-label={convening ? t.council.askElse : t.council.startOver}
+          onClick={() => {
+            setActive(null);
+            cancelCasting();
+            setText('');
+            inputRef.current?.focus();
+          }}
+        >
+          <IconRefresh stroke={2} />
+        </button>
+        </span>
+      </div>
+      <div className="screen-scroll council-body nav-space">
+        <div className="council-stage">
+          <CouncilRoom
+            seats={seats}
+            emptyAria={t.council.seatEmptyAria}
+            onEmptyTap={asked ? undefined : focusAsk}
+            drawn={drawn}
+            onArtFail={() => setDrawn(true)}
+          />
+          <div className="council-titles">
+            {!asked && <p className="council-kicker">{t.council.sub}</p>}
+            <h1 className="council-marquee">
+              {t.council.title}
+              <span className="dot">.</span>
+            </h1>
+            {asked && <p className="council-kicker asked">{fmt(t.council.subAsked, { q: asked })}</p>}
+            {casting && !convening && (
+              <p className="council-casting" role="status">
+                {t.council.casting}
+              </p>
+            )}
+          </div>
+          {!convening && <Owl color="teal" pose="peek" size={76} className="council-owl" title={t.council.owl} />}
+          {!asked && drawn && <span className="hand council-hand2">{t.council.hand}</span>}
+        </div>
+        <Ticker items={t.council.ticker} />
+
+        {convening ? (
+          <div className={`pad intros ${showIntros ? 'show' : ''}`}>
+            <p className="caps intros-label">{t.council.yourCouncil}</p>
+            {introsFor(convening).map(({ figureId, why }, i) => {
+              const f = figure(figureId);
+              return (
+                <div key={figureId} className="card intro-card" style={{ animationDelay: `${i * 120}ms` }}>
+                  <Avatar figure={f} size={44} />
+                  <div className="grow">
+                    <div className="intro-name">
+                      {f.name} <span className="intro-label">· {f.label}</span>
+                    </div>
+                    <p className="small intro-why">{why}</p>
+                  </div>
+                </div>
+              );
+            })}
+            <p className="micro-note">{t.council.note}</p>
+            <button
+              type="button"
+              className="btn btn-primary"
+              // the discussion screen seats the council as it opens; joining here first would
+              // empty the room for a frame before the screen changes
+              onClick={() => navigate({ name: 'discussion', id: convening.id })}
+            >
+              {t.council.join}
+            </button>
+          </div>
+        ) : casting ? (
+          // the ask has been taken; nothing to do but watch the seats fill (the head's button starts over)
+          <div className="pad council-wait" aria-hidden="true" />
+        ) : (
+          <div className="pad council-ask">
+            <p className="council-prompt">{t.council.prompt}</p>
+            <form className="askbar" onSubmit={onSubmit}>
+              <textarea
+                ref={inputRef}
+                rows={1}
+                placeholder={t.council.ph}
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                onKeyDown={onKey}
+                aria-label={t.council.ariaQ}
+              />
+              <button type="submit" className="sendbtn" aria-label={t.council.ariaAsk} disabled={!text.trim()}>
+                <IconArrowUp stroke={2.5} />
+              </button>
+            </form>
+            <ul className="suggestions" role="list">
+              {suggestions.map((s) => (
+                <li key={s.text}>
+                  <button type="button" className="suggestion" onClick={() => submit(s.text, s.councilId)}>
+                    <span className="suggestion-text">{s.text}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <button type="button" className="linkbtn council-paths-link" onClick={() => navigate({ name: 'interests' })}>
+              <IconCompass /> {t.council.pathsLink}
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
