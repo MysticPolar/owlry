@@ -1,0 +1,115 @@
+/* ============================================================
+   owlry — design tokens, lifted from the "Walk with Great Minds." poster.
+
+   Two rooms: the NIGHT room (welcome, the council table) is near-black with
+   one warm lamp; the DAY room (everything after a question is asked) is
+   cream paper with white cards. Yellow is the only brand colour and it is
+   used for exactly three things: the primary action, the active nav item,
+   and the period in the wordmark.
+   ============================================================ */
+:root {
+  /* brand — the landing page's mustard, not a pure yellow */
+  --yellow: #F6C347;
+  --yellow-2: #E6B237;        /* pressed */
+  --yellow-soft: #FFF2B3;     /* highlight marker, chart fill */
+  --yellow-ink: #141414;      /* text on yellow */
+
+  /* night room — navy and cream, as on the landing page and in the painting */
+  --night: #0D111F;
+  --night-2: #13182A;
+  --night-3: #1B2136;
+  --night-line: rgba(241, 235, 216, 0.12);
+  --night-text: #F1EBD8;
+  --night-mut: #A7A59E;
+  --lamp: #F6C347;            /* the one warm bulb */
+
+  /* day room */
+  --cream: #F6F3EC;
+  --paper: #FFFFFF;
+  --paper-2: #F0ECE3;
+  --line: #E7E2D7;
+  --line-2: #D9D3C5;
+  --ink: #141414;
+  --ink-2: #2E2D2A;
+  --ink-3: #4A4843;           /* glosses, secondary reading text */
+  --mut: #6E6A62;             /* ≥4.5:1 on cream */
+  --hint: #9B968C;            /* placeholders, decorative only */
+
+  /* the five owls */
+  --owl-teal: #2FB8A6;
+  --owl-violet: #8A5CE0;
+  --owl-yellow: #FFC93C;
+  --owl-orange: #F5883A;
+  --owl-green: #4DB36B;
+  --owl-blue: #4C86F5;
+
+  /* interest tints */
+  --tint-health: #35A56B;
+  --tint-career: #B07A2A;
+  --tint-investing: #2E9E63;
+  --tint-relationships: #E2483C;
+  --tint-literature: #24304A;
+  --tint-other: #4A4844;
+
+  /* shape */
+  --r-card: 18px;
+  --r-card-lg: 24px;
+  --r-input: 22px;
+  --r-pill: 999px;
+  --shadow-card: 0 1px 2px rgba(20, 20, 20, 0.05), 0 6px 20px rgba(20, 20, 20, 0.06);
+  --shadow-float: 0 12px 40px rgba(0, 0, 0, 0.18);
+
+  /* type */
+  --font-display: 'Archivo', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-read: 'Literata', Georgia, 'Times New Roman', serif;
+  --font-hand: 'Caveat', 'Segoe Print', 'Bradley Hand', cursive;
+  --font-wordmark: 'Rubik', 'Archivo', 'Inter', sans-serif;
+
+  --t-marquee: clamp(2.75rem, 12vw, 3.6rem); /* WALK WITH GREAT MINDS. */
+  --t-display: 2rem;      /* 32 — screen titles */
+  --t-title: 1.375rem;    /* 22 — card / modal titles */
+  --t-heading: 1.0625rem; /* 17 — section heads */
+  --t-body: 1rem;         /* 16 — never smaller for inputs (iOS zoom) */
+  --t-small: 0.875rem;    /* 14 */
+  --t-label: 0.8125rem;   /* 13 */
+  --t-micro: 0.75rem;     /* 12 — the floor */
+
+  --lh-display: 1.02;
+  --lh-tight: 1.2;
+  --lh-ui: 1.45;
+  --lh-read: 1.7;
+
+  --track-display: -0.035em;
+  --track-title: -0.02em;
+  --track-label: 0.02em;
+  --track-caps: 0.14em;
+
+  /* safe areas + viewport */
+  --sat: env(safe-area-inset-top, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+  --app-h: 100vh;
+  --nav-h: 64px;
+
+  /* motion — one ease for arrivals, one spring for things that land, one duration for state changes;
+     screens take a little longer (--dur-screen) because they move the whole frame */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+  --dur: 220ms;
+  --dur-fast: 120ms;
+  --dur-screen: 300ms;
+}
+
+@supports (height: 100dvh) {
+  :root { --app-h: 100dvh; }
+}
+
+/* Chinese: the Latin faces stay for their glyphs; system CJK faces fill in the rest */
+html[lang='zh-CN'] {
+  --font-display: 'Archivo', 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans CJK SC', 'Noto Sans SC', 'Source Han Sans SC', 'Microsoft YaHei', 'Inter', sans-serif;
+  --font-ui: 'Inter', 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans CJK SC', 'Noto Sans SC', 'Source Han Sans SC', 'Microsoft YaHei', sans-serif;
+  --font-read: 'Literata', 'Songti SC', 'Noto Serif CJK SC', 'Noto Serif SC', 'Source Han Serif SC', 'SimSun', serif;
+  --font-hand: 'Caveat', 'Kaiti SC', 'STKaiti', 'KaiTi', 'Noto Sans CJK SC', 'Noto Sans SC', cursive;
+}
+html[lang='zh-CN'] .caps { letter-spacing: 0.08em; }
+html[lang='zh-CN'] .marquee { letter-spacing: 0.04em; }
