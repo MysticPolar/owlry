@@ -17,6 +17,9 @@
 // ============================================================
 import { GoogleGenAI } from 'npm:@google/genai@2.14.0';
 
+/** the client type, for callers that pass one around without importing the SDK themselves */
+export type { GoogleGenAI };
+
 /** digest + memory merge — extraction jobs, cheapest tier */
 export const MODEL_FAST = 'gemini-3.1-flash-lite';
 /** Scout + Peek — the two calls that carry the owl's voice */
