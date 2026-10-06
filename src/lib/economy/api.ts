@@ -17,6 +17,19 @@ export async function getSnapshot(): Promise<Snapshot> {
   return data as Snapshot;
 }
 
+/** Tag a book so radar can score saves & quotes. Upgrades wonder defaults. */
+export async function ensureBookDimension(
+  bookId: string,
+  dimension: string,
+): Promise<void> {
+  if (!bookId || !dimension) return;
+  const { error } = await client().rpc('owlry_ensure_book_dimension', {
+    p_book_id: bookId,
+    p_dimension: dimension,
+  });
+  if (error) console.warn('[econ] ensureBookDimension', error.message);
+}
+
 /**
  * The one guarded economy mutation. The server validates the cost, applies its
  * guard suite (per-book dedupe, daily caps, the 60s step floor, the global daily
