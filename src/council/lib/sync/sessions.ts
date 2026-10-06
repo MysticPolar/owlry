@@ -37,6 +37,7 @@ function toRow(s: CouncilSession, uid: string) {
     revealed: rest.revealed,
     live: rest.live ?? null,
     cast: rest.cast ?? null,
+    focus: rest.focus ?? null,
     createdAt: rest.createdAt,
     updatedAt: rest.updatedAt,
   };
@@ -72,6 +73,20 @@ function castSeatOf(v: unknown): CastSeat | null {
     bookId: str(v.bookId),
     bookTitle: str(v.bookTitle),
     bookYear: str(v.bookYear),
+  };
+}
+
+/** the chosen reading from another device's payload, or nothing — a session without one is the question as asked */
+function focusOf(v: unknown): CouncilSession['focus'] {
+  if (!isObj(v) || !str(v.title)) return undefined;
+  const r = isObj(v.reading) && typeof v.reading.index === 'number' && v.reading.index >= 0 && v.reading.index <= 2
+    ? { scriptId: str(v.reading.scriptId) || null, index: v.reading.index }
+    : undefined;
+  return {
+    title: str(v.title).slice(0, 200),
+    ...(str(v.detail) ? { detail: str(v.detail).slice(0, 200) } : {}),
+    ...(v.custom === true ? { custom: true } : {}),
+    ...(r ? { reading: r } : {}),
   };
 }
 
@@ -111,6 +126,7 @@ function fromRow(r: Row): CouncilSession | null {
     ...(r.source === 'live' ? { source: 'live' as const } : {}),
     ...(p.live && typeof p.live === 'object' ? { live: p.live as CouncilSession['live'] } : {}),
     ...(cast ? { cast } : {}),
+    ...(focusOf(p.focus) ? { focus: focusOf(p.focus) } : {}),
   };
 }
 

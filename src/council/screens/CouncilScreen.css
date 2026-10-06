@@ -6,8 +6,8 @@
    ============================================================ */
 .council-room .lead { margin-top: 4px; }
 .council-room .askbox { margin-top: 0; }
-/* "Casting the council" takes the button's place on the tap: it arrives rather than appears */
-.council-room .footer .thinking { animation: fade-in var(--dur) var(--ease) both; }
+/* "Reading your question" takes the button's place on the tap: it arrives rather than appears */
+.council-room .footer .thinking { animation: fade-in var(--dur) var(--ease) backwards; }
 
 /* the categories sheet: the interests page in a sheet, the teal owl peeking in at the corner.
    The owl is positioned against the sheet itself (not its scrolling body), so it never adds
@@ -21,6 +21,3 @@
 .sheet.cats .tile-title { font-size: 16.5px; }
 .sheet.cats .catfoot { display: flex; align-items: center; gap: 10px; padding: 14px 100px 0 0; }
 .sheet.cats .interests-owl { position: absolute; right: 10px; bottom: -4px; z-index: 1; pointer-events: none; }
-/* The room is a tab, and the tab nav sits above the screen's layer (the layer's entrance animation makes the
-   screen a stacking context), so it covers the foot of any sheet the screen opens. Until sheets are lifted
-   over the nav, this one runs on under the frosted nav and keeps its Done button and owl clear of it. */

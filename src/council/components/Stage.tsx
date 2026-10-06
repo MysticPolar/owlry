@@ -5,8 +5,8 @@ import './Stage.css';
 
 /* ============================================================
    The stage. One drawn set — a floor, a round table, three seats — in
-   three geometries: the ROOM (the ask screen, seats empty or holding the
-   last council), the BAND (Act I, a strip above the cast), and the FULL
+   three geometries: the ROOM (the ask and confirmation screens, three
+   empty seats breathing), the BAND (Act I, a strip above the cast), and the FULL
    stage (Act II, with the spotlight on whoever is speaking and reply
    lines to whoever they address). A velvet curtain closes over the seats
    when a council is cast and opens again on Act I; it lowers at the end
@@ -61,7 +61,6 @@ export function Stage({
   speaker = null,
   addressing = [],
   dim = false,
-  last,
   onSeatTap,
   onEmptyTap,
   seatAria,
@@ -86,8 +85,6 @@ export function Stage({
   addressing?: number[];
   /** full stage: dim the set so the spotlight reads */
   dim?: boolean;
-  /** the room: a strip at the bottom offering the last council */
-  last?: { text: string; action: string; onOpen: () => void; aria: string };
   onSeatTap?: (seat: number) => void;
   onEmptyTap?: (seat: number) => void;
   seatAria?: (f: Figure) => string;
@@ -255,12 +252,6 @@ export function Stage({
         <div className="marquee" aria-hidden="true">
           {marquee}
         </div>
-      )}
-      {last && (
-        <button type="button" className="stagelast show" aria-label={last.aria} onClick={last.onOpen}>
-          <span className="q">{last.text}</span>
-          <span className="go">{last.action}</span>
-        </button>
       )}
     </div>
   );

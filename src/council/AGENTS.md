@@ -62,11 +62,25 @@ plain boot in `main.tsx`, drop the variable from `deploy.yml` and
 
 ## Where things are
 
-- Routes (`app/router.ts`): `#/council` (the room), `#/stands/:id`,
+- Routes (`app/router.ts`): `#/council` (the room — always three empty,
+  breathing seats; it never shows the last council), `#/confirm` (how the
+  council reads the question: three readings + Other, then cast), `#/stands/:id`,
   `#/debate/:id`, `#/summary/:id`, `#/one/:id/:figure` (one on one with a
   seat), `#/book/:id`, `#/read/:id`, the tabs, auth. `#/discussion/:id` is a
   legacy alias of the stands. `App.tsx` orders them by depth for the slide
-  direction.
+  direction. The wordmark in every app bar (`HomeMark` in
+  `components/chrome.tsx`, beside the back arrow on screens that have one)
+  is the way home from any screen.
+- Readings → `content/readings.ts` (+ `content/zh/readings.ts`): three per
+  scripted council, written for its three seats in seat order, and a
+  general set for a question no script covers (Chinese titles read
+  "甲，还是乙"). A picked reading is saved with a reference to its set, so
+  it follows a language switch. The room hands the question
+  to the confirmation page through the store's transient `pendingAsk`; the
+  chosen reading is the session's `focus` (synced in the session payload),
+  shown on Act I and sent to the live council with the question
+  (`askedOf()` in `lib/councilClient.ts` — the server takes only the
+  question for the opening and the cast). A new council needs its readings.
 - Content (figures, books, scripted councils) → `content/`. Adding a
   council: write a `CouncilScript` (see `content/types.ts`) and register it in
   `content/councils/index.ts`; give each seat at least one alternate.

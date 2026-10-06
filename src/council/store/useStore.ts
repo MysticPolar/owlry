@@ -8,11 +8,11 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { uid } from '../app/ids';
 import type { Area } from '../content/types';
-import type { CastInfo, CastSeat, CouncilSession, Highlight, Message, Post, Progress, SavedStep, Segment, TextSize, Toast, UserProfile } from './types';
+import type { CastInfo, CastSeat, CouncilSession, Focus, Highlight, Message, Post, Progress, SavedStep, Segment, TextSize, Toast, UserProfile } from './types';
 import type { Rig } from '../app/rig';
 import * as engine from '../engine/council';
 import { seedPosts, seedHighlights, FOLLOWING } from '../content/social';
-import { liveBook, liveCast, liveFigure, liveOpen, liveTurn, type MindBook, type MindFigure, type MindSeat } from '../lib/councilClient';
+import { askedOf, liveBook, liveCast, liveFigure, liveOpen, liveTurn, type MindBook, type MindFigure, type MindSeat } from '../lib/councilClient';
 import * as social from '../lib/social/api';
 import { council, matchScore } from '../content/councils';
 import { CURATED_FIGURE_NAMES, curatedFigure, curatedFigureId } from '../content/figures';
@@ -35,6 +35,15 @@ export interface MindsSlice {
   unavailable?: Record<string, number>;
 }
 
+/** a question asked in the room, waiting on the confirmation page for its reading — transient, never persisted */
+export interface PendingAsk {
+  question: string;
+  /** a suggestion pins its council */
+  councilId?: string;
+  /** the script that will answer (its readings are offered), or null for a question no script covers (the general ones) */
+  scriptId: string | null;
+}
+
 /** a question no script covers, while the live council seats it — transient, never persisted; the room shows it */
 export interface Casting {
   question: string;
@@ -51,6 +60,7 @@ export interface StoreState {
   councilOrder: string[];
   activeCouncilId: string | null;
   casting: Casting | null;
+  pendingAsk: PendingAsk | null;
   minds: MindsSlice;
 
   saved: string[];
@@ -84,8 +94,11 @@ export interface StoreState {
   setOnboarded: (v: boolean) => void;
 
   // --- council
+  /** the room hands a question to the confirmation page, which offers its readings */
+  beginAsk: (question: string, councilId?: string) => PendingAsk | null;
+  clearAsk: () => void;
   /** the session id for a scripted council; null while the live council is casting one (watch `casting`) */
-  ask: (question: string, councilId?: string) => string | null;
+  ask: (question: string, councilId?: string, focus?: Focus) => string | null;
   setActiveCouncil: (id: string | null) => void;
   /** the reader changed their mind while the live council was still seating: the room empties and a late cast is dropped */
   cancelCasting: () => void;
@@ -159,6 +172,7 @@ function seedState() {
     councilOrder: [past.id],
     activeCouncilId: null,
     casting: null as Casting | null,
+    pendingAsk: null as PendingAsk | null,
     minds: { figures: {}, books: {}, unavailable: {} } as MindsSlice,
     saved: ['meditations', 'almanack', 'second-sex', 'sapiens', 'atomic-habits', 'daily-stoic'],
     progress: {
@@ -352,22 +366,22 @@ function refreshSeated(set: Setter, figureId: string) {
   });
 }
 
-async function castCouncil(set: Setter, get: () => StoreState, question: string, area: Area, startedAt: number, lang: Lang) {
-  const cast = await Promise.race([liveCast(question, area, { known: CURATED_FIGURE_NAMES, avoid: [] }, lang), delay(CAST_WAIT_MS).then(() => null)]);
+async function castCouncil(set: Setter, get: () => StoreState, question: string, area: Area, startedAt: number, lang: Lang, focus?: Focus) {
+  const cast = await Promise.race([liveCast(askedOf(question, focus), area, { known: CURATED_FIGURE_NAMES, avoid: [] }, lang), delay(CAST_WAIT_MS).then(() => null)]);
   // the reader asked something else while the council was being seated, or left the page
   if (unloading || get().casting?.startedAt !== startedAt) return;
   const seats = cast ? (cast.seats.map(toCastSeat) as CastInfo['seats']) : null;
   // three different people, or it is not a council (two of the model's names may resolve to one curated thinker)
   if (!cast || !seats || new Set(seats.map((x) => x.id)).size !== 3) {
     // the scripted default, exactly what the question gets with no live council
-    const session = engine.createSession(question, get().interests);
+    const session = { ...engine.createSession(question, get().interests), ...(focus ? { focus } : {}) };
     seatSession(set, session);
     requestOpening(set, session);
     return;
   }
   const info: CastInfo = { title: cast.title || shortTitle(question), seats, alternates: [] };
   registerCast(info);
-  const session = engine.createCastSession(question, area, info);
+  const session = { ...engine.createCastSession(question, area, info), ...(focus ? { focus } : {}) };
   seatSession(set, session);
   // the opening waits for the recalled cards, whose quotes go into the dossiers — but not past the cap
   const recalled = seats.filter((x) => !curatedFigure(x.id));
@@ -408,7 +422,20 @@ export const useStore = create<StoreState>()(
       setInterests: (areas) => set({ interests: areas, prefsAt: Date.now() }),
       setOnboarded: (v) => set({ onboarded: v }),
 
-      ask: (question, councilId) => {
+      beginAsk: (question, councilId) => {
+        const q = question.trim();
+        if (q.length < 3) return null;
+        const areas = get().interests;
+        // the script that will answer: the pinned council, else the best keyword match; none means the general readings
+        // (a question no script's keywords touch is not about the reader's first interest either)
+        const match = councilId ? null : matchScore(q, areas);
+        const scriptId = councilId ?? (match && match.score > 0 ? match.script.id : null);
+        const pending: PendingAsk = { question: q, ...(councilId ? { councilId } : {}), scriptId };
+        set({ pendingAsk: pending });
+        return pending;
+      },
+      clearAsk: () => set({ pendingAsk: null }),
+      ask: (question, councilId, focus) => {
         const areas = get().interests;
         // a typed question no script's keywords touch, with a live council to ask: cast one (the readiness check is inside liveCast)
         if (!councilId && isLiveCouncilConfigured() && matchScore(question, areas).score === 0) {
@@ -416,10 +443,10 @@ export const useStore = create<StoreState>()(
           const area: Area = areas[0] ?? 'other';
           const startedAt = Date.now();
           set({ casting: { question: q, area, startedAt }, activeCouncilId: null, onboarded: true });
-          void castCouncil(set, get, q, area, startedAt, getActiveLang());
+          void castCouncil(set, get, q, area, startedAt, getActiveLang(), focus);
           return null;
         }
-        const session = engine.createSession(question, areas, councilId);
+        const session = { ...engine.createSession(question, areas, councilId), ...(focus ? { focus } : {}) };
         seatSession(set, session);
         requestOpening(set, session);
         return session.id;
@@ -759,9 +786,10 @@ export const useStore = create<StoreState>()(
       version: 1,
       storage: createJSONStorage(() => localStorage),
       partialize: (s) => {
-        const { toast: _toast, casting: _casting, ...rest } = s;
+        const { toast: _toast, casting: _casting, pendingAsk: _pendingAsk, ...rest } = s;
         void _toast;
         void _casting;
+        void _pendingAsk;
         // functions are dropped by JSON anyway; keep the data slice — minus the transient "waiting on the live council" lists
         const councils: Record<string, CouncilSession> = {};
         for (const [id, c] of Object.entries(rest.councils)) {

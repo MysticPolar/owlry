@@ -98,6 +98,16 @@ export interface CastInfo {
   alternates: CastSeat[];
 }
 
+/** the angle the reader chose on the confirmation page: one of the offered readings, or their own words */
+export interface Focus {
+  title: string;
+  detail?: string;
+  /** typed under "Other" rather than picked */
+  custom?: boolean;
+  /** a picked reading's place in its set, so it is re-read in the interface language of the moment */
+  reading?: { scriptId: string | null; index: number };
+}
+
 export interface CouncilSession {
   id: string;
   scriptId: string;
@@ -122,6 +132,8 @@ export interface CouncilSession {
   pending?: string[];
   /** set when the model cast the seats (scriptId 'cast'): the engine synthesises the script from it */
   cast?: CastInfo;
+  /** the reading of the question the council debates (absent: the question as asked) */
+  focus?: Focus;
 }
 
 export interface Progress {

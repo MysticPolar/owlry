@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { IconHome, IconBooks, IconUsers, IconUser, IconArrowLeft, IconSun, IconMoon } from '@tabler/icons-react';
-import { navigate, goBack, type Route, type TabName } from '../app/router';
+import { navigate, goBack, parseRoute, type Route, type TabName } from '../app/router';
 import { useStore } from '../store/useStore';
 import { useRig } from '../app/rig';
 import { useModalFocus } from '../hooks/useModalFocus';
@@ -80,11 +80,15 @@ export function AppBar({
     <div className={`appbar ${className}`}>
       {left ??
         (back ? (
-          <button type="button" className="iconbtn ghost" aria-label={t.common.back} onClick={() => (typeof back === 'function' ? back() : goBack(back))}>
-            <IconArrowLeft stroke={2.2} />
-          </button>
+          // a screen with a back arrow keeps "owlry." beside it: home is always one tap away
+          <span className="appbar-left">
+            <button type="button" className="iconbtn ghost" aria-label={t.common.back} onClick={() => (typeof back === 'function' ? back() : goBack(back))}>
+              <IconArrowLeft stroke={2.2} />
+            </button>
+            <HomeMark />
+          </span>
         ) : (
-          <Wordmark />
+          <HomeMark />
         ))}
       {centre ?? (label ? <span className="showlabel grow">{label}</span> : <span className="grow" />)}
       <div className="right">
@@ -92,6 +96,23 @@ export function AppBar({
         {rig && <RigButton />}
       </div>
     </div>
+  );
+}
+
+/** "owlry." on every screen is the way home: the room (or the welcome, before the first visit is through) */
+export function HomeMark() {
+  const t = useT();
+  const onboarded = useStore((s) => s.onboarded);
+  const go = () => {
+    const home: Route = onboarded ? { name: 'council' } : { name: 'welcome' };
+    // already home: nothing to do (a push would leave a back step that goes nowhere)
+    if (parseRoute(location.hash).name === home.name) return;
+    navigate(home);
+  };
+  return (
+    <button type="button" className="homemark" aria-label={t.common.homeAria} onClick={go}>
+      <Wordmark />
+    </button>
   );
 }
 

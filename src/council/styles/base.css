@@ -83,6 +83,12 @@ input:focus-visible, textarea:focus-visible { outline: none; }
 .appbar .right { display: flex; gap: 8px; }
 .wordmark { font-family: var(--font-wordmark); font-size: 26px; line-height: 1; display: inline-block; transform: skewX(-8deg); letter-spacing: 0.01em; }
 .wordmark i, .wordmark-dot { font-style: normal; color: var(--gold); }
+/* the wordmark in the app bar is a button home */
+.homemark { display: inline-flex; align-items: center; min-height: 44px; padding: 0 4px; margin-left: -4px; border-radius: 10px; color: inherit; transition: opacity var(--dur-fast); }
+.homemark:active { opacity: 0.6; }
+.appbar-left { display: inline-flex; align-items: center; gap: 2px; flex: none; }
+.appbar-left .iconbtn { margin-left: -10px; }
+.appbar-left .wordmark { font-size: 22px; }
 .showlabel { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .iconbtn {
   width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); background: transparent; color: var(--ink);

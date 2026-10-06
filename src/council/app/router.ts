@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 
      #/welcome  #/signup  #/signin  #/interests
      #/council                       the room: ask a question
+     #/confirm                       how the council reads it: three readings + Other, then cast
      #/stands/:id                    Act I   — three minds, one book each
      #/debate/:id                    Act II  — one line at a time
      #/summary/:id                   Act III — the verdict and the books
@@ -23,6 +24,7 @@ export type Route =
   | { name: 'signin' }
   | { name: 'interests' }
   | { name: 'council' }
+  | { name: 'confirm' }
   | { name: 'stands'; id: string }
   | { name: 'debate'; id: string }
   | { name: 'summary'; id: string }
@@ -55,6 +57,8 @@ export function parseRoute(hash: string): Route {
       return { name: 'interests' };
     case 'council':
       return { name: 'council' };
+    case 'confirm':
+      return { name: 'confirm' };
     case 'stands':
     case 'discussion': // the old chat screen
       return seg[1] ? { name: 'stands', id: seg[1] } : { name: 'council' };

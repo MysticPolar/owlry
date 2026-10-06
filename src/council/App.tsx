@@ -7,6 +7,7 @@ import { WelcomeScreen } from './screens/WelcomeScreen';
 import { AuthScreen } from './screens/AuthScreen';
 import { InterestsScreen } from './screens/InterestsScreen';
 import { CouncilScreen } from './screens/CouncilScreen';
+import { ConfirmScreen } from './screens/ConfirmScreen';
 import { StandsScreen } from './screens/StandsScreen';
 import { DebateScreen } from './screens/DebateScreen';
 import { SummaryScreen } from './screens/SummaryScreen';
@@ -39,6 +40,8 @@ const DEPTH: Record<Route['name'], number> = {
   signin: 1,
   interests: 1,
   council: 2,
+  // the room's sibling: the stage stays put and only the words below change (v13), so the move is a fade
+  confirm: 2,
   library: 2,
   social: 2,
   profile: 2,
@@ -66,6 +69,8 @@ function renderScreen(route: Route) {
       return <InterestsScreen />;
     case 'council':
       return <CouncilScreen />;
+    case 'confirm':
+      return <ConfirmScreen />;
     case 'stands':
       return <StandsScreen id={route.id} />;
     case 'debate':

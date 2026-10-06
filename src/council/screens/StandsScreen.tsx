@@ -1,3 +1,4 @@
+import { focusText } from '../content/readings';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { IconArrowsLeftRight } from '@tabler/icons-react';
 import { navigate } from '../app/router';
@@ -152,6 +153,9 @@ export function StandsScreen({ id }: { id: string }) {
   const intros = introsFor(session);
   const bookIds = seatBookIds(session);
   const followUp = cyclesFor(session).length > 1;
+  // the reading chosen on the confirmation page, in the interface language of the moment; a reading's title is lower-cased
+  // mid-sentence (v13), own words stay as typed
+  const focusLine = session.focus ? (session.focus.custom ? session.focus.title : focusText(session.focus).title.toLocaleLowerCase()) : '';
   const marquee = `${t.council.marquee} · ${seats.map((f) => f.short).join(' · ')}`;
 
   /**
@@ -234,6 +238,15 @@ export function StandsScreen({ id }: { id: string }) {
           {t.stands.title}
           {followUp && <span className="muted">{t.stands.followUp}</span>}
         </h1>
+        {/* the reading chosen on the confirmation page (v13): "On security now vs. freedom later." */}
+        {focusLine && (
+          <p className="sub rv stands-on" style={{ animationDelay: '.05s' }}>
+            {t.stands.on.split('{focus}')[0]}
+            <em>{focusLine}</em>
+            {/* own words that end in their own stop do not get a second one */}
+            {/[.?!。？！]$/.test(focusLine) ? '' : t.stands.on.split('{focus}')[1]}
+          </p>
+        )}
         {seats.map((f, i) => {
           // a cast council whose alternates are not known yet keeps its arrows: a tap asks the live council for them
           const canSwap = candidatesFor(session, i).length > 0 || (!!session.cast && !session.cast.alternates.length);

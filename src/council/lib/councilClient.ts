@@ -11,6 +11,7 @@
    function enforces it too): a "quote" segment must match one of the
    figure's verified quotes exactly, or it renders as paraphrase.
    ============================================================ */
+import { focusText } from '../content/readings';
 import { supabase, isLiveCouncilConfigured } from '../../lib/supabase';
 import type { CouncilSession, Message, Segment, LiveOverrides } from '../store/types';
 import type { Axis, Category } from '../content/types';
@@ -117,6 +118,20 @@ const devWarn = (...args: unknown[]) => {
   if (import.meta.env?.DEV) console.warn(...args);
 };
 
+/** the server's cap on a question (council-chat: str(body.question, 600)) */
+const QUESTION_MAX = 600;
+
+/** the question as the model hears it: the reader's words, then the reading they chose on the confirmation page.
+    The angle is read in the interface language of the moment and kept whole; the question gets the rest of the cap */
+export function askedOf(question: string, focus?: CouncilSession['focus']): string {
+  if (!focus?.title) return question;
+  const f = focusText(focus);
+  const angle = (focus.custom || !f.detail ? f.title : `${f.title} — ${f.detail}`).slice(0, 200);
+  const lead = getActiveLang() === 'zh' ? '读者希望议事厅从这个角度讨论：' : 'The reader wants the council to take it as: ';
+  const room = QUESTION_MAX - lead.length - angle.length - 2;
+  return `${question.slice(0, Math.max(0, room))}\n\n${lead}${angle}`;
+}
+
 async function invoke(body: Record<string, unknown>): Promise<unknown> {
   const { data, error } = await supabase!.functions.invoke('council-chat', { body });
   if (error) throw error;
@@ -143,7 +158,7 @@ export async function liveCouncilReady(): Promise<boolean> {
 export async function liveOpen(session: CouncilSession): Promise<OpenResult | null> {
   if (!(await liveCouncilReady())) return null;
   try {
-    const data = (await invoke({ mode: 'open', question: session.question, area: session.area, seats: dossiers(session), lang: getActiveLang() })) as {
+    const data = (await invoke({ mode: 'open', question: askedOf(session.question, session.focus), area: session.area, seats: dossiers(session), lang: getActiveLang() })) as {
       intros?: unknown;
       round1?: WireLine[];
       round2?: WireLine[];
@@ -206,7 +221,7 @@ export async function liveTurn(
   try {
     const data = (await invoke({
       mode: 'turn',
-      question: session.question,
+      question: askedOf(session.question, session.focus),
       area: session.area,
       seats: dossiers(session),
       slot,

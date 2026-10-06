@@ -190,3 +190,19 @@ store, engine, content, backend and Chinese layer are unchanged underneath.
 - What the mockup stubbed is wired to the real thing: sign-in, the live
   council (lines still being written show "{name} is writing" and the debate
   waits), cast sessions with recalled cards, sync, Chinese.
+
+### Later on 6 October: the room, the confirmation step, the way home
+
+- **The room is always empty.** Three dashed seats with breathing halos
+  invite a question; the last council is no longer replayed in the chairs
+  (it lives in the Library).
+- **The v13 confirmation step is back** (`#/confirm`). Asking shows
+  "Reading your question", then "The council will debate" with one reading
+  of the question picked; "Not this? Change" offers three readings — three
+  tensions in the question, each pressed hardest by one seat — plus "Other"
+  in the reader's own words. "Cast the council" runs the v14 curtain from
+  there. Act I names the angle ("On getting rich vs. having enough."). The
+  scripted councils' words do not change with the reading; the live council
+  is told the angle with the question.
+- **"owlry." goes home** from every screen that shows it, so a debate or a
+  summary is never a dead end.
