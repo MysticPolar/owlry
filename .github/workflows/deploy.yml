@@ -1,11 +1,18 @@
-name: Deploy preview to GitHub Pages
+name: Deploy app.owlry.ai to GitHub Pages
 
-# Builds the app and publishes it to GitHub Pages on every push, so the
-# latest version is always live at a stable URL — no local server needed.
+# Builds both apps from main and publishes them as one site on every push:
+#
+#   https://app.owlry.ai/           Owlry (the root app, a PWA)
+#   https://app.owlry.ai/council/   the Council Room (src/council), reachable
+#                                   only by URL and behind an access code
+#
+# One artifact holds both, so a deploy can never drop /council/ again (the
+# old split — a root deploy here, a Council preview from its own branch —
+# made whichever ran last own the site).
 
 on:
   push:
-    branches: [renovation/homescreen]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -71,8 +78,15 @@ jobs:
           done
           echo "The configured backend did not become ready in four minutes." >&2
           check_backend
+      - name: Nothing in Owlry points at the Council
+        # the Council is reachable only by someone who has the URL
+        run: |
+          if git grep -n -i -e '/council' -- src ':!src/council' index.html public; then
+            echo "::error::Owlry references /council (above); the Council must stay unlinked" >&2
+            exit 1
+          fi
       - run: npm ci
-      - run: npm run build
+      - name: Build Owlry (/) and the Council Room (/council/) into one dist/
         env:
           # relative base works for both github.io/owlry/ and app.owlry.ai/
           BASE_PATH: ./
@@ -81,6 +95,19 @@ jobs:
           # app runs local-only with the offline mockup brain, exactly as before.
           VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ vars.VITE_SUPABASE_ANON_KEY }}
+          # the Council's access code, as its SHA-256 (src/council/gate/access.ts)
+          VITE_COUNCIL_ACCESS_HASH: ${{ vars.VITE_COUNCIL_ACCESS_HASH }}
+        run: |
+          set -euo pipefail
+          if [[ ! "$VITE_COUNCIL_ACCESS_HASH" =~ ^[0-9a-fA-F]{64}$ ]]; then
+            echo "::error::repository variable VITE_COUNCIL_ACCESS_HASH is missing or not a SHA-256; /council/ would stay locked for everyone" >&2
+            exit 1
+          fi
+          npm run build    # tsc -b && vite build && vite build --config vite.council.config.ts
+          # the root worker answers every navigation on the origin: it must leave /council/ alone
+          grep -q 'council' dist/sw.js || { echo "::error::dist/sw.js lacks the /council/ navigation denylist" >&2; exit 1; }
+          ! grep -q 'council/index.html' dist/sw.js || { echo "::error::dist/sw.js precaches the Council" >&2; exit 1; }
+          test -f dist/index.html && test -f dist/council/index.html && test -f dist/CNAME
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

@@ -17,11 +17,9 @@ name: Deploy Supabase backend
 # signup-with-invite are public (--no-verify-jwt) because guests call them
 # before a session exists.
 #
-# The Council Room (docs/council-backend.md) adds one additive migration and
+# The Council Room (docs/council-backend.md) adds two additive migrations and
 # two functions: council-chat (JWT-gated) and council-signup (public — it
-# creates the account). They deploy with everything else; to deploy them
-# from the Council branch before it lands on the live branch, run this
-# workflow from the Actions tab with that branch selected. Optional secrets
+# creates the account). They deploy with everything else. Optional secrets
 # (Edge Functions → Secrets): COUNCIL_INVITE_REQUIRED=false opens sign-up
 # without an invite code; COUNCIL_DAILY_CAP caps council-chat's Gemini calls
 # per day across all readers (default 1500); COUNCIL_RECALL_MODEL points the
@@ -30,7 +28,7 @@ name: Deploy Supabase backend
 on:
   workflow_dispatch:
   push:
-    branches: [renovation/homescreen]
+    branches: [main]
     paths:
       - ".github/workflows/owl-chat-deploy.yml"
       - "supabase/functions/**"

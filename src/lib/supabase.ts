@@ -26,8 +26,8 @@ const liveOwlBuildEnabled = env.VITE_OWL_LIVE !== 'off';
  * app runs entirely local (IndexedDB), exactly as it does today. The backend
  * lights up only once VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY are provided.
  *
- * Shared with the Council Room (src/council), so both apps hold one session on
- * the origin: signing in or out at app.owlry.ai is the same at /council/.
+ * Shared with the Council Room (vite.council.config.ts), so both apps hold one
+ * session on the origin: signing in or out of Owlry is the same in the Council.
  */
 export const supabase: SupabaseClient | null =
   url && anonKey
