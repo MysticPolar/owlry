@@ -8,6 +8,8 @@ import { App } from './App';
 import { bootBackend } from './lib/backend';
 import { useStore } from './store/useStore';
 import { setActiveLang } from './i18n';
+import { CouncilGate } from './gate/CouncilGate';
+import { grantFromUrl, hasCouncilAccess } from './gate/access';
 
 // the persisted language wins over the browser's; keep the module-level value in step from here on
 setActiveLang(useStore.getState().lang);
@@ -15,10 +17,24 @@ useStore.subscribe((s, prev) => {
   if (s.lang !== prev.lang) setActiveLang(s.lang);
 });
 
-bootBackend();
+const root = createRoot(document.getElementById('root')!);
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-);
+function open() {
+  bootBackend();
+  root.render(
+    <StrictMode>
+      <App />
+    </StrictMode>,
+  );
+}
+
+// the door (gate/access.ts): a shared ?key= link or a stored grant opens it; otherwise ask for the code
+void grantFromUrl().then((granted) => {
+  if (granted || hasCouncilAccess()) open();
+  else
+    root.render(
+      <StrictMode>
+        <CouncilGate onOpen={open} />
+      </StrictMode>,
+    );
+});

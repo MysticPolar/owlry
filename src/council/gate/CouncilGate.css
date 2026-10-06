@@ -1,0 +1,6 @@
+/* the door in front of the Council (gate/CouncilGate.tsx) — the auth screen's night room, one field */
+.gate-form {
+  display: grid; gap: 14px; align-content: center;
+  padding-top: calc(var(--sat) + 24px); padding-bottom: calc(var(--sab) + 24px);
+}
+.gate-error { color: #FFB4A8; margin: -4px 0 0; animation: fade-up 300ms var(--ease-out) both; }
