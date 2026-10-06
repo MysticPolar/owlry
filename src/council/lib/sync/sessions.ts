@@ -7,7 +7,7 @@
    the device. A cast session's `cast` travels in the payload, so another
    device can register its placeholders and re-ask for the cards.
    ============================================================ */
-import { supabase } from '../supabase';
+import { supabase } from '../../../lib/supabase';
 import type { CastInfo, CastSeat, CouncilSession } from '../../store/types';
 
 const TABLE = 'owlry_council_sessions';

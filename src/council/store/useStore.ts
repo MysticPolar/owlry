@@ -18,7 +18,7 @@ import { CURATED_FIGURE_NAMES, curatedFigure, curatedFigureId } from '../content
 import { isCuratedBook } from '../content/books';
 import { bookCard, bookSeedOf, castSeatOf, figureCard, registerBookCard, registerCast, registerFigureCard, registerMinds } from '../content/minds';
 import { recalledBookId } from '../lib/minds';
-import { isLiveCouncilConfigured } from '../lib/supabase';
+import { isLiveCouncilConfigured } from '../../lib/supabase';
 import { detectLang, getActiveLang, setActiveLang, type Lang } from '../i18n';
 import { UI } from '../i18n/ui';
 

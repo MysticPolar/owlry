@@ -1,3 +1,4 @@
+import './sessionMigrate'; // first: runs before the shared Supabase client is created
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles/fonts.css';

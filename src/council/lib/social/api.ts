@@ -6,7 +6,7 @@
    calls are no-ops without a backend, and the store keeps the seed feed
    in front of the reader either way.
    ============================================================ */
-import { supabase, currentUserId } from '../supabase';
+import { supabase, currentUserId } from '../../../lib/supabase';
 import { uid as newId } from '../../app/ids';
 import type { Post } from '../../store/types';
 

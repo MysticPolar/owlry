@@ -12,7 +12,7 @@
 import { useStore, type StoreState } from '../../store/useStore';
 import { useAuth } from '../../store/useAuth';
 import type { AuthProfile } from '../auth/api';
-import { supabase } from '../supabase';
+import { supabase } from '../../../lib/supabase';
 import { cloudPull, cloudPush } from './cloud';
 import { mergeState, sameState } from './merge';
 import { pullSessions, pushSessions, mergeSessions } from './sessions';

@@ -11,7 +11,7 @@
    function enforces it too): a "quote" segment must match one of the
    figure's verified quotes exactly, or it renders as paraphrase.
    ============================================================ */
-import { supabase, isLiveCouncilConfigured } from './supabase';
+import { supabase, isLiveCouncilConfigured } from '../../lib/supabase';
 import type { CouncilSession, Message, Segment, LiveOverrides } from '../store/types';
 import type { Axis, Category } from '../content/types';
 import { figure } from '../content/figures';

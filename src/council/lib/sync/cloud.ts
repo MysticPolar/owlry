@@ -7,7 +7,7 @@
    the classic app's cloudPull/cloudPush against the Council's table.
    Safe no-ops with no backend / no session.
    ============================================================ */
-import { supabase, currentUserId } from '../supabase';
+import { supabase, currentUserId } from '../../../lib/supabase';
 import { mergeState } from './merge';
 import { normalizeCloudState, type CloudState } from './types';
 

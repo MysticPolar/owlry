@@ -25,6 +25,9 @@ const liveOwlBuildEnabled = env.VITE_OWL_LIVE !== 'off';
  * The Supabase client, or `null` when env vars aren't set — in which case the
  * app runs entirely local (IndexedDB), exactly as it does today. The backend
  * lights up only once VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY are provided.
+ *
+ * Shared with the Council Room (src/council), so both apps hold one session on
+ * the origin: signing in or out at app.owlry.ai is the same at /council/.
  */
 export const supabase: SupabaseClient | null =
   url && anonKey
@@ -40,3 +43,13 @@ export const isConfigured: boolean = supabase !== null;
 
 /** The build can reach Live Scout. A signed-in session and ink are still required per turn. */
 export const isLiveOwlConfigured = (): boolean => supabase !== null && liveOwlBuildEnabled;
+
+/** Council: the build may call the live council (council-chat); VITE_COUNCIL_LIVE=off keeps the scripted one even with a backend */
+export const isLiveCouncilConfigured = (): boolean => supabase !== null && env.VITE_COUNCIL_LIVE !== 'off';
+
+/** Council: the signed-in user's id, or null (no backend / no session) */
+export async function currentUserId(): Promise<string | null> {
+  if (!supabase) return null;
+  const { data } = await supabase.auth.getSession();
+  return data.session?.user.id ?? null;
+}

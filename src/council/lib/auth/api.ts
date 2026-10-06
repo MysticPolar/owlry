@@ -9,7 +9,7 @@
    Every call is safe with no backend: `authAvailable()` is false and the
    screens keep the on-device mock account.
    ============================================================ */
-import { supabase } from '../supabase';
+import { supabase } from '../../../lib/supabase';
 
 export interface AuthProfile {
   id: string;

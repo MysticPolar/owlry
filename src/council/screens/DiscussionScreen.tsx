@@ -5,7 +5,7 @@ import { useStore, selectCouncil } from '../store/useStore';
 import { figure } from '../content/figures';
 import { typingDelay, readingPause, readingFor } from '../engine/council';
 import { book } from '../content/books';
-import { useKeyboardInset } from '../hooks/useKeyboardInset';
+import { useKeyboardInset } from '../../hooks/useKeyboardInset';
 import { useReduceMotion } from '../hooks/useReduceMotion';
 import { useAutoGrow } from '../hooks/useAutoGrow';
 import { usePresence } from '../hooks/usePresence';

@@ -8,7 +8,7 @@ import { Seg } from '../components/Seg';
 import { OwlRow } from '../components/Owl';
 import { saveProfile } from '../lib/auth/api';
 import { SignInForm } from '../components/SignInForm';
-import { isBackendConfigured, isLiveCouncilConfigured } from '../lib/supabase';
+import { isBackendConfigured, isLiveCouncilConfigured } from '../../lib/supabase';
 import { useT, fmt } from '../i18n/react';
 import { LANGS } from '../i18n';
 
