@@ -14,15 +14,6 @@ useStore.subscribe((s, prev) => {
   if (s.lang !== prev.lang) setActiveLang(s.lang);
 });
 
-// The Council booted for real: clear the flag the service-worker escape shim
-// sets before it reloads (scripts/sw-escape-shims.mjs), so its loop guard
-// only ever fires when an escape did not lead here.
-try {
-  sessionStorage.removeItem('owlry-council-sw-escape');
-} catch {
-  /* storage unavailable — nothing to clear */
-}
-
 bootBackend();
 
 createRoot(document.getElementById('root')!).render(
