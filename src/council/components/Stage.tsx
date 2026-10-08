@@ -250,7 +250,6 @@ export function Stage({
       </svg>
       <div className="curtain l" aria-hidden="true" />
       <div className="curtain r" aria-hidden="true" />
-      <div className="rail" aria-hidden="true" />
       {marquee && (
         <div className="marquee" aria-hidden="true">
           {marquee}

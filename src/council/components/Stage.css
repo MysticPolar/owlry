@@ -27,14 +27,13 @@
 .stagewrap.reveal .fig.seatin { animation-delay: calc(0.7s + var(--i, 0) * 0.24s); }
 @keyframes seatin { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
 
-/* the curtain and its rail */
+/* the curtain (the mockup's brass rail above it is left out: in the room, where the curtain is never drawn, it read as a stray edge) */
 .curtain { position: absolute; top: 0; bottom: 0; width: 51%; background: var(--velvet); background-image: repeating-linear-gradient(90deg, rgba(0, 0, 0, 0) 0 22px, rgba(0, 0, 0, 0.14) 22px 30px); transition: transform 0.95s var(--ease); }
 .curtain.l { left: 0; }
 .curtain.r { right: 0; }
 .stagewrap.open .curtain.l { transform: translateX(-102%); }
 .stagewrap.open .curtain.r { transform: translateX(102%); }
 .stagewrap.nocurtain .curtain { display: none; }
-.rail { position: absolute; top: 0; left: 0; right: 0; height: 6px; background: var(--brass); }
 .marquee { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 0 24px; text-align: center; color: var(--cream); font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; transition: opacity 0.4s; pointer-events: none; }
 .stagewrap.open .marquee, .stagewrap.nocurtain .marquee { opacity: 0; }
 
