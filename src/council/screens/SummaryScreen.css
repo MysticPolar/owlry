@@ -1,7 +1,8 @@
 /* ============================================================
-   Act III — the programme (mockup V.summary). The question line, the
-   verdict, the "Read next" rows, where they differ, the next step and
-   the transcript. The ask bar's primitives (.chips.who, .chatbar) are
+   Act III — the programme (mockup V.summary, reordered at the reader's
+   request). The question line, where they differ, the verdict, why it
+   matters to you, the next step, the "Read next" rows and the
+   transcript. The ask bar's primitives (.chips.who, .chatbar) are
    in base.css; these are the summary's own levels.
    ============================================================ */
 .summary .summary-q { font-size: 13.5px; margin: 4px 0 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -12,13 +13,14 @@
 .summary .sec .k { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
 .summary .sec .v { font-family: var(--font-serif); font-size: 17px; line-height: 1.45; margin-top: 7px; }
 .summary .sec .v b { font-weight: 600; }
-.summary .sec.lead-sec { padding-top: 4px; }
-.summary .sec.lead-sec .v { font-size: 19px; line-height: 1.4; }
+/* the verdict is still the heart of the page: the largest words on it */
+.summary .sec.verdict .v { font-size: 19px; line-height: 1.4; }
+.summary .sec.fits .k + .added { margin-top: 7px; }
 .summary .added { margin-top: 10px; display: grid; gap: 4px; font-family: var(--font-serif); font-size: 14px; line-height: 1.45; color: var(--muted); }
-.summary .casting { font-size: 13px; margin: 10px 0 0; }
+.summary .casting { font-size: 13px; margin: 0 0 4px; }
 
 /* read next */
-.summary h2.read-next { font-size: 22px; margin: 10px 0 0; }
+.summary h2.read-next { font-size: 22px; margin: 24px 0 0; }
 .summary .rn { display: flex; gap: 12px; align-items: center; width: 100%; text-align: left; color: var(--ink); padding: 10px 0; border-bottom: 1px solid var(--line); transition: background var(--dur-fast); }
 .summary .rn:active { background: var(--surface); }
 .summary .rn .grow { flex: 1 1 auto; min-width: 0; display: grid; gap: 2px; }
@@ -29,8 +31,9 @@
 .summary .readbtn { flex: none; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; background: var(--gold); color: var(--gold-ink); border: none; border-radius: 999px; padding: 0 16px; font-family: inherit; font-weight: 700; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
 .summary .readbtn.outline { background: transparent; color: var(--ink); border: 1px solid var(--line-2); }
 
-/* where they differ */
-.summary .sec.differ { border-top: none; padding-top: 18px; }
+/* where they differ: the first section, straight under the question */
+.summary .sec.differ { border-top: none; padding-top: 4px; }
+.summary .sec.differ .v { margin-top: 0; }
 .summary .sec.differ .diff { display: flex; gap: 10px; align-items: flex-start; margin-top: 8px; }
 
 /* one next step */

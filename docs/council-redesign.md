@@ -238,3 +238,12 @@ store, engine, content, backend and Chinese layer are unchanged underneath.
 - **The readings mode ships** with the evening-of-6-October backend work
   (`council-chat` modes `readings`; the opening with room to finish; every
   live line says whom it answers).
+
+### 8 October: the summary, reordered
+
+- **Act III reads in a new order**, at the reader's request: where they
+  differ, the verdict (what they agree on), why it matters to you, one next
+  step, what to read next, then the transcript. "Why it matters to you" is
+  the takeaways' `fits` on its own (it used to run on after the verdict),
+  with anything the reader added under it. The verdict keeps the largest
+  type on the page.

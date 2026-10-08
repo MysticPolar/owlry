@@ -9,8 +9,9 @@ The interface is the **v14 design** with the **v15 room**: ask a question in
 the room (one chat canvas — the open seats above, the composer on the bottom
 edge, three ideas stacked on it), then three acts — *Stands* (three minds,
 one book each), *Debate* (one line at a time on a drawn stage, the reader sets
-the pace) and *Summary* (the verdict, the books, a follow-up). Two lighting
-rigs, evening and matinée.
+the pace) and *Summary* (in this order: where they differ, the verdict, why it
+matters to you, one next step, what to read next, the transcript on request;
+the follow-up bar under it). Two lighting rigs, evening and matinée.
 
 Paths below are relative to `src/council/` unless they start with `src/`,
 `supabase/`, `docs/` or `scripts/` (repo root).

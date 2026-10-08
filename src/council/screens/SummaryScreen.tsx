@@ -16,9 +16,10 @@ import { useT, useLang, fmt } from '../i18n/react';
 import './SummaryScreen.css';
 
 /* ============================================================
-   Act III — the programme: the verdict, then the books. The question
-   that was put, what the three agree on and what fits, one book per
-   seat to read next, where they differ, one next step to keep, and the
+   Act III — the programme. The question that was put, then, in this
+   order: where the three differ, the verdict (what they agree on), why
+   it matters to you (how it fits your situation, with anything you
+   added), one next step to keep, one book per seat to read next, and the
    whole transcript on request. Under it the ask bar: a follow-up to the
    council plays as a new cycle (back to Act I); a question to one seat
    opens the one-on-one.
@@ -147,25 +148,60 @@ export function SummaryScreen({ id }: { id: string }) {
           {isFollowUp ? t.summary.followUp : ''}“{latestQ}”
         </p>
 
-        <div className="sec lead-sec rv" style={{ animationDelay: '.1s' }}>
-          <div className="k">{t.summary.verdict}</div>
+        {/* the live council is still writing the opening: everything below is the script's until it answers */}
+        {liveWriting && <p className="sub casting rv">{t.summary.casting}</p>}
+
+        <div className="sec differ rv" style={{ animationDelay: '.1s' }}>
+          <div className="k">{t.summary.differ}</div>
           <div className="v">
-            {tk.commonGround} {tk.fits}
+            {tk.differences.map((d, i) => {
+              const f = figure(d.figureId);
+              return (
+                <div key={d.figureId} className="diff">
+                  <Avatar figure={f} size={26} seat={i} className="sm" />
+                  <span>
+                    <b>{f.short}:</b> {d.text}
+                  </span>
+                </div>
+              );
+            })}
           </div>
-          {tk.context.length > 0 && (
-            <ul className="added">
-              {tk.context.map((c, i) => (
-                <li key={i}>{fmt(t.summary.youAdded, { c })}</li>
-              ))}
-            </ul>
-          )}
-          {liveWriting && <p className="sub casting">{t.summary.casting}</p>}
         </div>
 
-        <h2 className="lead read-next rv" style={{ animationDelay: '.2s' }}>
+        <div className="sec verdict rv" style={{ animationDelay: '.18s' }}>
+          <div className="k">{t.summary.verdict}</div>
+          <div className="v">{tk.commonGround}</div>
+        </div>
+
+        {(tk.fits || tk.context.length > 0) && (
+          <div className="sec fits rv" style={{ animationDelay: '.26s' }}>
+            <div className="k">{t.summary.fits}</div>
+            {tk.fits && <div className="v">{tk.fits}</div>}
+            {tk.context.length > 0 && (
+              <ul className="added">
+                {tk.context.map((c, i) => (
+                  <li key={i}>{fmt(t.summary.youAdded, { c })}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )}
+
+        <div className="sec next rv" style={{ animationDelay: '.34s' }}>
+          <div className="k">{t.summary.nextStep}</div>
+          <div className="v">{tk.nextStep}</div>
+          <div className="act2">
+            <span className="caps lands">{t.summary.lands}</span>
+            <button type="button" className="btn ghost sm" disabled={stepSaved} onClick={keepStep}>
+              {stepSaved ? t.summary.savedStep : t.summary.saveStep}
+            </button>
+          </div>
+        </div>
+
+        <h2 className="lead read-next rv" style={{ animationDelay: '.42s' }}>
           {t.summary.readNext}
         </h2>
-        <div className="rv" style={{ animationDelay: '.26s' }}>
+        <div className="rv" style={{ animationDelay: '.48s' }}>
           {recs.map((r) => {
             const b = maybeBook(r.bookId);
             if (!b) return null;
@@ -186,35 +222,7 @@ export function SummaryScreen({ id }: { id: string }) {
           })}
         </div>
 
-        <div className="sec differ rv" style={{ animationDelay: '.34s' }}>
-          <div className="k">{t.summary.differ}</div>
-          <div className="v">
-            {tk.differences.map((d, i) => {
-              const f = figure(d.figureId);
-              return (
-                <div key={d.figureId} className="diff">
-                  <Avatar figure={f} size={26} seat={i} className="sm" />
-                  <span>
-                    <b>{f.short}:</b> {d.text}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        <div className="sec next rv" style={{ animationDelay: '.42s' }}>
-          <div className="k">{t.summary.nextStep}</div>
-          <div className="v">{tk.nextStep}</div>
-          <div className="act2">
-            <span className="caps lands">{t.summary.lands}</span>
-            <button type="button" className="btn ghost sm" disabled={stepSaved} onClick={keepStep}>
-              {stepSaved ? t.summary.savedStep : t.summary.saveStep}
-            </button>
-          </div>
-        </div>
-
-        <button type="button" className="btn text tr rv" style={{ animationDelay: '.5s' }} aria-expanded={transcript} onClick={() => setTranscript((v) => !v)}>
+        <button type="button" className="btn text tr rv" style={{ animationDelay: '.56s' }} aria-expanded={transcript} onClick={() => setTranscript((v) => !v)}>
           {transcript ? t.summary.hideTranscript : t.summary.showTranscript}
         </button>
         {tr.mounted && (
