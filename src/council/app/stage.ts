@@ -1,9 +1,9 @@
 /* ============================================================
    Hand-offs between screens that the URL does not carry.
 
-   The curtain: casting a council on the ask screen closes it over the
-   empty seats; Act I then finds it closed and opens it on the cast. The
-   ask screen marks the session before navigating and Act I takes the
+   The curtain: Act I finds it closed over a freshly cast council and
+   opens it on the cast (the selection page has no stage of its own). The
+   selection page marks the session before navigating and Act I takes the
    mark on mount — a deep link or a return to Act I plays no reveal.
    ============================================================ */
 let pendingReveal: string | null = null;

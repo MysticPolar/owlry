@@ -66,8 +66,8 @@ plain boot in `main.tsx`, drop the variable from `deploy.yml` and
 
 - Routes (`app/router.ts`): `#/council` (the room — always three empty,
   breathing seats; it never shows the last council), `#/confirm` (the
-  selection page: what the question is really about — any of three readings,
-  plus Other in the reader's words — then cast), `#/stands/:id`,
+  selection page, no stage: the question, then what it is really about — any
+  of three readings, plus Other in the reader's words — then cast), `#/stands/:id`,
   `#/debate/:id`, `#/summary/:id`, `#/one/:id/:figure` (one on one with a
   seat), `#/book/:id`, `#/read/:id`, the tabs, auth. `#/discussion/:id` is a
   legacy alias of the stands. `App.tsx` orders them by depth for the slide
@@ -156,8 +156,8 @@ plain boot in `main.tsx`, drop the variable from `deploy.yml` and
 - Portraits must have a Wikimedia licence entry in `public/portraits/CREDITS.md`.
 - The council room is the drawn stage in `components/Stage.tsx`: one set in
   three geometries (`GEO`: the room, the band of Act I, the full stage of
-  Act II), a velvet curtain that closes when a council is cast and opens on
-  Act I, a spotlight on whoever speaks. Seat 0 is the centre chair, 1 the
+  Act II), a velvet curtain that Act I finds closed over a fresh cast and opens
+  on the council, a spotlight on whoever speaks. Seat 0 is the centre chair, 1 the
   left, 2 the right (`session.seats` order); the chairs' colours are
   `--seat-0/1/2`. Its paint is the one place a screen may hard-code colour.
 - Gold (`--gold`) is for the primary action, the active nav item, the

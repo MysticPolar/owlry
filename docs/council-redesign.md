@@ -222,3 +222,19 @@ store, engine, content, backend and Chinese layer are unchanged underneath.
   room to finish, round one is built as answers (each seat replies to the
   one before by name), and every live line says whom it addresses, so the
   "X to Y" labels follow the words rather than the script.
+
+### 8 October: the v15 room, and a selection page without the stage
+
+- **The room is one chat canvas** (v15 mockup): the open seats above, the
+  composer on the bottom edge with the interest pill and a send button, three
+  idea pills stacked on it. The seats turn gold while there is a question to
+  send; asking lands the question in the room as the reader's own line while
+  it is read. The brass curtain rail is gone from every stage.
+- **The selection page has no stage.** The question, then the options:
+  "What is it really about?", the three readings (the live council's for the
+  question itself, else the script's), Other in the reader's words, "Cast the
+  council". The tap holds a short beat ("Casting the council") and Act I
+  opens its curtain on the cast as before — the curtain is Act I's alone now.
+- **The readings mode ships** with the evening-of-6-October backend work
+  (`council-chat` modes `readings`; the opening with room to finish; every
+  live line says whom it answers).

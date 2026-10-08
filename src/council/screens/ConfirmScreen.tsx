@@ -4,46 +4,33 @@ import { navigate, parseRoute } from '../app/router';
 import { markReveal } from '../app/stage';
 import { useStore } from '../store/useStore';
 import type { Focus, FocusPick } from '../store/types';
-import type { Figure } from '../content/types';
-import { figure } from '../content/figures';
 import { readingsFor } from '../content/readings';
 import { isLiveCouncilConfigured } from '../../lib/supabase';
 import { AppBar, Thinking } from '../components/chrome';
-import { Stage, type Curtain } from '../components/Stage';
 import { usePresence } from '../hooks/usePresence';
 import { useReduceMotion } from '../hooks/useReduceMotion';
 import { fmt, useT } from '../i18n/react';
 import './ConfirmScreen.css';
 
 /* ============================================================
-   What the question is really about — the selection page (v13's
-   Confirm step, made a multiple choice). The room's stage stays on, its
-   seats empty; under it the question, then three readings of it — three
+   What the question is really about — the selection page. No stage
+   here: the question, then the options. Three readings of it — three
    tensions it could be about, written for this question by the live
    council while the room said "Reading your question", or the script's
    own (content/readings.ts) — and "Other", in the reader's own words.
    The reader picks any of them, and that is what the council debates:
    picking is how the reader, and the model, come to understand the
-   question. "Cast the council" waits for at least one; it draws the
-   curtain over the seats, and Act I opens it on the cast (app/stage.ts
-   carries the hand-off).
+   question. "Cast the council" waits for at least one, holds a beat
+   ("Casting the council"), then Act I opens its curtain on the cast
+   (app/stage.ts carries the hand-off).
 
-   A scripted council is only seated when the curtain's beat ends, so
-   leaving during it leaves nothing behind; a live cast starts at once
-   (it takes a few seconds) and is called off if the reader leaves.
+   A scripted council is only seated when the beat ends, so leaving
+   during it leaves nothing behind; a live cast starts at once (it takes
+   a few seconds) and is called off if the reader leaves.
    ============================================================ */
 
-/** the curtain's beat: it closes over the seats before Act I opens */
-const CAST_BEAT_MS = 1150;
-
-/** a seat's thinker, or an empty chair while a cast seat's card is still on its way */
-function seatFigure(id: string): Figure | null {
-  try {
-    return figure(id);
-  } catch {
-    return null;
-  }
-}
+/** the beat between the tap and Act I: long enough to read "Casting the council", short enough to feel like one motion */
+const CAST_BEAT_MS = 650;
 
 /** this screen is still the one on show (an outgoing screen stays mounted for its exit, timers and all) */
 const isHere = () => parseRoute(location.hash).name === 'confirm';
@@ -62,7 +49,6 @@ export function ConfirmScreen() {
   const cancelCasting = useStore((s) => s.cancelCasting);
   const storeCasting = useStore((s) => s.casting);
   const activeCouncilId = useStore((s) => s.activeCouncilId);
-  const councils = useStore((s) => s.councils);
 
   // the question as it was handed over: the screen keeps its copy, so clearing the store's never empties it mid-exit
   const [pending] = useState(() => useStore.getState().pendingAsk);
@@ -81,7 +67,6 @@ export function ConfirmScreen() {
   const focusOther = useRef(false);
 
   const [cast, setCast] = useState<Cast | null>(null);
-  const [curtain, setCurtain] = useState<Curtain>('none');
   const [beat, setBeat] = useState(false);
   const done = useRef(false);
   const castRef = useRef<Cast | null>(null);
@@ -122,12 +107,13 @@ export function ConfirmScreen() {
       return;
     }
     focusAtCast.current = focus;
+    otherRef.current?.blur();
     // a question no script covers, with a live council to ask: the cast starts now (it takes a few seconds)
     if (!scriptId && isLiveCouncilConfigured()) {
       setCast({ id: ask(pending.question, undefined, focus), deferred: false });
       return;
     }
-    // a scripted council is seated when the curtain's beat ends
+    // a scripted council is seated when the beat ends
     setCast({ id: null, deferred: true });
   };
 
@@ -138,23 +124,12 @@ export function ConfirmScreen() {
     else setCast(null);
   }, [cast, storeCasting, activeCouncilId]);
 
-  // the curtain closes over the seats: parked in the wings on one frame, drawn on the next, so the transition plays
+  // the beat: "Casting the council" holds for a moment before Act I
   useEffect(() => {
-    if (!casting) {
-      setCurtain((c) => (c === 'closed' ? 'open' : 'none'));
-      setBeat(false);
-      return;
-    }
-    setCurtain('open');
-    let raf = requestAnimationFrame(() => {
-      raf = requestAnimationFrame(() => setCurtain('closed'));
-    });
     setBeat(false);
+    if (!casting) return;
     const tm = window.setTimeout(() => setBeat(true), reduce ? 10 : CAST_BEAT_MS);
-    return () => {
-      cancelAnimationFrame(raf);
-      clearTimeout(tm);
-    };
+    return () => clearTimeout(tm);
   }, [casting, reduce]);
 
   // the beat has passed: a scripted council is seated now; once the session is known, Act I takes the reveal
@@ -202,16 +177,12 @@ export function ConfirmScreen() {
     }
   };
 
-  // the curtain names tonight's council once it is seated
-  const castSession = cast?.id ? councils[cast.id] : undefined;
-  const marquee = [t.council.marquee, ...(castSession ? castSession.seats.map(seatFigure).flatMap((f) => (f ? [f.short] : [])) : [])].join(' · ');
-
   return (
     <div className={`screen confirm-screen ${casting ? 'is-casting' : ''}`}>
       <AppBar back={{ name: 'council' }} />
-      <Stage mode="mid" seats={[null, null, null]} curtain={curtain} marquee={marquee} onEmptyTap={casting ? undefined : castCouncil} emptyAria={t.council.cast} />
       <div className="content">
-        <p className="sub rv confirm-q">“{pending.question}”</p>
+        {/* the question, then the options: the reader's words first, the room's reading of them under it */}
+        <p className="confirm-q rv">“{pending.question}”</p>
         <div className="pick-head rv" style={{ animationDelay: '.04s' }}>
           <h2 className="k" id="pick-k">
             {t.confirm.kicker}

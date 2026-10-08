@@ -1,12 +1,17 @@
 /* ============================================================
-   What the question is really about (screens/ConfirmScreen.tsx) — the
-   v13 mockup's options as a multiple choice, on the tokens.
+   What the question is really about (screens/ConfirmScreen.tsx) — no
+   stage: the question, then the options. The v13 mockup's option cards
+   as a multiple choice, on the tokens.
    ============================================================ */
-.confirm-q { font-size: 14px; margin: 2px 0 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+/* the reader's own words, whole (a long question is cut at three lines) */
+.confirm-q {
+  font-family: var(--font-serif); font-size: 19px; line-height: 1.3; letter-spacing: -0.005em; color: var(--ink); margin: 6px 0 0;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
 
-.pick-head { margin-top: 14px; }
+.pick-head { margin-top: 20px; }
 .pick-head .k { font-family: var(--font-serif); font-size: 22px; font-weight: 500; line-height: 1.25; color: var(--ink); margin: 0; }
-.pick-lead { font-family: var(--font-serif); font-size: 14.5px; color: var(--muted); margin: 6px 0 2px; line-height: 1.4; }
+.pick-lead { font-family: var(--font-serif); font-size: 14.5px; color: var(--muted); margin: 5px 0 2px; line-height: 1.4; }
 
 /* the readings, and Other */
 .opt { display: block; width: 100%; text-align: left; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 14px 52px 15px 16px; margin-top: 10px; color: var(--ink); font-family: inherit; transition: border-color var(--dur), transform 0.15s var(--ease); position: relative; cursor: pointer; }
@@ -41,6 +46,7 @@
 .pick-count.nudge { color: var(--ink); animation: nudge 360ms var(--ease); }
 @keyframes nudge { 0%, 100% { transform: none; } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
 .confirm-screen .footer .btn[aria-disabled='true'] { opacity: 0.45; }
+/* "Casting the council" takes the button's place on the tap: it arrives rather than appears */
 .confirm-screen .footer .thinking { animation: fade-in var(--dur) var(--ease) backwards; }
 
 @media (prefers-reduced-motion: reduce) {

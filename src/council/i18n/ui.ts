@@ -111,7 +111,7 @@ const en = {
   /** the selection page: what the question is really about, any of three readings plus Other */
   confirm: {
     kicker: 'What is it really about?',
-    lead: 'Pick any that fit, or add your own. The council debates what you pick.',
+    lead: 'Pick any that fit, or add your own.',
     other: 'Other',
     otherHint: 'Tell the council in your own words.',
     otherPh: 'In your own words…',
@@ -532,7 +532,7 @@ const zh: Dict = {
   },
   confirm: {
     kicker: '你的问题，其实关于什么？',
-    lead: '选出所有符合的，也可以自己写。议事厅就辩论你选的。',
+    lead: '选出所有符合的，也可以自己写。',
     other: '其他',
     otherHint: '用你自己的话告诉议事厅。',
     otherPh: '用你自己的话…',

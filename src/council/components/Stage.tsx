@@ -5,12 +5,12 @@ import './Stage.css';
 
 /* ============================================================
    The stage. One drawn set — a floor, a round table, three seats — in
-   three geometries: the ROOM (the ask and confirmation screens, three
-   empty seats breathing), the BAND (Act I, a strip above the cast), and the FULL
+   three geometries: the ROOM (the ask screen, three empty seats
+   breathing), the BAND (Act I, a strip above the cast), and the FULL
    stage (Act II, with the spotlight on whoever is speaking and reply
-   lines to whoever they address). A velvet curtain closes over the seats
-   when a council is cast and opens again on Act I; it lowers at the end
-   of the debate. Seat 0 is the centre chair, 1 the left, 2 the right.
+   lines to whoever they address). A velvet curtain is found closed over
+   a freshly cast council on Act I and opens on the seats; it lowers at
+   the end of the debate. Seat 0 is the centre chair, 1 the left, 2 the right.
    ============================================================ */
 export type StageMode = 'mid' | 'band' | 'full';
 export type Curtain = 'none' | 'open' | 'closed';
