@@ -196,7 +196,7 @@ button.card:active { transform: scale(0.985); }
 /* a list that cascades in: give each item --i */
 .cascade > * { animation: up 0.5s var(--ease) backwards; animation-delay: calc(min(var(--i, 0), 9) * 50ms); }
 
-/* ---------- chips, ask box, inputs ---------- */
+/* ---------- chips, the question field, inputs ---------- */
 .chips { display: flex; gap: 8px; overflow-x: auto; padding: 2px 0 10px; scrollbar-width: none; }
 .chips::-webkit-scrollbar { display: none; }
 .chips.who { padding: 0 0 8px; }
@@ -211,22 +211,14 @@ button.card:active { transform: scale(0.985); }
 .chip .dot { width: 18px; height: 18px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 9px; font-family: var(--font-serif); color: var(--cream); margin-left: -6px; overflow: hidden; }
 .chip .dot img { width: 100%; height: 100%; object-fit: cover; }
 .chip .dot .med { width: 100%; height: 100%; border-width: 0; font-size: 9px; }
-.askbox { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 14px 16px 16px; margin-top: 8px; transition: border-color var(--dur); }
-.askbox .lbl { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
-.askbox:focus-within { border-color: var(--line-2); }
-.askq { display: block; width: 100%; font-family: var(--font-serif); font-size: 18px; line-height: 1.45; min-height: 56px; max-height: 180px; outline: none; border: 0; background: transparent; color: var(--ink); resize: none; padding: 0; overflow: auto; }
+.askq { display: block; width: 100%; min-height: 26px; max-height: 132px; padding: 0 8px; overflow: auto; resize: none; outline: none; border: 0; background: transparent; font-family: var(--font-serif); font-size: 18px; line-height: 1.45; color: var(--ink); }
 .askq::placeholder { color: var(--muted); opacity: 1; }
-.askfoot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 10px; }
-.pill { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); border-radius: 999px; padding: 0 14px; min-height: 40px; font-size: 12.5px; font-weight: 600; color: var(--muted); background: transparent; transition: border-color var(--dur), color var(--dur); position: relative; max-width: 100%; }
+.askfoot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 8px; }
+.pill { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); border-radius: 999px; padding: 0 14px; min-height: 40px; font-size: 12.5px; font-weight: 600; color: var(--muted); background: transparent; transition: border-color var(--dur), color var(--dur); position: relative; min-width: 0; flex: 0 1 auto; max-width: 100%; }
 .pill::after { content: ''; position: absolute; inset: -2px; }
 .pill.on { color: var(--ink); border-color: var(--line-2); background: var(--surface2); }
 .pill svg { width: 12px; height: 12px; flex: none; }
 .pill .pill-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.suggest { list-style: none; margin-top: 16px; border-top: 1px solid var(--line); }
-.suggest button { width: 100%; display: flex; align-items: baseline; gap: 12px; padding: 12px 2px; text-align: left; border-bottom: 1px solid var(--line); font-family: var(--font-serif); font-size: 15.5px; line-height: 1.35; color: var(--ink); transition: background var(--dur-fast); }
-.suggest button .n { flex: none; font-family: var(--font-serif); font-size: 12px; letter-spacing: 0.18em; color: var(--num); }
-.suggest button .arr { margin-left: auto; padding-left: 10px; color: var(--muted); font-family: var(--font-ui); }
-.suggest button:active { background: var(--surface); }
 .lastrow { width: 100%; display: flex; align-items: center; gap: 12px; padding: 12px 14px; text-align: left; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; margin-top: 14px; color: var(--ink); }
 .lastrow .q { flex: 1 1 auto; min-width: 0; font-family: var(--font-serif); font-size: 15px; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .lastrow .q small { display: block; font-family: var(--font-ui); font-size: 11px; color: var(--muted); margin-top: 3px; letter-spacing: 0.04em; }

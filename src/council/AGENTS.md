@@ -5,10 +5,12 @@ council of three thinkers. Vite + React + TypeScript, mobile-first, fully
 usable offline with scripted councils. Served at **app.owlry.ai/council/**,
 reachable only by URL and behind one access code. Nothing in Owlry links here.
 
-The interface is the **v14 design**: ask a question in the room, then three
-acts — *Stands* (three minds, one book each), *Debate* (one line at a time on
-a drawn stage, the reader sets the pace) and *Summary* (the verdict, the books,
-a follow-up). Two lighting rigs, evening and matinée.
+The interface is the **v14 design** with the **v15 room**: ask a question in
+the room (one chat canvas — the open seats above, the composer on the bottom
+edge, three ideas stacked on it), then three acts — *Stands* (three minds,
+one book each), *Debate* (one line at a time on a drawn stage, the reader sets
+the pace) and *Summary* (the verdict, the books, a follow-up). Two lighting
+rigs, evening and matinée.
 
 Paths below are relative to `src/council/` unless they start with `src/`,
 `supabase/`, `docs/` or `scripts/` (repo root).
@@ -127,7 +129,7 @@ plain boot in `main.tsx`, drop the variable from `deploy.yml` and
   the new one for `--dur-screen`; direction comes from the `DEPTH` table).
   `hooks/usePresence.ts` keeps a sheet, toast or popover mounted for its
   exit animation; `useBump.ts` pops an icon that was just toggled;
-  `useAutoGrow.ts` grows the ask box. Shared keyframes (`up`, `fade-up`,
+  `useAutoGrow.ts` grows the question box. Shared keyframes (`up`, `fade-up`,
   `pop`, `pop-in/out`, `slide`, `sheet-down`, `toast-out`) and the `.rv` /
   `.cascade` helpers live in `styles/base.css`. The curtain hand-off between
   the room and Act I is `app/stage.ts`.

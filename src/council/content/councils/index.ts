@@ -147,19 +147,22 @@ export function areaMeta(id: Area): AreaMeta {
   return list.find((a) => a.id === id) ?? list[list.length - 1];
 }
 
-/** suggestions for the council room: the chosen areas' questions, de-duplicated, poster order when none chosen */
+/** the council room's three ideas: one question from each chosen area in turn (catalogue order), never the same one
+    twice; "Other" tops it up, and is the whole list when nothing is chosen */
 export function suggestionsFor(areas: Area[]): { text: string; councilId: string }[] {
-  const picked = areas.length ? areas : ['other' as Area];
-  const seen = new Set<string>();
   const out: { text: string; councilId: string }[] = [];
-  for (const a of picked) {
-    for (const s of areaMeta(a).suggestions) {
-      if (seen.has(s.text)) continue;
-      seen.add(s.text);
-      out.push(s);
-    }
+  const has = (s: { text: string }) => out.some((o) => o.text === s.text);
+  const pools = areasList()
+    .filter((a) => areas.includes(a.id))
+    .map((a) => a.suggestions.slice());
+  for (let turn = 0; out.length < 3 && pools.some((p) => p.length); turn++) {
+    const p = pools[turn % pools.length];
+    while (p.length && has(p[0])) p.shift();
+    const s = p.shift();
+    if (s) out.push(s);
   }
-  return out.slice(0, 4);
+  for (const s of areaMeta('other').suggestions) if (out.length < 3 && !has(s)) out.push(s);
+  return out;
 }
 
 /**

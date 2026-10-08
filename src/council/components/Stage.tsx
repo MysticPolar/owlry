@@ -61,6 +61,7 @@ export function Stage({
   speaker = null,
   addressing = [],
   dim = false,
+  ready = false,
   onSeatTap,
   onEmptyTap,
   seatAria,
@@ -85,6 +86,8 @@ export function Stage({
   addressing?: number[];
   /** full stage: dim the set so the spotlight reads */
   dim?: boolean;
+  /** the room: the empty seats turn gold, listening, while there is a question to send */
+  ready?: boolean;
   onSeatTap?: (seat: number) => void;
   onEmptyTap?: (seat: number) => void;
   seatAria?: (f: Figure) => string;
@@ -121,7 +124,7 @@ export function Stage({
   const sp = mode === 'full' && speaker !== null && speaker >= 0 ? speaker : null;
   const spotPos = sp !== null ? POS[sp] : null;
 
-  const cls = ['stagewrap', show ? 'show' : '', open ? 'open' : '', nocurtain ? 'nocurtain' : '', revealing ? 'reveal' : '', dim && sp !== null ? 'dim' : '', `mode-${mode}`, className]
+  const cls = ['stagewrap', show ? 'show' : '', open ? 'open' : '', nocurtain ? 'nocurtain' : '', revealing ? 'reveal' : '', dim && sp !== null ? 'dim' : '', ready ? 'ready' : '', `mode-${mode}`, className]
     .filter(Boolean)
     .join(' ');
 

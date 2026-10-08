@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { IconHome, IconBooks, IconUsers, IconUser, IconArrowLeft, IconSun, IconMoon } from '@tabler/icons-react';
 import { navigate, goBack, parseRoute, type Route, type TabName } from '../app/router';
 import { useStore } from '../store/useStore';
@@ -222,9 +222,23 @@ export function ToastHost() {
     const t = setTimeout(dismiss, toast.action ? 7000 : 3200);
     return () => clearTimeout(t);
   }, [toast, dismiss]);
+  // a screen whose bottom edge is its composer (the room) marks a `.toast-anchor`: the toast goes in the air under it
+  const [top, setTop] = useState<number | null>(null);
+  useLayoutEffect(() => {
+    if (!toast) return;
+    const anchor = document.querySelector('.screen-layer.in .toast-anchor');
+    const clip = anchor?.closest('.screen-clip');
+    setTop(anchor && clip ? Math.round(anchor.getBoundingClientRect().bottom - clip.getBoundingClientRect().top + 12) : null);
+  }, [toast]);
   if (!mounted || !shown) return null;
   return (
-    <div key={shown.id} className={`toast ${closing ? 'closing' : ''}`} role="status" onClick={() => dismiss()}>
+    <div
+      key={shown.id}
+      className={`toast ${closing ? 'closing' : ''}`}
+      style={top !== null ? { top, bottom: 'auto' } : undefined}
+      role="status"
+      onClick={() => dismiss()}
+    >
       <span>{shown.text}</span>
       {shown.action && (
         <button

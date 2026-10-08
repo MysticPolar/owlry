@@ -94,7 +94,7 @@ const en = {
   /** the room: ask a question */
   council: {
     lead: 'What’s on your mind?',
-    ph: 'Ask anything…',
+    ph: 'Ask the council anything…',
     ariaQ: 'Your question',
     pickAria: 'Choose interests',
     chooseInterest: 'Choose an interest',
@@ -518,7 +518,7 @@ const zh: Dict = {
   },
   council: {
     lead: '你在想什么？',
-    ph: '问点什么…',
+    ph: '向议事厅问点什么…',
     ariaQ: '你的问题',
     pickAria: '选择兴趣',
     chooseInterest: '选一个方向',
