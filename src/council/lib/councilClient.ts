@@ -11,7 +11,7 @@
    function enforces it too): a "quote" segment must match one of the
    figure's verified quotes exactly, or it renders as paraphrase.
    ============================================================ */
-import { focusText } from '../content/readings';
+import { normalizeFocus, pickText, type Reading } from '../content/readings';
 import { supabase, isLiveCouncilConfigured } from '../../lib/supabase';
 import type { CouncilSession, Message, Segment, LiveOverrides } from '../store/types';
 import type { Axis, Category } from '../content/types';
@@ -38,11 +38,27 @@ interface WireSegment {
 interface WireLine {
   seat: number;
   segments: WireSegment[];
+  /** the seats the line addresses by name; [] = the reader (absent from a server older than the field) */
+  to?: unknown;
+}
+
+/** a live line: its words, and whom it answers when the server said */
+export interface LiveLine {
+  segments: Segment[];
+  to?: number[];
 }
 
 export interface OpenResult {
-  lines: { seat: number; slot: 'r1' | 'r2'; segments: Segment[] }[];
+  lines: ({ seat: number; slot: 'r1' | 'r2' } & LiveLine)[];
   overrides: LiveOverrides;
+}
+
+/** the addressees as the client trusts them: seats 0–2, never the speaker, once each, ascending.
+    Not an array at all (an older server) → undefined, and the script's addressees stand */
+function toOf(raw: unknown, speaker: number): number[] | undefined {
+  if (!Array.isArray(raw)) return undefined;
+  const seats = raw.filter((n): n is number => Number.isInteger(n) && n >= 0 && n <= 2 && n !== speaker);
+  return [...new Set(seats)].sort((a, b) => a - b);
 }
 
 /* ---------- dossiers: what the function is told about each seat ---------- */
@@ -120,20 +136,37 @@ const devWarn = (...args: unknown[]) => {
 
 /** the server's cap on a question (council-chat: str(body.question, 600)) */
 const QUESTION_MAX = 600;
+/** what of the reader's own question always survives the picks */
+const QUESTION_KEEP = 240;
 
-/** the question as the model hears it: the reader's words, then the reading they chose on the confirmation page.
-    The angle is read in the interface language of the moment and kept whole; the question gets the rest of the cap */
-export function askedOf(question: string, focus?: CouncilSession['focus']): string {
-  if (!focus?.title) return question;
-  const f = focusText(focus);
-  const angle = (focus.custom || !f.detail ? f.title : `${f.title} — ${f.detail}`).slice(0, 200);
-  const lead = getActiveLang() === 'zh' ? '读者希望议事厅从这个角度讨论：' : 'The reader wants the council to take it as: ';
-  const room = QUESTION_MAX - lead.length - angle.length - 2;
-  return `${question.slice(0, Math.max(0, room))}\n\n${lead}${angle}`;
+/** the question as the model hears it: the reader's words, then what they picked on the selection page —
+    each reading as "tension (its question)", then their own words, read in the interface language of the moment.
+    The question keeps its room under the server's cap; when the picks would crowd it, their questions go first */
+export function askedOf(question: string, raw?: unknown): string {
+  const focus = normalizeFocus(raw);
+  if (!focus) return question;
+  const zh = getActiveLang() === 'zh';
+  const lead = zh ? '读者说这个问题其实关于（议事厅要围绕这些讨论）：' : 'The reader says the question is really about (debate these):';
+  const own = focus.own ? `- ${zh ? '用读者自己的话：' : 'In their own words: '}${focus.own}` : null;
+  const tailOf = (details: boolean) => {
+    const picks = focus.picks.map((p) => {
+      const r = pickText(p);
+      return `- ${details && r.detail ? `${r.title} (${r.detail})` : r.title}`;
+    });
+    return [lead, ...picks, ...(own ? [own] : [])].join('\n');
+  };
+  const room = QUESTION_MAX - 2 - Math.min(question.length, QUESTION_KEEP);
+  let tail = tailOf(true);
+  if (tail.length > room) tail = tailOf(false);
+  tail = tail.slice(0, room);
+  return `${question.slice(0, QUESTION_MAX - 2 - tail.length)}\n\n${tail}`;
 }
 
-async function invoke(body: Record<string, unknown>): Promise<unknown> {
-  const { data, error } = await supabase!.functions.invoke('council-chat', { body });
+/** how long a call may take before the room stops waiting and keeps the script (the function's own model call can fall back once) */
+const TIMEOUT_MS = { open: 60_000, turn: 40_000, readings: 12_000, recall: 45_000 } as const;
+
+async function invoke(body: Record<string, unknown>, timeout: number = TIMEOUT_MS.recall): Promise<unknown> {
+  const { data, error } = await supabase!.functions.invoke('council-chat', { body, timeout });
   if (error) throw error;
   return data;
 }
@@ -158,7 +191,7 @@ export async function liveCouncilReady(): Promise<boolean> {
 export async function liveOpen(session: CouncilSession): Promise<OpenResult | null> {
   if (!(await liveCouncilReady())) return null;
   try {
-    const data = (await invoke({ mode: 'open', question: askedOf(session.question, session.focus), area: session.area, seats: dossiers(session), lang: getActiveLang() })) as {
+    const data = (await invoke({ mode: 'open', question: askedOf(session.question, session.focus), area: session.area, seats: dossiers(session), lang: getActiveLang() }, TIMEOUT_MS.open)) as {
       intros?: unknown;
       round1?: WireLine[];
       round2?: WireLine[];
@@ -172,7 +205,8 @@ export async function liveOpen(session: CouncilSession): Promise<OpenResult | nu
         const line = round.find((l) => l && l.seat === seat);
         const segments = line ? toSegments(line, session.seats[seat]) : null;
         if (!segments) throw new Error(`council-chat contract: seat ${seat} has no ${slot}`);
-        lines.push({ seat, slot, segments });
+        const to = toOf(line?.to, seat);
+        lines.push({ seat, slot, segments, ...(to ? { to } : {}) });
       }
     }
     const t = data.takeaways ?? {};
@@ -212,7 +246,7 @@ export async function liveTurn(
   session: CouncilSession,
   user: Message,
   targets: Message[],
-): Promise<Record<string, Segment[]> | null> {
+): Promise<Record<string, LiveLine> | null> {
   if (!(await liveCouncilReady())) return null;
   const slot = user.userKind === 'context' ? 'context' : user.userKind === 'passage' ? 'passage' : targets.length === 1 && user.target ? 'direct' : 'followup';
   const replySeats = targets.map((m) => m.seat).filter((s): s is number => s !== undefined);
@@ -231,13 +265,16 @@ export async function liveTurn(
       context: session.context,
       passage,
       lang: getActiveLang(),
-    })) as { replies?: WireLine[] };
+    }, TIMEOUT_MS.turn)) as { replies?: WireLine[] };
     if (!Array.isArray(data.replies)) throw new Error('council-chat contract: missing replies');
-    const out: Record<string, Segment[]> = {};
+    const out: Record<string, LiveLine> = {};
     for (const m of targets) {
       const line = data.replies.find((l) => l && l.seat === m.seat);
       const segments = line && m.figureId ? toSegments(line, m.figureId) : null;
-      if (segments) out[m.id] = segments;
+      if (!segments || m.seat === undefined) continue;
+      // a direct ask is the reader's own thread: its reply always answers the reader
+      const to = m.slot === 'direct' ? [] : toOf(line?.to, m.seat);
+      out[m.id] = { segments, ...(to ? { to } : {}) };
     }
     if (!Object.keys(out).length) throw new Error('council-chat contract: no usable reply');
     lastFallback = null;
@@ -245,6 +282,26 @@ export async function liveTurn(
   } catch (err) {
     lastFallback = reasonFor(err);
     devWarn('[council] live turn failed, keeping the script:', err);
+    return null;
+  }
+}
+
+/** three readings written for this question (the selection page's options); null → the authored ones */
+export async function liveReadings(question: string, area: string, lang: Lang = getActiveLang()): Promise<Reading[] | null> {
+  if (!(await liveCouncilReady())) return null;
+  try {
+    const data = (await invoke({ mode: 'readings', question: question.slice(0, QUESTION_MAX), area, lang }, TIMEOUT_MS.readings)) as { readings?: unknown };
+    const out = (Array.isArray(data.readings) ? data.readings : [])
+      .filter(isObj)
+      .map((r) => ({ title: text(r.title).slice(0, 80), detail: text(r.detail).slice(0, 160) }))
+      .filter((r) => r.title);
+    // three distinct readings, or the authored ones
+    if (out.length < 3 || new Set(out.map((r) => r.title.toLocaleLowerCase())).size < 3) throw new Error('council-chat contract: readings needs three');
+    lastFallback = null;
+    return out.slice(0, 3);
+  } catch (err) {
+    lastFallback = reasonFor(err);
+    devWarn('[council] live readings failed, offering the authored ones:', err);
     return null;
   }
 }

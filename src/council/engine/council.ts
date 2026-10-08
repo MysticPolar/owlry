@@ -200,8 +200,10 @@ export function rebuild(session: CouncilSession): CouncilSession {
     // live words belong to the thinker who said them — a replaced seat falls back to the script
     const live = m.live && m.figureId === figureId ? m.live : undefined;
     const scripted = figureLines(script, session.seats, m.seat, m.slot, m.variant ?? 0, varsFor(m));
-    // who the line addresses follows the script even when the live council wrote the words: the turn's shape is the same
-    return { ...m, figureId, live, segments: live ?? scripted.segments, to: scripted.to };
+    // whom the line answers: the live council's own addressees with its words (they name whom they answer), else the script's
+    const { liveTo, ...rest } = m;
+    const to = live && liveTo ? liveTo : scripted.to;
+    return { ...rest, figureId, live, ...(live && liveTo ? { liveTo } : {}), segments: live ?? scripted.segments, to };
   });
   return { ...session, messages };
 }

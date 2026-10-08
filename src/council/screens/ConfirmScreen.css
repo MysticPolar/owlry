@@ -1,17 +1,12 @@
 /* ============================================================
-   How the council reads your question (screens/ConfirmScreen.tsx) — the
-   v13 mockup's confirm card and its options, on the tokens.
+   What the question is really about (screens/ConfirmScreen.tsx) — the
+   v13 mockup's options as a multiple choice, on the tokens.
    ============================================================ */
 .confirm-q { font-size: 14px; margin: 2px 0 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
-.confirm { display: block; width: 100%; text-align: left; background: var(--surface); border: 1px solid var(--line-2); border-radius: 20px; padding: 16px 18px 17px; margin-top: 12px; color: var(--ink); }
-.confirm .k { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
-.confirm .t { font-family: var(--font-serif); font-size: 22px; font-weight: 500; line-height: 1.25; margin-top: 8px; overflow-wrap: anywhere; }
-.confirm .d { font-family: var(--font-serif); font-size: 14.5px; color: var(--muted); margin-top: 6px; line-height: 1.4; }
-/* a new pick arrives in the card rather than swapping in place */
-.confirm-pick { animation: fade-up var(--dur) var(--ease) backwards; }
-.confirm-foot { display: flex; justify-content: flex-end; margin-top: 4px; }
-.confirm-foot .btn.text { width: auto; min-height: 44px; }
+.pick-head { margin-top: 14px; }
+.pick-head .k { font-family: var(--font-serif); font-size: 22px; font-weight: 500; line-height: 1.25; color: var(--ink); margin: 0; }
+.pick-lead { font-family: var(--font-serif); font-size: 14.5px; color: var(--muted); margin: 6px 0 2px; line-height: 1.4; }
 
 /* the readings, and Other */
 .opt { display: block; width: 100%; text-align: left; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 14px 52px 15px 16px; margin-top: 10px; color: var(--ink); font-family: inherit; transition: border-color var(--dur), transform 0.15s var(--ease); position: relative; cursor: pointer; }
@@ -33,9 +28,21 @@
 .opt .other-field { margin: -3px 16px 15px; padding-left: 16px; cursor: text; animation: fade-up var(--dur) var(--ease) backwards; }
 .opt .other-field.closing { animation: other-out 180ms var(--ease) both; pointer-events: none; }
 .opt .other-field input { font-size: 16px; }
-/* the readings fold away rather than vanish */
-.opt-list.closing { animation: list-out 220ms var(--ease) both; pointer-events: none; }
-@keyframes list-out { to { opacity: 0; transform: translateY(-6px); } }
 @keyframes other-out { to { opacity: 0; transform: translateY(-4px); } }
 
+.opt-list { padding-bottom: 6px; }
+/* a cast under way: the picks hold still, quieter */
+.opt[disabled], .opt-toggle[disabled] { cursor: default; }
+.is-casting .opt { opacity: 0.72; transition: opacity var(--dur), border-color var(--dur); }
+.is-casting .opt:active, .is-casting .opt-toggle:active { transform: none; }
+
+/* the footer: how many are picked, then the cast */
+.pick-count { margin: 0 0 8px; text-align: center; font-size: 12px; letter-spacing: 0.08em; color: var(--muted); }
+.pick-count.nudge { color: var(--ink); animation: nudge 360ms var(--ease); }
+@keyframes nudge { 0%, 100% { transform: none; } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+.confirm-screen .footer .btn[aria-disabled='true'] { opacity: 0.45; }
 .confirm-screen .footer .thinking { animation: fade-in var(--dur) var(--ease) backwards; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pick-count.nudge { animation: none; }
+}

@@ -5,6 +5,14 @@
 // two user-prompt builders. The client sends the dossiers — name, role,
 // bio, works and the verified quotes — so the server stays generic and the
 // content catalogue (src/content) remains the single source of truth.
+//
+// The opening is one conversation, not three speeches: the six lines are
+// heard in a fixed order (round one seat 0, 1, 2; round two seat 0, 1, 2)
+// and each answers what came before it, by name. Every line says whom it
+// answers in `to` (schemas.ts), which the debate draws as "X to Y".
+//
+// Before a council sits, the confirmation page asks for three readings of
+// the reader's own question (READINGS_SYSTEM + readingsUser, below).
 // ============================================================
 import type { Dossier } from './quotes.ts';
 import type { ReaderLang } from '../lang.ts';
@@ -40,8 +48,11 @@ THE RULES OF THE HOUSE (these are enforced after you answer; break them and the 
 3. Each thinker's message is 2–4 sentences: one idea, said plainly, with a concrete edge (a practice, a
    distinction, a test the reader can apply). No headings, bullets, emoji or markdown. No "As a Stoic, I…"
    throat-clearing. Address the reader as "you".
-4. In round two, each thinker responds to ANOTHER seat by their short name — agree and sharpen, or disagree
-   and say why. Real friction is welcome; contempt is not.
+4. It is one conversation, not three speeches. A thinker who answers another seat names them by short name and
+   takes up a specific thing that seat said — agrees and sharpens it, or disagrees and says why — then adds
+   something of their own. Real friction is welcome; contempt is not. Every message carries "to": the seat
+   numbers it addresses by name — exactly the seats it names, never the speaker's own; [] when it speaks only
+   to the reader.
 5. Speak to the reader's actual situation. If they added context, the advice must change with it.
 6. The thinkers are not doctors, lawyers or financial advisers. On medical, legal, financial-crisis or
    self-harm territory, stay with what their work genuinely offers and, in one plain sentence, point the
@@ -75,19 +86,43 @@ ${quotes}`;
 }
 
 export function openUser(question: string, area: string, dossiers: Dossier[], lang: ReaderLang): string {
+  const [a, b, c] = dossiers.map((d) => d.short);
   return `${LANG_LINE[lang]}
 
 THE READER'S QUESTION (area: ${area}):
 "${question}"
 
+If the reader has said what the question is really about (the lines after their own words), that is what the
+council debates: every line, the takeaways and the reading answer the question through those tensions.
+
 THE COUNCIL:
 ${dossiers.map(dossierBlock).join('\n\n')}
+
+THE DEBATE. "round1" and "round2" are ONE conversation of six lines, heard in exactly this order — round one
+seat 0, 1, 2, then round two seat 0, 1, 2 — and each line answers what was said before it. Not six speeches:
+a thinker who answers another takes up a specific thing they just said. Every line is 2–4 sentences (rule 3),
+and its "to" lists exactly the seats it names (rule 4); [] when it speaks only to the reader.
+
+Round one — three distinct ideas, no two alike:
+1. Seat 0 (${a}) opens: their answer to the reader's question, spoken to the reader. "to": [].
+2. Seat 1 (${b}) answers ${a} by name — agrees and sharpens, or disagrees and says why — and adds their own
+   idea, one ${a} did not give. "to": [0].
+3. Seat 2 (${c}) answers ${a}, ${b} or both by name, and adds the third idea, distinct from both. "to": the
+   seats named — [0], [1] or [0, 1].
+
+Round two — lines 4 and 5 each take up a specific claim another seat has made, by short name, and push on it:
+a cost, a counter-example, a case where it fails. Real friction, no contempt; nobody restates their round-one
+point. Vary who answers whom. Line 6 closes the exchange.
+4. Seat 0 (${a}) answers ${b} or ${c} (or both) on what they said in round one. "to": the seats named.
+5. Seat 1 (${b}) answers ${a}'s round-two point, or ${c}. "to": the seats named.
+6. Seat 2 (${c}) closes the exchange: turns to the reader ("you") and says what this disagreement means for
+   them — which way to lean, or how to tell which side fits their case — without naming the others. "to": [].
 
 WRITE, as JSON:
 - "intros": for each seat in order, ONE sentence (third person, ≤ 22 words) on why this perspective fits the
   question — e.g. "Wrote the book on why willpower is the wrong lever."
-- "round1": each seat (0, 1, 2 in order) opens with a distinct idea. No two seats may make the same point.
-- "round2": each seat responds to another seat by short name (rule 4). Vary who answers whom.
+- "round1": lines 1–3 above — seats 0, 1, 2 in that order, each {"seat", "to", "segments"}.
+- "round2": lines 4–6 above — seats 0, 1, 2 in that order, likewise.
 - "takeaways": "commonGround" (2–3 sentences: what all three agree on, in plain words); "differences": one
   sentence per seat (≤ 20 words) on where that thinker parts from the others; "fits": 2–3 sentences on how
   this applies to the reader's question as asked; "nextStep": ONE small concrete action for tomorrow,
@@ -116,7 +151,7 @@ export function turnUser(
   let ask: string;
   switch (slot) {
     case 'direct':
-      ask = `The reader asks ONE thinker directly — seat ${seats[0]} (${dossiers[seats[0]]?.name}). Only that seat replies, plainly, in 2–4 sentences.\nTHEIR QUESTION: "${text}"`;
+      ask = `The reader asks ONE thinker directly — seat ${seats[0]} (${dossiers[seats[0]]?.name}). Only that seat replies, plainly, in 2–4 sentences, to the reader ("to": []).\nTHEIR QUESTION: "${text}"`;
       break;
     case 'context':
       ask = `The reader adds context about their situation. Each of seats ${who} responds in turn, in 2–3 sentences, saying how this changes (or doesn't change) their advice. Quote the reader's words back sparingly, if at all.\nTHE CONTEXT: "${text}"`;
@@ -125,7 +160,7 @@ export function turnUser(
       ask = `The reader brings a passage from their reading. Seats ${who} respond in turn — the first is the author if they are seated. 2–4 sentences each: what the passage means, and what it changes for the reader's question.\nFROM ${passage?.bookTitle ?? 'the book'}: "${passage?.text ?? text}"`;
       break;
     default:
-      ask = `The reader follows up to the whole council. Seats ${who} reply in that order, 2–4 sentences each, each adding something the previous reply did not.\nTHE FOLLOW-UP: "${text}"`;
+      ask = `The reader follows up to the whole council. Seats ${who} reply in that order, 2–4 sentences each. The first answers the reader ("to": []); each later reply takes up what an earlier reply in this turn said — by short name, agreeing and sharpening or disagreeing — and adds something it did not ("to": the seats it names).\nTHE FOLLOW-UP: "${text}"`;
   }
   return `${LANG_LINE[lang]}
 
@@ -140,7 +175,50 @@ ${hist || '(the council has just opened)'}
 
 ${ask}
 
-Reply as JSON: {"replies": [{"seat", "segments"}...]} with exactly the seats named above, in that order.`;
+Reply as JSON: {"replies": [{"seat", "to", "segments"}...]} with exactly the seats named above, in that order. "to" is whom each reply answers (rule 4): the seats it addresses by name, never its own; [] when it speaks to the reader${slot === 'direct' ? ', as a direct answer does' : ''}.`;
+}
+
+/* ============================================================
+   Readings: before the council sits, the confirmation page offers three
+   ways the reader's question could be read — three tensions it could be
+   about, each with a question that sharpens it — plus "Other" in the
+   reader's own words. What they pick is what the council debates, so the
+   readings help the council understand the question and the reader
+   understand it themselves. A small, quick call: no thinkers, no quotes.
+   ============================================================ */
+
+export const READINGS_SYSTEM = `WHAT THIS IS
+
+Before a council of three thinkers answers a reader's question, the Council Room shows the reader three ways
+their question could be read, so they can pick the one they mean or write their own. You write those three
+readings. They are not answers: they help the reader see what they are really asking, and tell the council
+what to argue about.
+
+THE RULES
+
+1. Read THIS question — its words, its situation, what it leaves unsaid. Each reading is a different challenge
+   the question could really be about: a different tension in the reader's situation, not three wordings of one
+   idea, and not generic life advice that would fit any question.
+2. "title" names the tension as "X vs. Y": at most 6 words, sentence case, no full stop. In Chinese the form is
+   "甲，还是乙" (at most 14 characters, no full stop).
+3. "detail" is ONE short question to the reader that sharpens the reading: at most 12 words (in Chinese at
+   most 24 characters), addressed to "you" (你), ending with "?" (in Chinese "？").
+4. No thinkers, no names of authors or books, no quotations, no advice. The readings ask; the council answers.
+5. No headings, bullets, emoji or markdown inside a field, and no quotation marks around a field.
+6. On medical, legal, financial-crisis or self-harm ground, read the question plainly and kindly; never
+   diagnose, never judge.`;
+
+/** three readings of the reader's own question, for the confirmation page */
+export function readingsUser(question: string, area: string, lang: ReaderLang): string {
+  return `${LANG_LINE[lang]}
+
+THE READER'S QUESTION (area: ${area}):
+"${question}"
+
+WRITE, as JSON: "readings" — exactly three, the most likely reading first, each {"title", "detail"} by rules
+2 and 3. The form, not the content, of a good one: {"title": "Effort vs. direction", "detail": "Is the thing
+you're forcing yourself to do worth doing?"}; in Chinese {"title": "努力，还是方向", "detail":
+"你逼自己去做的事，本身值得做吗？"}. Yours must come from this question's own words and situation.`;
 }
 
 /* ============================================================

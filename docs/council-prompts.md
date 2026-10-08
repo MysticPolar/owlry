@@ -2,8 +2,8 @@
 
 *Generated from `supabase/functions/_shared/council/prompts.ts` with sample inputs (`scripts/render-prompts.ts`); the code is the source of truth. The JSON shape each call must return is forced by the schemas in `schemas.ts`; the post-processing that follows is in `quotes.ts` (the verbatim gate) and `minds.ts` (the recall cards).*
 
-> **Screens since the v14 interface (6 October 2026).** The calls below are
-> unchanged; the screens that make them were re-flowed. "Council room" is now
+> **Screens since the v14 interface (6 October 2026).** The re-flow left the
+> calls as they were; the screens that make them moved. "Council room" is now
 > the room (`#/council`: the ask box under the drawn stage); its "intro cards"
 > are *Act I — Stands* (`#/stands/:id`); the group-chat "Discussion" became
 > *Act II — Debate* (`#/debate/:id`, one line at a time) for the opening and
@@ -12,12 +12,22 @@
 > context" has no affordance in v14 (the store still supports it). See
 > `docs/council-redesign.md`, "The v14 interface".
 
+> **The debate and the readings (6 October 2026).** Every line of `open`
+> (`round1`, `round2`) and `turn` (`replies`) now carries `to`: the seats it
+> addresses by name, `[]` when it speaks to the reader — the debate draws
+> "X to Y" from it, and `quotes.ts` holds it to the names the words use.
+> The opening is written as one conversation in the order the debate plays
+> it (round one seat 0, 1, 2; round two seat 0, 1, 2), each line answering
+> what came before it. The selection page (`#/confirm`) asks
+> the new `readings` call for three readings of the reader's own question.
+
 | Screen in the mockup | Call | Prompt | Model |
 | --- | --- | --- | --- |
+| Selection page (`#/confirm`) — three readings of the reader's own question, plus Other | `readings` | `READINGS_SYSTEM` + `readingsUser` | voice model, minimal thinking, Flash-Lite fallback |
 | Council room — the seats fill for a question the scripts do not cover | `cast` | `KNOWLEDGE_SYSTEM` + `castUser` | voice model, Flash-Lite fallback |
 | Council room — a seat's card (about, works, quotes, voice) | `figure` | `KNOWLEDGE_SYSTEM` + `figureUser` | recall model, no fallback, cached |
-| Council room — intro cards; Discussion — round one and two; Summary — common ground, differences, fits, next step; Reading — why each book, best start | `open` | `COUNCIL_SYSTEM` + `openUser` | voice model, Flash-Lite fallback |
-| Discussion — follow-up, direct question, added context, a passage from the reader | `turn` | `COUNCIL_SYSTEM` + `turnUser` | voice model, Flash-Lite fallback |
+| Council room — intro cards; Discussion — round one and two (one conversation; every line with `to`); Summary — common ground, differences, fits, next step; Reading — why each book, best start | `open` | `COUNCIL_SYSTEM` + `openUser` | voice model (low thinking, 8192 output tokens), Flash-Lite fallback |
+| Discussion — follow-up, direct question, added context, a passage from the reader (every reply with `to`) | `turn` | `COUNCIL_SYSTEM` + `turnUser` | voice model (low thinking, 4096 output tokens), Flash-Lite fallback |
 | Book — the card, the summary, where to start, the reading guide | `book` | `KNOWLEDGE_SYSTEM` + `bookUser` | recall model, no fallback, cached |
 
 ## The council: `COUNCIL_SYSTEM` (system prompt for `open` and `turn`)
@@ -41,8 +51,11 @@ THE RULES OF THE HOUSE (these are enforced after you answer; break them and the 
 3. Each thinker's message is 2–4 sentences: one idea, said plainly, with a concrete edge (a practice, a
    distinction, a test the reader can apply). No headings, bullets, emoji or markdown. No "As a Stoic, I…"
    throat-clearing. Address the reader as "you".
-4. In round two, each thinker responds to ANOTHER seat by their short name — agree and sharpen, or disagree
-   and say why. Real friction is welcome; contempt is not.
+4. It is one conversation, not three speeches. A thinker who answers another seat names them by short name and
+   takes up a specific thing that seat said — agrees and sharpens it, or disagrees and says why — then adds
+   something of their own. Real friction is welcome; contempt is not. Every message carries "to": the seat
+   numbers it addresses by name — exactly the seats it names, never the speaker's own; [] when it speaks only
+   to the reader.
 5. Speak to the reader's actual situation. If they added context, the advice must change with it.
 6. The thinkers are not doctors, lawyers or financial advisers. On medical, legal, financial-crisis or
    self-harm territory, stay with what their work genuinely offers and, in one plain sentence, point the
@@ -67,6 +80,9 @@ Write everything in English.
 
 THE READER'S QUESTION (area: health):
 "Why do I keep breaking promises to myself?"
+
+If the reader has said what the question is really about (the lines after their own words), that is what the
+council debates: every line, the takeaways and the reading answer the question through those tensions.
 
 THE COUNCIL:
 SEAT 0 — Marcus Aurelius ("Marcus"), The Stoic
@@ -93,11 +109,31 @@ Their book on the reading list: Letters from a Stoic
 VERIFIED QUOTES:
   - "We suffer more often in imagination than in reality." — Letters from a Stoic, Letter XIII [attributed, unverified]
 
+THE DEBATE. "round1" and "round2" are ONE conversation of six lines, heard in exactly this order — round one
+seat 0, 1, 2, then round two seat 0, 1, 2 — and each line answers what was said before it. Not six speeches:
+a thinker who answers another takes up a specific thing they just said. Every line is 2–4 sentences (rule 3),
+and its "to" lists exactly the seats it names (rule 4); [] when it speaks only to the reader.
+
+Round one — three distinct ideas, no two alike:
+1. Seat 0 (Marcus) opens: their answer to the reader's question, spoken to the reader. "to": [].
+2. Seat 1 (James) answers Marcus by name — agrees and sharpens, or disagrees and says why — and adds their own
+   idea, one Marcus did not give. "to": [0].
+3. Seat 2 (Seneca) answers Marcus, James or both by name, and adds the third idea, distinct from both. "to": the
+   seats named — [0], [1] or [0, 1].
+
+Round two — lines 4 and 5 each take up a specific claim another seat has made, by short name, and push on it:
+a cost, a counter-example, a case where it fails. Real friction, no contempt; nobody restates their round-one
+point. Vary who answers whom. Line 6 closes the exchange.
+4. Seat 0 (Marcus) answers James or Seneca (or both) on what they said in round one. "to": the seats named.
+5. Seat 1 (James) answers Marcus's round-two point, or Seneca. "to": the seats named.
+6. Seat 2 (Seneca) closes the exchange: turns to the reader ("you") and says what this disagreement means for
+   them — which way to lean, or how to tell which side fits their case — without naming the others. "to": [].
+
 WRITE, as JSON:
 - "intros": for each seat in order, ONE sentence (third person, ≤ 22 words) on why this perspective fits the
   question — e.g. "Wrote the book on why willpower is the wrong lever."
-- "round1": each seat (0, 1, 2 in order) opens with a distinct idea. No two seats may make the same point.
-- "round2": each seat responds to another seat by short name (rule 4). Vary who answers whom.
+- "round1": lines 1–3 above — seats 0, 1, 2 in that order, each {"seat", "to", "segments"}.
+- "round2": lines 4–6 above — seats 0, 1, 2 in that order, likewise.
 - "takeaways": "commonGround" (2–3 sentences: what all three agree on, in plain words); "differences": one
   sentence per seat (≤ 20 words) on where that thinker parts from the others; "fits": 2–3 sentences on how
   this applies to the reader's question as asked; "nextStep": ONE small concrete action for tomorrow,
@@ -149,10 +185,10 @@ Marcus: (seat 0, round one)
 James: (seat 1, round one)
 Seneca: (seat 2, round one)
 
-The reader follows up to the whole council. Seats 0 (Marcus), 1 (James), 2 (Seneca) reply in that order, 2–4 sentences each, each adding something the previous reply did not.
+The reader follows up to the whole council. Seats 0 (Marcus), 1 (James), 2 (Seneca) reply in that order, 2–4 sentences each. The first answers the reader ("to": []); each later reply takes up what an earlier reply in this turn said — by short name, agreeing and sharpening or disagreeing — and adds something it did not ("to": the seats it names).
 THE FOLLOW-UP: "But what if the system itself is the problem?"
 
-Reply as JSON: {"replies": [{"seat", "segments"}...]} with exactly the seats named above, in that order.
+Reply as JSON: {"replies": [{"seat", "to", "segments"}...]} with exactly the seats named above, in that order. "to" is whom each reply answers (rule 4): the seats it addresses by name, never its own; [] when it speaks to the reader.
 ```
 
 *The other slots change only the ask block:*
@@ -161,7 +197,7 @@ Reply as JSON: {"replies": [{"seat", "segments"}...]} with exactly the seats nam
 (most recent last):
 (the council has just opened)
 
-The reader asks ONE thinker directly — seat 0 (Marcus Aurelius). Only that seat replies, plainly, in 2–4 sentences.
+The reader asks ONE thinker directly — seat 0 (Marcus Aurelius). Only that seat replies, plainly, in 2–4 sentences, to the reader ("to": []).
 THEIR QUESTION: "Marcus, how did you actually get out of bed?"
 ```
 
@@ -179,6 +215,47 @@ THE CONTEXT: "I have two kids under five."
 
 The reader brings a passage from their reading. Seats 1 (James), 2 (Seneca) respond in turn — the first is the author if they are seated. 2–4 sentences each: what the passage means, and what it changes for the reader's question.
 FROM Atomic Habits: "Every action you take is a vote for the type of person you wish to become."
+```
+
+## The selection page: `READINGS_SYSTEM` (system prompt for `readings`)
+
+```text
+WHAT THIS IS
+
+Before a council of three thinkers answers a reader's question, the Council Room shows the reader three ways
+their question could be read, so they can pick the one they mean or write their own. You write those three
+readings. They are not answers: they help the reader see what they are really asking, and tell the council
+what to argue about.
+
+THE RULES
+
+1. Read THIS question — its words, its situation, what it leaves unsaid. Each reading is a different challenge
+   the question could really be about: a different tension in the reader's situation, not three wordings of one
+   idea, and not generic life advice that would fit any question.
+2. "title" names the tension as "X vs. Y": at most 6 words, sentence case, no full stop. In Chinese the form is
+   "甲，还是乙" (at most 14 characters, no full stop).
+3. "detail" is ONE short question to the reader that sharpens the reading: at most 12 words (in Chinese at
+   most 24 characters), addressed to "you" (你), ending with "?" (in Chinese "？").
+4. No thinkers, no names of authors or books, no quotations, no advice. The readings ask; the council answers.
+5. No headings, bullets, emoji or markdown inside a field, and no quotation marks around a field.
+6. On medical, legal, financial-crisis or self-harm ground, read the question plainly and kindly; never
+   diagnose, never judge.
+```
+
+## `readings` — three readings of the question
+
+*Sample: a typed question no script covers, English. The reply is `{"readings": [{"title", "detail"} ×3]}`; a wrapping quotation mark and a title's closing full stop are dropped, titles are trimmed to 80 characters and details to 160, and fewer than three distinct readings is a `502 generation_failed`.*
+
+```text
+Write everything in English.
+
+THE READER'S QUESTION (area: career):
+"Should I quit a stable job to go back to school at 34?"
+
+WRITE, as JSON: "readings" — exactly three, the most likely reading first, each {"title", "detail"} by rules
+2 and 3. The form, not the content, of a good one: {"title": "Effort vs. direction", "detail": "Is the thing
+you're forcing yourself to do worth doing?"}; in Chinese {"title": "努力，还是方向", "detail":
+"你逼自己去做的事，本身值得做吗？"}. Yours must come from this question's own words and situation.
 ```
 
 ## The librarian: `KNOWLEDGE_SYSTEM` (system prompt for `cast`, `figure` and `book`)
@@ -331,7 +408,7 @@ WRITE, as JSON:
 
 ## In Chinese
 
-*The language line is the only thing that changes. For the council:*
+*The language line is the only thing that changes. For the council and the readings (which also spell out the Chinese forms, "甲，还是乙" and a question ending in "？", in their rules):*
 
 ```text
 所有面向读者的文字使用简体中文；直接引语保持原文（英文）不翻译。

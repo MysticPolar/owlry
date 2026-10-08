@@ -9,6 +9,7 @@
    ============================================================ */
 import { supabase } from '../../../lib/supabase';
 import type { CastInfo, CastSeat, CouncilSession } from '../../store/types';
+import { normalizeFocus } from '../../content/readings';
 
 const TABLE = 'owlry_council_sessions';
 const AREAS = ['health', 'career', 'investing', 'relationships', 'literature', 'other'];
@@ -76,19 +77,8 @@ function castSeatOf(v: unknown): CastSeat | null {
   };
 }
 
-/** the chosen reading from another device's payload, or nothing — a session without one is the question as asked */
-function focusOf(v: unknown): CouncilSession['focus'] {
-  if (!isObj(v) || !str(v.title)) return undefined;
-  const r = isObj(v.reading) && typeof v.reading.index === 'number' && v.reading.index >= 0 && v.reading.index <= 2
-    ? { scriptId: str(v.reading.scriptId) || null, index: v.reading.index }
-    : undefined;
-  return {
-    title: str(v.title).slice(0, 200),
-    ...(str(v.detail) ? { detail: str(v.detail).slice(0, 200) } : {}),
-    ...(v.custom === true ? { custom: true } : {}),
-    ...(r ? { reading: r } : {}),
-  };
-}
+/** what the reader picked, from another device's payload (either shape), or nothing — a session without it is the question as asked */
+const focusOf = (v: unknown): CouncilSession['focus'] => normalizeFocus(v);
 
 /** a cast from another device's payload, or nothing — a session without one simply reads as scripted */
 function castOf(v: unknown): CastInfo | undefined {

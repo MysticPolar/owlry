@@ -108,17 +108,16 @@ const en = {
     paths: 'Choose a path',
   },
   /** how the council reads the question (v13's confirmation step) */
+  /** the selection page: what the question is really about, any of three readings plus Other */
   confirm: {
-    willDebate: 'The council will debate',
-    change: 'Not this? Change',
-    keep: 'Keep this one',
+    kicker: 'What is it really about?',
+    lead: 'Pick any that fit, or add your own. The council debates what you pick.',
     other: 'Other',
     otherHint: 'Tell the council in your own words.',
     otherPh: 'In your own words…',
-    otherTitle: 'In your own words',
-    otherSub: 'The council takes your question as asked.',
-    otherOwn: 'The council takes it your way.',
-    readingsAria: 'Ways to read your question',
+    readingsAria: 'Ways to read your question — pick any',
+    none: 'Pick at least one',
+    picked: '{n} picked',
   },
   /** Act I */
   stands: {
@@ -532,16 +531,14 @@ const zh: Dict = {
     paths: '选择方向',
   },
   confirm: {
-    willDebate: '议事厅将讨论',
-    change: '不是这个？换一个',
-    keep: '就这个',
+    kicker: '你的问题，其实关于什么？',
+    lead: '选出所有符合的，也可以自己写。议事厅就辩论你选的。',
     other: '其他',
     otherHint: '用你自己的话告诉议事厅。',
     otherPh: '用你自己的话…',
-    otherTitle: '用你自己的话',
-    otherSub: '议事厅会照你问的原样讨论。',
-    otherOwn: '议事厅会照你的角度来讨论。',
-    readingsAria: '理解你的问题的几种方式',
+    readingsAria: '理解你的问题的几种方式，可多选',
+    none: '至少选一项',
+    picked: '已选 {n} 项',
   },
   stands: {
     title: '三位智者，各一本书。',

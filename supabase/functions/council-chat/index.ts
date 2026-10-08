@@ -11,14 +11,28 @@
 // (owlry_council_minds), so a thinker is recalled once and every reader
 // gets the same card.
 //
-//   mode "open"   → intros + round one + round two + takeaways + reading
-//                   (one 3.5 Flash call; Flash-Lite fallback on provider errors)
-//   mode "turn"   → the replies to a follow-up / direct question / added
-//                   context / passage from the reader
-//   mode "cast"   → three real thinkers for the question, one book each
-//   mode "figure" → a thinker's card from the model's own knowledge: bio,
-//                   works, attributed quotes, voice lines (cached)
-//   mode "book"   → a book's card and its reading guide (cached)
+//   mode "readings" → three readings of the reader's own question for the
+//                     confirmation page: {readings: [{title, detail}] ×3},
+//                     a tension "X vs. Y" and a question that sharpens it
+//                     (minimal thinking; Flash-Lite fallback)
+//   mode "open"     → intros + round one + round two + takeaways + reading
+//                     (one 3.5 Flash call; Flash-Lite fallback on provider
+//                     errors). The six lines are one conversation, heard in
+//                     order: round one seat 0, 1, 2, round two seat 0, 1, 2
+//   mode "turn"     → the replies to a follow-up / direct question / added
+//                     context / passage from the reader
+//   mode "cast"     → three real thinkers for the question, one book each
+//   mode "figure"   → a thinker's card from the model's own knowledge: bio,
+//                     works, attributed quotes, voice lines (cached)
+//   mode "book"     → a book's card and its reading guide (cached)
+//
+// Every line of "open" (round1, round2) and "turn" (replies) is
+// {seat, to, segments}: `to` is the seats (0–2) the line addresses by
+// name — unique, ascending, never the speaker's own; [] when it speaks to
+// the reader (a direct answer always does) — so the debate can say
+// "Seneca to Marcus" from the words themselves rather than from a script.
+// The model writes it; quotes.ts cleans it and holds it to the names the
+// line's words actually use.
 //
 // The client sends the three dossiers (name, role, bio, works, quotes, the
 // seat's book) for open/turn, so the catalogue in src/content stays the
@@ -41,14 +55,26 @@ import { createClient, type SupabaseClient } from 'npm:@supabase/supabase-js@2';
 import { callGeminiJson, callGeminiJsonWithFallback, geminiClient, GeminiBlocked, MODEL_VOICE, type GoogleGenAI } from '../_shared/gemini.ts';
 import { corsHeaders, jsonResponse } from '../_shared/cors.ts';
 import { coerceLang, type ReaderLang } from '../_shared/lang.ts';
-import { BOOK_SCHEMA, CAST_SCHEMA, FIGURE_SCHEMA, OPEN_SCHEMA, TURN_SCHEMA } from '../_shared/council/schemas.ts';
-import type { BookReply, CastReply, FigureReply, OpenReply, TurnReply, WireLine } from '../_shared/council/schemas.ts';
-import { enforceQuotes, type Dossier } from '../_shared/council/quotes.ts';
-import { bookUser, castUser, COUNCIL_SYSTEM, figureUser, KNOWLEDGE_SYSTEM, openUser, turnUser, type HistoryTurn, type TurnSlot } from '../_shared/council/prompts.ts';
+import { BOOK_SCHEMA, CAST_SCHEMA, FIGURE_SCHEMA, OPEN_SCHEMA, READINGS_SCHEMA, TURN_SCHEMA } from '../_shared/council/schemas.ts';
+import type { BookReply, CastReply, FigureReply, OpenReply, ReadingsReply, TurnReply, WireLine } from '../_shared/council/schemas.ts';
+import { enforceQuotes, named, type Dossier } from '../_shared/council/quotes.ts';
+import {
+  bookUser,
+  castUser,
+  COUNCIL_SYSTEM,
+  figureUser,
+  KNOWLEDGE_SYSTEM,
+  openUser,
+  READINGS_SYSTEM,
+  readingsUser,
+  turnUser,
+  type HistoryTurn,
+  type TurnSlot,
+} from '../_shared/council/prompts.ts';
 import { coerceBook, coerceCast, coerceFigure, keyOf, str, strings } from '../_shared/council/minds.ts';
 
-type Mode = 'open' | 'turn' | 'cast' | 'figure' | 'book';
-const MODES: readonly Mode[] = ['open', 'turn', 'cast', 'figure', 'book'];
+type Mode = 'readings' | 'open' | 'turn' | 'cast' | 'figure' | 'book';
+const MODES: readonly Mode[] = ['readings', 'open', 'turn', 'cast', 'figure', 'book'];
 
 interface CouncilRequest {
   mode?: string;
@@ -149,6 +175,38 @@ function dailyCap(): number {
 const isLine = (v: unknown): v is WireLine =>
   !!v && typeof v === 'object' && typeof (v as WireLine).seat === 'number' && Array.isArray((v as WireLine).segments);
 
+/** the lines of a reply, whatever the model put there */
+const linesOf = (v: unknown): WireLine[] => (Array.isArray(v) ? v.filter(isLine) : []);
+
+/** one line per seat, in seat order (the order the debate plays them), or null when a seat has none */
+function bySeat(lines: WireLine[]): WireLine[] | null {
+  const out = [0, 1, 2].map((s) => lines.find((l) => l.seat === s));
+  return out.every((l): l is WireLine => !!l) ? (out as WireLine[]) : null;
+}
+
+/** a field the model wrapped whole in double quotation marks, unwrapped; marks inside the field are left alone */
+const unwrap = (s: string): string => s.match(/^["“「『]([^"“”「」『』]*)["”」』]$/u)?.[1].trim() ?? s;
+
+/** the readings, made safe: trimmed and capped, unwrapped, no closing full stop on a title, no two titles
+ *  alike — three, or null */
+function coerceReadings(parsed: ReadingsReply): { title: string; detail: string }[] | null {
+  if (!Array.isArray(parsed?.readings)) return null;
+  const out: { title: string; detail: string }[] = [];
+  const seen = new Set<string>();
+  for (const r of parsed.readings) {
+    const x = (r ?? {}) as Record<string, unknown>;
+    // unwrapped before the cap, so a long field keeps no stray opening mark
+    const title = unwrap(str(x.title, 400)).replace(/[.。]+$/u, '').trim().slice(0, 80).trim();
+    const detail = unwrap(str(x.detail, 400)).slice(0, 160).trim();
+    const key = title.toLowerCase();
+    if (!title || !detail || seen.has(key)) continue;
+    seen.add(key);
+    out.push({ title, detail });
+    if (out.length === 3) break;
+  }
+  return out.length === 3 ? out : null;
+}
+
 /* ---------- the minds cache ---------- */
 
 const CACHE = 'owlry_council_minds';
@@ -172,7 +230,27 @@ async function cachePut(admin: SupabaseClient, kind: Kind, keys: string[], lang:
   if (error) console.warn('[council-chat] cache write failed', error.message);
 }
 
-/* ---------- the five modes ---------- */
+/* ---------- the six modes ---------- */
+
+/**
+ * Three readings of the reader's own question, for the confirmation page. A
+ * small call that has to be quick — the reader is waiting on the page — so
+ * minimal thinking, a short budget and the usual Flash-Lite fallback.
+ */
+async function runReadings(ai: GoogleGenAI, question: string, area: string, lang: ReaderLang): Promise<Response> {
+  const parsed = (await callGeminiJsonWithFallback(ai, {
+    model: MODEL_VOICE,
+    system: READINGS_SYSTEM,
+    user: readingsUser(question, area, lang),
+    schema: READINGS_SCHEMA,
+    temperature: 0.7, // three different readings, but of this question
+    maxOutputTokens: 1024,
+    thinkingLevel: 'MINIMAL',
+  })) as ReadingsReply;
+  const readings = coerceReadings(parsed);
+  if (!readings) return jsonResponse({ error: 'generation_failed' }, 502);
+  return jsonResponse({ readings });
+}
 
 async function runOpen(ai: GoogleGenAI, question: string, area: string, dossiers: Dossier[], lang: ReaderLang): Promise<Response> {
   const parsed = (await callGeminiJsonWithFallback(ai, {
@@ -181,18 +259,29 @@ async function runOpen(ai: GoogleGenAI, question: string, area: string, dossiers
     user: openUser(question, area, dossiers, lang),
     schema: OPEN_SCHEMA,
     temperature: 0.9, // three voices, real friction — a touch warmer than Scout
-    maxOutputTokens: 4000,
+    // thinking tokens count against this cap: at 4000 the whole opening (six lines, takeaways, reading) ran
+    // out mid-reply in production (finishReason MAX_TOKENS → 502), Chinese especially
+    maxOutputTokens: 8192,
     thinkingLevel: 'LOW',
   })) as OpenReply;
 
-  const round1 = enforceQuotes((parsed.round1 ?? []).filter(isLine), dossiers);
-  const round2 = enforceQuotes((parsed.round2 ?? []).filter(isLine), dossiers);
-  const complete = [0, 1, 2].every((s) => round1.some((l) => l.seat === s) && round2.some((l) => l.seat === s));
-  if (!complete) return jsonResponse({ error: 'generation_failed' }, 502);
+  // one line per seat, in the order the debate plays them; enforceQuotes keeps each line's `to`, cleaned and
+  // checked against the names in its words
+  const round1 = bySeat(enforceQuotes(linesOf(parsed?.round1), dossiers));
+  const round2 = bySeat(enforceQuotes(linesOf(parsed?.round2), dossiers));
+  if (!round1 || !round2) return jsonResponse({ error: 'generation_failed' }, 502);
+  // lines 2–5 of the exchange answer another seat by design: one sent as "to the reader" whose words name a
+  // seat answers that seat (lines 1 and 6 speak to the reader, and may mention the others without answering)
+  for (const line of [round1[1], round1[2], round2[0], round2[1]]) {
+    if (!line.to.length) line.to = named(line.segments, line.seat, dossiers);
+  }
 
-  const differences = [0, 1, 2].map((s) => str(parsed.takeaways?.differences?.find((d) => d.seat === s)?.text, 300));
+  // the rest is schema-forced, but a malformed field costs only its own words, never the debate
+  const diffs = Array.isArray(parsed.takeaways?.differences) ? parsed.takeaways.differences : [];
+  const reasons = Array.isArray(parsed.reading) ? parsed.reading : [];
+  const differences = [0, 1, 2].map((s) => str(diffs.find((d) => d?.seat === s)?.text, 300));
   const reading = [0, 1, 2].map((s) => {
-    const r = parsed.reading?.find((x) => x.seat === s);
+    const r = reasons.find((x) => x?.seat === s);
     return { why: str(r?.why, 300), bestStart: !!r?.bestStart };
   });
   if (!reading.some((r) => r.bestStart)) reading[0].bestStart = true;
@@ -204,7 +293,7 @@ async function runOpen(ai: GoogleGenAI, question: string, area: string, dossiers
     }
   }
   return jsonResponse({
-    intros: [0, 1, 2].map((i) => str(parsed.intros?.[i], 240)),
+    intros: [0, 1, 2].map((i) => str(Array.isArray(parsed.intros) ? parsed.intros[i] : '', 240)),
     round1,
     round2,
     takeaways: {
@@ -234,11 +323,15 @@ async function runTurn(ai: GoogleGenAI, body: CouncilRequest, question: string, 
     user: turnUser(question, dossiers, coerceHistory(body.history), context, slot, text, seats, lang, passage),
     schema: TURN_SCHEMA,
     temperature: 0.9,
-    maxOutputTokens: 2000,
+    // thinking counts against this cap, as in `open`: up to three replies plus whom each answers need the room
+    maxOutputTokens: 4096,
     thinkingLevel: 'LOW',
   })) as TurnReply;
 
-  const replies = enforceQuotes((parsed.replies ?? []).filter(isLine), dossiers).filter((l) => seats.includes(l.seat));
+  // each reply keeps its `to` (whom it answers), cleaned by the quote gate; a direct answer is the reader's own
+  const replies = enforceQuotes(linesOf(parsed?.replies), dossiers)
+    .filter((l) => seats.includes(l.seat))
+    .map((l) => (slot === 'direct' ? { ...l, to: [] } : l));
   // keep the requested order, one reply per seat
   const ordered = seats.map((s) => replies.find((l) => l.seat === s)).filter((l): l is WireLine => !!l);
   if (!ordered.length) return jsonResponse({ error: 'generation_failed' }, 502);
@@ -326,7 +419,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
   const name = str(body.name, 80);
   const title = str(body.title, 160);
   const author = str(body.author, 80);
-  if ((mode === 'open' || mode === 'turn' || mode === 'cast') && !question) return jsonResponse({ error: 'question required' }, 400);
+  if ((mode === 'readings' || mode === 'open' || mode === 'turn' || mode === 'cast') && !question) return jsonResponse({ error: 'question required' }, 400);
   if ((mode === 'open' || mode === 'turn') && !dossiers) return jsonResponse({ error: 'three seats required' }, 400);
   if (mode === 'figure' && !name) return jsonResponse({ error: 'name required' }, 400);
   if (mode === 'book' && (!title || !author)) return jsonResponse({ error: 'title and author required' }, 400);
@@ -347,7 +440,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
     if (hit) return jsonResponse({ [mode]: hit, cached: true });
   }
 
-  // ── rate limit: 30/hour and 150/day per reader (an opening counts double), under one cap for the whole room ──
+  // ── rate limit: 30/hour and 150/day per reader (an opening counts double, every other call once), under one cap for the whole room ──
   const cost = mode === 'open' ? 2 : 1;
   const bumps: PromiseLike<{ data: unknown }>[] = [];
   for (let i = 0; i < cost; i++) {
@@ -363,6 +456,8 @@ Deno.serve(async (req: Request): Promise<Response> => {
 
   try {
     switch (mode) {
+      case 'readings':
+        return await runReadings(ai, question, str(body.area, 40) || 'other', lang);
       case 'open':
         return await runOpen(ai, question, str(body.area, 40) || 'other', dossiers!, lang);
       case 'turn':

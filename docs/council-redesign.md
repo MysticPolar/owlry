@@ -206,3 +206,19 @@ store, engine, content, backend and Chinese layer are unchanged underneath.
   is told the angle with the question.
 - **"owlry." goes home** from every screen that shows it, so a debate or a
   summary is never a dead end.
+
+### Evening of 6 October: a multiple choice, and a debate that answers itself
+
+- **The confirmation step is a selection page.** No card, no "Not this?
+  Change": the three readings and "Other" are all on the page, and the
+  reader ticks any of them (at least one) before "Cast the council". Signed
+  in, the three are written by the live council for the question itself
+  while the room shows "Reading your question"; otherwise the script's own,
+  or the general three. Act I names every pick ("On security now vs. freedom
+  later · friendship vs. partnership."), and the live council hears them all.
+- **The live debate is one conversation.** The opening used to run out of
+  room (the model's reply was cut off, so the function failed after ~28 s
+  and the debate sat on "is writing" until "Skip to summary"). It now has
+  room to finish, round one is built as answers (each seat replies to the
+  one before by name), and every live line says whom it addresses, so the
+  "X to Y" labels follow the words rather than the script.

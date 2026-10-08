@@ -1,4 +1,4 @@
-import { focusText } from '../content/readings';
+import { focusLabel } from '../content/readings';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { IconArrowsLeftRight } from '@tabler/icons-react';
 import { navigate } from '../app/router';
@@ -153,9 +153,9 @@ export function StandsScreen({ id }: { id: string }) {
   const intros = introsFor(session);
   const bookIds = seatBookIds(session);
   const followUp = cyclesFor(session).length > 1;
-  // the reading chosen on the confirmation page, in the interface language of the moment; a reading's title is lower-cased
-  // mid-sentence (v13), own words stay as typed
-  const focusLine = session.focus ? (session.focus.custom ? session.focus.title : focusText(session.focus).title.toLocaleLowerCase()) : '';
+  // what the reader picked on the selection page, in the interface language of the moment: the readings lower-cased
+  // mid-sentence (v13), then their own words as typed, joined by " · "
+  const focusLine = focusLabel(session.focus);
   const marquee = `${t.council.marquee} · ${seats.map((f) => f.short).join(' · ')}`;
 
   /**

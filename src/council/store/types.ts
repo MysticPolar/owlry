@@ -51,6 +51,8 @@ export interface Message {
   figures?: { from: string; to: string };
   /** words written by the live council for this seat; when present they replace the scripted `segments` */
   live?: Segment[];
+  /** the seats the live words address by name ([] = the reader); with `live`, it replaces the script's `to` */
+  liveTo?: number[];
 }
 
 /** what the live council wrote for the cards and the intro; valid only while `seats` still match */
@@ -67,7 +69,7 @@ export interface Replacement {
   to: string;
   ts: number;
   /** the live words the replacement discarded, so Undo can put them back without another call */
-  restore?: { live?: LiveOverrides; lines: Record<string, Segment[]> };
+  restore?: { live?: LiveOverrides; lines: Record<string, Segment[]>; tos?: Record<string, number[]> };
   /** on a cast session: the seat that left, so Undo can seat them again */
   castSeat?: CastSeat;
 }
@@ -98,14 +100,19 @@ export interface CastInfo {
   alternates: CastSeat[];
 }
 
-/** the angle the reader chose on the confirmation page: one of the offered readings, or their own words */
-export interface Focus {
+/** one reading the reader ticked on the selection page */
+export interface FocusPick {
   title: string;
   detail?: string;
-  /** typed under "Other" rather than picked */
-  custom?: boolean;
-  /** a picked reading's place in its set, so it is re-read in the interface language of the moment */
+  /** an authored reading's place in its set (content/readings.ts), so it is re-read in the language of the moment;
+      absent for readings the live council wrote for this question */
   reading?: { scriptId: string | null; index: number };
+}
+
+/** what the reader says their question is about: any of the offered readings, and/or their own words */
+export interface Focus {
+  picks: FocusPick[];
+  own?: string;
 }
 
 export interface CouncilSession {

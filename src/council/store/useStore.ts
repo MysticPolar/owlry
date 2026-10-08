@@ -12,7 +12,8 @@ import type { CastInfo, CastSeat, CouncilSession, Focus, Highlight, Message, Pos
 import type { Rig } from '../app/rig';
 import * as engine from '../engine/council';
 import { seedPosts, seedHighlights, FOLLOWING } from '../content/social';
-import { askedOf, liveBook, liveCast, liveFigure, liveOpen, liveTurn, type MindBook, type MindFigure, type MindSeat } from '../lib/councilClient';
+import { askedOf, liveBook, liveCast, liveFigure, liveOpen, liveReadings, liveTurn, type MindBook, type MindFigure, type MindSeat } from '../lib/councilClient';
+import { normalizeFocus, type Reading } from '../content/readings';
 import * as social from '../lib/social/api';
 import { council, matchScore } from '../content/councils';
 import { CURATED_FIGURE_NAMES, curatedFigure, curatedFigureId } from '../content/figures';
@@ -35,13 +36,15 @@ export interface MindsSlice {
   unavailable?: Record<string, number>;
 }
 
-/** a question asked in the room, waiting on the confirmation page for its reading — transient, never persisted */
+/** a question asked in the room, waiting on the selection page for the reader's picks — transient, never persisted */
 export interface PendingAsk {
   question: string;
   /** a suggestion pins its council */
   councilId?: string;
-  /** the script that will answer (its readings are offered), or null for a question no script covers (the general ones) */
+  /** the script that will answer, or null for a question no script covers */
   scriptId: string | null;
+  /** three readings the live council wrote for this very question; without them the script's own (or the general three) are offered */
+  readings?: Reading[];
 }
 
 /** a question no script covers, while the live council seats it — transient, never persisted; the room shows it */
@@ -97,6 +100,8 @@ export interface StoreState {
   /** the room hands a question to the confirmation page, which offers its readings */
   beginAsk: (question: string, councilId?: string) => PendingAsk | null;
   clearAsk: () => void;
+  /** the live council reads the pending question while the room says so: its three readings join the ask (never throws) */
+  readAsk: (pending: PendingAsk) => Promise<void>;
   /** the session id for a scripted council; null while the live council is casting one (watch `casting`) */
   ask: (question: string, councilId?: string, focus?: Focus) => string | null;
   setActiveCouncil: (id: string | null) => void;
@@ -223,11 +228,11 @@ function requestOpening(set: Setter, session: CouncilSession) {
       const pending = (c.pending ?? []).filter((id) => !waiting.includes(id));
       // the seats moved on (replace/undo) while we waited — those words are for another council
       if (!res || !res.overrides.seats.every((id, i) => id === c.seats[i])) return { pending };
-      const bySeat = new Map(res.lines.map((l) => [`${l.slot}:${l.seat}`, l.segments]));
+      const bySeat = new Map(res.lines.map((l) => [`${l.slot}:${l.seat}`, l]));
       const messages = c.messages.map((m) => {
         if (m.kind !== 'figure' || m.seat === undefined || (m.slot !== 'r1' && m.slot !== 'r2')) return m;
-        const live = bySeat.get(`${m.slot}:${m.seat}`);
-        return live ? { ...m, live } : m;
+        const line = bySeat.get(`${m.slot}:${m.seat}`);
+        return line ? withLive(m, line.segments, line.to) : m;
       });
       return { messages, live: res.overrides, source: 'live', pending, updatedAt: Date.now() };
     });
@@ -251,17 +256,41 @@ function requestTurn(set: Setter, session: CouncilSession) {
     patch(set, session.id, (c) => {
       const pending = (c.pending ?? []).filter((id) => !waiting.includes(id));
       if (!res) return { pending };
-      const messages = c.messages.map((m) => (res[m.id] && m.figureId === session.seats[m.seat ?? 0] ? { ...m, live: res[m.id] } : m));
+      const messages = c.messages.map((m) => {
+        const line = res[m.id];
+        return line && m.figureId === session.seats[m.seat ?? 0] ? withLive(m, line.segments, line.to) : m;
+      });
       return { pending, messages, source: 'live', updatedAt: Date.now() };
     });
   });
 }
 
+/** a message with the live council's words on it — and whom they answer, when the server said (else the script's addressees stand) */
+function withLive(m: Message, live: Segment[], to?: number[]): Message {
+  const { liveTo: _old, ...rest } = m;
+  void _old;
+  return { ...rest, live, ...(to ? { liveTo: to } : {}) };
+}
+
 /** the live words a session currently holds, keyed by message id — stashed on Replace so Undo can restore them */
-function liveLines(c: CouncilSession): Record<string, Segment[]> {
-  const out: Record<string, Segment[]> = {};
-  for (const m of c.messages) if (m.live) out[m.id] = m.live;
-  return out;
+function liveLines(c: CouncilSession): { lines: Record<string, Segment[]>; tos: Record<string, number[]> } {
+  const lines: Record<string, Segment[]> = {};
+  const tos: Record<string, number[]> = {};
+  for (const m of c.messages) {
+    if (!m.live) continue;
+    lines[m.id] = m.live;
+    if (m.liveTo) tos[m.id] = m.liveTo;
+  }
+  return { lines, tos };
+}
+
+/** a message without the live council's words */
+function withoutLive(m: Message): Message {
+  if (!m.live && !m.liveTo) return m;
+  const { live: _l, liveTo: _t, ...rest } = m;
+  void _l;
+  void _t;
+  return rest;
 }
 
 /* ---------- the cast council ----------
@@ -430,11 +459,20 @@ export const useStore = create<StoreState>()(
         // (a question no script's keywords touch is not about the reader's first interest either)
         const match = councilId ? null : matchScore(q, areas);
         const scriptId = councilId ?? (match && match.score > 0 ? match.script.id : null);
-        const pending: PendingAsk = { question: q, ...(councilId ? { councilId } : {}), scriptId };
+        // back from the selection page with the same question: the readings already written for it stay
+        const was = get().pendingAsk;
+        const readings = was && was.question === q && was.councilId === councilId ? was.readings : undefined;
+        const pending: PendingAsk = { question: q, ...(councilId ? { councilId } : {}), scriptId, ...(readings ? { readings } : {}) };
         set({ pendingAsk: pending });
         return pending;
       },
       clearAsk: () => set({ pendingAsk: null }),
+      readAsk: async (pending) => {
+        if (pending.readings) return;
+        const readings = await liveReadings(pending.question, get().interests[0] ?? 'other', getActiveLang());
+        // a newer ask (or none) since: these readings are for a question no longer on the table
+        if (readings && get().pendingAsk === pending) set({ pendingAsk: { ...pending, readings } });
+      },
       ask: (question, councilId, focus) => {
         const areas = get().interests;
         // a typed question no script's keywords touch, with a live council to ask: cast one (the readiness check is inside liveCast)
@@ -501,9 +539,9 @@ export const useStore = create<StoreState>()(
         if (next === c) return;
         if (c.source === 'live' || c.cast) {
           // the others' live replies name the old thinker — drop every live line (Undo brings them back) and re-open live
-          const restore = { live: c.live, lines: liveLines(c) };
+          const restore = { live: c.live, ...liveLines(c) };
           const replaced = next.replaced.map((r, i) => (i === next.replaced.length - 1 ? { ...r, restore } : r));
-          next = engine.rebuild({ ...next, replaced, live: undefined, messages: next.messages.map((m) => (m.live ? { ...m, live: undefined } : m)) });
+          next = engine.rebuild({ ...next, replaced, live: undefined, messages: next.messages.map(withoutLive) });
           set((s) => ({ councils: { ...s.councils, [id]: next } }));
           const joined = next.cast?.seats[seat];
           if (joined) {
@@ -530,12 +568,12 @@ export const useStore = create<StoreState>()(
         const last = c.replaced[c.replaced.length - 1];
         let next = engine.undoReplace(c);
         if (last?.restore) {
-          const lines = last.restore.lines;
+          const { lines, tos = {} } = last.restore;
           next = engine.rebuild({
             ...next,
             live: last.restore.live,
             pending: [],
-            messages: next.messages.map((m) => (lines[m.id] ? { ...m, live: lines[m.id] } : m)),
+            messages: next.messages.map((m) => (lines[m.id] ? withLive(m, lines[m.id], tos[m.id]) : m)),
           });
         }
         set((s) => ({ councils: { ...s.councils, [id]: next } }));
@@ -785,6 +823,18 @@ export const useStore = create<StoreState>()(
       // written here still loads in the build before it
       version: 1,
       storage: createJSONStorage(() => localStorage),
+      // a session saved before the multiple choice held one reading (or own words) as its focus: read it into today's shape
+      merge: (persisted, current) => {
+        const p = (persisted ?? {}) as Partial<StoreState>;
+        if (!p.councils) return { ...current, ...p };
+        const councils: Record<string, CouncilSession> = {};
+        for (const [id, c] of Object.entries(p.councils)) {
+          const { focus: raw, ...rest } = c;
+          const focus = normalizeFocus(raw);
+          councils[id] = focus ? { ...rest, focus } : rest;
+        }
+        return { ...current, ...p, councils };
+      },
       partialize: (s) => {
         const { toast: _toast, casting: _casting, pendingAsk: _pendingAsk, ...rest } = s;
         void _toast;

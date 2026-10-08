@@ -12,6 +12,12 @@
 // when the words are one of the verified quotes in that figure's dossier.
 // _shared/council/quotes.ts enforces that after the parse — a "quote" the
 // model made up is demoted to plain text, never rendered as a quotation.
+//
+// Every line also says whom it answers: `to` is the seats (0–2) it
+// addresses by name, never the speaker's own; [] when it speaks only to
+// the reader. The debate reads it to say "Seneca to Marcus" and to draw
+// the reply line, so the words and the label come from the same answer.
+// quotes.ts cleans it after the parse with the quotes.
 // ============================================================
 
 export interface WireSource {
@@ -30,6 +36,8 @@ export interface WireSegment {
 
 export interface WireLine {
   seat: number;
+  /** the seats this line addresses by name — unique, ascending, never `seat`; [] = to the reader */
+  to: number[];
   segments: WireSegment[];
 }
 
@@ -48,6 +56,11 @@ export interface OpenReply {
 
 export interface TurnReply {
   replies: WireLine[];
+}
+
+/** the confirmation page: three ways the reader's own question could be read */
+export interface ReadingsReply {
+  readings: { title: string; detail: string }[];
 }
 
 const NULLABLE_STRING = { anyOf: [{ type: 'string' }, { type: 'null' }] } as const;
@@ -70,12 +83,15 @@ const SEGMENT_SCHEMA = {
   },
 } as const;
 
+// `to` comes before the words on purpose (property order is generation order): the line decides whom it
+// answers, then answers them
 const LINE_SCHEMA = {
   type: 'object',
   additionalProperties: false,
-  required: ['seat', 'segments'],
+  required: ['seat', 'to', 'segments'],
   properties: {
     seat: { type: 'integer', minimum: 0, maximum: 2 },
+    to: { type: 'array', maxItems: 2, items: { type: 'integer', minimum: 0, maximum: 2 } },
     segments: { type: 'array', minItems: 1, maxItems: 4, items: SEGMENT_SCHEMA },
   },
 } as const;
@@ -133,6 +149,25 @@ export const TURN_SCHEMA = {
   required: ['replies'],
   properties: {
     replies: { type: 'array', minItems: 1, maxItems: 3, items: LINE_SCHEMA },
+  },
+} as const;
+
+export const READINGS_SCHEMA = {
+  type: 'object',
+  additionalProperties: false,
+  required: ['readings'],
+  properties: {
+    readings: {
+      type: 'array',
+      minItems: 3,
+      maxItems: 3,
+      items: {
+        type: 'object',
+        additionalProperties: false,
+        required: ['title', 'detail'],
+        properties: { title: { type: 'string' }, detail: { type: 'string' } },
+      },
+    },
   },
 } as const;
 

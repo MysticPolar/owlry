@@ -3,7 +3,7 @@ import { IconCheck } from '@tabler/icons-react';
 import { navigate, parseRoute } from '../app/router';
 import { markReveal } from '../app/stage';
 import { useStore } from '../store/useStore';
-import type { Focus } from '../store/types';
+import type { Focus, FocusPick } from '../store/types';
 import type { Figure } from '../content/types';
 import { figure } from '../content/figures';
 import { readingsFor } from '../content/readings';
@@ -12,17 +12,21 @@ import { AppBar, Thinking } from '../components/chrome';
 import { Stage, type Curtain } from '../components/Stage';
 import { usePresence } from '../hooks/usePresence';
 import { useReduceMotion } from '../hooks/useReduceMotion';
-import { useT } from '../i18n/react';
+import { fmt, useT } from '../i18n/react';
 import './ConfirmScreen.css';
 
 /* ============================================================
-   How the council reads your question (the v13 mockup's Confirm).
-   The room's stage stays on, its seats empty; under it the question and
-   "The council will debate" with one reading picked. "Not this? Change"
-   opens the three readings — three tensions the question holds, from
-   content/readings.ts — and "Other", in your own words. "Cast the
-   council" draws the curtain over the seats; Act I opens it on the cast
-   (app/stage.ts carries the hand-off).
+   What the question is really about — the selection page (v13's
+   Confirm step, made a multiple choice). The room's stage stays on, its
+   seats empty; under it the question, then three readings of it — three
+   tensions it could be about, written for this question by the live
+   council while the room said "Reading your question", or the script's
+   own (content/readings.ts) — and "Other", in the reader's own words.
+   The reader picks any of them, and that is what the council debates:
+   picking is how the reader, and the model, come to understand the
+   question. "Cast the council" waits for at least one; it draws the
+   curtain over the seats, and Act I opens it on the cast (app/stage.ts
+   carries the hand-off).
 
    A scripted council is only seated when the curtain's beat ends, so
    leaving during it leaves nothing behind; a live cast starts at once
@@ -67,13 +71,13 @@ export function ConfirmScreen() {
     if (!pending && isHere()) navigate({ name: 'council' }, { replace: true });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // the pick: one of the three readings, or Other (which remembers the reading it was switched on from)
-  const [reading, setReading] = useState(0);
+  // the picks: any of the three readings, and Other with its words
+  const [picked, setPicked] = useState<number[]>([]);
   const [other, setOther] = useState(false);
   const [otherText, setOtherText] = useState('');
-  const [changing, setChanging] = useState(false);
+  const [nudge, setNudge] = useState(0);
   const otherRef = useRef<HTMLInputElement>(null);
-  const changeRef = useRef<HTMLButtonElement>(null);
+  const firstRef = useRef<HTMLButtonElement>(null);
   const focusOther = useRef(false);
 
   const [cast, setCast] = useState<Cast | null>(null);
@@ -84,27 +88,39 @@ export function ConfirmScreen() {
   castRef.current = cast;
   const casting = !!cast;
 
-  const list = usePresence(changing && !casting, 220);
   const otherField = usePresence(other, 180);
 
   // the script that answers: the suggestion's council, else the keyword match; neither means the general readings
   const scriptId = pending ? (pending.councilId ?? pending.scriptId ?? null) : null;
-  const readings = readingsFor(scriptId);
-  const picked = readings[reading];
-  const own = otherText.trim();
-  const title = other ? own || t.confirm.otherTitle : picked.title;
-  const sub = other ? (own ? t.confirm.otherOwn : t.confirm.otherSub) : picked.detail;
+  // the live council's three for this very question, else the script's own (re-read in the language of the moment)
+  const liveReadings = pending?.readings;
+  const readings = liveReadings ?? readingsFor(scriptId);
+  const own = other ? otherText.trim() : '';
+  const count = picked.length + (own ? 1 : 0);
 
   const focusNow = (): Focus | undefined => {
-    if (other) return own ? { title: own.slice(0, 200), custom: true } : undefined;
-    return { title: picked.title, detail: picked.detail, reading: { scriptId, index: reading } };
+    const picks: FocusPick[] = [...picked]
+      .sort((a, b) => a - b)
+      .flatMap((n) => {
+        const r = readings[n];
+        if (!r) return [];
+        // an authored reading is kept by reference too, so it is re-read in the language of the moment; a live one stays as written
+        return [{ title: r.title, ...(r.detail ? { detail: r.detail } : {}), ...(liveReadings ? {} : { reading: { scriptId, index: n } }) }];
+      });
+    if (!picks.length && !own) return undefined;
+    return { picks, ...(own ? { own: own.slice(0, 200) } : {}) };
   };
   const focusAtCast = useRef<Focus | undefined>(undefined);
 
   const castCouncil = () => {
     if (!pending || casting) return;
-    setChanging(false);
     const focus = focusNow();
+    // nothing picked yet: the page says so, and the first reading takes the focus
+    if (!focus) {
+      setNudge((n) => n + 1);
+      if (!other) firstRef.current?.focus();
+      return;
+    }
     focusAtCast.current = focus;
     // a question no script covers, with a live council to ask: the cast starts now (it takes a few seconds)
     if (!scriptId && isLiveCouncilConfigured()) {
@@ -164,8 +180,7 @@ export function ConfirmScreen() {
     [cancelCasting],
   );
 
-  // Other takes the focus when it is switched on (not when the list reopens with it already chosen)
-  // (the field mounts a render after `other` turns on, so the flag waits for it)
+  // Other takes the focus when it is switched on (the field mounts a render after `other` turns on, so the flag waits for it)
   useEffect(() => {
     if (other && focusOther.current && otherRef.current) {
       focusOther.current = false;
@@ -175,13 +190,7 @@ export function ConfirmScreen() {
 
   if (!pending) return <div className="screen confirm-screen" />;
 
-  const pick = (n: number) => {
-    setReading(n);
-    setOther(false);
-    setChanging(false);
-    // the list folds away under the finger: the focus goes back to the control that opened it
-    requestAnimationFrame(() => changeRef.current?.focus());
-  };
+  const toggle = (n: number) => setPicked((p) => (p.includes(n) ? p.filter((x) => x !== n) : [...p, n]));
   const toggleOther = () => {
     focusOther.current = !other;
     setOther((v) => !v);
@@ -198,83 +207,81 @@ export function ConfirmScreen() {
   const marquee = [t.council.marquee, ...(castSession ? castSession.seats.map(seatFigure).flatMap((f) => (f ? [f.short] : [])) : [])].join(' · ');
 
   return (
-    <div className="screen confirm-screen">
+    <div className={`screen confirm-screen ${casting ? 'is-casting' : ''}`}>
       <AppBar back={{ name: 'council' }} />
       <Stage mode="mid" seats={[null, null, null]} curtain={curtain} marquee={marquee} onEmptyTap={casting ? undefined : castCouncil} emptyAria={t.council.cast} />
       <div className="content">
         <p className="sub rv confirm-q">“{pending.question}”</p>
-        {/* typing under Other is not announced keystroke by keystroke; a new pick is */}
-        <div className="confirm rv" style={{ animationDelay: '.06s' }} aria-live={other ? 'off' : 'polite'}>
-          <div className="k">{t.confirm.willDebate}</div>
-          {/* keyed by the choice (not its words): a new pick arrives, typing under Other does not replay it */}
-          <div key={other ? 'other' : `r${reading}`} className="confirm-pick">
-            <div className="t">{title}</div>
-            <div className="d">{sub}</div>
-          </div>
+        <div className="pick-head rv" style={{ animationDelay: '.04s' }}>
+          <h2 className="k" id="pick-k">
+            {t.confirm.kicker}
+          </h2>
+          <p className="pick-lead">{t.confirm.lead}</p>
         </div>
-        {!casting && (
-          <div className="confirm-foot rv" style={{ animationDelay: '.1s' }}>
-            <button ref={changeRef} type="button" className="btn text" aria-expanded={changing} onClick={() => setChanging((v) => !v)}>
-              {changing ? t.confirm.keep : t.confirm.change}
-            </button>
-          </div>
-        )}
-        {list.mounted && (
-          <div className={`opt-list ${list.closing ? 'closing' : ''}`} role="group" aria-label={t.confirm.readingsAria}>
-            {readings.map((r, n) => {
-              const on = !other && reading === n;
-              return (
-                <button
-                  key={r.title}
-                  type="button"
-                  className={`opt rv ${on ? 'on' : ''}`}
-                  style={{ animationDelay: `${(n * 0.06).toFixed(2)}s` }}
-                  aria-pressed={on}
-                  onClick={() => pick(n)}
-                >
-                  <span className="t">{r.title}</span>
-                  <span className="d">{r.detail}</span>
-                  <span className="box" aria-hidden="true">
-                    {on && <IconCheck stroke={3} />}
-                  </span>
-                </button>
-              );
-            })}
-            {/* Other: a button that toggles it, and its own field beside it (never inside a button) */}
-            <div className={`opt opt-other rv ${other ? 'on' : ''}`} style={{ animationDelay: '.2s' }}>
-              <button type="button" className="opt-toggle" aria-pressed={other} onClick={toggleOther}>
-                <span className="t">{t.confirm.other}</span>
-                {!other && <span className="d">{t.confirm.otherHint}</span>}
+        <div className="opt-list" role="group" aria-labelledby="pick-k" aria-describedby="pick-count">
+          {readings.map((r, n) => {
+            const on = picked.includes(n);
+            return (
+              <button
+                // a new set of readings (the language changed) arrives afresh
+                key={`${n}:${r.title}`}
+                ref={n === 0 ? firstRef : undefined}
+                type="button"
+                className={`opt rv ${on ? 'on' : ''}`}
+                style={{ animationDelay: `${(0.08 + n * 0.06).toFixed(2)}s` }}
+                aria-pressed={on}
+                disabled={casting}
+                onClick={() => toggle(n)}
+              >
+                <span className="t">{r.title}</span>
+                {r.detail && <span className="d">{r.detail}</span>}
                 <span className="box" aria-hidden="true">
-                  {other && <IconCheck stroke={3} />}
+                  {on && <IconCheck stroke={3} />}
                 </span>
               </button>
-              {otherField.mounted && (
-                <div className={`chatbar other-field ${otherField.closing ? 'closing' : ''}`}>
-                  <input
-                    ref={otherRef}
-                    value={otherText}
-                    onChange={(e) => setOtherText(e.target.value)}
-                    onKeyDown={onOtherKey}
-                    placeholder={t.confirm.otherPh}
-                    aria-label={t.confirm.otherPh}
-                    autoComplete="off"
-                    enterKeyHint="send"
-                    maxLength={200}
-                  />
-                </div>
-              )}
-            </div>
+            );
+          })}
+          {/* Other: a button that toggles it, and its own field beside it (never inside a button) */}
+          <div className={`opt opt-other rv ${other ? 'on' : ''}`} style={{ animationDelay: '.26s' }}>
+            <button type="button" className="opt-toggle" aria-pressed={other} disabled={casting} onClick={toggleOther}>
+              <span className="t">{t.confirm.other}</span>
+              {!other && <span className="d">{t.confirm.otherHint}</span>}
+              <span className="box" aria-hidden="true">
+                {other && <IconCheck stroke={3} />}
+              </span>
+            </button>
+            {otherField.mounted && (
+              <div className={`chatbar other-field ${otherField.closing ? 'closing' : ''}`}>
+                <input
+                  ref={otherRef}
+                  value={otherText}
+                  onChange={(e) => setOtherText(e.target.value)}
+                  onKeyDown={onOtherKey}
+                  placeholder={t.confirm.otherPh}
+                  aria-label={t.confirm.otherPh}
+                  autoComplete="off"
+                  enterKeyHint="send"
+                  maxLength={200}
+                  readOnly={casting}
+                />
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
       <div className="footer">
         {casting ? (
           <Thinking>{t.council.casting}</Thinking>
         ) : (
-          <button type="button" className="btn gold" onClick={castCouncil}>
-            {t.council.cast}
-          </button>
+          <>
+            {/* how many are picked — or, on a cast with none, that one is needed (re-keyed so it says so again) */}
+            <p id="pick-count" key={count ? 'n' : `none${nudge}`} className={`pick-count ${!count && nudge ? 'nudge' : ''}`} aria-live="polite">
+              {count ? fmt(t.confirm.picked, { n: String(count) }) : t.confirm.none}
+            </p>
+            <button type="button" className="btn gold" aria-disabled={!count} onClick={castCouncil}>
+              {t.council.cast}
+            </button>
+          </>
         )}
       </div>
     </div>

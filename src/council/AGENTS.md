@@ -65,24 +65,32 @@ plain boot in `main.tsx`, drop the variable from `deploy.yml` and
 ## Where things are
 
 - Routes (`app/router.ts`): `#/council` (the room — always three empty,
-  breathing seats; it never shows the last council), `#/confirm` (how the
-  council reads the question: three readings + Other, then cast), `#/stands/:id`,
+  breathing seats; it never shows the last council), `#/confirm` (the
+  selection page: what the question is really about — any of three readings,
+  plus Other in the reader's words — then cast), `#/stands/:id`,
   `#/debate/:id`, `#/summary/:id`, `#/one/:id/:figure` (one on one with a
   seat), `#/book/:id`, `#/read/:id`, the tabs, auth. `#/discussion/:id` is a
   legacy alias of the stands. `App.tsx` orders them by depth for the slide
   direction. The wordmark in every app bar (`HomeMark` in
   `components/chrome.tsx`, beside the back arrow on screens that have one)
   is the way home from any screen.
-- Readings → `content/readings.ts` (+ `content/zh/readings.ts`): three per
-  scripted council, written for its three seats in seat order, and a
-  general set for a question no script covers (Chinese titles read
-  "甲，还是乙"). A picked reading is saved with a reference to its set, so
-  it follows a language switch. The room hands the question
-  to the confirmation page through the store's transient `pendingAsk`; the
-  chosen reading is the session's `focus` (synced in the session payload),
-  shown on Act I and sent to the live council with the question
-  (`askedOf()` in `lib/councilClient.ts` — the server takes only the
-  question for the opening and the cast). A new council needs its readings.
+- Readings: signed in, the live council writes three for the question
+  itself while the room shows "Reading your question" (council-chat mode
+  `readings`, `liveReadings()`; the store's `readAsk` puts them on the
+  transient `pendingAsk`). Otherwise `content/readings.ts` (+
+  `content/zh/readings.ts`): three per scripted council, written for its
+  three seats in seat order, and a general set for a question no script
+  covers (Chinese titles read "甲，还是乙"). The reader picks any number,
+  and/or writes their own; that is the session's `focus` — `{ picks, own }`,
+  synced in the session payload; `normalizeFocus()` reads the older
+  one-reading shape. An authored pick keeps a reference to its set, so it
+  follows a language switch. The focus is shown on Act I (`focusLabel()`)
+  and sent to the live council with the question (`askedOf()` in
+  `lib/councilClient.ts` — the server takes only the question for the
+  opening and the cast). A new council needs its readings.
+- Who answers whom: a live line carries the seats it addresses (`liveTo`,
+  from the server's `to`); with the live words it replaces the script's
+  `to`, so "Epictetus to Carol" always matches what was said.
 - Content (figures, books, scripted councils) → `content/`. Adding a
   council: write a `CouncilScript` (see `content/types.ts`) and register it in
   `content/councils/index.ts`; give each seat at least one alternate.

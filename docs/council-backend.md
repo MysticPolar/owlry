@@ -38,12 +38,21 @@ Migrations: `supabase/migrations/20260915120000_owlry_council.sql` and
 
 - **`council-chat`** (JWT-gated) — the live council. Modelled on `owl-chat`:
   the caller's JWT is revalidated, the reader is rate-limited (30/hour,
-  150/day; an opening counts double), then one schema-forced Gemini call
-  writes the words. Two modes:
+  150/day; an opening counts double, every other call once), then one
+  schema-forced Gemini call writes the words. Six modes:
+  - `readings` → three readings of the reader's own question for the
+    selection page (`#/confirm`), before anyone is seated (see *Readings*
+    below);
   - `open` → intros, round one, round two, the takeaways and the reading
-    reasons, in one call;
+    reasons, in one call. The six debate lines are one conversation, written
+    in the order the debate plays them (round one seat 0, 1, 2; round two
+    seat 0, 1, 2), and every line carries `to` (see *The debate, addressed*
+    below). It asks for up to 8192 output tokens at thinking level `LOW`:
+    thinking counts against that cap, and the earlier 4000 ran out mid-reply
+    in production (`finishReason: MAX_TOKENS` → `502`), Chinese especially;
   - `turn` → the replies to a follow-up, a direct question, added context or a
-    passage from the reader;
+    passage from the reader, each with `to` (up to 4096 output tokens at
+    `LOW`, for the same reason as `open`);
   - `cast` → three real thinkers for a question the catalogue has no script
     for, one book each (see *Minds from the model* below);
   - `figure` → a thinker's card from the model's own knowledge — bio, works,
@@ -79,6 +88,61 @@ segment that comes out is marked `attributed: true`, and the chat, the
 figure sheet and the About note label it *attributed* rather than *verbatim*.
 The word "verbatim" stays reserved for the curated catalogue, whatever the
 model said about its own certainty.
+
+### The debate, addressed
+
+The debate shows one line at a time and says whom it answers ("Seneca to
+Marcus"), so the live words carry that themselves: every line of `open`
+(`round1`, `round2`) and `turn` (`replies`) is `{seat, to, segments}`, where
+`to` is the seats (0–2) the line addresses by name — unique, ascending,
+never the speaker's own — and `[]` when it speaks to the reader. The schema
+asks for it before the words (the line decides whom it answers, then
+answers), the prompt asks that it list exactly the seats the line names, and
+the quote gate cleans it after the parse (`addressees()` in `quotes.ts`), so
+whatever the model sent, the client can draw it without checking.
+
+The gate also holds `to` to the words (`named()` and `answered()` in
+`quotes.ts`): it looks for each other seat's short or full name in the
+line's text segments (Latin names as whole, case-sensitive words; Chinese
+names anywhere; a quote is not an address). A line to the reader stays
+`[]` — it may mention the others without answering them. A line that answers
+someone keeps the model's seats when its words name one of them, plus any
+other seat they name; when they name none of them but do name another seat,
+the words win; when they name no seat at all (a rendering the dossier does
+not use, a pronoun), the model's `to` stands. In the opening, lines 2–5
+answer a seat by design, so one of them sent as `[]` whose words name a seat
+is given that seat. A direct answer in a turn is always `[]`.
+
+The opening prompt fixes the shape of the exchange: round one — seat 0 opens
+to the reader (`[]`), seat 1 answers seat 0 by name and adds its own idea
+(`[0]`), seat 2 answers either or both and adds the third; round two — seat 0
+takes up a round-one claim of seat 1 or 2, seat 1 answers seat 0's
+round-two point or seat 2, and seat 2 closes by turning to the reader with
+what the disagreement means for them (`[]`). When the question arrives with
+the reader's picks from the selection page appended (`askedOf()` in the
+client), the prompt tells the council to debate those. The function returns
+one line per seat per round, in seat order. In a turn, a direct question is answered
+to the reader (`[]`); in a whole-council follow-up the first reply answers
+the reader and each later one takes up an earlier reply by name.
+
+### Readings
+
+The selection page offers three readings of the question — each a tension the
+question could be about, with one question that sharpens it — plus *Other* in
+the reader's own words; what they pick goes to the council with the question.
+
+| In | Out | Model | Cost |
+| --- | --- | --- | --- |
+| `{mode: "readings", question, area, lang}` | `200 {"readings": [{"title", "detail"} ×3]}` — `title` the tension, "X vs. Y" (≤ 6 words, sentence case, no full stop; Chinese "甲，还是乙"), `detail` one question to the reader (≤ 12 words, ends with "?" / "？"); no thinker names, no quotes | `MODEL_VOICE`, thinking `MINIMAL`, temperature 0.7, 1024 output tokens, Flash-Lite fallback | 1 |
+
+`READINGS_SYSTEM` + `readingsUser` in `prompts.ts`, `READINGS_SCHEMA` in
+`schemas.ts` (exactly three). After the parse a wrapping quotation mark and a
+title's closing full stop are dropped, then each title is capped at 80
+characters and each detail at 160, and titles must differ; fewer than three valid
+readings is `502 {"error": "generation_failed"}`, a missing question
+`400 {"error": "question required"}`. Same auth, rate limiter and daily cap
+as the other modes. The client offers its authored readings whenever the call
+fails or is not made.
 
 ## Minds from the model (MVP)
 

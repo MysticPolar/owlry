@@ -21,8 +21,9 @@ import './CouncilScreen.css';
    The composer is the bottom edge (the question, the interest pill, the
    send button) and three ideas stack on it. Asking lands the question in
    the room as the reader's own line, the composer emptied and inert,
-   "Reading your question" for a beat; then the confirmation page offers
-   the readings and casts.
+   "Reading your question" while the live council writes three readings
+   of it (a beat at least, its timeout at most); then the selection page
+   offers them and casts.
    ============================================================ */
 
 /** the mockup's category glyphs, one per interest area */
@@ -35,7 +36,7 @@ const ICONS: Record<Area, ReactNode> = {
   other: <IconMessageCircle stroke={1.8} />,
 };
 
-/** how long "Reading your question" holds before the confirmation page */
+/** the least "Reading your question" holds before the selection page (the live council's readings may take longer) */
 const READING_BEAT_MS = 900;
 
 /** an idea that wraps to two lines still hugs its text (CSS alone leaves a wrapped pill as wide as the column) */
@@ -71,6 +72,7 @@ export function CouncilScreen() {
   const interests = useStore((s) => s.interests);
   const setInterests = useStore((s) => s.setInterests);
   const beginAsk = useStore((s) => s.beginAsk);
+  const readAsk = useStore((s) => s.readAsk);
   const showToast = useStore((s) => s.showToast);
 
   // back from the confirmation page without casting: the question is still in the box, ready to change
@@ -119,12 +121,18 @@ export function CouncilScreen() {
   };
   useEffect(() => {
     if (!reading) return;
-    // only while the room is still the screen on show: a tab tapped during the beat wins
-    const tm = window.setTimeout(() => {
-      if (parseRoute(location.hash).name === 'council') navigate({ name: 'confirm' });
-    }, reduce ? 10 : READING_BEAT_MS);
-    return () => clearTimeout(tm);
-  }, [reading, reduce]);
+    let here = true;
+    const pending = useStore.getState().pendingAsk;
+    const beat = new Promise<void>((resolve) => window.setTimeout(resolve, reduce ? 10 : READING_BEAT_MS));
+    // the live council reads the question meanwhile; without it (or past its timeout) the page offers the authored readings
+    void Promise.all([beat, pending ? readAsk(pending) : null]).then(() => {
+      // only while the room is still the screen on show: a tab tapped during the beat wins
+      if (here && parseRoute(location.hash).name === 'council') navigate({ name: 'confirm' });
+    });
+    return () => {
+      here = false;
+    };
+  }, [reading, reduce, readAsk]);
 
   /* ---- interests + suggestions ---- */
   const areas = areasList();
