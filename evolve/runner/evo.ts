@@ -29,7 +29,7 @@ interface Config {
   lanes: Record<string, { kind: 'api' | 'subagent'; model: string; thinkingLevel?: ThinkingLevel; temperature?: number; maxOutputTokens?: number; retries429?: number; minGapMs?: number; agentType?: string; effort?: string; samples?: number }>;
   primaryLane: string;
   /** the first target: the primary lane's current version scoring at least this */
-  milestone?: { lane: string; score: number; note?: string };
+  milestone?: { lane: string; score: number; consecutive?: number; coverAllCategories?: boolean; note?: string };
   /** hard limits on the system prompt's size, enforced in code when a version is applied */
   prompt?: { maxWords: number; maxGrowthPerRound?: number; note?: string };
   /** the strongest lane: what the prompt can produce when the model is not the limit */
@@ -986,8 +986,37 @@ async function cmdStatus(cfg: Config) {
     const traj = await roundScores(cfg);
     const best = traj.reduce((b, r) => (r.score > b ? r.score : b), 0);
     const latest = traj.at(-1);
-    console.log(`milestone: ${cfg.milestone.score} on ${cfg.milestone.lane}. ${traj.length ? `latest ${latest!.score.toFixed(2)} (v${latest!.version}, round ${latest!.round}), best ${best.toFixed(2)}, trajectory ${traj.map((r) => r.score.toFixed(1)).join(' -> ')}` : 'no scores yet'}${best >= cfg.milestone.score ? ' REACHED' : ''}`);
+    const m = await milestoneState(cfg, traj);
+    console.log(`milestone: ${cfg.milestone.score} on ${cfg.milestone.lane}, ${m.need} consecutive${cfg.milestone.coverAllCategories ? ', one per category' : ''}. ${traj.length ? `latest ${latest!.score.toFixed(2)} (v${latest!.version}, round ${latest!.round}), best ${best.toFixed(2)}, trajectory ${traj.map((r) => r.score.toFixed(1)).join(' -> ')}` : 'no scores yet'}. streak ${m.streak} of ${m.need}${m.reached ? ' REACHED' : ''}`);
   }
+}
+
+/**
+ * How many trailing rounds cleared the milestone, and whether enough did.
+ * With coverAllCategories, the trailing rounds that count must between them
+ * include every category in the bank's rotation: one question per category.
+ */
+async function milestoneState(cfg: Config, traj: { round: number; score: number; category?: string }[]): Promise<{ streak: number; need: number; reached: boolean; missing: string[] }> {
+  const need = cfg.milestone?.consecutive ?? 1;
+  const target = cfg.milestone?.score ?? Infinity;
+  let streak = 0;
+  for (let i = traj.length - 1; i >= 0 && traj[i].score >= target; i--) streak++;
+  let missing: string[] = [];
+  if (cfg.milestone?.coverAllCategories) {
+    const bank = await loadBank();
+    const covered = new Set(traj.slice(traj.length - streak).map((r) => r.category).filter(Boolean));
+    missing = bank.rotation.filter((c) => !covered.has(c));
+  }
+  return { streak, need, reached: streak >= need && missing.length === 0, missing };
+}
+
+/** one line a loop can read: the streak, the target, and reached or not */
+async function cmdMilestone(cfg: Config) {
+  if (!cfg.milestone) fail('no milestone in config.json');
+  const traj = await roundScores(cfg);
+  const m = await milestoneState(cfg, traj);
+  const latest = traj.at(-1);
+  console.log(`${m.reached ? 'REACHED' : 'not yet'}: streak ${m.streak} of ${m.need} rounds at or above ${cfg.milestone.score} on ${cfg.milestone.lane}${cfg.milestone.coverAllCategories ? `; categories still to clear in the streak: ${m.missing.length ? m.missing.join(', ') : 'none'}` : ''}; latest ${latest ? `${latest.score.toFixed(2)} (v${latest.version}, round ${latest.round})` : 'none'}`);
 }
 
 function cmdNow() {
@@ -999,6 +1028,7 @@ function cmdNow() {
 const HELP = `evo <command> [--flag value]
 
   status                                     where things stand
+  milestone                                  REACHED or not yet: the streak of rounds at or above the target
   now                                        current time in ms (for timing subagent lanes)
   new --pick [next|weakest|<Category>] | --id <bank id> | --question "<text>" | --question-file <path>
                                              start a round: folder, question, blind map.
@@ -1028,6 +1058,7 @@ const cfg = await loadConfig();
 const flags = args();
 switch (cmd) {
   case 'status': await cmdStatus(cfg); break;
+  case 'milestone': await cmdMilestone(cfg); break;
   case 'now': cmdNow(); break;
   case 'new': await cmdNew(cfg, flags); break;
   case 'bank': await cmdBank(cfg, flags); break;

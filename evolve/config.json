@@ -24,7 +24,7 @@
   },
   "primaryLane": "gemini",
   "ceilingLane": "sonnet",
-  "milestone": { "lane": "gemini", "score": 70, "note": "first milestone: the free-tier Gemini model scores above 70 on the matrix" },
+  "milestone": { "lane": "gemini", "score": 70, "consecutive": 5, "coverAllCategories": true, "note": "first milestone: the free-tier Gemini model's mean score is 70 or more on one question from every category, i.e. five consecutive rounds in rotation" },
   "prompt": { "maxWords": 1900, "maxGrowthPerRound": 0.10, "note": "absolute ceiling on the system prompt's word count, enforced by apply-editor; the editor must cut to add once it is near" },
   "judge": { "agentType": "general-purpose", "model": "opus", "effort": "high" },
   "editor": { "agentType": "general-purpose", "model": "fable", "effort": "xhigh" },

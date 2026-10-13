@@ -2,7 +2,7 @@
 
 A loop that improves one system prompt, the cast-plus-debate prompt, one test question at a time.
 
-**The goal.** The prompt is for the Gemini model the free tier serves, `gemini-3.1-flash-lite`. The first milestone is a score of 70 or more on the 100-point matrix on that lane. The milestone and the round-by-round score go to the editor every round, so it knows how far the prompt is from the target and whether the last change helped.
+**The goal.** The prompt is for the Gemini model the free tier serves, `gemini-3.1-flash-lite`. The first milestone is a mean score of 70 or more on the 100-point matrix on that lane for one question from every category: five consecutive rounds in rotation, all at or above 70, covering Health, Wealth, Love, Purpose and Wonder. `evo milestone` prints the streak and REACHED when it is met; the run stops there. The milestone and the round-by-round score go to the editor every round, so it knows how far the prompt is from the target and whether the last change helped.
 
 **Length.** The system prompt has a hard ceiling in words (`prompt.maxWords` in `config.json`) and a per-round growth limit. Both are enforced in code when a version is applied, not by an agent, and the editor sees the remaining budget every round. At the ceiling, every addition must be paid for by a cut.
 
