@@ -1,0 +1,122 @@
+{
+  "lane": "sonnet",
+  "version": 1,
+  "model": "sonnet",
+  "settings": {
+    "agentType": "Explore",
+    "effort": "medium",
+    "note": "latency includes Claude Code subagent overhead"
+  },
+  "latencyMs": 36057,
+  "output": {
+    "situation": "You want to learn how to build a successful consumer SaaS now that AI is everywhere, and which product principles from the internet era still hold. You haven't said what you plan to build, who it's for, or whether you want a business, a craft, or a study project. That is the decisive unknown. It decides whether AI is your product's core or just a cheap way to build features anyone can copy.",
+    "minds": [
+      {
+        "title": "The Experimenter",
+        "concern": "Learning what customers really do before betting on what you believe, so that speed of learning is the advantage.",
+        "author": "Eric Ries",
+        "book": "The Lean Startup",
+        "year": 2011
+      },
+      {
+        "title": "The Market Economist",
+        "concern": "Where lasting advantage comes from when features are cheap to copy: switching costs, network effects, and pricing.",
+        "author": "Carl Shapiro and Hal R. Varian",
+        "book": "Information Rules",
+        "year": 1998
+      },
+      {
+        "title": "The Design Critic",
+        "concern": "Whether ordinary people can understand and use the product without effort or blame, and whether it fits how they actually behave.",
+        "author": "Don Norman",
+        "book": "The Design of Everyday Things",
+        "year": 1988
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Experimenter",
+        "text": "Start small and ship ugly. AI makes building so cheap that the scarce thing is knowing what people want. Build the smallest version, put it in front of twenty strangers, and measure what they do, not what they say. Studying principles for months is the old way of procrastinating.",
+        "author": "Eric Ries",
+        "book": "The Lean Startup",
+        "pd": false,
+        "basis": "Basis: Eric Ries, The Lean Startup (build-measure-learn idea); I could not check a URL, so this source is not verified."
+      },
+      {
+        "speaker": "The Market Economist",
+        "text": "But if building is cheap for you, it's cheap for everyone. Your clever prototype gets cloned in a weekend. Learning fast is necessary, not sufficient. The real question is what keeps a customer from leaving once a copycat appears. Without an answer, you're just funding a competitor's research.",
+        "author": "Carl Shapiro and Hal R. Varian",
+        "book": "Information Rules",
+        "pd": false,
+        "basis": "Basis: Carl Shapiro and Hal Varian, Information Rules (lock-in and switching costs); I could not check a URL, so this source is not verified."
+      },
+      {
+        "speaker": "The Design Critic",
+        "text": "You're both skipping the person. Lock-in without delight is a trap people resent, and a fast experiment on a confusing product teaches nothing. If users can't tell what the thing does or what to press next, they blame themselves and quietly leave. That's a design failure, not a market one.",
+        "author": "Don Norman",
+        "book": "The Design of Everyday Things",
+        "pd": false,
+        "basis": "Basis: Don Norman, The Design of Everyday Things (discoverability and feedback); I could not check a URL, so this source is not verified."
+      },
+      {
+        "speaker": "The Experimenter",
+        "text": "Fair, and that sharpens my test. An experiment on a confusing prototype measures the confusion, not the demand. So I'll watch people try it silently and note where they stall. But I'd go further than Ries here: that observation is itself the design work, not a step before it.",
+        "author": "Eric Ries",
+        "book": "The Lean Startup",
+        "pd": false,
+        "basis": "Basis: Eric Ries, The Lean Startup (validated learning); the extension about observing stalls is my own, not the author's. Source not verified by URL."
+      },
+      {
+        "speaker": "The Market Economist",
+        "text": "Delight doesn't pay rent, though. Plenty of beloved apps die because nothing makes the second year of use better than the first. Internet winners usually had a compounding loop: more users, more data or content, better product. For a consumer AI tool, what compounds? If the answer is nothing, expect a race to free.",
+        "author": "Carl Shapiro and Hal R. Varian",
+        "book": "Information Rules",
+        "pd": false,
+        "basis": "Basis: Carl Shapiro and Hal Varian, Information Rules (network effects and positive feedback); I could not check a URL, so this source is not verified."
+      },
+      {
+        "speaker": "The Design Critic",
+        "text": "Something can compound without a network. Your product can remember a person's habits, preferences, and past work, so it fits them better each week. That is design, not lock-in. The test is whether leaving feels like losing something valuable, not like escaping a cage. People can feel that difference.",
+        "author": "Don Norman",
+        "book": "The Design of Everyday Things",
+        "pd": false,
+        "basis": "Basis: Don Norman, The Design of Everyday Things (fit between product and user's mental model); the personal-memory example is my own extension. Source not verified by URL."
+      },
+      {
+        "speaker": "The Market Economist",
+        "text": "I'll concede that personal fit is a legitimate moat, and a gentler one than I assumed. But it creates a cost: you hold sensitive history, and a rival can offer to import it. So portability pressure rises. Lock-in that customers can escape in one click is only a head start.",
+        "author": "Carl Shapiro and Hal R. Varian",
+        "book": "Information Rules",
+        "pd": false,
+        "basis": "Basis: Carl Shapiro and Hal Varian, Information Rules (switching costs and standards); the portability point applied to AI is my own extension. Source not verified by URL."
+      },
+      {
+        "speaker": "The Experimenter",
+        "text": "Then a head start is exactly what I'd measure. Does a user who gets personal fit return in week four more than one who doesn't? That's one cheap cohort comparison. If it doesn't move retention, your moat story is a hope. If it does, double down and stop debating.",
+        "author": "Eric Ries",
+        "book": "The Lean Startup",
+        "pd": false,
+        "basis": "Basis: Eric Ries, The Lean Startup (cohort analysis and actionable metrics); applying it to personal fit is my own extension. Source not verified by URL."
+      },
+      {
+        "speaker": "The Design Critic",
+        "text": "One caution on that metric. Retention can rise because you made quitting annoying, not because you made life better. Count the people who return and say they'd recommend it, then separately count the ones who stay but complain. Numbers that hide resentment will mislead you.",
+        "author": "Don Norman",
+        "book": "The Design of Everyday Things",
+        "pd": false,
+        "basis": "Basis: Don Norman, The Design of Everyday Things (human-centered design, errors and blame); the retention caution is my own extension. Source not verified by URL."
+      },
+      {
+        "speaker": "The Market Economist",
+        "text": "We still disagree on order. I'd pick the market first: who pays, how much, and what a rival can copy. You'd start with people, he'd start with tests. For a study project, I'd accept all three, but a business that skips my question is the one most likely to be cloned.",
+        "author": "Carl Shapiro and Hal R. Varian",
+        "book": "Information Rules",
+        "pd": false,
+        "basis": "Basis: Carl Shapiro and Hal Varian, Information Rules (pricing and differentiation); I could not check a URL, so this source is not verified."
+      }
+    ],
+    "clearer": "The main insight is that AI lowers the cost of building, so the scarce things become knowing what people want, being understandable and trustworthy to them, and having a reason they stay. The three minds mostly agree on that. They still disagree on sequence: test first, study the market first, or design for the person first. They also disagree on whether personal fit is a lasting moat or only a head start. One possible self-reflection is whether you want to learn these principles as a student, or to bet on a specific product soon. This is an option to consider, not a conclusion about you. All three sources are cited without URLs, so none of the references were verified against the books.",
+    "dependsOn": "If you want to build a real product soon, the Experimenter's path becomes more reasonable. Cheap, fast tests of a narrow idea beat extended study, because the main risk is building something nobody uses. If you will charge money or expect copycats, the Economist's question matters more. Work out what makes a customer stay before you invest heavily. If your product asks people to trust it with habits, memories, or personal data, the Design Critic's concern comes first. Check that people understand it and feel good about staying. If you are still studying, read all three books in this order: the Lean Startup for method, Information Rules for economics, and Everyday Things for design. The decisive unknown is whether your idea gets better with use. A proportionate way to learn that is to compare return rates in week four for users who get personalization and users who don't."
+  },
+  "savedAt": "2026-10-13T09:19:36.780Z"
+}
