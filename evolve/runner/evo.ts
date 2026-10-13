@@ -55,6 +55,10 @@ interface RoundFile {
   blind: Record<string, { A: number; B: number | null }>;
   createdAt: string;
   next?: number;
+  /** a rewrite round: the editor returns a from-scratch short prompt instead of an incremental edit */
+  rewrite?: boolean;
+  /** the version the editor built the next one on: the round's winner on the primary lane */
+  baseVersion?: number;
 }
 
 // ---------- small helpers ----------
@@ -507,6 +511,7 @@ async function cmdNew(cfg: Config, f: Record<string, string>) {
     blind[lane] = previous === null ? { A: current, B: null } : prevFirst ? { A: previous, B: current } : { A: current, B: previous };
   }
   const rf: RoundFile = { round, question: question.trim(), current, previous, blind, createdAt: new Date().toISOString() };
+  if (f.rewrite) rf.rewrite = true;
   if (picked) {
     rf.questionId = picked.id;
     rf.category = picked.category;
@@ -748,8 +753,15 @@ async function cmdEditorInput(cfg: Config, f: Record<string, string>) {
   const round = Number(need(f, 'round'));
   const rf = await readJson<RoundFile>(`${roundDir(round)}/round.json`);
   const editor = await Deno.readTextFile(`${ROLES_DIR}/editor.md`);
-  const s = await loadSubject(cfg, rf.current);
-  const parts = [editor, '', '----------------------------------------', '', `CURRENT SYSTEM PROMPT (version ${rf.current})`, '<<<', s.system, '>>>', '', "THE USER'S SITUATION", rf.question, ''];
+  const base = await baseVersionFor(cfg, round, rf);
+  const s = await loadSubject(cfg, base);
+  const baseNote = base === rf.current
+    ? `BASE SYSTEM PROMPT (version ${rf.current}, the current version${rf.previous !== null ? `, which held against v${rf.previous} this round` : ''})`
+    : `BASE SYSTEM PROMPT (version ${base}: the current version v${rf.current} LOST to it on the primary lane this round, so v${rf.current} is discarded and you build on v${base})`;
+  const parts = [editor, '', '----------------------------------------', '', baseNote, '<<<', s.system, '>>>', '', "THE USER'S SITUATION", rf.question, ''];
+  if (rf.rewrite) {
+    parts.push('REWRITE ROUND', `This round you do not edit. Write the system prompt again from scratch, at most ${cfg.prompt ? Math.round(cfg.prompt.maxWords / 2) : 900} words, for a small model: mechanical rules only, each one checkable sentence by sentence, in the order the model needs them. Keep every protected part (output format and field names, fictional role titles, the publication-year quotation rule, the user's language, the turn count and word range). Keep what the scorecards show the current prompt does well. Drop every principle the small model has ignored across rounds, and every sentence that explains rather than instructs. Report it as one change of kind "rewrite". The growth limit does not apply this round; the ceiling does.`, '');
+  }
   const versions = rf.previous !== null ? [rf.previous, rf.current] : [rf.current];
   parts.push("THE JUDGE'S SCORECARDS");
   for (const lane of Object.keys(cfg.lanes)) {
@@ -839,6 +851,19 @@ interface EditorOut {
 
 const words = (t: string) => t.trim().split(/\s+/).filter(Boolean).length;
 
+/**
+ * The version the next one is built on: the current version, unless the primary
+ * lane's judge preferred the previous version this round, in which case the
+ * current version is a regression and the loop goes back to the winner.
+ */
+async function baseVersionFor(cfg: Config, round: number, rf: RoundFile): Promise<number> {
+  if (rf.previous === null) return rf.current;
+  const jp = `${roundDir(round)}/judge.${cfg.primaryLane}.json`;
+  if (!(await exists(jp))) return rf.current;
+  const j = await readJson<JudgeFile>(jp);
+  return j.preferredVersion === rf.previous ? rf.previous : rf.current;
+}
+
 async function cmdApplyEditor(cfg: Config, f: Record<string, string>) {
   const round = Number(need(f, 'round'));
   const rf = await readJson<RoundFile>(`${roundDir(round)}/round.json`);
@@ -850,14 +875,15 @@ async function cmdApplyEditor(cfg: Config, f: Record<string, string>) {
   }
   if (typeof e.prompt !== 'string' || e.prompt.trim().length < 200) fail('editor answer has no usable "prompt"');
   if (!Array.isArray(e.changes) || e.changes.length === 0) fail('editor answer lists no changes');
-  const cur = await loadSubject(cfg, rf.current);
+  const base = await baseVersionFor(cfg, round, rf);
+  const cur = await loadSubject(cfg, base);
   const next = rf.current + 1;
   if (USER_HEADING.test(e.prompt)) fail('the editor returned the user section inside the prompt; it must return the system prompt only');
   const before = words(cur.system);
   const after = words(e.prompt);
   const growth = (after - before) / before;
   const maxGrowth = cfg.prompt?.maxGrowthPerRound ?? 0.10;
-  if (growth > maxGrowth) fail(`new prompt grew ${(growth * 100).toFixed(0)}% (${before} -> ${after} words); the limit is ${Math.round(maxGrowth * 100)}%. Ask the editor for a shorter version`);
+  if (!rf.rewrite && growth > maxGrowth) fail(`new prompt grew ${(growth * 100).toFixed(0)}% (${before} -> ${after} words); the limit is ${Math.round(maxGrowth * 100)}%. Ask the editor for a shorter version`);
   if (cfg.prompt && after > cfg.prompt.maxWords) fail(`new prompt is ${after} words; the ceiling is ${cfg.prompt.maxWords}. Ask the editor for a version at or under the ceiling, cutting what earns nothing`);
 
   const file = `${SUBJECT_DIR}/${cfg.subject}.v${next}.md`;
@@ -883,6 +909,7 @@ async function cmdApplyEditor(cfg: Config, f: Record<string, string>) {
     `Question${rf.questionId ? ` (${rf.questionId}, ${rf.category} / ${rf.label})` : ''}: ${rf.question.replace(/\s+/g, ' ').slice(0, 160)}${rf.question.length > 160 ? '…' : ''}`,
     `Scores: ${scoreBits.join(' | ') || '(none)'}`,
     `Latency: ${latBits.join(' | ') || '(none)'}`,
+    `Based on: v${base}${base !== rf.current ? ` (v${rf.current} lost to it on the primary lane and is discarded)` : ''}${rf.rewrite ? '; REWRITE ROUND, written from scratch' : ''}`,
     `Words: ${before} -> ${after}`,
     `Changes: ${e.changes.map((c) => c.kind).join(', ')}${e.reverted?.length ? `; reverted: ${e.reverted.length}` : ''}${e.blocked?.length ? `; blocked: ${e.blocked.join(' / ')}` : ''}`,
     `${e.changelog}`,
@@ -891,8 +918,9 @@ async function cmdApplyEditor(cfg: Config, f: Record<string, string>) {
   const head = (await exists(clp)) ? await Deno.readTextFile(clp) : '# Changelog of the cast+debate prompt\n\nOne entry per version. Newest at the bottom.\n';
   await Deno.writeTextFile(clp, head.trimEnd() + '\n\n' + entry + '\n');
   rf.next = next;
+  rf.baseVersion = base;
   await writeJson(`${roundDir(round)}/round.json`, rf);
-  console.log(`applied: v${next} written to ${file} (${before} -> ${after} words, ${e.changes.length} changes)`);
+  console.log(`applied: v${next} written to ${file} (based on v${base}, ${before} -> ${after} words, ${e.changes.length} changes${rf.rewrite ? ', rewrite round' : ''})`);
 }
 
 /** a readable file of every debate in a round, with its score and latency, for a person to read */
@@ -1030,9 +1058,10 @@ const HELP = `evo <command> [--flag value]
   status                                     where things stand
   milestone                                  REACHED or not yet: the streak of rounds at or above the target
   now                                        current time in ms (for timing subagent lanes)
-  new --pick [next|weakest|<Category>] | --id <bank id> | --question "<text>" | --question-file <path>
+  new --pick [next|weakest|<Category>] | --id <bank id> | --question "<text>" | --question-file <path> [--rewrite]
                                              start a round: folder, question, blind map.
-                                             --pick next rotates categories and takes the least-used question
+                                             --pick next rotates categories and takes the least-used question;
+                                             --rewrite makes the editor write a short prompt from scratch this round
   bank                                       list the question bank with usage and the next pick
   gemini --round R --versions 1,2 | --version V [--model M]
                                              run the Gemini worker per version, one after another with the

@@ -20,7 +20,7 @@ Call that `evo` below. `evolve/config.json` holds the models and efforts; do not
 evo new --pick next
 ```
 
-`--pick next` rotates through the five categories and takes the least-used question in the category. `--pick weakest` takes the category with the lowest recent score instead; `--id <bank id>` takes a specific question. The bank's category and label are for the record only. They are never shown to a worker or a judge.
+`--pick next` rotates through the five categories and takes the least-used question in the category. Add `--rewrite` only when the main session tells you this is a rewrite round; the editor then writes a short prompt from scratch instead of editing. `--pick weakest` takes the category with the lowest recent score instead; `--id <bank id>` takes a specific question. The bank's category and label are for the record only. They are never shown to a worker or a judge.
 
 It prints the question's label, the round number R, the current version, the previous version if any, and the versions to run. Round 1 runs one version. Later rounds run two: previous and current, so the judge can compare them.
 
