@@ -1,0 +1,646 @@
+{
+  "lane": "sonnet",
+  "sample": null,
+  "blind": {
+    "A": 8,
+    "B": 9
+  },
+  "scores": {
+    "v8": {
+      "criteria": [
+        {
+          "name": "Quality of discussion",
+          "max": 20,
+          "points": 14.88,
+          "sub": [
+            {
+              "name": "Continuity and responsiveness",
+              "rating": 7.6,
+              "points": 3.04,
+              "example": "T2 takes up T1's 'close decides how everything is felt' and says a neat close can preach.",
+              "limitation": "T1 to T3 each take one slice of the request and run in parallel at first."
+            },
+            {
+              "name": "Development of ideas",
+              "rating": 7.4,
+              "points": 2.96,
+              "example": "T6 adds 'a lesson feels cheap when nothing was risked'. T7 narrows this to small domestic risk.",
+              "limitation": "Forster's pattern lens adds little after T7. T10 is practical advice, not pattern theory."
+            },
+            {
+              "name": "Exploration of central tensions",
+              "rating": 7.5,
+              "points": 3,
+              "example": "T8: warmth wants a resolved ending, and freedom from a point wants an open one.",
+              "limitation": "Whether hope needs real loss is named only at T12 and is never argued through."
+            },
+            {
+              "name": "Integration of perspectives",
+              "rating": 7.3,
+              "points": 2.92,
+              "example": "T7: Pattern Reader drops 'shape matters more than stakes' after the Hope Realist's point.",
+              "limitation": "The Skeptic never changes its view. Its T11 critique goes unanswered."
+            },
+            {
+              "name": "Progress toward understanding",
+              "rating": 7.4,
+              "points": 2.96,
+              "example": "The ending narrows to Foster or Ogawa and names the two facts that would decide it.",
+              "limitation": "The Summer Book, raised in T5, drops out of the debate until section E."
+            }
+          ]
+        },
+        {
+          "name": "Quality of disagreement, trust and grounding",
+          "max": 20,
+          "points": 14.64,
+          "sub": [
+            {
+              "name": "Faithful engagement",
+              "rating": 7,
+              "points": 2.8,
+              "example": "T4 states the Hope Realist's view accurately before offering 'you might just be tired'.",
+              "limitation": "T2 frames its challenge narrowly ('taking only the lessons part'), which sidesteps T1's full claim."
+            },
+            {
+              "name": "Substance of challenges",
+              "rating": 6.8,
+              "points": 2.72,
+              "example": "T11: twenty pages tests tolerance for sadness, not whether the book preaches.",
+              "limitation": "Few challenges test evidence. Most are reframings, not real counterexamples."
+            },
+            {
+              "name": "Accuracy and support",
+              "rating": 7.4,
+              "points": 2.96,
+              "example": "Foster's premise and The Summer Book's talks about God and dying are described accurately.",
+              "limitation": "The claim that the sad stretch shows in Foster's first twenty pages is unsupported (T10)."
+            },
+            {
+              "name": "Calibration and transparency",
+              "rating": 7.6,
+              "points": 3.04,
+              "example": "T6 marks the extension as its own: 'go further than Solnit here'. Basis notes flag paraphrase.",
+              "limitation": "T8 states 'warmth tends to want a resolved ending' as a general rule without support."
+            },
+            {
+              "name": "Intellectual honesty and revision",
+              "rating": 7.8,
+              "points": 3.12,
+              "example": "T7 makes an explicit concession and narrows the claim instead of moving the goalposts.",
+              "limitation": "No one answers T11's objection to the twenty-page test."
+            }
+          ]
+        },
+        {
+          "name": "Personal relevance",
+          "max": 10,
+          "points": 7.2,
+          "sub": [
+            {
+              "name": "Identification of the actual concern",
+              "rating": 7.6,
+              "points": 1.52,
+              "example": "The situation section asks whether the user can sit through a sad stretch to reach hope.",
+              "limitation": "Little attention to what 'thoughtful' means to this user."
+            },
+            {
+              "name": "Meaningful use of personal context",
+              "rating": 6.8,
+              "points": 1.36,
+              "example": "T11 checks the test against the user's word 'short' and against the lessons concern.",
+              "limitation": "Several turns open with 'You said' and then add little user-specific reasoning (T5, T11)."
+            },
+            {
+              "name": "Fit with goals and values",
+              "rating": 7.4,
+              "points": 1.48,
+              "example": "All three picks are short and avoid sermons, which fits both stated wishes.",
+              "limitation": "The Hope Realist's preference for costly hope leans toward Foster beyond what the user asked (T9)."
+            },
+            {
+              "name": "Attention to constraints and stakes",
+              "rating": 6.6,
+              "points": 1.32,
+              "example": "T9: Foster may cost a calm evening. The gentler book may cost the ache.",
+              "limitation": "Stakes stay small. Nothing is said about reading time or the user's mood now."
+            },
+            {
+              "name": "Responsiveness to information",
+              "rating": 7.6,
+              "points": 1.52,
+              "example": "T12 names the two facts that would decide it: the last gentle book and Foster's final page.",
+              "limitation": "Branches cover only tolerance for sadness, not other possible meanings of 'hopeful'."
+            }
+          ]
+        },
+        {
+          "name": "Constructive self-discovery",
+          "max": 20,
+          "points": 13.92,
+          "sub": [
+            {
+              "name": "Clarification of desires and motivations",
+              "rating": 7.2,
+              "points": 2.88,
+              "example": "T4 offers a rival reading, 'you might just be tired', as a hypothesis, not a fact.",
+              "limitation": "Desires are offered but never tied to any evidence from the user's wording."
+            },
+            {
+              "name": "Examination of assumptions",
+              "rating": 6.8,
+              "points": 2.72,
+              "example": "T5: the problem may be certainty, not ideas. This surfaces what 'lessons' really means.",
+              "limitation": "Does not ask whether the user assumes a short book can't carry real weight."
+            },
+            {
+              "name": "Clarification of values and priorities",
+              "rating": 7.4,
+              "points": 2.96,
+              "example": "T8 names a real conflict between valued outcomes: warmth versus a book with no stated point.",
+              "limitation": "It never asks which of the two the user would give up first."
+            },
+            {
+              "name": "Recognition of fears and outside expectations",
+              "rating": 6,
+              "points": 2.4,
+              "example": "T10: switching to the Ogawa should not be treated 'as a failure'. A gentle note on self-judgment.",
+              "limitation": "Mostly leaves out what pressures might make lessons feel talked-down."
+            },
+            {
+              "name": "Agency and reflective ownership",
+              "rating": 7.4,
+              "points": 2.96,
+              "example": "Section D offers a prompt: think of the last hopeful book and whether it hurt.",
+              "limitation": "The reflection prompt appears only at the end. Earlier turns are conditional but rarely invite reflection."
+            }
+          ]
+        },
+        {
+          "name": "Decision usefulness",
+          "max": 10,
+          "points": 7.32,
+          "sub": [
+            {
+              "name": "Definition of the decision and options",
+              "rating": 7.4,
+              "points": 1.48,
+              "example": "Clear options: Foster, Ogawa, The Summer Book, plus a limited trial step.",
+              "limitation": "The Summer Book's place in the decision is left unclear in the debate itself."
+            },
+            {
+              "name": "Explanation of tradeoffs",
+              "rating": 7.4,
+              "points": 1.48,
+              "example": "T9: the gentler book may cost the ache. Foster may cost a calm evening.",
+              "limitation": "Tradeoffs for The Summer Book are never set out."
+            },
+            {
+              "name": "Identification of decisive conditions",
+              "rating": 7.6,
+              "points": 1.52,
+              "example": "T9: if you can sit through sadness, Foster. If not, the Ogawa.",
+              "limitation": "Conditions turn on one axis only, tolerance for sadness."
+            },
+            {
+              "name": "Treatment of uncertainty",
+              "rating": 6.8,
+              "points": 1.36,
+              "example": "T11 separates what the trial can tell you from what it can't.",
+              "limitation": "Minor and major unknowns are not ranked against each other."
+            },
+            {
+              "name": "Proportionate next steps",
+              "rating": 7.4,
+              "points": 1.48,
+              "example": "T10: twenty pages, about half an hour, then continue or switch.",
+              "limitation": "Advising a check of the last page risks spoiling Foster's ending, and nobody notes this."
+            }
+          ]
+        },
+        {
+          "name": "Clarity and engagement",
+          "max": 10,
+          "points": 7.4,
+          "sub": [
+            {
+              "name": "Accessible language",
+              "rating": 7.8,
+              "points": 1.56,
+              "example": "Plain phrasing such as 'closes a door or opens one' (T1).",
+              "limitation": "'Shape matters more than stakes' (T4) is slightly abstract for a casual reader."
+            },
+            {
+              "name": "Traceable arguments and references",
+              "rating": 7.6,
+              "points": 1.52,
+              "example": "T7 names exactly which point moved it and why.",
+              "limitation": "T2 uses 'The Alchemist' without context for readers who don't know it."
+            },
+            {
+              "name": "Manageable pacing and turn length",
+              "rating": 7.8,
+              "points": 1.56,
+              "example": "All 12 turns fall within 25 to 65 words and have an even rhythm.",
+              "limitation": "Twelve turns for a book recommendation feels slightly long."
+            },
+            {
+              "name": "Distinguishable positions and voices",
+              "rating": 7,
+              "points": 1.4,
+              "example": "The three lenses are distinct: endings, uncertainty, and costly hope.",
+              "limitation": "All three minds sound alike in sentence style. The 'You said...' openers repeat."
+            },
+            {
+              "name": "Economy and sustained attention",
+              "rating": 6.8,
+              "points": 1.36,
+              "example": "Section E summarizes the outcome efficiently.",
+              "limitation": "The 'sad stretch' point appears three times (situation, T9, section E)."
+            }
+          ]
+        },
+        {
+          "name": "Drama and entertainment",
+          "max": 10,
+          "points": 5.6,
+          "sub": [
+            {
+              "name": "Meaningful stakes and tension",
+              "rating": 5.6,
+              "points": 1.12,
+              "example": "T9 frames the choice as a cost: the ache versus a calm evening.",
+              "limitation": "Stakes are inherently low. Tension is mild throughout."
+            },
+            {
+              "name": "Surprise and reversals",
+              "rating": 6,
+              "points": 1.2,
+              "example": "T7: the Pattern Reader reverses openly on shape versus stakes.",
+              "limitation": "The reversal is announced, not dramatised. It lands flat."
+            },
+            {
+              "name": "Personality and expressive voice",
+              "rating": 5.4,
+              "points": 1.08,
+              "example": "The Skeptic's dry T11 'check the last page' has some character.",
+              "limitation": "Voices are polite and uniform. There is little temperament."
+            },
+            {
+              "name": "Memorable delivery",
+              "rating": 5.4,
+              "points": 1.08,
+              "example": "'Closes a door or opens one' is a usable image (T1).",
+              "limitation": "No vivid scene from any recommended book is shown."
+            },
+            {
+              "name": "Anticipation and emotional movement",
+              "rating": 5.6,
+              "points": 1.12,
+              "example": "T10 to T11 build a test and then puncture it.",
+              "limitation": "Even intensity throughout. The ending is quiet and procedural."
+            }
+          ]
+        }
+      ],
+      "uncapped": 70.96,
+      "score": 70.96,
+      "capReason": null,
+      "strengths": [
+        "A real concession in T7, with the claim narrowed, plus a sharp objection to the test in T11.",
+        "All recommended books are actually short and accurately described (Foster, Ogawa, The Summer Book).",
+        "Decisive condition stated clearly (tolerance for a sad stretch), with a proportionate trial step."
+      ],
+      "weaknesses": [
+        "T11's objection to the twenty-page test is never answered by the Pattern Reader or the Hope Realist.",
+        "Voices are uniform and 'You said' openers repeat (T5, T11). Drama stays low.",
+        "The Summer Book (T5) drops out of the debate and returns only in section E."
+      ],
+      "editorNotes": [
+        "Require that any objection raised in the last three turns gets a direct reply before the closing turn.",
+        "Require each recommended book to stay in the debate or be explicitly dropped, with a stated reason.",
+        "Give each mind a distinct speech habit or temperament to raise the scores for voice and drama.",
+        "Warn against next steps that spoil endings, such as reading the last page first."
+      ]
+    },
+    "v9": {
+      "criteria": [
+        {
+          "name": "Quality of discussion",
+          "max": 20,
+          "points": 14,
+          "sub": [
+            {
+              "name": "Continuity and responsiveness",
+              "rating": 7.4,
+              "points": 2.96,
+              "example": "T2 rebuts T1 with Never Let Me Go. T3 rebuts T2's 'door ajar' with The Alchemist.",
+              "limitation": "T6 turns to the user and drops the T4 to T5 thread on Keegan."
+            },
+            {
+              "name": "Development of ideas",
+              "rating": 7,
+              "points": 2.8,
+              "example": "T7 separates an announced moral from an earned one, a useful new distinction.",
+              "limitation": "T9's friend scenario adds nothing the debate can build on."
+            },
+            {
+              "name": "Exploration of central tensions",
+              "rating": 7.2,
+              "points": 2.88,
+              "example": "T8: full reassurance and no message 'pull apart'.",
+              "limitation": "Doubt versus warmth (T4) is raised and never pursued."
+            },
+            {
+              "name": "Integration of perspectives",
+              "rating": 6.6,
+              "points": 2.64,
+              "example": "T10: the Craft Reader concedes that hope depends first on the user's preferred ending.",
+              "limitation": "T11 assigns the Irony Defender a position it never argued."
+            },
+            {
+              "name": "Progress toward understanding",
+              "rating": 6.8,
+              "points": 2.72,
+              "example": "Section E maps four conditions to three books.",
+              "limitation": "The final dispute (T11) is new, not a sharpened version of earlier threads."
+            }
+          ]
+        },
+        {
+          "name": "Quality of disagreement, trust and grounding",
+          "max": 20,
+          "points": 13.52,
+          "sub": [
+            {
+              "name": "Faithful engagement",
+              "rating": 6.8,
+              "points": 2.72,
+              "example": "T5 tests Keegan against both of the user's words, 'short' and 'hopeful'.",
+              "limitation": "T11: 'the Irony Defender might say' invents an opponent's view instead of quoting it."
+            },
+            {
+              "name": "Substance of challenges",
+              "rating": 7.4,
+              "points": 2.96,
+              "example": "T2's Never Let Me Go and T4's Candide are concrete counterexamples to the claims they answer.",
+              "limitation": "T4 hedges its own counterexample: 'I would guess some readers'."
+            },
+            {
+              "name": "Accuracy and support",
+              "rating": 6.2,
+              "points": 2.48,
+              "example": "Small Things Like These, about 116 pages, ending with Furlong taking the girl home: accurate.",
+              "limitation": "T7 says Gilead 'never issues a rule', which is doubtful. The book is full of a father's counsel."
+            },
+            {
+              "name": "Calibration and transparency",
+              "rating": 6.6,
+              "points": 2.64,
+              "example": "Basis notes flag every paraphrase as unverified.",
+              "limitation": "Form breach: T8 and T9 run about 73 words, over the 65-word limit."
+            },
+            {
+              "name": "Intellectual honesty and revision",
+              "rating": 6.8,
+              "points": 2.72,
+              "example": "T10 drops 'mostly a question of build' and states a narrower claim.",
+              "limitation": "T9 'accepts with a limit' but the limit is never stated clearly."
+            }
+          ]
+        },
+        {
+          "name": "Personal relevance",
+          "max": 10,
+          "points": 6.28,
+          "sub": [
+            {
+              "name": "Identification of the actual concern",
+              "rating": 7.4,
+              "points": 1.48,
+              "example": "The situation section names the key unknown: what 'hopeful' means to this user.",
+              "limitation": "Splits the request into three parts but drops 'short' in later picks."
+            },
+            {
+              "name": "Meaningful use of personal context",
+              "rating": 5.6,
+              "points": 1.12,
+              "example": "T5 checks Keegan's length against the user's word 'short'.",
+              "limitation": "Plainsong (T8) and Gilead (T7) are long novels. This ignores the user's 'short'."
+            },
+            {
+              "name": "Fit with goals and values",
+              "rating": 6,
+              "points": 1.2,
+              "example": "T7 tailors the pick to 'earned, not announced' lessons.",
+              "limitation": "Gilead is explicitly religious and didactic in form, a risky fit for 'no lessons'."
+            },
+            {
+              "name": "Attention to constraints and stakes",
+              "rating": 5.2,
+              "points": 1.04,
+              "example": "T4 gives concrete time: about 116 pages, one two-hour evening.",
+              "limitation": "T9 invents a friend who recommended books. The user never mentioned one."
+            },
+            {
+              "name": "Responsiveness to information",
+              "rating": 7.2,
+              "points": 1.44,
+              "example": "T8 turns the missing fact into a branch: at ease favors Haruf, a door ajar favors Keegan.",
+              "limitation": "The branches built on the invented friend are wasted (T9)."
+            }
+          ]
+        },
+        {
+          "name": "Constructive self-discovery",
+          "max": 20,
+          "points": 13.36,
+          "sub": [
+            {
+              "name": "Clarification of desires and motivations",
+              "rating": 7,
+              "points": 2.8,
+              "example": "T8: 'maybe you are after rest more than challenge', offered as a hypothesis.",
+              "limitation": "Desires accumulate (rest, irony, earned morals) without being ranked."
+            },
+            {
+              "name": "Examination of assumptions",
+              "rating": 6.8,
+              "points": 2.72,
+              "example": "T7: perhaps you don't mind a lesson, only an announced one.",
+              "limitation": "It never asks whether the user assumes hopeful must mean comforting."
+            },
+            {
+              "name": "Clarification of values and priorities",
+              "rating": 7,
+              "points": 2.8,
+              "example": "Section D: being hopeful and being free of lessons are two separate requests.",
+              "limitation": "It never asks which of the two the user would trade away."
+            },
+            {
+              "name": "Recognition of fears and outside expectations",
+              "rating": 5.6,
+              "points": 2.24,
+              "example": "T6: maybe you felt talked down to by uplifting books.",
+              "limitation": "T9's social pressure from a friend is invented, not drawn from the user."
+            },
+            {
+              "name": "Agency and reflective ownership",
+              "rating": 7,
+              "points": 2.8,
+              "example": "T11: recall whether you closed the last novel you loved at ease or unsettled.",
+              "limitation": "The many guesses about motive crowd the user's own judgment."
+            }
+          ]
+        },
+        {
+          "name": "Decision usefulness",
+          "max": 10,
+          "points": 6.84,
+          "sub": [
+            {
+              "name": "Definition of the decision and options",
+              "rating": 7.2,
+              "points": 1.44,
+              "example": "Section E lists three books, each tied to a condition, plus a trial step.",
+              "limitation": "Three books plus the friend branch blurs the choice."
+            },
+            {
+              "name": "Explanation of tradeoffs",
+              "rating": 6.4,
+              "points": 1.28,
+              "example": "T9: if tired and the book turns bleak, you may end lower.",
+              "limitation": "Plainsong's and Gilead's length is never named as a cost."
+            },
+            {
+              "name": "Identification of decisive conditions",
+              "rating": 7.4,
+              "points": 1.48,
+              "example": "Section E's conditions on ease, a door ajar, and announced lessons are clear and distinct.",
+              "limitation": "The friend condition (T9) is not grounded in anything the user said."
+            },
+            {
+              "name": "Treatment of uncertainty",
+              "rating": 6.4,
+              "points": 1.28,
+              "example": "Section D says the book picks are unverified starting points.",
+              "limitation": "A blanket disclaimer that the picks are unverified sits oddly beside confident claims about the books."
+            },
+            {
+              "name": "Proportionate next steps",
+              "rating": 6.8,
+              "points": 1.36,
+              "example": "Read twenty pages of Keegan in one sitting.",
+              "limitation": "Twenty pages can't reveal whether the ending brings relief or dread, as section E implies."
+            }
+          ]
+        },
+        {
+          "name": "Clarity and engagement",
+          "max": 10,
+          "points": 6.76,
+          "sub": [
+            {
+              "name": "Accessible language",
+              "rating": 7.4,
+              "points": 1.48,
+              "example": "T1: 'A flat character delivers a moral; a rounded one just lives.'",
+              "limitation": "'Irony treats a reader as an adult' (T6) is left unexplained."
+            },
+            {
+              "name": "Traceable arguments and references",
+              "rating": 6.8,
+              "points": 1.36,
+              "example": "T5 explicitly picks up the Craft Reader's Keegan proposal.",
+              "limitation": "T11's 'might say' makes the remaining dispute hard to attribute."
+            },
+            {
+              "name": "Manageable pacing and turn length",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Most turns are tight, around 50 to 60 words.",
+              "limitation": "T8 and T9 exceed the 65-word limit at about 73 words each."
+            },
+            {
+              "name": "Distinguishable positions and voices",
+              "rating": 7,
+              "points": 1.4,
+              "example": "The three stances are clearly different: craft, uncertainty, irony.",
+              "limitation": "The Irony Defender's irony lens disappears after T6."
+            },
+            {
+              "name": "Economy and sustained attention",
+              "rating": 6.6,
+              "points": 1.32,
+              "example": "Section E bullets are compact and scannable.",
+              "limitation": "Six books are named (Never Let Me Go, Alchemist, Candide, Keegan, Gilead, Plainsong), which crowds the choice."
+            }
+          ]
+        },
+        {
+          "name": "Drama and entertainment",
+          "max": 10,
+          "points": 5.72,
+          "sub": [
+            {
+              "name": "Meaningful stakes and tension",
+              "rating": 5.6,
+              "points": 1.12,
+              "example": "T5: Keegan's ending might read as dread.",
+              "limitation": "The stakes are inherently low. The invented friend adds artificial tension."
+            },
+            {
+              "name": "Surprise and reversals",
+              "rating": 6,
+              "points": 1.2,
+              "example": "T2's Never Let Me Go is a sharp, surprising counterexample.",
+              "limitation": "T10's reversal is formulaic: 'I drop my claim'."
+            },
+            {
+              "name": "Personality and expressive voice",
+              "rating": 5.8,
+              "points": 1.16,
+              "example": "T4's 'doubt alone is cheap' has bite.",
+              "limitation": "Voices converge after T6 into the same conditional style."
+            },
+            {
+              "name": "Memorable delivery",
+              "rating": 5.8,
+              "points": 1.16,
+              "example": "'Close it clever and no warmer' (T4) is a memorable line.",
+              "limitation": "The recommended books get only one-line premises, never a vivid moment."
+            },
+            {
+              "name": "Anticipation and emotional movement",
+              "rating": 5.4,
+              "points": 1.08,
+              "example": "The early run of counterexamples (T2 to T4) builds momentum.",
+              "limitation": "Momentum drops into hedged branches from T8 onward."
+            }
+          ]
+        }
+      ],
+      "uncapped": 66.48,
+      "score": 66.48,
+      "capReason": null,
+      "strengths": [
+        "Concrete counterexamples drive the early turns: Never Let Me Go (T2), The Alchemist (T3), Candide (T4).",
+        "T7's announced-versus-earned distinction is a genuinely useful reframe of 'no lessons'.",
+        "Section E maps clear conditions to distinct books, with a time estimate for Keegan."
+      ],
+      "weaknesses": [
+        "T9 invents a friend who recommended books, context the user never gave.",
+        "Plainsong and Gilead are long novels, which ignores the user's 'short' (T7, T8).",
+        "T8 and T9 exceed the 65-word turn limit, and T11 assigns the Irony Defender an unargued view."
+      ],
+      "editorNotes": [
+        "Forbid introducing people or circumstances the user never mentioned, even as hypotheticals.",
+        "Require every recommendation to be checked against each explicit constraint, such as length.",
+        "Enforce the word limit with a self-check before output.",
+        "In the closing turn, attribute a dispute only to positions a mind actually stated."
+      ]
+    }
+  },
+  "preferredVersion": 8,
+  "savedAt": "2026-10-13T21:16:02.297Z"
+}

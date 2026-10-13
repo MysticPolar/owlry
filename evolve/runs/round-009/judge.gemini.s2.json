@@ -1,0 +1,646 @@
+{
+  "lane": "gemini",
+  "sample": 2,
+  "blind": {
+    "A": 9,
+    "B": 8
+  },
+  "scores": {
+    "v9": {
+      "criteria": [
+        {
+          "name": "Quality of discussion",
+          "max": 20,
+          "points": 9.4,
+          "sub": [
+            {
+              "name": "Continuity and responsiveness",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Each turn names the prior claim, e.g. T2 answers 'simple craft provides the meaning'.",
+              "limitation": "Uptake is formulaic restating; T4 brushes off connection as 'exhausting' without argument."
+            },
+            {
+              "name": "Development of ideas",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "T7 shifts to 'precise image of existence' letting reader decide what is hopeful.",
+              "limitation": "T5-T8 mostly repeat opening positions; little new distinction added."
+            },
+            {
+              "name": "Exploration of central tensions",
+              "rating": 4,
+              "points": 1.6,
+              "example": "T9 frames hope as solitary endurance versus connection.",
+              "limitation": "What makes a novel feel like a 'lesson' is never examined."
+            },
+            {
+              "name": "Integration of perspectives",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "T7 Formalist drops the craft claim, citing the Humanist's point.",
+              "limitation": "T7 concession answers an argument the Humanist never made."
+            },
+            {
+              "name": "Progress toward understanding",
+              "rating": 5,
+              "points": 2,
+              "example": "T9 ends on a clear test: alone like the fisherman, or among people.",
+              "limitation": "The sharpened question has drifted away from 'hopeful without lessons'."
+            }
+          ]
+        },
+        {
+          "name": "Quality of disagreement, trust and grounding",
+          "max": 20,
+          "points": 8.2,
+          "sub": [
+            {
+              "name": "Faithful engagement",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "T5 fairly notes an old man's struggle may feel grim.",
+              "limitation": "T4 reduces 'only connect' to an exhausting risk, a weak version."
+            },
+            {
+              "name": "Substance of challenges",
+              "rating": 4,
+              "points": 1.6,
+              "example": "T2 challenges the Formalist's assumption that the world has inherent order.",
+              "limitation": "No one asks whether 'destroyed but not defeated' is itself an obvious lesson."
+            },
+            {
+              "name": "Accuracy and support",
+              "rating": 2.5,
+              "points": 1,
+              "example": "T1 paraphrases Hemingway's 'destroyed but not defeated' accurately.",
+              "limitation": "T3 puts 'only connect' in A Room with a View; it's Howards End's epigraph."
+            },
+            {
+              "name": "Calibration and transparency",
+              "rating": 5,
+              "points": 2,
+              "example": "T2 hedges: The Stranger 'may leave you feeling challenged rather than comforted'.",
+              "limitation": "T2 gives Sisyphus's joy-in-struggle to The Stranger as if established fact."
+            },
+            {
+              "name": "Intellectual honesty and revision",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "T7 explicitly states 'I drop the claim'.",
+              "limitation": "The Existentialist never concedes The Stranger fails the user's 'hopeful' requirement."
+            }
+          ]
+        },
+        {
+          "name": "Personal relevance",
+          "max": 10,
+          "points": 4.4,
+          "sub": [
+            {
+              "name": "Identification of the actual concern",
+              "rating": 5,
+              "points": 1,
+              "example": "T1 opens on 'hope without a lesson'.",
+              "limitation": "After T1 the aversion to lessons drops out until a brief mention in T8."
+            },
+            {
+              "name": "Meaningful use of personal context",
+              "rating": 4,
+              "points": 0.8,
+              "example": "T5 tailors to 'someone seeking a hopeful tone'.",
+              "limitation": "'Short' never shapes any recommendation or argument."
+            },
+            {
+              "name": "Fit with goals and values",
+              "rating": 4,
+              "points": 0.8,
+              "example": "T8 says Forster's Italy offers hope without didactic lesson.",
+              "limitation": "T2 recommends The Stranger, which fits poorly with 'hopeful'."
+            },
+            {
+              "name": "Attention to constraints and stakes",
+              "rating": 3.5,
+              "points": 0.7,
+              "example": "T4's 30-minute, ten-page sampling respects limited reading time.",
+              "limitation": "Never checks length; A Room with a View's possible didacticism is never raised."
+            },
+            {
+              "name": "Responsiveness to information",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Section E branches: hopeful when 'capable and alone' versus belonging.",
+              "limitation": "No focused question on what the user finds preachy or has already read."
+            }
+          ]
+        },
+        {
+          "name": "Constructive self-discovery",
+          "max": 20,
+          "points": 9.4,
+          "sub": [
+            {
+              "name": "Clarification of desires and motivations",
+              "rating": 5,
+              "points": 2,
+              "example": "T9 separates hope from solitude versus hope from belonging.",
+              "limitation": "Doesn't distinguish comfort-seeking from wanting to be quietly moved."
+            },
+            {
+              "name": "Examination of assumptions",
+              "rating": 4,
+              "points": 1.6,
+              "example": "T2 questions whether meaning needs an ordered world.",
+              "limitation": "The user's notion of an 'obvious lesson' is never surfaced."
+            },
+            {
+              "name": "Clarification of values and priorities",
+              "rating": 5,
+              "points": 2,
+              "example": "T8 offers aesthetic appreciation as a form of hope.",
+              "limitation": "The values in tension are the speakers' own rather than the user's."
+            },
+            {
+              "name": "Recognition of fears and outside expectations",
+              "rating": 4,
+              "points": 1.6,
+              "example": "T6 names a possible fear that warmth is illusion.",
+              "limitation": "T6 projects the fear onto the user rather than offering it as a question."
+            },
+            {
+              "name": "Agency and reflective ownership",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "T9's 'final test' leaves the user to judge where they feel grounded.",
+              "limitation": "The framing is binary; the user gets little room to refine it."
+            }
+          ]
+        },
+        {
+          "name": "Decision usefulness",
+          "max": 10,
+          "points": 4.9,
+          "sub": [
+            {
+              "name": "Definition of the decision and options",
+              "rating": 5,
+              "points": 1,
+              "example": "Three concrete titles named across T1-T3.",
+              "limitation": "Options limited to the minds' own books; one is not hopeful."
+            },
+            {
+              "name": "Explanation of tradeoffs",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "T5 weighs grim struggle against social warmth.",
+              "limitation": "No tradeoff discussed on length or degree of moralising per book."
+            },
+            {
+              "name": "Identification of decisive conditions",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Section E's if-alone / if-belonging conditions.",
+              "limitation": "Conditions ignore the user's stated criterion of avoiding lessons."
+            },
+            {
+              "name": "Treatment of uncertainty",
+              "rating": 3.5,
+              "points": 0.7,
+              "example": "Section E admits the user may be 'unsure what provides you hope'.",
+              "limitation": "Doesn't separate major unknowns (taste for didacticism) from minor ones."
+            },
+            {
+              "name": "Proportionate next steps",
+              "rating": 6,
+              "points": 1.2,
+              "example": "T4: 30 minutes on the first ten pages.",
+              "limitation": "Section E's sampling plan drops The Stranger without saying why."
+            }
+          ]
+        },
+        {
+          "name": "Clarity and engagement",
+          "max": 10,
+          "points": 6.2,
+          "sub": [
+            {
+              "name": "Accessible language",
+              "rating": 7,
+              "points": 1.4,
+              "example": "T5 is plain and concrete about tone.",
+              "limitation": "T7's 'precise image of existence' is vague."
+            },
+            {
+              "name": "Traceable arguments and references",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "Each turn names whose claim it answers.",
+              "limitation": "T4's 'that risk' has an unclear referent."
+            },
+            {
+              "name": "Manageable pacing and turn length",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "Nine turns, mostly 45-64 words, within the form's rules.",
+              "limitation": "At about 64 words, T2 sits at the length limit."
+            },
+            {
+              "name": "Distinguishable positions and voices",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Endurance, absurd honesty and connection stay distinct.",
+              "limitation": "All three speakers share a flat, identical register."
+            },
+            {
+              "name": "Economy and sustained attention",
+              "rating": 5,
+              "points": 1,
+              "example": "Section D compresses the shift usefully.",
+              "limitation": "The repeated 'The X suggests... but' opening becomes monotonous by T8."
+            }
+          ]
+        },
+        {
+          "name": "Drama and entertainment",
+          "max": 10,
+          "points": 3.7,
+          "sub": [
+            {
+              "name": "Meaningful stakes and tension",
+              "rating": 3.5,
+              "points": 0.7,
+              "example": "T6: warmth might be 'an illusion hiding the absurdity'.",
+              "limitation": "Stakes are abstract; the user's reading experience barely appears."
+            },
+            {
+              "name": "Surprise and reversals",
+              "rating": 4,
+              "points": 0.8,
+              "example": "T7 the Formalist drops his own thesis.",
+              "limitation": "The reversal is unmotivated, so it lands flat."
+            },
+            {
+              "name": "Personality and expressive voice",
+              "rating": 4,
+              "points": 0.8,
+              "example": "The Existentialist's 'raw honesty' stance has some edge.",
+              "limitation": "Little of Hemingway's terseness or Forster's irony shows in the voices."
+            },
+            {
+              "name": "Memorable delivery",
+              "rating": 3.5,
+              "points": 0.7,
+              "example": "T9's 'Hemingway's fisherman' image.",
+              "limitation": "Nothing comparable in T1-T8: no analogies, humour or sharp lines."
+            },
+            {
+              "name": "Anticipation and emotional movement",
+              "rating": 3.5,
+              "points": 0.7,
+              "example": "T8 brings brief warmth with Italy's beauty.",
+              "limitation": "The tone stays even throughout; nothing builds."
+            }
+          ]
+        }
+      ],
+      "uncapped": 46.2,
+      "score": 46.2,
+      "capReason": null,
+      "strengths": [
+        "Concrete, low-cost next step: T4's 30 minutes and ten pages, extended in Section E.",
+        "T9 and Section E give a clear conditional test: hope in solitude versus belonging.",
+        "The Formalist concedes explicitly in T7 ('I drop the claim')."
+      ],
+      "weaknesses": [
+        "T3 and T2 misattribute 'only connect' and Sisyphean joy to the wrong books.",
+        "The Existentialist (T2) recommends The Stranger, a poor fit for 'hopeful'.",
+        "No mind examines what counts as an 'obvious lesson', the user's core concern."
+      ],
+      "editorNotes": [
+        "Require a fact-check line per turn: is the cited idea actually in the named book?",
+        "When the user asks for a book, let minds recommend titles beyond their own basis works.",
+        "Require at least one turn to test each recommendation against every stated user criterion (short, hopeful, non-didactic).",
+        "Allow a concession only when it answers an argument actually made in an earlier turn."
+      ]
+    },
+    "v8": {
+      "criteria": [
+        {
+          "name": "Quality of discussion",
+          "max": 20,
+          "points": 11,
+          "sub": [
+            {
+              "name": "Continuity and responsiveness",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "T6 directly challenges T5's claim that the reader creates meaning.",
+              "limitation": "T3 ignores T1-T2 entirely and opens a fresh monologue."
+            },
+            {
+              "name": "Development of ideas",
+              "rating": 6,
+              "points": 2.4,
+              "example": "Ideas build: gaps (T2), secret shape (T4), structure as vehicle for unselfing (T7).",
+              "limitation": "T8-T9 add no new distinction; T9 restates rather than advances."
+            },
+            {
+              "name": "Exploration of central tensions",
+              "rating": 6,
+              "points": 2.4,
+              "example": "Directly debates where non-didactic hope lives: pattern, reader, or reality.",
+              "limitation": "Whether 'hope' itself risks sentimentality is never tested."
+            },
+            {
+              "name": "Integration of perspectives",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "T7 makes structure a vehicle for Murdoch's unselfing.",
+              "limitation": "T8 announces 'we are in agreement' though no agreement was reached; it is forced."
+            },
+            {
+              "name": "Progress toward understanding",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "T9 contrasts 'quiet, external truth' with 'shared, internal puzzle'.",
+              "limitation": "T9's 'author's intent' axis was never argued, so the ending blurs."
+            }
+          ]
+        },
+        {
+          "name": "Quality of disagreement, trust and grounding",
+          "max": 20,
+          "points": 10.4,
+          "sub": [
+            {
+              "name": "Faithful engagement",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "T6 fairly states the Reader of Intent's view before objecting.",
+              "limitation": "T5 claims the Formalist 'ignores the reader's role', which overstates T4."
+            },
+            {
+              "name": "Substance of challenges",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "T6: reader-made meaning may lead 'back to your own ego'.",
+              "limitation": "No one questions whether A Month in the Country is truly hopeful."
+            },
+            {
+              "name": "Accuracy and support",
+              "rating": 5,
+              "points": 2,
+              "example": "Iser's gaps and Murdoch's unselfing are represented accurately.",
+              "limitation": "Murdoch, a moral realist, is labelled 'Moral Skeptic'; chapter refs and generic URLs are loose."
+            },
+            {
+              "name": "Calibration and transparency",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Hedges throughout: 'Perhaps', 'might', 'maybe a well-made story'.",
+              "limitation": "T4 asserts hope 'arises when the plot achieves its secret shape' as fact."
+            },
+            {
+              "name": "Intellectual honesty and revision",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "T7: 'I drop my claim that the structure is everything'.",
+              "limitation": "T8 claims a consensus the Formalist never granted, which moves the goalposts."
+            }
+          ]
+        },
+        {
+          "name": "Personal relevance",
+          "max": 10,
+          "points": 5.4,
+          "sub": [
+            {
+              "name": "Identification of the actual concern",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "T1: completion 'without forcing a moral conclusion upon you'.",
+              "limitation": "Never asks what kind of 'lesson' bothers this user."
+            },
+            {
+              "name": "Meaningful use of personal context",
+              "rating": 5,
+              "points": 1,
+              "example": "T4 picks Fitzgerald for 'quiet brevity', which fits 'short'.",
+              "limitation": "The talk turns to theory of reading, away from the user's request."
+            },
+            {
+              "name": "Fit with goals and values",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "T1's A Month in the Country fits short, hopeful and non-didactic.",
+              "limitation": "T4 names Fitzgerald but never a specific title."
+            },
+            {
+              "name": "Attention to constraints and stakes",
+              "rating": 4,
+              "points": 0.8,
+              "example": "T5 proposes a 30-minute sample.",
+              "limitation": "T5's 'reread' assumes the user has already read the book."
+            },
+            {
+              "name": "Responsiveness to information",
+              "rating": 5,
+              "points": 1,
+              "example": "Section E branches on resolved pattern versus collaborative uncertainty.",
+              "limitation": "Branch two ends on a vague 'contemporary, fragmented narrative' with no title."
+            }
+          ]
+        },
+        {
+          "name": "Constructive self-discovery",
+          "max": 20,
+          "points": 9.6,
+          "sub": [
+            {
+              "name": "Clarification of desires and motivations",
+              "rating": 5,
+              "points": 2,
+              "example": "Distinguishes the comfort of resolution from collaborating on ambiguity.",
+              "limitation": "The desire for hope itself goes unexplored."
+            },
+            {
+              "name": "Examination of assumptions",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "T2/T6 ask whether meaning comes from the text or from the reader.",
+              "limitation": "The user's sense of what a 'lesson' is stays implicit."
+            },
+            {
+              "name": "Clarification of values and priorities",
+              "rating": 5,
+              "points": 2,
+              "example": "T9: external truth versus internal puzzle as a value choice.",
+              "limitation": "These values are theoretical and loosely tied to how the user reads."
+            },
+            {
+              "name": "Recognition of fears and outside expectations",
+              "rating": 3,
+              "points": 1.2,
+              "example": "T6 voices a worry about ego-driven reading.",
+              "limitation": "The fear in T6 belongs to the speaker; the user's wariness of preachiness is unexplored."
+            },
+            {
+              "name": "Agency and reflective ownership",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Section E: notice whether the prose feels like discovery or puzzle.",
+              "limitation": "The distinctions are abstract enough that applying them is hard."
+            }
+          ]
+        },
+        {
+          "name": "Decision usefulness",
+          "max": 10,
+          "points": 4.5,
+          "sub": [
+            {
+              "name": "Definition of the decision and options",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "T1 names A Month in the Country concretely.",
+              "limitation": "Only one concrete title; the second option is unnamed."
+            },
+            {
+              "name": "Explanation of tradeoffs",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Section E contrasts a resolved pattern with uncertainty.",
+              "limitation": "No costs per book are given (pace, mood, ending)."
+            },
+            {
+              "name": "Identification of decisive conditions",
+              "rating": 5,
+              "points": 1,
+              "example": "Section E: whether the prose feels like truth or puzzle.",
+              "limitation": "The condition is too abstract to tell a reader which book to pick."
+            },
+            {
+              "name": "Treatment of uncertainty",
+              "rating": 3.5,
+              "points": 0.7,
+              "example": "Section E's third branch handles the unsure reader.",
+              "limitation": "Doesn't separate consequential unknowns from minor ones."
+            },
+            {
+              "name": "Proportionate next steps",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Read the opening pages of Carr, then follow the matching mind.",
+              "limitation": "Gives no follow-up title for the second branch."
+            }
+          ]
+        },
+        {
+          "name": "Clarity and engagement",
+          "max": 10,
+          "points": 5.6,
+          "sub": [
+            {
+              "name": "Accessible language",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "T1 is plain and concrete.",
+              "limitation": "'Unselfing' (T3), 'blank spaces' and 'secret shape' go unexplained to a casual reader."
+            },
+            {
+              "name": "Traceable arguments and references",
+              "rating": 5,
+              "points": 1,
+              "example": "Most turns name whose claim they answer.",
+              "limitation": "T9's 'author's intent' has no antecedent in the debate."
+            },
+            {
+              "name": "Manageable pacing and turn length",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Nine brisk turns of about 40-50 words.",
+              "limitation": "T1 is too brief to explain why Carr's book is hopeful."
+            },
+            {
+              "name": "Distinguishable positions and voices",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Three clear theoretical stances: pattern, gaps, reality.",
+              "limitation": "T8 merges the Formalist and Reader positions, blurring them."
+            },
+            {
+              "name": "Economy and sustained attention",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Little repetition; each turn adds a concept.",
+              "limitation": "The theory crowds out talk about the actual novels."
+            }
+          ]
+        },
+        {
+          "name": "Drama and entertainment",
+          "max": 10,
+          "points": 3.4,
+          "sub": [
+            {
+              "name": "Meaningful stakes and tension",
+              "rating": 3,
+              "points": 0.6,
+              "example": "T6's ego-versus-world worry gives some tension.",
+              "limitation": "Debate stays seminar-level; the stakes are academic."
+            },
+            {
+              "name": "Surprise and reversals",
+              "rating": 4,
+              "points": 0.8,
+              "example": "T7 the Formalist subordinates structure to unselfing.",
+              "limitation": "T8's agreement undercuts the reversal's effect."
+            },
+            {
+              "name": "Personality and expressive voice",
+              "rating": 3,
+              "points": 0.6,
+              "example": "The Moral Skeptic has a distinct ethical edge.",
+              "limitation": "The voices read as interchangeable theorists."
+            },
+            {
+              "name": "Memorable delivery",
+              "rating": 4,
+              "points": 0.8,
+              "example": "T7: a story 'like a mirror that shows you something outside yourself'.",
+              "limitation": "There are few vivid images of the books themselves."
+            },
+            {
+              "name": "Anticipation and emotional movement",
+              "rating": 3,
+              "points": 0.6,
+              "example": "T1's quiet recommendation sets a calm, warm tone.",
+              "limitation": "The emotional register never changes."
+            }
+          ]
+        }
+      ],
+      "uncapped": 49.9,
+      "score": 49.9,
+      "capReason": null,
+      "strengths": [
+        "T1's A Month in the Country fits short, hopeful and non-didactic.",
+        "Minds target the user's real concern: how hope arrives without a lesson.",
+        "The ideas build: gaps (T2), unselfing (T3), structure as its vehicle (T7)."
+      ],
+      "weaknesses": [
+        "T8 Reader of Intent declares agreement the Formalist never gave, a forced consensus.",
+        "Abstract jargon ('unselfing', 'secret shape') and too few concrete titles beyond Carr.",
+        "Murdoch mislabelled 'Moral Skeptic'; the basis links are generic and chapter refs loose."
+      ],
+      "editorNotes": [
+        "Require each mind to name a specific title, and a reason it is hopeful, when the user asks for a book.",
+        "Require plain-language glossing of any theoretical term at first use.",
+        "Forbid claiming agreement unless the other mind has explicitly conceded it in an earlier turn.",
+        "Require role titles to match the cited thinker's actual position."
+      ]
+    }
+  },
+  "preferredVersion": 8,
+  "savedAt": "2026-10-13T21:16:02.157Z"
+}

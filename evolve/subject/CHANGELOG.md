@@ -72,3 +72,11 @@ Latency: gemini v8 10.2 s | sonnet v8 105.4 s
 Words: 1897 -> 1899
 Changes: replace, sharpen, sharpen, sharpen, delete, replace
 Version 9 defines verified as read in this session, so a worker that cannot browse cites author and book only and paraphrases instead of inventing chapter numbers and misquoting, the accuracy leak that has persisted since round 1; the revision is given a fixed slot, the turn before the final turn, and must repeat a phrase from the speaker's own earlier turn as the claim it drops, because the small model follows slots and phrase reuse but skips or fakes a free-floating concession. The loss turn now also names what another person involved may expect of the user, and the vague 'one reason against it' becomes a four-item menu (a real case, a cost left out, the speaker's own words, something the user wrote). To pay for it at the ceiling, the six abstract 'Let the speakers' bullets and the redundant 'ability to revise' bullet are cut: four changes, one applied in two places, 1897 to 1899 words.
+
+## v10 — from round 9 — 2026-10-13
+Question (wonder-02, Wonder / Book discovery): I’d like a short, thoughtful novel that leaves me feeling hopeful, but I don’t enjoy obvious life lessons. What might suit me?
+Scores: gemini: v8 46.51 vs v9 50.83 (v9 better) | sonnet: v8 70.96 vs v9 66.48 (v8 better)
+Latency: gemini v9 12.6 s | sonnet v9 107.6 s
+Words: 1899 -> 1882
+Changes: sharpen, sharpen, replace, sharpen, delete, delete; reverted: 1
+Version 10 narrows the v9 loss turn so it only names another person's expectations when the user mentioned one, and makes that turn and the decisive-uncertainty turn each ask the user one direct question instead of stating a guess as a finding, since every sample lost points for having no focused question and some for pathologising the user. The turn after any proposed option or step now checks it against each explicit constraint the user stated and names one cost, and the famous-idea rule is limited to ideas the cited book actually contains, to stop famous lines being attributed to the wrong book by the same author. Two redundant paragraphs on verification and on principle-versus-application are cut, so the prompt shrinks from 1899 to 1882 words.

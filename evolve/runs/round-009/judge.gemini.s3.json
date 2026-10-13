@@ -1,0 +1,646 @@
+{
+  "lane": "gemini",
+  "sample": 3,
+  "blind": {
+    "A": 8,
+    "B": 9
+  },
+  "scores": {
+    "v8": {
+      "criteria": [
+        {
+          "name": "Quality of discussion",
+          "max": 20,
+          "points": 9.92,
+          "sub": [
+            {
+              "name": "Continuity and responsiveness",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Each turn names the prior speaker, e.g. T4 answers the Existentialist's absurdity claim.",
+              "limitation": "Mostly just restates the prior claim, then pivots to its own position."
+            },
+            {
+              "name": "Development of ideas",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "T4 says an existential sermon is as tedious as a moral lesson.",
+              "limitation": "T8 and T9 repeat the warmth-versus-rawness split from T5 and T6 with nothing new."
+            },
+            {
+              "name": "Exploration of central tensions",
+              "rating": 5,
+              "points": 2,
+              "example": "T8 and T9 pit warmth of connection against stark, liberated hope.",
+              "limitation": "The core question, how hope arrives without a lesson, gets only a passing look."
+            },
+            {
+              "name": "Integration of perspectives",
+              "rating": 5,
+              "points": 2,
+              "example": "In T7 the Aestheticist concedes that pure beauty was too narrow.",
+              "limitation": "The concession comes without a stated cause and changes no one else's view."
+            },
+            {
+              "name": "Progress toward understanding",
+              "rating": 4.8,
+              "points": 1.92,
+              "example": "In T9 the choice comes down to comfort versus challenge.",
+              "limitation": "The user ends with a single title and an abstract binary."
+            }
+          ]
+        },
+        {
+          "name": "Quality of disagreement, trust and grounding",
+          "max": 20,
+          "points": 10.2,
+          "sub": [
+            {
+              "name": "Faithful engagement",
+              "rating": 5,
+              "points": 2,
+              "example": "T2 accurately restates the Aestheticist's 'beauty is enough' before qualifying it.",
+              "limitation": "In T8 the Existentialist position shrinks to 'raw tension' that obscures warmth."
+            },
+            {
+              "name": "Substance of challenges",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "T4 makes a real point: existential struggle can turn into its own sermon.",
+              "limitation": "T6's 'too smooth' objection is asserted without saying why smoothness kills hope."
+            },
+            {
+              "name": "Accuracy and support",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "T1 quotes 'all art is quite useless' accurately, with pd=true.",
+              "limitation": "T7's 'mirror to the world' reverses the Preface, which says art mirrors the spectator."
+            },
+            {
+              "name": "Calibration and transparency",
+              "rating": 5,
+              "points": 2,
+              "example": "Turns hedge suitably with 'perhaps' and 'might'.",
+              "limitation": "Calling Forster 'The Structuralist' is an anachronistic label presented as a description."
+            },
+            {
+              "name": "Intellectual honesty and revision",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "T7 is an explicit concession, and T9 leaves the dispute open honestly.",
+              "limitation": "No reason is given for the T7 reversal, so it reads as convenience."
+            }
+          ]
+        },
+        {
+          "name": "Personal relevance",
+          "max": 10,
+          "points": 4.6,
+          "sub": [
+            {
+              "name": "Identification of actual concern",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Section A names the uncertainty between artistic form and existential ambiguity.",
+              "limitation": "It never asks what 'obvious life lessons' has meant in the user's reading so far."
+            },
+            {
+              "name": "Meaningful use of personal context",
+              "rating": 4,
+              "points": 0.8,
+              "example": "T5 links 'short' and 'without obvious lesson' to A Room with a View.",
+              "limitation": "The 'short' constraint barely shapes the rest of the argument."
+            },
+            {
+              "name": "Fit with goals and values",
+              "rating": 5,
+              "points": 1,
+              "example": "T2 respects the user's wish not to be preached to.",
+              "limitation": "T6 steers toward a 'difficult work', drifting from the hope the user asked for."
+            },
+            {
+              "name": "Attention to constraints and stakes",
+              "rating": 4,
+              "points": 0.8,
+              "example": "T6 proposes a two-chapter trial, which suits a modest commitment.",
+              "limitation": "Length and mood constraints are never weighed directly."
+            },
+            {
+              "name": "Responsiveness to information",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Section E branches on warmth versus intellectual clarity.",
+              "limitation": "There are no focused questions about the user's past reading or taste."
+            }
+          ]
+        },
+        {
+          "name": "Constructive self-discovery",
+          "max": 20,
+          "points": 9.6,
+          "sub": [
+            {
+              "name": "Clarification of desires and motivations",
+              "rating": 5,
+              "points": 2,
+              "example": "T8 suggests the user might 'actually be craving' human warmth, offered tentatively.",
+              "limitation": "Motives stay generic and are never tied to what the user wrote."
+            },
+            {
+              "name": "Examination of assumptions",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "T4 exposes the hidden assumption that only moral lessons are didactic.",
+              "limitation": "It never asks what 'hopeful' assumes about how a book should end."
+            },
+            {
+              "name": "Clarification of values and priorities",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Section D asks: comfort you, or challenge your perspective?",
+              "limitation": "This values split is stated but not explored through cases."
+            },
+            {
+              "name": "Recognition of fears and outside expectations",
+              "rating": 3.5,
+              "points": 1.4,
+              "example": "T3 touches on suspicion of 'false, comforting conclusions'.",
+              "limitation": "It never examines why lessons put the user off, e.g. a fear of being condescended to."
+            },
+            {
+              "name": "Agency and reflective ownership",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Section E's page-comparison test leaves the user to judge the tone.",
+              "limitation": "The distinctions are broad and hard to refine or reject usefully."
+            }
+          ]
+        },
+        {
+          "name": "Decision usefulness",
+          "max": 10,
+          "points": 4.6,
+          "sub": [
+            {
+              "name": "Definition of decision and options",
+              "rating": 4,
+              "points": 0.8,
+              "example": "T5 names A Room with a View as a concrete option.",
+              "limitation": "Only one title is named, and the 'short, difficult work' in T6 is never specified."
+            },
+            {
+              "name": "Explanation of tradeoffs",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "T8 says rawness can obscure warmth.",
+              "limitation": "The tradeoffs are abstract, not set against particular books."
+            },
+            {
+              "name": "Identification of decisive conditions",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Section E: prioritise warmth, choose character-driven; prioritise courage, choose existential.",
+              "limitation": "The conditions are generic categories, not tied to observable preferences."
+            },
+            {
+              "name": "Treatment of uncertainty",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Section A names one decisive uncertainty.",
+              "limitation": "It doesn't separate key unknowns (tolerance for sadness) from minor ones."
+            },
+            {
+              "name": "Proportionate next steps",
+              "rating": 5,
+              "points": 1,
+              "example": "T6 suggests reading two chapters; Section E suggests comparing a few pages.",
+              "limitation": "With no titles attached, the steps are hard to act on."
+            }
+          ]
+        },
+        {
+          "name": "Clarity and engagement",
+          "max": 10,
+          "points": 6.5,
+          "sub": [
+            {
+              "name": "Accessible language",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Plain, readable sentences throughout, e.g. T2.",
+              "limitation": "'Absurdity of your situation' in T3 is jargon applied to a book request."
+            },
+            {
+              "name": "Traceable arguments and references",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "Every turn names whom it answers.",
+              "limitation": "T6's 'short, difficult work' gives the reader no referent."
+            },
+            {
+              "name": "Manageable pacing",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Nine brief turns stay within the 25–65 word limit.",
+              "limitation": "The turns are short enough that some arguments feel truncated."
+            },
+            {
+              "name": "Distinguishable positions",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Beauty, character and absurdity are three clear stances.",
+              "limitation": "The voices sound alike, and the 'Structuralist' label confuses Forster's stance."
+            },
+            {
+              "name": "Economy and sustained attention",
+              "rating": 6,
+              "points": 1.2,
+              "example": "No long recaps inside the debate.",
+              "limitation": "Section D repeats T9's binary almost word for word."
+            }
+          ]
+        },
+        {
+          "name": "Drama and entertainment",
+          "max": 10,
+          "points": 3.7,
+          "sub": [
+            {
+              "name": "Meaningful stakes and tension",
+              "rating": 3.5,
+              "points": 0.7,
+              "example": "T8 frames a real choice: warmth or rawness.",
+              "limitation": "Stakes are low, and nothing about the user's reading life is at risk."
+            },
+            {
+              "name": "Surprise and reversals",
+              "rating": 4,
+              "points": 0.8,
+              "example": "T7 has the Aestheticist reverse on pure beauty.",
+              "limitation": "The reversal has no trigger, so it doesn't land."
+            },
+            {
+              "name": "Personality and voice",
+              "rating": 3.5,
+              "points": 0.7,
+              "example": "T1 echoes Wilde's paradoxical flair.",
+              "limitation": "Forster and Camus sound like interchangeable moderators."
+            },
+            {
+              "name": "Memorable delivery",
+              "rating": 3.5,
+              "points": 0.7,
+              "example": "T4's line: a sermon on existence is as tedious as a moral lesson.",
+              "limitation": "There are no vivid examples or analogies from actual novels."
+            },
+            {
+              "name": "Anticipation and emotional movement",
+              "rating": 4,
+              "points": 0.8,
+              "example": "The T7 concession briefly shifts the dynamic.",
+              "limitation": "The rhythm is flat and every turn has the same cadence."
+            }
+          ]
+        }
+      ],
+      "uncapped": 49.12,
+      "score": 49.12,
+      "capReason": null,
+      "strengths": [
+        "T1 quotes Wilde accurately with pd=true, and the form rules are respected.",
+        "T4's point that existential struggle can become its own sermon is genuinely sharp.",
+        "Section E offers a usable comparison test that leaves the user to judge."
+      ],
+      "weaknesses": [
+        "Only one title is offered (T5), and T6's 'short, difficult work' is never named.",
+        "T7's Aestheticist inverts Wilde's mirror line and concedes with no stated reason.",
+        "The Existentialist (T6) steers away from the hope the user explicitly asked for."
+      ],
+      "editorNotes": [
+        "When the user asks 'what might suit me', require at least three specific titles tied to the minds' arguments.",
+        "Require each concession to name the specific argument that caused it.",
+        "Forbid anachronistic role titles; role labels must fit the author's own era and stance.",
+        "Have at least one turn ask a focused question about the user's past reading."
+      ]
+    },
+    "v9": {
+      "criteria": [
+        {
+          "name": "Quality of discussion",
+          "max": 20,
+          "points": 12.8,
+          "sub": [
+            {
+              "name": "Continuity and responsiveness",
+              "rating": 6.5,
+              "points": 2.6,
+              "example": "T6 picks up T5's 'your labor' and turns it toward self-deception.",
+              "limitation": "T8 skips past T7's revision and jumps straight to a test."
+            },
+            {
+              "name": "Development of ideas",
+              "rating": 6.5,
+              "points": 2.6,
+              "example": "T7 moves from ambiguity to precise, short structure that prevents projection.",
+              "limitation": "The Reader-Response position barely develops after T2."
+            },
+            {
+              "name": "Exploration of central tensions",
+              "rating": 6.5,
+              "points": 2.6,
+              "example": "T3, T6 and T9 probe hope as understanding versus retreat into sentiment.",
+              "limitation": "Whether a hopeful book can avoid sentimentality is assumed doubtful rather than tested."
+            },
+            {
+              "name": "Integration of perspectives",
+              "rating": 6.5,
+              "points": 2.6,
+              "example": "In T7 the Formalist revises after the Ethicist's projection objection.",
+              "limitation": "The Reader-Response Critic never absorbs the Ethicist's challenge."
+            },
+            {
+              "name": "Progress toward understanding",
+              "rating": 6,
+              "points": 2.4,
+              "example": "T9 sharpens the question: clearer perception of others, or a warmer self-feeling?",
+              "limitation": "The sharper question moves the user further from an actual book choice."
+            }
+          ]
+        },
+        {
+          "name": "Quality of disagreement, trust and grounding",
+          "max": 20,
+          "points": 12,
+          "sub": [
+            {
+              "name": "Faithful engagement",
+              "rating": 6,
+              "points": 2.4,
+              "example": "T4 restates the Ethicist's self-deception worry fairly before countering.",
+              "limitation": "T2's 'the book holds all the weight' overstates T1's Formalist claim."
+            },
+            {
+              "name": "Substance of challenges",
+              "rating": 6.5,
+              "points": 2.6,
+              "example": "T6 tests whether the user's labour can be merely self-confirming.",
+              "limitation": "T5's 'regardless of whether the final tone is…hopeful' sidesteps the user's stated goal."
+            },
+            {
+              "name": "Accuracy and support",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "The gaps (Iser), unselfing (Murdoch) and anti-pamphlet (Kundera) views are fairly represented.",
+              "limitation": "T8's 'gaps in her narration': Brodie is not the narrator, and hopefulness is doubtful."
+            },
+            {
+              "name": "Calibration and transparency",
+              "rating": 5,
+              "points": 2,
+              "example": "T6 frames the defence-mechanism idea as a question, not a fact.",
+              "limitation": "T1's 'ceases to be a novel and becomes a pamphlet' overstates a preference as fact."
+            },
+            {
+              "name": "Intellectual honesty and revision",
+              "rating": 7,
+              "points": 2.8,
+              "example": "T7: 'I drop my earlier claim' and gives the Ethicist's reason.",
+              "limitation": "The Ethicist never concedes that wanting hope can be legitimate."
+            }
+          ]
+        },
+        {
+          "name": "Personal relevance",
+          "max": 10,
+          "points": 4.6,
+          "sub": [
+            {
+              "name": "Identification of actual concern",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Section A flags the risk of choosing sentimentality over complexity.",
+              "limitation": "It reframes the request as suspect rather than clarifying it."
+            },
+            {
+              "name": "Meaningful use of personal context",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "T7 uses 'short' as an argument: brevity forces an encounter with the real.",
+              "limitation": "'Thoughtful' and the dislike of lessons are treated abstractly."
+            },
+            {
+              "name": "Fit with goals and values",
+              "rating": 4,
+              "points": 0.8,
+              "example": "T1 honours the dislike of obvious lessons.",
+              "limitation": "T3 and T6 treat the stated wish for hope as a likely self-deception."
+            },
+            {
+              "name": "Attention to constraints and stakes",
+              "rating": 4,
+              "points": 0.8,
+              "example": "T8's 30 pages in one sitting suits a short-novel reader.",
+              "limitation": "It ignores the mood constraint by suggesting a dark novel."
+            },
+            {
+              "name": "Responsiveness to information",
+              "rating": 5,
+              "points": 1,
+              "example": "T9: 'That fact is the detail only you can provide.'",
+              "limitation": "There is no direct question about past books that felt hopeful or preachy."
+            }
+          ]
+        },
+        {
+          "name": "Constructive self-discovery",
+          "max": 20,
+          "points": 11.6,
+          "sub": [
+            {
+              "name": "Clarification of desires and motivations",
+              "rating": 6,
+              "points": 2.4,
+              "example": "T9 separates hope as achieved understanding from hope as retreat.",
+              "limitation": "T6's 'defense mechanism' edges toward declaring a hidden motive."
+            },
+            {
+              "name": "Examination of assumptions",
+              "rating": 6.5,
+              "points": 2.6,
+              "example": "T2 questions the assumption that hope lives in the text, not the reader.",
+              "limitation": "The Ethicist's own assumption that hope-seeking is suspect goes unexamined."
+            },
+            {
+              "name": "Clarification of values and priorities",
+              "rating": 6,
+              "points": 2.4,
+              "example": "Section E weighs challenge, agency and self-discovery as distinct priorities.",
+              "limitation": "It doesn't show where these values actually conflict in a book choice."
+            },
+            {
+              "name": "Recognition of fears and outside expectations",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "T3 names the fear of mistaking false sentiment for insight.",
+              "limitation": "T6's 'comforted by a lie' tips into pathologising an ordinary wish."
+            },
+            {
+              "name": "Agency and reflective ownership",
+              "rating": 6,
+              "points": 2.4,
+              "example": "T8's reading test lets the user check the claims against their own experience.",
+              "limitation": "The framing pressures toward the Ethicist's answer instead of leaving it open."
+            }
+          ]
+        },
+        {
+          "name": "Decision usefulness",
+          "max": 10,
+          "points": 4.3,
+          "sub": [
+            {
+              "name": "Definition of decision and options",
+              "rating": 3.5,
+              "points": 0.7,
+              "example": "T8 names The Prime of Miss Jean Brodie.",
+              "limitation": "One title, poorly matched to 'hopeful'; there are no alternatives."
+            },
+            {
+              "name": "Explanation of tradeoffs",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "T4 sets ambiguity against neat endings as two kinds of hope.",
+              "limitation": "No option's cost is spelled out in reading terms."
+            },
+            {
+              "name": "Identification of decisive conditions",
+              "rating": 5,
+              "points": 1,
+              "example": "Section E maps value-challenge, agency and self-discovery to book types.",
+              "limitation": "The categories ('significant narrative gaps') are hard to apply when browsing."
+            },
+            {
+              "name": "Treatment of uncertainty",
+              "rating": 4,
+              "points": 0.8,
+              "example": "T9 names the unknown the user must supply.",
+              "limitation": "It doesn't rank this unknown against simpler ones like tolerance for sad endings."
+            },
+            {
+              "name": "Proportionate next steps",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "T8's 30-page sitting is a limited, concrete trial.",
+              "limitation": "The trial book may well fail the user's hope criterion."
+            }
+          ]
+        },
+        {
+          "name": "Clarity and engagement",
+          "max": 10,
+          "points": 6.4,
+          "sub": [
+            {
+              "name": "Accessible language",
+              "rating": 6,
+              "points": 1.2,
+              "example": "T1 ('pamphlet') and T6 ('comforted by a lie') are crisp.",
+              "limitation": "'Fill the gaps' and 'encounter with the real' in T2 and T7 are unexplained theory jargon."
+            },
+            {
+              "name": "Traceable arguments and references",
+              "rating": 6,
+              "points": 1.2,
+              "example": "T4–T7 each name the claim they answer.",
+              "limitation": "The basis lines give no chapters or links, so they're hard to trace."
+            },
+            {
+              "name": "Manageable pacing",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "Turns run 45–60 words with a steady exchange.",
+              "limitation": "Dense turns stack abstractions without examples."
+            },
+            {
+              "name": "Distinguishable positions",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Text, reader and ethics positions are clearly distinct; T7 marks its change explicitly.",
+              "limitation": "T8 abandons the debate thread for a recommendation without linking back."
+            },
+            {
+              "name": "Economy and sustained attention",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "Little repetition inside the debate.",
+              "limitation": "Section D re-explains T9's dichotomy at length."
+            }
+          ]
+        },
+        {
+          "name": "Drama and entertainment",
+          "max": 10,
+          "points": 4.9,
+          "sub": [
+            {
+              "name": "Meaningful stakes and tension",
+              "rating": 5,
+              "points": 1,
+              "example": "T6 raises real stakes: whether the user's hope is honest.",
+              "limitation": "The stakes come partly from suspicion of the user, not the issue."
+            },
+            {
+              "name": "Surprise and reversals",
+              "rating": 5,
+              "points": 1,
+              "example": "T7's Formalist reversal follows plausibly from T6.",
+              "limitation": "T8's swerve to Spark is abrupt rather than surprising."
+            },
+            {
+              "name": "Personality and voice",
+              "rating": 5,
+              "points": 1,
+              "example": "The Ethicist's austere, probing voice fits Murdoch.",
+              "limitation": "Kundera's irony and Iser's play barely come through."
+            },
+            {
+              "name": "Memorable delivery",
+              "rating": 5,
+              "points": 1,
+              "example": "T1: 'ceases to be a novel and becomes a pamphlet.'",
+              "limitation": "There are no vivid scenes or examples from actual novels."
+            },
+            {
+              "name": "Anticipation and emotional movement",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Tension builds from T3 to T6, then T7 releases it.",
+              "limitation": "The tone stays uniformly severe, at odds with a hopeful brief."
+            }
+          ]
+        }
+      ],
+      "uncapped": 56.6,
+      "score": 56.6,
+      "capReason": null,
+      "strengths": [
+        "T7 makes a genuine, reasoned revision prompted by T6's projection objection.",
+        "The debate sharpens a real question: hope as understanding versus self-soothing (T9).",
+        "It keeps to the form: no quotation marks, pd flags honest, turns within word limits."
+      ],
+      "weaknesses": [
+        "Only one recommendation (T8, Brodie), poorly fitted to 'hopeful', and 'her narration' is inaccurate.",
+        "The Ethicist (T3, T6) treats the user's wish for hope as suspect, edging into pathologising.",
+        "The basis lines give no chapter or link, so grounding is hard to check."
+      ],
+      "editorNotes": [
+        "For recommendation requests, require three or more specific titles, each checked against the user's stated mood goal.",
+        "Tell the minds to take the user's stated wish as legitimate and question its shape, not its validity.",
+        "Require chapter-level basis references for every turn.",
+        "Have one turn ground an abstract claim in a concrete scene from a named novel."
+      ]
+    }
+  },
+  "preferredVersion": 9,
+  "savedAt": "2026-10-13T21:16:02.228Z"
+}
