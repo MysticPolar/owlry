@@ -1,0 +1,27 @@
+{
+  "subject": "castDebate",
+  "turns": { "min": 9, "max": 12 },
+  "wordsPerTurn": { "min": 25, "max": 65 },
+  "pdCutoff": 1931,
+  "lanes": {
+    "gemini": {
+      "kind": "api",
+      "model": "gemini-3.5-flash",
+      "thinkingLevel": "MEDIUM",
+      "temperature": 0.9,
+      "maxOutputTokens": 16384,
+      "retries429": 3
+    },
+    "sonnet": {
+      "kind": "subagent",
+      "agentType": "Explore",
+      "model": "sonnet",
+      "effort": "medium"
+    }
+  },
+  "primaryLane": "gemini",
+  "judge": { "agentType": "general-purpose", "model": "opus", "effort": "high" },
+  "editor": { "agentType": "general-purpose", "model": "fable", "effort": "xhigh" },
+  "master": { "agentType": "general-purpose", "model": "opus", "effort": "max" },
+  "latency": "report-only"
+}
