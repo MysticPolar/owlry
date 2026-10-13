@@ -25,6 +25,7 @@
   "primaryLane": "gemini",
   "ceilingLane": "sonnet",
   "milestone": { "lane": "gemini", "score": 70, "note": "first milestone: the free-tier Gemini model scores above 70 on the matrix" },
+  "prompt": { "maxWords": 1900, "maxGrowthPerRound": 0.10, "note": "absolute ceiling on the system prompt's word count, enforced by apply-editor; the editor must cut to add once it is near" },
   "judge": { "agentType": "general-purpose", "model": "opus", "effort": "high" },
   "editor": { "agentType": "general-purpose", "model": "fable", "effort": "xhigh" },
   "master": { "agentType": "general-purpose", "model": "opus", "effort": "max" },

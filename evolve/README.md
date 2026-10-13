@@ -4,6 +4,10 @@ A loop that improves one system prompt, the cast-plus-debate prompt, one test qu
 
 **The goal.** The prompt is for the Gemini model the free tier serves, `gemini-3.1-flash-lite`. The first milestone is a score of 70 or more on the 100-point matrix on that lane. The milestone and the round-by-round score go to the editor every round, so it knows how far the prompt is from the target and whether the last change helped.
 
+**Length.** The system prompt has a hard ceiling in words (`prompt.maxWords` in `config.json`) and a per-round growth limit. Both are enforced in code when a version is applied, not by an agent, and the editor sees the remaining budget every round. At the ceiling, every addition must be paid for by a cut.
+
+**Running the whole bank.** One round per question, in rotation, each round improving the prompt from the last. State is on disk, so a fresh master is spawned for every round and the main session loops: open the round, run it, commit, next. A round that fails stops the run at that round, and the run resumes from there.
+
 **Samples.** The Gemini lane runs three samples per version each round, each judged on its own, and the lane's score is the mean. The spread between samples of the same version is the noise floor, shown to the editor, so a difference between versions smaller than the spread is not treated as evidence. Sonnet runs one sample.
 
 ## Who does what

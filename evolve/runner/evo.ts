@@ -30,6 +30,8 @@ interface Config {
   primaryLane: string;
   /** the first target: the primary lane's current version scoring at least this */
   milestone?: { lane: string; score: number; note?: string };
+  /** hard limits on the system prompt's size, enforced in code when a version is applied */
+  prompt?: { maxWords: number; maxGrowthPerRound?: number; note?: string };
   /** the strongest lane: what the prompt can produce when the model is not the limit */
   ceilingLane?: string;
   judge: { agentType: string; model: string; effort: string };
@@ -812,6 +814,12 @@ async function cmdEditorInput(cfg: Config, f: Record<string, string>) {
     const line = [...traj.map((r) => `round ${r.round}: v${r.version} ${r.score.toFixed(2)}`), here ? `round ${round}: v${rf.current} ${here.score.toFixed(2)}` : ''].filter(Boolean);
     parts.push(`Primary-lane score of the version under test, round by round: ${line.length ? line.join('; ') : '(none yet)'}. Milestone ${cfg.milestone.score}: ${here ? (here.score >= cfg.milestone.score ? 'reached' : `${(cfg.milestone.score - here.score).toFixed(2)} points short`) : 'no score yet'}.`);
   }
+  if (cfg.prompt) {
+    const now = words(s.system);
+    const left = cfg.prompt.maxWords - now;
+    const perRound = Math.floor(now * (cfg.prompt.maxGrowthPerRound ?? 0.10));
+    parts.push('', 'LENGTH BUDGET (enforced in code; a version over it is rejected)', `The system prompt is ${now} words. The absolute ceiling is ${cfg.prompt.maxWords} words, so ${Math.max(0, left)} words are left in total, and this round may add at most ${Math.min(perRound, Math.max(0, left))} words net. ${left <= perRound ? 'You are at the ceiling: every word you add must be paid for by a word you cut. Prefer cutting instructions the primary lane ignores anyway.' : 'Growth is not free: a longer prompt is harder for a small model to follow.'}`);
+  }
   parts.push('', 'PREVIOUS CHANGES (last three)', await lastChangelog(3), '', `Write version ${rf.current + 1}. Return the JSON object only.`);
   const out = `${roundDir(round)}/editor-input.md`;
   await Deno.writeTextFile(out, parts.join('\n') + '\n');
@@ -848,7 +856,9 @@ async function cmdApplyEditor(cfg: Config, f: Record<string, string>) {
   const before = words(cur.system);
   const after = words(e.prompt);
   const growth = (after - before) / before;
-  if (growth > 0.10) fail(`new prompt grew ${(growth * 100).toFixed(0)}% (${before} -> ${after} words); the limit is 10%. Ask the editor for a shorter version`);
+  const maxGrowth = cfg.prompt?.maxGrowthPerRound ?? 0.10;
+  if (growth > maxGrowth) fail(`new prompt grew ${(growth * 100).toFixed(0)}% (${before} -> ${after} words); the limit is ${Math.round(maxGrowth * 100)}%. Ask the editor for a shorter version`);
+  if (cfg.prompt && after > cfg.prompt.maxWords) fail(`new prompt is ${after} words; the ceiling is ${cfg.prompt.maxWords}. Ask the editor for a version at or under the ceiling, cutting what earns nothing`);
 
   const file = `${SUBJECT_DIR}/${cfg.subject}.v${next}.md`;
   await Deno.writeTextFile(file, e.prompt.trimEnd() + '\n\n## User’s situation\n\n' + cur.userTemplate + '\n');
