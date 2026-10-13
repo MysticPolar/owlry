@@ -1,0 +1,646 @@
+{
+  "lane": "sonnet",
+  "sample": null,
+  "blind": {
+    "A": 4,
+    "B": 3
+  },
+  "scores": {
+    "v4": {
+      "criteria": [
+        {
+          "name": "Quality of discussion",
+          "max": 20,
+          "points": 15.16,
+          "sub": [
+            {
+              "name": "Continuity and responsiveness",
+              "rating": 7.8,
+              "points": 3.12,
+              "example": "T2 answers T1 with page detail: coughing, late apology.",
+              "limitation": "T3 opens with a reset instead of answering T2."
+            },
+            {
+              "name": "Development of ideas",
+              "rating": 7.6,
+              "points": 3.04,
+              "example": "T7 narrows: imagination starts attachment but can't explain his return.",
+              "limitation": "T9's apology reading arrives late, little developed."
+            },
+            {
+              "name": "Exploration of central tensions",
+              "rating": 7.5,
+              "points": 3,
+              "example": "Found versus built love is named and held in T10.",
+              "limitation": "Prince leaving the rose barely examined after T3."
+            },
+            {
+              "name": "Integration of perspectives",
+              "rating": 7.8,
+              "points": 3.12,
+              "example": "T5 concedes fantasy point; T8 fuses care and irreplaceability.",
+              "limitation": "T9 sidesteps rather than integrates the Seer/Fromm synthesis."
+            },
+            {
+              "name": "Progress toward understanding",
+              "rating": 7.2,
+              "points": 2.88,
+              "example": "T10 sharpens the open question: found or built.",
+              "limitation": "Ends on reader's attachments, not a crisper reading of the rose."
+            }
+          ]
+        },
+        {
+          "name": "Quality of disagreement, trust and grounding",
+          "max": 20,
+          "points": 14.24,
+          "sub": [
+            {
+              "name": "Faithful engagement",
+              "rating": 7.2,
+              "points": 2.88,
+              "example": "T2 grants projection exists, then rebuts with textual specifics.",
+              "limitation": "T4 treats responsibility as mere effort, thinning Fromm's view."
+            },
+            {
+              "name": "Substance of challenges",
+              "rating": 7,
+              "points": 2.8,
+              "example": "T5: the Salzburg branch had no history; prince returned knowing faults.",
+              "limitation": "T9 'people pour hours into bad bets' left unanswered on substance."
+            },
+            {
+              "name": "Accuracy and support",
+              "rating": 6.3,
+              "points": 2.52,
+              "example": "Stendhal's Salzburg branch and crystallization rendered faithfully (T4).",
+              "limitation": "T2 'hides her fear of tigers' misreads; she boasts of thorns."
+            },
+            {
+              "name": "Calibration and transparency",
+              "rating": 7.3,
+              "points": 2.92,
+              "example": "T9 hedges Consuelo: 'whom many readers see in the rose'.",
+              "limitation": "Repeated 'source not verified' bases without textual anchors."
+            },
+            {
+              "name": "Intellectual honesty and revision",
+              "rating": 7.8,
+              "points": 3.12,
+              "example": "T6 Fromm concedes effort can't explain choosing her over the garden.",
+              "limitation": "T10 dismisses T9's apology reading rather than engaging it."
+            }
+          ]
+        },
+        {
+          "name": "Personal relevance",
+          "max": 10,
+          "points": 6.24,
+          "sub": [
+            {
+              "name": "Identification of the actual concern",
+              "rating": 7.8,
+              "points": 1.56,
+              "example": "Section A lists three possible puzzles; T5 offers rival reading.",
+              "limitation": "Never asks what 'beautiful' meant to the reader."
+            },
+            {
+              "name": "Meaningful use of personal context",
+              "rating": 5,
+              "points": 1,
+              "example": "T6 turns 'hard to like' into a branch.",
+              "limitation": "Little user context exists; few details reshape argument."
+            },
+            {
+              "name": "Fit with goals and values",
+              "rating": 5.8,
+              "points": 1.16,
+              "example": "T4 notes reader may want the rose to deserve devotion.",
+              "limitation": "Reader's stated sense of beauty is barely used."
+            },
+            {
+              "name": "Attention to constraints and stakes",
+              "rating": 4.8,
+              "points": 0.96,
+              "example": "T9 'do less' keeps the stakes proportionate to a reading question.",
+              "limitation": "No constraints addressed; stakes stay abstract."
+            },
+            {
+              "name": "Responsiveness to information",
+              "rating": 7.8,
+              "points": 1.56,
+              "example": "T6 names the missing fact and branches on it.",
+              "limitation": "Branches overlap in section E, slightly redundant."
+            }
+          ]
+        },
+        {
+          "name": "Constructive self-discovery",
+          "max": 20,
+          "points": 13,
+          "sub": [
+            {
+              "name": "Clarification of desires and motivations",
+              "rating": 7,
+              "points": 2.8,
+              "example": "T7: reader may want irreplaceable rose and buildable love at once.",
+              "limitation": "Desire analysis leans on the speakers' theories more than reader."
+            },
+            {
+              "name": "Examination of assumptions",
+              "rating": 6.8,
+              "points": 2.72,
+              "example": "T8 surfaces the assumption that uniqueness needs no history.",
+              "limitation": "Assumption that the rose must be deserved stated, not probed."
+            },
+            {
+              "name": "Clarification of values and priorities",
+              "rating": 6.8,
+              "points": 2.72,
+              "example": "Section D asks: discovered or built, irreplaceable in itself or via giving.",
+              "limitation": "Value conflict stays theoretical, not tied to reader's experience."
+            },
+            {
+              "name": "Recognition of fears and outside expectations",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "T5 hints at fear of replaceability.",
+              "limitation": "Grief, loss or fear of leaving barely touched."
+            },
+            {
+              "name": "Agency and reflective ownership",
+              "rating": 7.4,
+              "points": 2.96,
+              "example": "Section D: 'None of this assumes you hold either view'.",
+              "limitation": "T10 frames it as decision rather than invitation."
+            }
+          ]
+        },
+        {
+          "name": "Decision usefulness",
+          "max": 10,
+          "points": 6.36,
+          "sub": [
+            {
+              "name": "Definition of the decision and options",
+              "rating": 6.2,
+              "points": 1.24,
+              "example": "Choice framed as which reading fits, including rereading.",
+              "limitation": "Options blur: apprenticeship versus effort readings overlap."
+            },
+            {
+              "name": "Explanation of tradeoffs",
+              "rating": 6,
+              "points": 1.2,
+              "example": "T8: uniqueness without history is the real cost.",
+              "limitation": "Cost of each reading to the reader seldom spelled out."
+            },
+            {
+              "name": "Identification of decisive conditions",
+              "rating": 7.2,
+              "points": 1.44,
+              "example": "Section E: hard to like favors effort; lovable favors seeing.",
+              "limitation": "Conditions rely on one unknown; others underexplored."
+            },
+            {
+              "name": "Treatment of uncertainty",
+              "rating": 5.6,
+              "points": 1.12,
+              "example": "T6 isolates which fact is missing.",
+              "limitation": "Consuelo uncertainty not weighed against textual readings."
+            },
+            {
+              "name": "Proportionate next steps",
+              "rating": 6.8,
+              "points": 1.36,
+              "example": "Reread the fox and garden chapters, note what moves you.",
+              "limitation": "Next step generic; no specific passages beyond chapter names."
+            }
+          ]
+        },
+        {
+          "name": "Clarity and engagement",
+          "max": 10,
+          "points": 6.88,
+          "sub": [
+            {
+              "name": "Accessible language",
+              "rating": 7.2,
+              "points": 1.44,
+              "example": "Plain terms: projection, attention, practice.",
+              "limitation": "'Fromm's heir' (T10) is opaque to a lay reader."
+            },
+            {
+              "name": "Traceable arguments and references",
+              "rating": 6.6,
+              "points": 1.32,
+              "example": "T5 'Your branch' clearly refers to T4.",
+              "limitation": "T5 crams rival reading, rebuttal, concession and advice."
+            },
+            {
+              "name": "Manageable pacing and turn length",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Most turns 48 to 60 words.",
+              "limitation": "T5 runs 83 words, breaking the 65-word limit."
+            },
+            {
+              "name": "Distinguishable positions and voices",
+              "rating": 7.6,
+              "points": 1.52,
+              "example": "Three readings stay distinct; T7 and T8 mark narrowing explicitly.",
+              "limitation": "Skeptic's T9 pivot to biography blurs its role."
+            },
+            {
+              "name": "Economy and sustained attention",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Little recap; turns advance.",
+              "limitation": "Section E repeats Section D's found/built split."
+            }
+          ]
+        },
+        {
+          "name": "Drama and entertainment",
+          "max": 10,
+          "points": 6.2,
+          "sub": [
+            {
+              "name": "Meaningful stakes and tension",
+              "rating": 5.6,
+              "points": 1.12,
+              "example": "Is the rose deserving or merely decorated? Real tension.",
+              "limitation": "Stakes stay intellectual; little emotional pull."
+            },
+            {
+              "name": "Surprise and reversals",
+              "rating": 6.4,
+              "points": 1.28,
+              "example": "T9 biographical twist: rose as apology.",
+              "limitation": "Twist dropped immediately in T10."
+            },
+            {
+              "name": "Personality and expressive voice",
+              "rating": 6.4,
+              "points": 1.28,
+              "example": "Skeptic's dry 'She doesn't have to' (T4).",
+              "limitation": "Seer and Practitioner voices are somewhat similar in tone."
+            },
+            {
+              "name": "Memorable delivery",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Salzburg branch glittering from the mine, not the twig.",
+              "limitation": "Few images after T4."
+            },
+            {
+              "name": "Anticipation and emotional movement",
+              "rating": 5.6,
+              "points": 1.12,
+              "example": "Concessions in T5 to T8 give movement.",
+              "limitation": "Even temperature throughout; ending flat."
+            }
+          ]
+        }
+      ],
+      "uncapped": 68.08,
+      "score": 68.08,
+      "capReason": null,
+      "strengths": [
+        "Concessions reshape positions: T5 and T6 concede, T7 and T8 narrow claims.",
+        "Stendhal's crystallization and Salzburg branch faithfully and vividly used (T1, T4).",
+        "Section E branches the reading on what the reader found hard."
+      ],
+      "weaknesses": [
+        "T5 runs 83 words, breaking the 25 to 65 word rule.",
+        "T2 misreads the tigers detail; the rose boasts, not hides fear.",
+        "T9 Skeptic's Consuelo turn is off-source and dropped by T10."
+      ],
+      "editorNotes": [
+        "Enforce the word limit with a self-count before output; one concern per turn.",
+        "Require textual details to be checked against the book's scenes before use.",
+        "Require each new reading introduced late to be answered, not dismissed, in the next turn.",
+        "Ask minds to address emotional stakes like loss and leaving, not only theory."
+      ]
+    },
+    "v3": {
+      "criteria": [
+        {
+          "name": "Quality of discussion",
+          "max": 20,
+          "points": 14.24,
+          "sub": [
+            {
+              "name": "Continuity and responsiveness",
+              "rating": 7.2,
+              "points": 2.88,
+              "example": "T2 directly answers T1's tending claim with the wine test.",
+              "limitation": "T3 opens a new line rather than responding to T2."
+            },
+            {
+              "name": "Development of ideas",
+              "rating": 7.2,
+              "points": 2.88,
+              "example": "T5 revises reciprocity from the farewell scene.",
+              "limitation": "T9 Velveteen comparison adds little beyond T6."
+            },
+            {
+              "name": "Exploration of central tensions",
+              "rating": 7,
+              "points": 2.8,
+              "example": "Care alone versus mutual goodwill is tested in T10.",
+              "limitation": "Fromm's immaturity claim (T3) is contested once, then dropped."
+            },
+            {
+              "name": "Integration of perspectives",
+              "rating": 7.2,
+              "points": 2.88,
+              "example": "T4 concedes the love needed some answer; T5 reciprocates.",
+              "limitation": "Fromm's view stays parallel, rarely reshaped by others."
+            },
+            {
+              "name": "Progress toward understanding",
+              "rating": 7,
+              "points": 2.8,
+              "example": "T10 offers a decisive thought experiment.",
+              "limitation": "Three-way dispute in D not narrowed much."
+            }
+          ]
+        },
+        {
+          "name": "Quality of disagreement, trust and grounding",
+          "max": 20,
+          "points": 13.92,
+          "sub": [
+            {
+              "name": "Faithful engagement",
+              "rating": 7.2,
+              "points": 2.88,
+              "example": "T4: 'The wine test is fair, but the rose isn't wine.'",
+              "limitation": "T7 calls Fromm's reading a verdict, flattening his care framework."
+            },
+            {
+              "name": "Substance of challenges",
+              "rating": 7,
+              "points": 2.8,
+              "example": "T2 separates attachment from worth: a real assumption tested.",
+              "limitation": "T4's Odysseus example doesn't answer the reciprocity objection."
+            },
+            {
+              "name": "Accuracy and support",
+              "rating": 6,
+              "points": 2.4,
+              "example": "Aristotle's wine example accurate; Consuelo reported correctly (T7).",
+              "limitation": "T9: Velveteen Rabbit does involve leaving; T4 Odysseus filed under Saint-Exupery."
+            },
+            {
+              "name": "Calibration and transparency",
+              "rating": 6.8,
+              "points": 2.72,
+              "example": "T8 flags 'and it's a guess'; T7 'widely reported'.",
+              "limitation": "T1 asserts authorial intent 'on purpose' as fact."
+            },
+            {
+              "name": "Intellectual honesty and revision",
+              "rating": 7.8,
+              "points": 3.12,
+              "example": "T5 withdraws part of the charge after the farewell scene.",
+              "limitation": "T9 'go further than Fromm' drifts from his source."
+            }
+          ]
+        },
+        {
+          "name": "Personal relevance",
+          "max": 10,
+          "points": 5.92,
+          "sub": [
+            {
+              "name": "Identification of the actual concern",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Section A splits feeling of beauty from the gap.",
+              "limitation": "Doesn't consider whether the puzzle is the prince leaving."
+            },
+            {
+              "name": "Meaningful use of personal context",
+              "rating": 5,
+              "points": 1,
+              "example": "T6 uses 'felt the beauty' to branch.",
+              "limitation": "Few user details exist; little tailoring beyond that."
+            },
+            {
+              "name": "Fit with goals and values",
+              "rating": 5.6,
+              "points": 1.12,
+              "example": "T8 keeps reader's wish for beauty intact distinct from analysis.",
+              "limitation": "Reader's own aims mostly inferred, not explored."
+            },
+            {
+              "name": "Attention to constraints and stakes",
+              "rating": 4.6,
+              "points": 0.92,
+              "example": "T8 notes cost: explanation may drain mystery.",
+              "limitation": "No constraints addressed; stakes abstract."
+            },
+            {
+              "name": "Responsiveness to information",
+              "rating": 7.4,
+              "points": 1.48,
+              "example": "T10 converts a missing reaction into a testable branch.",
+              "limitation": "No question about what specifically puzzled them."
+            }
+          ]
+        },
+        {
+          "name": "Constructive self-discovery",
+          "max": 20,
+          "points": 12.64,
+          "sub": [
+            {
+              "name": "Clarification of desires and motivations",
+              "rating": 6.8,
+              "points": 2.72,
+              "example": "T8: wants a clean reason and the beauty intact, flagged as guess.",
+              "limitation": "Only one desire split offered."
+            },
+            {
+              "name": "Examination of assumptions",
+              "rating": 6.4,
+              "points": 2.56,
+              "example": "T6 surfaces the assumed rule: love anything long enough.",
+              "limitation": "Assumption about replaceability not made the reader's."
+            },
+            {
+              "name": "Clarification of values and priorities",
+              "rating": 6.6,
+              "points": 2.64,
+              "example": "Section D: tended preciousness versus cost of leaving.",
+              "limitation": "Value conflict briefly drawn."
+            },
+            {
+              "name": "Recognition of fears and outside expectations",
+              "rating": 4.6,
+              "points": 1.84,
+              "example": "T6 'ache of love done badly' hints at regret.",
+              "limitation": "Fear or loss in the reader barely addressed."
+            },
+            {
+              "name": "Agency and reflective ownership",
+              "rating": 7.2,
+              "points": 2.88,
+              "example": "T10 counterfactual lets the reader test their own reaction.",
+              "limitation": "T10 'that reaction decides it' slightly closes inquiry."
+            }
+          ]
+        },
+        {
+          "name": "Decision usefulness",
+          "max": 10,
+          "points": 6.56,
+          "sub": [
+            {
+              "name": "Definition of the decision and options",
+              "rating": 6.2,
+              "points": 1.24,
+              "example": "Section E names three readings and their triggers.",
+              "limitation": "Options are readings, choice not framed beyond that."
+            },
+            {
+              "name": "Explanation of tradeoffs",
+              "rating": 5.8,
+              "points": 1.16,
+              "example": "T8: explanation costs mystery.",
+              "limitation": "Tradeoffs of each reading rarely stated."
+            },
+            {
+              "name": "Identification of decisive conditions",
+              "rating": 7.4,
+              "points": 1.48,
+              "example": "T10's apology-removed test is decisive and concrete.",
+              "limitation": "Fromm's reading lacks an equally sharp test."
+            },
+            {
+              "name": "Treatment of uncertainty",
+              "rating": 6.4,
+              "points": 1.28,
+              "example": "Section E names biography as the key unknown.",
+              "limitation": "Biography's weight versus the text left unweighed."
+            },
+            {
+              "name": "Proportionate next steps",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Short biography note, then reread the rose chapters.",
+              "limitation": "Biography step may pull away from the text."
+            }
+          ]
+        },
+        {
+          "name": "Clarity and engagement",
+          "max": 10,
+          "points": 7.08,
+          "sub": [
+            {
+              "name": "Accessible language",
+              "rating": 7.4,
+              "points": 1.48,
+              "example": "Plain, concrete language throughout.",
+              "limitation": "'Real case:' labels feel mechanical (T4, T7)."
+            },
+            {
+              "name": "Traceable arguments and references",
+              "rating": 6.6,
+              "points": 1.32,
+              "example": "T4 explicitly picks up 'the wine test'.",
+              "limitation": "Odysseus and Velveteen examples cited under unrelated books."
+            },
+            {
+              "name": "Manageable pacing and turn length",
+              "rating": 7.4,
+              "points": 1.48,
+              "example": "All turns 50 to 60 words.",
+              "limitation": "T9 packs comparison and closing image."
+            },
+            {
+              "name": "Distinguishable positions and voices",
+              "rating": 7.2,
+              "points": 1.44,
+              "example": "Friendship Examiner's position shift in T5 is explicit.",
+              "limitation": "Close Reader and Fromm both stress care; edges blur."
+            },
+            {
+              "name": "Economy and sustained attention",
+              "rating": 6.8,
+              "points": 1.36,
+              "example": "Little repetition in turns.",
+              "limitation": "Section D restates the three positions at length."
+            }
+          ]
+        },
+        {
+          "name": "Drama and entertainment",
+          "max": 10,
+          "points": 6.2,
+          "sub": [
+            {
+              "name": "Meaningful stakes and tension",
+              "rating": 5.8,
+              "points": 1.16,
+              "example": "Is she worth loving or merely tended? Real stakes.",
+              "limitation": "Stakes remain academic."
+            },
+            {
+              "name": "Surprise and reversals",
+              "rating": 6.2,
+              "points": 1.24,
+              "example": "T5 reversal from the farewell scene is plausible and earned.",
+              "limitation": "T7's biographical turn feels bolted on."
+            },
+            {
+              "name": "Personality and expressive voice",
+              "rating": 6.2,
+              "points": 1.24,
+              "example": "Aristotle's wine line gives the Examiner bite.",
+              "limitation": "Close Reader and Fromm share a similar register."
+            },
+            {
+              "name": "Memorable delivery",
+              "rating": 6.8,
+              "points": 1.36,
+              "example": "'Four thorns against the world' (T6); the sheep worry (T9).",
+              "limitation": "Odysseus example feels imported."
+            },
+            {
+              "name": "Anticipation and emotional movement",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Movement from charge to withdrawal to test.",
+              "limitation": "Rhythm uniform; ending procedural."
+            }
+          ]
+        }
+      ],
+      "uncapped": 66.56,
+      "score": 66.56,
+      "capReason": null,
+      "strengths": [
+        "T10's apology-removed counterfactual gives the reader a decisive self-test.",
+        "T5 Friendship Examiner withdraws a charge on textual evidence, honestly.",
+        "Aristotle's wine test (T2) is accurate and sharp."
+      ],
+      "weaknesses": [
+        "T9 misstates The Velveteen Rabbit as having no leaving, under Fromm's book.",
+        "T4 Close Reader cites Odysseus under The Little Prince, off its own source.",
+        "Fromm's immaturity reading (T3) is never seriously tested or revised."
+      ],
+      "editorNotes": [
+        "Forbid examples from works outside the speaker's book unless flagged and accurate.",
+        "Give every mind one sharp, testable condition, not only the closing speaker.",
+        "Drop mechanical labels like 'Real case:' and vary turn openings.",
+        "Ask one mind to probe the reader's feelings of loss, not just the argument."
+      ]
+    }
+  },
+  "preferredVersion": 4,
+  "savedAt": "2026-10-13T19:05:10.970Z"
+}

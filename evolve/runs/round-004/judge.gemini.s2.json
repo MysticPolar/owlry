@@ -1,0 +1,646 @@
+{
+  "lane": "gemini",
+  "sample": 2,
+  "blind": {
+    "A": 3,
+    "B": 4
+  },
+  "scores": {
+    "v3": {
+      "criteria": [
+        {
+          "name": "Quality of discussion",
+          "max": 20,
+          "points": 10.8,
+          "sub": [
+            {
+              "name": "Continuity and responsiveness",
+              "rating": 6,
+              "points": 2.4,
+              "example": "Turn 2 directly rejects turn 1's 'secure base' with a counter-reading of the rose.",
+              "limitation": "Turns 5 and 8 echo agreement ('Precisely!', 'Exactly') instead of building."
+            },
+            {
+              "name": "Development of ideas",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turn 6 reframes choice as a moral act; turn 7 moves attachment toward invested labor.",
+              "limitation": "Turn 8 restates turn 5's defiance idea without adding a distinction."
+            },
+            {
+              "name": "Exploration of central tensions",
+              "rating": 5,
+              "points": 2,
+              "example": "Turns 1-2 set safety against a chosen burden.",
+              "limitation": "That tension is dropped by turn 7; the five thousand roses are never examined."
+            },
+            {
+              "name": "Integration of perspectives",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Turn 7: Attachment Theorist absorbs the 'investment' idea from the others.",
+              "limitation": "Turn 9's synthesis feels forced; the Existentialist never challenges the virtue reading."
+            },
+            {
+              "name": "Progress toward understanding",
+              "rating": 6,
+              "points": 2.4,
+              "example": "Section D: the rose matters through chosen, invested care.",
+              "limitation": "The open question (security vs burden) is named in D but not developed in the debate."
+            }
+          ]
+        },
+        {
+          "name": "Quality of disagreement, trust and grounding",
+          "max": 20,
+          "points": 9.2,
+          "sub": [
+            {
+              "name": "Faithful engagement",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Turn 2 states the secure-base view fairly before rejecting it.",
+              "limitation": "Turn 4 misreads the Virtue Ethicist, who never called the rose a 'virtuous' partner."
+            },
+            {
+              "name": "Substance of challenges",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Turn 2: she is volatile and demanding, so she is no secure base.",
+              "limitation": "After turn 4, challenges give way to agreement and nothing gets tested."
+            },
+            {
+              "name": "Accuracy and support",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Turn 3 uses Aristotle's 'friend is another self' from Book IX correctly.",
+              "limitation": "Turn 5 says the desert shows 'the universe offers nothing'; the book's desert hides a well."
+            },
+            {
+              "name": "Calibration and transparency",
+              "rating": 4,
+              "points": 1.6,
+              "example": "Section D marks security vs burden as still disputed.",
+              "limitation": "Turn 4 says the distress 'proves' something; scare quotes appear in turns marked pd=false (turns 2, 4, 7)."
+            },
+            {
+              "name": "Intellectual honesty and revision",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turn 7: 'I am shifting my position here.'",
+              "limitation": "Turn 7's shift isn't earned; no objection forced it."
+            }
+          ]
+        },
+        {
+          "name": "Personal relevance",
+          "max": 10,
+          "points": 4,
+          "sub": [
+            {
+              "name": "Identification of the actual concern",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Section A frames the question as innate worth versus chosen commitment.",
+              "limitation": "It never asks what part of the story left the user unsure."
+            },
+            {
+              "name": "Meaningful use of personal context",
+              "rating": 3.5,
+              "points": 0.7,
+              "example": "Section E speaks to the user directly.",
+              "limitation": "The user's sense that the book 'felt beautiful' never shapes the argument."
+            },
+            {
+              "name": "Fit with goals and values",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "It answers why the rose matters, which is the user's goal.",
+              "limitation": "Section E switches to the user's own vulnerability, which the user never raised."
+            },
+            {
+              "name": "Attention to constraints and stakes",
+              "rating": 3,
+              "points": 0.6,
+              "example": "Section E asks for courage to commit to something fragile.",
+              "limitation": "The stakes it invents are relational; the user's stakes are interpretive."
+            },
+            {
+              "name": "Responsiveness to information",
+              "rating": 3.5,
+              "points": 0.7,
+              "example": "Third bullet of E: does the user value comfort or what they become?",
+              "limitation": "It doesn't ask which scenes (fox, rose garden) confused the user."
+            }
+          ]
+        },
+        {
+          "name": "Constructive self-discovery",
+          "max": 20,
+          "points": 8.2,
+          "sub": [
+            {
+              "name": "Clarification of desires and motivations",
+              "rating": 3.5,
+              "points": 1.4,
+              "example": "Section E: valuing her for what she gives versus what you become.",
+              "limitation": "It doesn't explore why the book moved the user."
+            },
+            {
+              "name": "Examination of assumptions",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Section D challenges the assumption that the rose has objective worth.",
+              "limitation": "The reader's own assumptions about love or beauty go unexamined."
+            },
+            {
+              "name": "Clarification of values and priorities",
+              "rating": 5,
+              "points": 2,
+              "example": "Comfort versus commitment is set out as a conflict of values.",
+              "limitation": "This only surfaces in section E, not in the debate itself."
+            },
+            {
+              "name": "Recognition of fears and outside expectations",
+              "rating": 2.5,
+              "points": 1,
+              "example": "Turn 1 mentions the Prince's anxiety.",
+              "limitation": "Nothing on the reader's worry about 'not understanding' a beloved book."
+            },
+            {
+              "name": "Agency and reflective ownership",
+              "rating": 5,
+              "points": 2,
+              "example": "The E bullets offer readings the user can accept or reject.",
+              "limitation": "Turn 9 closes on one synthesis instead of leaving the choice open."
+            }
+          ]
+        },
+        {
+          "name": "Decision usefulness",
+          "max": 10,
+          "points": 3.7,
+          "sub": [
+            {
+              "name": "Definition of the decision and options",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Section E sets out two readings: safety or deliberate creation.",
+              "limitation": "It recasts a reading question as a relationship decision."
+            },
+            {
+              "name": "Explanation of tradeoffs",
+              "rating": 3.5,
+              "points": 0.7,
+              "example": "Section D: security versus a 'self-imposed burden'.",
+              "limitation": "It doesn't say what each reading explains or misses in the book."
+            },
+            {
+              "name": "Identification of decisive conditions",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "E's if-branches tie each reading to a stance.",
+              "limitation": "No textual test, such as the rose-garden scene, decides between them."
+            },
+            {
+              "name": "Treatment of uncertainty",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Section D names the remaining dispute.",
+              "limitation": "It doesn't separate major interpretive unknowns from minor ones."
+            },
+            {
+              "name": "Proportionate next steps",
+              "rating": 2.5,
+              "points": 0.5,
+              "example": "Section E's third bullet gives a reflective question.",
+              "limitation": "No suggestion to reread the fox chapter or the rose garden."
+            }
+          ]
+        },
+        {
+          "name": "Clarity and engagement",
+          "max": 10,
+          "points": 6,
+          "sub": [
+            {
+              "name": "Accessible language",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "Turn 3 explains 'another self' in plain terms.",
+              "limitation": "Turn 1's 'internal working models' isn't explained."
+            },
+            {
+              "name": "Traceable arguments and references",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Turn 3: 'Both perspectives miss the point' names its targets.",
+              "limitation": "Turn 4's 'virtuous partner' attacks a claim no one made."
+            },
+            {
+              "name": "Manageable pacing and turn length",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Nine turns, all within the word range.",
+              "limitation": "Scare quotes in pd=false turns break the form rule."
+            },
+            {
+              "name": "Distinguishable positions and voices",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Turn 7 announces its change of position.",
+              "limitation": "By turns 8-9 the Existentialist and Virtue Ethicist sound alike."
+            },
+            {
+              "name": "Economy and sustained attention",
+              "rating": 5,
+              "points": 1,
+              "example": "Turns are compact.",
+              "limitation": "Turn 8 repeats turn 5's 'defy the emptiness'."
+            }
+          ]
+        },
+        {
+          "name": "Drama and entertainment",
+          "max": 10,
+          "points": 4.5,
+          "sub": [
+            {
+              "name": "Meaningful stakes and tension",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Turn 2's 'fragile, absurd creature in a cold, vast galaxy'.",
+              "limitation": "The tension is gone by turn 6."
+            },
+            {
+              "name": "Surprise and reversals",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Turn 7's shift by the Attachment Theorist.",
+              "limitation": "The reversal comes without any pressure that would cause it."
+            },
+            {
+              "name": "Personality and expressive voice",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "The Existentialist's defiant register in turn 8.",
+              "limitation": "The Virtue Ethicist is flat and lecturing."
+            },
+            {
+              "name": "Memorable delivery",
+              "rating": 5,
+              "points": 1,
+              "example": "Turn 9: 'The rose is the work of being human.'",
+              "limitation": "No vivid scene from the book is brought in."
+            },
+            {
+              "name": "Anticipation and emotional movement",
+              "rating": 4,
+              "points": 0.8,
+              "example": "The debate builds toward a resolution.",
+              "limitation": "The rhythm is uniform and the consensus is predictable."
+            }
+          ]
+        }
+      ],
+      "uncapped": 46.4,
+      "score": 46.4,
+      "capReason": null,
+      "strengths": [
+        "Reaches the book's central idea, that time and care invested make the rose unique (turns 6, 9).",
+        "Turn 2 makes a real opening challenge: the rose is volatile, not a secure base.",
+        "Turn 7 shows an explicit, labeled change of position."
+      ],
+      "weaknesses": [
+        "Agreement is forced from turn 5 ('Precisely!', 'Exactly'), and the synthesis in turn 9 is unearned.",
+        "Turn 5 misreads the desert as empty, and turn 4 misattributes a claim to the Virtue Ethicist.",
+        "Section E turns a reading question into advice about the user's own relationship."
+      ],
+      "editorNotes": [
+        "Require at least one checkable scene from the book (fox, rose garden, the glass globe) to anchor the turns.",
+        "Ban agreement-only turns: every turn must add a distinction or a challenge.",
+        "When the user asks about interpretation, frame section E as competing readings, not life choices.",
+        "Restate the no-quotation-marks rule so it explicitly covers scare quotes."
+      ]
+    },
+    "v4": {
+      "criteria": [
+        {
+          "name": "Quality of discussion",
+          "max": 20,
+          "points": 11.8,
+          "sub": [
+            {
+              "name": "Continuity and responsiveness",
+              "rating": 6.5,
+              "points": 2.6,
+              "example": "Turn 3: 'You are both focusing on the rose's traits.'",
+              "limitation": "Turns 7-8 turn to the user instead of answering turn 6."
+            },
+            {
+              "name": "Development of ideas",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turn 4 adds that physical presence turns an observer into a participant.",
+              "limitation": "The later turns drift to speculation about the user, not the text."
+            },
+            {
+              "name": "Exploration of central tensions",
+              "rating": 6.5,
+              "points": 2.6,
+              "example": "Turns 2 and 5 ask whether the bond is healthy or simply a duty.",
+              "limitation": "The rose's own change (her apology, her confession) is never weighed."
+            },
+            {
+              "name": "Integration of perspectives",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turn 6 concedes the suffering point, then reframes it as authorship.",
+              "limitation": "The Attachment Theorist never takes in the other views."
+            },
+            {
+              "name": "Progress toward understanding",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turn 9 sharpens the question: who she is, or who he decides to be.",
+              "limitation": "It ends on the user's attachments rather than the reading."
+            }
+          ]
+        },
+        {
+          "name": "Quality of disagreement, trust and grounding",
+          "max": 20,
+          "points": 10.6,
+          "sub": [
+            {
+              "name": "Faithful engagement",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 3 states both rival views fairly before redirecting.",
+              "limitation": "Turn 5's 'toxic bond' strawmans the taming view in turn 4."
+            },
+            {
+              "name": "Substance of challenges",
+              "rating": 6,
+              "points": 2.4,
+              "example": "Turn 2: 'That logic assumes all investment is healthy.'",
+              "limitation": "It ignores the Prince's regret at judging her by words, not deeds."
+            },
+            {
+              "name": "Accuracy and support",
+              "rating": 5,
+              "points": 2,
+              "example": "Turns 1 and 4 rest on the novel itself (Chapter 21, taming).",
+              "limitation": "Turn 2's 'does not reciprocate' overstates it; the rose confesses her love when he leaves."
+            },
+            {
+              "name": "Calibration and transparency",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 8 hedges: 'It is possible the user is struggling'.",
+              "limitation": "Turn 5 calls the bond 'toxic' as if it were fact."
+            },
+            {
+              "name": "Intellectual honesty and revision",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turn 6: 'I concede that suffering without purpose is merely trauma.'",
+              "limitation": "The Attachment Theorist never revises in response to turn 6."
+            }
+          ]
+        },
+        {
+          "name": "Personal relevance",
+          "max": 10,
+          "points": 3.7,
+          "sub": [
+            {
+              "name": "Identification of the actual concern",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Section A names the uncertainty: objective truth or projection.",
+              "limitation": "Turn 7 recasts a reading question as the user's own love life."
+            },
+            {
+              "name": "Meaningful use of personal context",
+              "rating": 3.5,
+              "points": 0.7,
+              "example": "Turn 8 tries to account for why the user is unsure.",
+              "limitation": "It invents fears the user never stated."
+            },
+            {
+              "name": "Fit with goals and values",
+              "rating": 3.5,
+              "points": 0.7,
+              "example": "Turn 1 directly answers why the rose matters.",
+              "limitation": "Section E's 're-evaluated for personal health' is off the user's goal."
+            },
+            {
+              "name": "Attention to constraints and stakes",
+              "rating": 2.5,
+              "points": 0.5,
+              "example": "Turn 7: the cost of the thorns.",
+              "limitation": "It invents an independence-versus-love dilemma (turn 8)."
+            },
+            {
+              "name": "Responsiveness to information",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Section E: 'if the rose were stripped of her demands...'",
+              "limitation": "It doesn't ask what part of the book puzzled the user."
+            }
+          ]
+        },
+        {
+          "name": "Constructive self-discovery",
+          "max": 20,
+          "points": 9.8,
+          "sub": [
+            {
+              "name": "Clarification of desires and motivations",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Turn 7, hedged: 'Perhaps the user wants both...'",
+              "limitation": "The guessed desire isn't tied to anything the user wrote."
+            },
+            {
+              "name": "Examination of assumptions",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turn 8: the assumption that a flawed rose makes the bond invalid.",
+              "limitation": "It presumes the user holds that assumption."
+            },
+            {
+              "name": "Clarification of values and priorities",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 9: burdens to manage or foundations to build on.",
+              "limitation": "The values are imported, not drawn from the user's reaction to the book."
+            },
+            {
+              "name": "Recognition of fears and outside expectations",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Turn 8 names a fear of losing love, with a hedge.",
+              "limitation": "It edges toward pathologising ('toxic', 'stuck' in turn 5)."
+            },
+            {
+              "name": "Agency and reflective ownership",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 9 and section E leave the question for the user to answer.",
+              "limitation": "The framing pushes the user toward reflecting on their own relationships."
+            }
+          ]
+        },
+        {
+          "name": "Decision usefulness",
+          "max": 10,
+          "points": 3.9,
+          "sub": [
+            {
+              "name": "Definition of the decision and options",
+              "rating": 3.5,
+              "points": 0.7,
+              "example": "Section E: security versus purpose.",
+              "limitation": "It treats an interpretation as a personal relationship decision."
+            },
+            {
+              "name": "Explanation of tradeoffs",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Turn 7: 'you cannot have the beauty without the risk of the sting.'",
+              "limitation": "It doesn't show what each reading explains in the book."
+            },
+            {
+              "name": "Identification of decisive conditions",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Section E's test of stripping away her demands.",
+              "limitation": "No textual evidence is named that would settle the question."
+            },
+            {
+              "name": "Treatment of uncertainty",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Section D lists two disputes that remain open.",
+              "limitation": "The disputes aren't ranked by how much they matter."
+            },
+            {
+              "name": "Proportionate next steps",
+              "rating": 3,
+              "points": 0.6,
+              "example": "Section E gives a single reflective question.",
+              "limitation": "No pointer to reread specific chapters."
+            }
+          ]
+        },
+        {
+          "name": "Clarity and engagement",
+          "max": 10,
+          "points": 6.4,
+          "sub": [
+            {
+              "name": "Accessible language",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "Turn 1 is plain and concrete: watering, listening to her complaints.",
+              "limitation": "Turn 2's 'anxious attachment style' isn't explained."
+            },
+            {
+              "name": "Traceable arguments and references",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Turn 2's 'That logic' clearly points back to turn 1.",
+              "limitation": "Turn 4 says 'Frankl misses', naming the author rather than the mind."
+            },
+            {
+              "name": "Manageable pacing and turn length",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Nine turns, all within range, with no stray quotation marks.",
+              "limitation": "Turns 7-8 shift abruptly to the user."
+            },
+            {
+              "name": "Distinguishable positions and voices",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "Three clearly separate stances that hold through turn 6.",
+              "limitation": "The Relational Realist loses its own position in turn 7."
+            },
+            {
+              "name": "Economy and sustained attention",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Little repetition across turns.",
+              "limitation": "Section D re-summarises the stances at length."
+            }
+          ]
+        },
+        {
+          "name": "Drama and entertainment",
+          "max": 10,
+          "points": 4.7,
+          "sub": [
+            {
+              "name": "Meaningful stakes and tension",
+              "rating": 5,
+              "points": 1,
+              "example": "Turn 5: 'he is not growing; he is just stuck.'",
+              "limitation": "The tension rests on 'toxic', which overstates the book."
+            },
+            {
+              "name": "Surprise and reversals",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Turn 6 concedes the point, then flips it.",
+              "limitation": "No reversal comes from a scene in the book."
+            },
+            {
+              "name": "Personality and expressive voice",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "The Attachment Theorist's blunt skepticism in turn 2.",
+              "limitation": "The voices are functional rather than distinctive."
+            },
+            {
+              "name": "Memorable delivery",
+              "rating": 5,
+              "points": 1,
+              "example": "Turn 7: the beauty without the risk of the sting.",
+              "limitation": "Little imagery beyond the thorns."
+            },
+            {
+              "name": "Anticipation and emotional movement",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Conflict rises through turns 2-6.",
+              "limitation": "Energy dissipates into speculation about the user in turns 7-8."
+            }
+          ]
+        }
+      ],
+      "uncapped": 50.9,
+      "score": 50.9,
+      "capReason": null,
+      "strengths": [
+        "Real, sustained disagreement: turn 2 tests whether investment is healthy, and turn 6 concedes and reframes.",
+        "Grounded in the novel itself (taming, Chapter 21) through the Relational Realist.",
+        "Turn 9 and section E sharpen the open question into a test the reader can use."
+      ],
+      "weaknesses": [
+        "Turns 7-8 invent personal fears and dilemmas for a user who asked a reading question.",
+        "The Attachment Theorist overstates ('toxic', 'does not reciprocate') and ignores the Prince's regret and the rose's confession.",
+        "Section E's 're-evaluated for personal health' misframes the literary question as life advice."
+      ],
+      "editorNotes": [
+        "Forbid attributing feelings or dilemmas to the user beyond what they wrote; ask instead.",
+        "For literary questions, require each turn to cite a specific scene that could support or refute it.",
+        "Require each mind to answer the strongest textual counter-evidence (the rose's apology, 'judge by deeds').",
+        "Keep section E about which reading fits, and which passages to reread to decide."
+      ]
+    }
+  },
+  "preferredVersion": 4,
+  "savedAt": "2026-10-13T19:05:05.812Z"
+}

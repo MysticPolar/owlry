@@ -32,3 +32,11 @@ Latency: gemini v3 12.5 s | sonnet v3 74.7 s
 Words: 1620 -> 1736
 Changes: sharpen, sharpen, replace, sharpen
 Version 4 makes four instructions checkable for a small model: a reading of the user's inner life must be voiced as a possibility and answered by the next turn, and nothing the user did not say may be stated as fact; one disagreement must stay open and no turn may declare agreement, with the final turn naming what about the user would decide it; the no-quotation-marks rule for pd-false turns moves to the output line as a per-line check, and pd-true quotations must be wording the model knows exactly; and the decisive unknown must be named in a turn as a missing fact with a two-way branch, never invented. Nothing reverted, since v3 raised both lanes. Points lost are summed from the Sonnet subcriterion and a fifth of the Gemini criterion, as the Gemini card has no subcriteria; the prompt grew by about seven percent and the next round should look for a cut.
+
+## v5 — from round 4 — 2026-10-13
+Question (wonder-01, Wonder / Literary interpretation): I finished The Little Prince, and it felt beautiful, but I’m not sure I understood why the rose mattered so much. How do you read that relationship?
+Scores: gemini: v4 51.89 vs v3 51.57 (v4 better) | sonnet: v4 68.08 vs v3 66.56 (v4 better)
+Latency: gemini v4 16.5 s | sonnet v4 94.0 s
+Words: 1736 -> 1797
+Changes: sharpen, sharpen, sharpen, delete
+Version 5 stops an exploratory question from being turned into a decision about the user’s own life: section 1 says that for a topic or a work the evidence lies in the material and the next step is one specific thing to look at again, and the closing turn may name a detail in the material, not only a fact about the user, as what would decide the open disagreement. Every reading of the user’s inner life must now start from something the user actually wrote and repeat it, and one turn must name what could be lost and argue from it. One vague sentence telling the voices to evolve beyond their titles is cut; accuracy slips and agreement-only turns are left alone this round because the cards show no prompt sentence causing them.
