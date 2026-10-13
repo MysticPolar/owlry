@@ -26,8 +26,10 @@ interface Config {
   turns: { min: number; max: number };
   wordsPerTurn: { min: number; max: number };
   pdCutoff: number;
-  lanes: Record<string, { kind: 'api' | 'subagent'; model: string; thinkingLevel?: ThinkingLevel; temperature?: number; maxOutputTokens?: number; retries429?: number; agentType?: string; effort?: string }>;
+  lanes: Record<string, { kind: 'api' | 'subagent'; model: string; thinkingLevel?: ThinkingLevel; temperature?: number; maxOutputTokens?: number; retries429?: number; minGapMs?: number; agentType?: string; effort?: string }>;
   primaryLane: string;
+  /** the first target: the primary lane's current version scoring at least this */
+  milestone?: { lane: string; score: number; note?: string };
   /** the strongest lane: what the prompt can produce when the model is not the limit */
   ceilingLane?: string;
   judge: { agentType: string; model: string; effort: string };
@@ -235,16 +237,33 @@ function sonnetFrame(system: string, user: string): string {
   ].join('\n');
 }
 
+/**
+ * The Gemini lane. `--version V` runs one version; `--versions 1,2` runs them one
+ * after another with the configured gap, because the free tier allows five
+ * requests a minute and two parallel runs with retries exhaust it.
+ */
 async function cmdGemini(cfg: Config, f: Record<string, string>) {
   const round = Number(need(f, 'round'));
-  const version = Number(need(f, 'version'));
-  const lane = { ...cfg.lanes.gemini, model: f.model ?? cfg.lanes.gemini.model };
+  const versions = f.versions ? f.versions.split(',').map((v) => Number(v.trim())).filter((n) => n > 0) : [Number(need(f, 'version'))];
+  if (!versions.length) fail('no versions given');
   const key = Deno.env.get('GEMINI_API_KEY');
   if (!key) fail('GEMINI_API_KEY is not set; run with --env-file=.env.local');
+  const ai = geminiClient(key);
+  const gap = cfg.lanes.gemini.minGapMs ?? 0;
+  let last = 0;
+  for (const version of versions) {
+    const since = Date.now() - last;
+    if (last && since < gap) await new Promise((r) => setTimeout(r, gap - since));
+    last = Date.now();
+    await runGemini(cfg, ai, round, version, f.model);
+  }
+}
+
+async function runGemini(cfg: Config, ai: ReturnType<typeof geminiClient>, round: number, version: number, modelOverride?: string) {
+  const lane = { ...cfg.lanes.gemini, model: modelOverride ?? cfg.lanes.gemini.model };
   const rf = await readJson<RoundFile>(`${roundDir(round)}/round.json`);
   const s = await loadSubject(cfg, version);
   const user = userMessage(cfg, s, rf.question);
-  const ai = geminiClient(key);
   const settings = { thinkingLevel: lane.thinkingLevel, temperature: lane.temperature, maxOutputTokens: lane.maxOutputTokens, fallback: 'none' };
 
   let attempt = 0;
@@ -273,7 +292,8 @@ async function cmdGemini(cfg: Config, f: Record<string, string>) {
       const transient = status === 429 || status === 500 || status === 502 || status === 503 || status === 504;
       if (transient && attempt < (lane.retries429 ?? 3)) {
         attempt++;
-        const wait = 2000 * 2 ** attempt;
+        // a 429 on the free tier means the minute's quota is spent: wait a full minute, not a few seconds
+        const wait = status === 429 ? 61000 : 2000 * 2 ** attempt;
         console.error(`gemini ${status}, retry ${attempt} in ${wait} ms (same model, no fallback)`);
         await new Promise((r) => setTimeout(r, wait));
         continue;
@@ -363,8 +383,8 @@ async function bankUsage(): Promise<Map<string, number[]>> {
 }
 
 /** primary-lane score of the current version per round, for the "weakest category" rule */
-async function roundScores(cfg: Config): Promise<{ round: number; category?: string; score: number }[]> {
-  const out: { round: number; category?: string; score: number }[] = [];
+async function roundScores(cfg: Config): Promise<{ round: number; version: number; category?: string; score: number }[]> {
+  const out: { round: number; version: number; category?: string; score: number }[] = [];
   if (!(await exists(RUNS))) return out;
   for await (const e of Deno.readDir(RUNS)) {
     const m = e.name.match(/^round-(\d+)$/);
@@ -375,7 +395,7 @@ async function roundScores(cfg: Config): Promise<{ round: number; category?: str
     const rf = await readJson<RoundFile>(rp);
     const j = await readJson<{ scores: Record<string, Scorecard> }>(jp);
     const sc = j.scores[`v${rf.current}`];
-    if (sc) out.push({ round: rf.round, category: rf.category, score: sc.score });
+    if (sc) out.push({ round: rf.round, version: rf.current, category: rf.category, score: sc.score });
   }
   return out.sort((a, b) => a.round - b.round);
 }
@@ -640,6 +660,13 @@ async function cmdEditorInput(cfg: Config, f: Record<string, string>) {
       }
     }
   }
+  if (cfg.milestone) {
+    const traj = (await roundScores(cfg)).filter((r) => r.round < round);
+    const here = laneCards[cfg.milestone.lane];
+    parts.push('', `GOAL AND TRAJECTORY`, `The target is the ${cfg.milestone.lane} lane, model ${cfg.lanes[cfg.milestone.lane]?.model}, a small and fast model. The first milestone is a score of ${cfg.milestone.score} or more on it. Every change must be something a small model can follow: short, concrete, checkable. Prefer removing or simplifying an instruction it is ignoring over adding a new one.`);
+    const line = [...traj.map((r) => `round ${r.round}: v${r.version} ${r.score.toFixed(2)}`), here ? `round ${round}: v${rf.current} ${here.score.toFixed(2)}` : ''].filter(Boolean);
+    parts.push(`Primary-lane score of the version under test, round by round: ${line.length ? line.join('; ') : '(none yet)'}. Milestone ${cfg.milestone.score}: ${here ? (here.score >= cfg.milestone.score ? 'reached' : `${(cfg.milestone.score - here.score).toFixed(2)} points short`) : 'no score yet'}.`);
+  }
   parts.push('', 'PREVIOUS CHANGES (last three)', await lastChangelog(3), '', `Write version ${rf.current + 1}. Return the JSON object only.`);
   const out = `${roundDir(round)}/editor-input.md`;
   await Deno.writeTextFile(out, parts.join('\n') + '\n');
@@ -796,6 +823,12 @@ async function cmdStatus(cfg: Config) {
     const rf = await readJson<RoundFile>(`${roundDir(last)}/round.json`);
     console.log(`last round ${last}: ran ${rf.previous ? `v${rf.previous} and ` : ''}v${rf.current}${rf.next ? `, produced v${rf.next}` : ', editor not applied yet'}`);
   }
+  if (cfg.milestone) {
+    const traj = await roundScores(cfg);
+    const best = traj.reduce((b, r) => (r.score > b ? r.score : b), 0);
+    const latest = traj.at(-1);
+    console.log(`milestone: ${cfg.milestone.score} on ${cfg.milestone.lane}. ${traj.length ? `latest ${latest!.score.toFixed(2)} (v${latest!.version}, round ${latest!.round}), best ${best.toFixed(2)}, trajectory ${traj.map((r) => r.score.toFixed(1)).join(' -> ')}` : 'no scores yet'}${best >= cfg.milestone.score ? ' REACHED' : ''}`);
+  }
 }
 
 function cmdNow() {
@@ -812,8 +845,9 @@ const HELP = `evo <command> [--flag value]
                                              start a round: folder, question, blind map.
                                              --pick next rotates categories and takes the least-used question
   bank                                       list the question bank with usage and the next pick
-  gemini --round R --version V [--model M]   run the Gemini worker, time it, save vV.gemini.json
-                                             (--model only when the configured model is down; it is recorded)
+  gemini --round R --versions 1,2 | --version V [--model M]
+                                             run the Gemini worker per version, one after another with the
+                                             free-tier gap, time each, save vV.gemini.json (--model is recorded)
   worker-prompt --round R --version V [--lane sonnet|fable]
                                              write the framed prompt for a subagent lane (default sonnet)
   save --round R --version V --lane sonnet --latency-ms N --file <answer.txt>

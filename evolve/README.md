@@ -2,6 +2,8 @@
 
 A loop that improves one system prompt, the cast-plus-debate prompt, one test question at a time.
 
+**The goal.** The prompt is for the Gemini model the free tier serves, `gemini-3.1-flash-lite`. The first milestone is a score of 70 or more on the 100-point matrix on that lane. The milestone and the round-by-round score go to the editor every round, so it knows how far the prompt is from the target and whether the last change helped.
+
 ## Who does what
 
 | Role | What it is | Lives where |

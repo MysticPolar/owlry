@@ -6,11 +6,13 @@
   "lanes": {
     "gemini": {
       "kind": "api",
-      "model": "gemini-3.5-flash",
+      "model": "gemini-3.1-flash-lite",
+      "note": "the model the free tier serves; gemini-3.5-flash refuses free-tier keys with 503",
       "thinkingLevel": "MEDIUM",
       "temperature": 0.9,
       "maxOutputTokens": 16384,
-      "retries429": 3
+      "retries429": 3,
+      "minGapMs": 13000
     },
     "sonnet": {
       "kind": "subagent",
@@ -27,6 +29,7 @@
   },
   "primaryLane": "gemini",
   "ceilingLane": "fable",
+  "milestone": { "lane": "gemini", "score": 70, "note": "first milestone: the free-tier Gemini model scores above 70 on the matrix" },
   "judge": { "agentType": "general-purpose", "model": "opus", "effort": "high" },
   "editor": { "agentType": "general-purpose", "model": "fable", "effort": "xhigh" },
   "master": { "agentType": "general-purpose", "model": "opus", "effort": "max" },
