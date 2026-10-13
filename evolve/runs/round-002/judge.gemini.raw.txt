@@ -1,0 +1,161 @@
+{
+  "A": {
+    "criteria": [
+      {"name": "Quality of discussion", "max": 20.00, "points": 10.80,
+       "sub": [
+         {"name": "Continuity and responsiveness", "rating": 6.50, "points": 2.60, "example": "Turn 4 'It isn't just judgment' directly answers the Stoic's turn 3 reframe.", "limitation": "Turn 5 'Precisely' agrees with turn 4 without engaging its anxiety claim."},
+         {"name": "Development of ideas", "rating": 5.00, "points": 2.00, "example": "Turn 8 separates lack of interest from backstage privacy, a new distinction.", "limitation": "Turns 5 and 7 mostly restate the openings of turns 1 and 2."},
+         {"name": "Exploration of central tensions", "rating": 5.00, "points": 2.00, "example": "Turns 3-4 test whether the distress is the user's judgment or a real signal.", "limitation": "'Looking for different things' (relationship intent) is never examined directly."},
+         {"name": "Integration of perspectives", "rating": 5.00, "points": 2.00, "example": "Turn 6 Stoic concedes and adapts toward a clearer request.", "limitation": "Turn 6 concession comes easily; Stoic's core point is dropped rather than integrated."},
+         {"name": "Progress toward understanding", "rating": 5.50, "points": 2.20, "example": "Turn 9 ends on a test: does the silence change on request?", "limitation": "Opening question 'too much?' is answered in turn 1 and never reopened."}
+       ]},
+      {"name": "Quality of disagreement, trust and grounding", "max": 20.00, "points": 10.20,
+       "sub": [
+         {"name": "Faithful engagement", "rating": 5.00, "points": 2.00, "example": "Turn 4 accurately restates the Stoic's 'just judgment' claim before rebutting.", "limitation": "Nobody presents the strongest case that low texting is normal early-dating behavior."},
+         {"name": "Substance of challenges", "rating": 5.00, "points": 2.00, "example": "Turn 8 challenges the avoidant label: 'without enough evidence of their intent.'", "limitation": "Turn 2's performance theory goes unchallenged by evidence from the user's actual dates."},
+         {"name": "Accuracy and support", "rating": 4.50, "points": 1.80, "example": "Turn 3 Meditations Book IV on judgments versus events is a fair use.", "limitation": "Turn 2 'unperformed self' misreads Goffman; scare quotes appear in pd=false turns 2, 5, 8."},
+         {"name": "Calibration and transparency", "rating": 5.50, "points": 2.20, "example": "Turn 8 explicitly flags labeling the partner without evidence.", "limitation": "Turn 1 'You aren't asking for too much' asserted as fact without knowing context."},
+         {"name": "Intellectual honesty and revision", "rating": 5.50, "points": 2.20, "example": "Turn 6 'I concede that point' is a genuine revision.", "limitation": "Turn 6 concedes without answering turn 4's hard objection; Social Psychologist flips turn 5 to 8."}
+       ]},
+      {"name": "Personal relevance", "max": 10.00, "points": 4.30,
+       "sub": [
+         {"name": "Identification of the actual concern", "rating": 5.50, "points": 1.10, "example": "Turn 1 addresses 'too much' head on.", "limitation": "Second half of the question, differing relationship goals, is barely touched."},
+         {"name": "Meaningful use of personal context", "rating": 4.50, "points": 0.90, "example": "Turn 2 maps affection-on-dates versus silence-between onto stage regions.", "limitation": "Nothing on how long they've dated or what 'barely reply' means changes the reasoning."},
+         {"name": "Fit with goals and values", "rating": 4.00, "points": 0.80, "example": "Turn 7 names the user's need for consistency to attach.", "limitation": "The user's own goals for this relationship are never distinguished from the speakers'."},
+         {"name": "Attention to constraints and stakes", "rating": 3.50, "points": 0.70, "example": "Turn 7 asks 'if this friction is sustainable.'", "limitation": "No attention to stage of dating, timing, or cost of raising it early."},
+         {"name": "Responsiveness to information", "rating": 4.00, "points": 0.80, "example": "Section E branches on whether the silence changes on request.", "limitation": "No focused question about reply frequency, dating length or prior conversations."}
+       ]},
+      {"name": "Constructive self-discovery", "max": 20.00, "points": 9.80,
+       "sub": [
+         {"name": "Clarification of desires and motivations", "rating": 4.50, "points": 1.80, "example": "Turn 7 frames the user's want as consistency to attach.", "limitation": "Never distinguishes wanting reassurance from wanting a committed relationship."},
+         {"name": "Examination of assumptions", "rating": 6.00, "points": 2.40, "example": "Turn 3 separates the observable fact from 'your judgment that their silence implies a lack of care.'", "limitation": "The assumption that texting measures care is named but not explored further."},
+         {"name": "Clarification of values and priorities", "rating": 4.00, "points": 1.60, "example": "Turn 7 sets the user's need against the partner's need for space.", "limitation": "No conflict among the user's own values is surfaced."},
+         {"name": "Recognition of fears and outside expectations", "rating": 5.00, "points": 2.00, "example": "Turn 4 treats the anxiety as real, not as neediness.", "limitation": "Turn 3 'torturing yourself' presumes suffering; fear of seeming needy goes unexamined."},
+         {"name": "Agency and reflective ownership", "rating": 5.00, "points": 2.00, "example": "Turn 9 leaves the user to test and interpret the response.", "limitation": "Turn 1 hands down a verdict rather than a question the user can weigh."}
+       ]},
+      {"name": "Decision usefulness", "max": 10.00, "points": 5.10,
+       "sub": [
+         {"name": "Definition of the decision and options", "rating": 5.00, "points": 1.00, "example": "Turn 9 frames the choice as raise the discomfort versus continue silently.", "limitation": "Waiting, lowering the ask, or leaving are not laid out as options."},
+         {"name": "Explanation of tradeoffs", "rating": 3.50, "points": 0.70, "example": "Turn 7 notes space versus consistency friction.", "limitation": "No cost of asking early or of staying quiet is described."},
+         {"name": "Identification of decisive conditions", "rating": 6.00, "points": 1.20, "example": "Section E: habit that changes on request versus non-negotiable boundary.", "limitation": "No condition tied to the user's own tolerance for distance."},
+         {"name": "Treatment of uncertainty", "rating": 5.00, "points": 1.00, "example": "Turn 8 marks the partner's intent as the key unknown.", "limitation": "Minor and consequential unknowns are not separated."},
+         {"name": "Proportionate next steps", "rating": 6.00, "points": 1.20, "example": "Section E: neutrally request a specific change and observe the reaction.", "limitation": "No guidance on wording or what 'specific' frequency would be reasonable."}
+       ]},
+      {"name": "Clarity and engagement", "max": 10.00, "points": 6.40,
+       "sub": [
+         {"name": "Accessible language", "rating": 7.00, "points": 1.40, "example": "Turn 3 'What is the observable fact?' is plain and direct.", "limitation": "Turn 1 'proximity-seeking behaviors' is unexplained jargon."},
+         {"name": "Traceable arguments and references", "rating": 5.50, "points": 1.10, "example": "Turn 2 'That assumes...' clearly targets turn 1.", "limitation": "Turn 6 'that point' is ambiguous; scare quotes in pd=false turns break the form."},
+         {"name": "Manageable pacing and turn length", "rating": 7.50, "points": 1.50, "example": "All nine turns are short, roughly 34-41 words.", "limitation": "Turn 9 compresses the conclusion abruptly."},
+         {"name": "Distinguishable positions and voices", "rating": 5.50, "points": 1.10, "example": "Three lenses are distinct in turns 1-3.", "limitation": "Turn 6 Stoic loses Stoic character; turn 5 merges with Attachment Theorist."},
+         {"name": "Economy and sustained attention", "rating": 6.50, "points": 1.30, "example": "No recaps; each turn moves on.", "limitation": "Turn 7 largely repeats turns 1 and 4."}
+       ]},
+      {"name": "Drama and entertainment", "max": 10.00, "points": 4.40,
+       "sub": [
+         {"name": "Meaningful stakes and tension", "rating": 5.00, "points": 1.00, "example": "Turn 4 'tethered to a phantom' raises the cost of waiting.", "limitation": "Tension dissipates after turn 6 concession."},
+         {"name": "Surprise and reversals", "rating": 4.50, "points": 0.90, "example": "Turn 8 'Wait, let's be careful' reverses the drift to labeling.", "limitation": "Turn 6 concession is unearned, so the reversal feels convenient."},
+         {"name": "Personality and expressive voice", "rating": 4.00, "points": 0.80, "example": "Turn 3 Stoic briskness is characterful.", "limitation": "Voices are generic; little of Marcus or Goffman's texture."},
+         {"name": "Memorable delivery", "rating": 4.50, "points": 0.90, "example": "Turn 4 'waiting for a signal that may never come.'", "limitation": "Few concrete examples or analogies beyond the stage metaphor."},
+         {"name": "Anticipation and emotional movement", "rating": 4.00, "points": 0.80, "example": "Turn 9 ends on an open test.", "limitation": "Flat rhythm; no turn builds toward a moment."}
+       ]}
+    ],
+    "uncapped": 51.00,
+    "score": 51.00,
+    "capReason": null,
+    "strengths": [
+      "Turn 3 separates observable silence from the user's interpretation, a usable reframe.",
+      "Turn 8 self-corrects against labeling the partner without evidence of intent.",
+      "Section E gives a clear, proportionate test: request a specific change and watch the reaction."
+    ],
+    "weaknesses": [
+      "Turn 6: Stoic concedes without answering turn 4, abandoning his own lens.",
+      "Turn 1 declares the user isn't asking too much before any inquiry; 'different things' barely explored.",
+      "Scare quotes in pd=false turns 2, 5, 8; turn 2 misreads Goffman as an 'unperformed self'."
+    ],
+    "editorNotes": [
+      "Ban opening verdicts: turn 1 must frame the question, not answer it.",
+      "Require each concession to quote or restate the objection it answers, and to keep the speaker's lens.",
+      "Require both halves of a two-part question to receive a dedicated turn each.",
+      "Enforce no quotation marks of any kind, including scare quotes, when pd is false."
+    ]
+  },
+  "B": {
+    "criteria": [
+      {"name": "Quality of discussion", "max": 20.00, "points": 10.60,
+       "sub": [
+         {"name": "Continuity and responsiveness", "rating": 6.00, "points": 2.40, "example": "Turn 2 'You see a lack of safety, but I see...' takes up turn 1.", "limitation": "Turn 6 'Regardless of why they are silent' sidesteps turns 4-5."},
+         {"name": "Development of ideas", "rating": 5.50, "points": 2.20, "example": "Turn 3 adds utility/pleasure/virtue friendship as a new distinction.", "limitation": "Turn 8 contradicts turn 2 on whether digital is back or front stage."},
+         {"name": "Exploration of central tensions", "rating": 6.00, "points": 2.40, "example": "Turn 3 asks what kind of bond this is, matching 'different things.'", "limitation": "Medium versus intent is raised in turn 5 but never resolved."},
+         {"name": "Integration of perspectives", "rating": 3.50, "points": 1.40, "example": "Turn 9 folds the friendship test into a practical step.", "limitation": "No speaker qualifies or revises; turns 1, 4, 7 restate one position."},
+         {"name": "Progress toward understanding", "rating": 5.50, "points": 2.20, "example": "Section D names the open dispute: flaw or different valid style.", "limitation": "Debate turns end mostly where they began."}
+       ]},
+      {"name": "Quality of disagreement, trust and grounding", "max": 20.00, "points": 8.20,
+       "sub": [
+         {"name": "Faithful engagement", "rating": 3.50, "points": 1.40, "example": "Turn 2 states the attachment concern fairly before reframing.", "limitation": "Turn 6 invents 'constant contact'; turn 8 casts the user as 'forcing' the partner."},
+         {"name": "Substance of challenges", "rating": 5.50, "points": 2.20, "example": "Turn 5 offers a real alternative cause: avoiding a botched performance.", "limitation": "Turn 4 dismisses compartmentalizing by relabeling, not by evidence."},
+         {"name": "Accuracy and support", "rating": 5.00, "points": 2.00, "example": "Turn 3 accurately uses Aristotle's three friendships and shared life, Book VIII.", "limitation": "Turns 2/5/8 inconsistent on Goffman's regions; scare quotes in pd=false turns; Bowlby basis links generic page."},
+         {"name": "Calibration and transparency", "rating": 3.50, "points": 1.40, "example": "Turn 2 'They aren't necessarily inconsistent' is appropriately hedged.", "limitation": "Turn 4 'clearly not invested', turn 7 'fundamentally lopsided' asserted without evidence."},
+         {"name": "Intellectual honesty and revision", "rating": 3.00, "points": 1.20, "example": "Section D admits the core question remains disputed.", "limitation": "No concession in nine turns; Attachment Theorist never answers turn 5."}
+       ]},
+      {"name": "Personal relevance", "max": 10.00, "points": 4.50,
+       "sub": [
+         {"name": "Identification of the actual concern", "rating": 6.00, "points": 1.20, "example": "Turn 7 answers 'too much'; turn 3 addresses 'different things.'", "limitation": "Does not ask whether the concern is the texting or the uncertainty."},
+         {"name": "Meaningful use of personal context", "rating": 4.50, "points": 0.90, "example": "Turn 1 uses warm-in-person, unreachable-later directly.", "limitation": "Context stays at the level of the one-line prompt."},
+         {"name": "Fit with goals and values", "rating": 4.50, "points": 0.90, "example": "Turn 9 ties outcome to whether the user wants a deeper bond.", "limitation": "User's goals are assumed (virtue friendship), not distinguished."},
+         {"name": "Attention to constraints and stakes", "rating": 3.00, "points": 0.60, "example": "Section E notes intermittent connection as a lived cost.", "limitation": "Invents 'constant contact' (turn 6) and 'geographically' intermittent (section E)."},
+         {"name": "Responsiveness to information", "rating": 4.50, "points": 0.90, "example": "Section E gives three conditional branches.", "limitation": "No focused question about dating length or reply frequency."}
+       ]},
+      {"name": "Constructive self-discovery", "max": 20.00, "points": 10.00,
+       "sub": [
+         {"name": "Clarification of desires and motivations", "rating": 5.50, "points": 2.20, "example": "Turn 3 lets the user ask whether they want pleasure or a shared life.", "limitation": "Never asks what the user wants the texts to provide."},
+         {"name": "Examination of assumptions", "rating": 5.00, "points": 2.00, "example": "Turn 5 questions the assumption that silence means low interest.", "limitation": "Turn 4 bakes in the assumption that compartmentalizing equals avoidance."},
+         {"name": "Clarification of values and priorities", "rating": 6.00, "points": 2.40, "example": "Turn 3 contrasts consistent concern with fleeting pleasure as values.", "limitation": "The user's own value conflict is not drawn out."},
+         {"name": "Recognition of fears and outside expectations", "rating": 4.00, "points": 1.60, "example": "Turn 7 'Asking for consistency is not the same as being needy.'", "limitation": "Turn 6 'grounding their self-worth' edges toward pathologizing the user."},
+         {"name": "Agency and reflective ownership", "rating": 4.50, "points": 1.80, "example": "Turn 9 offers a test the user can run and interpret.", "limitation": "Turn 8 blames the user, closing rather than opening reflection."}
+       ]},
+      {"name": "Decision usefulness", "max": 10.00, "points": 5.00,
+       "sub": [
+         {"name": "Definition of the decision and options", "rating": 5.00, "points": 1.00, "example": "Turn 9 frames: express the need, then judge the response.", "limitation": "Waiting or adjusting own expectations not offered as options."},
+         {"name": "Explanation of tradeoffs", "rating": 4.00, "points": 0.80, "example": "Section E weighs fulfillment in an intermittent connection.", "limitation": "No cost named for raising the need or for not raising it."},
+         {"name": "Identification of decisive conditions", "rating": 6.00, "points": 1.20, "example": "Section E: open discussion versus requests seen as a burden.", "limitation": "Branches overlap; no clear signal to tell them apart."},
+         {"name": "Treatment of uncertainty", "rating": 5.00, "points": 1.00, "example": "Section D flags flaw-versus-style as disputed.", "limitation": "Turns 4 and 7 treat the key unknown as settled."},
+         {"name": "Proportionate next steps", "rating": 5.00, "points": 1.00, "example": "Turn 9 'expresses their need for connection.'", "limitation": "Less specific than a concrete, observable request."}
+       ]},
+      {"name": "Clarity and engagement", "max": 10.00, "points": 6.10,
+       "sub": [
+         {"name": "Accessible language", "rating": 6.50, "points": 1.30, "example": "Turn 7 is plain: consistency is not neediness.", "limitation": "'Friendship of virtue' and 'front stage' left largely unexplained."},
+         {"name": "Traceable arguments and references", "rating": 5.00, "points": 1.00, "example": "Turn 4 clearly targets turn 2's 'compartmentalizing'.", "limitation": "Turn 8 reverses turn 2's backstage mapping without flagging it; scare quotes in pd=false turns."},
+         {"name": "Manageable pacing and turn length", "rating": 6.50, "points": 1.30, "example": "Turns stay within length, mostly 40-50 words.", "limitation": "Turns 3 and 6 are dense for a casual reader."},
+         {"name": "Distinguishable positions and voices", "rating": 7.00, "points": 1.40, "example": "Three lenses stay distinct throughout.", "limitation": "No explicit change of position anywhere."},
+         {"name": "Economy and sustained attention", "rating": 5.50, "points": 1.10, "example": "Turn 9 compresses the test into one sentence.", "limitation": "Attachment Theorist repeats the same claim in turns 1, 4, 7."}
+       ]},
+      {"name": "Drama and entertainment", "max": 10.00, "points": 4.70,
+       "sub": [
+         {"name": "Meaningful stakes and tension", "rating": 5.50, "points": 1.10, "example": "Turn 9 'the partner shows their character' raises the stakes.", "limitation": "Tension is repetition rather than escalation."},
+         {"name": "Surprise and reversals", "rating": 4.00, "points": 0.80, "example": "Turn 5 reframes silence as avoiding a botched performance.", "limitation": "No reversal; nobody is moved."},
+         {"name": "Personality and expressive voice", "rating": 5.00, "points": 1.00, "example": "Turn 3 Virtue Ethicist's question 'performance, or friendship?' is characterful.", "limitation": "Turn 8 tips into scolding the user."},
+         {"name": "Memorable delivery", "rating": 5.00, "points": 1.00, "example": "Turn 9 'the fleeting pleasure of the date.'", "limitation": "No concrete example from dating life."},
+         {"name": "Anticipation and emotional movement", "rating": 4.00, "points": 0.80, "example": "Turn 9 resolves into a test.", "limitation": "Uniform intensity; same beat repeats three times."}
+       ]}
+    ],
+    "uncapped": 49.10,
+    "score": 49.10,
+    "capReason": null,
+    "strengths": [
+      "Turn 3 brings Aristotle's friendship types, directly addressing 'looking for different things.'",
+      "Turn 5 offers a plausible alternative cause for the silence beyond disinterest.",
+      "Section E gives three conditional branches tied to the partner's response."
+    ],
+    "weaknesses": [
+      "No concession in nine turns; Attachment Theorist repeats one claim in turns 1, 4, 7.",
+      "Turn 6 invents 'constant contact'; turn 8 blames the user for 'forcing' the partner.",
+      "Turns 2, 5, 8 contradict each other on Goffman's regions; scare quotes in pd=false turns."
+    ],
+    "editorNotes": [
+      "Require at least one explicit concession or revision by turn 7, answering a named objection.",
+      "Forbid restating a prior position; each speaker's later turn must add a new distinction.",
+      "Forbid attributing behaviors or demands to the user not in the situation text.",
+      "Require a consistency check so a mind's key framework terms keep one meaning throughout."
+    ]
+  },
+  "preferred": "A"
+}

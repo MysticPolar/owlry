@@ -1,0 +1,115 @@
+{
+  "lane": "gemini",
+  "version": 2,
+  "model": "gemini-3.1-flash-lite",
+  "settings": {
+    "thinkingLevel": "MEDIUM",
+    "temperature": 0.9,
+    "maxOutputTokens": 16384,
+    "fallback": "none"
+  },
+  "latencyMs": 11328,
+  "output": {
+    "situation": "The user experiences a jarring disconnect between high-intensity in-person affection and digital silence between dates. The central tension is whether this behavior signals a fundamental incompatibility in emotional needs, a calculated attempt to maintain independence, or simply differing habits that the user is currently misinterpreting as a rejection.",
+    "minds": [
+      {
+        "title": "The Attachment Theorist",
+        "concern": "The need for secure, consistent signaling in romantic bonds.",
+        "author": "John Bowlby",
+        "book": "Attachment and Loss",
+        "year": 1969
+      },
+      {
+        "title": "The Social Psychologist",
+        "concern": "The discrepancy between performed roles and private behavior.",
+        "author": "Erving Goffman",
+        "book": "The Presentation of Self in Everyday Life",
+        "year": 1956
+      },
+      {
+        "title": "The Stoic",
+        "concern": "Distinguishing between external events and our internal judgments of them.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "year": 180
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Attachment Theorist",
+        "text": "You aren't asking for too much. You are simply observing a break in the proximity-seeking behaviors that humans rely on to feel secure in a bond. When someone is inconsistently available, it triggers an alarm.",
+        "author": "John Bowlby",
+        "book": "Attachment and Loss",
+        "pd": false,
+        "basis": "[Basis: John Bowlby, Attachment and Loss, Vol 1](https://en.wikipedia.org/wiki/Attachment_and_Loss)"
+      },
+      {
+        "speaker": "The Social Psychologist",
+        "text": "That assumes the person is acting from a consistent internal state. I see the 'date' as a performance where they play the lover, but the 'between-dates' is when they step off-stage, retreating into their private, unperformed self.",
+        "author": "Erving Goffman",
+        "book": "The Presentation of Self in Everyday Life",
+        "pd": false,
+        "basis": "[Basis: Erving Goffman, The Presentation of Self in Everyday Life, Chapter 2](https://en.wikipedia.org/wiki/The_Presentation_of_Self_in_Everyday_Life)"
+      },
+      {
+        "speaker": "The Stoic",
+        "text": "But you are torturing yourself with the story of their silence. What is the observable fact? They show up when present. The rest is just your judgment that their silence implies a lack of care.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "[Basis: Marcus Aurelius, Meditations, Book IV](https://en.wikipedia.org/wiki/Meditations)"
+      },
+      {
+        "speaker": "The Attachment Theorist",
+        "text": "It isn't just judgment. When a secure base is unpredictable, it triggers real biological anxiety. Ignoring that doesn't make it go away; it leaves you tethered to a phantom, waiting for a signal that may never come.",
+        "author": "John Bowlby",
+        "book": "Attachment and Loss",
+        "pd": false,
+        "basis": "[Basis: John Bowlby, Attachment and Loss, Vol 1](https://en.wikipedia.org/wiki/Attachment_and_Loss)"
+      },
+      {
+        "speaker": "The Social Psychologist",
+        "text": "Precisely. The user is trying to find a coherent script where none exists. The 'date' character and the 'texting' character might not be the same person's intended design, leading to this confusion.",
+        "author": "Erving Goffman",
+        "book": "The Presentation of Self in Everyday Life",
+        "pd": false,
+        "basis": "[Basis: Erving Goffman, The Presentation of Self in Everyday Life, Chapter 3](https://en.wikipedia.org/wiki/The_Presentation_of_Self_in_Everyday_Life)"
+      },
+      {
+        "speaker": "The Stoic",
+        "text": "I concede that point. If the inconsistency creates ongoing suffering, the user has a right to demand a clearer role, even if the other person is merely playing a part in their own life.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "[Basis: Marcus Aurelius, Meditations, Book V](https://en.wikipedia.org/wiki/Meditations)"
+      },
+      {
+        "speaker": "The Attachment Theorist",
+        "text": "Exactly. If they are avoidant, they might need space to regulate, but you need consistency to attach. It is a fundamental friction in needs, not a failing on your part. You have to ask if this friction is sustainable.",
+        "author": "John Bowlby",
+        "book": "Attachment and Loss",
+        "pd": false,
+        "basis": "[Basis: John Bowlby, Attachment and Loss, Vol 1](https://en.wikipedia.org/wiki/Attachment_and_Loss)"
+      },
+      {
+        "speaker": "The Social Psychologist",
+        "text": "Wait, let’s be careful. Could the silence be a lack of interest, or is it just how they manage their 'backstage' privacy? We are labeling them without enough evidence of their intent.",
+        "author": "Erving Goffman",
+        "book": "The Presentation of Self in Everyday Life",
+        "pd": false,
+        "basis": "[Basis: Erving Goffman, The Presentation of Self in Everyday Life, Chapter 7](https://en.wikipedia.org/wiki/The_Presentation_of_Self_in_Everyday_Life)"
+      },
+      {
+        "speaker": "The Stoic",
+        "text": "Then the choice is clear. The user should act on the observable fact—the silence is real—and see if communicating that discomfort yields a change or merely reveals a fixed boundary that cannot be crossed.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "[Basis: Marcus Aurelius, Meditations, Book XII](https://en.wikipedia.org/wiki/Meditations)"
+      }
+    ],
+    "clearer": "The debate clarified that the user's distress may not stem from being 'too demanding' but from a mismatch between their need for consistency and the partner's compartmentalized communication style. The insight is that the user is currently filling the silence with anxious interpretations instead of testing the boundary through direct, calm communication.",
+    "dependsOn": "If the silence is a habit that changes upon request, the relationship is viable; if the silence is a non-negotiable boundary for the partner's 'backstage' time, the user must decide if they can emotionally sustain that distance. To learn which is the case, the user should neutrally request a specific change in communication frequency and observe the reaction."
+  },
+  "savedAt": "2026-10-13T09:53:04.989Z"
+}

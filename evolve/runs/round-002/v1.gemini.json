@@ -1,0 +1,115 @@
+{
+  "lane": "gemini",
+  "version": 1,
+  "model": "gemini-3.1-flash-lite",
+  "settings": {
+    "thinkingLevel": "MEDIUM",
+    "temperature": 0.9,
+    "maxOutputTokens": 16384,
+    "fallback": "none"
+  },
+  "latencyMs": 12822,
+  "output": {
+    "situation": "The user experiences a stark disconnect between in-person intimacy and digital silence with their partner. This leaves them questioning whether they have excessive expectations or if they are simply incompatible in their communication needs and relational intent.",
+    "minds": [
+      {
+        "title": "The Attachment Theorist",
+        "concern": "Seeking reliable emotional consistency",
+        "author": "John Bowlby",
+        "book": "Attachment",
+        "year": 1969
+      },
+      {
+        "title": "The Social Dramaturgist",
+        "concern": "Managing performance and social distance",
+        "author": "Erving Goffman",
+        "book": "The Presentation of Self in Everyday Life",
+        "year": 1956
+      },
+      {
+        "title": "The Virtue Ethicist",
+        "concern": "Defining the depth of the bond",
+        "author": "Aristotle",
+        "book": "Nicomachean Ethics",
+        "year": -340
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Attachment Theorist",
+        "text": "This inconsistency is unsettling because a secure base requires predictability. If they are warm in person but unreachable later, they are failing to provide the emotional safety necessary to build trust.",
+        "author": "John Bowlby",
+        "book": "Attachment",
+        "pd": false,
+        "basis": "[Basis: John Bowlby, Attachment, Chapter 15](https://en.wikipedia.org/wiki/Attachment_theory)"
+      },
+      {
+        "speaker": "The Social Dramaturgist",
+        "text": "You see a lack of safety, but I see a clear separation of settings. The date is their 'front stage,' where they perform the role of an affectionate partner. Digital space is their 'back stage,' where they relax the performance. They aren't necessarily inconsistent; they are compartmentalizing.",
+        "author": "Erving Goffman",
+        "book": "The Presentation of Self in Everyday Life",
+        "pd": false,
+        "basis": "[Basis: Erving Goffman, The Presentation of Self in Everyday Life, Chapter 2](https://en.wikipedia.org/wiki/The_Presentation_of_Self_in_Everyday_Life)"
+      },
+      {
+        "speaker": "The Virtue Ethicist",
+        "text": "Is this a performance, or is it a friendship? If it is merely a friendship of utility or pleasure, the silence between meetings is expected. But if it aims to be a friendship of virtue, it requires a shared life, which includes consistent concern even when apart.",
+        "author": "Aristotle",
+        "book": "Nicomachean Ethics",
+        "pd": true,
+        "basis": "[Basis: Aristotle, Nicomachean Ethics, Book VIII](https://classics.mit.edu/Aristotle/nicomachaen.8.viii.html)"
+      },
+      {
+        "speaker": "The Attachment Theorist",
+        "text": "Compartmentalizing is just a sophisticated term for avoidant behavior. A partner who can turn off their care for you when they are not in your physical presence is clearly not invested in the same level of emotional proximity that the user is seeking.",
+        "author": "John Bowlby",
+        "book": "Attachment",
+        "pd": false,
+        "basis": "[Basis: John Bowlby, Attachment, Chapter 18](https://en.wikipedia.org/wiki/Attachment_theory)"
+      },
+      {
+        "speaker": "The Social Dramaturgist",
+        "text": "I disagree. The user might be misinterpreting the medium. In digital spaces, the cost of communication is low, but the pressure to 'perform' correctly is high. Silence might be their way of avoiding a botched performance, rather than a lack of interest.",
+        "author": "Erving Goffman",
+        "book": "The Presentation of Self in Everyday Life",
+        "pd": false,
+        "basis": "[Basis: Erving Goffman, The Presentation of Self in Everyday Life, Chapter 6](https://en.wikipedia.org/wiki/The_Presentation_of_Self_in_Everyday_Life)"
+      },
+      {
+        "speaker": "The Virtue Ethicist",
+        "text": "Regardless of why they are silent, we must look at the user's reaction. If the user expects constant contact to feel valued, they are grounding their self-worth in the actions of the other. The virtue lies in knowing whether the user can find contentment without this constant external validation.",
+        "author": "Aristotle",
+        "book": "Nicomachean Ethics",
+        "pd": true,
+        "basis": "[Basis: Aristotle, Nicomachean Ethics, Book IX](https://classics.mit.edu/Aristotle/nicomachaen.9.ix.html)"
+      },
+      {
+        "speaker": "The Attachment Theorist",
+        "text": "Asking for consistency is not the same as being needy. It is a reasonable request for a partner to be a reliable source of support. If the silence creates anxiety, it is because the relationship is fundamentally lopsided in its commitment to intimacy.",
+        "author": "John Bowlby",
+        "book": "Attachment",
+        "pd": false,
+        "basis": "[Basis: John Bowlby, Attachment, Chapter 16](https://en.wikipedia.org/wiki/Attachment_theory)"
+      },
+      {
+        "speaker": "The Social Dramaturgist",
+        "text": "But consider that the user is demanding a 'back stage' level of intimacy in a medium that is inherently public or performance-heavy. They are forcing the partner out of their comfortable role, which creates friction that has nothing to do with genuine affection.",
+        "author": "Erving Goffman",
+        "book": "The Presentation of Self in Everyday Life",
+        "pd": false,
+        "basis": "[Basis: Erving Goffman, The Presentation of Self in Everyday Life, Chapter 4](https://en.wikipedia.org/wiki/The_Presentation_of_Self_in_Everyday_Life)"
+      },
+      {
+        "speaker": "The Virtue Ethicist",
+        "text": "Perhaps the solution is to test the nature of the bond. If the user expresses their need for connection and the partner refuses to adjust, the partner shows their character. One cannot force a friendship of virtue if the other person is only there for the fleeting pleasure of the date.",
+        "author": "Aristotle",
+        "book": "Nicomachean Ethics",
+        "pd": true,
+        "basis": "[Basis: Aristotle, Nicomachean Ethics, Book VIII](https://classics.mit.edu/Aristotle/nicomachaen.8.viii.html)"
+      }
+    ],
+    "clearer": "The debate clarifies that the user's struggle isn't necessarily about 'needing too much' but about a mismatch in how intimacy is performed and defined. The core tension is between the need for an available, consistent partner and the reality of a partner who may be managing their social energy through compartmentalization. It remains disputed whether the partner's behavior is a character flaw or simply a different, valid social style.",
+    "dependsOn": "- If the partner is willing to discuss communication styles openly, the issue may simply be an alignment of norms.\n- If the partner perceives requests for connection as a burden or an unwanted performance, the relationship likely lacks the shared values necessary for a deeper connection.\n- If the anxiety persists despite clear communication, the choice depends on whether the user can find fulfillment in a connection that is geographically and digitally intermittent."
+  },
+  "savedAt": "2026-10-13T09:53:03.934Z"
+}
