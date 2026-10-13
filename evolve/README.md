@@ -4,6 +4,8 @@ A loop that improves one system prompt, the cast-plus-debate prompt, one test qu
 
 **The goal.** The prompt is for the Gemini model the free tier serves, `gemini-3.1-flash-lite`. The first milestone is a score of 70 or more on the 100-point matrix on that lane. The milestone and the round-by-round score go to the editor every round, so it knows how far the prompt is from the target and whether the last change helped.
 
+**Samples.** The Gemini lane runs three samples per version each round, each judged on its own, and the lane's score is the mean. The spread between samples of the same version is the noise floor, shown to the editor, so a difference between versions smaller than the spread is not treated as evidence. Sonnet runs one sample.
+
 ## Who does what
 
 | Role | What it is | Lives where |
@@ -11,8 +13,7 @@ A loop that improves one system prompt, the cast-plus-debate prompt, one test qu
 | You | Give one test question per round. Read the summary. | chat |
 | Master | Runs the round, step by step, and logs everything. Opus 5.5. | `roles/master.md` |
 | Worker, Gemini lane | Answers the question with the current prompt. Gemini Flash, thinking MEDIUM. Timed. | `runner/evo.ts gemini` |
-| Worker, Sonnet lane | Same, on Claude Sonnet at medium. Timed. A middle reference. | spawned by the master |
-| Worker, Fable lane | Same, on Claude Fable at max. Timed. The ceiling: what the prompt produces when the model is not the limit. | spawned by the master |
+| Worker, Sonnet lane | Same, on Claude Sonnet at medium. Timed. The ceiling: what the prompt produces on a stronger model. | spawned by the master |
 | Judge | Scores each debate on the 100-point matrix, blind to which version it came from. Opus 5.5. | `roles/judge.md` |
 | Editor | Reads the scorecards and writes the next prompt version. Fable. | `roles/editor.md` |
 
@@ -65,7 +66,7 @@ deno run --config evolve/deno.json --env-file=.env.local -A evolve/runner/evo.ts
 
 Score first, latency second, per lane and per version. The Gemini lane is the primary one: it is the model the prompt is for, and only its scores decide whether a version is better. The judge compares versions inside a lane, never across models.
 
-The other lanes exist for one diagnostic: the lane gap. The editor sees each criterion's points on Gemini next to Fable, the ceiling. Both low means the prompt lacks the instruction. Fable high and Gemini low means the instruction is there but Gemini cannot follow it as written, so the editor simplifies it rather than adding rules. The subagent lanes' latency includes Claude Code overhead, so compare it only with itself across rounds.
+The Sonnet lane exists for one diagnostic: the lane gap. The editor sees each criterion's points on Gemini next to Sonnet, the ceiling. Both low means the prompt lacks the instruction. Sonnet high and Gemini low means the instruction is there but Gemini cannot follow it as written, so the editor simplifies it rather than adding rules. The Sonnet lane's latency includes Claude Code overhead, so compare it only with itself across rounds. A Fable lane at max effort ran in round 2 and was removed afterwards: ten minutes per debate for a reference signal Sonnet gives in under a minute.
 
 ## Setup, once
 

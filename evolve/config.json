@@ -12,23 +12,18 @@
       "temperature": 0.9,
       "maxOutputTokens": 16384,
       "retries429": 3,
-      "minGapMs": 13000
+      "minGapMs": 13000,
+      "samples": 3
     },
     "sonnet": {
       "kind": "subagent",
       "agentType": "Explore",
       "model": "sonnet",
       "effort": "medium"
-    },
-    "fable": {
-      "kind": "subagent",
-      "agentType": "Explore",
-      "model": "fable",
-      "effort": "max"
     }
   },
   "primaryLane": "gemini",
-  "ceilingLane": "fable",
+  "ceilingLane": "sonnet",
   "milestone": { "lane": "gemini", "score": 70, "note": "first milestone: the free-tier Gemini model scores above 70 on the matrix" },
   "judge": { "agentType": "general-purpose", "model": "opus", "effort": "high" },
   "editor": { "agentType": "general-purpose", "model": "fable", "effort": "xhigh" },
