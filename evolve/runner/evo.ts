@@ -28,6 +28,8 @@ interface Config {
   pdCutoff: number;
   lanes: Record<string, { kind: 'api' | 'subagent'; model: string; thinkingLevel?: ThinkingLevel; temperature?: number; maxOutputTokens?: number; retries429?: number; agentType?: string; effort?: string }>;
   primaryLane: string;
+  /** the strongest lane: what the prompt can produce when the model is not the limit */
+  ceilingLane?: string;
   judge: { agentType: string; model: string; effort: string };
   editor: { agentType: string; model: string; effort: string };
   master: { agentType: string; model: string; effort: string };
@@ -284,10 +286,13 @@ async function cmdGemini(cfg: Config, f: Record<string, string>) {
 async function cmdWorkerPrompt(cfg: Config, f: Record<string, string>) {
   const round = Number(need(f, 'round'));
   const version = Number(need(f, 'version'));
+  const laneName = f.lane ?? 'sonnet';
+  const lane = cfg.lanes[laneName] ?? fail(`unknown lane ${laneName}`);
+  if (lane.kind !== 'subagent') fail(`lane ${laneName} is not a subagent lane; use "evo gemini" for it`);
   const rf = await readJson<RoundFile>(`${roundDir(round)}/round.json`);
   const s = await loadSubject(cfg, version);
   const text = sonnetFrame(s.system, userMessage(cfg, s, rf.question));
-  const out = `${roundDir(round)}/worker-prompt.v${version}.sonnet.md`;
+  const out = `${roundDir(round)}/worker-prompt.v${version}.${laneName}.md`;
   await Deno.writeTextFile(out, text + '\n');
   console.log(out);
 }
@@ -596,6 +601,35 @@ async function cmdEditorInput(cfg: Config, f: Record<string, string>) {
     if (j.preferredVersion !== null && j.preferredVersion !== undefined) parts.push(`lane ${lane} preferred: ${j.preferredVersion === 'tie' ? 'tie' : 'v' + j.preferredVersion}`);
     parts.push('');
   }
+  // the lane gap: the same prompt on the primary model and on the strongest model, criterion by criterion
+  const laneCards: Record<string, Scorecard> = {};
+  for (const lane of Object.keys(cfg.lanes)) {
+    const jp = `${roundDir(round)}/judge.${lane}.json`;
+    if (!(await exists(jp))) continue;
+    const j = await readJson<{ scores: Record<string, Scorecard> }>(jp);
+    const sc = j.scores[`v${rf.current}`];
+    if (sc) laneCards[lane] = sc;
+  }
+  const primary = laneCards[cfg.primaryLane];
+  const ceiling = cfg.ceilingLane ? laneCards[cfg.ceilingLane] : undefined;
+  if (primary && ceiling && cfg.ceilingLane !== cfg.primaryLane) {
+    parts.push(`LANE GAP FOR THE CURRENT VERSION v${rf.current} (primary ${cfg.primaryLane} vs ceiling ${cfg.ceilingLane}; other lanes for reference)`);
+    const lanes = Object.keys(laneCards);
+    parts.push(`criterion | ${lanes.join(' | ')} | gap (ceiling minus primary)`);
+    for (const c of primary.criteria) {
+      const row = lanes.map((l) => {
+        const cc = laneCards[l].criteria.find((x) => x.name === c.name);
+        return cc ? `${cc.points.toFixed(2)}/${cc.max.toFixed(0)}` : '-';
+      });
+      const cc = ceiling.criteria.find((x) => x.name === c.name);
+      const gap = cc ? (cc.points - c.points).toFixed(2) : '-';
+      parts.push(`${c.name} | ${row.join(' | ')} | ${gap}`);
+    }
+    parts.push(`total | ${lanes.map((l) => laneCards[l].score.toFixed(2)).join(' | ')} | ${(ceiling.score - primary.score).toFixed(2)}`);
+    parts.push('');
+    parts.push('How to read it: the goal is the primary lane. Where the ceiling lane is also low, the prompt lacks the instruction or has it wrong, so add or fix it. Where the ceiling lane is high and the primary lane is low, the instruction exists but the primary model cannot follow it as written, so make that instruction more concrete, more explicit, or simpler for a smaller model; do not add more rules on top of it.');
+    parts.push('');
+  }
   parts.push('LATENCY (seconds; reported for context only)');
   for (const lane of Object.keys(cfg.lanes)) {
     for (const v of versions) {
@@ -760,7 +794,7 @@ async function cmdStatus(cfg: Config) {
   console.log(`judge ${cfg.judge.model}/${cfg.judge.effort}; editor ${cfg.editor.model}/${cfg.editor.effort}; master ${cfg.master.model}/${cfg.master.effort}; latency ${cfg.latency}`);
   if (last > 0) {
     const rf = await readJson<RoundFile>(`${roundDir(last)}/round.json`);
-    console.log(`last round ${last}: ran v${rf.previous ?? ''}${rf.previous ? ' and ' : ''}v${rf.current}${rf.next ? `, produced v${rf.next}` : ', editor not applied yet'}`);
+    console.log(`last round ${last}: ran ${rf.previous ? `v${rf.previous} and ` : ''}v${rf.current}${rf.next ? `, produced v${rf.next}` : ', editor not applied yet'}`);
   }
 }
 
@@ -780,7 +814,8 @@ const HELP = `evo <command> [--flag value]
   bank                                       list the question bank with usage and the next pick
   gemini --round R --version V [--model M]   run the Gemini worker, time it, save vV.gemini.json
                                              (--model only when the configured model is down; it is recorded)
-  worker-prompt --round R --version V        write the framed prompt for the Sonnet subagent
+  worker-prompt --round R --version V [--lane sonnet|fable]
+                                             write the framed prompt for a subagent lane (default sonnet)
   save --round R --version V --lane sonnet --latency-ms N --file <answer.txt>
                                              validate and save a subagent worker's answer
   judge-input --round R --lane <lane>        write judge-input.<lane>.md (blind A/B)

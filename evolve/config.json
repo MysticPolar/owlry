@@ -17,9 +17,16 @@
       "agentType": "Explore",
       "model": "sonnet",
       "effort": "medium"
+    },
+    "fable": {
+      "kind": "subagent",
+      "agentType": "Explore",
+      "model": "fable",
+      "effort": "max"
     }
   },
   "primaryLane": "gemini",
+  "ceilingLane": "fable",
   "judge": { "agentType": "general-purpose", "model": "opus", "effort": "high" },
   "editor": { "agentType": "general-purpose", "model": "fable", "effort": "xhigh" },
   "master": { "agentType": "general-purpose", "model": "opus", "effort": "max" },

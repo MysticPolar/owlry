@@ -24,12 +24,12 @@ evo new --pick next
 
 It prints the question's label, the round number R, the current version, the previous version if any, and the versions to run. Round 1 runs one version. Later rounds run two: previous and current, so the judge can compare them.
 
-**2. Run the workers.** For every version V listed, run both lanes. The two lanes and the two versions are independent, so run them at the same time.
+**2. Run the workers.** For every version V listed, run every lane in `config.json` → `lanes`. All lanes and all versions are independent, so start them all at the same time and wait for all of them.
 
-- Gemini lane: `evo gemini --round R --version V`. It times the call and saves the file itself.
-- Sonnet lane: `evo worker-prompt --round R --version V` prints a path. Note the time with `evo now`. Spawn an agent with `agentType` and `model` and `effort` from `config.json` → `lanes.sonnet`, whose prompt is: "Read the file at <path> and do exactly what it says. Return only the JSON object." Do not add anything else to that prompt. When it returns, note the time again, write its reply verbatim to `<round folder>/v<V>.sonnet.raw.txt`, then:
-  `evo save --round R --version V --lane sonnet --latency-ms <end minus start> --file <that raw file>`.
-  If `save` rejects the answer, spawn the worker once more. If it fails twice, record the failure in the round folder as `v<V>.sonnet.failed.txt` and continue without that lane.
+- The `api` lane (gemini): `evo gemini --round R --version V`. It times the call and saves the file itself.
+- Each `subagent` lane (sonnet, fable): `evo worker-prompt --round R --version V --lane <lane>` prints a path. Note the time with `evo now`. Spawn an agent with that lane's `agentType`, `model` and `effort` from `config.json`, whose prompt is: "Read the file at <path> and do exactly what it says. Return only the JSON object." Do not add anything else to that prompt. When it returns, note the time again, write its reply verbatim to `<round folder>/v<V>.<lane>.raw.txt`, then:
+  `evo save --round R --version V --lane <lane> --latency-ms <end minus start> --file <that raw file>`.
+  If `save` rejects the answer, spawn the worker once more. If it fails twice, record the failure in the round folder as `v<V>.<lane>.failed.txt` and continue without that lane.
 
 **3. Judge, per lane.** For each lane that has a saved answer for every version:
 

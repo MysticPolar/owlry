@@ -9,7 +9,8 @@ A loop that improves one system prompt, the cast-plus-debate prompt, one test qu
 | You | Give one test question per round. Read the summary. | chat |
 | Master | Runs the round, step by step, and logs everything. Opus 5.5. | `roles/master.md` |
 | Worker, Gemini lane | Answers the question with the current prompt. Gemini Flash, thinking MEDIUM. Timed. | `runner/evo.ts gemini` |
-| Worker, Sonnet lane | Same, on Claude Sonnet. Timed. Reported next to Gemini. | spawned by the master |
+| Worker, Sonnet lane | Same, on Claude Sonnet at medium. Timed. A middle reference. | spawned by the master |
+| Worker, Fable lane | Same, on Claude Fable at max. Timed. The ceiling: what the prompt produces when the model is not the limit. | spawned by the master |
 | Judge | Scores each debate on the 100-point matrix, blind to which version it came from. Opus 5.5. | `roles/judge.md` |
 | Editor | Reads the scorecards and writes the next prompt version. Fable. | `roles/editor.md` |
 
@@ -60,7 +61,9 @@ Run, from the repository root:
 deno run --config evolve/deno.json --env-file=.env.local -A evolve/runner/evo.ts summary --round 1
 ```
 
-Score first, latency second, per lane and per version. The Gemini lane is the primary one. The Sonnet lane's latency includes Claude Code overhead, so compare it only with itself across rounds.
+Score first, latency second, per lane and per version. The Gemini lane is the primary one: it is the model the prompt is for, and only its scores decide whether a version is better. The judge compares versions inside a lane, never across models.
+
+The other lanes exist for one diagnostic: the lane gap. The editor sees each criterion's points on Gemini next to Fable, the ceiling. Both low means the prompt lacks the instruction. Fable high and Gemini low means the instruction is there but Gemini cannot follow it as written, so the editor simplifies it rather than adding rules. The subagent lanes' latency includes Claude Code overhead, so compare it only with itself across rounds.
 
 ## Setup, once
 
