@@ -40,3 +40,11 @@ Latency: gemini v4 16.5 s | sonnet v4 94.0 s
 Words: 1736 -> 1797
 Changes: sharpen, sharpen, sharpen, delete
 Version 5 stops an exploratory question from being turned into a decision about the user’s own life: section 1 says that for a topic or a work the evidence lies in the material and the next step is one specific thing to look at again, and the closing turn may name a detail in the material, not only a fact about the user, as what would decide the open disagreement. Every reading of the user’s inner life must now start from something the user actually wrote and repeat it, and one turn must name what could be lost and argue from it. One vague sentence telling the voices to evolve beyond their titles is cut; accuracy slips and agreement-only turns are left alone this round because the cards show no prompt sentence causing them.
+
+## v6 — from round 5 — 2026-10-13
+Question (health-01, Health / Exercise with constraints): My shifts change every week, and I keep giving up on exercise. How can I build a routine that doesn’t depend on having the same schedule?
+Scores: gemini: v4 51.57 vs v5 54.93 (v5 better) | sonnet: v4 74.92 vs v5 75.60 (v5 better)
+Latency: gemini v5 11.7 s | sonnet v5 104.1 s
+Words: 1797 -> 1847
+Changes: replace, sharpen, replace, sharpen
+Version 6 turns three judgment-level rules into mechanical ones for the small model. Any sentence about what the user feels, fears, wants or will do must carry maybe, perhaps, might or if and never must, clearly, always or obviously, and that check now runs on every line next to the quotation-mark check; a turn that disagrees first restates the disputed claim in one sentence with its role title before answering it; and the one required change of position must name the claim dropped, the point that moved it and the narrower claim now held. Four sentence-level changes, 1797 to 1847 words, nothing reverted since v5 was preferred on every sample of both lanes; the prompt is 53 words under the ceiling and the next round should cut the vague drama and voices sentences in section 5 if they still earn nothing.

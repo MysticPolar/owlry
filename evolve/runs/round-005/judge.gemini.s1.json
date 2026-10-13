@@ -1,0 +1,646 @@
+{
+  "lane": "gemini",
+  "sample": 1,
+  "blind": {
+    "A": 4,
+    "B": 5
+  },
+  "scores": {
+    "v4": {
+      "criteria": [
+        {
+          "name": "Quality of discussion",
+          "max": 20,
+          "points": 9.2,
+          "sub": [
+            {
+              "name": "Continuity and responsiveness",
+              "rating": 4.8,
+              "points": 1.92,
+              "example": "Turn 4 picks up turn 3: 'I agree with simplifying, but it requires a system.'",
+              "limitation": "Turns 5, 6 and 8 mostly restate each mind's opening stance; little direct rebuttal."
+            },
+            {
+              "name": "Development of ideas",
+              "rating": 4.2,
+              "points": 1.68,
+              "example": "Turn 7 adds that intensity can scale while the habit persists.",
+              "limitation": "The Existentialist's turns 5 and 8 add no new distinctions after turn 2."
+            },
+            {
+              "name": "Exploration of central tensions",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 9 names it: athlete identity versus worker reality.",
+              "limitation": "The tension is named in the last turn, not worked through earlier."
+            },
+            {
+              "name": "Integration of perspectives",
+              "rating": 4,
+              "points": 1.6,
+              "example": "Turn 4 folds the Minimalist's simplicity into the Habitualist's system.",
+              "limitation": "Camus's view never reshapes the other two; it stays parallel."
+            },
+            {
+              "name": "Progress toward understanding",
+              "rating": 5,
+              "points": 2,
+              "example": "Section D asks whether the goal is fitness or a sense of control.",
+              "limitation": "Turn 9 settles on the Minimalist's own opening position instead of a sharper question."
+            }
+          ]
+        },
+        {
+          "name": "Quality of disagreement, trust and grounding",
+          "max": 20,
+          "points": 8.8,
+          "sub": [
+            {
+              "name": "Faithful engagement",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Turn 6 engages 'struggle' framing directly: 'If you view it as a struggle, you will quit.'",
+              "limitation": "Turn 6 flattens Camus's view of struggle into a recipe for quitting."
+            },
+            {
+              "name": "Substance of challenges",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Turn 5: identity is fragile when chaos wins.",
+              "limitation": "Turn 5's objection gets no answer about how identity survives missed days."
+            },
+            {
+              "name": "Accuracy and support",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 1's habit-anchoring idea matches Atomic Habits chapter 5.",
+              "limitation": "Turn 2: 'rebellion against absurd shift hours' stretches Camus; numbered Sisyphus chapters don't exist."
+            },
+            {
+              "name": "Calibration and transparency",
+              "rating": 4,
+              "points": 1.6,
+              "example": "Turn 7 hedges: 'The user may fear...'",
+              "limitation": "Turn 1 asserts as fact: 'You are failing because you equate a routine...'"
+            },
+            {
+              "name": "Intellectual honesty and revision",
+              "rating": 4,
+              "points": 1.6,
+              "example": "Turn 4 concedes 'I agree with simplifying.'",
+              "limitation": "No mind revises a claim; the Existentialist never answers turn 6's objection."
+            }
+          ]
+        },
+        {
+          "name": "Personal relevance",
+          "max": 10,
+          "points": 4.4,
+          "sub": [
+            {
+              "name": "Identification of the actual concern",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Turn 1 locates the issue: routine tied to a clock time.",
+              "limitation": "Doesn't separate why they quit: tiredness, planning load, or all-or-nothing thinking."
+            },
+            {
+              "name": "Meaningful use of personal context",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Turn 1 ties the cue to the end of a shift.",
+              "limitation": "'Hang up your uniform' is invented; no night shifts, sleep, or fatigue."
+            },
+            {
+              "name": "Fit with goals and values",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Turn 9 serves the stated goal: not fighting your own life.",
+              "limitation": "Turn 5 pushes the Existentialist's value ('struggle is the point') over the user's goal."
+            },
+            {
+              "name": "Attention to constraints and stakes",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Turn 6: 'If you have only ten minutes, do ten minutes.'",
+              "limitation": "No talk of energy after long or late shifts, or of recovery."
+            },
+            {
+              "name": "Responsiveness to information",
+              "rating": 3.5,
+              "points": 0.7,
+              "example": "Section E gives conditional branches based on what causes anxiety.",
+              "limitation": "Never asks about shift pattern, type of exercise, or why previous attempts stopped."
+            }
+          ]
+        },
+        {
+          "name": "Constructive self-discovery",
+          "max": 20,
+          "points": 10.8,
+          "sub": [
+            {
+              "name": "Clarification of desires and motivations",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Section D: actual fitness or the sense of control?",
+              "limitation": "Turn 8 declares 'I see a desire for control' as if it were fact."
+            },
+            {
+              "name": "Examination of assumptions",
+              "rating": 6,
+              "points": 2.4,
+              "example": "Turn 1 brings out the assumption that a routine means a fixed time.",
+              "limitation": "The all-or-nothing assumption is only implied, never named outright."
+            },
+            {
+              "name": "Clarification of values and priorities",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 9: athlete identity versus worker reality.",
+              "limitation": "Doesn't show where these values actually conflict in the user's week."
+            },
+            {
+              "name": "Recognition of fears and outside expectations",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turn 7: fear that doing less means giving up.",
+              "limitation": "Turn 8 says 'their work controls them' and speculates without hedging."
+            },
+            {
+              "name": "Agency and reflective ownership",
+              "rating": 5,
+              "points": 2,
+              "example": "Section D's closing question can be taken or left.",
+              "limitation": "Turn 5 instructs ('Accept that the struggle...') instead of offering a choice."
+            }
+          ]
+        },
+        {
+          "name": "Decision usefulness",
+          "max": 10,
+          "points": 4.9,
+          "sub": [
+            {
+              "name": "Definition of the decision and options",
+              "rating": 5,
+              "points": 1,
+              "example": "Section E sets out habit-anchoring, minimal action, and reframing.",
+              "limitation": "No trial or limited-experiment option is defined."
+            },
+            {
+              "name": "Explanation of tradeoffs",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Turn 8: a rigid routine breaks under shifting reality.",
+              "limitation": "The cost of minimal sessions, like slower fitness gains, is never stated."
+            },
+            {
+              "name": "Identification of decisive conditions",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Section E: if the system causes more anxiety than exercise, go minimal.",
+              "limitation": "The third branch is vague: 'investigate whether you are seeking...'"
+            },
+            {
+              "name": "Treatment of uncertainty",
+              "rating": 3.5,
+              "points": 0.7,
+              "example": "Section D notes the identity-versus-acceptance question remains open.",
+              "limitation": "Doesn't name key unknowns like shift length, rest days, or energy."
+            },
+            {
+              "name": "Proportionate next steps",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Turn 1: walk right after the shift ends.",
+              "limitation": "No plan for the first week or what to do after a miss."
+            }
+          ]
+        },
+        {
+          "name": "Clarity and engagement",
+          "max": 10,
+          "points": 6,
+          "sub": [
+            {
+              "name": "Accessible language",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "Turn 6 is plain: 'Make it effortless.'",
+              "limitation": "Turn 2's 'rebellion against the absurdity' is abstract for this user."
+            },
+            {
+              "name": "Traceable arguments and references",
+              "rating": 5,
+              "points": 1,
+              "example": "Turn 3 addresses both rivals: 'You are both overcomplicating it.'",
+              "limitation": "Turns 3, 7 and 8 switch between 'you' and 'the user/they', which blurs who is addressed."
+            },
+            {
+              "name": "Manageable pacing and turn length",
+              "rating": 7,
+              "points": 1.4,
+              "example": "All nine turns fall within 25 to 65 words.",
+              "limitation": "Turns are evenly paced, so no exchange stands out."
+            },
+            {
+              "name": "Distinguishable positions and voices",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "Each mind keeps one clear stance: system, struggle, simplicity.",
+              "limitation": "No mind ever clearly changes position."
+            },
+            {
+              "name": "Economy and sustained attention",
+              "rating": 5,
+              "points": 1,
+              "example": "Section E condenses the three paths.",
+              "limitation": "Turn 8 repeats turn 5's chaos/control point."
+            }
+          ]
+        },
+        {
+          "name": "Drama and entertainment",
+          "max": 10,
+          "points": 4,
+          "sub": [
+            {
+              "name": "Meaningful stakes and tension",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Turn 8: does work control them?",
+              "limitation": "The stakes of quitting again are never made concrete."
+            },
+            {
+              "name": "Surprise and reversals",
+              "rating": 3.5,
+              "points": 0.7,
+              "example": "Turn 2's reframe: the problem is wanting predictability.",
+              "limitation": "No reversals after turn 3."
+            },
+            {
+              "name": "Personality and expressive voice",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Turn 3's blunt 'You are both overcomplicating it.'",
+              "limitation": "The Existentialist sounds generic, not like Camus."
+            },
+            {
+              "name": "Memorable delivery",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Turn 9: 'no longer fighting your own life.'",
+              "limitation": "No vivid analogies or images, apart from the uniform."
+            },
+            {
+              "name": "Anticipation and emotional movement",
+              "rating": 3.5,
+              "points": 0.7,
+              "example": "Turn 7 touches on the fear of giving up.",
+              "limitation": "Flat rhythm; the speakers simply rotate with no build."
+            }
+          ]
+        }
+      ],
+      "uncapped": 48.1,
+      "score": 48.1,
+      "capReason": null,
+      "strengths": [
+        "Turn 1 makes the core move: anchor the habit to an event, not a clock time.",
+        "Turns 6-7 give a usable scale-down rule: ten minutes still counts.",
+        "Section D's question, fitness or control, gives real room for reflection."
+      ],
+      "weaknesses": [
+        "The Existentialist (turns 2, 5, 8) loosely paraphrases Camus and never answers turn 6's objection.",
+        "Ignores shift-work realities: fatigue, sleep, night shifts; 'uniform' detail is invented (turn 1).",
+        "Turns 3, 7, 8 talk about 'the user' in third person and state motives as fact."
+      ],
+      "editorNotes": [
+        "Require each turn after the third to answer a specific earlier claim by turn number or quote.",
+        "Require the debate to raise at least two concrete constraints from the situation (energy, sleep, timing) without inventing details.",
+        "Require speakers to address the user only as 'you' and to hedge any claim about the user's motives.",
+        "Require at least one mind to concede or revise a claim on the page."
+      ]
+    },
+    "v5": {
+      "criteria": [
+        {
+          "name": "Quality of discussion",
+          "max": 20,
+          "points": 10.8,
+          "sub": [
+            {
+              "name": "Continuity and responsiveness",
+              "rating": 6,
+              "points": 2.4,
+              "example": "Turn 7 answers turn 6 directly: 'It matters because...'",
+              "limitation": "Turn 3 does not engage turn 2's Sartre claim."
+            },
+            {
+              "name": "Development of ideas",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 6 sorts the rivals' assumptions: system, identity, health.",
+              "limitation": "Turns 8-9 open new themes instead of building on turn 7."
+            },
+            {
+              "name": "Exploration of central tensions",
+              "rating": 5.8,
+              "points": 2.32,
+              "example": "Turn 8: wanting both security and spontaneity, which can't fully coexist.",
+              "limitation": "Turn 7's decision-fatigue point versus turn 6's 'why does it matter' is never resolved."
+            },
+            {
+              "name": "Integration of perspectives",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 4 builds on the Stoic: 'I agree with the Stoic, but...'",
+              "limitation": "The Existentialist stays separate and never takes up the Architect's gear tactic."
+            },
+            {
+              "name": "Progress toward understanding",
+              "rating": 5.2,
+              "points": 2.08,
+              "example": "Section D: the discomfort is predictability versus flux.",
+              "limitation": "Turn 9 drifts into abstraction instead of sharpening the practical question."
+            }
+          ]
+        },
+        {
+          "name": "Quality of disagreement, trust and grounding",
+          "max": 20,
+          "points": 10.6,
+          "sub": [
+            {
+              "name": "Faithful engagement",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turn 5 grants the gear idea before objecting: 'a fine tactic, but...'",
+              "limitation": "Turn 6 reduces the Existentialist to 'wants an identity.'"
+            },
+            {
+              "name": "Substance of challenges",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turn 6 asks why clock time matters if the goal is health.",
+              "limitation": "Turn 8's claim that rigidity causes unhappiness gets no reply."
+            },
+            {
+              "name": "Accuracy and support",
+              "rating": 6,
+              "points": 2.4,
+              "example": "Turn 3 quotes the Enchiridion's opening line faithfully, with pd=true.",
+              "limitation": "Turn 7's 'drains your willpower' treats contested ego-depletion research as settled."
+            },
+            {
+              "name": "Calibration and transparency",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Turn 2 hedges with 'perhaps.'",
+              "limitation": "Turn 2 then says 'They must realize'; turn 4 says 'you will always default to rest.'"
+            },
+            {
+              "name": "Intellectual honesty and revision",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 4 concedes the Stoic's point before adding implementation.",
+              "limitation": "No speaker revises their own claim after it is challenged."
+            }
+          ]
+        },
+        {
+          "name": "Personal relevance",
+          "max": 10,
+          "points": 4.9,
+          "sub": [
+            {
+              "name": "Identification of the actual concern",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Turn 1: the habit is attached to a clock.",
+              "limitation": "Turn 2 suggests the user defines themselves as unable to commit, which is unsupported."
+            },
+            {
+              "name": "Meaningful use of personal context",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Turn 4: prepare gym gear before the shift starts.",
+              "limitation": "No talk of shift length, night work, or tiredness after work."
+            },
+            {
+              "name": "Fit with goals and values",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Turn 6 holds to the user's likely goal: health.",
+              "limitation": "Turn 5 imposes the 'athlete' identity, which the user never mentioned."
+            },
+            {
+              "name": "Attention to constraints and stakes",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Turn 8 counts the job's flexibility as a real cost.",
+              "limitation": "Doesn't address limited time or energy on heavy weeks."
+            },
+            {
+              "name": "Responsiveness to information",
+              "rating": 5,
+              "points": 1,
+              "example": "Section E: track whether time or motivation is missing.",
+              "limitation": "No direct questions about how past attempts ended."
+            }
+          ]
+        },
+        {
+          "name": "Constructive self-discovery",
+          "max": 20,
+          "points": 11.4,
+          "sub": [
+            {
+              "name": "Clarification of desires and motivations",
+              "rating": 6,
+              "points": 2.4,
+              "example": "Turn 6 separates a system, an identity, and health.",
+              "limitation": "Turn 2 presents a self-sabotage motive with little hedging."
+            },
+            {
+              "name": "Examination of assumptions",
+              "rating": 6,
+              "points": 2.4,
+              "example": "Turn 6: 'Stop judging the irregularity as a failure.'",
+              "limitation": "Doesn't examine whether 'routine' must mean daily."
+            },
+            {
+              "name": "Clarification of values and priorities",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turn 8 sets security against spontaneity.",
+              "limitation": "Doesn't ask which of those the user actually ranks higher."
+            },
+            {
+              "name": "Recognition of fears and outside expectations",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turn 9: the routine as a security blanket against uncertainty.",
+              "limitation": "Turn 5's 'already choosing by not exercising' risks blame."
+            },
+            {
+              "name": "Agency and reflective ownership",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turn 9 asks: 'What is lost if you abandon...?'",
+              "limitation": "Turn 2's 'They must realize' closes options instead of opening them."
+            }
+          ]
+        },
+        {
+          "name": "Decision usefulness",
+          "max": 10,
+          "points": 5.2,
+          "sub": [
+            {
+              "name": "Definition of the decision and options",
+              "rating": 5,
+              "points": 1,
+              "example": "Section E: event trigger versus daily reframe.",
+              "limitation": "Leaves out a scaled-down minimum-session option."
+            },
+            {
+              "name": "Explanation of tradeoffs",
+              "rating": 5,
+              "points": 1,
+              "example": "Turn 8: choosing rigidity limits flexibility.",
+              "limitation": "The cost of event-anchoring on chaotic days isn't covered."
+            },
+            {
+              "name": "Identification of decisive conditions",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Section E: if decision fatigue, use triggers; if fear of losing control, reframe.",
+              "limitation": "The conditions aren't tied to shift details."
+            },
+            {
+              "name": "Treatment of uncertainty",
+              "rating": 5,
+              "points": 1,
+              "example": "Section E's tracking test targets the consequential unknown.",
+              "limitation": "Smaller unknowns, like workout type, aren't set apart."
+            },
+            {
+              "name": "Proportionate next steps",
+              "rating": 5,
+              "points": 1,
+              "example": "Turn 4: prepare gear; turn 1: anchor to waking or end of shift.",
+              "limitation": "No minimum version for exhausting days."
+            }
+          ]
+        },
+        {
+          "name": "Clarity and engagement",
+          "max": 10,
+          "points": 6.6,
+          "sub": [
+            {
+              "name": "Accessible language",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "Turn 6: '5 AM or 5 PM?' is concrete.",
+              "limitation": "Turn 5's 'anxiety of choice' and 'creates the athlete' are abstract."
+            },
+            {
+              "name": "Traceable arguments and references",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "Turn 6 names 'The Architect' and 'the Existentialist' explicitly.",
+              "limitation": "Turn 2 refers to 'the user' in third person."
+            },
+            {
+              "name": "Manageable pacing and turn length",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Turns run about 35 to 50 words, all within limits.",
+              "limitation": "The closing turns are no shorter or sharper."
+            },
+            {
+              "name": "Distinguishable positions and voices",
+              "rating": 7,
+              "points": 1.4,
+              "example": "The three stances are distinct: cues, choice, control.",
+              "limitation": "No explicit change of position."
+            },
+            {
+              "name": "Economy and sustained attention",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Little repetition across the nine turns.",
+              "limitation": "Section D repeats turn 8's tension without adding to it."
+            }
+          ]
+        },
+        {
+          "name": "Drama and entertainment",
+          "max": 10,
+          "points": 4.8,
+          "sub": [
+            {
+              "name": "Meaningful stakes and tension",
+              "rating": 5,
+              "points": 1,
+              "example": "Turn 5: 'already choosing by not exercising.'",
+              "limitation": "The stakes stay abstract; no picture of a failed week."
+            },
+            {
+              "name": "Surprise and reversals",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Turn 9 reframes the routine as a security blanket.",
+              "limitation": "No speaker is moved by another."
+            },
+            {
+              "name": "Personality and expressive voice",
+              "rating": 5,
+              "points": 1,
+              "example": "The Stoic's terse questions in turns 6 and 9.",
+              "limitation": "The Architect's voice is mostly bullet-point advice."
+            },
+            {
+              "name": "Memorable delivery",
+              "rating": 5,
+              "points": 1,
+              "example": "Turn 9's 'security blanket against the uncertainty of life.'",
+              "limitation": "Few concrete images beyond gear and clock times."
+            },
+            {
+              "name": "Anticipation and emotional movement",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "It builds from tactics (turn 4) to fear (turn 9).",
+              "limitation": "Middle turns 5-8 keep one even intensity."
+            }
+          ]
+        }
+      ],
+      "uncapped": 54.3,
+      "score": 54.3,
+      "capReason": null,
+      "strengths": [
+        "Turn 6 sorts the rivals' hidden assumptions, and turn 7 answers it directly.",
+        "Turn 3 quotes the Enchiridion faithfully, with pd=true, and applies it to the schedule.",
+        "Section E's tracking test (time versus motivation) is a usable diagnostic."
+      ],
+      "weaknesses": [
+        "Turn 2 (Existentialist) suggests self-sabotage without evidence and says 'They must realize.'",
+        "No minimum-dose option for exhausting shifts; fatigue and sleep are never raised.",
+        "Turn 7 states willpower depletion as fact; turn 8's rigidity claim is never challenged."
+      ],
+      "editorNotes": [
+        "Require hedged, conditional language for any claim about the user's motives; ban 'must realize.'",
+        "Require at least one concrete fallback plan for low-energy or irregular days.",
+        "Require each mind's last turn to revise or concede something raised against it.",
+        "Prompt minds to flag contested empirical claims, such as willpower depletion, as interpretations."
+      ]
+    }
+  },
+  "preferredVersion": 5,
+  "savedAt": "2026-10-13T19:28:02.681Z"
+}

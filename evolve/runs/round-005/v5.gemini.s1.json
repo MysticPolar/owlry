@@ -1,0 +1,116 @@
+{
+  "lane": "gemini",
+  "version": 5,
+  "sample": 1,
+  "model": "gemini-3.1-flash-lite",
+  "settings": {
+    "thinkingLevel": "MEDIUM",
+    "temperature": 0.9,
+    "maxOutputTokens": 16384,
+    "fallback": "none"
+  },
+  "latencyMs": 10406,
+  "output": {
+    "situation": "The user struggles to maintain an exercise routine due to a fluctuating work schedule. The central tension is between the desire for consistency and the reality of a life that lacks it, leaving the user feeling like they need a rigid plan where none can exist.",
+    "minds": [
+      {
+        "title": "The Habit Architect",
+        "concern": "Behavioral consistency through small cues.",
+        "author": "James Clear",
+        "book": "Atomic Habits",
+        "year": 2018
+      },
+      {
+        "title": "The Existentialist",
+        "concern": "Personal freedom and authentic choice.",
+        "author": "Jean-Paul Sartre",
+        "book": "Existentialism Is a Humanism",
+        "year": 1946
+      },
+      {
+        "title": "The Stoic Practitioner",
+        "concern": "Focusing only on what is controllable.",
+        "author": "Epictetus",
+        "book": "Enchiridion",
+        "year": 125
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Habit Architect",
+        "text": "Consistency fails here because you are trying to attach exercise to a clock. Instead, anchor your workouts to specific events like waking up or finishing a shift, regardless of the time, to build a reliable habit loop.",
+        "author": "James Clear",
+        "book": "Atomic Habits",
+        "pd": false,
+        "basis": "[Basis: James Clear, Atomic Habits, Chapter 5]"
+      },
+      {
+        "speaker": "The Existentialist",
+        "text": "The user says they want a routine, but perhaps they are using their changing schedule as a project to define themselves as someone who cannot commit. They must realize that their freedom allows them to choose their identity anew every single day.",
+        "author": "Jean-Paul Sartre",
+        "book": "Existentialism Is a Humanism",
+        "pd": false,
+        "basis": "[Basis: Jean-Paul Sartre, Existentialism Is a Humanism, Section 1]"
+      },
+      {
+        "speaker": "The Stoic Practitioner",
+        "text": "\"Some things are in our control and others not.\" Your schedule is the latter; your effort is the former. Do not tie your worth to a perfect record; tie it to the act of exercising whenever the opportunity arrives.",
+        "author": "Epictetus",
+        "book": "Enchiridion",
+        "pd": true,
+        "basis": "[Basis: Epictetus, Enchiridion, Section 1](http://classics.mit.edu/Epictetus/epicench.html)"
+      },
+      {
+        "speaker": "The Habit Architect",
+        "text": "I agree with the Stoic, but the difficulty is implementation. If you do not have an environment that triggers the behavior, you will always default to rest. You need to prepare your gym gear before your shift even starts.",
+        "author": "James Clear",
+        "book": "Atomic Habits",
+        "pd": false,
+        "basis": "[Basis: James Clear, Atomic Habits, Chapter 6]"
+      },
+      {
+        "speaker": "The Existentialist",
+        "text": "Preparing gear is a fine tactic, but it ignores the anxiety of choice. The user could say they need a week to decide how to be an athlete, but they are already choosing by not exercising. The goal is to act in a way that creates the athlete.",
+        "author": "Jean-Paul Sartre",
+        "book": "Existentialism Is a Humanism",
+        "pd": false,
+        "basis": "[Basis: Jean-Paul Sartre, Existentialism Is a Humanism, Section 2]"
+      },
+      {
+        "speaker": "The Stoic Practitioner",
+        "text": "The Architect assumes you want a system; the Existentialist assumes you want an identity. But if you simply want health, why does it matter if you exercise at 5 AM or 5 PM? Stop judging the irregularity as a failure.",
+        "author": "Epictetus",
+        "book": "Enchiridion",
+        "pd": true,
+        "basis": "[Basis: Epictetus, Enchiridion, Section 5](http://classics.mit.edu/Epictetus/epicench.html)"
+      },
+      {
+        "speaker": "The Habit Architect",
+        "text": "It matters because without a system, the friction of decision-making drains your willpower. You are trying to use your limited energy to decide when to work out, rather than making the when automatic.",
+        "author": "James Clear",
+        "book": "Atomic Habits",
+        "pd": false,
+        "basis": "[Basis: James Clear, Atomic Habits, Chapter 8]"
+      },
+      {
+        "speaker": "The Existentialist",
+        "text": "But what if the user wants both the security of a routine and the spontaneity of their current job? They cannot have both fully. A choice for a rigid schedule is a choice to limit their flexibility, which might actually be a source of their unhappiness.",
+        "author": "Jean-Paul Sartre",
+        "book": "Existentialism Is a Humanism",
+        "pd": false,
+        "basis": "[Basis: Jean-Paul Sartre, Existentialism Is a Humanism, Section 3]"
+      },
+      {
+        "speaker": "The Stoic Practitioner",
+        "text": "What is lost if you abandon the idea of a weekly schedule? You lose the comfort of knowing what happens when. If that loss is the primary fear, the routine is just a security blanket against the uncertainty of life.",
+        "author": "Epictetus",
+        "book": "Enchiridion",
+        "pd": true,
+        "basis": "[Basis: Epictetus, Enchiridion, Section 12](http://classics.mit.edu/Epictetus/epicench.html)"
+      }
+    ],
+    "clearer": "The debate shifted from finding a 'perfect' schedule to recognizing that the user’s discomfort stems from a conflict between wanting predictability and living in flux. We remain divided on whether a system or a change in perspective is the priority, though it appears that letting go of the ideal of a fixed weekly routine is necessary for progress.",
+    "dependsOn": "If the primary barrier is decision fatigue, build a habit trigger tied to an event rather than a time. If the barrier is a fear of losing control, reframe the situation as choosing your identity daily regardless of the hour. To determine which applies, track whether you actually lack the time to exercise or if you lack the motivation when you are not on a rigid schedule."
+  },
+  "savedAt": "2026-10-13T19:17:02.243Z"
+}
