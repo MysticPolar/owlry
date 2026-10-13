@@ -1,0 +1,644 @@
+{
+  "lane": "gemini",
+  "sample": 2,
+  "blind": {
+    "A": 5,
+    "B": 6
+  },
+  "scores": {
+    "v5": {
+      "criteria": [
+        {
+          "name": "Quality of discussion",
+          "max": 20,
+          "points": 12.8,
+          "sub": [
+            {
+              "name": "Continuity and responsiveness",
+              "rating": 7,
+              "points": 2.8,
+              "example": "T3 'Both of you assume' and T6 'You talk about redundancy' answer earlier turns.",
+              "limitation": "T5 sets aside the Planner's forecasting point and moves to income streams."
+            },
+            {
+              "name": "Development of ideas",
+              "rating": 6.3,
+              "points": 2.52,
+              "example": "T6 adds the 10th-percentile month; T8 adds structural shift to that idea.",
+              "limitation": "The barbell from T2 is never developed into an actual budget."
+            },
+            {
+              "name": "Exploration of central tensions",
+              "rating": 6,
+              "points": 2.4,
+              "example": "T8 and T9 test past base rates against unpredictable structural change.",
+              "limitation": "Tension between spending smoothly and saving surplus is never examined."
+            },
+            {
+              "name": "Integration of perspectives",
+              "rating": 6.2,
+              "points": 2.48,
+              "example": "T7 the Stoic recasts his discipline as the way to enforce the Planner's baseline.",
+              "limitation": "The Analyst never folds in the base-rate method; he only objects to it."
+            },
+            {
+              "name": "Progress toward understanding",
+              "rating": 6.5,
+              "points": 2.6,
+              "example": "T9 asks a sharp question: client churn or inconsistent work cycles?",
+              "limitation": "Budgeting itself (what to do with surplus months) stays unresolved."
+            }
+          ]
+        },
+        {
+          "name": "Quality of disagreement, trust and grounding",
+          "max": 20,
+          "points": 11.4,
+          "sub": [
+            {
+              "name": "Faithful engagement",
+              "rating": 6,
+              "points": 2.4,
+              "example": "T4 accepts the Planner's forecasting point before building on it.",
+              "limitation": "T5 calls the Stoic view 'a psychological trick', which dismisses it."
+            },
+            {
+              "name": "Substance of challenges",
+              "rating": 6.3,
+              "points": 2.52,
+              "example": "T8: three years of history may miss a structural market shift.",
+              "limitation": "T6's 'no time to build streams' is asserted, not reasoned through."
+            },
+            {
+              "name": "Accuracy and support",
+              "rating": 5,
+              "points": 2,
+              "example": "T3 planning fallacy and Ch. 23 'Outside View' are faithful to Kahneman.",
+              "limitation": "T1 quote 'the man who has enough is rich' is not a verifiable Seneca line."
+            },
+            {
+              "name": "Calibration and transparency",
+              "rating": 5,
+              "points": 2,
+              "example": "T9 says plainly which fact is unknown and would decide the question.",
+              "limitation": "T3 'You are likely basing your budget on an optimistic view' is unfounded."
+            },
+            {
+              "name": "Intellectual honesty and revision",
+              "rating": 6.2,
+              "points": 2.48,
+              "example": "T7 Stoic: 'I concede that my focus on detachment might overlook' base rates.",
+              "limitation": "No one answers T8's objection; T9 just records it."
+            }
+          ]
+        },
+        {
+          "name": "Personal relevance",
+          "max": 10,
+          "points": 4.9,
+          "sub": [
+            {
+              "name": "Identification of the actual concern",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Section A asks whether the volatility is built into the industry or comes from acquisition.",
+              "limitation": "The direct question of how to budget gets drawn toward income strategy."
+            },
+            {
+              "name": "Meaningful use of personal context",
+              "rating": 4,
+              "points": 0.8,
+              "example": "T6 notes the user lacks time when busy.",
+              "limitation": "Mostly generic advice for freelancers, not shaped to this user."
+            },
+            {
+              "name": "Fit with goals and values",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Section E ties the advice to where the volatility comes from.",
+              "limitation": "The user's own priorities (lifestyle, freedom) are never raised."
+            },
+            {
+              "name": "Attention to constraints and stakes",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "T6: building new streams needs time a busy freelancer lacks.",
+              "limitation": "T6 assumes three years of income records the user may not have."
+            },
+            {
+              "name": "Responsiveness to information",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "T9 and Section E turn the missing fact into a monthly audit.",
+              "limitation": "Only one missing detail is pursued; savings and fixed costs go unasked."
+            }
+          ]
+        },
+        {
+          "name": "Constructive self-discovery",
+          "max": 20,
+          "points": 9.4,
+          "sub": [
+            {
+              "name": "Clarification of desires and motivations",
+              "rating": 3.5,
+              "points": 1.4,
+              "example": "Section D separates a budget that is tight in reality from one that is only anxious.",
+              "limitation": "What the user wants from good months is never explored."
+            },
+            {
+              "name": "Examination of assumptions",
+              "rating": 6,
+              "points": 2.4,
+              "example": "T3 shows the hidden assumption that recent success will persist.",
+              "limitation": "It is framed as a likely error, not offered for the user to reflect on."
+            },
+            {
+              "name": "Clarification of values and priorities",
+              "rating": 4,
+              "points": 1.6,
+              "example": "T1 contrasts needing less with earning more.",
+              "limitation": "No conflict between security and freedom or growth is raised."
+            },
+            {
+              "name": "Recognition of fears and outside expectations",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Section D names anxiety from not knowing the income pattern.",
+              "limitation": "Fear shows up only in the summary, not in the debate turns."
+            },
+            {
+              "name": "Agency and reflective ownership",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "T9's churn-or-cycles question is one the user can answer.",
+              "limitation": "Most turns give orders ('build your entire life around') rather than distinctions."
+            }
+          ]
+        },
+        {
+          "name": "Decision usefulness",
+          "max": 10,
+          "points": 5.6,
+          "sub": [
+            {
+              "name": "Definition of the decision and options",
+              "rating": 5,
+              "points": 1,
+              "example": "Options: lower-bound baseline, barbell reserve, or diversifying income.",
+              "limitation": "No option of a buffer or of paying oneself a smoothed salary."
+            },
+            {
+              "name": "Explanation of tradeoffs",
+              "rating": 5,
+              "points": 1,
+              "example": "T6: redundancy costs time the user lacks.",
+              "limitation": "Living at the 10th percentile is treated as costless."
+            },
+            {
+              "name": "Identification of decisive conditions",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "Section E: client churn means diversify; inconsistent cycles mean a rigid baseline.",
+              "limitation": "The diversify branch answers an income question, not a budgeting one."
+            },
+            {
+              "name": "Treatment of uncertainty",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "T8 separates historical variance from structural shift.",
+              "limitation": "Emergency reserve size and timing are never addressed."
+            },
+            {
+              "name": "Proportionate next steps",
+              "rating": 6,
+              "points": 1.2,
+              "example": "T6 percentile method and the Section E audit are concrete and cheap.",
+              "limitation": "No step for what to do with surplus in good months."
+            }
+          ]
+        },
+        {
+          "name": "Clarity and engagement",
+          "max": 10,
+          "points": 7.1,
+          "sub": [
+            {
+              "name": "Accessible language",
+              "rating": 7,
+              "points": 1.4,
+              "example": "T6's 10th-percentile instruction is plain and usable.",
+              "limitation": "'Barbell' and 'thin-tailed thinking' (T2, T8) are not explained."
+            },
+            {
+              "name": "Traceable arguments and references",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Speakers name whom they answer: 'The Planner is right' (T4).",
+              "limitation": "T2's 'high-upside opportunities' is vague about what is meant."
+            },
+            {
+              "name": "Manageable pacing and turn length",
+              "rating": 7.5,
+              "points": 1.5,
+              "example": "Nine turns, all within 25 to 65 words.",
+              "limitation": "T9 closes abruptly with no summary of the method."
+            },
+            {
+              "name": "Distinguishable positions and voices",
+              "rating": 7.5,
+              "points": 1.5,
+              "example": "Three clear stances: needs, robustness, forecasting bias.",
+              "limitation": "T7 says the Stoic changed position but does not show it clearly."
+            },
+            {
+              "name": "Economy and sustained attention",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "Little repetition across the turns.",
+              "limitation": "T4 repeats T1's lower-bound idea as 'voluntary poverty'."
+            }
+          ]
+        },
+        {
+          "name": "Drama and entertainment",
+          "max": 10,
+          "points": 4.9,
+          "sub": [
+            {
+              "name": "Meaningful stakes and tension",
+              "rating": 5,
+              "points": 1,
+              "example": "T5: 'one bad month does not lead to total failure'.",
+              "limitation": "The stakes stay abstract; there is no concrete bad month."
+            },
+            {
+              "name": "Surprise and reversals",
+              "rating": 5,
+              "points": 1,
+              "example": "T7 the Stoic turns detachment into enforcement of base rates.",
+              "limitation": "No other turn changes direction."
+            },
+            {
+              "name": "Personality and expressive voice",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "T5 Analyst is blunt: 'psychological trick, not a financial system'.",
+              "limitation": "The Planner reads like a textbook."
+            },
+            {
+              "name": "Memorable delivery",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "T1 'treating surplus as a phantom that does not belong to you'.",
+              "limitation": "No vivid example of a freelancer's month."
+            },
+            {
+              "name": "Anticipation and emotional movement",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "T9 cliffhanger question gives some pull.",
+              "limitation": "The tone stays even and analytical throughout."
+            }
+          ]
+        }
+      ],
+      "uncapped": 56.1,
+      "score": 56.1,
+      "capReason": null,
+      "strengths": [
+        "T6 gives a concrete, usable baseline: build the budget on the 10th-percentile month.",
+        "T9 and Section E turn a missing fact (churn or cycles) into an audit.",
+        "T7 Stoic concession genuinely merges discipline with the Planner's base rates."
+      ],
+      "weaknesses": [
+        "T1 Seneca quotation is not verifiable; T2 and T5 Taleb chapter bases are loose.",
+        "No mind addresses what to do with surplus in good months, or how big a buffer should be.",
+        "Self-discovery is thin; fear and values appear only in Section D."
+      ],
+      "editorNotes": [
+        "Require one turn to cover how surplus months are banked or smoothed into a salary.",
+        "Allow quotation marks only for lines the model can attribute verbatim; otherwise paraphrase.",
+        "Ask one mind to probe the user's values (security vs freedom) inside the debate turns."
+      ]
+    },
+    "v6": {
+      "criteria": [
+        {
+          "name": "Quality of discussion",
+          "max": 20,
+          "points": 11.96,
+          "sub": [
+            {
+              "name": "Continuity and responsiveness",
+              "rating": 6.5,
+              "points": 2.6,
+              "example": "T4 'I must dispute the Stoic'; T6 'Responding to the Planner'.",
+              "limitation": "T8 misreads T7 instead of responding to what it said."
+            },
+            {
+              "name": "Development of ideas",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "T7 redefines the buffer as protection from desperate decisions.",
+              "limitation": "T9 repeats the Stoic's T3 point without moving it forward."
+            },
+            {
+              "name": "Exploration of central tensions",
+              "rating": 6.3,
+              "points": 2.52,
+              "example": "T5: wanting both a growing business and security means two conflicting goals.",
+              "limitation": "The tension between smoothing and buffering (T1 vs T2) is dropped."
+            },
+            {
+              "name": "Integration of perspectives",
+              "rating": 5.8,
+              "points": 2.32,
+              "example": "T7 'The Stoic has moved me' reshapes the Antifragile's buffer.",
+              "limitation": "The Planner and the Stoic never qualify each other's views."
+            },
+            {
+              "name": "Progress toward understanding",
+              "rating": 5.8,
+              "points": 2.32,
+              "example": "T9 reframes it: can a low month feel like rest rather than crisis?",
+              "limitation": "The ending moves away from budgeting mechanics toward attitude."
+            }
+          ]
+        },
+        {
+          "name": "Quality of disagreement, trust and grounding",
+          "max": 20,
+          "points": 10.16,
+          "sub": [
+            {
+              "name": "Faithful engagement",
+              "rating": 4.8,
+              "points": 1.92,
+              "example": "T4 states the Stoic view as 'not about attachment' before rebutting it.",
+              "limitation": "T8 attributes 'hoarding is irrelevant' to T7, which never said that."
+            },
+            {
+              "name": "Substance of challenges",
+              "rating": 5.3,
+              "points": 2.12,
+              "example": "T4: reducing wants does not protect against a market crash or fund growth.",
+              "limitation": "T2's claim that deprivation outweighs liquidity is asserted, not supported."
+            },
+            {
+              "name": "Accuracy and support",
+              "rating": 4,
+              "points": 1.6,
+              "example": "T1 and T4 Black Swan points on optionality are faithful to Taleb.",
+              "limitation": "T3's 'few wants' line is Epictetus, not Seneca; using Mill (T2, T5) is a stretch."
+            },
+            {
+              "name": "Calibration and transparency",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "T8 'If you assume that the user fears' is framed as a condition.",
+              "limitation": "T2 says deprivation 'outweighs the benefit' with no basis."
+            },
+            {
+              "name": "Intellectual honesty and revision",
+              "rating": 5.8,
+              "points": 2.32,
+              "example": "T7 the Antifragile explicitly revises the size of the buffer.",
+              "limitation": "The T5 fixed-salary objection is waved away in T6, not answered."
+            }
+          ]
+        },
+        {
+          "name": "Personal relevance",
+          "max": 10,
+          "points": 4.8,
+          "sub": [
+            {
+              "name": "Identification of the actual concern",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Section A frames three approaches: buffer, smoothing, minimizing.",
+              "limitation": "No question about what the user is really asking."
+            },
+            {
+              "name": "Meaningful use of personal context",
+              "rating": 4,
+              "points": 0.8,
+              "example": "T3 links the user's comfort baseline to their best months.",
+              "limitation": "Mostly generic; the feast-or-famine detail is barely used."
+            },
+            {
+              "name": "Fit with goals and values",
+              "rating": 5,
+              "points": 1,
+              "example": "Section E branches on lifestyle versus independence.",
+              "limitation": "T4's growth motive is imposed, not drawn from the user."
+            },
+            {
+              "name": "Attention to constraints and stakes",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "T7: avoid desperate, low-quality decisions in an empty month.",
+              "limitation": "Fixed costs, current savings and taxes are not considered."
+            },
+            {
+              "name": "Responsiveness to information",
+              "rating": 5,
+              "points": 1,
+              "example": "Section E gives conditional branches based on fear and values.",
+              "limitation": "No focused question for the user; the minds assume instead (T8)."
+            }
+          ]
+        },
+        {
+          "name": "Constructive self-discovery",
+          "max": 20,
+          "points": 12.04,
+          "sub": [
+            {
+              "name": "Clarification of desires and motivations",
+              "rating": 6,
+              "points": 2.4,
+              "example": "T5 separates wanting growth from wanting security, framed as 'if you feel'.",
+              "limitation": "T4 'you may want to grow' is speculation with no grounding."
+            },
+            {
+              "name": "Examination of assumptions",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "T3: comfort may be tied to your best months, not your worst.",
+              "limitation": "The assumption that more savings means less fear is raised only in Section D."
+            },
+            {
+              "name": "Clarification of values and priorities",
+              "rating": 6.3,
+              "points": 2.52,
+              "example": "Section D: volatility as a risk to hedge or as the price of independence.",
+              "limitation": "The conflict is named but never weighed for this user."
+            },
+            {
+              "name": "Recognition of fears and outside expectations",
+              "rating": 6.5,
+              "points": 2.6,
+              "example": "T9: 'If you are terrified of the empty months, you are not really free.'",
+              "limitation": "T9 comes close to treating the fear itself as a flaw."
+            },
+            {
+              "name": "Agency and reflective ownership",
+              "rating": 5.8,
+              "points": 2.32,
+              "example": "T9 asks whether a low month could feel like rest; the user can take or leave it.",
+              "limitation": "T8 talks about 'the user' in third person, which pushes the reader out."
+            }
+          ]
+        },
+        {
+          "name": "Decision usefulness",
+          "max": 10,
+          "points": 5.06,
+          "sub": [
+            {
+              "name": "Definition of the decision and options",
+              "rating": 5,
+              "points": 1,
+              "example": "Options: large buffer, smoothing, minimalism, fixed salary.",
+              "limitation": "T5's part-time salary and Section E's pay-yourself salary are blurred together."
+            },
+            {
+              "name": "Explanation of tradeoffs",
+              "rating": 5,
+              "points": 1,
+              "example": "T6: a fixed salary trades one anxiety for another.",
+              "limitation": "The cost of a 'massive' buffer is never quantified or weighed."
+            },
+            {
+              "name": "Identification of decisive conditions",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Section E: fear of losing your lifestyle means aggressive saving.",
+              "limitation": "No condition based on the income data itself."
+            },
+            {
+              "name": "Treatment of uncertainty",
+              "rating": 4,
+              "points": 0.8,
+              "example": "T1 treats lean months as expected rather than surprising.",
+              "limitation": "Major and minor unknowns are not separated."
+            },
+            {
+              "name": "Proportionate next steps",
+              "rating": 5.8,
+              "points": 1.16,
+              "example": "Section E: try paying yourself a fixed monthly salary.",
+              "limitation": "There is no amount, method or time frame for the experiment."
+            }
+          ]
+        },
+        {
+          "name": "Clarity and engagement",
+          "max": 10,
+          "points": 6.4,
+          "sub": [
+            {
+              "name": "Accessible language",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Plain wording throughout, e.g. T7 'desperate, low-quality decisions'.",
+              "limitation": "T2 utilitarian phrasing is awkward for a personal budget."
+            },
+            {
+              "name": "Traceable arguments and references",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Each turn names whom it is answering.",
+              "limitation": "T5 'fixed salary for part of your time' is ambiguous."
+            },
+            {
+              "name": "Manageable pacing and turn length",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Nine turns, each within length limits.",
+              "limitation": "There is no turn that synthesizes before the end."
+            },
+            {
+              "name": "Distinguishable positions and voices",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "Buffer, smoothing and minimalism are distinct stances.",
+              "limitation": "The Planner's link to Mill is unclear; T8 reverses his T5 stance."
+            },
+            {
+              "name": "Economy and sustained attention",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "T7's concession re-energises the middle of the debate.",
+              "limitation": "T3, T6 and T9 repeat the Stoic's lower-your-needs point."
+            }
+          ]
+        },
+        {
+          "name": "Drama and entertainment",
+          "max": 10,
+          "points": 5.2,
+          "sub": [
+            {
+              "name": "Meaningful stakes and tension",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "T8: a buffer is 'the only thing standing between them and the ruin'.",
+              "limitation": "Ruin is asserted, not made concrete."
+            },
+            {
+              "name": "Surprise and reversals",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "T7: 'The Stoic has moved me; I concede'.",
+              "limitation": "T8's pushback rests on a misreading, so the reversal is undercut."
+            },
+            {
+              "name": "Personality and expressive voice",
+              "rating": 5,
+              "points": 1,
+              "example": "The Stoic's aphoristic voice in T6 and T9.",
+              "limitation": "The Planner's utilitarian voice is flat and off-topic."
+            },
+            {
+              "name": "Memorable delivery",
+              "rating": 5,
+              "points": 1,
+              "example": "T9: a low-income month as 'a rest rather than a crisis'.",
+              "limitation": "No analogy or concrete example a freelancer would recognise."
+            },
+            {
+              "name": "Anticipation and emotional movement",
+              "rating": 5,
+              "points": 1,
+              "example": "The arc moves from money to fear to freedom.",
+              "limitation": "The tone is uniform; no rise and fall in rhythm."
+            }
+          ]
+        }
+      ],
+      "uncapped": 55.62,
+      "score": 55.62,
+      "capReason": null,
+      "strengths": [
+        "Strong self-discovery: T5 and T9 bring out security against freedom and the fear itself.",
+        "T7 Antifragile genuinely revises the buffer's purpose and size.",
+        "Section E's pay-yourself-a-salary experiment is a practical, limited next step."
+      ],
+      "weaknesses": [
+        "T8 misrepresents T7 as saying 'hoarding is irrelevant'.",
+        "The Prudent Planner via Mill's Utilitarianism is an ill-fitting source; T3 credits Epictetus's line to Seneca.",
+        "The Stoic repeats one point (T3, T6, T9); budgeting mechanics are underdeveloped."
+      ],
+      "editorNotes": [
+        "Pick each mind's book so it actually supports the stance; reject sources that fit badly, like Mill for budgeting.",
+        "Require each rebuttal to restate the prior turn accurately before disputing it.",
+        "Ask for one concrete mechanism (amount, cadence) in the closing section."
+      ]
+    }
+  },
+  "preferredVersion": 5,
+  "savedAt": "2026-10-13T19:46:57.864Z"
+}

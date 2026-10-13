@@ -48,3 +48,11 @@ Latency: gemini v5 11.7 s | sonnet v5 104.1 s
 Words: 1797 -> 1847
 Changes: replace, sharpen, replace, sharpen
 Version 6 turns three judgment-level rules into mechanical ones for the small model. Any sentence about what the user feels, fears, wants or will do must carry maybe, perhaps, might or if and never must, clearly, always or obviously, and that check now runs on every line next to the quotation-mark check; a turn that disagrees first restates the disputed claim in one sentence with its role title before answering it; and the one required change of position must name the claim dropped, the point that moved it and the narrower claim now held. Four sentence-level changes, 1797 to 1847 words, nothing reverted since v5 was preferred on every sample of both lanes; the prompt is 53 words under the ceiling and the next round should cut the vague drama and voices sentences in section 5 if they still earn nothing.
+
+## v7 — from round 6 — 2026-10-13
+Question (wealth-01, Wealth / Irregular income): I freelance, so some months are great and others are almost empty. How do I budget when I don’t know what I’ll earn?
+Scores: gemini: v6 54.47 vs v5 53.63 (v6 better) | sonnet: v6 71.02 vs v5 69.74 (v6 better)
+Latency: gemini v6 18.0 s | sonnet v6 77.6 s
+Words: 1847 -> 1876
+Changes: replace, sharpen, add, delete
+Version 7 makes the minds talk about the user as you, never the user, and say I for themselves, with that check added to the per-line check where the small model follows rules best; the vague advice ban becomes 'argue with one another, not at the user'. One turn must now propose one specific step with a number, an amount or a time frame, and the next turn must test it against something the user wrote, so the debate ends with a sized mechanism rather than a named idea. The two drama and voices sentences that earned nothing across two rounds are cut, so the prompt grows only 29 words to 1876; accuracy, still the largest loss, is left for next round because its clearest cause (a role assignment pushing a mind to argue against its own book) needs a rule this round had no change slot for.

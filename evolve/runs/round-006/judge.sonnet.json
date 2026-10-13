@@ -1,0 +1,646 @@
+{
+  "lane": "sonnet",
+  "sample": null,
+  "blind": {
+    "A": 6,
+    "B": 5
+  },
+  "scores": {
+    "v6": {
+      "criteria": [
+        {
+          "name": "Quality of discussion",
+          "max": 20,
+          "points": 15.68,
+          "sub": [
+            {
+              "name": "Continuity and responsiveness",
+              "rating": 8.3,
+              "points": 3.32,
+              "example": "Every turn names and answers the previous one, e.g. turn 8 takes up turn 7's narrowed wage rule.",
+              "limitation": "Turns 1-2 open as parallel statements before the actual exchange begins."
+            },
+            {
+              "name": "Development of ideas",
+              "rating": 7.8,
+              "points": 3.12,
+              "example": "Turn 7 narrows to low wage first, percentages on surplus; turn 9 adds freedom to refuse clients.",
+              "limitation": "Turn 6's JPMorgan point restates that volatility is common and adds no new distinction."
+            },
+            {
+              "name": "Exploration of central tensions",
+              "rating": 7.8,
+              "points": 3.12,
+              "example": "Turn 6 names the conflict between spending freely in great months and feeling safe in empty ones.",
+              "limitation": "Tax set-asides, which matter for freelancers, appear in turn 2 and then drop out."
+            },
+            {
+              "name": "Integration of perspectives",
+              "rating": 7.6,
+              "points": 3.04,
+              "example": "Turn 7: Sorter drops fixed percentages because of Realist's point that past months predict little.",
+              "limitation": "Slack Keeper's bandwidth idea never really reshapes the Sorter's mechanical rule."
+            },
+            {
+              "name": "Progress toward understanding",
+              "rating": 7.7,
+              "points": 3.08,
+              "example": "Turn 10 reduces the dispute to one fact: whether lean runs last single months or several.",
+              "limitation": "The order of wage and buffer is still open at the close, which is reasonable, but only one way to test it is offered."
+            }
+          ]
+        },
+        {
+          "name": "Quality of disagreement, trust and grounding",
+          "max": 20,
+          "points": 14.72,
+          "sub": [
+            {
+              "name": "Faithful engagement",
+              "rating": 7.5,
+              "points": 3,
+              "example": "Turn 5 restates Slack Keeper's reading accurately before offering a rival reading.",
+              "limitation": "Turn 3 assumes the percentages depend on the past; Profit First doesn't forecast."
+            },
+            {
+              "name": "Substance of challenges",
+              "rating": 7.4,
+              "points": 2.96,
+              "example": "Turn 3 challenges averaging with Knight's distinction between risk and uncertainty and the 2020 cancellations.",
+              "limitation": "Turn 5's claim that a buffer takes a year to build is asserted without any support."
+            },
+            {
+              "name": "Accuracy and support",
+              "rating": 6.6,
+              "points": 2.64,
+              "example": "The sugarcane-farmer cognition study (turn 4) and Knight's distinction (turn 3) are described accurately.",
+              "limitation": "Turns 6, 8 and 10 exceed 65 words (73, 66, 67); turn 6's JPMorgan fact sits under Knight's book."
+            },
+            {
+              "name": "Calibration and transparency",
+              "rating": 7.5,
+              "points": 3,
+              "example": "Turn 9 says it goes further than Knight; turn 4 says the evidence suggests, not proves.",
+              "limitation": "Turn 7 calls Profit First a low fixed wage first, which drifts from its percentage-based owner pay."
+            },
+            {
+              "name": "Intellectual honesty and revision",
+              "rating": 7.8,
+              "points": 3.12,
+              "example": "Turn 7 says the Realist's point moved it and states a narrower claim instead.",
+              "limitation": "Turn 10 holds wage-first without answering turn 9's point that desperation erodes the ability to refuse clients."
+            }
+          ]
+        },
+        {
+          "name": "Personal relevance",
+          "max": 10,
+          "points": 6.62,
+          "sub": [
+            {
+              "name": "Identification of the actual concern",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Turn 1 separates the empty month itself from the mechanics of the spreadsheet.",
+              "limitation": "It never asks whether the user wants a method, reassurance, or a target number."
+            },
+            {
+              "name": "Meaningful use of personal context",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Turns 4 and 5 build rival readings on the user's own words, almost empty and great.",
+              "limitation": "Freelance specifics such as taxes and invoice timing are dropped after turn 2."
+            },
+            {
+              "name": "Fit with goals and values",
+              "rating": 5.8,
+              "points": 1.16,
+              "example": "Turn 9 offers the freedom to say no as a possible purpose of freelancing.",
+              "limitation": "The user's goals are never stated, so this value is guessed rather than drawn out."
+            },
+            {
+              "name": "Attention to constraints and stakes",
+              "rating": 6.8,
+              "points": 1.36,
+              "example": "Turn 8 names rent, insurance and loans as the floor that has to be met.",
+              "limitation": "Debt, dependents and savings already held are not raised as conditions."
+            },
+            {
+              "name": "Responsiveness to information",
+              "rating": 7.5,
+              "points": 1.5,
+              "example": "Turn 8 branches on whether the emptiest month covers fixed bills.",
+              "limitation": "There are few direct questions to the user; the unknowns stay as conditionals."
+            }
+          ]
+        },
+        {
+          "name": "Constructive self-discovery",
+          "max": 20,
+          "points": 13.28,
+          "sub": [
+            {
+              "name": "Clarification of desires and motivations",
+              "rating": 6.6,
+              "points": 2.64,
+              "example": "Turn 6: wanting to spend freely and feel safe cannot fully coexist.",
+              "limitation": "The desires are framed for the user rather than put to the user as questions."
+            },
+            {
+              "name": "Examination of assumptions",
+              "rating": 6.8,
+              "points": 2.72,
+              "example": "Turn 3 exposes the assumption that past income patterns predict future months.",
+              "limitation": "The assumption that a steady wage is wanted at all is never examined."
+            },
+            {
+              "name": "Clarification of values and priorities",
+              "rating": 6.8,
+              "points": 2.72,
+              "example": "Turn 9 puts the freedom to refuse bad clients against the comfort of a steady wage.",
+              "limitation": "Values beyond security and freedom, such as growth or rest, go unexplored."
+            },
+            {
+              "name": "Recognition of fears and outside expectations",
+              "rating": 6.5,
+              "points": 2.6,
+              "example": "Turn 4 reads the empty months as a possible threat, offered with a maybe.",
+              "limitation": "Social pressure and comparison with salaried peers are not considered."
+            },
+            {
+              "name": "Agency and reflective ownership",
+              "rating": 6.5,
+              "points": 2.6,
+              "example": "Section D asks whether the dread comes from empty months or from rising spending.",
+              "limitation": "The debate turns themselves give the user only a few open questions to answer."
+            }
+          ]
+        },
+        {
+          "name": "Decision usefulness",
+          "max": 10,
+          "points": 7.16,
+          "sub": [
+            {
+              "name": "Definition of decision and options",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Options are set out as wage-first, buffer-first, or cutting fixed costs (turns 8-10).",
+              "limitation": "There is no option for a limited trial or staged test."
+            },
+            {
+              "name": "Explanation of tradeoffs",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Turn 6: a high pay line buys freedom, a low floor with a thick buffer buys safety.",
+              "limitation": "The cost of cutting fixed costs is not weighed at all."
+            },
+            {
+              "name": "Identification of decisive conditions",
+              "rating": 7.8,
+              "points": 1.56,
+              "example": "Turn 10: lean runs of two or three months decide it against wage-first.",
+              "limitation": "The sizing of the buffer, in months or amount, is never given."
+            },
+            {
+              "name": "Treatment of uncertainty",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Section A singles out whether the emptiest month covers fixed bills as the decisive unknown.",
+              "limitation": "Minor unknowns are not separated explicitly from the consequential ones."
+            },
+            {
+              "name": "Proportionate next steps",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Section E: list monthly income for one to two years and note the longest run below fixed bills.",
+              "limitation": "No first action is given for the user to take this month."
+            }
+          ]
+        },
+        {
+          "name": "Clarity and engagement",
+          "max": 10,
+          "points": 7.36,
+          "sub": [
+            {
+              "name": "Accessible language",
+              "rating": 7.8,
+              "points": 1.56,
+              "example": "Turn 2 explains the account split in plain terms: taxes, bills, profit, pay.",
+              "limitation": "Turn 3's risk versus uncertainty is stated abstractly before the example arrives."
+            },
+            {
+              "name": "Traceable arguments and references",
+              "rating": 7.8,
+              "points": 1.56,
+              "example": "Each turn says whose claim it answers by role title.",
+              "limitation": "Turn 6's both readings refers back two turns."
+            },
+            {
+              "name": "Manageable pacing and turn length",
+              "rating": 6.2,
+              "points": 1.24,
+              "example": "Ten turns move steadily from diagnosis to conditions.",
+              "limitation": "Turns 6, 8 and 10 break the 65-word limit."
+            },
+            {
+              "name": "Distinguishable positions and voices",
+              "rating": 7.8,
+              "points": 1.56,
+              "example": "Turn 7 marks the Sorter's change of position explicitly: I drop my claim.",
+              "limitation": "Slack Keeper and Realist converge on buffer-first and become hard to tell apart."
+            },
+            {
+              "name": "Economy and sustained attention",
+              "rating": 7.2,
+              "points": 1.44,
+              "example": "Recaps at the start of turns are short and serve the reply.",
+              "limitation": "Section D repeats much of turns 8-10."
+            }
+          ]
+        },
+        {
+          "name": "Drama and entertainment",
+          "max": 10,
+          "points": 6.2,
+          "sub": [
+            {
+              "name": "Meaningful stakes and tension",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "Turn 9: taking bad clients out of fear costs the freedom to say no.",
+              "limitation": "The stakes stay abstract and no concrete bad month is pictured."
+            },
+            {
+              "name": "Surprise and reversals",
+              "rating": 6.4,
+              "points": 1.28,
+              "example": "Turn 7's retreat from fixed percentages is a plausible reversal.",
+              "limitation": "After turn 7 there are no further surprises."
+            },
+            {
+              "name": "Personality and expressive voice",
+              "rating": 6,
+              "points": 1.2,
+              "example": "The Sorter's line rules beat willpower gives that mind a voice.",
+              "limitation": "The Realist sounds like a narrator more than a character."
+            },
+            {
+              "name": "Memorable delivery",
+              "rating": 6.3,
+              "points": 1.26,
+              "example": "Turn 4: a floor on paper pays no rent.",
+              "limitation": "There are few analogies and no humour."
+            },
+            {
+              "name": "Anticipation and emotional movement",
+              "rating": 5.8,
+              "points": 1.16,
+              "example": "Turn 10 leaves the outcome hanging on a single fact.",
+              "limitation": "The rhythm is even throughout, with a similar tone in every turn."
+            }
+          ]
+        }
+      ],
+      "uncapped": 71.02,
+      "score": 71.02,
+      "capReason": null,
+      "strengths": [
+        "Clear revision in turn 7, credited to the Realist's argument",
+        "Turn 10 reduces the dispute to one testable fact: length of lean runs",
+        "Accurate grounding in the sugarcane study and Knight's distinction between risk and uncertainty"
+      ],
+      "weaknesses": [
+        "Turns 6, 8, 10 exceed 65 words (73, 66, 67)",
+        "Taxes and invoice timing dropped after turn 2 despite freelance context",
+        "Turn 6 hangs a JPMorgan Chase fact on Knight's book"
+      ],
+      "editorNotes": [
+        "Enforce the 65-word limit per turn with a self-check before output",
+        "Require one turn to address a freelance-specific factor such as taxes, invoices or seasonality",
+        "Ask the minds to pose at least one direct question to the user within the debate",
+        "Keep the examples a turn uses inside its cited book's scope, or move them into the basis note"
+      ]
+    },
+    "v5": {
+      "criteria": [
+        {
+          "name": "Quality of discussion",
+          "max": 20,
+          "points": 14.76,
+          "sub": [
+            {
+              "name": "Continuity and responsiveness",
+              "rating": 7.2,
+              "points": 2.88,
+              "example": "Turn 4 answers turn 2's 2020 shutdown point directly.",
+              "limitation": "Turn 5 pivots to motive and ignores turn 4's revised lower-end draw."
+            },
+            {
+              "name": "Development of ideas",
+              "rating": 7.6,
+              "points": 3.04,
+              "example": "Turn 10 adds a new cause: great months as delayed invoice catch-up.",
+              "limitation": "Turns 5, 6 and 9 repeat the same motive-reading move."
+            },
+            {
+              "name": "Exploration of central tensions",
+              "rating": 7.4,
+              "points": 2.96,
+              "example": "Turn 11 sets lower end of recent months against worst realistic month.",
+              "limitation": "Reserve Keeper's habit rule is never truly tested against the baseline dispute."
+            },
+            {
+              "name": "Integration of perspectives",
+              "rating": 7.2,
+              "points": 2.88,
+              "example": "Turn 7 lets Smoother concede that the barbell wins if bills exceed the floor.",
+              "limitation": "Reserve Keeper stays somewhat apart from the baseline dispute."
+            },
+            {
+              "name": "Progress toward understanding",
+              "rating": 7.5,
+              "points": 3,
+              "example": "Turn 11 names exactly the history that would settle the baseline.",
+              "limitation": "The three rival causes are left listed and never ranked."
+            }
+          ]
+        },
+        {
+          "name": "Quality of disagreement, trust and grounding",
+          "max": 20,
+          "points": 14.32,
+          "sub": [
+            {
+              "name": "Faithful engagement",
+              "rating": 7.2,
+              "points": 2.88,
+              "example": "Turn 4 calls the shutdown a fair hit and accepts what it costs the average.",
+              "limitation": "Turn 2 attacks a raw average; Friedman's permanent income is not a simple mean."
+            },
+            {
+              "name": "Substance of challenges",
+              "rating": 7.2,
+              "points": 2.88,
+              "example": "Turn 9 notes that a lower-end draw still lets a spender spend the surplus.",
+              "limitation": "Turn 10 rebuts with the 2023 writers strike, which concerns gaps, not invoice timing."
+            },
+            {
+              "name": "Accuracy and support",
+              "rating": 6.4,
+              "points": 2.56,
+              "example": "Friedman's permanent income and Taleb's barbell strategy are summarized correctly.",
+              "limitation": "Turn 3 credits Clason with drawing a steady amount from the reserve; turn 7 is 66 words."
+            },
+            {
+              "name": "Calibration and transparency",
+              "rating": 7.6,
+              "points": 3.04,
+              "example": "Turns 8 and 10 flag their examples as their own illustrations, not the author's.",
+              "limitation": "Turn 1 says the user is treating each month as its own paycheck as if that were known."
+            },
+            {
+              "name": "Intellectual honesty and revision",
+              "rating": 7.4,
+              "points": 2.96,
+              "example": "Turn 4: I change my position and draw from the lower end, not the mean.",
+              "limitation": "Barbell Builder never concedes anything despite turn 4's point about starving a healthy year."
+            }
+          ]
+        },
+        {
+          "name": "Personal relevance",
+          "max": 10,
+          "points": 6.84,
+          "sub": [
+            {
+              "name": "Identification of the actual concern",
+              "rating": 7.4,
+              "points": 1.48,
+              "example": "Turns 5, 6, 9 and 10 offer four distinct readings of what troubles the user.",
+              "limitation": "The readings multiply without saying which matters most."
+            },
+            {
+              "name": "Meaningful use of personal context",
+              "rating": 6.4,
+              "points": 1.28,
+              "example": "Turn 6 builds on the user's own phrase, don't know what I'll earn.",
+              "limitation": "The repeated formula The user wrote that feels mechanical."
+            },
+            {
+              "name": "Fit with goals and values",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Turn 6 separates calm from freedom as competing aims.",
+              "limitation": "The user's own priorities are never asked about."
+            },
+            {
+              "name": "Attention to constraints and stakes",
+              "rating": 6.8,
+              "points": 1.36,
+              "example": "Turn 8 raises dependents conditionally, without inventing them.",
+              "limitation": "Taxes are entirely absent for a freelancer."
+            },
+            {
+              "name": "Responsiveness to information",
+              "rating": 7.6,
+              "points": 1.52,
+              "example": "Turn 7 branches on whether bills fit under the lowest months and how many come in a row.",
+              "limitation": "There are no direct questions to the user inside the turns."
+            }
+          ]
+        },
+        {
+          "name": "Constructive self-discovery",
+          "max": 20,
+          "points": 13.44,
+          "sub": [
+            {
+              "name": "Clarification of desires and motivations",
+              "rating": 6.8,
+              "points": 2.72,
+              "example": "Turn 6: a fixed draw buys calm, spending the surplus buys freedom.",
+              "limitation": "Turn 1 states the user's framing as fact rather than as a possibility."
+            },
+            {
+              "name": "Examination of assumptions",
+              "rating": 7,
+              "points": 2.8,
+              "example": "Turn 10 questions the assumption that great months mean extra money.",
+              "limitation": "The assumption that a reserve account is affordable goes unexamined."
+            },
+            {
+              "name": "Clarification of values and priorities",
+              "rating": 6.4,
+              "points": 2.56,
+              "example": "Turn 8 values bargaining power over a savings percentage.",
+              "limitation": "The values are named briefly and never weighed against each other."
+            },
+            {
+              "name": "Recognition of fears and outside expectations",
+              "rating": 6.6,
+              "points": 2.64,
+              "example": "Turn 5: the worry may push the user to accept any client, offered as a guess.",
+              "limitation": "Turn 9's permission to spend comes close to a habit diagnosis."
+            },
+            {
+              "name": "Agency and reflective ownership",
+              "rating": 6.8,
+              "points": 2.72,
+              "example": "Section D asks whether an empty month feels like a money problem or a decision problem.",
+              "limitation": "Most of the reflection is left to the closing sections."
+            }
+          ]
+        },
+        {
+          "name": "Decision usefulness",
+          "max": 10,
+          "points": 7.16,
+          "sub": [
+            {
+              "name": "Definition of decision and options",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Options: steady draw, worst-month baseline, an invoice-cycle buffer, moving money before it is spent.",
+              "limitation": "There is no limited trial or waiting option."
+            },
+            {
+              "name": "Explanation of tradeoffs",
+              "rating": 6.8,
+              "points": 1.36,
+              "example": "Turn 4: a worst-month baseline would starve a healthy year.",
+              "limitation": "The cost of cutting fixed costs is not addressed."
+            },
+            {
+              "name": "Identification of decisive conditions",
+              "rating": 7.6,
+              "points": 1.52,
+              "example": "Turn 11: a short shallow dip favours Smoother, a long deep one favours Barbell.",
+              "limitation": "No threshold says what counts as a long run."
+            },
+            {
+              "name": "Treatment of uncertainty",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Section A names depth, length and bill fit as the key unknowns.",
+              "limitation": "Late payments as a cause are introduced only in turn 10."
+            },
+            {
+              "name": "Proportionate next steps",
+              "rating": 7.4,
+              "points": 1.48,
+              "example": "Section E: list twelve months of income against fixed bills, noting the lowest month and longest low run.",
+              "limitation": "The checks of payment timing and spending pattern are not ordered."
+            }
+          ]
+        },
+        {
+          "name": "Clarity and engagement",
+          "max": 10,
+          "points": 7.16,
+          "sub": [
+            {
+              "name": "Accessible language",
+              "rating": 7.6,
+              "points": 1.52,
+              "example": "Turn 7 is in plain terms: floor below the rent, cut fixed costs first.",
+              "limitation": "Barbell is never explained to the reader."
+            },
+            {
+              "name": "Traceable arguments and references",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Turn 9 addresses Smoother by name and by claim.",
+              "limitation": "Turn 10's strike example doesn't connect to its invoice-timing point; turn 11 has a typo, The user own history."
+            },
+            {
+              "name": "Manageable pacing and turn length",
+              "rating": 7.2,
+              "points": 1.44,
+              "example": "Eleven turns of fairly even length.",
+              "limitation": "Turn 7 runs 66 words."
+            },
+            {
+              "name": "Distinguishable positions and voices",
+              "rating": 7.4,
+              "points": 1.48,
+              "example": "Smoother's lower-end draw versus Barbell's worst month stays distinct to the end.",
+              "limitation": "Reserve Keeper's position blurs into general motive reading."
+            },
+            {
+              "name": "Economy and sustained attention",
+              "rating": 6.6,
+              "points": 1.32,
+              "example": "Section E's bullets are concise and each one is distinct.",
+              "limitation": "Turns 5, 6, 9 open in near-identical ways (The user wrote / may mean)."
+            }
+          ]
+        },
+        {
+          "name": "Drama and entertainment",
+          "max": 10,
+          "points": 6.06,
+          "sub": [
+            {
+              "name": "Meaningful stakes and tension",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "Turn 2: stagehands near zero for months, with no yearly average paying the rent.",
+              "limitation": "Tension falls away in the motive-reading turns."
+            },
+            {
+              "name": "Surprise and reversals",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Turn 10's reframe of great months as catch-up is a fresh angle.",
+              "limitation": "Turn 4 is the only real reversal."
+            },
+            {
+              "name": "Personality and expressive voice",
+              "rating": 5.8,
+              "points": 1.16,
+              "example": "Barbell Builder's blunt language: the trap, breaks you.",
+              "limitation": "The Reserve Keeper has little character of its own."
+            },
+            {
+              "name": "Memorable delivery",
+              "rating": 6.2,
+              "points": 1.24,
+              "example": "Turn 8: bargaining power, not just money, is lost.",
+              "limitation": "The strike example in turn 10 falls flat and confuses."
+            },
+            {
+              "name": "Anticipation and emotional movement",
+              "rating": 5.8,
+              "points": 1.16,
+              "example": "Turn 11 sets up a deciding test.",
+              "limitation": "The middle turns (5, 6, 9) have the same steady speculative rhythm."
+            }
+          ]
+        }
+      ],
+      "uncapped": 69.74,
+      "score": 69.74,
+      "capReason": null,
+      "strengths": [
+        "Turn 10's invoice-timing reading is novel and practically useful for freelancers",
+        "Turn 4 is an honest revision prompted by turn 2's evidence",
+        "Examples are clearly flagged as the minds' own illustrations (turns 8, 10)"
+      ],
+      "weaknesses": [
+        "Turn 10's 2023 writers strike example doesn't support its timing point",
+        "Turns 5, 6, 9 repeat the same motive-reading formula",
+        "Turn 3 credits Clason with a steady-draw mechanism; turn 7 is 66 words"
+      ],
+      "editorNotes": [
+        "Require each example to support the claim made in its own turn",
+        "Limit motive-reading to two turns and require them to be ranked or tested",
+        "Ask each mind to concede or narrow something at least once",
+        "Enforce the 65-word limit and proofread before output"
+      ]
+    }
+  },
+  "preferredVersion": 6,
+  "savedAt": "2026-10-13T19:47:02.819Z"
+}
