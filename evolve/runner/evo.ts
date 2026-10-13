@@ -522,6 +522,44 @@ async function cmdApplyEditor(cfg: Config, f: Record<string, string>) {
   console.log(`applied: v${next} written to ${file} (${before} -> ${after} words, ${e.changes.length} changes)`);
 }
 
+/** a readable file of every debate in a round, with its score and latency, for a person to read */
+async function cmdRender(cfg: Config, f: Record<string, string>) {
+  const round = Number(need(f, 'round'));
+  const rf = await readJson<RoundFile>(`${roundDir(round)}/round.json`);
+  const versions = rf.previous !== null ? [rf.previous, rf.current] : [rf.current];
+  const out: string[] = [`# Round ${round}`, '', `**Question.** ${rf.question}`, ''];
+  for (const lane of Object.keys(cfg.lanes)) {
+    const jp = `${roundDir(round)}/judge.${lane}.json`;
+    const j = (await exists(jp)) ? await readJson<{ scores: Record<string, Scorecard> }>(jp) : null;
+    for (const v of versions) {
+      const wp = `${roundDir(round)}/v${v}.${lane}.json`;
+      if (!(await exists(wp))) continue;
+      const w = await readJson<WorkerRecord>(wp);
+      const sc = j?.scores[`v${v}`];
+      const o = w.output as { situation: string; minds: { title: string; concern: string; author: string; book: string; year: number }[]; debate: { speaker: string; text: string; author: string; book: string; pd: boolean; basis: string }[]; clearer: string; dependsOn: string };
+      out.push(`## ${lane} lane, version ${v}`, '');
+      out.push(`Model ${w.model}. Latency ${(w.latencyMs / 1000).toFixed(1)} s.${sc ? ` Score ${sc.score.toFixed(2)} / 100${sc.capReason ? ` (capped: ${sc.capReason})` : ''}.` : ''}`, '');
+      if (sc) {
+        out.push('| criterion | points | max |', '| --- | ---: | ---: |');
+        for (const c of sc.criteria) out.push(`| ${c.name} | ${c.points.toFixed(2)} | ${c.max.toFixed(2)} |`);
+        out.push('');
+        if (sc.weaknesses?.length) out.push(`**Judge's main weaknesses.** ${sc.weaknesses.join(' ')}`, '');
+      }
+      out.push('### The situation', '', o.situation, '', '### The three minds', '');
+      for (const m of o.minds) out.push(`- **${m.title}.** ${m.concern} *(${m.author}, ${m.book}, ${m.year})*`);
+      out.push('', `### The debate, ${o.debate.length} turns`, '');
+      o.debate.forEach((t, i) => {
+        out.push(`**${i + 1}. ${t.speaker}.** ${t.text}`);
+        out.push(`<sub>${t.basis}${t.pd ? ' (pre-cutoff work)' : ''}</sub>`, '');
+      });
+      out.push('### What became clearer', '', o.clearer, '', '### What the choice depends on', '', o.dependsOn, '');
+    }
+  }
+  const path = `${roundDir(round)}/debates.md`;
+  await Deno.writeTextFile(path, out.join('\n') + '\n');
+  console.log(path);
+}
+
 async function cmdSummary(cfg: Config, f: Record<string, string>) {
   const round = Number(need(f, 'round'));
   const rf = await readJson<RoundFile>(`${roundDir(round)}/round.json`);
@@ -591,6 +629,7 @@ const HELP = `evo <command> [--flag value]
   editor-input --round R                     write editor-input.md
   apply-editor --round R --file <answer.txt> write the next version + changelog
   summary --round R                          one-screen result for a person
+  render --round R                           write debates.md: every debate in the round, readable
 `;
 
 const cmd = Deno.args[0];
@@ -608,6 +647,7 @@ switch (cmd) {
   case 'editor-input': await cmdEditorInput(cfg, flags); break;
   case 'apply-editor': await cmdApplyEditor(cfg, flags); break;
   case 'summary': await cmdSummary(cfg, flags); break;
+  case 'render': await cmdRender(cfg, flags); break;
   default:
     console.log(HELP);
     if (cmd && cmd !== 'help') fail(`unknown command ${cmd}`);
