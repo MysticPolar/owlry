@@ -1,0 +1,116 @@
+{
+  "lane": "gemini",
+  "version": 9,
+  "sample": 1,
+  "model": "gemini-3.1-flash-lite",
+  "settings": {
+    "thinkingLevel": "MEDIUM",
+    "temperature": 0.9,
+    "maxOutputTokens": 16384,
+    "fallback": "none"
+  },
+  "latencyMs": 9714,
+  "output": {
+    "situation": "The user is sleeping eight hours a night but continues to wake up feeling exhausted. They are unsure whether this is a lifestyle issue they can address through personal changes or a medical condition requiring professional intervention. The central uncertainty is whether the exhaustion stems from physiological sleep quality or external factors.",
+    "minds": [
+      {
+        "title": "The Biological Realist",
+        "concern": "Physical mechanics and physiological health",
+        "author": "Matthew Walker",
+        "book": "Why We Sleep",
+        "year": 2017
+      },
+      {
+        "title": "The Stoic Observer",
+        "concern": "Alignment with natural order and self-discipline",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "year": 180
+      },
+      {
+        "title": "The Systems Thinker",
+        "concern": "Feedback loops and environmental interaction",
+        "author": "Donella Meadows",
+        "book": "Thinking in Systems",
+        "year": 2008
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Biological Realist",
+        "text": "You might assume that eight hours is sufficient, but sleep duration is only half the battle. If you wake up exhausted, perhaps your sleep architecture is fragmented, preventing deep recovery cycles which are essential for health.",
+        "author": "Matthew Walker",
+        "book": "Why We Sleep",
+        "pd": false,
+        "basis": "[Basis: Matthew Walker, Why We Sleep, Chapter 1]"
+      },
+      {
+        "speaker": "The Stoic Observer",
+        "text": "Perhaps you worry too much about the quantity of your rest, which might itself be the source of your fatigue. A calm mind often finds that even brief periods of nature-aligned rest suffice, provided one is not agitated by constant desire for perfection.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "[Basis: Marcus Aurelius, Meditations, Book 5]"
+      },
+      {
+        "speaker": "The Systems Thinker",
+        "text": "The Biological Realist suggests you need better sleep cycles, yet you could be caught in a feedback loop where stress during the day degrades your sleep quality, which then creates more stress. You should examine the entire system of your day, not just the eight hours in bed.",
+        "author": "Donella Meadows",
+        "book": "Thinking in Systems",
+        "pd": false,
+        "basis": "[Basis: Donella Meadows, Thinking in Systems, Chapter 2]"
+      },
+      {
+        "speaker": "The Biological Realist",
+        "text": "The Stoic Observer claims that worry about rest might be the source of fatigue, but this ignores the possibility of sleep apnea. If you struggle with breathing at night, no amount of mental calmness will fix your physical oxygen deprivation.",
+        "author": "Matthew Walker",
+        "book": "Why We Sleep",
+        "pd": false,
+        "basis": "[Basis: Matthew Walker, Why We Sleep, Chapter 14]"
+      },
+      {
+        "speaker": "The Stoic Observer",
+        "text": "I agree with The Biological Realist that medical conditions matter; however, if you have not first observed your own habits for 14 days, you might be rushing to blame the body rather than your own erratic actions. Test your routine before seeking a physician.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "[Basis: Marcus Aurelius, Meditations, Book 6]"
+      },
+      {
+        "speaker": "The Systems Thinker",
+        "text": "The Stoic Observer proposes a 14-day observation, yet this assumes your environment remains static. If you work in a high-pressure system, waiting two weeks to monitor yourself might be a delay that exacerbates the very burnout you hope to avoid.",
+        "author": "Donella Meadows",
+        "book": "Thinking in Systems",
+        "pd": false,
+        "basis": "[Basis: Donella Meadows, Thinking in Systems, Chapter 4]"
+      },
+      {
+        "speaker": "The Biological Realist",
+        "text": "I drop my earlier focus on simply managing cycles to focus on the medical urgency. Since The Systems Thinker notes that external pressures might be severe, you should seek professional screening immediately to rule out clinical disorders before adjusting your lifestyle.",
+        "author": "Matthew Walker",
+        "book": "Why We Sleep",
+        "pd": false,
+        "basis": "[Basis: Matthew Walker, Why We Sleep, Chapter 15]"
+      },
+      {
+        "speaker": "The Stoic Observer",
+        "text": "If you follow the advice of The Biological Realist to seek a physician, ensure you still maintain a disciplined mind. Do not let the anticipation of a diagnosis become a distraction from the duties that define your life.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "[Basis: Marcus Aurelius, Meditations, Book 2]"
+      },
+      {
+        "speaker": "The Systems Thinker",
+        "text": "Whether you change your habits or visit a doctor remains an open question. It depends on whether your exhaustion is a symptom of a broken internal component or a byproduct of an overwhelming system you inhabit, which only data from a sleep study could clarify.",
+        "author": "Donella Meadows",
+        "book": "Thinking in Systems",
+        "pd": false,
+        "basis": "[Basis: Donella Meadows, Thinking in Systems, Chapter 6]"
+      }
+    ],
+    "clearer": "The debate highlights the tension between personal habits and potential clinical issues. While lifestyle changes might help, there is a risk that ignoring physiological red flags, such as sleep apnea, could delay recovery. The main disagreement persists between whether you should first commit to a period of rigorous self-observation or prioritize medical testing immediately.",
+    "dependsOn": "If you experience physical symptoms like snoring or gasping for air → medical testing is the urgent priority as it addresses immediate safety. If your energy levels fluctuate specifically with work intensity or stress → system-level lifestyle changes may yield more sustainable results. If you remain unsure of your nocturnal breathing → keep a sleep journal for one week and present it to a healthcare provider to determine if a sleep study is necessary."
+  },
+  "savedAt": "2026-10-13T21:27:04.856Z"
+}

@@ -1,0 +1,161 @@
+{
+  "A": {
+    "criteria": [
+      {"name": "Quality of discussion", "max": 20.00, "points": 9.60,
+       "sub": [
+         {"name": "Continuity and responsiveness", "rating": 5.50, "points": 2.20, "example": "Turn 4 picks up turns 2-3: 'You suggest environment and purpose matter, but...'", "limitation": "Turns 3, 6 and 9 mostly restate the Skeptic's opening point."},
+         {"name": "Development of ideas", "rating": 4.50, "points": 1.80, "example": "Turn 7 combines the positions: track environment and stress together for a week.", "limitation": "After turn 7 the debate goes back to the doctor-versus-meaning split."},
+         {"name": "Exploration of central tensions", "rating": 5.00, "points": 2.00, "example": "Turns 8-9 set the apnea check against treating the body as a machine.", "limitation": "Never asks whether a checkup and a look at meaning really compete."},
+         {"name": "Integration of perspectives", "rating": 4.50, "points": 1.80, "example": "Turn 7: the Architect drops 'sufficient' because of the Skeptic's point.", "limitation": "The Reductionist and the Skeptic never let the other view change theirs."},
+         {"name": "Progress toward understanding", "rating": 4.50, "points": 1.80, "example": "Section E separates snoring/gasping cases from morning dread tied to a role.", "limitation": "Turn 10 ends on the same split that section A already stated."}
+       ]},
+      {"name": "Quality of disagreement, trust and grounding", "max": 20.00, "points": 9.00,
+       "sub": [
+         {"name": "Faithful engagement", "rating": 4.00, "points": 1.60, "example": "Turn 9 fairly restates turn 8: 'You propose a doctor'.", "limitation": "Turn 5 claims 'biology is the only hurdle'; turn 4 only said 'if'."},
+         {"name": "Substance of challenges", "rating": 4.50, "points": 1.80, "example": "Turn 6: optimizing habits may only speed you toward burnout if work feels empty.", "limitation": "No challenge tests evidence, e.g. how common apnea is versus low meaning as a fatigue cause."},
+         {"name": "Accuracy and support", "rating": 4.00, "points": 1.60, "example": "Turn 8 correctly names sleep apnea as a cause of unrefreshing sleep.", "limitation": "James's 1890 Principles is used to back apnea and circadian claims, which is anachronistic."},
+         {"name": "Calibration and transparency", "rating": 5.00, "points": 2.00, "example": "Turns 3 and 6 hedge: 'might stem from a lack of meaning'.", "limitation": "The meaning-deficit guess gets the same weight as a checkable medical cause."},
+         {"name": "Intellectual honesty and revision", "rating": 5.00, "points": 2.00, "example": "Turn 7: 'I drop my earlier claim that habit optimization is sufficient'.", "limitation": "The Reductionist and the Skeptic concede nothing across nine turns."}
+       ]},
+      {"name": "Personal relevance", "max": 10.00, "points": 4.20,
+       "sub": [
+         {"name": "Identification of the actual concern", "rating": 5.00, "points": 1.00, "example": "Turn 1 reframes the question from quantity to quality of sleep.", "limitation": "Does not directly answer the user's 'change something or get checked' question."},
+         {"name": "Meaningful use of personal context", "rating": 3.50, "points": 0.70, "example": "Turn 1 uses the eight-hour detail.", "limitation": "Turns 3, 6 and 9 invent 'empty work' and 'aimlessness' the user never mentioned."},
+         {"name": "Fit with goals and values", "rating": 4.00, "points": 0.80, "example": "Section E ties the choice to a project or role the user may dread.", "limitation": "The Skeptic's interest in purpose takes over from the user's practical question."},
+         {"name": "Attention to constraints and stakes", "rating": 3.50, "points": 0.70, "example": "Turn 5 suggests a seven-day tracking window.", "limitation": "Nothing on cost, urgency or warning signs that should prompt a quicker check."},
+         {"name": "Responsiveness to information", "rating": 5.00, "points": 1.00, "example": "Section E: snoring or gasping means a medical check comes first.", "limitation": "Never asks about caffeine, alcohol, mood or other symptoms."}
+       ]},
+      {"name": "Constructive self-discovery", "max": 20.00, "points": 8.40,
+       "sub": [
+         {"name": "Clarification of desires and motivations", "rating": 3.50, "points": 1.40, "example": "Section D asks whether the fatigue feels like a 'physical glitch'.", "limitation": "Never separates what the user might want, such as reassurance, energy or a diagnosis."},
+         {"name": "Examination of assumptions", "rating": 5.50, "points": 2.20, "example": "Turn 1 challenges the assumption that eight hours should be enough.", "limitation": "Leaves unexamined the assumption that the causes are either/or."},
+         {"name": "Clarification of values and priorities", "rating": 4.00, "points": 1.60, "example": "Turn 10 sets clinical attention against re-valuing purpose.", "limitation": "Frames meaning as a rival to health instead of exploring the user's priorities."},
+         {"name": "Recognition of fears and outside expectations", "rating": 3.00, "points": 1.20, "example": "Section E mentions 'morning dread' tied to a role.", "limitation": "Turn 9's 'meaninglessness' risks pathologising without evidence."},
+         {"name": "Agency and reflective ownership", "rating": 5.00, "points": 2.00, "example": "Section D leaves the user to judge which reading fits.", "limitation": "Gives few concrete reflective questions the user can try."}
+       ]},
+      {"name": "Decision usefulness", "max": 10.00, "points": 4.90,
+       "sub": [
+         {"name": "Definition of the decision and options", "rating": 5.50, "points": 1.10, "example": "Options: see a doctor, change routines, re-evaluate goals, or log for a week.", "limitation": "Frames doctor and re-evaluation as competing when both can be done."},
+         {"name": "Explanation of tradeoffs", "rating": 3.50, "points": 0.70, "example": "Turn 6 warns that optimizing may hide burnout.", "limitation": "No cost, time or risk given for getting checked versus waiting."},
+         {"name": "Identification of decisive conditions", "rating": 6.00, "points": 1.20, "example": "Section E: snoring or gasping makes a medical check the priority.", "limitation": "Leaves out other red flags such as daytime sleepiness while driving or low mood."},
+         {"name": "Treatment of uncertainty", "rating": 4.00, "points": 0.80, "example": "Turn 10 names the cause as the open question.", "limitation": "Does not rank which unknowns matter most."},
+         {"name": "Proportionate next steps", "rating": 5.50, "points": 1.10, "example": "Section E: log both physical rest and sense of purpose for a week.", "limitation": "Never says the plain step: a routine GP visit is cheap."}
+       ]},
+      {"name": "Clarity and engagement", "max": 10.00, "points": 5.70,
+       "sub": [
+         {"name": "Accessible language", "rating": 6.50, "points": 1.30, "example": "Plain wording throughout, e.g. turn 8's 'mechanical failure'.", "limitation": "Turn 3's 'internal batteries' and 'aimlessness' stay vague."},
+         {"name": "Traceable arguments and references", "rating": 4.50, "points": 0.90, "example": "Turn 7 names the Existential Skeptic as the source of the concession.", "limitation": "'You' moves between the user and other minds; turn 10's 'You disagree' is unclear."},
+         {"name": "Manageable pacing and turn length", "rating": 7.00, "points": 1.40, "example": "Ten turns, each within 25-65 words.", "limitation": "The turns are evenly matched in length, which flattens the rhythm."},
+         {"name": "Distinguishable positions and voices", "rating": 6.00, "points": 1.20, "example": "Three clearly separate lenses: biology, systems, meaning.", "limitation": "The voices sound alike; every turn opens with a 'You ... but' structure."},
+         {"name": "Economy and sustained attention", "rating": 4.50, "points": 0.90, "example": "Section E summarizes the debate in three useful sentences.", "limitation": "The Skeptic's turns 3, 6 and 9 repeat the same claim."}
+       ]},
+      {"name": "Drama and entertainment", "max": 10.00, "points": 3.70,
+       "sub": [
+         {"name": "Meaningful stakes and tension", "rating": 4.50, "points": 0.90, "example": "Turn 8: a 'mechanical failure that no amount of purpose can overcome'.", "limitation": "The tension is stated rather than built."},
+         {"name": "Surprise and reversals", "rating": 4.00, "points": 0.80, "example": "Turn 7: the Architect gives up the claim that habits are enough.", "limitation": "This is the only shift in the whole debate."},
+         {"name": "Personality and expressive voice", "rating": 3.50, "points": 0.70, "example": "The Skeptic's 'optimizing the path toward deeper burnout' (turn 6).", "limitation": "No mind sounds like its author; all three are generic."},
+         {"name": "Memorable delivery", "rating": 3.00, "points": 0.60, "example": "Turn 9: 'treat your body purely like a machine to be repaired'.", "limitation": "No vivid example, analogy or concrete scene."},
+         {"name": "Anticipation and emotional movement", "rating": 3.50, "points": 0.70, "example": "Turns 8-10 lead to a stated open question.", "limitation": "Flat rhythm: every turn has the same intensity."}
+       ]}
+    ],
+    "uncapped": 45.50,
+    "score": 45.50,
+    "capReason": null,
+    "strengths": [
+      "Turn 7 is a real, credited concession that merges tracking of environment and stress.",
+      "Section E gives clear decisive conditions: snoring or gasping means getting checked first.",
+      "Turn 1 usefully moves the focus from sleep quantity to sleep quality."
+    ],
+    "weaknesses": [
+      "The Existential Skeptic repeats the meaning-deficit point (turns 3, 6, 9) on invented context.",
+      "The Reductionist leans on James's 1890 Principles for apnea and circadian claims, a poor fit as grounding.",
+      "Turn 5 strawmans turn 4 ('biology is the only hurdle'), and turn 10's 'You disagree' is ambiguous."
+    ],
+    "editorNotes": [
+      "Require each mind's source to actually cover its claims; prefer a modern clinical source for medical claims.",
+      "Ban speculation about the user's life such as 'empty work' unless framed as a question to the user.",
+      "Require each mind to revise or concede at least once, and forbid repeating a point without new content.",
+      "Require the speaker to name who 'you' refers to when addressing another mind."
+    ]
+  },
+  "B": {
+    "criteria": [
+      {"name": "Quality of discussion", "max": 20.00, "points": 9.00,
+       "sub": [
+         {"name": "Continuity and responsiveness", "rating": 5.00, "points": 2.00, "example": "Turn 4 answers turn 3: no room temperature tweak fixes obstructed breathing.", "limitation": "Turns 1-3 are three separate openings that don't respond to each other."},
+         {"name": "Development of ideas", "rating": 4.50, "points": 1.80, "example": "Turn 1 brings in sleep architecture: deep and REM stages, not just duration.", "limitation": "Later turns add little beyond apnea versus routine versus mind."},
+         {"name": "Exploration of central tensions", "rating": 4.50, "points": 1.80, "example": "Turn 6: a ritual cannot fix worry carried into sleep.", "limitation": "Turn 9 wrongly turns a medical question into a values choice."},
+         {"name": "Integration of perspectives", "rating": 4.00, "points": 1.60, "example": "Turn 8 accepts the checkup as 'wise' and adds a point about calm.", "limitation": "Turn 7's revision is incoherent, so it doesn't integrate anything."},
+         {"name": "Progress toward understanding", "rating": 4.50, "points": 1.80, "example": "Section D names snoring versus high-stress periods as the distinction to watch.", "limitation": "Turn 9 ends on the opening split, without sharpening it."}
+       ]},
+      {"name": "Quality of disagreement, trust and grounding", "max": 20.00, "points": 8.60,
+       "sub": [
+         {"name": "Faithful engagement", "rating": 4.00, "points": 1.60, "example": "Turn 4 accurately restates the Analyst's view that environmental tweaks are enough.", "limitation": "Turn 5 claims the Reductionist says 'breathing is the only issue'; turn 4 said 'if'."},
+         {"name": "Substance of challenges", "rating": 5.00, "points": 2.00, "example": "Turn 4: apnea starves the brain of oxygen whatever the room temperature.", "limitation": "Turn 6's challenge rests on the claim 'fix the soul', which no one made."},
+         {"name": "Accuracy and support", "rating": 4.50, "points": 1.80, "example": "Walker's Why We Sleep is apt for sleep stages and apnea.", "limitation": "The quote in turn 2 is a modern paraphrase of Meditations 5.16, not a pd translation; 161 is wrong."},
+         {"name": "Calibration and transparency", "rating": 5.00, "points": 2.00, "example": "Turn 1 conditions its claim: 'If your sleep architecture lacks...'.", "limitation": "Turn 5's 'which often precedes physical disruption' is unsupported."},
+         {"name": "Intellectual honesty and revision", "rating": 3.00, "points": 1.20, "example": "Turn 8 concedes the checkup is 'wise'.", "limitation": "Turn 7 retracts 'environment is the culprit', which the Reductionist never claimed."}
+       ]},
+      {"name": "Personal relevance", "max": 10.00, "points": 4.60,
+       "sub": [
+         {"name": "Identification of the actual concern", "rating": 5.50, "points": 1.10, "example": "Section A states the lifestyle-versus-medical question directly.", "limitation": "Turn 9 drifts to 'internal clarity over mere physical duration'."},
+         {"name": "Meaningful use of personal context", "rating": 4.00, "points": 0.80, "example": "Turn 1 uses the eight hours to explain why duration alone misleads.", "limitation": "Uses no context beyond the eight hours."},
+         {"name": "Fit with goals and values", "rating": 4.00, "points": 0.80, "example": "Section E addresses the user's change-or-check question.", "limitation": "Turn 9 imposes Stoic values on a practical health question."},
+         {"name": "Attention to constraints and stakes", "rating": 4.00, "points": 0.80, "example": "Turn 7: get assessed 'before blaming your habits'.", "limitation": "No mention of cost, access or how urgent a sleep study is."},
+         {"name": "Responsiveness to information", "rating": 5.50, "points": 1.10, "example": "Section E branches on gasping, snoring and morning headaches.", "limitation": "Never asks about caffeine, alcohol, mood or medication."}
+       ]},
+      {"name": "Constructive self-discovery", "max": 20.00, "points": 8.40,
+       "sub": [
+         {"name": "Clarification of desires and motivations", "rating": 3.00, "points": 1.20, "example": "Turn 2 raises a restless or burdened mind at bedtime.", "limitation": "Does not separate what the user wants from the outcome."},
+         {"name": "Examination of assumptions", "rating": 5.50, "points": 2.20, "example": "Turn 1: 'sleep is not a single block of time'.", "limitation": "Doesn't examine the either/or assumption between body and mind."},
+         {"name": "Clarification of values and priorities", "rating": 3.50, "points": 1.40, "example": "Turn 8 sets control of sleep against a calm life.", "limitation": "Turn 9's 'value internal clarity' is a misplaced framing."},
+         {"name": "Recognition of fears and outside expectations", "rating": 4.00, "points": 1.60, "example": "Turn 6: 'internally wrestling with the day ahead'.", "limitation": "Anxiety is suggested but never explored, e.g. what the user dreads."},
+         {"name": "Agency and reflective ownership", "rating": 5.00, "points": 2.00, "example": "Section D: notice whether the fatigue follows high-stress periods.", "limitation": "Offers only one concrete reflective prompt."}
+       ]},
+      {"name": "Decision usefulness", "max": 10.00, "points": 5.30,
+       "sub": [
+         {"name": "Definition of the decision and options", "rating": 6.00, "points": 1.20, "example": "Options: a sleep study, 14 days of decompression, or a two-week log.", "limitation": "A general checkup for other causes, such as thyroid or anemia, is not named."},
+         {"name": "Explanation of tradeoffs", "rating": 3.50, "points": 0.70, "example": "Turn 8: treating sleep as a chore can cost rest.", "limitation": "Nothing on the cost or delay of a sleep study versus self-tracking."},
+         {"name": "Identification of decisive conditions", "rating": 6.50, "points": 1.30, "example": "Section E: gasping, snoring or morning headaches point to a sleep study.", "limitation": "Leaves out mood and daytime sleepiness as signs."},
+         {"name": "Treatment of uncertainty", "rating": 4.50, "points": 0.90, "example": "Section E: 'If you are unsure', keep a log.", "limitation": "Does not rank the unknowns by how much they matter."},
+         {"name": "Proportionate next steps", "rating": 6.00, "points": 1.20, "example": "A two-week log tracking physical sensations and evening mental state.", "limitation": "The 14-day decompression period is arbitrary and unexplained."}
+       ]},
+      {"name": "Clarity and engagement", "max": 10.00, "points": 5.70,
+       "sub": [
+         {"name": "Accessible language", "rating": 6.50, "points": 1.30, "example": "Turn 1 explains sleep architecture in plain words.", "limitation": "Turn 5's 'cues of stress, which often precedes physical disruption' is muddled."},
+         {"name": "Traceable arguments and references", "rating": 4.50, "points": 0.90, "example": "Turns 4, 5 and 8 refer to the other mind by name.", "limitation": "Turn 7 credits a claim to the wrong speaker, which confuses the thread."},
+         {"name": "Manageable pacing and turn length", "rating": 7.00, "points": 1.40, "example": "Nine turns, each within 25-65 words.", "limitation": "Nine turns is the minimum, which leaves little room to develop."},
+         {"name": "Distinguishable positions and voices", "rating": 5.00, "points": 1.00, "example": "The Stoic's voice is distinct in turns 2 and 6.", "limitation": "In turn 8 the Analyst slips into the Stoic's 'calm life' voice."},
+         {"name": "Economy and sustained attention", "rating": 5.50, "points": 1.10, "example": "Turn 4 makes its point concisely.", "limitation": "Sections D and E partly repeat each other."}
+       ]},
+      {"name": "Drama and entertainment", "max": 10.00, "points": 4.00,
+       "sub": [
+         {"name": "Meaningful stakes and tension", "rating": 4.50, "points": 0.90, "example": "Turn 4: 'restore the oxygen your brain needs'.", "limitation": "The tension is mostly declared."},
+         {"name": "Surprise and reversals", "rating": 3.00, "points": 0.60, "example": "Turn 8 unexpectedly warns against over-mastering sleep.", "limitation": "Turn 7's reversal makes no sense, so it doesn't land."},
+         {"name": "Personality and expressive voice", "rating": 4.50, "points": 0.90, "example": "The Stoic: 'you carry those weights into your slumber' (turn 6).", "limitation": "The Reductionist and the Analyst are generic."},
+         {"name": "Memorable delivery", "rating": 4.50, "points": 0.90, "example": "Turn 2: the 'dyed with the color of its thoughts' image.", "limitation": "The memorable line is a misquotation."},
+         {"name": "Anticipation and emotional movement", "rating": 3.50, "points": 0.70, "example": "Turn 9 ends on a reflective closing.", "limitation": "Little build-up; the rhythm stays even."}
+       ]}
+    ],
+    "uncapped": 45.60,
+    "score": 45.60,
+    "capReason": null,
+    "strengths": [
+      "Medically more specific: sleep architecture (turn 1) and apnea versus temperature (turn 4).",
+      "Section E gives concrete warning signs and a two-week log to tell the paths apart.",
+      "Minds mostly address each other by name, which helps the reader follow."
+    ],
+    "weaknesses": [
+      "Turn 7: the Reductionist retracts 'environment is the culprit', a claim he never made.",
+      "Turn 2 presents a modern paraphrase of Meditations 5.16 as a quotation; the year 161 is wrong.",
+      "Turn 9 (the Stoic) turns a medical question into valuing 'internal clarity'."
+    ],
+    "editorNotes": [
+      "Require concessions to quote the speaker's own earlier turn number, so revisions stay coherent.",
+      "Require quotations to match a named public-domain translation exactly, or be paraphrased without quotation marks.",
+      "Make the closing turn answer the user's actual question, such as when to get checked, not a values abstraction.",
+      "Tell the clinical mind to name the full routine-checkup list, not only apnea."
+    ]
+  },
+  "preferred": "B"
+}

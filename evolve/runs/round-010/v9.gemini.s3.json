@@ -1,0 +1,116 @@
+{
+  "lane": "gemini",
+  "version": 9,
+  "sample": 3,
+  "model": "gemini-3.1-flash-lite",
+  "settings": {
+    "thinkingLevel": "MEDIUM",
+    "temperature": 0.9,
+    "maxOutputTokens": 16384,
+    "fallback": "none"
+  },
+  "latencyMs": 7273,
+  "output": {
+    "situation": "The user reports sleeping eight hours nightly but waking up exhausted, leading to uncertainty about whether this is a lifestyle issue or a medical condition. The central tension lies in whether to pursue immediate behavioral changes or seek clinical evaluation.",
+    "minds": [
+      {
+        "title": "The Data Optimizer",
+        "concern": "Maximizing efficiency through measurement and systematic tracking.",
+        "author": "James Clear",
+        "book": "Atomic Habits",
+        "year": 2018
+      },
+      {
+        "title": "The Evolutionary Biologist",
+        "concern": "Alignment with natural biological rhythms and environmental mismatch.",
+        "author": "Daniel Lieberman",
+        "book": "The Story of the Human Body",
+        "year": 2013
+      },
+      {
+        "title": "The Stoic Observer",
+        "concern": "Focusing on what is within personal control versus external physical reality.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "year": 180
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Data Optimizer",
+        "text": "Before you visit a doctor, you might try tracking your sleep latency and quality metrics for two weeks. If you aren't measuring your output, you are just guessing at the root cause.",
+        "author": "James Clear",
+        "book": "Atomic Habits",
+        "pd": false,
+        "basis": "[Basis: James Clear, Atomic Habits, Chapter 1]"
+      },
+      {
+        "speaker": "The Evolutionary Biologist",
+        "text": "You could be suffering from a mismatch between your modern lifestyle and your biological design. Maybe your exhaustion stems from artificial light exposure rather than a deficit in total sleep duration.",
+        "author": "Daniel Lieberman",
+        "book": "The Story of the Human Body",
+        "pd": false,
+        "basis": "[Basis: Daniel Lieberman, The Story of the Human Body, Part 4]"
+      },
+      {
+        "speaker": "The Stoic Observer",
+        "text": "It is not the sleep itself that troubles you, but your judgment about it. If you accept that your body is a vessel subject to decay, you might find peace even while tired.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "[Basis: Marcus Aurelius, Meditations, Book 4]"
+      },
+      {
+        "speaker": "The Data Optimizer",
+        "text": "The Stoic Observer suggests that you accept your exhaustion, but that ignores the potential for optimization. You could change your environment to force a better sleep outcome through small, iterative adjustments.",
+        "author": "James Clear",
+        "book": "Atomic Habits",
+        "pd": false,
+        "basis": "[Basis: James Clear, Atomic Habits, Chapter 2]"
+      },
+      {
+        "speaker": "The Evolutionary Biologist",
+        "text": "The Data Optimizer says you should track metrics, but measuring a broken system rarely fixes the underlying evolutionary mismatch. If your circadian rhythm is disrupted by blue light, a logbook will not save you.",
+        "author": "Daniel Lieberman",
+        "book": "The Story of the Human Body",
+        "pd": false,
+        "basis": "[Basis: Daniel Lieberman, The Story of the Human Body, Part 4]"
+      },
+      {
+        "speaker": "The Stoic Observer",
+        "text": "The Evolutionary Biologist claims your exhaustion is a mismatch, yet if that is the case, then seeing a physician is an act of rational agency. One must distinguish between what is in our control and what belongs to the physician.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "[Basis: Marcus Aurelius, Meditations, Book 2]"
+      },
+      {
+        "speaker": "The Data Optimizer",
+        "text": "I drop my earlier claim that you should just track metrics. Perhaps I was too focused on the process and missed the urgency of a potential medical issue that prevents system performance.",
+        "author": "James Clear",
+        "book": "Atomic Habits",
+        "pd": false,
+        "basis": "[Basis: James Clear, Atomic Habits, Chapter 1]"
+      },
+      {
+        "speaker": "The Evolutionary Biologist",
+        "text": "You might be dealing with sleep apnea, which is a structural issue. If you struggle to wake up refreshed despite eight hours, it could be that your body is not getting enough oxygen at night.",
+        "author": "Daniel Lieberman",
+        "book": "The Story of the Human Body",
+        "pd": false,
+        "basis": "[Basis: Daniel Lieberman, The Story of the Human Body, Part 5]"
+      },
+      {
+        "speaker": "The Stoic Observer",
+        "text": "Whether this is a biological failure or a simple lack of discipline remains an open question. The decision to see a doctor rests on whether you have exhausted your own reasonable efforts to improve your rest.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "[Basis: Marcus Aurelius, Meditations, Book 5]"
+      }
+    ],
+    "clearer": "The debate highlights a tension between self-optimization (tracking habits), environmental alignment (biological needs), and the acceptance of physical limits (Stoic perspective). The main insight is that exhaustion may result from either environmental mismatch or structural health issues, both of which require distinct approaches. The primary dispute remains whether the user should prioritize immediate medical screening or systematic self-experimentation first.",
+    "dependsOn": "- If the exhaustion is accompanied by snoring or gasping, medical evaluation is the reasonable priority because structural issues like apnea require clinical intervention.\n- If the exhaustion persists despite perfect circadian hygiene (dark, cool room, no screens), then medical testing becomes the necessary next step.\n- If a decisive fact remains unknown—such as whether you have tried consistent sleep hygiene for 30 days—the proportionate step is to implement those hygiene changes for one month before seeking a clinical diagnosis."
+  },
+  "savedAt": "2026-10-13T21:27:51.143Z"
+}

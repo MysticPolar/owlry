@@ -1,0 +1,124 @@
+{
+  "lane": "gemini",
+  "version": 10,
+  "sample": 1,
+  "model": "gemini-3.1-flash-lite",
+  "settings": {
+    "thinkingLevel": "MEDIUM",
+    "temperature": 0.9,
+    "maxOutputTokens": 16384,
+    "fallback": "none"
+  },
+  "latencyMs": 8550,
+  "output": {
+    "situation": "You sleep eight hours nightly but still experience persistent exhaustion upon waking. You are unsure whether this is a physiological issue requiring medical intervention or a result of lifestyle habits you might adjust.",
+    "minds": [
+      {
+        "title": "The Biological Architect",
+        "concern": "Optimizing physical systems through evidence-based sleep hygiene",
+        "author": "Matthew Walker",
+        "book": "Why We Sleep",
+        "year": 2017
+      },
+      {
+        "title": "The Stoic Observer",
+        "concern": "Discerning what is within your control versus what you must accept",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "year": 161
+      },
+      {
+        "title": "The Meaning Seeker",
+        "concern": "Uncovering the psychological source of subjective fatigue",
+        "author": "Viktor Frankl",
+        "book": "Man's Search for Meaning",
+        "year": 1946
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Biological Architect",
+        "text": "Your exhaustion suggests that your sleep is fragmented or lacking in the specific stages required for restoration. If you are consistently tired, you might need to evaluate your environment or the consistency of your wake times to ensure you are actually achieving deep restorative rest.",
+        "author": "Matthew Walker",
+        "book": "Why We Sleep",
+        "pd": false,
+        "basis": "Basis: Matthew Walker, Why We Sleep, Chapter 12"
+      },
+      {
+        "speaker": "The Stoic Observer",
+        "text": "Perhaps this fatigue is merely a temporary trial you are experiencing, as it is written that \"the mind is unconquerable\" when it decides to remain indifferent to its own condition. You should consider if your distress about being tired is more damaging than the tiredness itself.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "Basis: Marcus Aurelius, Meditations, Book 8.48"
+      },
+      {
+        "speaker": "The Meaning Seeker",
+        "text": "I disagree with the Stoic Observer because you might be ignoring that exhaustion often serves as a signal that your current path lacks an underlying sense of purpose. If you feel empty, you might be experiencing a loss of meaning which manifests physically as a lack of drive.",
+        "author": "Viktor Frankl",
+        "book": "Man's Search for Meaning",
+        "pd": false,
+        "basis": "Basis: Viktor Frankl, Man's Search for Meaning, Part II"
+      },
+      {
+        "speaker": "The Biological Architect",
+        "text": "The Stoic Observer is wrong to suggest that you should just be indifferent to exhaustion because physiological sleep deprivation acts on your brain chemistry regardless of your mental resolve. You might have an undiagnosed condition like sleep apnea that prevents oxygenation no matter your attitude.",
+        "author": "Matthew Walker",
+        "book": "Why We Sleep",
+        "pd": false,
+        "basis": "Basis: Matthew Walker, Why We Sleep, Chapter 15"
+      },
+      {
+        "speaker": "The Meaning Seeker",
+        "text": "The Biological Architect is too focused on the machine, forgetting that if you perceive your days as meaningless, your body might reflect that lethargy as a protective barrier. You might find that your exhaustion changes if you engage with a task that demands your focus.",
+        "author": "Viktor Frankl",
+        "book": "Man's Search for Meaning",
+        "pd": false,
+        "basis": "Basis: Viktor Frankl, Man's Search for Meaning, Part II"
+      },
+      {
+        "speaker": "The Stoic Observer",
+        "text": "The Meaning Seeker suggests that you are suffering from a lack of purpose, but you may simply be overcomplicating a physical reality. Is it possible that you are chasing a state of perfect energy that does not exist, and what you fear is simply the discomfort of reality?",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "Basis: Marcus Aurelius, Meditations, Book 4.3"
+      },
+      {
+        "speaker": "The Biological Architect",
+        "text": "I propose you try a specific experiment for 14 days: record your sleep latency and wake-up time, and remove all caffeine after 12 PM. If you still wake up exhausted, you should see a doctor to rule out clinical apnea, which is a known physical cost.",
+        "author": "Matthew Walker",
+        "book": "Why We Sleep",
+        "pd": false,
+        "basis": "Basis: Matthew Walker, Why We Sleep, Chapter 16"
+      },
+      {
+        "speaker": "The Meaning Seeker",
+        "text": "Regarding that 14-day experiment, you might find it difficult to track your sleep if you feel trapped by your routine. The cost of this experiment is that you might become hyper-focused on your data, which could increase the very stress that keeps you from feeling truly rested.",
+        "author": "Viktor Frankl",
+        "book": "Man's Search for Meaning",
+        "pd": false,
+        "basis": "Basis: Viktor Frankl, Man's Search for Meaning, Part II"
+      },
+      {
+        "speaker": "The Stoic Observer",
+        "text": "I drop my initial stance that you should just be indifferent to this state, because the Meaning Seeker points out that ignoring your body when it clearly struggles might be irrational. You must use your reason to decide if your exhaustion is a matter of nature or a sign of neglect.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "Basis: Marcus Aurelius, Meditations, Book 5.1"
+      },
+      {
+        "speaker": "The Biological Architect",
+        "text": "We remain divided on whether you need a doctor or a change in outlook. What would decide this is whether you snore or feel gasping sensations at night, which are facts you have not provided and would immediately suggest a medical necessity over a mental reframing.",
+        "author": "Matthew Walker",
+        "book": "Why We Sleep",
+        "pd": false,
+        "basis": "Basis: Matthew Walker, Why We Sleep, Chapter 15"
+      }
+    ],
+    "clearer": "The debate highlights a tension between viewing exhaustion as a biological malfunction, a psychological symptom of aimlessness, or a standard discomfort to be managed through rational perspective. While all agree that the state of your rest is significant, there is no consensus on whether the priority should be medical investigation or existential adjustment.",
+    "dependsOn": "If you experience physical symptoms like snoring or gasping, a medical check-up is the most reasonable step to address potential apnea. If you find your exhaustion correlates strictly with days you feel aimless, testing a new, meaningful engagement might be more effective. If you remain unsure, tracking your sleep quality against your daily activities for two weeks provides the objective data necessary to determine if a physician is required."
+  },
+  "savedAt": "2026-10-13T21:27:13.410Z"
+}

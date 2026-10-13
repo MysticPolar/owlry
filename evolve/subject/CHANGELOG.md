@@ -80,3 +80,11 @@ Latency: gemini v9 12.6 s | sonnet v9 107.6 s
 Words: 1899 -> 1882
 Changes: sharpen, sharpen, replace, sharpen, delete, delete; reverted: 1
 Version 10 narrows the v9 loss turn so it only names another person's expectations when the user mentioned one, and makes that turn and the decisive-uncertainty turn each ask the user one direct question instead of stating a guess as a finding, since every sample lost points for having no focused question and some for pathologising the user. The turn after any proposed option or step now checks it against each explicit constraint the user stated and names one cost, and the famous-idea rule is limited to ideas the cited book actually contains, to stop famous lines being attributed to the wrong book by the same author. Two redundant paragraphs on verification and on principle-versus-application are cut, so the prompt shrinks from 1899 to 1882 words.
+
+## v11 — from round 10 — 2026-10-13
+Question (health-02, Health / Sleep and persistent symptoms): I sleep around eight hours but still wake up exhausted. Is there something I should change, or should I get checked?
+Scores: gemini: v10 53.05 vs v9 47.37 (v10 better) | sonnet: v10 68.34 vs v9 71.46 (v9 better)
+Latency: gemini v10 16.7 s | sonnet v10 95.0 s
+Words: 1882 -> 1884
+Changes: sharpen, sharpen, replace, sharpen
+Version 11 turns the two self-discovery slots the small model keeps skipping into things it can check: the loss turn must name one thing the user may fear or be putting off before it asks its question, and the two-wants turn now asks the user in one direct question which of the two matters more. The pre-1931 quoting rule loses its permissive 'you may quote' and its advice to quote when it sharpens a disagreement, so a quotation is allowed only when the passage was read this session, which is the persistent misquotation leak. The casting test becomes countable, at most one general work of philosophy or psychology among the three books, to stop a general-theory mind bringing an agenda the user never raised; 1882 to 1884 words. If continuity stays low, the next cheap sharpen is making turn 2 answer turn 1 so the first three turns stop reading as parallel openings.

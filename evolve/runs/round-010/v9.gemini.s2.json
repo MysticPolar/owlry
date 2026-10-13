@@ -1,0 +1,124 @@
+{
+  "lane": "gemini",
+  "version": 9,
+  "sample": 2,
+  "model": "gemini-3.1-flash-lite",
+  "settings": {
+    "thinkingLevel": "MEDIUM",
+    "temperature": 0.9,
+    "maxOutputTokens": 16384,
+    "fallback": "none"
+  },
+  "latencyMs": 8180,
+  "output": {
+    "situation": "You report sleeping eight hours nightly but still experience persistent exhaustion upon waking. The central tension lies between treating this as a physiological malfunction requiring medical intervention or as an environmental or existential issue rooted in your habits and daily purpose.",
+    "minds": [
+      {
+        "title": "The Biological Reductionist",
+        "concern": "Physical mechanisms and physiological states",
+        "author": "William James",
+        "book": "The Principles of Psychology",
+        "year": 1890
+      },
+      {
+        "title": "The Systems Architect",
+        "concern": "Optimization of environment and routines",
+        "author": "James Clear",
+        "book": "Atomic Habits",
+        "year": 2018
+      },
+      {
+        "title": "The Existential Skeptic",
+        "concern": "The psychological load of purpose and meaning",
+        "author": "Viktor Frankl",
+        "book": "Man's Search for Meaning",
+        "year": 1946
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Biological Reductionist",
+        "text": "You might be focused on the quantity of sleep, but the quality of your physiological state decides how restorative that time actually is, perhaps due to internal conditions that are not apparent while you are awake.",
+        "author": "William James",
+        "book": "The Principles of Psychology",
+        "pd": true,
+        "basis": "[Basis: William James, The Principles of Psychology, Chapter 2](https://psychclassics.yorku.ca/James/Principles/)"
+      },
+      {
+        "speaker": "The Systems Architect",
+        "text": "You could be ignoring environmental cues that keep your system in a state of alertness even when you are supposedly resting, so maybe small adjustments to your evening routine would change the quality of your sleep.",
+        "author": "James Clear",
+        "book": "Atomic Habits",
+        "pd": false,
+        "basis": "[Basis: James Clear, Atomic Habits, Chapter 16](https://jamesclear.com/atomic-habits)"
+      },
+      {
+        "speaker": "The Existential Skeptic",
+        "text": "You might feel exhausted because your daily activities lack a sense of purpose, which drains your internal batteries regardless of how long you spend in bed, if your mind carries a heavy burden of aimlessness.",
+        "author": "Viktor Frankl",
+        "book": "Man's Search for Meaning",
+        "pd": false,
+        "basis": "[Basis: Viktor Frankl, Man's Search for Meaning, Part 1](https://www.penguinrandomhouse.com/books/296766/mans-search-for-meaning-by-viktor-e-frankl/)"
+      },
+      {
+        "speaker": "The Biological Reductionist",
+        "text": "You suggest environment and purpose matter, but if your biological clock is fundamentally misaligned, no amount of habit optimization will fix the underlying exhaustion that defines your waking experience.",
+        "author": "William James",
+        "book": "The Principles of Psychology",
+        "pd": true,
+        "basis": "[Basis: William James, The Principles of Psychology, Chapter 4](https://psychclassics.yorku.ca/James/Principles/)"
+      },
+      {
+        "speaker": "The Systems Architect",
+        "text": "You claim biology is the only hurdle, but if you do not track your evening light exposure and temperature for 7 days, you are guessing about variables you can easily control.",
+        "author": "James Clear",
+        "book": "Atomic Habits",
+        "pd": false,
+        "basis": "[Basis: James Clear, Atomic Habits, Chapter 15](https://jamesclear.com/atomic-habits)"
+      },
+      {
+        "speaker": "The Existential Skeptic",
+        "text": "You think tracking habits will help, but if your work feels empty, you might just be optimizing the path toward deeper burnout, as your exhaustion might stem from a lack of meaning rather than light levels.",
+        "author": "Viktor Frankl",
+        "book": "Man's Search for Meaning",
+        "pd": false,
+        "basis": "[Basis: Viktor Frankl, Man's Search for Meaning, Part 2](https://www.penguinrandomhouse.com/books/296766/mans-search-for-meaning-by-viktor-e-frankl/)"
+      },
+      {
+        "speaker": "The Systems Architect",
+        "text": "I drop my earlier claim that habit optimization is sufficient, as the Existential Skeptic points out that motivation matters; maybe you should track both your environment and your stress levels for a week to see if you can identify a pattern.",
+        "author": "James Clear",
+        "book": "Atomic Habits",
+        "pd": false,
+        "basis": "[Basis: James Clear, Atomic Habits, Chapter 3](https://jamesclear.com/atomic-habits)"
+      },
+      {
+        "speaker": "The Biological Reductionist",
+        "text": "You both focus on psychology, but if you do not see a doctor to rule out sleep apnea or other physical disruptions, you might ignore a mechanical failure that no amount of purpose can overcome.",
+        "author": "William James",
+        "book": "The Principles of Psychology",
+        "pd": true,
+        "basis": "[Basis: William James, The Principles of Psychology, Chapter 1](https://psychclassics.yorku.ca/James/Principles/)"
+      },
+      {
+        "speaker": "The Existential Skeptic",
+        "text": "You propose a doctor, but if you treat your body purely like a machine to be repaired, you might miss the chance to address the meaninglessness that could be causing your fatigue, if your life feels like it lacks an anchor.",
+        "author": "Viktor Frankl",
+        "book": "Man's Search for Meaning",
+        "pd": false,
+        "basis": "[Basis: Viktor Frankl, Man's Search for Meaning, Part 2](https://www.penguinrandomhouse.com/books/296766/mans-search-for-meaning-by-viktor-e-frankl/)"
+      },
+      {
+        "speaker": "The Biological Reductionist",
+        "text": "You disagree about the necessity of a doctor, but the dispute remains open: does the exhaustion come from a physical break that requires clinical attention, or a life out of balance that requires a revaluation of your purpose?",
+        "author": "William James",
+        "book": "The Principles of Psychology",
+        "pd": true,
+        "basis": "[Basis: William James, The Principles of Psychology, Chapter 2](https://psychclassics.yorku.ca/James/Principles/)"
+      }
+    ],
+    "clearer": "The debate highlights a division between treating your exhaustion as a biological symptom or a psychological consequence. It remains disputed whether clinical testing or existential re-evaluation should take precedence, leaving you to decide if your fatigue feels like a physical glitch or a lack of engagement with your daily life.",
+    "dependsOn": "If you experience physical symptoms like snoring or gasping, a medical check becomes the priority to rule out apnea. If your sleep quality is physically high but your morning dread is tied to a specific project or role, re-evaluating your goals might be more effective than a doctor visit. To distinguish these, keep a log for one week noting both your physical rest and your sense of purpose during the day."
+  },
+  "savedAt": "2026-10-13T21:27:26.045Z"
+}

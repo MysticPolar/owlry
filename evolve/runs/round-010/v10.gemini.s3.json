@@ -1,0 +1,124 @@
+{
+  "lane": "gemini",
+  "version": 10,
+  "sample": 3,
+  "model": "gemini-3.1-flash-lite",
+  "settings": {
+    "thinkingLevel": "MEDIUM",
+    "temperature": 0.9,
+    "maxOutputTokens": 16384,
+    "fallback": "none"
+  },
+  "latencyMs": 30558,
+  "output": {
+    "situation": "You are sleeping eight hours but waking up exhausted, which creates a gap between your expectation of rest and your actual experience of energy. It is unclear whether your exhaustion stems from physiological sleep architecture, behavioral habits, or psychological factors. You are currently weighing whether to adjust your routine or consult a professional.",
+    "minds": [
+      {
+        "title": "The Bio-Mechanic",
+        "concern": "Sleep architecture and physiological function",
+        "author": "Matthew Walker",
+        "book": "Why We Sleep",
+        "year": 2017
+      },
+      {
+        "title": "The Habit Strategist",
+        "concern": "Environment and behavioral consistency",
+        "author": "James Clear",
+        "book": "Atomic Habits",
+        "year": 2018
+      },
+      {
+        "title": "The Existential Skeptic",
+        "concern": "Subjective interpretation of physical states",
+        "author": "William James",
+        "book": "The Principles of Psychology",
+        "year": 1890
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Bio-Mechanic",
+        "text": "You might be getting eight hours in bed, but if your sleep architecture is fragmented, you are not actually getting eight hours of restorative rest. Perhaps your circadian rhythm is fighting against your schedule, preventing deep sleep cycles that you need to feel refreshed.",
+        "author": "Matthew Walker",
+        "book": "Why We Sleep",
+        "pd": false,
+        "basis": "[Basis: Matthew Walker, Why We Sleep, Chapter 2]"
+      },
+      {
+        "speaker": "The Habit Strategist",
+        "text": "I would suggest that your evening environment could be the culprit. If you scroll through your phone right before bed, your brain might be primed for stimulation instead of sleep, which would make your eight hours less effective than they appear.",
+        "author": "James Clear",
+        "book": "Atomic Habits",
+        "pd": false,
+        "basis": "[Basis: James Clear, Atomic Habits, Chapter 15]"
+      },
+      {
+        "speaker": "The Existential Skeptic",
+        "text": "It is possible that you are simply experiencing a state of mind where the label of exhaustion has become a habit in itself. You may feel that you are tired because you expect to be, rather than because your physiology is failing to recover during the night.",
+        "author": "William James",
+        "book": "The Principles of Psychology",
+        "pd": false,
+        "basis": "[Basis: William James, The Principles of Psychology, Chapter 20]"
+      },
+      {
+        "speaker": "The Bio-Mechanic",
+        "text": "The Existential Skeptic argues that feeling exhausted is just a habit of mind, but that ignores the biological reality of sleep apnea or other sleep disorders. If your oxygen levels drop during the night, you might feel exhausted no matter how much you mentally convince yourself you should be rested.",
+        "author": "Matthew Walker",
+        "book": "Why We Sleep",
+        "pd": false,
+        "basis": "[Basis: Matthew Walker, Why We Sleep, Chapter 12]"
+      },
+      {
+        "speaker": "The Habit Strategist",
+        "text": "The Bio-Mechanic claims that biological failures are the primary issue, yet small, consistent habit changes often solve these problems before medical intervention is required. If you adjust your light exposure by dimming lamps one hour before bed, you might fix the issue without needing to seek a doctor.",
+        "author": "James Clear",
+        "book": "Atomic Habits",
+        "pd": false,
+        "basis": "[Basis: James Clear, Atomic Habits, Chapter 15]"
+      },
+      {
+        "speaker": "The Existential Skeptic",
+        "text": "The Habit Strategist suggests that simple environmental changes like dimming lights are the solution, but perhaps you actually desire a change in your daily purpose that would resolve your fatigue. If you lack interest in your daily tasks, you might interpret a normal physical state as profound exhaustion.",
+        "author": "William James",
+        "book": "The Principles of Psychology",
+        "pd": false,
+        "basis": "[Basis: William James, The Principles of Psychology, Chapter 10]"
+      },
+      {
+        "speaker": "The Bio-Mechanic",
+        "text": "I drop my earlier claim that only architecture matters, because I concede to The Habit Strategist that consistency in your routine is a vital foundation for that architecture. However, I still maintain that if this exhaustion persists, you must see a doctor to rule out physical sleep pathology first.",
+        "author": "Matthew Walker",
+        "book": "Why We Sleep",
+        "pd": false,
+        "basis": "[Basis: Matthew Walker, Why We Sleep, Chapter 12]"
+      },
+      {
+        "speaker": "The Habit Strategist",
+        "text": "To start, I suggest you track your sleep quality for exactly 7 days, noting your screen usage and caffeine intake, to see if a pattern emerges. This provides data before you commit to the time and cost of a clinical sleep study or medical appointment.",
+        "author": "James Clear",
+        "book": "Atomic Habits",
+        "pd": false,
+        "basis": "[Basis: James Clear, Atomic Habits, Chapter 1]"
+      },
+      {
+        "speaker": "The Bio-Mechanic",
+        "text": "Tracking your habits for 7 days helps identify lifestyle interference, but it does not account for the biological cost of potential undiagnosed sleep apnea. If you follow this tracking plan, you might lose valuable time if a medical issue is actually the root cause of your exhaustion.",
+        "author": "Matthew Walker",
+        "book": "Why We Sleep",
+        "pd": false,
+        "basis": "[Basis: Matthew Walker, Why We Sleep, Chapter 12]"
+      },
+      {
+        "speaker": "The Existential Skeptic",
+        "text": "We still disagree on whether this exhaustion is a physiological deficit or a psychological manifestation. Does your exhaustion persist even on days when you feel entirely satisfied with your work or personal life, or is it tied to the times when you feel bored or unfulfilled?",
+        "author": "William James",
+        "book": "The Principles of Psychology",
+        "pd": true,
+        "basis": "[Basis: William James, The Principles of Psychology, Chapter 20]"
+      }
+    ],
+    "clearer": "The discussion clarified that your exhaustion could be a genuine biological symptom, a consequence of poor habits, or a reflection of your subjective state. A significant disagreement remains regarding whether you should prioritize self-tracking or immediate medical consultation. A useful self-reflection involves noticing if your fatigue fluctuates based on your daily engagement or remains constant regardless of your mood.",
+    "dependsOn": "- If you experience heavy snoring, gasping, or morning headaches → medical consultation becomes more reasonable, because these are indicators of sleep pathology that habit changes cannot fix.\n- If your exhaustion varies significantly with your daily schedule or screen usage → habit adjustment becomes more reasonable, because you can likely isolate the environmental cause yourself.\n- If you are unsure about the nature of your exhaustion → maintain a 7-day sleep log documenting both your physical symptoms and your daily emotional satisfaction to distinguish between lifestyle factors and potential underlying health concerns."
+  },
+  "savedAt": "2026-10-13T21:28:27.432Z"
+}
