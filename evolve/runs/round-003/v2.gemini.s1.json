@@ -1,0 +1,116 @@
+{
+  "lane": "gemini",
+  "version": 2,
+  "sample": 1,
+  "model": "gemini-3.1-flash-lite",
+  "settings": {
+    "thinkingLevel": "MEDIUM",
+    "temperature": 0.9,
+    "maxOutputTokens": 16384,
+    "fallback": "none"
+  },
+  "latencyMs": 12973,
+  "output": {
+    "situation": "The user is caught between the pressure to find a singular 'calling' and the practical need for stability and connection with loved ones. They struggle with the assumption that a meaningful life requires a pre-existing destination, rather than an active process of construction.",
+    "minds": [
+      {
+        "title": "The Existentialist",
+        "concern": "The freedom to define one's own purpose.",
+        "author": "Jean-Paul Sartre",
+        "book": "Existentialism is a Humanism",
+        "year": 1946
+      },
+      {
+        "title": "The Virtue Ethicist",
+        "concern": "The cultivation of character through consistent action.",
+        "author": "Aristotle",
+        "book": "Nicomachean Ethics",
+        "year": -350
+      },
+      {
+        "title": "The Pragmatist",
+        "concern": "The necessity of action to resolve uncertainty.",
+        "author": "William James",
+        "book": "The Will to Believe",
+        "year": 1896
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Existentialist",
+        "text": "You are looking for a 'calling' as if it were a hidden treasure waiting to be discovered. You are free, and that is terrifying, but it means you don't 'have' a nature. You must invent your purpose through your choices.",
+        "author": "Jean-Paul Sartre",
+        "book": "Existentialism is a Humanism",
+        "pd": false,
+        "basis": "[Basis: Jean-Paul Sartre, Existentialism is a Humanism](https://www.marxists.org/reference/archive/sartre/works/exist/sartre.htm)"
+      },
+      {
+        "speaker": "The Virtue Ethicist",
+        "text": "Inventing from a void is exhausting. I suggest focusing on the excellence of your daily activity. Happiness isn't a feeling of having found a calling; it is the activity of the soul in accordance with virtue. Stability follows from excellence.",
+        "author": "Aristotle",
+        "book": "Nicomachean Ethics",
+        "pd": true,
+        "basis": "[Basis: Aristotle, Nicomachean Ethics, Book I](https://classics.mit.edu/Aristotle/nicomachaen.1.i.html)"
+      },
+      {
+        "speaker": "The Pragmatist",
+        "text": "You both assume we can think our way into this. But some truths are only accessible through action. If you wait for the 'calling' to appear before you move, you will wait forever. Try something, and watch how your life responds.",
+        "author": "William James",
+        "book": "The Will to Believe",
+        "pd": true,
+        "basis": "[Basis: William James, The Will to Believe, section IV](https://www.gutenberg.org/files/26659/26659-h/26659-h.htm)"
+      },
+      {
+        "speaker": "The Existentialist",
+        "text": "Pragmatism is fine, but it risks turning life into a series of aimless experiments. If you treat life as a trial, you avoid the responsibility of commitment. You must choose, even without a guarantee that it is the 'right' path.",
+        "author": "Jean-Paul Sartre",
+        "book": "Existentialism is a Humanism",
+        "pd": false,
+        "basis": "[Basis: Jean-Paul Sartre, Existentialism is a Humanism](https://www.marxists.org/reference/archive/sartre/works/exist/sartre.htm)"
+      },
+      {
+        "speaker": "The Virtue Ethicist",
+        "text": "I agree with the need for commitment, but not as an invention. It is a refinement. We are what we repeatedly do. Excellence is not an act, but a habit. Your focus on people you love is a great place to start building that character.",
+        "author": "Aristotle",
+        "book": "Nicomachean Ethics",
+        "pd": true,
+        "basis": "[Basis: Aristotle, Nicomachean Ethics, Book II](https://classics.mit.edu/Aristotle/nicomachaen.2.ii.html)"
+      },
+      {
+        "speaker": "The Pragmatist",
+        "text": "I’ll concede that 'aimless' is a danger. But the user isn't paralyzed by a lack of virtue; they are paralyzed by the fear that one choice precludes all others. You can be a 'good person' in many different jobs. The 'calling' is the feedback loop.",
+        "author": "William James",
+        "book": "The Will to Believe",
+        "pd": true,
+        "basis": "[Basis: William James, The Will to Believe, section IX](https://www.gutenberg.org/files/26659/26659-h/26659-h.htm)"
+      },
+      {
+        "speaker": "The Existentialist",
+        "text": "That is the trap. You think there is a 'correct' feedback loop out there. There isn't. The user's anxiety comes from looking for a sign from the world. Once they accept that the world sends no signs, they can stop waiting and start deciding.",
+        "author": "Jean-Paul Sartre",
+        "book": "Existentialism is a Humanism",
+        "pd": false,
+        "basis": "[Basis: Jean-Paul Sartre, Existentialism is a Humanism](https://www.marxists.org/reference/archive/sartre/works/exist/sartre.htm)"
+      },
+      {
+        "speaker": "The Virtue Ethicist",
+        "text": "Wait—perhaps I was too abstract. If the user prioritizes people they love, that isn't just a side project. That is the material for their virtue. They don't need a career 'calling' to live well; they need to exercise their human capacities effectively.",
+        "author": "Aristotle",
+        "book": "Nicomachean Ethics",
+        "pd": true,
+        "basis": "[Basis: Aristotle, Nicomachean Ethics, Book I](https://classics.mit.edu/Aristotle/nicomachaen.1.i.html)"
+      },
+      {
+        "speaker": "The Pragmatist",
+        "text": "Exactly. The condition that settles this is whether the user needs a 'calling' to feel they have permission to act. If they realize they can just start, the 'calling' becomes a retrospective story they tell, not a prerequisite for starting.",
+        "author": "William James",
+        "book": "The Will to Believe",
+        "pd": true,
+        "basis": "[Basis: William James, The Will to Believe, section VI](https://www.gutenberg.org/files/26659/26659-h/26659-h.htm)"
+      }
+    ],
+    "clearer": "The main insight is that a 'calling' is likely a narrative constructed after the fact, rather than a hidden truth. What remains disputed is whether the path should be built through radical, groundless choice or through the steady cultivation of daily habits.",
+    "dependsOn": "- If the user feels stuck because they fear making the 'wrong' choice → prioritize the Pragmatist's approach: take the smallest, most reversible action possible to gather data.\n- If the user feels empty despite having stability → prioritize the Existentialist's approach: acknowledge that they are responsible for creating meaning, and stop searching for an external sign.\n- If the user is overwhelmed by the complexity of 'life' → prioritize the Virtue Ethicist's approach: identify the daily habits that support their stated value of 'time for loved ones' and treat those habits as the primary goal."
+  },
+  "savedAt": "2026-10-13T10:42:28.107Z"
+}

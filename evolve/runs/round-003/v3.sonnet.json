@@ -1,0 +1,123 @@
+{
+  "lane": "sonnet",
+  "version": 3,
+  "sample": null,
+  "model": "sonnet",
+  "settings": {
+    "agentType": "Explore",
+    "effort": "medium",
+    "note": "latency includes Claude Code subagent overhead"
+  },
+  "latencyMs": 74699,
+  "output": {
+    "situation": "You do not know what to do with your life. You want stability and time for people you love, but no kind of work feels like a calling. You have reported only those wants and that feeling. The decisive unknown is whether this is a shortage of information (you have not tried enough to know) or a settled preference for a life centered outside work. Your money, obligations and the people who depend on your income are also unknown.",
+    "minds": [
+      {
+        "title": "The Experimenter",
+        "concern": "You learn what fits by trying things, not by introspecting.",
+        "author": "Herminia Ibarra",
+        "book": "Working Identity: Unconventional Strategies for Reinventing Your Career",
+        "year": 2003
+      },
+      {
+        "title": "The Craftsman",
+        "concern": "Stability and satisfaction come from becoming skilled and useful, not from finding a passion first.",
+        "author": "Cal Newport",
+        "book": "So Good They Can't Ignore You",
+        "year": 2012
+      },
+      {
+        "title": "The Simplifier",
+        "concern": "The real price of any arrangement is the life you spend to pay for it, and time for people is the thing to protect.",
+        "author": "Henry David Thoreau",
+        "book": "Walden",
+        "year": 1854
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Experimenter",
+        "text": "I read this as a data shortage, not a character flaw. This person has one narrow sample of life and is trying to deduce the whole answer by thinking harder. Ibarra found career changers learned who they were by trying things and then reflecting, rarely the other way round. So the first job is gathering evidence, not producing an answer.",
+        "author": "Herminia Ibarra",
+        "book": "Working Identity: Unconventional Strategies for Reinventing Your Career",
+        "pd": false,
+        "basis": "Basis: Herminia Ibarra, Working Identity (source not verified online; idea paraphrased, no section cited)"
+      },
+      {
+        "speaker": "The Simplifier",
+        "text": "You are skipping what they already said. Stability and time for loved ones is a real answer, just not a job title. Thoreau spent two years at Walden Pond starting in 1845 and found that a little paid work covered his needs. Maybe the question is how little of their life this way of living should cost.",
+        "author": "Henry David Thoreau",
+        "book": "Walden",
+        "pd": true,
+        "basis": "Basis: Henry David Thoreau, Walden (source not verified online; idea paraphrased, no section cited)"
+      },
+      {
+        "speaker": "The Craftsman",
+        "text": "Nothing feels like a calling? That is the normal state, not a symptom. Newport treats follow your passion as a shaky hypothesis. As he reads it, Steve Jobs told Stanford graduates in 2005 to love their work, yet Apple began as a practical money-making venture. Love for work usually grows after you get good and gain some control.",
+        "author": "Cal Newport",
+        "book": "So Good They Can't Ignore You",
+        "pd": false,
+        "basis": "Basis: Cal Newport, So Good They Can't Ignore You (source not verified online; idea paraphrased, no section cited)"
+      },
+      {
+        "speaker": "The Simplifier",
+        "text": "I distrust the phrase what to do with my life. It treats a whole lifetime as one decision, which is how people freeze. Thoreau thought many people drift into quiet desperation by never questioning the plan they inherited. Shrink it: what does the next two years need to contain? That is answerable, even if the lifetime is not.",
+        "author": "Henry David Thoreau",
+        "book": "Walden",
+        "pd": true,
+        "basis": "Basis: Henry David Thoreau, Walden (source not verified online; idea paraphrased, no section cited)"
+      },
+      {
+        "speaker": "The Experimenter",
+        "text": "Fine, shrink it, then start cheaply. This month: talk to someone in a job that looks steady, shadow a workday or do a small project, take a short course. Judge each by how the days feel, not by whether it is a calling. Ibarra says reflection alone replays the old self; doing creates new options.",
+        "author": "Herminia Ibarra",
+        "book": "Working Identity: Unconventional Strategies for Reinventing Your Career",
+        "pd": false,
+        "basis": "Basis: Herminia Ibarra, Working Identity (source not verified online; idea paraphrased, no section cited)"
+      },
+      {
+        "speaker": "The Craftsman",
+        "text": "Three tests, three shrugs. If what this person wants is relief from the fear of choosing wrong, sampling feeds that fear, because no sample ever announces itself as the answer. I would go further than Newport here: endless sampling can become a way of never choosing. Stay in one field for a year and get useful. Skill is what buys control over your hours.",
+        "author": "Cal Newport",
+        "book": "So Good They Can't Ignore You",
+        "pd": false,
+        "basis": "Basis: Cal Newport, So Good They Can't Ignore You (source not verified online; idea paraphrased, no section cited)"
+      },
+      {
+        "speaker": "The Simplifier",
+        "text": "Look at the two things they named. Steady pay and free evenings pull apart: the ladder that makes income steady often eats hours, while a cheap life frees hours but loosens income. Craftsman, your path serves stability; mine serves time. If what they fear is being a burden, they will pick yours, so what do their people actually need?",
+        "author": "Henry David Thoreau",
+        "book": "Walden",
+        "pd": true,
+        "basis": "Basis: Henry David Thoreau, Walden (source not verified online; idea paraphrased, no section cited)"
+      },
+      {
+        "speaker": "The Experimenter",
+        "text": "Craftsman, you moved me on one point. Sampling aimed at finding a calling will fail, because the target never shows up. So I change my claim: test against criteria this person already gave us, namely predictable hours, steady pay and tolerable work. Run my small tests as filters, then stay in one field for a year.",
+        "author": "Herminia Ibarra",
+        "book": "Working Identity: Unconventional Strategies for Reinventing Your Career",
+        "pd": false,
+        "basis": "Basis: Herminia Ibarra, Working Identity (source not verified online; idea paraphrased, no section cited)"
+      },
+      {
+        "speaker": "The Craftsman",
+        "text": "Simplifier, your Walden case proves less than you think. Thoreau was single, and critics note he walked into Concord often to eat and visit family. Cheap living works when nobody depends on your income. If loved ones need money, a low-cost life might cost you time with them anyway.",
+        "author": "Cal Newport",
+        "book": "So Good They Can't Ignore You",
+        "pd": false,
+        "basis": "Basis: Cal Newport, So Good They Can't Ignore You (source not verified online; idea paraphrased, no section cited)"
+      },
+      {
+        "speaker": "The Simplifier",
+        "text": "Fair, and it narrows my claim: frugality buys time only if it does not shift the cost onto someone else. So the settling condition is the fixed cost of the people they love. If a stable role gives predictable hours and covers those costs, stay and deepen the skill. If it takes their evenings, cut expenses before changing fields.",
+        "author": "Henry David Thoreau",
+        "book": "Walden",
+        "pd": true,
+        "basis": "Basis: Henry David Thoreau, Walden (source not verified online; idea paraphrased, no section cited)"
+      }
+    ],
+    "clearer": "The main insight is that you may have a usable answer already: stability and time for people are criteria, even though they are not a calling. That turns the question from who should I become into what the next stretch of life has to contain. Still disputed: whether to sample widely first (the Experimenter), commit to one field and build skill (the Craftsman), or lower costs to protect time (the Simplifier). A possible self-reflection is which of your two wants, steady income or free time, you would give up first if you had to, and whether fear of choosing wrong is part of why nothing feels like a calling. These are possibilities to test, not conclusions about you.",
+    "dependsOn": "If you have people who rely on your income, or you value predictability above all, then choosing a reasonably stable field and building skill for about a year becomes more reasonable, because skill earns both pay and leverage over your hours.\nIf your fixed costs are low and nobody depends on your income, then lowering expenses and choosing work for its hours becomes more reasonable, because time is then the scarcer resource.\nIf you have not tried enough to know what tolerable work looks like, then run a few cheap tests this month (a conversation with someone in a steady job, a short project, a short course) and judge each by predictable hours, steady pay and how the days feel.\nIf the unknown is whether a stable role will leave you evenings, learn it by asking people already in that role about their typical week before committing."
+  },
+  "savedAt": "2026-10-13T10:44:52.625Z"
+}

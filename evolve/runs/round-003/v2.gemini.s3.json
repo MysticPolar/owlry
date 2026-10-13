@@ -1,0 +1,116 @@
+{
+  "lane": "gemini",
+  "version": 2,
+  "sample": 3,
+  "model": "gemini-3.1-flash-lite",
+  "settings": {
+    "thinkingLevel": "MEDIUM",
+    "temperature": 0.9,
+    "maxOutputTokens": 16384,
+    "fallback": "none"
+  },
+  "latencyMs": 11728,
+  "output": {
+    "situation": "The user feels lost because they equate a 'calling' with a life purpose, fearing that prioritizing stability and relationships over a grand mission is a form of surrender. The decisive uncertainty lies in whether a 'calling' is an objective truth to be discovered or a narrative construct to be built, and whether their desire for a quiet, connected life is sufficient justification for their choices.",
+    "minds": [
+      {
+        "title": "The Existentialist",
+        "concern": "Creating meaning through radical freedom and choice.",
+        "author": "Jean-Paul Sartre",
+        "book": "Existentialism is a Humanism",
+        "year": 1946
+      },
+      {
+        "title": "The Simple Liver",
+        "concern": "Finding clarity through deliberate, minimalist living.",
+        "author": "Henry David Thoreau",
+        "book": "Walden",
+        "year": 1854
+      },
+      {
+        "title": "The Pragmatic Stoic",
+        "concern": "Distinguishing between internal agency and external expectations.",
+        "author": "Epictetus",
+        "book": "Enchiridion",
+        "year": 135
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Existentialist",
+        "text": "You are paralyzed because you imagine a 'calling' is hidden somewhere like a treasure, waiting for you to find it. In reality, you are the project. You must choose what your life is, rather than waiting for an essence to dictate your path.",
+        "author": "Jean-Paul Sartre",
+        "book": "Existentialism is a Humanism",
+        "pd": false,
+        "basis": "[Basis: Jean-Paul Sartre, Existentialism is a Humanism, Section 1](https://www.marxists.org/reference/archive/sartre/works/exist/sartre.htm)"
+      },
+      {
+        "speaker": "The Simple Liver",
+        "text": "Sartre pushes you toward a heavy freedom, but you won't hear your own voice if you keep living as if you need a grand project. I suggest you go to the woods—or your own version of them—and simplify your affairs until you see what you truly need.",
+        "author": "Henry David Thoreau",
+        "book": "Walden",
+        "pd": true,
+        "basis": "[Basis: Henry David Thoreau, Walden, Where I Lived, and What I Lived For](https://www.gutenberg.org/files/205/205-h/205-h.htm#link2HCH0002)"
+      },
+      {
+        "speaker": "The Pragmatic Stoic",
+        "text": "Both of you are creating unnecessary agitation. A 'calling' is an external opinion you have adopted. You suffer because you are trying to control your future reputation instead of focusing on what is actually in your power: your current actions and the quality of your relationships.",
+        "author": "Epictetus",
+        "book": "Enchiridion",
+        "pd": true,
+        "basis": "[Basis: Epictetus, Enchiridion, Section 1](https://www.gutenberg.org/files/45109/45109-h/45109-h.htm#chap01)"
+      },
+      {
+        "speaker": "The Existentialist",
+        "text": "Stoicism risks turning you into a stone. If you treat your life as just a series of external events to be accepted, you ignore the anguish that comes from realizing that your choices have no blueprint. You must feel that weight, for it is the proof of your freedom.",
+        "author": "Jean-Paul Sartre",
+        "book": "Existentialism is a Humanism",
+        "pd": false,
+        "basis": "[Basis: Jean-Paul Sartre, Existentialism is a Humanism, Section 1](https://www.marxists.org/reference/archive/sartre/works/exist/sartre.htm)"
+      },
+      {
+        "speaker": "The Simple Liver",
+        "text": "Anguish is just a symptom of a cluttered mind. If you simplify your daily habits and focus on the immediate, tangible needs of those you love, the 'weight' Sartre speaks of dissipates. Freedom isn't found in constant choosing, but in the deliberate repetition of a life well-examined.",
+        "author": "Henry David Thoreau",
+        "book": "Walden",
+        "pd": true,
+        "basis": "[Basis: Henry David Thoreau, Walden, Conclusion](https://www.gutenberg.org/files/205/205-h/205-h.htm#link2HCH0018)"
+      },
+      {
+        "speaker": "The Pragmatic Stoic",
+        "text": "I concede that my focus on endurance can sound cold, but Thoreau is right about simplicity. If you stop chasing the phantom of a 'calling'—which is just a story others told you to value—you are free to do your duty. If your duty is to your loved ones, that is enough.",
+        "author": "Epictetus",
+        "book": "Enchiridion",
+        "pd": true,
+        "basis": "[Basis: Epictetus, Enchiridion, Section 30](https://www.gutenberg.org/files/45109/45109-h/45109-h.htm#chap30)"
+      },
+      {
+        "speaker": "The Existentialist",
+        "text": "I am shifting my stance. Perhaps you don't need a grand 'calling' to be authentic. If you choose to prioritize stability and love with full awareness that you are creating that value yourself, you have already moved past the paralysis of waiting for a sign.",
+        "author": "Jean-Paul Sartre",
+        "book": "Existentialism is a Humanism",
+        "pd": false,
+        "basis": "[Basis: Jean-Paul Sartre, Existentialism is a Humanism, Section 3](https://www.marxists.org/reference/archive/sartre/works/exist/sartre.htm)"
+      },
+      {
+        "speaker": "The Simple Liver",
+        "text": "Exactly. You aren't 'settling'; you are curating. If you choose to invest in your relationships, you are building a life that is deep, not wide. That isn't a lack of a calling; it is a life of intention.",
+        "author": "Henry David Thoreau",
+        "book": "Walden",
+        "pd": true,
+        "basis": "[Basis: Henry David Thoreau, Walden, Where I Lived, and What I Lived For](https://www.gutenberg.org/files/205/205-h/205-h.htm#link2HCH0002)"
+      },
+      {
+        "speaker": "The Pragmatic Stoic",
+        "text": "The conflict is settled: your 'calling' is whatever you choose to accept responsibility for. Whether that is a career or a family, the meaning is determined by how well you perform your chosen duties, not by how much your choice impresses the world.",
+        "author": "Epictetus",
+        "book": "Enchiridion",
+        "pd": true,
+        "basis": "[Basis: Epictetus, Enchiridion, Section 1](https://www.gutenberg.org/files/45109/45109-h/45109-h.htm#chap01)"
+      }
+    ],
+    "clearer": "The debate shifted from viewing a 'calling' as an external discovery to seeing it as an internal commitment. The insight is that 'stability' and 'connection' are not fallbacks; they are valid, active choices. What remains disputed is whether one needs to feel the existential weight of this choice to remain authentic, or if simple, duty-bound action is sufficient.",
+    "dependsOn": "If your desire for stability is driven by fear of failure, then exploring new risks is necessary to distinguish between preference and avoidance. If your desire for stability is a conscious preference for depth over breadth, then you should treat your current commitments as your deliberate project and stop looking for a 'calling' that exists outside of them. To learn which is true, test your values by intentionally making one small, uncomfortable change to your routine; if you feel relief, it is growth; if you feel panic, it is likely an avoidance of a deeper dissatisfaction."
+  },
+  "savedAt": "2026-10-13T10:43:23.069Z"
+}

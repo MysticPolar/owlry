@@ -631,13 +631,27 @@ async function aggregateJudge(cfg: Config, round: number, lane: string): Promise
     const names = cards[0].criteria.map((c) => c.name);
     scores[v] = {
       criteria: names.map((name) => {
-        const pts = cards.map((c) => c.criteria.find((x) => x.name === name)?.points ?? 0);
-        const max = cards[0].criteria.find((x) => x.name === name)?.max ?? 0;
-        return { name, max, points: mean(pts) };
+        const crits = cards.map((c) => c.criteria.find((x) => x.name === name));
+        const pts = crits.map((c) => c?.points ?? 0);
+        const max = crits[0]?.max ?? 0;
+        // subcriteria: mean rating and points by name, with every sample's example and limitation kept, tagged
+        const subNames = [...new Set(crits.flatMap((c) => ((c?.sub ?? []) as SubScore[]).map((s) => s.name)))];
+        const sub = subNames.map((sn) => {
+          const hits = crits.map((c, i) => ({ s: ((c?.sub ?? []) as SubScore[]).find((x) => x.name === sn), i })).filter((h) => h.s);
+          return {
+            name: sn,
+            rating: mean(hits.map((h) => h.s!.rating ?? 0)),
+            points: mean(hits.map((h) => h.s!.points ?? 0)),
+            example: hits.map((h) => `[s${files[h.i].sample}] ${h.s!.example ?? ''}`).join(' '),
+            limitation: hits.map((h) => `[s${files[h.i].sample}] ${h.s!.limitation ?? ''}`).join(' '),
+          };
+        });
+        return { name, max, points: mean(pts), sub };
       }),
       uncapped: mean(cards.map((c) => c.uncapped)),
       score: mean(totals),
-      capReason: cards.map((c) => c.capReason).find((r) => r) ?? null,
+      // a cap only counts when it changed the number
+      capReason: cards.filter((c) => c.capReason && c.score < c.uncapped).map((c) => c.capReason).find((r) => r) ?? null,
       strengths: cards.flatMap((c, i) => (c.strengths ?? []).map((s) => `[s${files[i].sample}] ${s}`)),
       weaknesses: cards.flatMap((c, i) => (c.weaknesses ?? []).map((s) => `[s${files[i].sample}] ${s}`)),
       editorNotes: cards.flatMap((c, i) => (c.editorNotes ?? []).map((s) => `[s${files[i].sample}] ${s}`)),
@@ -669,8 +683,16 @@ async function aggregateJudge(cfg: Config, round: number, lane: string): Promise
   return rec;
 }
 
+interface SubScore {
+  name: string;
+  rating?: number;
+  points?: number;
+  example?: string;
+  limitation?: string;
+}
+
 interface Scorecard {
-  criteria: { name: string; max: number; points: number; sub?: unknown[] }[];
+  criteria: { name: string; max: number; points: number; sub?: SubScore[] }[];
   uncapped: number;
   score: number;
   capReason: string | null;
@@ -695,6 +717,8 @@ async function cmdSaveJudge(cfg: Config, f: Record<string, string>) {
   }
   if (!raw.A || typeof raw.A.score !== 'number') fail('judge answer has no A.score');
   if (b.B !== null && (!raw.B || typeof raw.B.score !== 'number')) fail('judge answer has no B.score but two debates were given');
+  // the judge sometimes fills capReason while saying the cap does not apply; a cap only counts when it lowered the score
+  for (const card of [raw.A, raw.B]) if (card && card.capReason && !(card.score < card.uncapped)) card.capReason = null;
   const scores: Record<string, Scorecard> = { [`v${b.A}`]: raw.A };
   if (b.B !== null && raw.B) scores[`v${b.B}`] = raw.B;
   const preferredVersion = raw.preferred === 'A' ? b.A : raw.preferred === 'B' ? b.B : raw.preferred === 'tie' ? 'tie' : null;
@@ -982,6 +1006,7 @@ const HELP = `evo <command> [--flag value]
   save-judge --round R --lane <lane> [--sample k] --file <answer.txt>
                                              unblind and save judge.<lane>[.sk].json; on a sampled lane also
                                              rebuild judge.<lane>.json as the mean over the samples saved so far
+  aggregate --round R --lane <lane>          rebuild judge.<lane>.json from the per-sample judge files
   editor-input --round R                     write editor-input.md
   apply-editor --round R --file <answer.txt> write the next version + changelog
   summary --round R                          one-screen result for a person
@@ -1001,6 +1026,11 @@ switch (cmd) {
   case 'save': await cmdSave(cfg, flags); break;
   case 'judge-input': await cmdJudgeInput(cfg, flags); break;
   case 'save-judge': await cmdSaveJudge(cfg, flags); break;
+  case 'aggregate': {
+    const agg = await aggregateJudge(cfg, Number(need(flags, 'round')), need(flags, 'lane'));
+    console.log(`rebuilt judge.${agg.lane}.json from ${agg.samples} samples: ${Object.entries(agg.scores).map(([v, s]) => `${v} ${s.score.toFixed(2)}`).join(', ')}`);
+    break;
+  }
   case 'editor-input': await cmdEditorInput(cfg, flags); break;
   case 'apply-editor': await cmdApplyEditor(cfg, flags); break;
   case 'summary': await cmdSummary(cfg, flags); break;

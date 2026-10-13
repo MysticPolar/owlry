@@ -1,0 +1,124 @@
+{
+  "lane": "gemini",
+  "version": 3,
+  "sample": 2,
+  "model": "gemini-3.1-flash-lite",
+  "settings": {
+    "thinkingLevel": "MEDIUM",
+    "temperature": 0.9,
+    "maxOutputTokens": 16384,
+    "fallback": "none"
+  },
+  "latencyMs": 11872,
+  "output": {
+    "situation": "The user is caught in the tension between seeking a 'calling'—a singular, life-defining purpose—and desiring the stability required to nurture personal relationships. There is an underlying assumption that a calling is something to be discovered rather than built, leading to paralysis when no immediate passion appears.",
+    "minds": [
+      {
+        "title": "The Stoic Minimalist",
+        "concern": "Removing distractions to focus on what is essential.",
+        "author": "Lucius Annaeus Seneca",
+        "book": "On the Shortness of Life",
+        "year": 49
+      },
+      {
+        "title": "The Experimental Pragmatist",
+        "concern": "Testing actions through experience rather than waiting for insight.",
+        "author": "William James",
+        "book": "The Will to Believe",
+        "year": 1896
+      },
+      {
+        "title": "The Relational Thinker",
+        "concern": "Meaning as a byproduct of participating in human activity.",
+        "author": "Hannah Arendt",
+        "book": "The Human Condition",
+        "year": 1958
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Stoic Minimalist",
+        "text": "You suffer because you look for a 'calling' as if it were a hidden treasure. Life is not short if you know how to use it, but you waste time by waiting for an epiphany that never comes.",
+        "author": "Lucius Annaeus Seneca",
+        "book": "On the Shortness of Life",
+        "pd": true,
+        "basis": "[Basis: Seneca, On the Shortness of Life, Chapter 1](https://en.wikisource.org/wiki/On_the_Shortness_of_Life)"
+      },
+      {
+        "speaker": "The Experimental Pragmatist",
+        "text": "The Stoic is right about waiting, but wrong about how to start. You cannot think your way into a calling. You must act as if something is meaningful to see if it sustains your interest through actual engagement.",
+        "author": "William James",
+        "book": "The Will to Believe",
+        "pd": true,
+        "basis": "[Basis: William James, The Will to Believe, The Will to Believe](https://www.gutenberg.org/files/26659/26659-h/26659-h.htm)"
+      },
+      {
+        "speaker": "The Relational Thinker",
+        "text": "Both of you view this as a personal project. You miss that meaning is never found in isolation. It is something we build with others through labor and shared action in the public world.",
+        "author": "Hannah Arendt",
+        "book": "The Human Condition",
+        "pd": false,
+        "basis": "[Basis: Hannah Arendt, The Human Condition, Chapter II](https://www.worldcat.org/title/human-condition/oclc/1054817105)"
+      },
+      {
+        "speaker": "The Stoic Minimalist",
+        "text": "But if you lose yourself in the 'public world' without first mastering your own attention, you become a slave to external demands. You will have stability, but no peace.",
+        "author": "Lucius Annaeus Seneca",
+        "book": "On the Shortness of Life",
+        "pd": true,
+        "basis": "[Basis: Seneca, On the Shortness of Life, Chapter 7](https://en.wikisource.org/wiki/On_the_Shortness_of_Life)"
+      },
+      {
+        "speaker": "The Experimental Pragmatist",
+        "text": "Peace is not the goal, progress is. By treating your career as a series of small experiments, you gain data on what you enjoy while keeping your schedule flexible enough to protect your relationships.",
+        "author": "William James",
+        "book": "The Will to Believe",
+        "pd": true,
+        "basis": "[Basis: William James, The Will to Believe, The Sentiment of Rationality](https://www.gutenberg.org/files/26659/26659-h/26659-h.htm)"
+      },
+      {
+        "speaker": "The Relational Thinker",
+        "text": "The Pragmatist treats life like a lab. But if you view your time as 'data points,' you turn your potential collaborators into tools. A calling isn't an experiment; it's a commitment to a community.",
+        "author": "Hannah Arendt",
+        "book": "The Human Condition",
+        "pd": false,
+        "basis": "[Basis: Hannah Arendt, The Human Condition, Chapter V](https://www.worldcat.org/title/human-condition/oclc/1054817105)"
+      },
+      {
+        "speaker": "The Stoic Minimalist",
+        "text": "Arendt makes a fair point. I concede that my focus on individual stillness can lead to coldness. We need others, but we must decide what to offer them so we aren't just reacting to their noise.",
+        "author": "Lucius Annaeus Seneca",
+        "book": "On the Shortness of Life",
+        "pd": true,
+        "basis": "[Basis: Seneca, On the Shortness of Life, Chapter 15](https://en.wikisource.org/wiki/On_the_Shortness_of_Life)"
+      },
+      {
+        "speaker": "The Experimental Pragmatist",
+        "text": "I’ll adjust my stance too. You don't have to be a cold scientist. Use your experiments to find which communities make you feel useful. That is how you bridge the gap between stability and meaning.",
+        "author": "William James",
+        "book": "The Will to Believe",
+        "pd": true,
+        "basis": "[Basis: William James, The Will to Believe, The Will to Believe](https://www.gutenberg.org/files/26659/26659-h/26659-h.htm)"
+      },
+      {
+        "speaker": "The Relational Thinker",
+        "text": "If you follow that, stop asking 'what should I do?' and start asking 'who do I want to stand with?' Stability is not about a job description; it’s about the people you hold through your actions.",
+        "author": "Hannah Arendt",
+        "book": "The Human Condition",
+        "pd": false,
+        "basis": "[Basis: Hannah Arendt, The Human Condition, Chapter III](https://www.worldcat.org/title/human-condition/oclc/1054817105)"
+      },
+      {
+        "speaker": "The Stoic Minimalist",
+        "text": "We agree then: reject the myth of a pre-existing 'calling' and move forward by choosing who you serve and what you can ignore to keep your life centered.",
+        "author": "Lucius Annaeus Seneca",
+        "book": "On the Shortness of Life",
+        "pd": true,
+        "basis": "[Basis: Seneca, On the Shortness of Life, Chapter 18](https://en.wikisource.org/wiki/On_the_Shortness_of_Life)"
+      }
+    ],
+    "clearer": "The debate shifted from viewing a 'calling' as an internal mystery to treating it as an active commitment. The main insight is that you are likely torn between two valid desires: the need for individual space and the need for public belonging. It remains disputed whether you should prioritize the 'what' (the work) or the 'who' (the community) first.",
+    "dependsOn": "If you value autonomy over everything → prioritize the Stoic path of pruning your schedule to ensure your primary commitments are to your own well-being and loved ones. If you value growth through change → prioritize the Pragmatist path of choosing low-risk, high-engagement projects to see what sticks. If you are uncertain of your role → engage in a shared local project to see if action with others provides the meaning you currently lack."
+  },
+  "savedAt": "2026-10-13T10:43:10.209Z"
+}

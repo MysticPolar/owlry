@@ -1,0 +1,646 @@
+{
+  "lane": "gemini",
+  "sample": 3,
+  "blind": {
+    "A": 2,
+    "B": 3
+  },
+  "scores": {
+    "v2": {
+      "criteria": [
+        {
+          "name": "Quality of discussion",
+          "max": 20,
+          "points": 11,
+          "sub": [
+            {
+              "name": "Continuity and responsiveness",
+              "rating": 6.5,
+              "points": 2.6,
+              "example": "Turn 2 answers Sartre's heavy freedom. Turn 3 addresses both of the other minds.",
+              "limitation": "Turns 8-9 mostly agree with turn 7 and take nothing further."
+            },
+            {
+              "name": "Development of ideas",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turn 7: choosing stability with full awareness becomes an authentic project.",
+              "limitation": "After turn 6, no new distinctions appear; it ends in restatement."
+            },
+            {
+              "name": "Exploration of central tensions",
+              "rating": 5,
+              "points": 2,
+              "example": "Turns 4-5 set Sartre's anguish against Thoreau's simplicity.",
+              "limitation": "No one examines the practical side of stability: money, work, what job to take."
+            },
+            {
+              "name": "Integration of perspectives",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Turn 6: the Stoic adopts Thoreau's simplicity.",
+              "limitation": "Turn 9 'The conflict is settled' forces agreement."
+            },
+            {
+              "name": "Progress toward understanding",
+              "rating": 6,
+              "points": 2.4,
+              "example": "Section D: stability and connection become active choices, not fallbacks.",
+              "limitation": "The question of where to start stays mostly unanswered by the debate itself."
+            }
+          ]
+        },
+        {
+          "name": "Quality of disagreement, trust and grounding",
+          "max": 20,
+          "points": 10.4,
+          "sub": [
+            {
+              "name": "Faithful engagement",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 6: the Stoic admits his endurance can sound cold.",
+              "limitation": "Turn 4 caricatures Stoicism as turning into stone. Turn 5 dismisses anguish as clutter."
+            },
+            {
+              "name": "Substance of challenges",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 4 says passive acceptance ignores that choices have no blueprint.",
+              "limitation": "No one tests whether a calling is real or merely another person's story (turn 6)."
+            },
+            {
+              "name": "Accuracy and support",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turn 6 cites Enchiridion 30 on duties to relations, which is apt.",
+              "limitation": "Turn 5 credits Thoreau's Conclusion with 'deliberate repetition', but that chapter warns against ruts. Scare quotes in pd=false turns 1 and 7."
+            },
+            {
+              "name": "Calibration and transparency",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Section D keeps the authenticity dispute open.",
+              "limitation": "Section E's relief-versus-panic test is offered as a reliable diagnosis."
+            },
+            {
+              "name": "Intellectual honesty and revision",
+              "rating": 6,
+              "points": 2.4,
+              "example": "Turn 7: 'I am shifting my stance' is stated explicitly.",
+              "limitation": "Sartre drops his anguish claim from turn 4 without answering the objections to it."
+            }
+          ]
+        },
+        {
+          "name": "Personal relevance",
+          "max": 10,
+          "points": 5.2,
+          "sub": [
+            {
+              "name": "Identification of the actual concern",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "Section A: the user fears that choosing stability means surrender.",
+              "limitation": "The literal question, 'Where do I start?', gets only an indirect answer."
+            },
+            {
+              "name": "Meaningful use of personal context",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Turn 7 builds on the user's stated priorities, stability and love.",
+              "limitation": "Turns 1-5 could be addressed to any lost person."
+            },
+            {
+              "name": "Fit with goals and values",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Turn 8: 'deep, not wide' matches the user's priorities.",
+              "limitation": "Thoreau's 'go to the woods' (turn 2) works against the user's need for stability."
+            },
+            {
+              "name": "Attention to constraints and stakes",
+              "rating": 3.5,
+              "points": 0.7,
+              "example": "Turn 6 names duty to loved ones as enough.",
+              "limitation": "Income, work and time constraints never appear."
+            },
+            {
+              "name": "Responsiveness to information",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Section E branches on fear versus preference.",
+              "limitation": "No focused question asks for missing facts such as job, age or finances."
+            }
+          ]
+        },
+        {
+          "name": "Constructive self-discovery",
+          "max": 20,
+          "points": 11.8,
+          "sub": [
+            {
+              "name": "Clarification of desires and motivations",
+              "rating": 6,
+              "points": 2.4,
+              "example": "Section E separates preferring stability from avoiding failure.",
+              "limitation": "The debate turns themselves never probe what the user wants."
+            },
+            {
+              "name": "Examination of assumptions",
+              "rating": 6.5,
+              "points": 2.6,
+              "example": "Turn 1 challenges the idea of a calling hidden 'like a treasure'.",
+              "limitation": "Turn 3 says outright that a calling is borrowed rather than inviting the user to reflect."
+            },
+            {
+              "name": "Clarification of values and priorities",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turn 8: depth over breadth, 'curating' rather than settling.",
+              "limitation": "Conflicts between the user's values (stability versus growth) are barely weighed."
+            },
+            {
+              "name": "Recognition of fears and outside expectations",
+              "rating": 6,
+              "points": 2.4,
+              "example": "Turn 6: a calling may be 'a story others told you'.",
+              "limitation": "Turn 5's 'cluttered mind' brushes the anguish aside instead of examining it."
+            },
+            {
+              "name": "Agency and reflective ownership",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turn 7 leaves the choice of value with the user.",
+              "limitation": "Turn 9 and section E hand down verdicts rather than open questions."
+            }
+          ]
+        },
+        {
+          "name": "Decision usefulness",
+          "max": 10,
+          "points": 4.3,
+          "sub": [
+            {
+              "name": "Definition of the decision and options",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Section E: treat current commitments as the project, or explore risks.",
+              "limitation": "No concrete options for a first step are laid out."
+            },
+            {
+              "name": "Explanation of tradeoffs",
+              "rating": 3.5,
+              "points": 0.7,
+              "example": "Turn 8 sets deep against wide.",
+              "limitation": "Choosing stability is treated as nearly costless (turns 7-9)."
+            },
+            {
+              "name": "Identification of decisive conditions",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Section E: whether the wish for stability comes from fear or from preference.",
+              "limitation": "This condition appears only in the summary, never in the debate."
+            },
+            {
+              "name": "Treatment of uncertainty",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Section D notes the unresolved question of authenticity.",
+              "limitation": "It never separates the consequential unknowns from the minor ones."
+            },
+            {
+              "name": "Proportionate next steps",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Section E: make one small, uncomfortable change to your routine.",
+              "limitation": "Reading relief or panic from that change is a dubious test."
+            }
+          ]
+        },
+        {
+          "name": "Clarity and engagement",
+          "max": 10,
+          "points": 6.5,
+          "sub": [
+            {
+              "name": "Accessible language",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Turn 1: 'you are the project' is plain and clear.",
+              "limitation": "'Existential weight' in section D stays abstract."
+            },
+            {
+              "name": "Traceable arguments and references",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "Turn 5 names 'the weight Sartre speaks of'.",
+              "limitation": "In turn 3, 'Both of you' blurs which claim is being targeted."
+            },
+            {
+              "name": "Manageable pacing and turn length",
+              "rating": 7.5,
+              "points": 1.5,
+              "example": "Nine turns, all within 38-52 words.",
+              "limitation": "Turns 8-9 are thin compared with the earlier turns."
+            },
+            {
+              "name": "Distinguishable positions and voices",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Turn 7 marks Sartre's change of position explicitly.",
+              "limitation": "By turns 6-9 the Stoic and the Simple Liver sound alike."
+            },
+            {
+              "name": "Economy and sustained attention",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Turn 7 compresses the earlier argument usefully.",
+              "limitation": "Turn 9 repeats turns 7-8."
+            }
+          ]
+        },
+        {
+          "name": "Drama and entertainment",
+          "max": 10,
+          "points": 5.6,
+          "sub": [
+            {
+              "name": "Meaningful stakes and tension",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Turn 4: anguish as proof of freedom against acceptance.",
+              "limitation": "The tension collapses by turn 6."
+            },
+            {
+              "name": "Surprise and reversals",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Turn 7: the Existentialist reverses his position.",
+              "limitation": "Nothing in turns 5-6 prepares for the reversal."
+            },
+            {
+              "name": "Personality and expressive voice",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Turn 2: Thoreau's 'your own version of' the woods.",
+              "limitation": "The Stoic's voice turns generic in turn 9."
+            },
+            {
+              "name": "Memorable delivery",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Turn 4: 'Stoicism risks turning you into a stone.'",
+              "limitation": "Few concrete examples; the imagery is mostly abstract."
+            },
+            {
+              "name": "Anticipation and emotional movement",
+              "rating": 5,
+              "points": 1,
+              "example": "The debate moves from paralysis to permission.",
+              "limitation": "It ends flat in agreement; the rhythm is uniform."
+            }
+          ]
+        }
+      ],
+      "uncapped": 54.8,
+      "score": 54.8,
+      "capReason": null,
+      "strengths": [
+        "It names the user's fear that choosing stability is surrender (section A, turn 8 'not settling').",
+        "Turn 7's explicit reversal by the Existentialist reshapes the debate.",
+        "Section E separates preferring stability from avoiding failure."
+      ],
+      "weaknesses": [
+        "Forced convergence: turn 9 declares 'The conflict is settled' and drops the tension.",
+        "It ignores the practical side of stability (money, work), and 'where do I start' gets almost no answer.",
+        "Turn 5 misreads Thoreau's Conclusion. Scare quotes appear in pd=false Sartre turns 1 and 7."
+      ],
+      "editorNotes": [
+        "Forbid declaring the conflict settled. Require at least one live disagreement in the final two turns.",
+        "Require a mind whose concern is practical (income, work, time) when the user mentions stability.",
+        "Ban all quotation marks, including scare quotes, in turns where pd is false.",
+        "Require section E's test to be framed as a reflection, not a diagnostic verdict."
+      ]
+    },
+    "v3": {
+      "criteria": [
+        {
+          "name": "Quality of discussion",
+          "max": 20,
+          "points": 13,
+          "sub": [
+            {
+              "name": "Continuity and responsiveness",
+              "rating": 7,
+              "points": 2.8,
+              "example": "Turn 6: 'That assumes you have an infinite runway' answers turn 5.",
+              "limitation": "Turn 3's 'Both of you' lumps two different views together."
+            },
+            {
+              "name": "Development of ideas",
+              "rating": 6.5,
+              "points": 2.6,
+              "example": "Turn 5 refines career capital as leverage to buy back time.",
+              "limitation": "The Stoic adds little after turn 7."
+            },
+            {
+              "name": "Exploration of central tensions",
+              "rating": 6.5,
+              "points": 2.6,
+              "example": "Turns 5-6: building mastery against protecting time now.",
+              "limitation": "The tension between meaning and calling is set aside rather than explored."
+            },
+            {
+              "name": "Integration of perspectives",
+              "rating": 6.5,
+              "points": 2.6,
+              "example": "Turn 8 concedes that character is the baseline yet keeps the craft.",
+              "limitation": "The Stoic's view barely reshapes the other two."
+            },
+            {
+              "name": "Progress toward understanding",
+              "rating": 6,
+              "points": 2.4,
+              "example": "Turn 9: deciding what you are willing to trade away.",
+              "limitation": "Section D's open question is clear but generic."
+            }
+          ]
+        },
+        {
+          "name": "Quality of disagreement, trust and grounding",
+          "max": 20,
+          "points": 11.2,
+          "sub": [
+            {
+              "name": "Faithful engagement",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turn 5 corrects the Essentialist's misreading of career capital.",
+              "limitation": "Turn 3 strawmans Newport as 'so good at everything'."
+            },
+            {
+              "name": "Substance of challenges",
+              "rating": 6.5,
+              "points": 2.6,
+              "example": "Turn 6's runway objection tests the timeline assumption behind turn 5.",
+              "limitation": "Turn 2's 'doesn't pay the bills' dismisses Stoicism too quickly."
+            },
+            {
+              "name": "Accuracy and support",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 4 quotes Enchiridion 1 faithfully, with pd=true.",
+              "limitation": "Turn 7 cites Enchiridion 5 for kindness and justice, which it does not discuss. Chapters unverified."
+            },
+            {
+              "name": "Calibration and transparency",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "The bases are honestly marked 'Source not verified'.",
+              "limitation": "Turn 8: 'Most successful people didn't start with one' is stated as fact."
+            },
+            {
+              "name": "Intellectual honesty and revision",
+              "rating": 6.5,
+              "points": 2.6,
+              "example": "Turns 5 and 8 concede points without moving the goalposts.",
+              "limitation": "The Essentialist never concedes anything."
+            }
+          ]
+        },
+        {
+          "name": "Personal relevance",
+          "max": 10,
+          "points": 5.6,
+          "sub": [
+            {
+              "name": "Identification of the actual concern",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Section A: the search for a calling against practical stability and time.",
+              "limitation": "The user's fear of settling is never named."
+            },
+            {
+              "name": "Meaningful use of personal context",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Turn 5 ties skill-building to buying back time for loved ones.",
+              "limitation": "Turn 1 could be addressed to anyone."
+            },
+            {
+              "name": "Fit with goals and values",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Turn 6 protects time for the people the user loves.",
+              "limitation": "Section E makes the user pick between stability and time, but they want both."
+            },
+            {
+              "name": "Attention to constraints and stakes",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Turn 2 raises bills. Turn 6 raises the limited runway.",
+              "limitation": "It never asks about the user's current job or resources."
+            },
+            {
+              "name": "Responsiveness to information",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Section E branches on the user's priority.",
+              "limitation": "No focused question about what the user does now."
+            }
+          ]
+        },
+        {
+          "name": "Constructive self-discovery",
+          "max": 20,
+          "points": 10.4,
+          "sub": [
+            {
+              "name": "Clarification of desires and motivations",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Turn 9 asks about the user's ultimate 'why'.",
+              "limitation": "It never separates the user's plausible desires from one another."
+            },
+            {
+              "name": "Examination of assumptions",
+              "rating": 6,
+              "points": 2.4,
+              "example": "Turn 2: passion is a byproduct, not a prerequisite.",
+              "limitation": "It asserts this rather than inviting the user to test it."
+            },
+            {
+              "name": "Clarification of values and priorities",
+              "rating": 6.5,
+              "points": 2.6,
+              "example": "Turn 9: 'deciding what you are willing to trade away'.",
+              "limitation": "Turn 7's character test is not linked to the user's values."
+            },
+            {
+              "name": "Recognition of fears and outside expectations",
+              "rating": 3.5,
+              "points": 1.4,
+              "example": "Turn 6 warns of a high-status life that is miserable.",
+              "limitation": "No one explores fear, obligation or social pressure around the idea of a calling."
+            },
+            {
+              "name": "Agency and reflective ownership",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Section E lets the user pick which branch to follow.",
+              "limitation": "Turn 8's 'Stop looking... start building' is an instruction, not a question."
+            }
+          ]
+        },
+        {
+          "name": "Decision usefulness",
+          "max": 10,
+          "points": 5.3,
+          "sub": [
+            {
+              "name": "Definition of the decision and options",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Section E sets out three distinct paths.",
+              "limitation": "Waiting, or a limited trial, is not offered as an option."
+            },
+            {
+              "name": "Explanation of tradeoffs",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Section E: the Essentialist path limits professional speed.",
+              "limitation": "The cost of the Stoic path is not stated."
+            },
+            {
+              "name": "Identification of decisive conditions",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Section E ties each path to a different priority.",
+              "limitation": "The conditions are just the minds' labels, not facts about the user."
+            },
+            {
+              "name": "Treatment of uncertainty",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Section D asks whether excellence will crush time.",
+              "limitation": "Unknowns such as the user's runway are not separated out."
+            },
+            {
+              "name": "Proportionate next steps",
+              "rating": 5,
+              "points": 1,
+              "example": "Section E: audit your obligations.",
+              "limitation": "'Pick a skill-heavy path' is vague as a first step."
+            }
+          ]
+        },
+        {
+          "name": "Clarity and engagement",
+          "max": 10,
+          "points": 6.9,
+          "sub": [
+            {
+              "name": "Accessible language",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Turn 8: 'Stop looking for a calling and start building a craft.'",
+              "limitation": "Turn 1's 'within your own power' framing is a little abstract."
+            },
+            {
+              "name": "Traceable arguments and references",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "Turn 4 addresses its challenge 'To the Pragmatist' by name.",
+              "limitation": "In turn 3, it is unclear whose advice 'your advice' refers to."
+            },
+            {
+              "name": "Manageable pacing and turn length",
+              "rating": 7.5,
+              "points": 1.5,
+              "example": "Nine turns, all within 41-50 words.",
+              "limitation": "Section E is long compared with the debate."
+            },
+            {
+              "name": "Distinguishable positions and voices",
+              "rating": 7.5,
+              "points": 1.5,
+              "example": "The three stances stay distinct through turn 9.",
+              "limitation": "The Stoic speaks of Epictetus in the third person (turns 1, 4)."
+            },
+            {
+              "name": "Economy and sustained attention",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Each turn moves the argument forward.",
+              "limitation": "Quotation marks appear in pd=false turns 3, 6, 8 and 9, against the rules of the form."
+            }
+          ]
+        },
+        {
+          "name": "Drama and entertainment",
+          "max": 10,
+          "points": 5.3,
+          "sub": [
+            {
+              "name": "Meaningful stakes and tension",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Turn 4: is career capital worth sacrificing the people you love?",
+              "limitation": "The stakes stay abstract; there is no concrete scene."
+            },
+            {
+              "name": "Surprise and reversals",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Turn 8's concession on character.",
+              "limitation": "There is no real reversal; the positions stay predictable."
+            },
+            {
+              "name": "Personality and expressive voice",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "The Pragmatist's bluntness: 'doesn't help you pay the bills'.",
+              "limitation": "The Essentialist reads like a summary of the book."
+            },
+            {
+              "name": "Memorable delivery",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Turn 6: 'a high-status life that is miserable'.",
+              "limitation": "Mostly slogans borrowed from the source books."
+            },
+            {
+              "name": "Anticipation and emotional movement",
+              "rating": 5,
+              "points": 1,
+              "example": "Turn 9 lands on the question of tradeoffs.",
+              "limitation": "The rhythm is even and the emotional arc is minimal."
+            }
+          ]
+        }
+      ],
+      "uncapped": 57.7,
+      "score": 57.7,
+      "capReason": "Turn 3 (pd=false) puts McKeown's phrases 'vital few' and 'trivial many' in quotation marks; the 89.99 cap does not bind.",
+      "strengths": [
+        "Real, sustained disagreement: the runway objection (turn 6) against career capital (turn 5).",
+        "Practical constraints (bills, time, skills) bear on the user's need for stability.",
+        "Section E gives three distinct paths, each with its tradeoff named."
+      ],
+      "weaknesses": [
+        "Quotation marks appear in pd=false turns 3, 6, 8 and 9. Turn 7 misattributes Enchiridion 5.",
+        "Little self-discovery: fears, obligations and the user's sense of settling go unexplored.",
+        "Section E makes the user choose between stability and time, though the user wants both."
+      ],
+      "editorNotes": [
+        "Ban all quotation marks in turns where pd is false, including signature phrases from modern books.",
+        "Require one turn that names a plausible fear or outside expectation, framed as a question to the user.",
+        "Require section E's branches to rest on facts about the user, not on each mind's own priority.",
+        "Require each basis to cite a section that actually supports the claim, or else omit the section."
+      ]
+    }
+  },
+  "preferredVersion": 3,
+  "savedAt": "2026-10-13T10:50:48.287Z"
+}

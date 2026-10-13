@@ -1,0 +1,116 @@
+{
+  "lane": "gemini",
+  "version": 3,
+  "sample": 1,
+  "model": "gemini-3.1-flash-lite",
+  "settings": {
+    "thinkingLevel": "MEDIUM",
+    "temperature": 0.9,
+    "maxOutputTokens": 16384,
+    "fallback": "none"
+  },
+  "latencyMs": 12497,
+  "output": {
+    "situation": "The user is caught in a paralysis of expectation, feeling that their desire for stability and time with loved ones conflicts with a missing sense of 'calling.' The central tension is whether this sense of purpose is a hidden treasure to be discovered or a structure that must be built through daily engagement and choice.",
+    "minds": [
+      {
+        "title": "The Habit-Builder",
+        "concern": "Building identity through consistent, small actions rather than grand pursuits.",
+        "author": "William James",
+        "book": "Talks to Teachers on Psychology; and to Students on Some of Life's Ideals",
+        "year": 1899
+      },
+      {
+        "title": "The Freedom-Architect",
+        "concern": "The burden of radical responsibility and the necessity of creating one's own essence.",
+        "author": "Jean-Paul Sartre",
+        "book": "Existentialism Is a Humanism",
+        "year": 1946
+      },
+      {
+        "title": "The Duty-Stoic",
+        "concern": "Acting according to nature and maintaining virtue within the present moment.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "year": 180
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Habit-Builder",
+        "text": "You are waiting for a lightning bolt of inspiration that may never strike. As James noted, it is not our nature to wait for perfect clarity; instead, we form our lives by the 'habits' we cultivate. Start by performing the tasks that sustain your desired lifestyle, and the purpose will follow the practice.",
+        "author": "William James",
+        "book": "Talks to Teachers on Psychology; and to Students on Some of Life's Ideals",
+        "pd": true,
+        "basis": "[Basis: William James, Talks to Teachers on Psychology, Chapter 8]"
+      },
+      {
+        "speaker": "The Freedom-Architect",
+        "text": "That is comfortable advice, but it risks bad faith. By suggesting you just 'fall into a habit,' you are avoiding the terrifying truth that you are entirely free. A 'calling' is not a discovery; it is a choice you make and validate through your actions. Stop asking what you want; start deciding what you are.",
+        "author": "Jean-Paul Sartre",
+        "book": "Existentialism Is a Humanism",
+        "pd": false,
+        "basis": "[Basis: Jean-Paul Sartre, Existentialism Is a Humanism, Section on Responsibility]"
+      },
+      {
+        "speaker": "The Duty-Stoic",
+        "text": "Why must you choose between discovery and creation? Your duty is to act well in the role you currently inhabit, regardless of whether it feels like a 'calling.' As I wrote, 'at every hour devote yourself with diligence to perform the work in hand.' If you perform your tasks well, the rest is nature's business.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "[Basis: Marcus Aurelius, Meditations, Book 2]"
+      },
+      {
+        "speaker": "The Habit-Builder",
+        "text": "Sartre, your 'radical responsibility' creates the very anxiety that paralyzes this person. When we treat every moment as a blank slate, we become exhausted. Habits are not a trap; they are the 'enormous flywheel of society,' providing the stability this person craves so they can actually enjoy time with loved ones.",
+        "author": "William James",
+        "book": "Talks to Teachers on Psychology; and to Students on Some of Life's Ideals",
+        "pd": true,
+        "basis": "[Basis: William James, Talks to Teachers on Psychology, Chapter 8]"
+      },
+      {
+        "speaker": "The Freedom-Architect",
+        "text": "And you, Aurelius, speak of 'duty' as if it is an external command. That is a way to hide from the fact that you are the sole author of your life. If this person wants stability, they must choose to make stability their project, not accept it as a pre-ordained role.",
+        "author": "Jean-Paul Sartre",
+        "book": "Existentialism Is a Humanism",
+        "pd": false,
+        "basis": "[Basis: Jean-Paul Sartre, Existentialism Is a Humanism, Section on Choice]"
+      },
+      {
+        "speaker": "The Duty-Stoic",
+        "text": "I do not see duty as external, but as alignment with the whole. If your goal is to have time for your loved ones, then duty to them is your 'calling.' The error is in imagining that a 'calling' must be a professional identity, rather than an act of service to the common good.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "[Basis: Marcus Aurelius, Meditations, Book 3]"
+      },
+      {
+        "speaker": "The Habit-Builder",
+        "text": "I concede that my focus on routine can become empty if it lacks an ideal. But the user is suffering because they think they lack a 'calling,' when they actually just lack a routine that protects their values. If you automate the professional, you liberate the personal.",
+        "author": "William James",
+        "book": "Talks to Teachers on Psychology; and to Students on Some of Life's Ideals",
+        "pd": true,
+        "basis": "[Basis: William James, Talks to Teachers on Psychology, Chapter 10]"
+      },
+      {
+        "speaker": "The Freedom-Architect",
+        "text": "I will change my stance slightly. If this person chooses a stable, low-stress path specifically to spend time with their family, that is a valid, powerful choice. The 'calling' is the choice itself, not the work. They are not 'lacking'; they are simply failing to own their decision.",
+        "author": "Jean-Paul Sartre",
+        "book": "Existentialism Is a Humanism",
+        "pd": false,
+        "basis": "[Basis: Jean-Paul Sartre, Existentialism Is a Humanism, Section on Commitment]"
+      },
+      {
+        "speaker": "The Duty-Stoic",
+        "text": "Agreed. When you realize that the 'calling' is simply the intention to act virtuously in your current station, the pressure to find a 'perfect' path vanishes. Peace is found in the performance of the role, not in the title of the role itself.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "[Basis: Marcus Aurelius, Meditations, Book 4]"
+      }
+    ],
+    "clearer": "The search for a 'calling' is revealed to be a potential distraction from the actual values the user holds: stability and connection. The debate suggests that these values can be achieved through disciplined habits and the active choice to value one's current roles, rather than waiting for an external sense of destiny.",
+    "dependsOn": "- If the user prioritizes mental clarity and reducing anxiety → choose the path of Habit-Building to create a predictable structure that protects personal time.\n- If the user prioritizes self-authorship → choose the path of Freedom-Architecting, viewing any chosen role as a deliberate, meaningful commitment.\n- If the user feels overwhelmed by the weight of the decision → identify the smallest possible action that supports their loved ones and execute it consistently for one month to see if 'meaning' emerges through that practice."
+  },
+  "savedAt": "2026-10-13T10:42:40.636Z"
+}

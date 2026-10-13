@@ -1,0 +1,123 @@
+{
+  "lane": "sonnet",
+  "version": 2,
+  "sample": null,
+  "model": "sonnet",
+  "settings": {
+    "agentType": "Explore",
+    "effort": "medium",
+    "note": "latency includes Claude Code subagent overhead"
+  },
+  "latencyMs": 37503,
+  "output": {
+    "situation": "You don't know what to do with your life. You want stability and time for the people you love, but no work feels like a calling, and you're asking where to start. What you've reported is two fairly clear wants (security and time for people) and one absence (no calling). It isn't clear whether that absence means you lack interests, or whether you've assumed a calling has to show up before you commit to anything. It's also unclear whether stability and time for people are fixed requirements or partly a response to pressure or fear. Much of what to do depends on that.",
+    "minds": [
+      {
+        "title": "The Experimenter",
+        "concern": "Identity is learned by trying things, not by introspection, so the first step is small and cheap tests.",
+        "author": "Herminia Ibarra",
+        "book": "Working Identity",
+        "year": 2003
+      },
+      {
+        "title": "The Craftsman",
+        "concern": "Passion usually follows getting good at something valued, so the question is what to get good at, not what to feel.",
+        "author": "Cal Newport",
+        "book": "So Good They Can't Ignore You",
+        "year": 2012
+      },
+      {
+        "title": "The Life-Wide Realist",
+        "concern": "Happiness comes from outward interests and affection, so a job should serve a full life, not be its whole point.",
+        "author": "Bertrand Russell",
+        "book": "The Conquest of Happiness",
+        "year": 1930
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Experimenter",
+        "text": "Start by dropping the search for a calling. Nobody finds themselves by thinking harder. Pick three small, cheap tests this month: shadow someone, take a short class, do a weekend project. See what you want more of. You can't reason your way to a wish you haven't felt yet.",
+        "author": "Herminia Ibarra",
+        "book": "Working Identity",
+        "pd": false,
+        "basis": "Basis: Ibarra, Working Identity, on testing possible selves through action (source not verified; no link provided)"
+      },
+      {
+        "speaker": "The Craftsman",
+        "text": "Testing sounds comfortable, but it can become endless sampling. Julia Child didn't feel a calling for cooking at first. She took classes in her late thirties and kept getting better. I'd say the user needs a field where skill can build up, because stability comes from being rare and good.",
+        "author": "Cal Newport",
+        "book": "So Good They Can't Ignore You",
+        "pd": false,
+        "basis": "Basis: Newport, So Good They Can't Ignore You, on career capital and skill before passion (source not verified; no link provided)"
+      },
+      {
+        "speaker": "The Life-Wide Realist",
+        "text": "You're both treating work as the center of this. The user said stability and time for loved ones. If that's what they want, a decent, steady job that leaves evenings free may already be a good answer. Not every life needs a vocation to be a good one.",
+        "author": "Bertrand Russell",
+        "book": "The Conquest of Happiness",
+        "pd": true,
+        "basis": "Basis: Russell, The Conquest of Happiness (1930), on zest, affection and outward interests (paraphrase only; source not verified; no link provided)"
+      },
+      {
+        "speaker": "The Experimenter",
+        "text": "That's fair, but notice the word 'already'. If they feel adrift, a decent job may be a place to hide, not a choice. Here is a reading to test: the missing calling may bother them because they fear settling means giving up. If so, a cheap experiment tells them more than a steady job would.",
+        "author": "Herminia Ibarra",
+        "book": "Working Identity",
+        "pd": false,
+        "basis": "Basis: Ibarra, Working Identity, on experimenting rather than committing early (source not verified; no link provided)"
+      },
+      {
+        "speaker": "The Life-Wide Realist",
+        "text": "Or the reverse. Maybe they don't feel adrift at all, and a culture that says everyone needs a calling is making them feel they should. Steve Jobs told Stanford graduates in 2005 to love their work. That is easy to say once you're already Steve Jobs. Your test could add pressure, not relief.",
+        "author": "Bertrand Russell",
+        "book": "The Conquest of Happiness",
+        "pd": true,
+        "basis": "Basis: Russell, The Conquest of Happiness (1930), on anxiety and comparison (paraphrase only; the Jobs example is my illustration, not Russell's; source not verified; no link provided)"
+      },
+      {
+        "speaker": "The Craftsman",
+        "text": "Jobs is my case too. Newport argues his early path was more about electronics and earning than burning purpose, and the passion grew with mastery. But I'll concede something to Russell. If stability and free evenings are fixed, then I shouldn't push a field. I should ask which steady jobs reward getting good.",
+        "author": "Cal Newport",
+        "book": "So Good They Can't Ignore You",
+        "pd": false,
+        "basis": "Basis: Newport, So Good They Can't Ignore You, on the passion hypothesis and Steve Jobs (source not verified; no link provided)"
+      },
+      {
+        "speaker": "The Life-Wide Realist",
+        "text": "Careful, though. Mastery can eat the evenings. Plenty of people chase being excellent until the time for loved ones is gone. That would be a bad trade for this user, since time with people is half of what they said. My guess is that many ambitious jobs quietly cost this.",
+        "author": "Bertrand Russell",
+        "book": "The Conquest of Happiness",
+        "pd": true,
+        "basis": "Basis: Russell, The Conquest of Happiness (1930), on balance between work and affection (paraphrase only; source not verified; no link provided)"
+      },
+      {
+        "speaker": "The Experimenter",
+        "text": "So the experiments need rules. I'm changing my position: no open-ended trying. Each test must fit inside the user's evenings and leave their income alone. Vera Wang left a steady magazine job for fashion design at about forty, but she had years of related experience. Small, bounded tests are the safe version of that.",
+        "author": "Herminia Ibarra",
+        "book": "Working Identity",
+        "pd": false,
+        "basis": "Basis: Ibarra, Working Identity, on small bounded experiments; the Vera Wang example is mine, not Ibarra's (source not verified; no link provided)"
+      },
+      {
+        "speaker": "The Craftsman",
+        "text": "Good, and mine becomes narrower too. I'd say test only things where improvement is visible within a few months, because that is what separates a real fit from a passing mood. If nothing shows progress or interest by then, drop it and try another. That keeps the testing from drifting.",
+        "author": "Cal Newport",
+        "book": "So Good They Can't Ignore You",
+        "pd": false,
+        "basis": "Basis: Newport, So Good They Can't Ignore You, on deliberate practice and feedback (source not verified; no link provided)"
+      },
+      {
+        "speaker": "The Life-Wide Realist",
+        "text": "I still disagree on one point. You two assume something will turn up. It may not, and that could be fine. What settles this is whether, after a few bounded tries, anything pulls at them. If something does, follow it within their limits. If nothing does, the steady life with loved ones is a real answer, not a failure.",
+        "author": "Bertrand Russell",
+        "book": "The Conquest of Happiness",
+        "pd": true,
+        "basis": "Basis: Russell, The Conquest of Happiness (1930), on interests and a full life (paraphrase only; source not verified; no link provided)"
+      }
+    ],
+    "clearer": "The main insight is that the question 'what is my calling?' may be the wrong place to start. The debate moved toward small, bounded tests that fit inside stability and time with loved ones, each judged by whether interest or visible progress shows up. Still disputed: whether skill-building ambition would cost the time they say they want, and whether a steady, ordinary life is a complete answer or a way of avoiding the question. A possible self-reflection is whether the lack of a calling feels like a missing piece or like pressure from outside. That is a reading to test, not a conclusion about them. The sources for the three books were not verified, so no links are given.",
+    "dependsOn": "If stability and free time are fixed requirements, then pick bounded, low-cost tests (a class, a shadowing day, a side project) and a steady job that leaves evenings free, because that protects what you already value while you learn. If a test shows real interest or visible progress within a few months, then building skill in that area becomes more reasonable, as long as it doesn't take over the time for people you love. If nothing pulls after several tries, a steady, ordinary job with a full life outside work is a reasonable answer in itself. If it's unknown whether the fixed requirements are really fixed or partly fear, a proportionate way to learn is to notice which kinds of work you'd still do with no pay and no audience, and to try one small test of that this month."
+  },
+  "savedAt": "2026-10-13T10:44:51.879Z"
+}

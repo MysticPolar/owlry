@@ -1,0 +1,116 @@
+{
+  "lane": "gemini",
+  "version": 3,
+  "sample": 3,
+  "model": "gemini-3.1-flash-lite",
+  "settings": {
+    "thinkingLevel": "MEDIUM",
+    "temperature": 0.9,
+    "maxOutputTokens": 16384,
+    "fallback": "none"
+  },
+  "latencyMs": 13200,
+  "output": {
+    "situation": "The user is caught between the search for a singular, purposeful 'calling' and the desire for practical stability and time for loved ones. They are struggling with the assumption that a meaningful life requires a pre-existing passion to discover, rather than a structure to build. The central tension is whether to prioritize finding a perfect fit or managing their current resources toward a balanced existence.",
+    "minds": [
+      {
+        "title": "The Stoic",
+        "concern": "Living in accordance with nature by focusing only on what is within one's control.",
+        "author": "Epictetus",
+        "book": "The Enchiridion",
+        "year": 135
+      },
+      {
+        "title": "The Pragmatist",
+        "concern": "Building rare and valuable skills that grant career leverage and autonomy.",
+        "author": "Cal Newport",
+        "book": "So Good They Can't Ignore You",
+        "year": 2012
+      },
+      {
+        "title": "The Essentialist",
+        "concern": "The disciplined pursuit of less to maximize contribution to what truly matters.",
+        "author": "Greg McKeown",
+        "book": "Essentialism: The Disciplined Pursuit of Less",
+        "year": 2014
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Stoic",
+        "text": "You are distressed because you seek a calling as if it were a lost object. Epictetus instructs that we must distinguish between what is ours and what is not. Your profession is external; your commitment to your values and your loved ones is entirely within your own power.",
+        "author": "Epictetus",
+        "book": "The Enchiridion",
+        "pd": true,
+        "basis": "[Basis: Epictetus, The Enchiridion, section 1](http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.01.0236%3Atext%3Denc%3Achapter%3D1)"
+      },
+      {
+        "speaker": "The Pragmatist",
+        "text": "Stoicism is fine for internal peace, but it doesn't help you pay the bills. I would argue that your focus on finding a calling is the problem. Newport suggests that passion is a byproduct of being good at something rare, not a prerequisite for starting.",
+        "author": "Cal Newport",
+        "book": "So Good They Can't Ignore You",
+        "pd": false,
+        "basis": "[Basis: Cal Newport, So Good They Can't Ignore You, Chapter 3](Source not verified for chapter)"
+      },
+      {
+        "speaker": "The Essentialist",
+        "text": "Both of you ignore the cost of your advice. Trying to become 'so good' at everything or accepting everything as an internal struggle drains your limited time. McKeown argues that you must choose the 'vital few' and eliminate the trivial many, otherwise, you have no time for the people you love.",
+        "author": "Greg McKeown",
+        "book": "Essentialism: The Disciplined Pursuit of Less",
+        "pd": false,
+        "basis": "[Basis: Greg McKeown, Essentialism, Chapter 2](Source not verified for chapter)"
+      },
+      {
+        "speaker": "The Stoic",
+        "text": "To the Pragmatist: if your career capital requires sacrificing the people you love, is it worth the gain? Epictetus would say that 'some things are up to us, and some things are not.' You cannot control if a career pays off, but you can control your integrity.",
+        "author": "Epictetus",
+        "book": "The Enchiridion",
+        "pd": true,
+        "basis": "[Basis: Epictetus, The Enchiridion, section 1](http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.01.0236%3Atext%3Denc%3Achapter%3D1)"
+      },
+      {
+        "speaker": "The Pragmatist",
+        "text": "I agree with the Stoic on control, but you misunderstand career capital. It is not about working harder, but about working on valuable skills that give you the leverage to set your own hours. That is how you eventually buy back your time for loved ones.",
+        "author": "Cal Newport",
+        "book": "So Good They Can't Ignore You",
+        "pd": false,
+        "basis": "[Basis: Cal Newport, So Good They Can't Ignore You, Chapter 8](Source not verified for chapter)"
+      },
+      {
+        "speaker": "The Essentialist",
+        "text": "That assumes you have an infinite runway to build that capital. You are still adding things to your plate. If you are not intentional, you will end up with a high-status life that is miserable. You need to trade the 'good' for the 'best' to protect your time.",
+        "author": "Greg McKeown",
+        "book": "Essentialism: The Disciplined Pursuit of Less",
+        "pd": false,
+        "basis": "[Basis: Greg McKeown, Essentialism, Chapter 4](Source not verified for chapter)"
+      },
+      {
+        "speaker": "The Stoic",
+        "text": "The Essentialist is right that we must choose, but we must choose based on our character. If your job does not allow for kindness or justice, it is not a 'good' or 'best'—it is simply a burden. Your choices should depend on what keeps your character intact.",
+        "author": "Epictetus",
+        "book": "The Enchiridion",
+        "pd": true,
+        "basis": "[Basis: Epictetus, The Enchiridion, section 5](http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.01.0236%3Atext%3Denc%3Achapter%3D5)"
+      },
+      {
+        "speaker": "The Pragmatist",
+        "text": "I concede that character is the baseline. But we must stop romanticizing 'calling.' Most successful people didn't start with one; they built a life that offered them the control to develop one. Stop looking for a calling and start building a craft.",
+        "author": "Cal Newport",
+        "book": "So Good They Can't Ignore You",
+        "pd": false,
+        "basis": "[Basis: Cal Newport, So Good They Can't Ignore You, Chapter 10](Source not verified for chapter)"
+      },
+      {
+        "speaker": "The Essentialist",
+        "text": "Building a craft is a 'vital' activity, but only if it serves your ultimate 'why.' If you are building a craft just to keep busy, you are still drifting. The clarity that moves you forward is not finding a calling; it is deciding what you are willing to trade away.",
+        "author": "Greg McKeown",
+        "book": "Essentialism: The Disciplined Pursuit of Less",
+        "pd": false,
+        "basis": "[Basis: Greg McKeown, Essentialism, Chapter 6](Source not verified for chapter)"
+      }
+    ],
+    "clearer": "The debate shifted from viewing a 'calling' as a magical discovery toward seeing it as a byproduct of deliberate action and trade-offs. The main insight is that stability and time for loved ones are not things you stumble into, but things you protect through the rejection of non-essential demands and the cultivation of mastery. What remains disputed is the extent to which one can pursue excellence (the Pragmatist's path) while simultaneously protecting time (the Essentialist's path) without one eventually crushing the other.",
+    "dependsOn": "- If your priority is absolute psychological stability → Focus on the Stoic approach: accept the uncertainty of your career and focus entirely on being present with your loved ones, as your character is the only thing truly under your control.\n- If your priority is long-term professional agency → Focus on the Pragmatist approach: pick a skill-heavy path and commit to deliberate practice, knowing that autonomy over your time will come only as a reward for being exceptionally good at what you do.\n- If your priority is immediate protection of your current relationships → Focus on the Essentialist approach: perform a rigorous audit of your obligations and cut everything that does not directly contribute to your core values, accepting that this will likely limit your professional speed."
+  },
+  "savedAt": "2026-10-13T10:43:37.545Z"
+}

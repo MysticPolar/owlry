@@ -24,12 +24,13 @@ evo new --pick next
 
 It prints the question's label, the round number R, the current version, the previous version if any, and the versions to run. Round 1 runs one version. Later rounds run two: previous and current, so the judge can compare them.
 
-**2. Run the workers.** For every version V listed, run every lane in `config.json` → `lanes`. All lanes and all versions are independent, so start them all at the same time and wait for all of them.
+**2. Run the workers.** For every version V listed, run every lane in `config.json` → `lanes`.
 
-- The `api` lane (gemini): one command for all versions, `evo gemini --round R --versions <V1>,<V2>`. It runs them one after another with the free-tier gap, times each call and saves the files itself. Never run two Gemini commands at the same time: the free tier allows five requests a minute. Never pass `--model`; the configured model is the target.
-- Each `subagent` lane (sonnet): `evo worker-prompt --round R --version V --lane <lane>` prints a path. Spawn an agent in the background with that lane's `agentType`, `model` and `effort` from `config.json`, whose prompt is: "Read the file at <path> and do exactly what it says. Return only the JSON object." Do not add anything else to that prompt. When its completion notice arrives, take the duration that notice reports as the latency; never use your own clock, which would include the time you spent on other lanes. Write its reply verbatim to `<round folder>/v<V>.<lane>.raw.txt`, then:
-  `evo save --round R --version V --lane <lane> --latency-ms <reported duration> --file <that raw file>`.
-  A slow lane is not a dead lane. Wait for the notice; do not respawn a worker that has not reported.
+- The `api` lane (gemini): one command for all versions, `evo gemini --round R --versions <V1>,<V2>`, started as a background shell command so it runs while you do the next lane. It runs the samples one after another with the free-tier gap, times each call and saves the files itself. Never run two Gemini commands at the same time: the free tier allows five requests a minute. Never pass `--model`; the configured model is the target.
+- Each `subagent` lane (sonnet), one version at a time, in the foreground: `evo worker-prompt --round R --version V --lane <lane>` prints a path. Note the time with `evo now`. Spawn an agent in the foreground with that lane's `agentType`, `model` and `effort` from `config.json`, whose prompt is: "Read the file at <path> and do exactly what it says. Return only the JSON object." Do not add anything else to that prompt. When it returns, note the time again, write its reply verbatim to `<round folder>/v<V>.<lane>.raw.txt`, then:
+  `evo save --round R --version V --lane <lane> --latency-ms <end minus start> --file <that raw file>`.
+  Foreground, because a background agent's completion notice goes to the main session, not to you, and you would wait for a reply that never arrives. The Gemini command keeps running in the background meanwhile, so nothing is lost.
+- Then wait for the Gemini command to finish before judging.
   If `save` rejects the answer, spawn the worker once more. If it fails twice, record the failure in the round folder as `v<V>.<lane>.failed.txt` and continue without that lane.
 
 **3. Judge, per lane, per sample.** The gemini lane runs several samples per version (`samples` in `config.json`); the other lanes run one. For each lane that has a saved answer for every version, and for each sample k of that lane (just once, without `--sample`, on a single-sample lane):
@@ -38,7 +39,7 @@ It prints the question's label, the round number R, the current version, the pre
 evo judge-input --round R --lane <lane> --sample k
 ```
 
-It prints a path. Spawn an agent with the `judge` settings from `config.json`, whose prompt is: "Read the file at <path> and do exactly what it says. Return only the JSON object." All judges of a round can run at the same time. Write each reply verbatim to `<round folder>/judge.<lane>[.sk].raw.txt`, then:
+It prints a path. Spawn an agent with the `judge` settings from `config.json`, whose prompt is: "Read the file at <path> and do exactly what it says. Return only the JSON object." Spawn all judges of a round in one go, in the foreground, so every reply comes straight back to you. Write each reply verbatim to `<round folder>/judge.<lane>[.sk].raw.txt`, then:
 
 ```
 evo save-judge --round R --lane <lane> --sample k --file <that raw file>
