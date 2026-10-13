@@ -14,13 +14,15 @@ Call that `evo` below. `evolve/config.json` holds the models and efforts; do not
 
 ## One round
 
-**1. Open the round.** Save the question to a file, then:
+**1. Open the round.** If the person gave a question, save it to a file and run `evo new --question-file <path>`. If they did not, draw the next one from the question bank:
 
 ```
-evo new --question-file <path>
+evo new --pick next
 ```
 
-It prints the round number R, the current version, the previous version if any, and the versions to run. Round 1 runs one version. Later rounds run two: previous and current, so the judge can compare them.
+`--pick next` rotates through the five categories and takes the least-used question in the category. `--pick weakest` takes the category with the lowest recent score instead; `--id <bank id>` takes a specific question. The bank's category and label are for the record only. They are never shown to a worker or a judge.
+
+It prints the question's label, the round number R, the current version, the previous version if any, and the versions to run. Round 1 runs one version. Later rounds run two: previous and current, so the judge can compare them.
 
 **2. Run the workers.** For every version V listed, run both lanes. The two lanes and the two versions are independent, so run them at the same time.
 

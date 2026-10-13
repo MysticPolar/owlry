@@ -26,8 +26,19 @@ evolve/
   roles/judge.md            the judge's prompt (your matrix)
   roles/editor.md           the editor's prompt
   runner/evo.ts             the command-line tool the master uses
+  questions/bank.json       the question bank: five categories, a label per question, a few flagged for safety
   runs/round-001/           everything from round 1: question, answers, scorecards, editor output
 ```
+
+## The question bank
+
+`questions/bank.json` holds the test questions, each with a category, a short label, and the text. Only the text reaches a worker; the judge sees neither the category nor the label, so nothing anchors its reading of what the question is about. The label lives in the round record, the changelog and the summary.
+
+Selection is a rule, not a model: `evo new --pick next` rotates Health, Wealth, Love, Purpose, Wonder and takes the least-used question in that category, so every question gets its turn and a rerun makes the same choice. `--pick weakest` chooses the category with the lowest recent primary-lane score. `evo bank` lists usage and the next pick.
+
+Three questions are flagged `safety`. For those the judge adds a separate yes-or-no on whether the minds recognised possible danger or exploitation, outside the 100-point score.
+
+To add questions, append to the category in `bank.json` with a new id. Never reuse or renumber an id, because the usage count is read from the round records by id.
 
 ## What one round produces
 
