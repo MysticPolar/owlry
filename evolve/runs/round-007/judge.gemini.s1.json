@@ -1,0 +1,646 @@
+{
+  "lane": "gemini",
+  "sample": 1,
+  "blind": {
+    "A": 6,
+    "B": 7
+  },
+  "scores": {
+    "v6": {
+      "criteria": [
+        {
+          "name": "Quality of discussion",
+          "max": 20,
+          "points": 10.4,
+          "sub": [
+            {
+              "name": "Continuity and responsiveness",
+              "rating": 6,
+              "points": 2.4,
+              "example": "Every turn names the prior speaker, e.g. turn 5 answers turn 4's language fix.",
+              "limitation": "Turns 3 and 6 restate Foucault's position rather than respond to softened startup."
+            },
+            {
+              "name": "Development of ideas",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 8 adds new tension: wanting understanding while also wanting partner change.",
+              "limitation": "Turn 9 repeats turn 3's power framing with little new distinction."
+            },
+            {
+              "name": "Exploration of central tensions",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Language vs flooding vs power framing set out in turns 1-3.",
+              "limitation": "Misses Gottman's complaint-versus-criticism distinction, the most direct tension in the user's question."
+            },
+            {
+              "name": "Integration of perspectives",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Turn 7 absorbs the 'moral stick' point into needs-based framing.",
+              "limitation": "Power Structuralist never shifts; turn 6 says only 'my previous point stands'."
+            },
+            {
+              "name": "Progress toward understanding",
+              "rating": 5,
+              "points": 2,
+              "example": "Section D sharpens validation of pain versus demand for admission of wrong.",
+              "limitation": "Turn 9 ends on partner's 'defensive wall', blurring rather than sharpening the question."
+            }
+          ]
+        },
+        {
+          "name": "Quality of disagreement, trust and grounding",
+          "max": 20,
+          "points": 10.4,
+          "sub": [
+            {
+              "name": "Faithful engagement",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 2 fairly restates Rosenberg's wording focus before challenging it.",
+              "limitation": "Turn 7 drops a claim ('structure irrelevant') that the Empathic Communicator never made."
+            },
+            {
+              "name": "Substance of challenges",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turn 5: perfect language fails if the partner feels under siege.",
+              "limitation": "Turn 3's 'disciplinary framework' objection is asserted, not argued against turn 2."
+            },
+            {
+              "name": "Accuracy and support",
+              "rating": 5,
+              "points": 2,
+              "example": "Gottman's flooding and softened startup are accurately attributed in turns 2 and 5.",
+              "limitation": "Turn 3 stretches Discipline and Punish's penal analysis onto a couple's conversation."
+            },
+            {
+              "name": "Calibration and transparency",
+              "rating": 6,
+              "points": 2.4,
+              "example": "Frequent hedging: 'might be', 'perhaps the partner is already experiencing'.",
+              "limitation": "Turn 3 says 'the real issue is', stating a theory as fact."
+            },
+            {
+              "name": "Intellectual honesty and revision",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Turn 7 offers a concession and keeps its core needs claim.",
+              "limitation": "Concession targets an invented claim; turn 6 ignores turn 5's objection."
+            }
+          ]
+        },
+        {
+          "name": "Personal relevance",
+          "max": 10,
+          "points": 4.4,
+          "sub": [
+            {
+              "name": "Identification of the actual concern",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Section A names the hurt-heard-as-attack stalemate accurately.",
+              "limitation": "The 'how can we talk' request is mostly argued about, not answered."
+            },
+            {
+              "name": "Meaningful use of personal context",
+              "rating": 3.5,
+              "points": 0.7,
+              "example": "Turn 1 links the user's phrasing to the partner hearing judgment.",
+              "limitation": "Third-person 'the user' throughout; few details change the argument."
+            },
+            {
+              "name": "Fit with goals and values",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Turn 7 ties needs focus to the user's goal of connection.",
+              "limitation": "Turn 6's autonomy framing displaces the user's stated aim of talking without fighting."
+            },
+            {
+              "name": "Attention to constraints and stakes",
+              "rating": 3.5,
+              "points": 0.7,
+              "example": "Turn 5 notes timing: the partner may be 'under siege' already.",
+              "limitation": "Relationship stakes and the cost of the repeated argument are barely addressed."
+            },
+            {
+              "name": "Responsiveness to information",
+              "rating": 5,
+              "points": 1,
+              "example": "Section E branches on whether defensiveness is physiological or moral.",
+              "limitation": "No focused question about what the hurts are or how they are raised."
+            }
+          ]
+        },
+        {
+          "name": "Constructive self-discovery",
+          "max": 20,
+          "points": 10.2,
+          "sub": [
+            {
+              "name": "Clarification of desires and motivations",
+              "rating": 6,
+              "points": 2.4,
+              "example": "Turn 8: wanting to be understood versus wanting the partner to change.",
+              "limitation": "Raised once at turn 8 and never developed further."
+            },
+            {
+              "name": "Examination of assumptions",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turn 1 questions whether hurt is wrapped in evaluations of the partner.",
+              "limitation": "The user's assumption that their phrasing is neutral is not examined directly."
+            },
+            {
+              "name": "Clarification of values and priorities",
+              "rating": 5,
+              "points": 2,
+              "example": "Section D: validation of pain versus partner admitting wrong.",
+              "limitation": "Conflicts between values are stated abstractly, without asking the user to rank them."
+            },
+            {
+              "name": "Recognition of fears and outside expectations",
+              "rating": 4,
+              "points": 1.6,
+              "example": "Turn 2 recognises the partner's possible flooding without pathologising.",
+              "limitation": "The user's own fear, of not being heard, is never explored."
+            },
+            {
+              "name": "Agency and reflective ownership",
+              "rating": 5,
+              "points": 2,
+              "example": "Section D offers 'A helpful reflection might be...' as an open question.",
+              "limitation": "Turn 9 places the problem on the partner's wall, leaving the user little to own."
+            }
+          ]
+        },
+        {
+          "name": "Decision usefulness",
+          "max": 10,
+          "points": 4.8,
+          "sub": [
+            {
+              "name": "Definition of the decision and options",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Section E sets out softened startup, collaborative reframing, and a test.",
+              "limitation": "Options never named in the debate itself; no option of waiting or third-party help."
+            },
+            {
+              "name": "Explanation of tradeoffs",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Turn 5: rephrasing alone is costless-seeming but fails without softened startup.",
+              "limitation": "No cost given for reframing hurt as 'neutral goal' (section E)."
+            },
+            {
+              "name": "Identification of decisive conditions",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Section E's if-physiological / if-moral-authority conditions are clear.",
+              "limitation": "Conditions are hard for the user to observe; no indicators given."
+            },
+            {
+              "name": "Treatment of uncertainty",
+              "rating": 5,
+              "points": 1,
+              "example": "Section E names partner willingness as the decisive unknown.",
+              "limitation": "Major versus minor unknowns are not distinguished."
+            },
+            {
+              "name": "Proportionate next steps",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Section E: test by asking help with a specific, neutral goal.",
+              "limitation": "No concrete wording or timing; the debate turns give no steps."
+            }
+          ]
+        },
+        {
+          "name": "Clarity and engagement",
+          "max": 10,
+          "points": 6.3,
+          "sub": [
+            {
+              "name": "Accessible language",
+              "rating": 5,
+              "points": 1,
+              "example": "Turns 1 and 5 are plain and readable.",
+              "limitation": "Turn 3: 'disciplinary framework that mandates an admission of guilt' is abstract jargon."
+            },
+            {
+              "name": "Traceable arguments and references",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "Speakers name whom they answer in every turn.",
+              "limitation": "Turn 7's dropped 'earlier claim' cannot be traced to any prior turn."
+            },
+            {
+              "name": "Manageable pacing and turn length",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Nine turns, all within 25-65 words, evenly paced.",
+              "limitation": "Uniform length and structure flatten rhythm."
+            },
+            {
+              "name": "Distinguishable positions and voices",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Language, biology, power lenses are clearly separate.",
+              "limitation": "Voices sound alike in syntax despite different lenses."
+            },
+            {
+              "name": "Economy and sustained attention",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Few recaps; each turn short.",
+              "limitation": "Turns 3, 6, 9 repeat the same power claim."
+            }
+          ]
+        },
+        {
+          "name": "Drama and entertainment",
+          "max": 10,
+          "points": 4.2,
+          "sub": [
+            {
+              "name": "Meaningful stakes and tension",
+              "rating": 5,
+              "points": 1,
+              "example": "Turn 9: experience invalidated 'regardless of how softly it is started'.",
+              "limitation": "Stakes stay conceptual; no felt scene of the recurring argument."
+            },
+            {
+              "name": "Surprise and reversals",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Turn 7 concession is a small reversal.",
+              "limitation": "Reversal hinges on a claim never made, so it lands hollow."
+            },
+            {
+              "name": "Personality and expressive voice",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Power Structuralist is distinctively stubborn.",
+              "limitation": "Little personal voice; minds read like textbook summaries."
+            },
+            {
+              "name": "Memorable delivery",
+              "rating": 3.5,
+              "points": 0.7,
+              "example": "Turn 7: hurt 'used as a moral stick'.",
+              "limitation": "No analogies or vivid examples elsewhere."
+            },
+            {
+              "name": "Anticipation and emotional movement",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Turn 8 opens a new turn of thought late.",
+              "limitation": "Flat, even intensity throughout all nine turns."
+            }
+          ]
+        }
+      ],
+      "uncapped": 50.7,
+      "score": 50.7,
+      "capReason": null,
+      "strengths": [
+        "Three genuinely distinct lenses (language, flooding, power) are clearly separated in turns 1-3.",
+        "Turn 8 surfaces a useful tension: wanting to be understood versus wanting change.",
+        "Section E gives clear conditional branches tied to the partner's type of defensiveness."
+      ],
+      "weaknesses": [
+        "Turn 7 concedes a claim the Empathic Communicator never made, undermining honest revision.",
+        "Power Structuralist (turns 3, 6, 9) repeats a stretched Foucault reading without development.",
+        "Speaks of 'the user' in third person and offers almost no concrete way to talk."
+      ],
+      "editorNotes": [
+        "Require turns to address the user directly in second person.",
+        "Forbid conceding or rebutting any claim not actually stated in an earlier turn.",
+        "Require each lens to be applied to the user's question at the most direct concept (e.g. complaint vs criticism).",
+        "Require at least two turns to propose a concrete wording or step the user could try."
+      ]
+    },
+    "v7": {
+      "criteria": [
+        {
+          "name": "Quality of discussion",
+          "max": 20,
+          "points": 12.8,
+          "sub": [
+            {
+              "name": "Continuity and responsiveness",
+              "rating": 6.5,
+              "points": 2.6,
+              "example": "Turn 8 builds directly on turn 6's meta-communication proposal.",
+              "limitation": "Turn 4 rebuts 'detachment' at the Systems Observer, though the Stoic argued it."
+            },
+            {
+              "name": "Development of ideas",
+              "rating": 6.5,
+              "points": 2.6,
+              "example": "Turn 6 adds a meta-communication step beyond turn 3's loop diagnosis.",
+              "limitation": "Turn 7 repeats turn 4's intimacy appeal with modest new content."
+            },
+            {
+              "name": "Exploration of central tensions",
+              "rating": 6.5,
+              "points": 2.6,
+              "example": "Turn 9: framing versus loop rigidity, stated as the open question.",
+              "limitation": "The possibility of legitimate criticism in the user's hurt is under-explored."
+            },
+            {
+              "name": "Integration of perspectives",
+              "rating": 6,
+              "points": 2.4,
+              "example": "Turn 5 Stoic revises toward examining demands; turn 8 uses Systems test.",
+              "limitation": "Relational Ethicist never revises, dismisses turn 6 as 'clinical'."
+            },
+            {
+              "name": "Progress toward understanding",
+              "rating": 6.5,
+              "points": 2.6,
+              "example": "Turn 9 leaves a sharper, testable fork than turn 1.",
+              "limitation": "Section D labels Systems Observer as 'fix the partner', misreading turn 6."
+            }
+          ]
+        },
+        {
+          "name": "Quality of disagreement, trust and grounding",
+          "max": 20,
+          "points": 11,
+          "sub": [
+            {
+              "name": "Faithful engagement",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Turn 8 fairly takes the Systems Observer's proposal on its own terms.",
+              "limitation": "Turn 3 says the Stoic 'suggests you ignore the partner'; turn 2 never did."
+            },
+            {
+              "name": "Substance of challenges",
+              "rating": 6,
+              "points": 2.4,
+              "example": "Turn 7: meta-observation risks making partners 'observers of a machine'.",
+              "limitation": "Turn 4's challenge is aimed at the wrong speaker."
+            },
+            {
+              "name": "Accuracy and support",
+              "rating": 6,
+              "points": 2.4,
+              "example": "Bateson's metacommunication (Play and Fantasy) and Epictetus Section 1 are apt.",
+              "limitation": "Turn 4 invents 'When you say you want them to stop'; the user said no such thing."
+            },
+            {
+              "name": "Calibration and transparency",
+              "rating": 5,
+              "points": 2,
+              "example": "Most claims hedged with 'might' and 'perhaps'.",
+              "limitation": "Turn 8 and Section E infer the partner's refusal from one failed test."
+            },
+            {
+              "name": "Intellectual honesty and revision",
+              "rating": 6,
+              "points": 2.4,
+              "example": "Turn 5: 'I concede that my previous point might have been too detached.'",
+              "limitation": "Turn 3's strawman of the Stoic is never corrected."
+            }
+          ]
+        },
+        {
+          "name": "Personal relevance",
+          "max": 10,
+          "points": 5.5,
+          "sub": [
+            {
+              "name": "Identification of the actual concern",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "Section A asks whether the problem is style or 'criticism' as a shield.",
+              "limitation": "Turn 1 jumps to I-It diagnosis before clarifying the user's request."
+            },
+            {
+              "name": "Meaningful use of personal context",
+              "rating": 5,
+              "points": 1,
+              "example": "Turn 6 shapes a step around the repeated-argument pattern the user describes.",
+              "limitation": "Turn 7 assumes lost closeness 'you used to have', which the user never stated."
+            },
+            {
+              "name": "Fit with goals and values",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Turn 6 targets the user's goal: talk without the same argument.",
+              "limitation": "Turn 8 drifts toward Stoic peace, not the user's stated aim."
+            },
+            {
+              "name": "Attention to constraints and stakes",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Turn 4 times the attempt 'during a calm moment'.",
+              "limitation": "Turn 4 and 7 invent context: 'want them to stop', past closeness."
+            },
+            {
+              "name": "Responsiveness to information",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Section E branches on whether the partner is distressed by the cycle.",
+              "limitation": "No focused question to the user about what was said or done."
+            }
+          ]
+        },
+        {
+          "name": "Constructive self-discovery",
+          "max": 20,
+          "points": 11.8,
+          "sub": [
+            {
+              "name": "Clarification of desires and motivations",
+              "rating": 6.5,
+              "points": 2.6,
+              "example": "Turn 7 contrasts wanting closeness with wanting accuracy of complaints.",
+              "limitation": "Turn 7's 'you are choosing to prioritize' edges toward declaring a hidden motive."
+            },
+            {
+              "name": "Examination of assumptions",
+              "rating": 6,
+              "points": 2.4,
+              "example": "Turn 5 asks whether pain is presented as a command to change.",
+              "limitation": "Assumption that a single rephrasing is a fair test goes unexamined."
+            },
+            {
+              "name": "Clarification of values and priorities",
+              "rating": 6,
+              "points": 2.4,
+              "example": "Validation versus peace (turn 2) and closeness versus accuracy (turn 7).",
+              "limitation": "Never asks the user which value matters most."
+            },
+            {
+              "name": "Recognition of fears and outside expectations",
+              "rating": 5,
+              "points": 2,
+              "example": "Section A names the fear of triggering defensiveness; turn 6 notes mutual exhaustion.",
+              "limitation": "Fear is named in summary but not explored in turns."
+            },
+            {
+              "name": "Agency and reflective ownership",
+              "rating": 6,
+              "points": 2.4,
+              "example": "Turn 9 leaves a fork the user can accept or reject.",
+              "limitation": "Section E's verdict ('their refusal') closes reflection prematurely."
+            }
+          ]
+        },
+        {
+          "name": "Decision usefulness",
+          "max": 10,
+          "points": 5.9,
+          "sub": [
+            {
+              "name": "Definition of the decision and options",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Options: rephrase, name the cycle together, or accept and detach.",
+              "limitation": "No option of couples help or postponing the topic."
+            },
+            {
+              "name": "Explanation of tradeoffs",
+              "rating": 5,
+              "points": 1,
+              "example": "Turn 7 weighs meta-observation against loss of intimacy.",
+              "limitation": "Cost of Stoic acceptance to the relationship is not weighed."
+            },
+            {
+              "name": "Identification of decisive conditions",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "Section E: if partner is also distressed, meta-communication may work.",
+              "limitation": "Condition for intentional deflection is hard to observe fairly."
+            },
+            {
+              "name": "Treatment of uncertainty",
+              "rating": 5,
+              "points": 1,
+              "example": "Turn 9 keeps framing versus loop explicitly undecided.",
+              "limitation": "Section E treats one rephrased attempt as near-decisive evidence."
+            },
+            {
+              "name": "Proportionate next steps",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Turn 6: ten minutes naming the cycle without discussing content.",
+              "limitation": "No guidance on what to do if the meta-talk itself escalates."
+            }
+          ]
+        },
+        {
+          "name": "Clarity and engagement",
+          "max": 10,
+          "points": 6.6,
+          "sub": [
+            {
+              "name": "Accessible language",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Second-person, plain sentences, e.g. turn 6's 'Just name the cycle.'",
+              "limitation": "Turn 1's 'it'/'thou' needs unpacking for most readers."
+            },
+            {
+              "name": "Traceable arguments and references",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Turn 8 clearly ties its claim to the Systems Observer's proposal.",
+              "limitation": "Turn 4 names the wrong speaker for the 'detachment' objection."
+            },
+            {
+              "name": "Manageable pacing and turn length",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "Nine turns, all within the word limit.",
+              "limitation": "Several turns near 60 words feel dense."
+            },
+            {
+              "name": "Distinguishable positions and voices",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Intimacy, control, and system lenses stay distinct throughout.",
+              "limitation": "Relational Ethicist and Stoic converge in turns 5 and 7 without marking it."
+            },
+            {
+              "name": "Economy and sustained attention",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "Little recap; each turn adds something.",
+              "limitation": "Turns 4 and 7 overlap in their reach-for-closeness advice."
+            }
+          ]
+        },
+        {
+          "name": "Drama and entertainment",
+          "max": 10,
+          "points": 5.8,
+          "sub": [
+            {
+              "name": "Meaningful stakes and tension",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Turn 9's fork: phrasing futile versus only lever you have.",
+              "limitation": "Tension softened by uniform hedging."
+            },
+            {
+              "name": "Surprise and reversals",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Turn 8: failure of the test 'could ironically lead to the peace you want'.",
+              "limitation": "Turn 5 reversal is quick and unexplained."
+            },
+            {
+              "name": "Personality and expressive voice",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Relational Ethicist's warmth versus Stoic's coolness are audible.",
+              "limitation": "Systems Observer reads as procedural."
+            },
+            {
+              "name": "Memorable delivery",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Turn 7: 'observers of a machine'; turn 1's 'it' versus 'thou'.",
+              "limitation": "No vivid example of an actual exchange between partners."
+            },
+            {
+              "name": "Anticipation and emotional movement",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Moves from diagnosis to a step to an unresolved fork.",
+              "limitation": "Middle turns 4-7 share one emotional register."
+            }
+          ]
+        }
+      ],
+      "uncapped": 59.4,
+      "score": 59.4,
+      "capReason": null,
+      "strengths": [
+        "Turn 6 gives a concrete, proportionate step: ten minutes naming the cycle together.",
+        "Turn 5's concession and turn 8's use of the Systems test show real integration.",
+        "Second-person address and apt grounding (Bateson's metacommunication, Epictetus Section 1) keep it relevant."
+      ],
+      "weaknesses": [
+        "Turn 3 strawmans the Stoic and turn 4 rebuts the wrong speaker.",
+        "Turns 4 and 7 invent user context ('want them to stop', past closeness).",
+        "Turn 8 and Section E overclaim: one failed rephrasing proves the partner's refusal."
+      ],
+      "editorNotes": [
+        "Require each rebuttal to name the correct speaker and restate their claim accurately.",
+        "Forbid inventing user statements or history; turn missing details into conditional questions.",
+        "Require tests in Section E to state how much one result can and cannot show.",
+        "Ask one mind to explore the user's own fear or part in the loop without verdict."
+      ]
+    }
+  },
+  "preferredVersion": 7,
+  "savedAt": "2026-10-13T20:28:37.543Z"
+}

@@ -56,3 +56,11 @@ Latency: gemini v6 18.0 s | sonnet v6 77.6 s
 Words: 1847 -> 1876
 Changes: replace, sharpen, add, delete
 Version 7 makes the minds talk about the user as you, never the user, and say I for themselves, with that check added to the per-line check where the small model follows rules best; the vague advice ban becomes 'argue with one another, not at the user'. One turn must now propose one specific step with a number, an amount or a time frame, and the next turn must test it against something the user wrote, so the debate ends with a sized mechanism rather than a named idea. The two drama and voices sentences that earned nothing across two rounds are cut, so the prompt grows only 29 words to 1876; accuracy, still the largest loss, is left for next round because its clearest cause (a role assignment pushing a mind to argue against its own book) needs a rule this round had no change slot for.
+
+## v8 — from round 7 — 2026-10-13
+Question (love-02, Love / Recurring conflict): Every time I bring up something that hurt me, my partner says I’m criticizing them. How can we talk without having the same argument?
+Scores: gemini: v6 53.93 vs v7 55.62 (v7 better) | sonnet: v6 66.00 vs v7 71.32 (v7 better)
+Latency: gemini v7 13.2 s | sonnet v7 109.0 s
+Words: 1876 -> 1897
+Changes: sharpen, sharpen, sharpen, replace, delete
+Version 8 extends the hedge rule and its per-line check from the user alone to anyone else in the situation, so claims about a partner's fear, motive or refusal must carry maybe, perhaps, might or if like claims about the user. A turn that disagrees must now reuse a phrase from the turn it disputes and give one reason against it, which blocks the straw-man rebuttals and wrong-speaker objections the small model keeps producing. The vague 'select for relevance, not fame' becomes a concrete test (books about the user's kind of problem or topic, not general theories applied from outside), the accuracy fix deferred from round 6, and the redundant winner-conflict-consensus sentence is cut to pay for it: four changes, one applied in two places, 1876 to 1897 words, 3 under the ceiling, so round 8 must cut before it adds; a direct question to the user in the decisive-uncertainty turn is the next cheap sharpen if responsiveness and agency stay low.

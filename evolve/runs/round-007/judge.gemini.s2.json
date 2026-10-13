@@ -1,0 +1,646 @@
+{
+  "lane": "gemini",
+  "sample": 2,
+  "blind": {
+    "A": 7,
+    "B": 6
+  },
+  "scores": {
+    "v7": {
+      "criteria": [
+        {
+          "name": "Quality of discussion",
+          "max": 20,
+          "points": 13.44,
+          "sub": [
+            {
+              "name": "Continuity and responsiveness",
+              "rating": 7.2,
+              "points": 2.88,
+              "example": "Turn 3 builds on Senge's loop; turn 8 tests the Analyst's experiment directly.",
+              "limitation": "Turns 1-3 are mostly parallel openings that stake out lenses."
+            },
+            {
+              "name": "Development of ideas",
+              "rating": 6.8,
+              "points": 2.72,
+              "example": "Moves from intent vs structure (turns 4-5) to a primed protocol (turns 7-9).",
+              "limitation": "Turn 6's 'loss of nuance' adds little beyond restating the defensive mode."
+            },
+            {
+              "name": "Exploration of central tensions",
+              "rating": 6.3,
+              "points": 2.52,
+              "example": "Turns 4-5 test whether intent or structure drives the loop.",
+              "limitation": "Never examines whether the user's hurt is sometimes a legitimate critique."
+            },
+            {
+              "name": "Integration of perspectives",
+              "rating": 6.8,
+              "points": 2.72,
+              "example": "Turn 9: Systems Theorist combines I-statements with a structural boundary.",
+              "limitation": "The convergence in turns 7-9 is somewhat tidy and quick."
+            },
+            {
+              "name": "Progress toward understanding",
+              "rating": 6.5,
+              "points": 2.6,
+              "example": "Turn 10 sharpens it: soul of the relationship vs mechanics of the interaction.",
+              "limitation": "Turn 10's claim that both are frightened appears late and is never examined."
+            }
+          ]
+        },
+        {
+          "name": "Quality of disagreement, trust and grounding",
+          "max": 20,
+          "points": 11.4,
+          "sub": [
+            {
+              "name": "Faithful engagement",
+              "rating": 6,
+              "points": 2.4,
+              "example": "Turn 5 restates the Analyst's intent claim accurately before rebutting it.",
+              "limitation": "Turn 1 presumes the user brings a 'list of grievances', which is uncharitable to the user."
+            },
+            {
+              "name": "Substance of challenges",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turn 4 challenges 'intent matters less' and gives the reason the system stays cold.",
+              "limitation": "Turn 5's locked-steering-wheel image argues by analogy, not evidence."
+            },
+            {
+              "name": "Accuracy and support",
+              "rating": 5,
+              "points": 2,
+              "example": "Senge's reinforcing loops and Kahneman's framing (ch. 34) are real concepts.",
+              "limitation": "Kahneman stretched to threat detection; Buber cited for I-statements (turn 7)."
+            },
+            {
+              "name": "Calibration and transparency",
+              "rating": 5,
+              "points": 2,
+              "example": "Hedges like 'perhaps' and 'likely' in turns 1 and 3.",
+              "limitation": "Turn 10 asserts 'you are both frightened' as fact; section D says 'We discovered'."
+            },
+            {
+              "name": "Intellectual honesty and revision",
+              "rating": 7,
+              "points": 2.8,
+              "example": "Turn 7: 'I will drop my initial claim that intent alone is sufficient.'",
+              "limitation": "Turn 9's concession costs the Systems Theorist little."
+            }
+          ]
+        },
+        {
+          "name": "Personal relevance",
+          "max": 10,
+          "points": 5.1,
+          "sub": [
+            {
+              "name": "Identification of the actual concern",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Section A names the misreading-vs-delivery ambiguity.",
+              "limitation": "Turn 1 opens by recasting the user's hurt as criticism."
+            },
+            {
+              "name": "Meaningful use of personal context",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Turn 8's script is built for the 'hurt heard as criticism' pattern.",
+              "limitation": "Uses little beyond the one-line situation; much is generic."
+            },
+            {
+              "name": "Fit with goals and values",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Turn 6 separates being heard from resolving the hurt.",
+              "limitation": "Doesn't confirm the user's goal is mutual talk rather than acknowledgment."
+            },
+            {
+              "name": "Attention to constraints and stakes",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Section E: a neutral third party if the partner can't regulate.",
+              "limitation": "Turn 7's 'forbidden' rule assumes the partner will cooperate."
+            },
+            {
+              "name": "Responsiveness to information",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Section E branches on whether the partner listens once safe.",
+              "limitation": "No focused questions about past episodes or the partner's view."
+            }
+          ]
+        },
+        {
+          "name": "Constructive self-discovery",
+          "max": 20,
+          "points": 11.12,
+          "sub": [
+            {
+              "name": "Clarification of desires and motivations",
+              "rating": 5.8,
+              "points": 2.32,
+              "example": "Turn 6: want to feel heard vs resolve the underlying hurt.",
+              "limitation": "The distinction is offered once and never developed."
+            },
+            {
+              "name": "Examination of assumptions",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turn 3: 'You might be assuming they understand your emotional vulnerability.'",
+              "limitation": "Turn 1 imposes an assumption about the user rather than surfacing one."
+            },
+            {
+              "name": "Clarification of values and priorities",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turn 6: partner's safety vs user's connection.",
+              "limitation": "The user's own priority ranking is never invited."
+            },
+            {
+              "name": "Recognition of fears and outside expectations",
+              "rating": 6,
+              "points": 2.4,
+              "example": "Turn 10: losing mutual trust hurts more than the disagreement.",
+              "limitation": "The fear is declared, not offered as a possibility."
+            },
+            {
+              "name": "Agency and reflective ownership",
+              "rating": 5,
+              "points": 2,
+              "example": "Section E's 'observe if their response changes' leaves the reading to the user.",
+              "limitation": "Section D's 'We discovered' presents conclusions rather than questions."
+            }
+          ]
+        },
+        {
+          "name": "Decision usefulness",
+          "max": 10,
+          "points": 5.7,
+          "sub": [
+            {
+              "name": "Definition of the decision and options",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Options: framing experiment, third party, a single trial.",
+              "limitation": "Doesn't frame what choice the user actually faces."
+            },
+            {
+              "name": "Explanation of tradeoffs",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Turn 6 notes the partner's safety comes at the cost of the user's connection.",
+              "limitation": "The cost or risk of the 10-minute protocol is never discussed."
+            },
+            {
+              "name": "Identification of decisive conditions",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "Section E: willing when safe vs unable to regulate even when primed.",
+              "limitation": "The conditions are about the partner only."
+            },
+            {
+              "name": "Treatment of uncertainty",
+              "rating": 5,
+              "points": 1,
+              "example": "Section E's 'If you are unsure' branch.",
+              "limitation": "Doesn't separate major unknowns from minor ones."
+            },
+            {
+              "name": "Proportionate next steps",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Turn 8 gives an exact opening sentence to try.",
+              "limitation": "Turn 7's 'forbidden from responding' rule is heavy-handed for a first step."
+            }
+          ]
+        },
+        {
+          "name": "Clarity and engagement",
+          "max": 10,
+          "points": 6.8,
+          "sub": [
+            {
+              "name": "Accessible language",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "Turn 8's script is plain and usable.",
+              "limitation": "I-It/I-Thou and System 1 are left unexplained for a lay reader."
+            },
+            {
+              "name": "Traceable arguments and references",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Turns name whom they answer ('The Analyst argues...').",
+              "limitation": "Turn 6's 'loss of nuance' has an unclear referent."
+            },
+            {
+              "name": "Manageable pacing and turn length",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Ten turns, all 48-65 words.",
+              "limitation": "Turns 1 and 6 crowd the word ceiling."
+            },
+            {
+              "name": "Distinguishable positions and voices",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Three lenses stay distinct; turns 7 and 9 mark the concessions.",
+              "limitation": "The voices sound alike in syntax."
+            },
+            {
+              "name": "Economy and sustained attention",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "Little repetition across turns.",
+              "limitation": "Section D partly repeats turns 6-9."
+            }
+          ]
+        },
+        {
+          "name": "Drama and entertainment",
+          "max": 10,
+          "points": 5.2,
+          "sub": [
+            {
+              "name": "Meaningful stakes and tension",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Intent vs structure conflict in turns 4-5.",
+              "limitation": "The relationship's stakes stay abstract until turn 10."
+            },
+            {
+              "name": "Surprise and reversals",
+              "rating": 5,
+              "points": 1,
+              "example": "Turn 10 reframes it: trust loss hurts more than the disagreement.",
+              "limitation": "The concessions in turns 7 and 9 are predictable."
+            },
+            {
+              "name": "Personality and expressive voice",
+              "rating": 5,
+              "points": 1,
+              "example": "The Analyst's insistence on 'soul' gives some character.",
+              "limitation": "The Behavioral Observer reads like a textbook."
+            },
+            {
+              "name": "Memorable delivery",
+              "rating": 5,
+              "points": 1,
+              "example": "Turn 8's ready-made sentence sticks.",
+              "limitation": "Turn 5's 'steering wheel already locked' analogy is muddled."
+            },
+            {
+              "name": "Anticipation and emotional movement",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "The emotional turn at turn 10.",
+              "limitation": "Turns 2-9 run at one even, clinical register."
+            }
+          ]
+        }
+      ],
+      "uncapped": 58.76,
+      "score": 58.76,
+      "capReason": null,
+      "strengths": [
+        "Real revision: turn 7 drops a claim and turn 9 integrates two views into a protocol.",
+        "Concrete next step: turn 8 gives a usable opening sentence that primes the partner.",
+        "Section E's branches turn the partner's response into a test the user can run."
+      ],
+      "weaknesses": [
+        "Turn 1 (Relational Analyst) accuses the user of objectifying the partner without evidence.",
+        "Accuracy stretch: Kahneman used for threat responses (turns 3, 6), Buber for I-statements (turn 7).",
+        "Turn 10 and section D state speculation ('you are both frightened', 'We discovered') as fact."
+      ],
+      "editorNotes": [
+        "Forbid an opening turn that presumes the user's fault; first state the user's reading charitably.",
+        "Require each mind's claim to match its book's actual argument, not a nearby popular idea.",
+        "Require naming the cost or risk of every proposed experiment.",
+        "Have one mind ask the user a focused question about a specific past episode."
+      ]
+    },
+    "v6": {
+      "criteria": [
+        {
+          "name": "Quality of discussion",
+          "max": 20,
+          "points": 11,
+          "sub": [
+            {
+              "name": "Continuity and responsiveness",
+              "rating": 6.5,
+              "points": 2.6,
+              "example": "Each turn names and answers the previous speaker.",
+              "limitation": "Turn 2 answers a position the Communicator never took."
+            },
+            {
+              "name": "Development of ideas",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 6 moves from face-saving to collaborating on a shared front.",
+              "limitation": "Turns 5 and 8 repeat the Stoic's same point."
+            },
+            {
+              "name": "Exploration of central tensions",
+              "rating": 6,
+              "points": 2.4,
+              "example": "Technique vs uncontrollable partner, turns 4-7.",
+              "limitation": "Turn 9's 'clash of egos' arrives with no time to explore it."
+            },
+            {
+              "name": "Integration of perspectives",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 7 combines the Stoic's limit with clearer observation.",
+              "limitation": "The Social Architect and the Communicator barely reshape each other."
+            },
+            {
+              "name": "Progress toward understanding",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 9 sharpens the question: does the partner want resolution or standing?",
+              "limitation": "Ends close to where section A started."
+            }
+          ]
+        },
+        {
+          "name": "Quality of disagreement, trust and grounding",
+          "max": 20,
+          "points": 10.2,
+          "sub": [
+            {
+              "name": "Faithful engagement",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Turn 6 accurately states the Stoic's detachment before answering.",
+              "limitation": "Turn 2 attacks a straw man ('assumes partner is responsible for user's peace')."
+            },
+            {
+              "name": "Substance of challenges",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turn 5: even perfect words may still be heard as criticism.",
+              "limitation": "Turn 3's 'misses the point' is asserted without a reason."
+            },
+            {
+              "name": "Accuracy and support",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Rosenberg's observation/evaluation distinction is faithful (turn 1).",
+              "limitation": "Turn 2's quote doesn't match the cited Carter text; 'face' comes from Goffman's On Face-Work."
+            },
+            {
+              "name": "Calibration and transparency",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Consistent hedges ('might', 'perhaps', 'likely').",
+              "limitation": "Turn 3 asserts the partner must defend face 'to survive the interaction'."
+            },
+            {
+              "name": "Intellectual honesty and revision",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turn 7: 'I drop the claim that technique alone solves this.'",
+              "limitation": "The Stoic never concedes the user's legitimate need for repair."
+            }
+          ]
+        },
+        {
+          "name": "Personal relevance",
+          "max": 10,
+          "points": 4.8,
+          "sub": [
+            {
+              "name": "Identification of the actual concern",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Section A names the shame vs misunderstanding uncertainty.",
+              "limitation": "The Stoic reframes the question as the user's tranquility, not the couple's conversation."
+            },
+            {
+              "name": "Meaningful use of personal context",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Turn 1 ties directly to hurt heard as a judgment of character.",
+              "limitation": "Speaks of 'the user' in the third person; generic throughout."
+            },
+            {
+              "name": "Fit with goals and values",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Turn 6: 'the user likely wants connection, not just indifference.'",
+              "limitation": "Turn 8 subordinates the user's goal of talking to inner peace."
+            },
+            {
+              "name": "Attention to constraints and stakes",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Section E raises a possible structural lack of safety.",
+              "limitation": "Never addresses the cost to the user of swallowing the hurt."
+            },
+            {
+              "name": "Responsiveness to information",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Section E branches on fragile self-image vs refusal to be vulnerable.",
+              "limitation": "No questions put directly to the user."
+            }
+          ]
+        },
+        {
+          "name": "Constructive self-discovery",
+          "max": 20,
+          "points": 10.8,
+          "sub": [
+            {
+              "name": "Clarification of desires and motivations",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Section D: seeking understanding vs forcing the partner to admit fault.",
+              "limitation": "It appears only in the summary, not in the debate."
+            },
+            {
+              "name": "Examination of assumptions",
+              "rating": 6,
+              "points": 2.4,
+              "example": "Turn 5 questions the assumption that better words fix the reaction.",
+              "limitation": "Turn 2's assumption is assigned to the user without basis."
+            },
+            {
+              "name": "Clarification of values and priorities",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 6: connection vs detachment.",
+              "limitation": "Vulnerability vs self-protection is named in A but not developed."
+            },
+            {
+              "name": "Recognition of fears and outside expectations",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turn 3 frames the partner's defensiveness as protecting face.",
+              "limitation": "The user's own fears are never explored."
+            },
+            {
+              "name": "Agency and reflective ownership",
+              "rating": 5,
+              "points": 2,
+              "example": "Section D poses a question for the user to consider.",
+              "limitation": "Turn 8 risks implying the user should simply accept the defensiveness."
+            }
+          ]
+        },
+        {
+          "name": "Decision usefulness",
+          "max": 10,
+          "points": 5.2,
+          "sub": [
+            {
+              "name": "Definition of the decision and options",
+              "rating": 5,
+              "points": 1,
+              "example": "Section D: careful speech vs acceptance.",
+              "limitation": "Options stay abstract; no concrete conversation format."
+            },
+            {
+              "name": "Explanation of tradeoffs",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Section E: accept the limitation vs address the lack of safety.",
+              "limitation": "The costs of acceptance are never weighed."
+            },
+            {
+              "name": "Identification of decisive conditions",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Section E: fragile self-image vs refusal of vulnerability.",
+              "limitation": "No guidance on telling the two apart beyond one test."
+            },
+            {
+              "name": "Treatment of uncertainty",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Section A names one decisive uncertainty explicitly.",
+              "limitation": "Other unknowns, like history or frequency, go unranked."
+            },
+            {
+              "name": "Proportionate next steps",
+              "rating": 5,
+              "points": 1,
+              "example": "Section E: test a small, neutral observation.",
+              "limitation": "No example wording despite the NVC lens."
+            }
+          ]
+        },
+        {
+          "name": "Clarity and engagement",
+          "max": 10,
+          "points": 6.8,
+          "sub": [
+            {
+              "name": "Accessible language",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Short, plain sentences.",
+              "limitation": "The third-person 'the user' distances the reader."
+            },
+            {
+              "name": "Traceable arguments and references",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "Each turn names whom it answers.",
+              "limitation": "Turn 6's 'shared front' is unclear in practice."
+            },
+            {
+              "name": "Manageable pacing and turn length",
+              "rating": 7.5,
+              "points": 1.5,
+              "example": "Nine compact turns of 39-48 words.",
+              "limitation": "Turn 9 ends abruptly on a new question."
+            },
+            {
+              "name": "Distinguishable positions and voices",
+              "rating": 7.5,
+              "points": 1.5,
+              "example": "Three clearly separate lenses.",
+              "limitation": "Only one explicit change of position (turn 7)."
+            },
+            {
+              "name": "Economy and sustained attention",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "Little filler.",
+              "limitation": "Turn 8 restates turn 5."
+            }
+          ]
+        },
+        {
+          "name": "Drama and entertainment",
+          "max": 10,
+          "points": 4.7,
+          "sub": [
+            {
+              "name": "Meaningful stakes and tension",
+              "rating": 5,
+              "points": 1,
+              "example": "The Stoic vs the Social Architect on detachment (turn 6).",
+              "limitation": "The stakes for the relationship are rarely felt."
+            },
+            {
+              "name": "Surprise and reversals",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Turn 9 raises the partner's possible motive of protecting standing.",
+              "limitation": "No real reversal."
+            },
+            {
+              "name": "Personality and expressive voice",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "The Stoic's blunt 'That is a false hope.'",
+              "limitation": "The Communicator is bland."
+            },
+            {
+              "name": "Memorable delivery",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Epictetus's control line (turn 2).",
+              "limitation": "No vivid examples or analogies."
+            },
+            {
+              "name": "Anticipation and emotional movement",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Turn 9 leaves an open, pointed question.",
+              "limitation": "Flat, even rhythm throughout."
+            }
+          ]
+        }
+      ],
+      "uncapped": 53.5,
+      "score": 53.5,
+      "capReason": null,
+      "strengths": [
+        "Rosenberg's observation/evaluation distinction (turn 1) is an apt, accurate entry point.",
+        "Section D's question, understanding vs forcing an admission of fault, invites real reflection.",
+        "Section E offers a low-cost test: a small neutral observation, then watch the response."
+      ],
+      "weaknesses": [
+        "Turn 2 (Stoic) straw-mans the Communicator; the quote doesn't match the cited Carter translation.",
+        "Turn 3 (Social Architect) draws 'face' from Goffman's On Face-Work, not the cited book.",
+        "Third-person 'the user' and no example wording leave the advice generic and distant."
+      ],
+      "editorNotes": [
+        "Require turns to address the user as 'you' and use the situation's specifics.",
+        "When quoting, the wording must match the linked translation exactly; otherwise paraphrase.",
+        "Require at least one concrete phrasing or script when a communication lens is cast.",
+        "Forbid rebuttals of positions the target never stated; quote or paraphrase the target first."
+      ]
+    }
+  },
+  "preferredVersion": 7,
+  "savedAt": "2026-10-13T20:28:37.621Z"
+}

@@ -1,0 +1,646 @@
+{
+  "lane": "sonnet",
+  "sample": null,
+  "blind": {
+    "A": 6,
+    "B": 7
+  },
+  "scores": {
+    "v6": {
+      "criteria": [
+        {
+          "name": "Quality of discussion",
+          "max": 20,
+          "points": 13.56,
+          "sub": [
+            {
+              "name": "Continuity and responsiveness",
+              "rating": 7.2,
+              "points": 2.88,
+              "example": "T2 opens 'The Pattern Spotter claims the opening alone earns the label'",
+              "limitation": "T3 sweeps both views aside rather than engaging either"
+            },
+            {
+              "name": "Development of ideas",
+              "rating": 6.5,
+              "points": 2.6,
+              "example": "T5 splits acknowledgment from change as rival wants",
+              "limitation": "T9-T10 restate one decisive fact twice"
+            },
+            {
+              "name": "Exploration of central tensions",
+              "rating": 6.8,
+              "points": 2.72,
+              "example": "T9 wording versus identity threat framed as testable fork",
+              "limitation": "Loop view (Dance Watcher) fades after T8 concession"
+            },
+            {
+              "name": "Integration of perspectives",
+              "rating": 6.6,
+              "points": 2.64,
+              "example": "T8 Dance Watcher narrows claim after Pattern Spotter's repair point",
+              "limitation": "Identity and loop readings never combined into one picture"
+            },
+            {
+              "name": "Progress toward understanding",
+              "rating": 6.8,
+              "points": 2.72,
+              "example": "T10 names the one detail that decides the dispute",
+              "limitation": "Ends on missing fact, little on how to talk next"
+            }
+          ]
+        },
+        {
+          "name": "Quality of disagreement, trust and grounding",
+          "max": 20,
+          "points": 14.16,
+          "sub": [
+            {
+              "name": "Faithful engagement",
+              "rating": 6.8,
+              "points": 2.72,
+              "example": "T4 takes Dance Watcher's one-step claim and gives a reason",
+              "limitation": "T6 'drop hurts altogether' rebutted by guess, not argument"
+            },
+            {
+              "name": "Substance of challenges",
+              "rating": 6.6,
+              "points": 2.64,
+              "example": "T9 shows the experiment teaches nothing without one fact",
+              "limitation": "T7 Tenerife hint argument targets hinting the user never described"
+            },
+            {
+              "name": "Accuracy and support",
+              "rating": 7,
+              "points": 2.8,
+              "example": "Semmelweis 1847 and Tenerife 1977 accurately described and flagged",
+              "limitation": "Semmelweis analogy stretches 'hurt' into public scientific rebuke"
+            },
+            {
+              "name": "Calibration and transparency",
+              "rating": 7.8,
+              "points": 3.12,
+              "example": "T2 and T7 flag own illustrations and extensions as not the book's",
+              "limitation": "Hedges ('might', 'perhaps') pile up, flattening confidence"
+            },
+            {
+              "name": "Intellectual honesty and revision",
+              "rating": 7.2,
+              "points": 2.88,
+              "example": "T8 'I drop my claim that one changed step can break the loop'",
+              "limitation": "Pattern Spotter never concedes anything across four turns"
+            }
+          ]
+        },
+        {
+          "name": "Personal relevance",
+          "max": 10,
+          "points": 6.16,
+          "sub": [
+            {
+              "name": "Identification of the actual concern",
+              "rating": 6.8,
+              "points": 1.36,
+              "example": "T4 'want the hurt believed before anything gets fixed'",
+              "limitation": "Partner's possible side of the loop barely examined"
+            },
+            {
+              "name": "Meaningful use of personal context",
+              "rating": 5.8,
+              "points": 1.16,
+              "example": "T4 and T6 build on 'every time' and 'same argument'",
+              "limitation": "User addressed in third person; little tailoring after T6"
+            },
+            {
+              "name": "Fit with goals and values",
+              "rating": 6,
+              "points": 1.2,
+              "example": "T5 acknowledgment versus change tied to user's stated aim",
+              "limitation": "Stated goal of talking 'without the same argument' rarely revisited"
+            },
+            {
+              "name": "Attention to constraints and stakes",
+              "rating": 5.2,
+              "points": 1.04,
+              "example": "T3 'a day of waiting' respects timing",
+              "limitation": "Relationship risk of the loop itself left mostly implicit"
+            },
+            {
+              "name": "Responsiveness to information",
+              "rating": 7,
+              "points": 1.4,
+              "example": "T10 asks how partner reacted to a gentle, specific hurt",
+              "limitation": "Only one missing fact pursued; frequency or pile not asked"
+            }
+          ]
+        },
+        {
+          "name": "Constructive self-discovery",
+          "max": 20,
+          "points": 12.56,
+          "sub": [
+            {
+              "name": "Clarification of desires and motivations",
+              "rating": 6.8,
+              "points": 2.72,
+              "example": "T5 offers two rival wants without declaring either",
+              "limitation": "T6 dropping-hurts guess lands abruptly"
+            },
+            {
+              "name": "Examination of assumptions",
+              "rating": 6.2,
+              "points": 2.48,
+              "example": "T1 questions whether the hurt arrives as a verdict",
+              "limitation": "User's own role in the loop raised only via T3"
+            },
+            {
+              "name": "Clarification of values and priorities",
+              "rating": 6,
+              "points": 2.4,
+              "example": "T5 being believed versus seeing change, cannot both be had",
+              "limitation": "Value of the partner's safety never weighed"
+            },
+            {
+              "name": "Recognition of fears and outside expectations",
+              "rating": 5.6,
+              "points": 2.24,
+              "example": "T6 names tiredness and fear of losing closeness",
+              "limitation": "Partner's fears read only through Semmelweis analogy"
+            },
+            {
+              "name": "Agency and reflective ownership",
+              "rating": 6.8,
+              "points": 2.72,
+              "example": "Section D poses acknowledgment-or-change as user's own question",
+              "limitation": "Few questions phrased for the user to answer directly"
+            }
+          ]
+        },
+        {
+          "name": "Decision usefulness",
+          "max": 10,
+          "points": 6.76,
+          "sub": [
+            {
+              "name": "Definition of the decision and options",
+              "rating": 6.8,
+              "points": 1.36,
+              "example": "T3 lists one changed step and waiting as options",
+              "limitation": "Counselor appears only in section E, not debated"
+            },
+            {
+              "name": "Explanation of tradeoffs",
+              "rating": 6,
+              "points": 1.2,
+              "example": "T5 acknowledgment-first versus request-first tradeoff",
+              "limitation": "Cost of the weeks-long experiment not discussed"
+            },
+            {
+              "name": "Identification of decisive conditions",
+              "rating": 7.6,
+              "points": 1.52,
+              "example": "T9 if-yes/if-no on partner hearing criticism",
+              "limitation": "Section E repeats rather than ranks conditions"
+            },
+            {
+              "name": "Treatment of uncertainty",
+              "rating": 7,
+              "points": 1.4,
+              "example": "T10 isolates the single consequential unknown",
+              "limitation": "Minor unknowns not explicitly set aside"
+            },
+            {
+              "name": "Proportionate next steps",
+              "rating": 6.4,
+              "points": 1.28,
+              "example": "Section E: one small hurt, one request, calm time",
+              "limitation": "No concrete opener wording or pause rule offered"
+            }
+          ]
+        },
+        {
+          "name": "Clarity and engagement",
+          "max": 10,
+          "points": 7.04,
+          "sub": [
+            {
+              "name": "Accessible language",
+              "rating": 7.2,
+              "points": 1.44,
+              "example": "Plain wording throughout, e.g. T3 'say the hurt once, plainly'",
+              "limitation": "'Repair attempts' (T4) used without explanation"
+            },
+            {
+              "name": "Traceable arguments and references",
+              "rating": 7.4,
+              "points": 1.48,
+              "example": "Each turn names whose claim it answers",
+              "limitation": "T9 'If yes... If no' needs rereading to follow"
+            },
+            {
+              "name": "Manageable pacing and turn length",
+              "rating": 7.4,
+              "points": 1.48,
+              "example": "All ten turns within 25-65 words",
+              "limitation": "Several turns sit at 59-65 words, uniformly dense"
+            },
+            {
+              "name": "Distinguishable positions and voices",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Three lenses clearly distinct: opening, identity, loop",
+              "limitation": "Identity Reader and Pattern Spotter sound alike in register"
+            },
+            {
+              "name": "Economy and sustained attention",
+              "rating": 6.2,
+              "points": 1.24,
+              "example": "Section D summary is compact",
+              "limitation": "T9 and T10 both restate the same decisive fact"
+            }
+          ]
+        },
+        {
+          "name": "Drama and entertainment",
+          "max": 10,
+          "points": 5.76,
+          "sub": [
+            {
+              "name": "Meaningful stakes and tension",
+              "rating": 5.8,
+              "points": 1.16,
+              "example": "T6 raises losing closeness if hurts go unspoken",
+              "limitation": "Stakes stay abstract; no concrete scene"
+            },
+            {
+              "name": "Surprise and reversals",
+              "rating": 5.6,
+              "points": 1.12,
+              "example": "T8 Dance Watcher drops its own claim",
+              "limitation": "Reversal is small; no turn surprises the reader"
+            },
+            {
+              "name": "Personality and expressive voice",
+              "rating": 5.8,
+              "points": 1.16,
+              "example": "Dance Watcher's 'steps' language gives a distinct voice",
+              "limitation": "Voices mostly share a cautious, hedged register"
+            },
+            {
+              "name": "Memorable delivery",
+              "rating": 6.4,
+              "points": 1.28,
+              "example": "Tenerife tentative question is a vivid image for hinting",
+              "limitation": "Semmelweis feels imported rather than apt"
+            },
+            {
+              "name": "Anticipation and emotional movement",
+              "rating": 5.2,
+              "points": 1.04,
+              "example": "T6 shifts to tiredness and loss",
+              "limitation": "Even rhythm; ending flat, no emotional rise"
+            }
+          ]
+        }
+      ],
+      "uncapped": 66,
+      "score": 66,
+      "capReason": null,
+      "strengths": [
+        "Clean three-lens structure: opening, identity threat, loop",
+        "T8 concession and T9-T10 converge on one testable fact",
+        "Illustrations (Semmelweis, Tenerife) accurately flagged as speakers' own"
+      ],
+      "weaknesses": [
+        "User addressed in third person; personal tailoring thin after T6",
+        "T9 and T10 restate the same decisive fact, little new",
+        "Pattern Spotter never concedes; T7 hint argument targets undescribed behavior"
+      ],
+      "editorNotes": [
+        "Require one turn that challenges the problem's framing (e.g. single event versus accumulated pile).",
+        "Address the user in second person and tie each lens to a phrase they wrote.",
+        "Require a concrete, wordable next step (opener sentence, pause rule) before the closing fork.",
+        "Forbid two closing turns that restate the same decisive fact."
+      ]
+    },
+    "v7": {
+      "criteria": [
+        {
+          "name": "Quality of discussion",
+          "max": 20,
+          "points": 14.96,
+          "sub": [
+            {
+              "name": "Continuity and responsiveness",
+              "rating": 7.6,
+              "points": 3.04,
+              "example": "T5 directly rejects T4's bracing reading for lack of evidence",
+              "limitation": "T2 and T3 widen the lens without testing prior claim"
+            },
+            {
+              "name": "Development of ideas",
+              "rating": 7.6,
+              "points": 3.04,
+              "example": "T8 'pile of events' reframes the twenty-second opener",
+              "limitation": "T10 partner-safety point arrives late, little developed"
+            },
+            {
+              "name": "Exploration of central tensions",
+              "rating": 7.4,
+              "points": 2.96,
+              "example": "T11 delivery as lever versus partner's reading as half the loop",
+              "limitation": "Needs-versus-identity distinction blurred in T5"
+            },
+            {
+              "name": "Integration of perspectives",
+              "rating": 7.6,
+              "points": 3.04,
+              "example": "T9 Relationship Scientist rebuilds his view around the pile",
+              "limitation": "Needs Translator's NVC lens not integrated into final dispute"
+            },
+            {
+              "name": "Progress toward understanding",
+              "rating": 7.2,
+              "points": 2.88,
+              "example": "T11 names exact fact that would settle it",
+              "limitation": "Pile hypothesis left out of final decisive test"
+            }
+          ]
+        },
+        {
+          "name": "Quality of disagreement, trust and grounding",
+          "max": 20,
+          "points": 14.8,
+          "sub": [
+            {
+              "name": "Faithful engagement",
+              "rating": 7.2,
+              "points": 2.88,
+              "example": "T5 rejects bracing claim since phrasing was never given",
+              "limitation": "T3 dismisses hidden-verdict view with 'Maybe, but' only"
+            },
+            {
+              "name": "Substance of challenges",
+              "rating": 7.4,
+              "points": 2.96,
+              "example": "T8 tests the one-event assumption behind T7's step",
+              "limitation": "T2 Middle East mention adds nothing to the challenge"
+            },
+            {
+              "name": "Accuracy and support",
+              "rating": 7,
+              "points": 2.8,
+              "example": "Gottman lab apartment and flooding pause fairly represented",
+              "limitation": "T7 twenty-second rule presented as Gottman's without flag"
+            },
+            {
+              "name": "Calibration and transparency",
+              "rating": 7.6,
+              "points": 3.04,
+              "example": "T3 and T4 flag 'my guess' and 'further than Gottman'",
+              "limitation": "T3 hour-arguing claim sounds empirical despite guess label"
+            },
+            {
+              "name": "Intellectual honesty and revision",
+              "rating": 7.8,
+              "points": 3.12,
+              "example": "T9 'I'll drop my claim that the first sentence is where'",
+              "limitation": "Needs Translator never revises or concedes"
+            }
+          ]
+        },
+        {
+          "name": "Personal relevance",
+          "max": 10,
+          "points": 6.96,
+          "sub": [
+            {
+              "name": "Identification of the actual concern",
+              "rating": 7.4,
+              "points": 1.48,
+              "example": "Section A separates why-criticism from how-to-stop",
+              "limitation": "T2 Rosenberg aside drifts from the user's question"
+            },
+            {
+              "name": "Meaningful use of personal context",
+              "rating": 7.2,
+              "points": 1.44,
+              "example": "T8 turns 'every time' into a possible pile of hurts",
+              "limitation": "Relationship length or setting not asked about"
+            },
+            {
+              "name": "Fit with goals and values",
+              "rating": 6.8,
+              "points": 1.36,
+              "example": "T6 full-strength hurt versus avoiding the fight",
+              "limitation": "User's own stated priority not explicitly ranked"
+            },
+            {
+              "name": "Attention to constraints and stakes",
+              "rating": 6.2,
+              "points": 1.24,
+              "example": "T10 partner feeling like a defendant",
+              "limitation": "Cost of a pattern talk to the relationship underexplored"
+            },
+            {
+              "name": "Responsiveness to information",
+              "rating": 7.2,
+              "points": 1.44,
+              "example": "T11 asks whether partner still says criticism after gentle opener",
+              "limitation": "Pile-versus-events question left to section D"
+            }
+          ]
+        },
+        {
+          "name": "Constructive self-discovery",
+          "max": 20,
+          "points": 14.16,
+          "sub": [
+            {
+              "name": "Clarification of desires and motivations",
+              "rating": 7.2,
+              "points": 2.88,
+              "example": "T6 two wants that may not both fit",
+              "limitation": "T4 bracing reading risks reading as diagnosis"
+            },
+            {
+              "name": "Examination of assumptions",
+              "rating": 7.4,
+              "points": 2.96,
+              "example": "T8 questions that each hurt is a single event",
+              "limitation": "Assumption that delivery is user's only lever raised late (T11)"
+            },
+            {
+              "name": "Clarification of values and priorities",
+              "rating": 6.8,
+              "points": 2.72,
+              "example": "T6 being fully heard versus avoiding the fight",
+              "limitation": "Closeness or partner's wellbeing not weighed as values"
+            },
+            {
+              "name": "Recognition of fears and outside expectations",
+              "rating": 6.8,
+              "points": 2.72,
+              "example": "T4 bracing for the label named without blame",
+              "limitation": "Partner's fear treated only in T10"
+            },
+            {
+              "name": "Agency and reflective ownership",
+              "rating": 7.2,
+              "points": 2.88,
+              "example": "T11 'could teach you to swallow hurt' leaves user to weigh",
+              "limitation": "Few explicit questions handed to the user"
+            }
+          ]
+        },
+        {
+          "name": "Decision usefulness",
+          "max": 10,
+          "points": 7.2,
+          "sub": [
+            {
+              "name": "Definition of the decision and options",
+              "rating": 6.8,
+              "points": 1.36,
+              "example": "T7 single opener versus T9 pattern talk",
+              "limitation": "Waiting or outside help not offered as options"
+            },
+            {
+              "name": "Explanation of tradeoffs",
+              "rating": 7,
+              "points": 1.4,
+              "example": "T6 raw words versus trimmed words, each with a cost",
+              "limitation": "Cost of pattern talk to partner only hinted (T10)"
+            },
+            {
+              "name": "Identification of decisive conditions",
+              "rating": 7.6,
+              "points": 1.52,
+              "example": "Section E if-partner-relaxes versus if-still-criticism",
+              "limitation": "Pile condition not tied to the opener test"
+            },
+            {
+              "name": "Treatment of uncertainty",
+              "rating": 7,
+              "points": 1.4,
+              "example": "T11 separates the deciding fact from the rest",
+              "limitation": "Uncertainty about pile frequency left unweighted"
+            },
+            {
+              "name": "Proportionate next steps",
+              "rating": 7.6,
+              "points": 1.52,
+              "example": "T7 one sentence, under twenty seconds, twenty-minute pause",
+              "limitation": "Pattern-talk next step lacks concrete wording"
+            }
+          ]
+        },
+        {
+          "name": "Clarity and engagement",
+          "max": 10,
+          "points": 6.96,
+          "sub": [
+            {
+              "name": "Accessible language",
+              "rating": 7.6,
+              "points": 1.52,
+              "example": "Second person and plain words, e.g. T7 'then stop'",
+              "limitation": "'Flooded' (T7) unexplained"
+            },
+            {
+              "name": "Traceable arguments and references",
+              "rating": 7.2,
+              "points": 1.44,
+              "example": "T8 names Relationship Scientist's proposal before objecting",
+              "limitation": "T5 'charge against who they are' blurs Needs vs Mapper"
+            },
+            {
+              "name": "Manageable pacing and turn length",
+              "rating": 6.6,
+              "points": 1.32,
+              "example": "Turns mostly short and readable",
+              "limitation": "T8 (67 words) and T10 (66 words) exceed 65-word limit"
+            },
+            {
+              "name": "Distinguishable positions and voices",
+              "rating": 6.6,
+              "points": 1.32,
+              "example": "Explicit change of position in T9",
+              "limitation": "Needs Translator and Contribution Mapper overlap on identity threat"
+            },
+            {
+              "name": "Economy and sustained attention",
+              "rating": 6.8,
+              "points": 1.36,
+              "example": "Section E is tight and conditional",
+              "limitation": "T2 Middle East aside is filler"
+            }
+          ]
+        },
+        {
+          "name": "Drama and entertainment",
+          "max": 10,
+          "points": 6.28,
+          "sub": [
+            {
+              "name": "Meaningful stakes and tension",
+              "rating": 6.4,
+              "points": 1.28,
+              "example": "T11 'could teach you to swallow hurt' raises stakes",
+              "limitation": "No concrete scene from the user's life"
+            },
+            {
+              "name": "Surprise and reversals",
+              "rating": 6.6,
+              "points": 1.32,
+              "example": "T9 reversal triggered by T8's pile point",
+              "limitation": "Earlier turns predictable"
+            },
+            {
+              "name": "Personality and expressive voice",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Relationship Scientist's practical, timed voice stands out",
+              "limitation": "Needs Translator's voice faint"
+            },
+            {
+              "name": "Memorable delivery",
+              "rating": 6.2,
+              "points": 1.24,
+              "example": "T8 'tip of an iceberg' image",
+              "limitation": "Few analogies; Middle East mention not vivid"
+            },
+            {
+              "name": "Anticipation and emotional movement",
+              "rating": 6.2,
+              "points": 1.24,
+              "example": "Builds from opener to pile to partner's safety",
+              "limitation": "Ending restates rather than lands"
+            }
+          ]
+        }
+      ],
+      "uncapped": 71.32,
+      "score": 71.32,
+      "capReason": null,
+      "strengths": [
+        "T8 pile-of-events point forces a genuine revision in T9",
+        "Concrete next step: one-sentence opener, twenty-minute pause (T7)",
+        "T11 sharpens the open dispute: fixing your side could teach swallowing hurt"
+      ],
+      "weaknesses": [
+        "T8 (67 words) and T10 (66 words) break the 65-word limit",
+        "Needs Translator overlaps identity lens; T2 Middle East aside is filler",
+        "T7 twenty-second rule not flagged as beyond Gottman"
+      ],
+      "editorNotes": [
+        "Enforce the 65-word turn ceiling with a self-count before output.",
+        "Give each mind a lens no other mind may borrow; keep NVC on needs, not identity.",
+        "Ban biographical asides about authors unless they bear on the user's case.",
+        "Fold every key reframing (like the pile) into the final decisive condition."
+      ]
+    }
+  },
+  "preferredVersion": 7,
+  "savedAt": "2026-10-13T20:28:37.759Z"
+}

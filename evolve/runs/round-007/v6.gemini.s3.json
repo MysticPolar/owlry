@@ -1,0 +1,116 @@
+{
+  "lane": "gemini",
+  "version": 6,
+  "sample": 3,
+  "model": "gemini-3.1-flash-lite",
+  "settings": {
+    "thinkingLevel": "MEDIUM",
+    "temperature": 0.9,
+    "maxOutputTokens": 16384,
+    "fallback": "none"
+  },
+  "latencyMs": 10715,
+  "output": {
+    "situation": "The user experiences a recurring cycle where their attempts to communicate hurt are deflected by their partner's perception of criticism. The central tension lies in whether this is a linguistic failure or a deeper emotional reaction to perceived shame, making it difficult to reach a resolution without triggering defensiveness.",
+    "minds": [
+      {
+        "title": "The Systems Thinker",
+        "concern": "Patterns of interaction and communication styles",
+        "author": "Virginia Satir",
+        "book": "Peoplemaking",
+        "year": 1972
+      },
+      {
+        "title": "The Vulnerability Analyst",
+        "concern": "The role of shame and defense mechanisms",
+        "author": "Brené Brown",
+        "book": "Daring Greatly",
+        "year": 2012
+      },
+      {
+        "title": "The Rational Negotiator",
+        "concern": "Separating interpersonal dynamics from problem-solving",
+        "author": "Roger Fisher and William Ury",
+        "book": "Getting to Yes",
+        "year": 1981
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Systems Thinker",
+        "text": "The user might be trapped in a circular communication pattern where every attempt to address pain is met with defensive labeling. These cycles persist because both parties have learned to interpret the other's moves as fixed threats rather than invitations to clarify needs.",
+        "author": "Virginia Satir",
+        "book": "Peoplemaking",
+        "pd": false,
+        "basis": "[Basis: Virginia Satir, Peoplemaking, Chapter 4](https://www.goodreads.com/book/show/157297.Peoplemaking)"
+      },
+      {
+        "speaker": "The Vulnerability Analyst",
+        "text": "The partner perhaps fears that acknowledging the hurt would require them to sit with intense shame. By calling the user critical, they successfully shift the focus from their own potential failing to the user's alleged tone, protecting their fragile self-image.",
+        "author": "Brené Brown",
+        "book": "Daring Greatly",
+        "pd": false,
+        "basis": "[Basis: Brené Brown, Daring Greatly, Chapter 3](https://www.goodreads.com/book/show/13588356-daring-greatly)"
+      },
+      {
+        "speaker": "The Rational Negotiator",
+        "text": "The user and their partner are conflating the person with the problem. They need to stop focusing on who is being critical and instead identify the underlying interests, such as a need for safety or acknowledgement, that both parties currently lack.",
+        "author": "Roger Fisher and William Ury",
+        "book": "Getting to Yes",
+        "pd": false,
+        "basis": "[Basis: Roger Fisher and William Ury, Getting to Yes, Chapter 2](https://www.goodreads.com/book/show/313601.Getting_to_Yes)"
+      },
+      {
+        "speaker": "The Systems Thinker",
+        "text": "The Rational Negotiator assumes there is space for logic, but if the partner perceives a threat to their identity, they cannot hear logic. The user might need to change the meta-communication, talking about how they talk rather than about the hurt itself.",
+        "author": "Virginia Satir",
+        "book": "Peoplemaking",
+        "pd": false,
+        "basis": "[Basis: Virginia Satir, Peoplemaking, Chapter 7](https://www.goodreads.com/book/show/157297.Peoplemaking)"
+      },
+      {
+        "speaker": "The Vulnerability Analyst",
+        "text": "The Systems Thinker is right that meta-communication matters, but if the partner refuses to own their shame, any new method will eventually be labeled as more criticism. The user might feel they are walking on eggshells, which only reinforces the distance.",
+        "author": "Brené Brown",
+        "book": "Daring Greatly",
+        "pd": false,
+        "basis": "[Basis: Brené Brown, Daring Greatly, Chapter 5](https://www.goodreads.com/book/show/13588356-daring-greatly)"
+      },
+      {
+        "speaker": "The Rational Negotiator",
+        "text": "The Vulnerability Analyst assumes the partner is acting from a fixed state of shame, but I suggest that interest-based negotiation can work even with defensive partners. If the user presents their need as a mutual goal to improve the relationship, the criticism label loses its power.",
+        "author": "Roger Fisher and William Ury",
+        "book": "Getting to Yes",
+        "pd": false,
+        "basis": "[Basis: Roger Fisher and William Ury, Getting to Yes, Chapter 4](https://www.goodreads.com/book/show/313601.Getting_to_Yes)"
+      },
+      {
+        "speaker": "The Systems Thinker",
+        "text": "The Rational Negotiator suggests that focusing on mutual goals works, but if the user continues to use accusatory language, the partner will surely retreat. The user may need to stop using the word you entirely and describe their internal experience instead.",
+        "author": "Virginia Satir",
+        "book": "Peoplemaking",
+        "pd": false,
+        "basis": "[Basis: Virginia Satir, Peoplemaking, Chapter 10](https://www.goodreads.com/book/show/157297.Peoplemaking)"
+      },
+      {
+        "speaker": "The Vulnerability Analyst",
+        "text": "I concede that changing language helps, but I drop my earlier claim that only the partner's shame is the issue. The Systems Thinker is correct that the user’s own reaction to being ignored might be fueling the cycle, even if the intent is just to be heard.",
+        "author": "Brené Brown",
+        "book": "Daring Greatly",
+        "pd": false,
+        "basis": "[Basis: Brené Brown, Daring Greatly, Chapter 7](https://www.goodreads.com/book/show/13588356-daring-greatly)"
+      },
+      {
+        "speaker": "The Rational Negotiator",
+        "text": "The user wants both to be heard and to avoid conflict, which are often incompatible in a heat-of-the-moment argument. The choice depends on whether they are willing to pause the discussion until both are in a state where interest-based negotiation is even possible.",
+        "author": "Roger Fisher and William Ury",
+        "book": "Getting to Yes",
+        "pd": false,
+        "basis": "[Basis: Roger Fisher and William Ury, Getting to Yes, Chapter 5](https://www.goodreads.com/book/show/313601.Getting_to_Yes)"
+      }
+    ],
+    "clearer": "The debate clarified that the recurring conflict is not just about the specific hurt, but about the defensive armor both partners wear. The main insight is that the label of criticism serves as a shield for the partner, which can only be bypassed if the user changes the format of the conversation or waits until the emotional temperature drops. It remains disputed whether the partner's defense is an impenetrable trait or a reaction that can be de-escalated through specific, neutral negotiation techniques.",
+    "dependsOn": "If the partner's response is driven primarily by deep-seated shame, then direct negotiation about the topic will likely fail, and the user must prioritize creating a safe space for vulnerability before addressing the hurt. If the conflict is simply a habit of poor communication, then switching to neutral, interest-based language will make progress easier. If it is unknown whether the partner is willing to change their defensive stance, the user might test this by pausing a difficult conversation and inviting a collaborative check-in at a later, neutral time."
+  },
+  "savedAt": "2026-10-13T19:58:53.395Z"
+}
