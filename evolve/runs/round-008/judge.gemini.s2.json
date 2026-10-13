@@ -1,0 +1,646 @@
+{
+  "lane": "gemini",
+  "sample": 2,
+  "blind": {
+    "A": 7,
+    "B": 8
+  },
+  "scores": {
+    "v7": {
+      "criteria": [
+        {
+          "name": "Quality of discussion",
+          "max": 20,
+          "points": 10.2,
+          "sub": [
+            {
+              "name": "Continuity and responsiveness",
+              "rating": 6,
+              "points": 2.4,
+              "example": "Turns 4-6 each name and rebut the prior mind explicitly.",
+              "limitation": "Turns 1-3 are three parallel diagnoses with no exchange."
+            },
+            {
+              "name": "Development of ideas",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 6 extends status critique to contribution itself.",
+              "limitation": "Turn 9 adds a confused branch rather than a new distinction."
+            },
+            {
+              "name": "Exploration of central tensions",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Status vs purpose vs tranquility framed across turns 3-5.",
+              "limitation": "Never asks whether the feeling is normal post-goal letdown."
+            },
+            {
+              "name": "Integration of perspectives",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Turn 7 tries to absorb the Social Critic's point.",
+              "limitation": "Turn 7 concedes a claim the Skeptic never made."
+            },
+            {
+              "name": "Progress toward understanding",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Section D names the contribution-vs-detachment dispute.",
+              "limitation": "Turn 9 and Section E give opposite readings of enjoying tasks."
+            }
+          ]
+        },
+        {
+          "name": "Quality of disagreement, trust and grounding",
+          "max": 20,
+          "points": 9.2,
+          "sub": [
+            {
+              "name": "Faithful engagement",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 5 states the Skeptic's daily-quality view fairly.",
+              "limitation": "Turn 7 misstates the Skeptic's own turn 4 position."
+            },
+            {
+              "name": "Substance of challenges",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 6: contribution can also be filtered through prestige.",
+              "limitation": "Turn 4's stability rebuttal is asserted, not argued."
+            },
+            {
+              "name": "Accuracy and support",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turn 3 pecuniary emulation correctly tied to Veblen Chapter 2.",
+              "limitation": "Turn 9 bureaucratic friction stretched onto Veblen Chapter 13."
+            },
+            {
+              "name": "Calibration and transparency",
+              "rating": 4,
+              "points": 1.6,
+              "example": "Most turns hedge with might and perhaps.",
+              "limitation": "Turn 3 declares it is likely the user sought status."
+            },
+            {
+              "name": "Intellectual honesty and revision",
+              "rating": 3.5,
+              "points": 1.4,
+              "example": "Turn 7 attempts an explicit concession.",
+              "limitation": "Turn 7 drops a claim never made, a hollow revision."
+            }
+          ]
+        },
+        {
+          "name": "Personal relevance",
+          "max": 10,
+          "points": 4.2,
+          "sub": [
+            {
+              "name": "Identification of the actual concern",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Section A frames goal as possible placeholder for meaning.",
+              "limitation": "Never addresses the user's how-do-I-figure-it-out framing directly."
+            },
+            {
+              "name": "Meaningful use of personal context",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Turn 8 uses the promotion and title as test variables.",
+              "limitation": "Years of striving and nothing-is-wrong never shape argument."
+            },
+            {
+              "name": "Fit with goals and values",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Section D asks whether user values work or image.",
+              "limitation": "Speakers impose their own value schemes throughout."
+            },
+            {
+              "name": "Attention to constraints and stakes",
+              "rating": 3,
+              "points": 0.6,
+              "example": "Turn 7 notes possible anxiety about losing the role.",
+              "limitation": "No mention of life outside work, relationships, or timing."
+            },
+            {
+              "name": "Responsiveness to information",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Section E branches on whether daily tasks bring joy.",
+              "limitation": "No focused questions to the user about missing details."
+            }
+          ]
+        },
+        {
+          "name": "Constructive self-discovery",
+          "max": 20,
+          "points": 10.6,
+          "sub": [
+            {
+              "name": "Clarification of desires and motivations",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turn 1 separates empty from necessary desires.",
+              "limitation": "Turn 3 states status-seeking as likely fact."
+            },
+            {
+              "name": "Examination of assumptions",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turn 1 surfaces expecting lasting pleasure from a goal.",
+              "limitation": "Assumption that work must satisfy goes unexamined."
+            },
+            {
+              "name": "Clarification of values and priorities",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turn 5 contrasts comfort with contribution beyond oneself.",
+              "limitation": "Conflicts among values are named, not weighed for this user."
+            },
+            {
+              "name": "Recognition of fears and outside expectations",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 7 names fear of losing position.",
+              "limitation": "Outside expectations reduced to prestige; no family or peers."
+            },
+            {
+              "name": "Agency and reflective ownership",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 8 test lets user sort tasks themselves.",
+              "limitation": "Turn 9 hands down verdicts, victim of friction."
+            }
+          ]
+        },
+        {
+          "name": "Decision usefulness",
+          "max": 10,
+          "points": 4.7,
+          "sub": [
+            {
+              "name": "Definition of the decision and options",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Section E: detach self-worth vs seek contribution.",
+              "limitation": "Options such as waiting or role change never listed."
+            },
+            {
+              "name": "Explanation of tradeoffs",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Turn 4 notes status may still give stability.",
+              "limitation": "No option's cost is spelled out."
+            },
+            {
+              "name": "Identification of decisive conditions",
+              "rating": 5,
+              "points": 1,
+              "example": "Section E branches on joy in daily activities.",
+              "limitation": "Contradicts turn 9's mapping of the same condition."
+            },
+            {
+              "name": "Treatment of uncertainty",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Section E admits it may be unclear which applies.",
+              "limitation": "Major vs minor unknowns are not separated."
+            },
+            {
+              "name": "Proportionate next steps",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Turn 8: 48 hours noting tasks you'd keep without title.",
+              "limitation": "No step after the test result arrives."
+            }
+          ]
+        },
+        {
+          "name": "Clarity and engagement",
+          "max": 10,
+          "points": 6.3,
+          "sub": [
+            {
+              "name": "Accessible language",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "Turn 8 test is plain and concrete.",
+              "limitation": "Turn 3 pecuniary emulation left unexplained."
+            },
+            {
+              "name": "Traceable arguments and references",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Turns 4-6 name whom they answer.",
+              "limitation": "Turn 9 logic hard to follow, enjoy tasks means victim."
+            },
+            {
+              "name": "Manageable pacing and turn length",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Nine turns, all within 25-65 words, no quotation marks.",
+              "limitation": "Uniform turn lengths flatten rhythm."
+            },
+            {
+              "name": "Distinguishable positions and voices",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Three clear lenses: pleasure, purpose, status.",
+              "limitation": "All three share the same hedged register."
+            },
+            {
+              "name": "Economy and sustained attention",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Little repetition across turns.",
+              "limitation": "Section D largely restates turn 3 and 5."
+            }
+          ]
+        },
+        {
+          "name": "Drama and entertainment",
+          "max": 10,
+          "points": 4,
+          "sub": [
+            {
+              "name": "Meaningful stakes and tension",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Turn 3 suggests prestige is merely performance for others.",
+              "limitation": "Stakes stay abstract; no concrete cost to the user."
+            },
+            {
+              "name": "Surprise and reversals",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Turn 7 concession is a nominal reversal.",
+              "limitation": "Reversal is hollow, conceding an unmade claim."
+            },
+            {
+              "name": "Personality and expressive voice",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Social Critic's cynicism in turn 6 is distinct.",
+              "limitation": "Epicurus and Frankl sound interchangeable."
+            },
+            {
+              "name": "Memorable delivery",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Turn 8: tasks you'd do if the title were stripped away.",
+              "limitation": "No analogy or vivid image anywhere."
+            },
+            {
+              "name": "Anticipation and emotional movement",
+              "rating": 3.5,
+              "points": 0.7,
+              "example": "Turn 9 sets up a test outcome.",
+              "limitation": "Even, flat intensity from turn 1 to 9."
+            }
+          ]
+        }
+      ],
+      "uncapped": 49.2,
+      "score": 49.2,
+      "capReason": null,
+      "strengths": [
+        "Turns 4-6 explicitly engage the prior speaker, giving real continuity.",
+        "Turn 8's 48-hour strip-the-title test is concrete and user-owned.",
+        "Distinct lenses (empty desire, purpose, status) cover plausible causes."
+      ],
+      "weaknesses": [
+        "Hedonic Skeptic turn 7 concedes a claim it never made, a false revision.",
+        "Social Critic turn 9 contradicts Section E on what enjoying tasks means.",
+        "Turn 3 asserts status-seeking as likely, overclaiming the user's motive."
+      ],
+      "editorNotes": [
+        "Require concessions to quote the exact earlier turn they revise.",
+        "Require Section E branches to match the debate's final turn's conditions.",
+        "Require one turn to pose a focused question about the user's life outside work.",
+        "Ban likely/probably for claims about the user's motives; use conditionals."
+      ]
+    },
+    "v8": {
+      "criteria": [
+        {
+          "name": "Quality of discussion",
+          "max": 20,
+          "points": 9.8,
+          "sub": [
+            {
+              "name": "Continuity and responsiveness",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 8 builds directly on the Stoic's turn 7 task.",
+              "limitation": "Turns 6 and 9 ignore the preceding turn entirely."
+            },
+            {
+              "name": "Development of ideas",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 9 adds loss of goal structure as a new cause.",
+              "limitation": "Turn 9's idea arrives last and is never tested."
+            },
+            {
+              "name": "Exploration of central tensions",
+              "rating": 5,
+              "points": 2,
+              "example": "Stay with internal excellence vs leave, turns 7-8.",
+              "limitation": "Focusing illusion in turn 3 never challenged by others."
+            },
+            {
+              "name": "Integration of perspectives",
+              "rating": 4,
+              "points": 1.6,
+              "example": "Turn 4 responds to the Psychologist's expectation point.",
+              "limitation": "No mind changes position across nine turns."
+            },
+            {
+              "name": "Progress toward understanding",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Section D sharpens work content vs goal disappearance.",
+              "limitation": "Stoic-Existentialist dispute left where it began."
+            }
+          ]
+        },
+        {
+          "name": "Quality of disagreement, trust and grounding",
+          "max": 20,
+          "points": 9.4,
+          "sub": [
+            {
+              "name": "Faithful engagement",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 4 restates the Psychologist's view accurately.",
+              "limitation": "Turn 5's That view rebuttal is vague about which view."
+            },
+            {
+              "name": "Substance of challenges",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 3 challenges both prior minds with focusing illusion.",
+              "limitation": "Turn 4 rebuttal is counterfactual hindsight, not a test."
+            },
+            {
+              "name": "Accuracy and support",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Turn 2 existence precedes essence is faithful to Sartre.",
+              "limitation": "Kahneman chapters 27, 28, 34 do not cover cited ideas."
+            },
+            {
+              "name": "Calibration and transparency",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turn 6 frames mood tracking as data to test hypotheses.",
+              "limitation": "Turn 9 attributes goal-loss claim to Kahneman without support."
+            },
+            {
+              "name": "Intellectual honesty and revision",
+              "rating": 3.5,
+              "points": 1.4,
+              "example": "Turn 8 conditions leaving on the Stoic's test failing.",
+              "limitation": "No concession or revision anywhere in the debate."
+            }
+          ]
+        },
+        {
+          "name": "Personal relevance",
+          "max": 10,
+          "points": 4.8,
+          "sub": [
+            {
+              "name": "Identification of the actual concern",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Turn 9: loss of the clear goal that structured time.",
+              "limitation": "Most apt reading arrives only in the final turn."
+            },
+            {
+              "name": "Meaningful use of personal context",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Turn 4 references those years of work.",
+              "limitation": "Nothing-is-wrong detail never used in reasoning."
+            },
+            {
+              "name": "Fit with goals and values",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Turn 7 asks for a task aligned with own principles.",
+              "limitation": "User's own priorities never distinguished from speakers'."
+            },
+            {
+              "name": "Attention to constraints and stakes",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Turn 8 notes past effort need not bind the user.",
+              "limitation": "Cost of leaving a hard-won role never weighed."
+            },
+            {
+              "name": "Responsiveness to information",
+              "rating": 5,
+              "points": 1,
+              "example": "Section E branches on localized vs pervasive emptiness.",
+              "limitation": "No direct questions to the user."
+            }
+          ]
+        },
+        {
+          "name": "Constructive self-discovery",
+          "max": 20,
+          "points": 10.6,
+          "sub": [
+            {
+              "name": "Clarification of desires and motivations",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turn 9 separates wanting the role from wanting a chase.",
+              "limitation": "Desire for recognition or growth not distinguished."
+            },
+            {
+              "name": "Examination of assumptions",
+              "rating": 6,
+              "points": 2.4,
+              "example": "Turn 3 exposes expecting the change to lift daily mood.",
+              "limitation": "Turn 5's projection claim is stated, not unpacked."
+            },
+            {
+              "name": "Clarification of values and priorities",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 7 points to principles over promotion.",
+              "limitation": "No conflict among the user's values is mapped."
+            },
+            {
+              "name": "Recognition of fears and outside expectations",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Turn 5 names anxiety of redefining oneself.",
+              "limitation": "Social or family expectations absent."
+            },
+            {
+              "name": "Agency and reflective ownership",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turn 2 frames the user as definer of the role.",
+              "limitation": "Turn 6 speaks of the user in third person."
+            }
+          ]
+        },
+        {
+          "name": "Decision usefulness",
+          "max": 10,
+          "points": 5.1,
+          "sub": [
+            {
+              "name": "Definition of the decision and options",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Excel internally, leave, or build a new project.",
+              "limitation": "Waiting it out as a valid option not named."
+            },
+            {
+              "name": "Explanation of tradeoffs",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Turn 8 weighs enduring against leaving.",
+              "limitation": "No option's cost spelled out."
+            },
+            {
+              "name": "Identification of decisive conditions",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Section E: task-tied vs goal-tied dissatisfaction.",
+              "limitation": "No threshold for when leaving beats staying."
+            },
+            {
+              "name": "Treatment of uncertainty",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Turn 6 admits the source is not yet known.",
+              "limitation": "Consequential unknowns not ranked."
+            },
+            {
+              "name": "Proportionate next steps",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Turn 6: track daily mood for 7 days by task.",
+              "limitation": "Two separate tests, turns 6 and 7, never sequenced."
+            }
+          ]
+        },
+        {
+          "name": "Clarity and engagement",
+          "max": 10,
+          "points": 6.1,
+          "sub": [
+            {
+              "name": "Accessible language",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Turn 6 mood tracking explained plainly.",
+              "limitation": "Turn 5 refuse the labels sentence is opaque."
+            },
+            {
+              "name": "Traceable arguments and references",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Turn 3 names both minds it challenges.",
+              "limitation": "Turn 5 That view has an ambiguous referent."
+            },
+            {
+              "name": "Manageable pacing and turn length",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Nine turns, all within 25-65 words, no quotation marks.",
+              "limitation": "Uniform length flattens rhythm."
+            },
+            {
+              "name": "Distinguishable positions and voices",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Stoic, Existentialist and Psychologist lenses are distinct.",
+              "limitation": "No explicit changes of position to track."
+            },
+            {
+              "name": "Economy and sustained attention",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Little repetition in the debate.",
+              "limitation": "Sections D and E restate turns 6 and 9."
+            }
+          ]
+        },
+        {
+          "name": "Drama and entertainment",
+          "max": 10,
+          "points": 4.1,
+          "sub": [
+            {
+              "name": "Meaningful stakes and tension",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Turn 8 raises leaving the hard-won path.",
+              "limitation": "Stakes arrive late and pass without reply."
+            },
+            {
+              "name": "Surprise and reversals",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Turn 9 reframes the problem as losing the chase.",
+              "limitation": "No mind reverses or is surprised."
+            },
+            {
+              "name": "Personality and expressive voice",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Existentialist's push to leave in turn 8 has edge.",
+              "limitation": "Stoic voice generic, no Marcus texture."
+            },
+            {
+              "name": "Memorable delivery",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Turn 5: projecting purpose onto a title that never promised it.",
+              "limitation": "No vivid analogy or concrete example."
+            },
+            {
+              "name": "Anticipation and emotional movement",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Turn 7-8 sets up a test with a leave branch.",
+              "limitation": "Flat intensity; turn 9 deflates the 7-8 build."
+            }
+          ]
+        }
+      ],
+      "uncapped": 49.9,
+      "score": 49.9,
+      "capReason": null,
+      "strengths": [
+        "Turn 3 focusing illusion and turn 9 goal-loss target the likely real cause.",
+        "Turn 6 seven-day mood tracking is a concrete, proportionate diagnostic.",
+        "Turns 7-8 give a conditional stay-or-leave branch the user can test."
+      ],
+      "weaknesses": [
+        "Psychologist's Kahneman chapter references (27, 28, 34) do not match cited ideas.",
+        "No mind concedes or revises anything across nine turns.",
+        "Turns 6 and 9 ignore the preceding turn; turn 6 calls you the user."
+      ],
+      "editorNotes": [
+        "Require at least one explicit concession that names the turn revised.",
+        "Require each turn after turn 3 to answer the immediately preceding turn.",
+        "Require basis references to name the chapter actually containing the idea.",
+        "Require the strongest diagnostic hypothesis to appear by turn 4, then be tested."
+      ]
+    }
+  },
+  "preferredVersion": 8,
+  "savedAt": "2026-10-13T20:51:51.448Z"
+}

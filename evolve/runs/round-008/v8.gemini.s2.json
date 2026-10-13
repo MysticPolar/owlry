@@ -1,0 +1,116 @@
+{
+  "lane": "gemini",
+  "version": 8,
+  "sample": 2,
+  "model": "gemini-3.1-flash-lite",
+  "settings": {
+    "thinkingLevel": "MEDIUM",
+    "temperature": 0.9,
+    "maxOutputTokens": 16384,
+    "fallback": "none"
+  },
+  "latencyMs": 9278,
+  "output": {
+    "situation": "The user has achieved a long-term career goal but experiences a lingering sense of dissatisfaction. The central tension lies between the value placed on the achievement and the reality of the current, less-than-fulfilling experience. A key uncertainty is whether the dissatisfaction stems from the nature of the work itself or from a misalignment between the user's internal values and their external milestones.",
+    "minds": [
+      {
+        "title": "The Stoic",
+        "concern": "Internal character over external achievement",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "year": 180
+      },
+      {
+        "title": "The Existentialist",
+        "concern": "Individual agency and self-definition",
+        "author": "Jean-Paul Sartre",
+        "book": "Existentialism is a Humanism",
+        "year": 1946
+      },
+      {
+        "title": "The Psychologist",
+        "concern": "The mechanics of happiness and adaptation",
+        "author": "Daniel Kahneman",
+        "book": "Thinking, Fast and Slow",
+        "year": 2011
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Stoic",
+        "text": "Perhaps your dissatisfaction arises because you anchored your sense of worth to an external promotion. Marcus Aurelius reminds us that if we seek the good in things outside ourselves, we might find ourselves enslaved to them rather than finding tranquility in our own rational choices.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "[Basis: Marcus Aurelius, Meditations, Book 4](https://classics.mit.edu/Antoninus/meditations.html)"
+      },
+      {
+        "speaker": "The Existentialist",
+        "text": "Disputing the Stoic, the issue might not be the external goal, but the fact that you now find yourself in a state of freedom where you must choose your next project. Sartre suggests that existence precedes essence, meaning you are the one who must define what this new role signifies for your future.",
+        "author": "Jean-Paul Sartre",
+        "book": "Existentialism is a Humanism",
+        "pd": false,
+        "basis": "[Basis: Jean-Paul Sartre, Existentialism is a Humanism, Section 1](https://www.marxists.org/reference/archive/sartre/works/exist/sartre.htm)"
+      },
+      {
+        "speaker": "The Psychologist",
+        "text": "The Existentialist and Stoic overlook the focusing illusion. Kahneman notes that when we think about a change, we focus on the change itself rather than the background of our lives, which perhaps leaves us surprised when our daily mood does not improve as much as we expected.",
+        "author": "Daniel Kahneman",
+        "book": "Thinking, Fast and Slow",
+        "pd": false,
+        "basis": "[Basis: Daniel Kahneman, Thinking, Fast and Slow, Chapter 27](https://us.macmillan.com/books/9780374533557)"
+      },
+      {
+        "speaker": "The Stoic",
+        "text": "The Psychologist suggests the problem is the expectation of change, but perhaps if you had focused on internal excellence during those years of work, the promotion might not have been viewed as the sole arbiter of your happiness.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "[Basis: Marcus Aurelius, Meditations, Book 2](https://classics.mit.edu/Antoninus/meditations.html)"
+      },
+      {
+        "speaker": "The Existentialist",
+        "text": "That view denies the anxiety you might feel in a new role where you could be required to redefine yourself entirely. If you refuse to accept the labels of your position, you might discover that you are merely projecting a need for purpose onto a title that never promised it.",
+        "author": "Jean-Paul Sartre",
+        "book": "Existentialism is a Humanism",
+        "pd": false,
+        "basis": "[Basis: Jean-Paul Sartre, Existentialism is a Humanism, Section 3](https://www.marxists.org/reference/archive/sartre/works/exist/sartre.htm)"
+      },
+      {
+        "speaker": "The Psychologist",
+        "text": "Maybe the user should track their daily mood for 7 days to see if the dissatisfaction occurs during specific tasks or if it is a general baseline. This data could reveal if it is the work content itself or the absence of the goal that is the real source of the struggle.",
+        "author": "Daniel Kahneman",
+        "book": "Thinking, Fast and Slow",
+        "pd": false,
+        "basis": "[Basis: Daniel Kahneman, Thinking, Fast and Slow, Chapter 34](https://us.macmillan.com/books/9780374533557)"
+      },
+      {
+        "speaker": "The Stoic",
+        "text": "I propose you look at one task in your current role that aligns with your own principles. If you can perform that task well, you might find that the work itself, rather than the promotion, provides the only meaningful return you can count on.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "[Basis: Marcus Aurelius, Meditations, Book 3](https://classics.mit.edu/Antoninus/meditations.html)"
+      },
+      {
+        "speaker": "The Existentialist",
+        "text": "If you try that task and find no resonance, the choice might not be to endure but to leave. You are not defined by the effort you have already expended, and you might choose to act in a way that creates a new essence for yourself entirely outside of this path.",
+        "author": "Jean-Paul Sartre",
+        "book": "Existentialism is a Humanism",
+        "pd": false,
+        "basis": "[Basis: Jean-Paul Sartre, Existentialism is a Humanism, Section 4](https://www.marxists.org/reference/archive/sartre/works/exist/sartre.htm)"
+      },
+      {
+        "speaker": "The Psychologist",
+        "text": "The loss here might be the simple, clear goal you once had, which provided a stable structure for your time. If you lack a clear objective now, you might be suffering from the absence of a future-focused projection that previously occupied your thoughts and energy.",
+        "author": "Daniel Kahneman",
+        "book": "Thinking, Fast and Slow",
+        "pd": false,
+        "basis": "[Basis: Daniel Kahneman, Thinking, Fast and Slow, Chapter 28](https://us.macmillan.com/books/9780374533557)"
+      }
+    ],
+    "clearer": "The discussion clarified that the user's dissatisfaction might stem from a loss of structure, a misaligned expectation, or a failure to define their own meaning within the new role. Disagreement remains regarding whether the user should find meaning within the current role through internal values or define a new path entirely. A helpful self-reflection involves asking whether the feeling of emptiness is tied to the work content or the disappearance of the goal-chasing process.",
+    "dependsOn": "If the dissatisfaction is tied to the daily work tasks, focusing on internal excellence or changing the role might be most effective. If the dissatisfaction is tied to the lack of a clear, long-term goal, creating a new, personally defined project becomes more reasonable. To learn which condition holds, track your mood during specific work activities for one week to identify whether the emptiness is localized to specific duties or pervasive throughout your time."
+  },
+  "savedAt": "2026-10-13T20:41:57.542Z"
+}

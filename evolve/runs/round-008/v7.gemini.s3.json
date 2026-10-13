@@ -1,0 +1,116 @@
+{
+  "lane": "gemini",
+  "version": 7,
+  "sample": 3,
+  "model": "gemini-3.1-flash-lite",
+  "settings": {
+    "thinkingLevel": "MEDIUM",
+    "temperature": 0.9,
+    "maxOutputTokens": 16384,
+    "fallback": "none"
+  },
+  "latencyMs": 10917,
+  "output": {
+    "situation": "You achieved a long-term goal of a promotion, yet you feel unsatisfied rather than fulfilled. The central tension is whether this dissatisfaction stems from the natural adaptation to new circumstances, a lack of deep purpose, or the social dynamics of your new peer group. The decisive uncertainty is whether your discontent arises from an internal mismatch of values or an external recalibration of status.",
+    "minds": [
+      {
+        "title": "The Mis-Predictor",
+        "concern": "Emotional adaptation",
+        "author": "Dan Gilbert",
+        "book": "Stumbling on Happiness",
+        "year": 2006
+      },
+      {
+        "title": "The Meaning Seeker",
+        "concern": "Purpose and responsibility",
+        "author": "Viktor Frankl",
+        "book": "Man's Search for Meaning",
+        "year": 1946
+      },
+      {
+        "title": "The Social Comparer",
+        "concern": "Relative standing",
+        "author": "Leon Festinger",
+        "book": "A Theory of Social Comparison Processes",
+        "year": 1954
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Mis-Predictor",
+        "text": "You might have anticipated that this promotion would create a permanent shift in your happiness, but you are likely experiencing the habituation of a new state where the initial thrill fades as the reality of the new role settles in.",
+        "author": "Dan Gilbert",
+        "book": "Stumbling on Happiness",
+        "pd": false,
+        "basis": "[Basis: Dan Gilbert, Stumbling on Happiness, Chapter 6](https://www.goodreads.com/book/show/22557.Stumbling_on_Happiness)"
+      },
+      {
+        "speaker": "The Meaning Seeker",
+        "text": "The Mis-Predictor assumes the goal was only to feel happy, yet you might be struggling because the promotion offers status without providing a deeper sense of why your daily contributions matter to the world beyond your office.",
+        "author": "Viktor Frankl",
+        "book": "Man's Search for Meaning",
+        "pd": false,
+        "basis": "[Basis: Viktor Frankl, Man's Search for Meaning, Part II](https://www.goodreads.com/book/show/4069.Man_s_Search_for_Meaning)"
+      },
+      {
+        "speaker": "The Social Comparer",
+        "text": "The Meaning Seeker ignores that you likely evaluate your success by looking at your peers; you might feel unsatisfied because your new status places you in a group where you are no longer the one who stands out.",
+        "author": "Leon Festinger",
+        "book": "A Theory of Social Comparison Processes",
+        "pd": false,
+        "basis": "[Basis: Leon Festinger, A Theory of Social Comparison Processes, Section 1](https://www.goodreads.com/book/show/244342.A_Theory_of_Social_Comparison_Processes)"
+      },
+      {
+        "speaker": "The Mis-Predictor",
+        "text": "The Social Comparer argues that status is the primary driver, but perhaps you simply underestimated how much the daily tedium of the new role would detract from the joy you expected to feel once you arrived at your destination.",
+        "author": "Dan Gilbert",
+        "book": "Stumbling on Happiness",
+        "pd": false,
+        "basis": "[Basis: Dan Gilbert, Stumbling on Happiness, Chapter 7](https://www.goodreads.com/book/show/22557.Stumbling_on_Happiness)"
+      },
+      {
+        "speaker": "The Meaning Seeker",
+        "text": "You might be overlooking that if you do not find a task that demands your unique participation, even a high-status role will feel empty because it does not engage the part of you that wants to be useful.",
+        "author": "Viktor Frankl",
+        "book": "Man's Search for Meaning",
+        "pd": false,
+        "basis": "[Basis: Viktor Frankl, Man's Search for Meaning, Part II](https://www.goodreads.com/book/show/4069.Man_s_Search_for_Meaning)"
+      },
+      {
+        "speaker": "The Social Comparer",
+        "text": "The Meaning Seeker suggests that internal utility is the answer, but you could be suffering because you are comparing yourself to an idealized version of your peers rather than focusing on the reality of the work itself.",
+        "author": "Leon Festinger",
+        "book": "A Theory of Social Comparison Processes",
+        "pd": false,
+        "basis": "[Basis: Leon Festinger, A Theory of Social Comparison Processes, Section 2](https://www.goodreads.com/book/show/244342.A_Theory_of_Social_Comparison_Processes)"
+      },
+      {
+        "speaker": "The Mis-Predictor",
+        "text": "I drop the claim that you just wanted the arrival; The Meaning Seeker is right that you might need a connection to something larger, even if that connection is merely a way to stabilize your emotional output after the promotion.",
+        "author": "Dan Gilbert",
+        "book": "Stumbling on Happiness",
+        "pd": false,
+        "basis": "[Basis: Dan Gilbert, Stumbling on Happiness, Chapter 8](https://www.goodreads.com/book/show/22557.Stumbling_on_Happiness)"
+      },
+      {
+        "speaker": "The Social Comparer",
+        "text": "The Mis-Predictor concedes too much to purpose, because if you do not acknowledge that you are measuring your worth against the success of your colleagues, you will continue to feel like you are missing something regardless of the meaning you find.",
+        "author": "Leon Festinger",
+        "book": "A Theory of Social Comparison Processes",
+        "pd": false,
+        "basis": "[Basis: Leon Festinger, A Theory of Social Comparison Processes, Section 3](https://www.goodreads.com/book/show/244342.A_Theory_of_Social_Comparison_Processes)"
+      },
+      {
+        "speaker": "The Meaning Seeker",
+        "text": "You might test this by spending one week documenting which specific tasks make you feel that you are contributing something beyond your job description, which could help you see if your current dissatisfaction is a crisis of purpose or status.",
+        "author": "Viktor Frankl",
+        "book": "Man's Search for Meaning",
+        "pd": false,
+        "basis": "[Basis: Viktor Frankl, Man's Search for Meaning, Part II](https://www.goodreads.com/book/show/4069.Man_s_Search_for_Meaning)"
+      }
+    ],
+    "clearer": "The discussion clarified that your dissatisfaction may be a byproduct of either a natural emotional reset, a search for deeper purpose, or a change in your social reference group. The main dispute remains whether your happiness depends on internal meaning or relative external standing.",
+    "dependsOn": "If you feel drained by the work itself, your challenge might be a lack of purpose, suggesting you should seek projects that align with your personal values. If you feel fine with the work but troubled by your status, your challenge might be social comparison, suggesting you should limit your focus to your own progress rather than your peers. If you remain unsure, tracking your daily tasks for one week could reveal if your dissatisfaction is tied to the content of your work or your environment."
+  },
+  "savedAt": "2026-10-13T20:42:12.187Z"
+}

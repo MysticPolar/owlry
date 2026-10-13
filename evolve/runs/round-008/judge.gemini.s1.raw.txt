@@ -1,0 +1,162 @@
+{
+  "A": {
+    "criteria": [
+      {"name": "Quality of discussion", "max": 20.00, "points": 9.40,
+       "sub": [
+        {"name": "Continuity and responsiveness", "rating": 5.00, "points": 2.00, "example": "Turn 5 answers Turn 3: 'You suggest it is about a task, but...'", "limitation": "Turns 1-3 are three parallel diagnoses with no exchange between them."},
+        {"name": "Development of ideas", "rating": 4.50, "points": 1.80, "example": "Turn 6 narrows Frankl's view from 'task' to 'service of others'.", "limitation": "Turn 8 reads the experiment's result loosely; boredom versus unfulfilment is never explained."},
+        {"name": "Exploration of central tensions", "rating": 5.00, "points": 2.00, "example": "Turn 4 sets simple comfort against meaning-as-task, a real values conflict.", "limitation": "Whether the years of striving were worth it is never examined."},
+        {"name": "Integration of perspectives", "rating": 4.00, "points": 1.60, "example": "Turn 6 'I concede that virtue matters' takes in Seneca's point.", "limitation": "The concession is formulaic and does not reshape Frankl's argument."},
+        {"name": "Progress toward understanding", "rating": 5.00, "points": 2.00, "example": "Turn 9 states the open question: new mission or neglected simple pleasure.", "limitation": "Section D claims a shared 'mismatch of values' view that the turns never reach."}
+      ]},
+      {"name": "Quality of disagreement, trust and grounding", "max": 20.00, "points": 10.40,
+       "sub": [
+        {"name": "Faithful engagement", "rating": 4.50, "points": 1.80, "example": "Turn 4 fairly warns that hunting for meaning can add stress.", "limitation": "Turn 5 reduces Frankl's meaning to 'a task' without virtue, a thin version."},
+        {"name": "Substance of challenges", "rating": 4.50, "points": 1.80, "example": "Turn 5 tests whether meaning can fix work that lacks virtue.", "limitation": "Objections assert positions; they rarely probe causes or evidence."},
+        {"name": "Accuracy and support", "rating": 6.00, "points": 2.40, "example": "No quotations used; Epicurean necessary/unnecessary desires paraphrased faithfully in Turn 1.", "limitation": "Basis links are a poor fit: Seneca Letter 7 (crowds) and Letter 82 (death); Frankl's is a Goodreads page."},
+        {"name": "Calibration and transparency", "rating": 6.00, "points": 2.40, "example": "Consistent hedging: 'Maybe', 'might', 'perhaps' across Turns 1-3.", "limitation": "Section D asserts agreement the minds never voiced."},
+        {"name": "Intellectual honesty and revision", "rating": 5.00, "points": 2.00, "example": "Turn 6 explicitly revises Frankl's position after Seneca's objection.", "limitation": "Epicurus never answers Turn 5's virtue objection or revises anything."}
+      ]},
+      {"name": "Personal relevance", "max": 10.00, "points": 4.70,
+       "sub": [
+        {"name": "Identification of the actual concern", "rating": 6.00, "points": 1.20, "example": "Section A frames it: new direction or failure to appreciate what they have.", "limitation": "Does not ask whether 'what's missing' sits outside work altogether."},
+        {"name": "Meaningful use of personal context", "rating": 4.00, "points": 0.80, "example": "Turn 8 refers to 'the work you chose to pursue years ago'.", "limitation": "The years of striving barely shape the argument."},
+        {"name": "Fit with goals and values", "rating": 4.00, "points": 0.80, "example": "Section E ties the paths to connection versus exhaustion.", "limitation": "The user's own priorities are never separated from the speakers' doctrines."},
+        {"name": "Attention to constraints and stakes", "rating": 3.50, "points": 0.70, "example": "Turn 7 keeps the experiment to three hours this week.", "limitation": "The stakes of the new role, such as obligations and timing, are ignored."},
+        {"name": "Responsiveness to information", "rating": 6.00, "points": 1.20, "example": "Section E branches on connection versus exhaustion, with a journal if the cause is unknown.", "limitation": "No focused question is put to the user inside the debate."}
+      ]},
+      {"name": "Constructive self-discovery", "max": 20.00, "points": 10.80,
+       "sub": [
+        {"name": "Clarification of desires and motivations", "rating": 5.50, "points": 2.20, "example": "Turns 1-3 offer three tentative desires: tranquillity, alignment, service.", "limitation": "Turn 9 wording 'failed to nourish' edges toward blame."},
+        {"name": "Examination of assumptions", "rating": 5.50, "points": 2.20, "example": "Turn 1 questions whether the promotion was ever needed for happiness.", "limitation": "The assumption that achievement should satisfy is never named directly."},
+        {"name": "Clarification of values and priorities", "rating": 5.50, "points": 2.20, "example": "Section E contrasts the need for peace with the need for purpose.", "limitation": "Never asks which of these the user has valued until now."},
+        {"name": "Recognition of fears and outside expectations", "rating": 4.50, "points": 1.80, "example": "Turn 2 'serves an external status' points to social pressure.", "limitation": "Fear, for example of wasted years, is never addressed."},
+        {"name": "Agency and reflective ownership", "rating": 6.00, "points": 2.40, "example": "Turn 9 leaves the question for the user to answer.", "limitation": "The distinctions are broad, which makes them hard to refine."}
+      ]},
+      {"name": "Decision usefulness", "max": 10.00, "points": 5.20,
+       "sub": [
+        {"name": "Definition of the decision and options", "rating": 5.00, "points": 1.00, "example": "Section E: seek a new mission or simplify.", "limitation": "Staying put and waiting is never named as an option."},
+        {"name": "Explanation of tradeoffs", "rating": 4.00, "points": 0.80, "example": "Turn 4: chasing meaning may add stress.", "limitation": "The costs of simplifying are never stated."},
+        {"name": "Identification of decisive conditions", "rating": 6.00, "points": 1.20, "example": "Section E: lack of connection points to mission; exhaustion points to simplifying.", "limitation": "The conditions are not tied to anything the user can observe at work."},
+        {"name": "Treatment of uncertainty", "rating": 4.50, "points": 0.90, "example": "Section D separates temporary malaise from a wrongly chosen path.", "limitation": "Does not say which unknown matters most."},
+        {"name": "Proportionate next steps", "rating": 6.50, "points": 1.30, "example": "Turn 7 three non-utility hours; Section E one-week journal.", "limitation": "Turn 8's reading of the experiment's result is confusing."}
+      ]},
+      {"name": "Clarity and engagement", "max": 10.00, "points": 6.60,
+       "sub": [
+        {"name": "Accessible language", "rating": 7.00, "points": 1.40, "example": "Plain wording throughout, for example Turn 7.", "limitation": "'Virtue' in Turn 5 is left undefined."},
+        {"name": "Traceable arguments and references", "rating": 6.00, "points": 1.20, "example": "Turn 8 'If you try that' clearly points back to Turn 7.", "limitation": "Turn 8's logic (empty leisure means bored) is hard to follow."},
+        {"name": "Manageable pacing and turn length", "rating": 7.50, "points": 1.50, "example": "Nine turns of 28-33 words; form rules all met.", "limitation": "Turns are uniformly short, so no argument gets room to breathe."},
+        {"name": "Distinguishable positions and voices", "rating": 6.00, "points": 1.20, "example": "Epicurus's simplicity stance stays distinct (Turns 1, 4, 7).", "limitation": "Seneca's 'virtue' and Frankl's 'service' blur in Turns 5-6."},
+        {"name": "Economy and sustained attention", "rating": 6.50, "points": 1.30, "example": "No needless recaps in the turns.", "limitation": "Section D repeats points without adding to them."}
+      ]},
+      {"name": "Drama and entertainment", "max": 10.00, "points": 3.30,
+       "sub": [
+        {"name": "Meaningful stakes and tension", "rating": 4.00, "points": 0.80, "example": "Turn 4 pits comfort against mission.", "limitation": "The stakes stay abstract."},
+        {"name": "Surprise and reversals", "rating": 3.00, "points": 0.60, "example": "Turn 6 revises Frankl's position.", "limitation": "The revision is announced, not dramatised."},
+        {"name": "Personality and expressive voice", "rating": 3.00, "points": 0.60, "example": "Epicurus's practical playfulness in Turn 7.", "limitation": "All three minds share one flat, hedging register."},
+        {"name": "Memorable delivery", "rating": 3.00, "points": 0.60, "example": "Turn 5 'when the promotion dust settles'.", "limitation": "No vivid analogy or sharp line."},
+        {"name": "Anticipation and emotional movement", "rating": 3.50, "points": 0.70, "example": "Turns 7-8 set up a test with a possible outcome.", "limitation": "The rhythm is monotone from start to finish."}
+      ]}
+    ],
+    "uncapped": 50.40,
+    "score": 50.40,
+    "capReason": null,
+    "strengths": [
+      "Section E gives conditional branches plus a one-week journal as a fallback.",
+      "Turn 7 sets a concrete, low-cost experiment: three non-utility hours.",
+      "Grounding is clean: no quotations and broadly faithful paraphrase."
+    ],
+    "weaknesses": [
+      "Turns 1-3 are parallel monologues; real exchange starts only at Turn 4.",
+      "Turn 8 (Purpose Seeker) misreads the experiment; 'simply bored' is unexplained.",
+      "Voices are flat and the basis links (Seneca Letters 7 and 82, Goodreads) fit poorly."
+    ],
+    "editorNotes": [
+      "Require turns 2-3 to name and challenge an earlier speaker's specific claim.",
+      "Require each experiment to state what each possible result would mean for each mind.",
+      "Require basis links to point at the passage actually used, not at a book page or an unrelated letter.",
+      "Give each mind one signature image or phrase to sharpen its voice."
+    ]
+  },
+  "B": {
+    "criteria": [
+      {"name": "Quality of discussion", "max": 20.00, "points": 10.60,
+       "sub": [
+        {"name": "Continuity and responsiveness", "rating": 6.00, "points": 2.40, "example": "Turn 4 'Challenging the Stoic', Turn 7 'Testing the Stoic's step'.", "limitation": "Turns 1-3 are separate openings; in Turn 5, 'you could say' is muddled."},
+        {"name": "Development of ideas", "rating": 5.50, "points": 2.20, "example": "Turn 7 turns the task audit from Turn 6 into a 'ladder to nowhere' reading.", "limitation": "Turn 9 restates Turn 3 instead of adding to it."},
+        {"name": "Exploration of central tensions", "rating": 5.50, "points": 2.20, "example": "Turn 4 sets inner integrity against a job that may be hollow.", "limitation": "Camus's own answer, embracing the climb, is dropped after Turn 1."},
+        {"name": "Integration of perspectives", "rating": 4.50, "points": 1.80, "example": "Turn 9 'I accept that utility matters' while keeping its core view.", "limitation": "Turn 8 drops its claim without saying who changed its mind."},
+        {"name": "Progress toward understanding", "rating": 5.00, "points": 2.00, "example": "Section D names absurdity versus virtue versus utility.", "limitation": "The ending re-asserts positions rather than sharpening the question."}
+      ]},
+      {"name": "Quality of disagreement, trust and grounding", "max": 20.00, "points": 8.60,
+       "sub": [
+        {"name": "Faithful engagement", "rating": 4.50, "points": 1.80, "example": "Turn 7 takes the Stoic's audit seriously and pushes it further.", "limitation": "Turn 4 recasts the Stoic view as work 'merely to be endured', which the Stoic never said."},
+        {"name": "Substance of challenges", "rating": 5.00, "points": 2.00, "example": "Turn 4 asks whether the job itself is hollow, testing a real assumption.", "limitation": "Turn 5's challenge to the Existentialist is hypothetical and vague."},
+        {"name": "Accuracy and support", "rating": 2.00, "points": 0.80, "example": "Turn 2 misquotes Mill: 'human being dissatisfied than a fool' (should be 'a pig').", "limitation": "Turn 3 gives Epictetus's 'not in your power' to Marcus; Turn 6 quote is not the linked Long text."},
+        {"name": "Calibration and transparency", "rating": 4.50, "points": 1.80, "example": "Hedges such as 'You might' and 'perhaps' in Turns 1-3.", "limitation": "Turn 2 inverts Mill: his line praises dissatisfaction, yet it is used to say the goal was inferior."},
+        {"name": "Intellectual honesty and revision", "rating": 5.50, "points": 2.20, "example": "Turn 8 'I drop the claim that you need a higher pleasure'.", "limitation": "No mind admits the misused Mill line; the Existentialist never revises."}
+      ]},
+      {"name": "Personal relevance", "max": 10.00, "points": 4.40,
+       "sub": [
+        {"name": "Identification of the actual concern", "rating": 5.50, "points": 1.10, "example": "Section A lists purpose, wrong goals, or emptiness inherent in the achievement.", "limitation": "Does not ask whether the gap lies outside work."},
+        {"name": "Meaningful use of personal context", "rating": 4.50, "points": 0.90, "example": "Turn 7 'spent years building a ladder' uses the years of striving.", "limitation": "That use is mostly a verdict, not a tailoring of the reasoning."},
+        {"name": "Fit with goals and values", "rating": 4.00, "points": 0.80, "example": "Turn 6 audits tasks for character versus status.", "limitation": "The user's own stated aims are never distinguished from the doctrines."},
+        {"name": "Attention to constraints and stakes", "rating": 3.00, "points": 0.60, "example": "Turn 6 keeps the step small: 30 minutes, tomorrow.", "limitation": "Ignores the practical stakes of the new role."},
+        {"name": "Responsiveness to information", "rating": 5.00, "points": 1.00, "example": "Section E: watch whether the void persists during productive hours.", "limitation": "Only two branches, and no direct question to the user."}
+      ]},
+      {"name": "Constructive self-discovery", "max": 20.00, "points": 10.20,
+       "sub": [
+        {"name": "Clarification of desires and motivations", "rating": 5.00, "points": 2.00, "example": "Turn 8 raises helping others rather than climbing.", "limitation": "Turn 5 frames the user as having 'prioritized your own career gain'."},
+        {"name": "Examination of assumptions", "rating": 6.00, "points": 2.40, "example": "Turn 1: the promotion believed to be 'a final summit'.", "limitation": "Turn 3's 'value external accolades' is assumed, not offered for reflection."},
+        {"name": "Clarification of values and priorities", "rating": 5.00, "points": 2.00, "example": "Turn 6 sets rational character against status.", "limitation": "Never asks what the user valued when they began pursuing the promotion."},
+        {"name": "Recognition of fears and outside expectations", "rating": 4.50, "points": 1.80, "example": "Turn 3 points to the pull of external accolades.", "limitation": "Fear of wasted years is hinted at in Turn 7 but never handled gently."},
+        {"name": "Agency and reflective ownership", "rating": 5.00, "points": 2.00, "example": "Section E lets the user test which cause applies.", "limitation": "Turn 7 'you have spent years building a ladder to nowhere' presumes the answer."}
+      ]},
+      {"name": "Decision usefulness", "max": 10.00, "points": 4.90,
+       "sub": [
+        {"name": "Definition of the decision and options", "rating": 4.50, "points": 0.90, "example": "Section E: existential reframing or prioritizing utility.", "limitation": "Staying, waiting, or a limited change are never named."},
+        {"name": "Explanation of tradeoffs", "rating": 3.50, "points": 0.70, "example": "Turn 4 warns that the internal-focus option may blind the user.", "limitation": "No option is costed in terms of the user's life."},
+        {"name": "Identification of decisive conditions", "rating": 5.50, "points": 1.10, "example": "Section E: inherent meaninglessness versus lack of impact on others.", "limitation": "The Stoic's own option has no deciding condition."},
+        {"name": "Treatment of uncertainty", "rating": 4.50, "points": 0.90, "example": "Section E's test separates working hours from later reflection.", "limitation": "Turn 7 treats an uncertain audit result as conclusive."},
+        {"name": "Proportionate next steps", "rating": 6.50, "points": 1.30, "example": "Turn 6: a 30-minute task audit tomorrow.", "limitation": "The audit's character-or-status scale is vague."}
+      ]},
+      {"name": "Clarity and engagement", "max": 10.00, "points": 6.50,
+       "sub": [
+        {"name": "Accessible language", "rating": 6.50, "points": 1.30, "example": "Turn 7's imagery is plain and clear.", "limitation": "'Rational character' and 'utility' are left as jargon."},
+        {"name": "Traceable arguments and references", "rating": 6.50, "points": 1.30, "example": "Explicit addressees in Turns 4, 5 and 7.", "limitation": "Turn 5 'you could say' blurs who is claiming what."},
+        {"name": "Manageable pacing and turn length", "rating": 7.00, "points": 1.40, "example": "Nine turns of 30-55 words; form rules met.", "limitation": "Turn 6 is crowded with both an instruction and a quotation."},
+        {"name": "Distinguishable positions and voices", "rating": 7.00, "points": 1.40, "example": "Absurdity, utility and control stay distinct throughout.", "limitation": "Turn 8 shifts position without saying why."},
+        {"name": "Economy and sustained attention", "rating": 5.50, "points": 1.10, "example": "Turn 7 builds on Turn 6 without recapping it.", "limitation": "Turn 9 repeats Turn 3."}
+      ]},
+      {"name": "Drama and entertainment", "max": 10.00, "points": 4.80,
+       "sub": [
+        {"name": "Meaningful stakes and tension", "rating": 5.00, "points": 1.00, "example": "Turn 4 raises the possibility that the job is inherently hollow.", "limitation": "The tension softens rather than building."},
+        {"name": "Surprise and reversals", "rating": 4.50, "points": 0.90, "example": "Turn 7 turns the Stoic's own audit against the Stoic.", "limitation": "Turn 8's reversal is flat and unmotivated."},
+        {"name": "Personality and expressive voice", "rating": 4.50, "points": 0.90, "example": "The Existentialist's imagery of summits and climbs.", "limitation": "The Utilitarian's voice is generic."},
+        {"name": "Memorable delivery", "rating": 5.50, "points": 1.10, "example": "Turn 7 'a ladder to nowhere... the summit feels cold'.", "limitation": "The Mill quote lands wrong because it is misquoted."},
+        {"name": "Anticipation and emotional movement", "rating": 4.50, "points": 0.90, "example": "The test in Turns 6-7 creates some anticipation.", "limitation": "The ending deflates into restatement."}
+      ]}
+    ],
+    "uncapped": 50.00,
+    "score": 50.00,
+    "capReason": "Turn 2 misquotes Mill ('pig' became 'human being... fool'); Turn 6's Meditations quote is not faithful to the linked text.",
+    "strengths": [
+      "Explicit cross-references (Turns 4, 5, 7) make the exchange feel like a real debate.",
+      "Turn 6 sets a concrete step for tomorrow; Turn 7 tests what its result would mean.",
+      "Vivid imagery: 'summit', 'ladder to nowhere', 'the summit feels cold'."
+    ],
+    "weaknesses": [
+      "Turn 2 (Utilitarian) misquotes Mill and inverts what the line means.",
+      "Turn 3 (Stoic) attributes Epictetus's phrase to Marcus; Turn 6's quotation is not faithful.",
+      "Turn 7 (Existentialist) presumes 'years building a ladder to nowhere', which cuts off the user's own reflection."
+    ]
+    ,
+    "editorNotes": [
+      "Allow quotations only when copied verbatim from the linked text; otherwise paraphrase without quotation marks.",
+      "Require each quotation to support the claim in its turn, not just appear on the same topic.",
+      "Make each revision name which earlier turn caused it.",
+      "Phrase verdicts about the user's past as questions, not conclusions."
+    ]
+  },
+  "preferred": "A"
+}

@@ -1,0 +1,116 @@
+{
+  "lane": "gemini",
+  "version": 7,
+  "sample": 2,
+  "model": "gemini-3.1-flash-lite",
+  "settings": {
+    "thinkingLevel": "MEDIUM",
+    "temperature": 0.9,
+    "maxOutputTokens": 16384,
+    "fallback": "none"
+  },
+  "latencyMs": 10212,
+  "output": {
+    "situation": "The user has achieved a long-term goal of a promotion, yet experiences a lack of fulfillment. The central tension lies in whether this feeling results from the pursuit of status, a disconnect between the role and personal values, or the realization that the goal itself was an empty placeholder for deeper meaning.",
+    "minds": [
+      {
+        "title": "The Hedonic Skeptic",
+        "concern": "Distinguishing necessary desires from empty, unfulfilling ones.",
+        "author": "Epicurus",
+        "book": "Letter to Menoeceus",
+        "year": -300
+      },
+      {
+        "title": "The Meaning Seeker",
+        "concern": "The necessity of transcending success to find personal purpose.",
+        "author": "Viktor Frankl",
+        "book": "Man's Search for Meaning",
+        "year": 1946
+      },
+      {
+        "title": "The Social Critic",
+        "concern": "Identifying whether success was sought for genuine utility or social validation.",
+        "author": "Thorstein Veblen",
+        "book": "The Theory of the Leisure Class",
+        "year": 1899
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Hedonic Skeptic",
+        "text": "Perhaps you might have been pursuing an empty desire rather than a necessary one. If you worked toward this goal expecting it to provide lasting pleasure, you might have been mistaken, as some things we crave are not grounded in actual need.",
+        "author": "Epicurus",
+        "book": "Letter to Menoeceus",
+        "pd": true,
+        "basis": "[Basis: Epicurus, Letter to Menoeceus, 127-130](https://www.epicurus.net/en/menoeceus.html)"
+      },
+      {
+        "speaker": "The Meaning Seeker",
+        "text": "I would argue that success is not the source of satisfaction, but merely a state of being. You might be feeling a void because you have reached a destination without having established the meaningful connections that define your life beyond your professional label.",
+        "author": "Viktor Frankl",
+        "book": "Man's Search for Meaning",
+        "pd": false,
+        "basis": "[Basis: Viktor Frankl, Man's Search for Meaning, Part I](https://www.penguinrandomhouse.com/books/80404/mans-search-for-meaning-by-viktor-e-frankl/)"
+      },
+      {
+        "speaker": "The Social Critic",
+        "text": "It is likely that you were seeking what is termed pecuniary emulation. You might have mistaken the status granted by this promotion for the personal utility it was supposed to provide, realizing now that the prestige is merely a performance for others.",
+        "author": "Thorstein Veblen",
+        "book": "The Theory of the Leisure Class",
+        "pd": true,
+        "basis": "[Basis: Thorstein Veblen, The Theory of the Leisure Class, Chapter 2](https://www.gutenberg.org/ebooks/833)"
+      },
+      {
+        "speaker": "The Hedonic Skeptic",
+        "text": "The Social Critic suggests that the problem is merely social performance, but even if the status is performative, it may still provide the stability necessary to pursue simpler pleasures. The issue perhaps is that you are overvaluing the outcome and ignoring the quality of your daily existence.",
+        "author": "Epicurus",
+        "book": "Letter to Menoeceus",
+        "pd": true,
+        "basis": "[Basis: Epicurus, Letter to Menoeceus, 131-132](https://www.epicurus.net/en/menoeceus.html)"
+      },
+      {
+        "speaker": "The Meaning Seeker",
+        "text": "The Hedonic Skeptic claims we should focus on the quality of daily existence, but comfort is insufficient. You might be suffering because you have ignored your responsibility to contribute something to the world that exists outside of your own emotional state.",
+        "author": "Viktor Frankl",
+        "book": "Man's Search for Meaning",
+        "pd": false,
+        "basis": "[Basis: Viktor Frankl, Man's Search for Meaning, Part II](https://www.penguinrandomhouse.com/books/80404/mans-search-for-meaning-by-viktor-e-frankl/)"
+      },
+      {
+        "speaker": "The Social Critic",
+        "text": "The Meaning Seeker suggests contribution is the remedy, yet even that is often filtered through social prestige. You might want to ask if the work you are doing is inherently productive or if it is merely a way to maintain an appearance of success in your industry.",
+        "author": "Thorstein Veblen",
+        "book": "The Theory of the Leisure Class",
+        "pd": true,
+        "basis": "[Basis: Thorstein Veblen, The Theory of the Leisure Class, Chapter 4](https://www.gutenberg.org/ebooks/833)"
+      },
+      {
+        "speaker": "The Hedonic Skeptic",
+        "text": "I drop my earlier claim that status is irrelevant. I concede to the Social Critic that social position has value. Perhaps the error is not the promotion itself, but the anxiety you might feel about losing it, which prevents you from enjoying the position you now hold.",
+        "author": "Epicurus",
+        "book": "Letter to Menoeceus",
+        "pd": true,
+        "basis": "[Basis: Epicurus, Letter to Menoeceus, 132](https://www.epicurus.net/en/menoeceus.html)"
+      },
+      {
+        "speaker": "The Meaning Seeker",
+        "text": "To test your current state, I propose you spend exactly 48 hours observing your tasks; identify which ones you would still perform if the promotion and title were stripped away. This might reveal if you are pursuing purpose or just prestige.",
+        "author": "Viktor Frankl",
+        "book": "Man's Search for Meaning",
+        "pd": false,
+        "basis": "[Basis: Viktor Frankl, Man's Search for Meaning, Part II](https://www.penguinrandomhouse.com/books/80404/mans-search-for-meaning-by-viktor-e-frankl/)"
+      },
+      {
+        "speaker": "The Social Critic",
+        "text": "If you follow the suggestion of the Meaning Seeker and find you hate the tasks, then your satisfaction was indeed tied to social standing. If you enjoy the tasks, then you are a victim of the unnecessary friction created by the bureaucratic nature of your new status.",
+        "author": "Thorstein Veblen",
+        "book": "The Theory of the Leisure Class",
+        "pd": true,
+        "basis": "[Basis: Thorstein Veblen, The Theory of the Leisure Class, Chapter 13](https://www.gutenberg.org/ebooks/833)"
+      }
+    ],
+    "clearer": "The debate clarified that dissatisfaction might be a signal that the promotion provided social validation rather than intrinsic purpose or tranquility. The main dispute remains whether the remedy lies in finding meaning through contribution or in detaching one's happiness from the status the promotion provides. A self-reflection might involve questioning whether you value the work itself or the image that comes with the title.",
+    "dependsOn": "If you find joy in the specific daily activities of the role, your dissatisfaction stems from status anxiety; focus on detaching your self-worth from the position. If you find the work itself meaningless, your dissatisfaction is a lack of purpose; investigate what contribution or connection you might be sacrificing. If it is unclear which it is, use the 48-hour observation of tasks to see which activities elicit a genuine sense of engagement."
+  },
+  "savedAt": "2026-10-13T20:41:48.261Z"
+}

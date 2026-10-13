@@ -1,0 +1,116 @@
+{
+  "lane": "gemini",
+  "version": 8,
+  "sample": 1,
+  "model": "gemini-3.1-flash-lite",
+  "settings": {
+    "thinkingLevel": "MEDIUM",
+    "temperature": 0.9,
+    "maxOutputTokens": 16384,
+    "fallback": "none"
+  },
+  "latencyMs": 9065,
+  "output": {
+    "situation": "You have achieved a long-term goal of a promotion, yet you find yourself feeling hollow instead of fulfilled. You are currently struggling to determine if this dissatisfaction signals a need for a new direction or a failure to appreciate your current state.",
+    "minds": [
+      {
+        "title": "The Pleasure Critic",
+        "concern": "Achieving simple contentment by avoiding unnecessary desire.",
+        "author": "Epicurus",
+        "book": "Letter to Menoeceus",
+        "year": -341
+      },
+      {
+        "title": "The Purpose Seeker",
+        "concern": "Aligning one's life with personal virtue and nature.",
+        "author": "Seneca",
+        "book": "Letters from a Stoic",
+        "year": 65
+      },
+      {
+        "title": "The Responsibility Analyst",
+        "concern": "Finding meaning through service and engagement beyond the self.",
+        "author": "Viktor Frankl",
+        "book": "Man's Search for Meaning",
+        "year": 1946
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Pleasure Critic",
+        "text": "Maybe you are chasing desires that create more wanting rather than removing pain, and perhaps this promotion was a luxury you did not actually need to be happy.",
+        "author": "Epicurus",
+        "book": "Letter to Menoeceus",
+        "pd": true,
+        "basis": "[Basis: Epicurus, Letter to Menoeceus](https://en.wikisource.org/wiki/Letter_to_Menoeceus)"
+      },
+      {
+        "speaker": "The Purpose Seeker",
+        "text": "You might be misaligned; perhaps this promotion serves an external status rather than your own nature, making you feel like a stranger in your own life.",
+        "author": "Seneca",
+        "book": "Letters from a Stoic",
+        "pd": true,
+        "basis": "[Basis: Seneca, Letters from a Stoic, Letter 7](https://en.wikisource.org/wiki/Moral_letters_to_Lucilius/Letter_7)"
+      },
+      {
+        "speaker": "The Responsibility Analyst",
+        "text": "It might not be about desire or nature, but a lack of a meaningful task that transcends your own professional success and impacts the lives of others.",
+        "author": "Viktor Frankl",
+        "book": "Man's Search for Meaning",
+        "pd": false,
+        "basis": "[Basis: Viktor Frankl, Man's Search for Meaning, Chapter 2](https://www.goodreads.com/book/show/4069.Man_s_Search_for_Meaning)"
+      },
+      {
+        "speaker": "The Pleasure Critic",
+        "text": "If you chase meaning as a task, you might just be adding more stress, forgetting that living comfortably and simply is the true goal of a human life.",
+        "author": "Epicurus",
+        "book": "Letter to Menoeceus",
+        "pd": true,
+        "basis": "[Basis: Epicurus, Letter to Menoeceus](https://en.wikisource.org/wiki/Letter_to_Menoeceus)"
+      },
+      {
+        "speaker": "The Purpose Seeker",
+        "text": "You suggest it is about a task, but if the work itself lacks virtue, no amount of meaning fixes the hollowness you feel when the promotion dust settles.",
+        "author": "Seneca",
+        "book": "Letters from a Stoic",
+        "pd": true,
+        "basis": "[Basis: Seneca, Letters from a Stoic, Letter 82](https://en.wikisource.org/wiki/Moral_letters_to_Lucilius/Letter_82)"
+      },
+      {
+        "speaker": "The Responsibility Analyst",
+        "text": "I concede that virtue matters, but I revise my position to focus on the idea that the lack you feel might be in the service of others, not just the task itself.",
+        "author": "Viktor Frankl",
+        "book": "Man's Search for Meaning",
+        "pd": false,
+        "basis": "[Basis: Viktor Frankl, Man's Search for Meaning, Chapter 2](https://www.goodreads.com/book/show/4069.Man_s_Search_for_Meaning)"
+      },
+      {
+        "speaker": "The Pleasure Critic",
+        "text": "Try spending 3 hours this week doing something that provides no professional utility, to see if the satisfaction returns when you are not performing for a goal.",
+        "author": "Epicurus",
+        "book": "Letter to Menoeceus",
+        "pd": true,
+        "basis": "[Basis: Epicurus, Letter to Menoeceus](https://en.wikisource.org/wiki/Letter_to_Menoeceus)"
+      },
+      {
+        "speaker": "The Purpose Seeker",
+        "text": "If you try that and it feels empty, it might mean you are simply bored, rather than unfulfilled by the work you chose to pursue years ago.",
+        "author": "Seneca",
+        "book": "Letters from a Stoic",
+        "pd": true,
+        "basis": "[Basis: Seneca, Letters from a Stoic, Letter 2](https://en.wikisource.org/wiki/Moral_letters_to_Lucilius/Letter_2)"
+      },
+      {
+        "speaker": "The Responsibility Analyst",
+        "text": "The disagreement remains open; is the dissatisfaction a signal to seek a new mission, or is it simply a lack of simple pleasure that you failed to nourish?",
+        "author": "Viktor Frankl",
+        "book": "Man's Search for Meaning",
+        "pd": false,
+        "basis": "[Basis: Viktor Frankl, Man's Search for Meaning, Chapter 2](https://www.goodreads.com/book/show/4069.Man_s_Search_for_Meaning)"
+      }
+    ],
+    "clearer": "The debate highlights a tension between seeking internal peace and pursuing a mission that transcends personal comfort. While the minds disagree on whether the solution lies in simplifying one's life or deepening one's commitment to service, they agree that the dissatisfaction might be a symptom of a mismatch between your actions and your values. A remaining point of contention is whether the feeling is a temporary malaise or a sign of an incorrectly chosen path.",
+    "dependsOn": "If your dissatisfaction stems from a lack of connection to others → the path of finding a new mission becomes more reasonable, because it shifts your focus away from your own internal state. If your dissatisfaction stems from the exhaustion of maintaining your current status → the path of simplification becomes more reasonable, because it removes the pressure of external validation. If the cause remains unknown → keep a journal for one week to record when you feel most present and when you feel most like you are performing, as this will help distinguish between your needs for peace versus purpose."
+  },
+  "savedAt": "2026-10-13T20:41:29.551Z"
+}
