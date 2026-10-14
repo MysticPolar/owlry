@@ -1,83 +1,58 @@
-# The self-evolving prompt loop
+# The self-evolving prompt loop (schema 2)
 
-A loop that improves one system prompt, the cast-plus-debate prompt, one test question at a time.
+Two prompts evolve side by side, one per model: the `gemini` lineage for the free-tier Gemini model (`gemini-3.1-flash-lite`) and the `sonnet` lineage for Claude Sonnet 5.5. Each round draws five fresh questions, one per category, runs each lineage's previous and current prompt version on all five, judges every pair blind, and lets each lineage's editor write the next version from the five-question evidence.
 
-**The goal.** The prompt is for the Gemini model the free tier serves, `gemini-3.1-flash-lite`. The first milestone is a mean score of 70 or more on the 100-point matrix on that lane for one question from every category: five consecutive rounds in rotation, all at or above 70, covering Health, Wealth, Love, Purpose and Wonder. `evo milestone` prints the streak and REACHED when it is met; the run stops there. The milestone and the round-by-round score go to the editor every round, so it knows how far the prompt is from the target and whether the last change helped.
-
-**Length.** The system prompt has a hard ceiling in words (`prompt.maxWords` in `config.json`) and a per-round growth limit. Both are enforced in code when a version is applied, not by an agent, and the editor sees the remaining budget every round. At the ceiling, every addition must be paid for by a cut.
-
-**Running the whole bank.** One round per question, in rotation, each round improving the prompt from the last. State is on disk, so a fresh master is spawned for every round and the main session loops: open the round, run it, commit, next. A round that fails stops the run at that round, and the run resumes from there.
-
-**Samples.** The Gemini lane runs three samples per version each round, each judged on its own, and the lane's score is the mean. The spread between samples of the same version is the noise floor, shown to the editor, so a difference between versions smaller than the spread is not treated as evidence. Sonnet runs one sample.
+**The goals.** Sonnet lineage: 90 or more on every question of a round, by prompt adaptation alone. Gemini lineage: 70 or more on every question, with the recorded caveat that this model's estimated ceiling under this judge is about 60. The judge's standard is unchanged from the owner's matrix; only its mechanics were fixed so the top band is reachable when earned.
 
 ## Who does what
 
 | Role | What it is | Lives where |
 | --- | --- | --- |
-| You | Give one test question per round. Read the summary. | chat |
-| Master | Runs the round, step by step, and logs everything. Opus 5.5. | `roles/master.md` |
-| Worker, Gemini lane | Answers the question with the current prompt. Gemini Flash, thinking MEDIUM. Timed. | `runner/evo.ts gemini` |
-| Worker, Sonnet lane | Same, on Claude Sonnet at medium. Timed. The ceiling: what the prompt produces on a stronger model. | spawned by the master |
-| Judge | Scores each debate on the 100-point matrix, blind to which version it came from. Opus 5.5. | `roles/judge.md` |
-| Editor | Reads the scorecards and writes the next prompt version. Fable. | `roles/editor.md` |
+| Main session | Spawns one master per round, commits between rounds, checks the milestones, decides when a round is a held-out round | chat |
+| Master | Runs one round step by step and logs everything. Opus 5.5, one per round. | `roles/master.md` |
+| Worker, Gemini lineage | Answers each question with the lineage's prompt. Flash-Lite, thinking MEDIUM, two samples per question, paced for the free tier. | `runner/evo.ts gemini` |
+| Worker, Sonnet lineage | Answers each question with the Sonnet lineage's prompt. One sample. | spawned by the master |
+| Judge | Scores each pair of debates on the 100-point matrix, blind to which version is which, side by side. Opus 5.5. | `roles/judge.v2.md` |
+| Editor, per lineage | Reads the five-question scorecards and writes the lineage's next version. Fable. | `roles/editor.gemini.md`, `roles/editor.sonnet.md` |
 
-Every worker, judge and editor is spawned for one job and is gone when it returns. Only the master persists, and it keeps nothing that is not in a file.
+Every worker, judge and editor is spawned for one job and is gone when it returns. Nothing persists between rounds except files.
+
+## Why five fresh questions
+
+Comparing two versions on different questions measures the questions, not the prompt: one question moved Sonnet's score by 10 points with the same prompt. So both versions run on the same five questions within a round, paired. The five change every round, drawn least-used first, so the editor cannot tune to any one of them and the prompt has to stay general across Health, Wealth, Love, Purpose and Wonder. Five questions the editor never sees are held out; every fifth round the current versions are scored on them alone, as the progress line.
+
+## Decisions
+
+- A version is kept if it wins more paired comparisons than it loses across the five questions. A losing version is discarded and the editor builds on the winner.
+- Length is enforced in code: an absolute ceiling of 1900 words and 10 percent growth per round.
+- The judge compares versions inside a lineage only. There is no cross-model comparison.
+- Latency is recorded and never acted on.
 
 ## Where things are
 
 ```
 evolve/
-  config.json               models, efforts, turn range, latency rule
-  subject/castDebate.v1.md  the prompt, one file per version; v1 is yours unchanged
-  subject/CHANGELOG.md      one entry per version: scores, latency, what changed
-  roles/master.md           the master's step-by-step playbook
-  roles/judge.md            the judge's prompt (your matrix)
-  roles/editor.md           the editor's prompt
-  runner/evo.ts             the command-line tool the master uses
-  questions/bank.json       the question bank: five categories, a label per question, a few flagged for safety
-  runs/round-001/           everything from round 1: question, answers, scorecards, editor output
+  config.json               lanes, lineages, panel size, held-out ids, judge and editor settings, length limits
+  questions/bank.json       51 questions in five categories with labels; three flagged safety
+  subject/castDebate.gemini.vN.md, CHANGELOG.gemini.md   the Gemini lineage (v1 = the single-lineage loop's v11)
+  subject/castDebate.sonnet.vN.md, CHANGELOG.sonnet.md   the Sonnet lineage (v1 = the original prompt)
+  subject/castDebate.v1..v11.md, CHANGELOG.md            the single-lineage history, rounds 1 to 11
+  roles/judge.v2.md         the judge (the matrix, mechanics fixed); judge.md is the earlier version
+  roles/editor.gemini.md, editor.sonnet.md, editor.md    the editor briefs; editor.md is the earlier single brief
+  roles/master.md           the master's playbook
+  runner/evo.ts             the command-line tool
+  runs/round-NNN/           everything a round produced
 ```
 
-## The question bank
-
-`questions/bank.json` holds the test questions, each with a category, a short label, and the text. Only the text reaches a worker; the judge sees neither the category nor the label, so nothing anchors its reading of what the question is about. The label lives in the round record, the changelog and the summary.
-
-Selection is a rule, not a model: `evo new --pick next` rotates Health, Wealth, Love, Purpose, Wonder and takes the least-used question in that category, so every question gets its turn and a rerun makes the same choice. `--pick weakest` chooses the category with the lowest recent primary-lane score. `evo bank` lists usage and the next pick.
-
-Three questions are flagged `safety`. For those the judge adds a separate yes-or-no on whether the minds recognised possible danger or exploitation, outside the 100-point score.
-
-To add questions, append to the category in `bank.json` with a new id. Never reuse or renumber an id, because the usage count is read from the round records by id.
-
-## What one round produces
-
-In `runs/round-R/`:
-
-- `question.txt`, `round.json`: the question, the versions run, which version hid behind label A and B.
-- `v<N>.gemini.json`, `v<N>.sonnet.json`: each worker's answer, model settings, and latency in milliseconds.
-- `judge.gemini.json`, `judge.sonnet.json`: scores per version, unblinded.
-- `editor.json`: the next version's changes and rationale.
-- `editor-input.md`, `judge-input.*.md`, `*.raw.txt`: the exact text each agent saw and returned.
-
-And in `subject/`: `castDebate.v<N+1>.md` plus a new changelog entry.
-
-## How to read a round
-
-Run, from the repository root:
+## Reading a round
 
 ```
-deno run --config evolve/deno.json --env-file=.env.local -A evolve/runner/evo.ts summary --round 1
+deno run --config evolve/deno.json --env-file=.env.local -A evolve/runner/evo.ts summary --round 12
 ```
 
-Score first, latency second, per lane and per version. The Gemini lane is the primary one: it is the model the prompt is for, and only its scores decide whether a version is better. The judge compares versions inside a lane, never across models.
-
-The Sonnet lane exists for one diagnostic: the lane gap. The editor sees each criterion's points on Gemini next to Sonnet, the ceiling. Both low means the prompt lacks the instruction. Sonnet high and Gemini low means the instruction is there but Gemini cannot follow it as written, so the editor simplifies it rather than adding rules. The Sonnet lane's latency includes Claude Code overhead, so compare it only with itself across rounds. A Fable lane at max effort ran in round 2 and was removed afterwards: ten minutes per debate for a reference signal Sonnet gives in under a minute.
+Per lineage: a table of the five questions against the versions, the means, the minimum question, the paired wins, and what the editor changed. `debates.md` in the round folder has every debate with its score. `status` prints each lineage's round means and held-out scores; `milestone` says REACHED or not.
 
 ## Setup, once
 
-- `.env.local` in this folder's repository root with `GEMINI_API_KEY=...`. Never commit it.
-- Deno 2 installed. No other install needed; the Gemini client is the production one.
-- Node packages installed (`npm install`) only if you run the repository's other scripts.
-
-## What is deliberately not here yet
-
-No automatic promotion to production, no auditor for fabricated books or quotes, no second judge, no pruner, no batch of 30 questions. Each can be added when the simple loop shows the need.
+- `.env.local` in the repository root with `GEMINI_API_KEY=...`. Never commit it.
+- Deno 2 installed. The Gemini client is the production one.

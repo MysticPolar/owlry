@@ -1,8 +1,8 @@
-# Master playbook
+# Master playbook (schema 2)
 
-You run one round of the self-evolving prompt loop. You orchestrate and log. You never write a debate, never score one, never edit the prompt. Those are done by agents you spawn, one fresh agent per job, each gone when it returns.
+You run one round of the self-evolving prompt loop. You orchestrate and log. You never write a debate, never score one, never edit a prompt. Those are done by agents you spawn, one fresh agent per job, each gone when it returns.
 
-All state is on disk under `evolve/`. Read it at the start of every round. Keep nothing in memory that is not also in a file.
+All state is on disk under `evolve/`. Read `config.json` at the start of every round. Keep nothing in memory that is not also in a file. Do not run any git command; the main session commits between rounds.
 
 Every command below runs from the repository root as:
 
@@ -10,64 +10,67 @@ Every command below runs from the repository root as:
 deno run --config evolve/deno.json --env-file=.env.local -A evolve/runner/evo.ts <command> ...
 ```
 
-Call that `evo` below. `evolve/config.json` holds the models and efforts; do not hardcode them.
+Call that `evo` below.
+
+## What a round is
+
+Five fresh questions, one per category. Two lineages, `gemini` and `sonnet`, each with its own prompt versions. For each lineage, the previous version and the current version run on all five questions (the gemini lane takes two samples per question, the sonnet lane one), every pair is judged blind, and the lineage's editor writes the next version from the five-question evidence. Every fifth round is a held-out round: only the current versions run, on five fixed questions, scored on their own, no editor.
 
 ## One round
 
-**1. Open the round.** If the person gave a question, save it to a file and run `evo new --question-file <path>`. If they did not, draw the next one from the question bank:
+**1. Open the round.**
 
 ```
-evo new --pick next
+evo new            (a normal round)
+evo new --holdout  (only when the main session says this is a held-out round)
 ```
 
-`--pick next` rotates through the five categories and takes the least-used question in the category. Add `--rewrite` only when the main session tells you this is a rewrite round; the editor then writes a short prompt from scratch instead of editing. `--pick weakest` takes the category with the lowest recent score instead; `--id <bank id>` takes a specific question. The bank's category and label are for the record only. They are never shown to a worker or a judge.
+It prints the five questions and, per lineage, the versions to run.
 
-It prints the question's label, the round number R, the current version, the previous version if any, and the versions to run. Round 1 runs one version. Later rounds run two: previous and current, so the judge can compare them.
+**2. Workers, all at once.**
 
-**2. Run the workers.** For every version V listed, run every lane in `config.json` → `lanes`.
+- Gemini lineage: start `evo gemini --round R --lineage gemini` as a background shell command. It runs every question, version and sample one call at a time with the free-tier gap, times each, and saves the files itself. Never run two Gemini commands at the same time. Never pass `--model`.
+- Sonnet lineage: `evo worker-prompts --round R --lineage sonnet` writes every framed prompt the lineage needs (one per question per version) and prints their paths. Spawn one agent per prompt, all in the foreground in one go, each with the sonnet lane's `agentType`, `model` and `effort` from `config.json` and exactly this prompt: "Read the file at <path> and do exactly what it says. Return only the JSON object." Note `evo now` before you spawn the batch and after it returns; the batch time divided across the workers is the latency figure, which is report-only. Write each reply verbatim to `<round folder>/q<i>.v<V>.sonnet.raw.txt`, then save it:
+  `evo save --round R --lineage sonnet --q <i> --version <V> --latency-ms <ms> --file <that raw file>`.
+  If `save` rejects an answer, spawn that one worker once more. If it fails twice, write `q<i>.v<V>.sonnet.failed.txt` and continue without it.
+- Wait for the Gemini command to finish before judging. If it stopped on an error, run it again once; it skips files already saved.
 
-- The `api` lane (gemini): one command for all versions, `evo gemini --round R --versions <V1>,<V2>`, started as a background shell command so it runs while you do the next lane. It runs the samples one after another with the free-tier gap, times each call and saves the files itself. Never run two Gemini commands at the same time: the free tier allows five requests a minute. Never pass `--model`; the configured model is the target.
-- Each `subagent` lane (sonnet), one version at a time, in the foreground: `evo worker-prompt --round R --version V --lane <lane>` prints a path. Note the time with `evo now`. Spawn an agent in the foreground with that lane's `agentType`, `model` and `effort` from `config.json`, whose prompt is: "Read the file at <path> and do exactly what it says. Return only the JSON object." Do not add anything else to that prompt. When it returns, note the time again, write its reply verbatim to `<round folder>/v<V>.<lane>.raw.txt`, then:
-  `evo save --round R --version V --lane <lane> --latency-ms <end minus start> --file <that raw file>`.
-  Foreground, because a background agent's completion notice goes to the main session, not to you, and you would wait for a reply that never arrives. The Gemini command keeps running in the background meanwhile, so nothing is lost.
-- Then wait for the Gemini command to finish before judging.
-  If `save` rejects the answer, spawn the worker once more. If it fails twice, record the failure in the round folder as `v<V>.<lane>.failed.txt` and continue without that lane.
-
-**3. Judge, per lane, per sample.** The gemini lane runs several samples per version (`samples` in `config.json`); the other lanes run one. For each lane that has a saved answer for every version, and for each sample k of that lane (just once, without `--sample`, on a single-sample lane):
+**3. Judges, all at once.** For each lineage:
 
 ```
-evo judge-input --round R --lane <lane> --sample k
+evo judge-input --round R --lineage <lineage>
 ```
 
-It prints a path. Spawn an agent with the `judge` settings from `config.json`, whose prompt is: "Read the file at <path> and do exactly what it says. Return only the JSON object." Spawn all judges of a round in one go, in the foreground, so every reply comes straight back to you. Write each reply verbatim to `<round folder>/judge.<lane>[.sk].raw.txt`, then:
+It writes every blind judge input for the lineage (one per question per sample) and prints their paths. Spawn one judge per path, all in the foreground in one go, each with the `judge` settings from `config.json` and exactly this prompt: "Read the file at <path> and do exactly what it says. Write the JSON object it asks for, and nothing else, to <round folder>/judge.<lineage>.q<i>.s<k>.raw.txt. Return only the word done." The judge writes its own file so its scorecard never passes through your context. When all have returned, for each one:
 
 ```
-evo save-judge --round R --lane <lane> --sample k --file <that raw file>
+evo save-judge --round R --lineage <lineage> --q <i> --sample <k> --file <that raw file>
 ```
 
-The judge never learns which version is which. The tool unblinds when it saves, and on a sampled lane it rebuilds the lane's mean score from the samples saved so far.
+The judge never learns which version is which. The tool unblinds when it saves and rebuilds the lineage's aggregate.
 
-**4. Edit.**
-
-```
-evo editor-input --round R
-```
-
-Spawn an agent with the `editor` settings from `config.json`, same one-line prompt pointing at the printed path. Write the reply verbatim to `<round folder>/editor.raw.txt`, then:
+**4. Editors, one per lineage (skip on a held-out round).**
 
 ```
-evo apply-editor --round R --file <that raw file>
+evo editor-input --round R --lineage <lineage>
 ```
 
-If it refuses because the prompt grew more than 10 percent, spawn the editor once more with the extra line: "Your previous answer grew the prompt by more than 10 percent. Return a version within the limit." Then apply again.
+Spawn an agent with the `editorModel` settings from `config.json` and this prompt: "Read the file at <path> and do exactly what it says. Write the JSON object it asks for, and nothing else, to <round folder>/editor.<lineage>.raw.txt. Return only the word done." Then:
+
+```
+evo apply-editor --round R --lineage <lineage> --file <that raw file>
+```
+
+If it refuses for length, spawn the editor once more with the exact error line appended, then apply again.
 
 **5. Report.**
 
 ```
 evo summary --round R
+evo render --round R
 ```
 
-Show that output to the person, unchanged, followed by at most three sentences: whether the current version beat the previous one on the primary lane, the biggest weakness the judge named, and what the editor changed.
+Your final report is the output of `evo summary --round R`, unchanged, followed by at most three sentences per lineage: whether the current version won the paired comparison and by how many pairs, the recurring weakness, and what the editor changed.
 
 ## Rules
 

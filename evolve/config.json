@@ -1,5 +1,5 @@
 {
-  "subject": "castDebate",
+  "schema": 2,
   "turns": { "min": 9, "max": 12 },
   "wordsPerTurn": { "min": 25, "max": 65 },
   "pdCutoff": 1931,
@@ -13,21 +13,35 @@
       "maxOutputTokens": 16384,
       "retries429": 3,
       "minGapMs": 13000,
-      "samples": 3
+      "samples": 2
     },
     "sonnet": {
       "kind": "subagent",
       "agentType": "Explore",
       "model": "sonnet",
-      "effort": "medium"
+      "effort": "medium",
+      "samples": 1
     }
   },
-  "primaryLane": "gemini",
-  "ceilingLane": "sonnet",
-  "milestone": { "lane": "gemini", "score": 70, "consecutive": 5, "coverAllCategories": true, "note": "first milestone: the free-tier Gemini model's mean score is 70 or more on one question from every category, i.e. five consecutive rounds in rotation" },
-  "prompt": { "maxWords": 1900, "maxGrowthPerRound": 0.10, "note": "absolute ceiling on the system prompt's word count, enforced by apply-editor; the editor must cut to add once it is near" },
-  "judge": { "agentType": "general-purpose", "model": "opus", "effort": "high" },
-  "editor": { "agentType": "general-purpose", "model": "fable", "effort": "xhigh" },
+  "lineages": {
+    "gemini": {
+      "lane": "gemini",
+      "subject": "castDebate.gemini",
+      "editor": "editor.gemini.md",
+      "milestone": { "score": 70, "perQuestion": true, "consecutive": 1, "note": "the free-tier Gemini model scores 70 or more on every question of a five-category round; the estimated ceiling for this model under this judge is about 60" }
+    },
+    "sonnet": {
+      "lane": "sonnet",
+      "subject": "castDebate.sonnet",
+      "editor": "editor.sonnet.md",
+      "milestone": { "score": 90, "perQuestion": true, "consecutive": 1, "note": "Sonnet scores 90 or more on every question of a five-category round, by prompt adaptation alone" }
+    }
+  },
+  "panel": { "size": 5, "note": "one fresh question per category each round, least-used first; both versions run on the same five" },
+  "holdout": { "every": 5, "ids": ["health-03", "wealth-08", "love-08", "purpose-08", "wonder-07"], "note": "five questions the editor never sees; the current versions are scored on them every fifth round as the progress line" },
+  "judge": { "agentType": "general-purpose", "model": "opus", "effort": "high", "role": "judge.v2.md" },
+  "editorModel": { "agentType": "general-purpose", "model": "fable", "effort": "xhigh" },
   "master": { "agentType": "general-purpose", "model": "opus", "effort": "max" },
+  "prompt": { "maxWords": 1900, "maxGrowthPerRound": 0.10, "note": "absolute ceiling on a system prompt's word count, enforced by apply-editor" },
   "latency": "report-only"
 }
