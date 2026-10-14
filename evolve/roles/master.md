@@ -49,19 +49,25 @@ evo save-judge --round R --lineage <lineage> --q <i> --sample <k> --file <that r
 
 The judge never learns which version is which. The tool unblinds when it saves and rebuilds the lineage's aggregate.
 
-**4. Editors, one per lineage (skip on a held-out round).**
+**4. Editors, one per lineage, proposals only (skip on a held-out round).**
 
 ```
 evo editor-input --round R --lineage <lineage>
 ```
 
-Spawn an agent with the `editorModel` settings from `config.json` and this prompt: "Read the file at <path> and do exactly what it says. Write the JSON object it asks for, and nothing else, to <round folder>/editor.<lineage>.raw.txt. Return only the word done." Then:
+Spawn an agent with the `editorModel` settings from `config.json` and this prompt: "Read the file at <path> and do exactly what it says. Write the JSON object it asks for, and nothing else, to <round folder>/editor.<lineage>.raw.txt. Return only the word done." Then print the proposal for the person:
 
 ```
-evo apply-editor --round R --lineage <lineage> --file <that raw file>
+evo proposal --round R --lineage <lineage>
 ```
 
-If it refuses for length, spawn the editor once more with the exact error line appended, then apply again.
+Do not apply it. The person reads the summary, the judges' findings and the proposal, and approves or rejects each lineage. Only after approval does the main session run:
+
+```
+evo apply-editor --round R --lineage <lineage> --file <round folder>/editor.<lineage>.raw.txt
+```
+
+If apply refuses for length, the editor is spawned once more with the exact error line appended, and the new proposal goes back to the person.
 
 **5. Report.**
 

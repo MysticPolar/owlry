@@ -1040,6 +1040,48 @@ async function cmdStatus(cfg: Config) {
 
 // ---------- summary and render ----------
 
+/** the editor's proposal for a lineage, readable, before (or after) it is applied: the human-in-the-loop gate reads this */
+async function cmdProposal(cfg: Config, f: Record<string, string>) {
+  const round = Number(need(f, 'round'));
+  const names = f.lineage ? [f.lineage] : Object.keys(cfg.lineages);
+  const rf = await loadRound(round);
+  for (const name of names) {
+    const lin = lineageOf(cfg, name);
+    const st = rf.lineages[name];
+    const applied = `${roundDir(round)}/editor.${name}.json`;
+    const raw = `${roundDir(round)}/editor.${name}.raw.txt`;
+    let e: EditorOut & { appliedVersion?: number; baseVersion?: number };
+    if (await exists(applied)) e = await readJson(applied);
+    else if (await exists(raw)) {
+      try {
+        e = parseLoose(await Deno.readTextFile(raw)) as EditorOut;
+      } catch (err) {
+        console.log(`lineage ${name}: the editor's answer is not valid JSON (${(err as Error).message})`);
+        continue;
+      }
+    } else {
+      console.log(`lineage ${name}: no editor proposal yet`);
+      continue;
+    }
+    const j = await loadJudge(round, name);
+    const base = e.baseVersion ?? baseVersionFor(st, j);
+    const cur = await loadSubject(lin, base);
+    const before = words(cur.system);
+    const after = typeof e.prompt === 'string' ? words(e.prompt) : 0;
+    console.log(`\n=== lineage ${name}: proposal for v${st.current + 1}, built on v${base}${e.appliedVersion ? ` (APPLIED as v${e.appliedVersion})` : ' (NOT applied; awaiting approval)'} ===`);
+    console.log(`words ${before} -> ${after} (${after - before >= 0 ? '+' : ''}${after - before}); ceiling ${cfg.prompt.maxWords}`);
+    console.log(`changelog: ${e.changelog}`);
+    (e.targets ?? []).forEach((t) => console.log(`target: ${JSON.stringify(t)}`));
+    (e.changes ?? []).forEach((c, i) => {
+      console.log(`\n${i + 1}. ${c.kind.toUpperCase()}: ${c.expectedEffect}`);
+      if (c.before) console.log(`   before: ${c.before}`);
+      if (c.after) console.log(`   after:  ${c.after}`);
+    });
+    if (e.reverted?.length) console.log(`reverted: ${e.reverted.join(' | ')}`);
+    if (e.blocked?.length) console.log(`blocked: ${e.blocked.join(' | ')}`);
+  }
+}
+
 async function cmdSummary(cfg: Config, f: Record<string, string>) {
   const round = Number(need(f, 'round'));
   const rf = await loadRound(round);
@@ -1138,8 +1180,9 @@ const HELP = `evo <command> [--flag value]   (schema 2: five questions a round, 
                                              unblind, save, and rebuild judge.<lineage>.json
   aggregate --round R --lineage L            rebuild judge.<lineage>.json from the saved samples
   editor-input --round R --lineage L         write editor-input.<lineage>.md
+  proposal --round R [--lineage L]           print an editor's proposed changes, applied or not: the approval gate reads this
   apply-editor --round R --lineage L --file <answer.txt>
-                                             write the lineage's next version + changelog
+                                             write the lineage's next version + changelog (only after the person approves)
   summary --round R                          one-screen result, both lineages
   render --round R                           write debates.md: every debate in the round
 `;
@@ -1170,6 +1213,7 @@ if (!cmd || cmd === 'help') {
     case 'editor-input': await cmdEditorInput(cfg, flags); break;
     case 'apply-editor': await cmdApplyEditor(cfg, flags); break;
     case 'summary': await cmdSummary(cfg, flags); break;
+    case 'proposal': await cmdProposal(cfg, flags); break;
     case 'render': await cmdRender(cfg, flags); break;
     default:
       console.log(HELP);
