@@ -1,0 +1,644 @@
+{
+  "lane": "gemini",
+  "sample": 2,
+  "blind": {
+    "A": 11,
+    "B": 10
+  },
+  "scores": {
+    "v11": {
+      "criteria": [
+        {
+          "name": "Quality of discussion",
+          "max": 20,
+          "points": 9.6,
+          "sub": [
+            {
+              "name": "Continuity and responsiveness",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turn 4 answers turn 2 directly: already losing money by keeping cash.",
+              "limitation": "Stoic turns 3 and 6 mostly sit beside the money argument rather than inside it."
+            },
+            {
+              "name": "Development of ideas",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Turn 7 moves the argument to a concrete $1,500 split.",
+              "limitation": "Nobody works out that paying the full $2,000 still leaves $1,000 in savings."
+            },
+            {
+              "name": "Exploration of central tensions",
+              "rating": 5,
+              "points": 2,
+              "example": "Turns 4-5 test a certain 22% cost against the risk of new debt.",
+              "limitation": "Nobody sizes either cost, e.g. about $440 a year in interest."
+            },
+            {
+              "name": "Integration of perspectives",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Turn 7: the Pragmatist adopts the Risk Manager's safety-net point.",
+              "limitation": "Turn 8 rejects the split, but its own turn 5 $1,000 cushion is effectively full payoff."
+            },
+            {
+              "name": "Progress toward understanding",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Turn 9 points to monthly paydown while keeping savings.",
+              "limitation": "The turn 9 open question is broad and does not resolve the confusion over amounts."
+            }
+          ]
+        },
+        {
+          "name": "Quality of disagreement, trust and grounding",
+          "max": 20,
+          "points": 8.8,
+          "sub": [
+            {
+              "name": "Faithful engagement",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Turn 5 restates the Pragmatist's loss argument before answering it.",
+              "limitation": "Turn 2 assumes payoff empties savings, which weakens the Pragmatist's case."
+            },
+            {
+              "name": "Substance of challenges",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Turn 8 points to a $2,000 emergency that would leave the split short.",
+              "limitation": "Nobody notes the paid-off card's credit line could itself serve as emergency liquidity."
+            },
+            {
+              "name": "Accuracy and support",
+              "rating": 3.5,
+              "points": 1.4,
+              "example": "Turn 4 rightly compares a low savings rate with 22% interest.",
+              "limitation": "Turn 2's 'empty your savings' is false: payoff leaves $1,000."
+            },
+            {
+              "name": "Calibration and transparency",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Turn 3 hedges with 'often' and 'perhaps worse than the interest'.",
+              "limitation": "Turn 2's 'avoid at all costs' states a preference as if it were certain."
+            },
+            {
+              "name": "Intellectual honesty and revision",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 7 drops the position outright and names whose point moved it.",
+              "limitation": "The Risk Manager never revises after turn 5 contradicts its own stance."
+            }
+          ]
+        },
+        {
+          "name": "Personal relevance",
+          "max": 10,
+          "points": 4.7,
+          "sub": [
+            {
+              "name": "Identification of the actual concern",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Turn 6 asks whether the real concern is comfort, not math.",
+              "limitation": "Doesn't ask if the card is still in use, which bears on relapse risk."
+            },
+            {
+              "name": "Meaningful use of personal context",
+              "rating": 5,
+              "points": 1,
+              "example": "Turns 7-8 work with the user's actual $3,000 and $2,000 figures.",
+              "limitation": "The figures are used but miscounted, with no leftover $1,000 ever noted."
+            },
+            {
+              "name": "Fit with goals and values",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Turn 9 frames the choice as tranquility against interest savings.",
+              "limitation": "The user's stated priorities are inferred, never kept separate from the speakers' own."
+            },
+            {
+              "name": "Attention to constraints and stakes",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Turn 8 flags the cycle of re-borrowing on the card.",
+              "limitation": "Income, job stability and dependents are never raised as constraints."
+            },
+            {
+              "name": "Responsiveness to information",
+              "rating": 5,
+              "points": 1,
+              "example": "Turn 9 asks whether the budget allows monthly paydown.",
+              "limitation": "Only one focused question; missing facts aren't turned into conditional branches in the debate."
+            }
+          ]
+        },
+        {
+          "name": "Constructive self-discovery",
+          "max": 20,
+          "points": 9.2,
+          "sub": [
+            {
+              "name": "Clarification of desires and motivations",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Turn 6 offers comfort as a possible real motive, framed as a question.",
+              "limitation": "Only one alternative desire is explored."
+            },
+            {
+              "name": "Examination of assumptions",
+              "rating": 3.5,
+              "points": 1.4,
+              "example": "Turn 4 challenges the assumption that cash is costless safety.",
+              "limitation": "The shared false assumption that payoff empties savings goes unexamined."
+            },
+            {
+              "name": "Clarification of values and priorities",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 9 names tranquility against future interest savings.",
+              "limitation": "The values are stated, not ranked or tested against the user's situation."
+            },
+            {
+              "name": "Recognition of fears and outside expectations",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 3: anxiety itself becomes a tax on your life.",
+              "limitation": "Habit around card use and social pressure are left untouched."
+            },
+            {
+              "name": "Agency and reflective ownership",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 6's question leaves the user free to accept or reject it.",
+              "limitation": "Section D summarises the debate rather than offering the user distinctions to refine."
+            }
+          ]
+        },
+        {
+          "name": "Decision usefulness",
+          "max": 10,
+          "points": 4.9,
+          "sub": [
+            {
+              "name": "Definition of the decision and options",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Full payoff, a $1,500 split, $1,000/$2,000 and monthly paydown are all put on the table.",
+              "limitation": "Never states that full payoff still leaves $1,000."
+            },
+            {
+              "name": "Explanation of tradeoffs",
+              "rating": 5,
+              "points": 1,
+              "example": "Turn 8 names the split's cost: possible re-borrowing.",
+              "limitation": "Neither the interest cost nor the cash yield is put in dollars."
+            },
+            {
+              "name": "Identification of decisive conditions",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Section E branches on primary goal and on monthly surplus.",
+              "limitation": "The conditions are preferences, not facts like job stability."
+            },
+            {
+              "name": "Treatment of uncertainty",
+              "rating": 3.5,
+              "points": 0.7,
+              "example": "Turn 5 names a buffer against the unknown.",
+              "limitation": "Emergency likelihood and size are never separated from minor unknowns."
+            },
+            {
+              "name": "Proportionate next steps",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Section E: check three months of statements for actual surplus.",
+              "limitation": "The next step doesn't follow from the debate's turns."
+            }
+          ]
+        },
+        {
+          "name": "Clarity and engagement",
+          "max": 10,
+          "points": 6.2,
+          "sub": [
+            {
+              "name": "Accessible language",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Plain wording throughout, e.g. turn 7's $1,500 split.",
+              "limitation": "Turn 2's 'sequence of fragility' is unnecessary jargon."
+            },
+            {
+              "name": "Traceable arguments and references",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Turns name whom they answer, e.g. turn 8 'The Pragmatist proposes'.",
+              "limitation": "Turn 5's $1,000 cushion confusingly matches full payoff."
+            },
+            {
+              "name": "Manageable pacing and turn length",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Nine turns, each within the length limits.",
+              "limitation": "Turn 1's 'debt-free in seconds' adds nothing to the pacing."
+            },
+            {
+              "name": "Distinguishable positions and voices",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Turn 7 states the change explicitly: 'I drop my position'.",
+              "limitation": "The Stoic sounds like a generic counsellor, not Marcus."
+            },
+            {
+              "name": "Economy and sustained attention",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Section E is compact and conditional.",
+              "limitation": "Section D restates the turns without adding anything."
+            }
+          ]
+        },
+        {
+          "name": "Drama and entertainment",
+          "max": 10,
+          "points": 3.9,
+          "sub": [
+            {
+              "name": "Meaningful stakes and tension",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Turn 8: re-borrowing would defeat the purpose of paying.",
+              "limitation": "The stakes stay abstract; no concrete emergency is imagined."
+            },
+            {
+              "name": "Surprise and reversals",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Turn 7: the Pragmatist abandons full payoff.",
+              "limitation": "The reversal is formulaic and quickly dismissed."
+            },
+            {
+              "name": "Personality and expressive voice",
+              "rating": 3.5,
+              "points": 0.7,
+              "example": "Turn 4's 'paying for the privilege of keeping' has some bite.",
+              "limitation": "Ramsey and Taleb lack their signature voice."
+            },
+            {
+              "name": "Memorable delivery",
+              "rating": 3.5,
+              "points": 0.7,
+              "example": "Turn 3: anxiety as a tax on your life.",
+              "limitation": "Few images or analogies."
+            },
+            {
+              "name": "Anticipation and emotional movement",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Turn 9 ends on an open question to the user.",
+              "limitation": "The rhythm stays flat across all nine turns."
+            }
+          ]
+        }
+      ],
+      "uncapped": 47.3,
+      "score": 47.3,
+      "capReason": null,
+      "strengths": [
+        "Turn 7 makes an explicit concession and names whose point caused it.",
+        "Section E ends with a concrete step: review three months of statements.",
+        "Turn 6 offers the comfort-versus-math question without claiming it as fact."
+      ],
+      "weaknesses": [
+        "Turns 2 and 8 wrongly assume payoff empties savings; it leaves $1,000.",
+        "Turn 5 (Risk Manager) proposes a $1,000 cushion, which equals full payoff, so the debate contradicts itself.",
+        "The Stoic (turns 3, 9) offers generic counselling with no grounding in Meditations."
+      ],
+      "editorNotes": [
+        "Require a first turn that does the user's arithmetic: what remains after each option, and the annual interest.",
+        "Require at least one turn to name a decisive fact to ask about: job stability, card use, or available credit.",
+        "Give each mind a voice from its book, not a generic advisor register."
+      ]
+    },
+    "v10": {
+      "criteria": [
+        {
+          "name": "Quality of discussion",
+          "max": 20,
+          "points": 8.4,
+          "sub": [
+            {
+              "name": "Continuity and responsiveness",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Turn 4 picks up the Risk Manager's buffer point.",
+              "limitation": "Turn 5 restates turn 2 instead of answering turn 4's premium argument."
+            },
+            {
+              "name": "Development of ideas",
+              "rating": 3.5,
+              "points": 1.4,
+              "example": "Turn 6 reframes the choice as two conflicting avoidance goals.",
+              "limitation": "Turns 2, 5 and 8 repeat one shock argument with little new."
+            },
+            {
+              "name": "Exploration of central tensions",
+              "rating": 5,
+              "points": 2,
+              "example": "Turns 4-5: a premium paid for safety against having no liquidity in catastrophe.",
+              "limitation": "The size of the premium and of the risk is never examined."
+            },
+            {
+              "name": "Integration of perspectives",
+              "rating": 4,
+              "points": 1.6,
+              "example": "Turn 7: Franklin drops full payoff after the shock point.",
+              "limitation": "The Behavioral Economist never shapes the other two minds' positions."
+            },
+            {
+              "name": "Progress toward understanding",
+              "rating": 4,
+              "points": 1.6,
+              "example": "Turn 9 asks about past emergencies larger than savings.",
+              "limitation": "The ending is barely sharper than turn 2."
+            }
+          ]
+        },
+        {
+          "name": "Quality of disagreement, trust and grounding",
+          "max": 20,
+          "points": 8.2,
+          "sub": [
+            {
+              "name": "Faithful engagement",
+              "rating": 4,
+              "points": 1.6,
+              "example": "Turn 8 states the compromise fairly before rejecting it.",
+              "limitation": "Turn 2 dismisses debt as 'a mere number', a strawman of the 22% cost."
+            },
+            {
+              "name": "Substance of challenges",
+              "rating": 4,
+              "points": 1.6,
+              "example": "Turn 8 tests the split against a $2,000 emergency.",
+              "limitation": "Nobody raises the card's freed credit line as emergency backup."
+            },
+            {
+              "name": "Accuracy and support",
+              "rating": 4,
+              "points": 1.6,
+              "example": "Turn 1 faithfully paraphrases Franklin's going a-borrowing, going a-sorrowing line.",
+              "limitation": "Turn 2's 'empty your savings' is wrong; turn 4's 'costing a fortune' is overstated."
+            },
+            {
+              "name": "Calibration and transparency",
+              "rating": 4,
+              "points": 1.6,
+              "example": "Turns 3 and 6 hedge with 'perhaps' and 'maybe'.",
+              "limitation": "Turn 4 and turn 5 state magnitudes with no figures."
+            },
+            {
+              "name": "Intellectual honesty and revision",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Turn 7 explicitly drops the full-payoff claim.",
+              "limitation": "Turn 8's 'exactly where you started' overstates; it ignores the debt already reduced."
+            }
+          ]
+        },
+        {
+          "name": "Personal relevance",
+          "max": 10,
+          "points": 4.6,
+          "sub": [
+            {
+              "name": "Identification of the actual concern",
+              "rating": 5,
+              "points": 1,
+              "example": "Turn 6 names avoiding interest against avoiding the anxiety of being broke.",
+              "limitation": "Doesn't ask whether the card is still being used."
+            },
+            {
+              "name": "Meaningful use of personal context",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Turn 7 uses the user's real dollar amounts.",
+              "limitation": "Most turns would apply to any debtor."
+            },
+            {
+              "name": "Fit with goals and values",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Turn 9: mathematical saving against peace of mind.",
+              "limitation": "The user's own priorities are never separated from the speakers'."
+            },
+            {
+              "name": "Attention to constraints and stakes",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Section E conditions on job and health security.",
+              "limitation": "Constraints appear only in the summary, not in the debate turns."
+            },
+            {
+              "name": "Responsiveness to information",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Turn 9 asks if an emergency ever exceeded current savings.",
+              "limitation": "Income stability is never posed as a question to the user."
+            }
+          ]
+        },
+        {
+          "name": "Constructive self-discovery",
+          "max": 20,
+          "points": 9.6,
+          "sub": [
+            {
+              "name": "Clarification of desires and motivations",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 6 distinguishes two avoidance goals as possibilities.",
+              "limitation": "The two goals are not developed beyond being named."
+            },
+            {
+              "name": "Examination of assumptions",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Turn 3 surfaces loss aversion behind holding cash.",
+              "limitation": "The shared 'empty savings' assumption is never checked."
+            },
+            {
+              "name": "Clarification of values and priorities",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Section D asks whether liquidity is a hedge or a costly comfort.",
+              "limitation": "The values are not ranked or tested against the user."
+            },
+            {
+              "name": "Recognition of fears and outside expectations",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 6 names the immediate anxiety of being broke without pathologising.",
+              "limitation": "Habit around card use is ignored."
+            },
+            {
+              "name": "Agency and reflective ownership",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 9's question about past emergencies invites the user's own evidence.",
+              "limitation": "Section E's 'prone to high-anxiety states' edges toward labelling the user."
+            }
+          ]
+        },
+        {
+          "name": "Decision usefulness",
+          "max": 10,
+          "points": 4.9,
+          "sub": [
+            {
+              "name": "Definition of the decision and options",
+              "rating": 5,
+              "points": 1,
+              "example": "Full payoff, keeping the cash, and the $1,500 split are all named.",
+              "limitation": "No monthly paydown option and no limited first step."
+            },
+            {
+              "name": "Explanation of tradeoffs",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Turn 4: a premium paid for a safety net.",
+              "limitation": "The premium is never put in dollars."
+            },
+            {
+              "name": "Identification of decisive conditions",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Section E branches on job and health security and on volatile expenses.",
+              "limitation": "No threshold says how secure is secure enough."
+            },
+            {
+              "name": "Treatment of uncertainty",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Section E singles out unknown emergency frequency as consequential.",
+              "limitation": "Rare catastrophe is conflated with ordinary emergencies in turn 5."
+            },
+            {
+              "name": "Proportionate next steps",
+              "rating": 5,
+              "points": 1,
+              "example": "Review 12 months of emergency expenses to size the buffer.",
+              "limitation": "Nothing to do now about the debt that keeps accruing."
+            }
+          ]
+        },
+        {
+          "name": "Clarity and engagement",
+          "max": 10,
+          "points": 6.6,
+          "sub": [
+            {
+              "name": "Accessible language",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Short, plain turns, e.g. turn 7.",
+              "limitation": "Section E's 'cognitive load of financial instability' is abstract."
+            },
+            {
+              "name": "Traceable arguments and references",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Turn 8 names the compromise it is rejecting.",
+              "limitation": "Turn 5's 'that feeling of safety' has an unclear referent."
+            },
+            {
+              "name": "Manageable pacing and turn length",
+              "rating": 7.5,
+              "points": 1.5,
+              "example": "Turns run about 30-37 words, easy to read.",
+              "limitation": "The brevity sometimes cuts the reasoning short, as in turn 2."
+            },
+            {
+              "name": "Distinguishable positions and voices",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "Franklin's archaic voice in turn 1 stands apart.",
+              "limitation": "Turns 4-7 drop Franklin's voice."
+            },
+            {
+              "name": "Economy and sustained attention",
+              "rating": 6,
+              "points": 1.2,
+              "example": "The debate is lean overall.",
+              "limitation": "Turns 2, 5 and 8 repeat the same shock point."
+            }
+          ]
+        },
+        {
+          "name": "Drama and entertainment",
+          "max": 10,
+          "points": 4.2,
+          "sub": [
+            {
+              "name": "Meaningful stakes and tension",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Turn 5: safety evaporates with no liquidity in catastrophe.",
+              "limitation": "No concrete scenario is used."
+            },
+            {
+              "name": "Surprise and reversals",
+              "rating": 3.5,
+              "points": 0.7,
+              "example": "Turn 7: Franklin's concession.",
+              "limitation": "The reversal is predictable and immediately dismissed in turn 8."
+            },
+            {
+              "name": "Personality and expressive voice",
+              "rating": 5,
+              "points": 1,
+              "example": "Turn 1's 'a-borrowing go a-sorrowing' sounds like Franklin.",
+              "limitation": "Taleb's voice is muted."
+            },
+            {
+              "name": "Memorable delivery",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Turn 2: debt is a number, survival a state of being.",
+              "limitation": "No analogy brings the 22% to life."
+            },
+            {
+              "name": "Anticipation and emotional movement",
+              "rating": 3.5,
+              "points": 0.7,
+              "example": "Turn 9 closes on a personal question.",
+              "limitation": "Little build across turns; the middle stalls."
+            }
+          ]
+        }
+      ],
+      "uncapped": 46.5,
+      "score": 46.5,
+      "capReason": null,
+      "strengths": [
+        "Turn 1 grounds Franklin in a faithful paraphrase of a real line.",
+        "Section E branches on real facts: job and health security and volatile expenses.",
+        "Turn 6 frames two conflicting avoidance goals the user can inspect."
+      ],
+      "weaknesses": [
+        "Turns 2 and 8 (Risk Manager) assume payoff empties savings; it leaves $1,000.",
+        "Turns 2, 5 and 8 repeat one shock argument without development.",
+        "Turn 4's 'costing a fortune' overstates the cost (about $440 a year) without numbers."
+      ],
+      "editorNotes": [
+        "Require the opening turns to compute leftover cash and the annual interest for each option.",
+        "Forbid a mind from repeating its earlier point; each turn must add a distinction.",
+        "Ask a mind to name the freed credit line as a fallback, or to test it."
+      ]
+    }
+  },
+  "preferredVersion": 11,
+  "savedAt": "2026-10-13T22:02:44.017Z"
+}
