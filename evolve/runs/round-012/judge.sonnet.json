@@ -1,0 +1,381 @@
+{
+  "lineage": "sonnet",
+  "lane": "sonnet",
+  "kind": "panel",
+  "samplesPerQuestion": 1,
+  "questions": [
+    {
+      "idx": 1,
+      "id": "health-04",
+      "category": "Health",
+      "label": "Skincare troubleshooting"
+    },
+    {
+      "idx": 2,
+      "id": "wealth-03",
+      "category": "Wealth",
+      "label": "Career tradeoff"
+    },
+    {
+      "idx": 3,
+      "id": "love-03",
+      "category": "Love",
+      "label": "One-sided friendship"
+    },
+    {
+      "idx": 4,
+      "id": "purpose-03",
+      "category": "Purpose",
+      "label": "Comparison and expectations"
+    },
+    {
+      "idx": 5,
+      "id": "wonder-03",
+      "category": "Wonder",
+      "label": "Geography and causation"
+    }
+  ],
+  "versions": {
+    "v1": {
+      "mean": 76.56800000000001,
+      "min": 70.48,
+      "max": 80.44,
+      "cards": 5,
+      "perQuestion": {
+        "q1": {
+          "mean": 77.5,
+          "samples": [
+            77.5
+          ]
+        },
+        "q2": {
+          "mean": 74.56,
+          "samples": [
+            74.56
+          ]
+        },
+        "q3": {
+          "mean": 80.44,
+          "samples": [
+            80.44
+          ]
+        },
+        "q4": {
+          "mean": 79.86,
+          "samples": [
+            79.86
+          ]
+        },
+        "q5": {
+          "mean": 70.48,
+          "samples": [
+            70.48
+          ]
+        }
+      },
+      "criteria": [
+        {
+          "name": "Quality of discussion",
+          "max": 20,
+          "points": 16.128,
+          "sub": [
+            {
+              "name": "Continuity and responsiveness",
+              "rating": 8.3,
+              "points": 3.3200000000000003,
+              "example": "[q1s1] T3 challenges T1-T2 assumption; T4, T6, T10 answer named prior turns directly. [q2s1] Turn 4 accepts turn 3's test drive, then objects it measures novelty, not year two. [q3s1] T4 turns Skeptic's alternative stories into the case for speaking; T5 opens 'Fair'. [q4s1] T4 'Partly agreed, with a catch'; T5 'Fair hit'; T8 revisits own T5 concession. [q5s1] T5 presses T4's gap; T6 answers T5's wind claim directly.",
+              "limitation": "[q1s1] Minor: T8 restates waiting cost without engaging T7's calm-baseline revision. [q2s1] minor: turn 9 sidesteps turn 7's tripwire objection instead of answering it. [q3s1] minor: T3 adds a fresh frame rather than answering T2 directly. [q4s1] minor: T6 moves to trials without answering T4's contamination objection. [q5s1] minor: T8 opens geography thread loosely tied to T7's forecast point."
+            },
+            {
+              "name": "Development of ideas",
+              "rating": 8.459999999999999,
+              "points": 3.3839999999999995,
+              "example": "[q1s1] T5 introduces layering interaction absent from openings; T10 uses it as a real finding. [q2s1] Turn 5 adds unequal hours and raise-funds-relocation; turn 6 builds a tripwire on it. [q3s1] T8 introduces 'decide which answers would change what you do'; T9 builds answer branches on it. [q4s1] T7 splits social from practical clocks, absent from openings; T8 and T9 build on it. [q5s1] T6 introduces warehouse vs delivery-truck distinction; T7 builds forecasts on it.",
+              "limitation": "[q1s1] Minor: T1's dismissal of ingredient lists never revisited or refined. [q2s1] minor: turn 9 largely repeats turn 3's testing advice. [q3s1] minor: T10 largely restates T4's resentment-leaks point. [q4s1] minor: T4's 'wanting thing vs wanting relief' distinction never explicitly reused. [q5s1] minor: T10 fragility-vs-contribution distinction arrives last, never used."
+            },
+            {
+              "name": "Exploration of central tensions",
+              "rating": 7.140000000000001,
+              "points": 2.856,
+              "example": "[q1s1] Rigor versus speed and single culprit versus interaction examined in T5-T7. [q2s1] Money versus life-hours and trust in forecasts examined across turns 1, 2, 7, 8. [q3s1] Speaking versus giving without a ledger examined across T3, T6, T9, T10. [q4s1] Comparison-as-noise versus feeling-as-information examined across T1-T9. [q5s1] Ocean versus winds credit split examined across T4-T7.",
+              "limitation": "[q1s1] Material: drop-the-strongest-active option only surfaces in section D, never debated. [q2s1] material: family, sleep, health costs never raised; job substance raised turn 8, undeveloped. [q3s1] minor: section A's 'less interest' possibility never examined squarely in any turn. [q4s1] material: nobody raises drifting apart from friends or belonging as the source of 'behind'. [q5s1] minor: nobody raises cold northerly flow over eastern Canada from Rockies-shaped wind patterns."
+            },
+            {
+              "name": "Integration of perspectives",
+              "rating": 8.14,
+              "points": 3.2560000000000002,
+              "example": "[q1s1] T7 reshapes Experimenter's method using T5 and T6; T10 absorbs T9. [q2s1] Turn 10: Accountant concedes flexibility changes his math, keeps five-day objection. [q3s1] T6 Idealist reshapes speaking into invitation; T7 sharpens it; T10 keeps real disagreement. [q4s1] Dissenter revises in T5 and T8; T10-T11 keep an honest split. [q5s1] T9 Tracer narrows to 'one major link in a chain' after T8.",
+              "limitation": "[q1s1] Minor: T8-T10 converge smoothly; little residual disagreement survives to the end. [q2s1] minor: Bet Designer's view never reshaped by turn 7's critique. [q3s1] minor: T7 'Agreed' converges quickly without testing T6's framing. [q4s1] minor: Experimenter's position is never reshaped by the others. [q5s1] minor: Ice-Core Reader's paleo evidence barely reshapes Comparer's position."
+            },
+            {
+              "name": "Progress toward understanding",
+              "rating": 8.28,
+              "points": 3.312,
+              "example": "[q1s1] Ending sequence: calm, isolate, repeat; T9 sharpens association versus diagnosis. [q2s1] Section D: offer is several offers depending on days, travel, purpose, reversibility. [q3s1] Section D reframes choice as what the conversation should find out. [q4s1] T9 sharpens to 'what specifically would you be late for'. [q5s1] T10 sharpens open question: fragile link versus largest contributor.",
+              "limitation": "[q1s1] Minor: speed-versus-certainty question left in section D, not sharpened in turns. [q2s1] minor: tripwire-reliability disagreement left unsharpened after turn 7. [q3s1] minor: wisdom-versus-avoidance split (T10) left with little argument either side. [q4s1] minor: T10-T11 mute-versus-audience dispute ends abstract. [q5s1] minor: actual ocean-atmosphere split never estimated, left wholly open."
+            }
+          ]
+        },
+        {
+          "name": "Quality of disagreement, trust and grounding",
+          "max": 20,
+          "points": 15.728,
+          "sub": [
+            {
+              "name": "Faithful engagement",
+              "rating": 8,
+              "points": 3.2,
+              "example": "[q1s1] T5 states the one-at-a-time method accurately before showing its blind spot. [q2s1] Turn 5 restates turn 4's hourly math accurately before objecting to identical hours. [q3s1] T4 accurately restates Skeptic's T2 alternatives before using them. [q4s1] T3 restates Dissenter fairly before distinguishing uncertainty from refusal. [q5s1] T5 restates T4's switched-off-current test accurately before objecting.",
+              "limitation": "[q1s1] Minor: T1's ingredient-list claim never given or tested in its strongest form. [q2s1] minor: turn 10 frames forecast disagreement as with Duke, not the Skeptic. [q3s1] minor: T10 attributes 'maturity' framing to acceptance; no speaker used it. [q4s1] minor: T11 restates position rather than engaging T10's swap-of-comparisons argument. [q5s1] minor: T2 calls Gulf Stream 'supporting actor' without engaging T1's magnitude claim."
+            },
+            {
+              "name": "Substance of challenges",
+              "rating": 8.080000000000002,
+              "points": 3.232,
+              "example": "[q1s1] T5 names independence assumption and what breaks; T7 and T10 answer, not restate. [q2s1] Turn 7: tripwire assumes it survives lifestyle absorption; else 'decoration'. [q3s1] T8 names assumption initiating equals caring and says replies get spun otherwise. [q4s1] T4 names assumption that trials are uncontaminated by envy; T5 answers. [q5s1] T5: current shutoff measures added heat, not whether winds do most work; T6 answers.",
+              "limitation": "[q1s1] Minor: T3's laundry detergent and weather suspects thin for facial sting. [q2s1] material: Bet Designer never answers turn 7; turn 5's objection unanswered by Accountant. [q3s1] minor: Plain Speaker, T8's real target, never answers the initiating-equals-caring objection. [q4s1] minor: Experimenter (T6) never answers T4's objection to its own method. [q5s1] minor: T3's 'size of the gap' rebuttal asserted without any figures."
+            },
+            {
+              "name": "Accuracy and support",
+              "rating": 7.4,
+              "points": 2.96,
+              "example": "[q1s1] Mill's method of difference, Kahneman's WYSIATI, Taleb's via negativa used faithfully. [q2s1] Turn 1 Thoreau quote accurate, pd true; 700 hours and 60% arithmetic correct. [q3s1] Rosenberg's observation-request distinction (T7) and Emerson's sincerity (T6) faithfully used. [q4s1] T2 drummer paraphrase and T5 two-year Walden stay accurate. [q5s1] Labrador Current, Pacific coast mildness, abrupt North Atlantic shifts all correct.",
+              "limitation": "[q1s1] Minor: T1 calls ingredient lists guesswork; known irritant actives give real priors. [q2s1] material: turn 10 '25% rarely pays for itself' unsupported; disagreement misattributed to Duke. [q3s1] minor: T5 'defensiveness is the fast reaction' stretches Kahneman; single-quoted phrases in pd=false turns. [q4s1] minor: T3 puts 'I don't want these' in quote marks with pd false; not user's words. [q5s1] minor: T8 ignores Norway's Scandes; T1 'leaves the Gulf of Mexico' oversimplifies."
+            },
+            {
+              "name": "Calibration and transparency",
+              "rating": 7.68,
+              "points": 3.072,
+              "example": "[q1s1] T9 separates association from diagnosis; basis notes mark red flags as character's own. [q2s1] Turn 2 labels commute non-adaptation 'my extension, not proof'. [q3s1] T9 basis marks lopsided-friendship extension as the speaker's own, not Emerson's. [q4s1] T9 'the alarm may be mostly noise' hedges appropriately. [q5s1] T4 flags going beyond Alley; bases mark speakers' own extensions.",
+              "limitation": "[q1s1] Minor: T1 overconfident, calling the comparison evidence and ingredient reading guesswork. [q2s1] minor: turn 10 'rarely pays' generalises without the user's salary. [q3s1] minor: T1 'It curdles' and T4 'Resentment leaks' asserted as certainties. [q4s1] minor: T1 'a ruler you never chose' asserted as fact about the user. [q5s1] minor: T3, T9 'biggest piece' claims carry confidence with no evidence offered."
+            },
+            {
+              "name": "Intellectual honesty and revision",
+              "rating": 8.16,
+              "points": 3.2640000000000002,
+              "example": "[q1s1] T7 explicitly revises to calm baseline and concedes slowness; T10 accepts T9. [q2s1] Turn 8 concedes commute claim is 'the shakiest thing I've said'. [q3s1] T5 concedes asking beats guessing; T10 concedes possible unfixable mismatch. [q4s1] T8 'I conceded too tidily, then' revises after T7. [q5s1] T3 concedes Vancouver counterexample; T9 narrows claim explicitly.",
+              "limitation": "[q1s1] Minor: ingredient-list overstatement in T1 never pressed nor conceded. [q2s1] material: Bet Designer withholds any concession to turn 7's objection. [q3s1] minor: no speaker revises after T8's challenge to the request's premise. [q4s1] minor: T11 holds its view without answering T10's objection. [q5s1] minor: T9 shifts from 'biggest piece' to 'least afford to lose', a reframing."
+            }
+          ]
+        },
+        {
+          "name": "Personal relevance",
+          "max": 10,
+          "points": 7.232000000000001,
+          "sub": [
+            {
+              "name": "Identification of the actual concern",
+              "rating": 7.9799999999999995,
+              "points": 1.5959999999999999,
+              "example": "[q1s1] Section D asks whether finding the cause matters more than calm skin. [q2s1] Section A reframes: what money does, what time would do, how to learn first. [q3s1] Section A: unknown reason decides whether speaking is request, test, or accusation. [q4s1] T3 catches 'not sure' as uncertainty, not refusal. [q5s1] Section A names the ocean-versus-winds split as the decisive uncertainty.",
+              "limitation": "[q1s1] Minor: never asks what the three products actually are. [q2s1] minor: why the user is looking at offers at all is never probed. [q3s1] minor: never asks whether user seeks reassurance, fairness, or permission to stop. [q4s1] minor: possibility the worry is about losing friends never considered. [q5s1] minor: whether user wants explanation or climate-risk view never asked."
+            },
+            {
+              "name": "Meaningful use of personal context",
+              "rating": 7.1,
+              "points": 1.4200000000000002,
+              "example": "[q1s1] Three products started together within a week drives T3 and T5's interaction point. [q2s1] Turn 1 turns 90 minutes into eighteen forty-hour weeks a year. [q3s1] Lovely meetings used as evidence (T3) and as timing for asking (T11). [q4s1] T4 ties house-hunting test to the friends' example. [q5s1] Uses user's Europe-Canada comparison, naming Labrador and Hudson Bay.",
+              "limitation": "[q1s1] Minor: product types unknown, so little personal detail changes the argument. [q2s1] material: only the two given numbers used; no question elicits more personal context. [q3s1] minor: the 'if I stop texting' detail is probed (T5) but not tied to user's history. [q4s1] minor: homes and marriage treated generically; their differences never used. [q5s1] material: which places the user compares never asked or used."
+            },
+            {
+              "name": "Fit with goals and values",
+              "rating": 7.1,
+              "points": 1.4200000000000002,
+              "example": "[q1s1] T1-T10 stay on identifying cause, as the user asked. [q2s1] Turn 4 compares per-hour raise against what free time is worth to you. [q3s1] T6 invitation keeps the warmth the user values in the meetings. [q4s1] Debate respects user's stated uncertainty rather than pushing milestones. [q5s1] Section E splits understanding today from forecasting circulation change.",
+              "limitation": "[q1s1] Minor: user's priority between relief and knowledge raised only in section D. [q2s1] material: user's own priorities never asked; speakers' values dominate. [q3s1] minor: speakers' values (sincerity, no ledger) dominate; user's own priority never asked. [q4s1] minor: Dissenter's muting agenda (T11) pressed over user's open stance. [q5s1] material: user's goal inferred, never confirmed or questioned."
+            },
+            {
+              "name": "Attention to constraints and stakes",
+              "rating": 6.9,
+              "points": 1.38,
+              "example": "[q1s1] T8 red flags and section A severity framing fit the stakes. [q2s1] Turn 4 nets out tax, fuel, fares and parking from the raise. [q3s1] T11 weighs timing: raise after a good meeting, not after silence. [q4s1] T7 names fertility window, partner timeline, rate lock as practical clocks. [q5s1] T7 ties the split to Europe's exposure if Atlantic circulation weakens.",
+              "limitation": "[q1s1] Minor: T5 assumes three actives layered; product types never given. [q2s1] material: household, caregiving and health constraints absent; turn 7 mortgage hypothetical. [q3s1] material: T1 invents 'months'; T6, T9, T11 assume the friend is female. [q4s1] minor: partner and finances raised as examples, never asked about directly. [q5s1] material: stakes stay generic; no invented context but none tailored."
+            },
+            {
+              "name": "Responsiveness to information",
+              "rating": 7.08,
+              "points": 1.416,
+              "example": "[q1s1] T2 asks what else changed; section E branches on severity and persistence. [q2s1] Section E branches on remote days, money purpose, current-job unhappiness. [q3s1] T9 branches on friend's two possible answers and what each implies. [q4s1] Section E branches on naming a concrete deadline versus feeling fading. [q5s1] Section E branches: explain today versus judge weakened circulation.",
+              "limitation": "[q1s1] Material: product identities (retinoid, acid, fragrance) never asked though they reorder suspects. [q2s1] minor: travel mode and reversibility listed in A but lack stated implications. [q3s1] minor: duration of pattern and prior hints never asked as questions. [q4s1] minor: age, relationship status, finances never turned into questions with implications. [q5s1] material: no direct question to the user about purpose or locations."
+            }
+          ]
+        },
+        {
+          "name": "Constructive self-discovery",
+          "max": 20,
+          "points": 14.248000000000001,
+          "sub": [
+            {
+              "name": "Clarification of desires and motivations",
+              "rating": 7.12,
+              "points": 2.8480000000000003,
+              "example": "[q1s1] Section D offers cause-finding versus calm skin as alternatives with a question. [q2s1] Turn 5 and section E: debt, savings goal, relocation as possible purposes. [q3s1] Section D: does lopsidedness bother you itself, or only what it means about caring? [q4s1] T4 wanting the thing versus wanting to stop feeling behind; section D question. [q5s1] Section D asks whether user sought one cause or combined causes.",
+              "limitation": "[q1s1] Material: only in section D; motives never explored within the turns. [q2s1] material: motives for wanting the job (escape, status, need) never offered as alternatives. [q3s1] minor: the motive question appears only in section D, not inside the debate. [q4s1] minor: belonging or fear of being left out not offered as alternative motive. [q5s1] material: curiosity versus climate worry never offered as alternative motives."
+            },
+            {
+              "name": "Examination of assumptions",
+              "rating": 8.080000000000002,
+              "points": 3.232,
+              "example": "[q1s1] T3 exposes 'culprit is among the three'; T9 exposes 'result equals diagnosis'. [q2s1] Turn 9: staying put is also a bet, not a neutral default. [q3s1] T8 surfaces initiating equals caring; T5 questions whether the stop-texting test was run. [q4s1] T5 exposes defiance as letting friends set terms; T1 the borrowed ruler. [q5s1] T2 exposes the latitude-plus-single-cause assumption via Pacific coast.",
+              "limitation": "[q1s1] Minor: assumption that the sting is harmful, not expected adjustment, never examined. [q2s1] minor: assumption that pay is the main draw never questioned directly. [q3s1] minor: assumption that the meetings are mutual delight never examined. [q4s1] minor: assumption that milestones are the relevant measure only partly probed. [q5s1] minor: user's assumption that latitude should predict climate left implicit."
+            },
+            {
+              "name": "Clarification of values and priorities",
+              "rating": 6.76,
+              "points": 2.704,
+              "example": "[q1s1] T7 frames speed versus trustworthy result; T8 safety over knowledge. [q2s1] Turn 4 asks what an hour of free time is worth to you. [q3s1] T9 and T10 set giving freely against naming an unmet need. [q4s1] T10 proposes building a ruler from what you value. [q5s1] Section E contrasts understanding the present with forecasting change.",
+              "limitation": "[q1s1] Minor: user's own ranking of these never put to them in turns. [q2s1] material: no conflict among user's valued outcomes beyond money versus time. [q3s1] minor: user's own weighting of reciprocity versus ease never put as a question. [q4s1] material: no turn asks what the user actually values or where values conflict. [q5s1] material: no priorities for the user named or weighed."
+            },
+            {
+              "name": "Recognition of fears and outside expectations",
+              "rating": 5.840000000000001,
+              "points": 2.3360000000000003,
+              "example": "[q1s1] T8's red flags address fear of a serious reaction implicitly. [q2s1] Turn 7 names lifestyle creep making exit costly. [q3s1] T10 names the persisting pang as a signal, not a flaw. [q4s1] T7-T8 separate peer pressure from body clock without pathologising. [q5s1] T7 hints Europe 'would feel it' under weaker circulation.",
+              "limitation": "[q1s1] Material: worry, sunk cost in products, reluctance to abandon them never named. [q2s1] material: fear, obligation, family expectations largely absent from all turns. [q3s1] material: fear that asking reveals she cares less, or loses the friend, never explored. [q4s1] minor: fear of isolation as friends pair off left unexamined. [q5s1] material: possible climate anxiety or popular Gulf Stream myth never surfaced."
+            },
+            {
+              "name": "Agency and reflective ownership",
+              "rating": 7.8199999999999985,
+              "points": 3.128,
+              "example": "[q1s1] T9 'decision, not a diagnosis' and section D question are user-refinable. [q2s1] Section D: 'things to examine, not conclusions about you'. [q3s1] Section E: user decides freely how much planning to keep after asking. [q4s1] Section D offers a self-check the user can accept or reject. [q5s1] T10 leaves fragility-versus-contribution open for the user to weigh.",
+              "limitation": "[q1s1] Minor: few distinctions framed as questions inside the debate itself. [q2s1] minor: few direct questions the user can answer; mostly instructions. [q3s1] minor: T10 disagreement handed over without a question the user could answer. [q4s1] minor: section E trials listed somewhat prescriptively. [q5s1] minor: Section D's single reflective question is thin."
+            }
+          ]
+        },
+        {
+          "name": "Decision usefulness",
+          "max": 10,
+          "points": 7.628,
+          "sub": [
+            {
+              "name": "Definition of the decision and options",
+              "rating": 7.5,
+              "points": 1.5,
+              "example": "[q1s1] Stop all, reintroduce, simplify layering, seek care; waiting included in T8. [q2s1] Turn 9: accept, stay, test, or counteroffer smaller raise with remote days. [q3s1] Speak, accept, silent test, or observe then ask once: T3, T5, T6, section E. [q4s1] Section E: small test, patience, or own yardstick. [q5s1] Section E frames two uses: explanation now or forecasting change.",
+              "limitation": "[q1s1] Minor: dropping newest or strongest product named only in section D. [q2s1] minor: declining and searching elsewhere only implied, not laid out. [q3s1] minor: letting the friendship shrink or stepping back is never named as an option. [q4s1] minor: options never laid out side by side within the debate. [q5s1] material: no real choice defined; options loosely framed."
+            },
+            {
+              "name": "Explanation of tradeoffs",
+              "rating": 6.92,
+              "points": 1.3840000000000001,
+              "example": "[q1s1] T7 trades speed for trust; T8 weighs waiting against pushing through. [q2s1] Turn 7: absorbed raise makes leaving costly while commute stays three hours. [q3s1] T6 cost of silent test; T10 speaking may reveal an unfixable mismatch. [q4s1] T4 contamination cost of trials; T10 abstaining swaps comparisons. [q5s1] Section E notes combined picture beats any single cause.",
+              "limitation": "[q1s1] Minor: cost of weeks without products or their benefits never stated. [q2s1] minor: costs of the counteroffer and of a week-long test unstated. [q3s1] minor: cost of asking to the friend's comfort barely weighed. [q4s1] minor: time or money cost of trials and of waiting not stated. [q5s1] material: no cost of adopting either framing stated."
+            },
+            {
+              "name": "Identification of decisive conditions",
+              "rating": 7.88,
+              "points": 1.576,
+              "example": "[q1s1] Section E: fades, pass-alone-sting-together, red flags, persists two weeks; each favours an option. [q2s1] Turn 4: after-tax, after-cost raise per 700 hours versus your free-time value. [q3s1] Section E: energized versus drained after meetings; shares effort once asked means habit. [q4s1] Section E: nameable deadline favours testing; fading feeling favours patience. [q5s1] Section E: Pacific coast mild without Gulf Stream favours combined picture.",
+              "limitation": "[q1s1] Minor: 'several days' calm period and reintroduction gap left vague. [q2s1] minor: turn 6's six-month tripwire not drawn from user's facts. [q3s1] minor: 'a few meetings' gives no observable threshold for drained enough. [q4s1] minor: 'imagine friends not caring' test is introspective, not observable. [q5s1] material: no threshold for ocean share that would change the forecast view."
+            },
+            {
+              "name": "Treatment of uncertainty",
+              "rating": 7.840000000000001,
+              "points": 1.568,
+              "example": "[q1s1] Section A flags severity as consequential; T9 separates allergy, irritant, strength. [q2s1] Section E names three most consequential unknowns: on-site days, net raise, route. [q3s1] Friend's reasons named the decisive unknown; T5 flags busy-season noise. [q4s1] T7 separates practical deadlines from social ones. [q5s1] T7 isolates the ocean-atmosphere split as the consequential unknown.",
+              "limitation": "[q1s1] Minor: unknown product types not flagged as a consequential unknown. [q2s1] minor: job quality flagged turn 8 omitted from section E's key unknowns. [q3s1] minor: minor unknowns not explicitly ranked below the friend's reasons. [q4s1] minor: unknowns not ranked by consequence. [q5s1] minor: well-known atmospheric dominance of heat transport never stated."
+            },
+            {
+              "name": "Proportionate next steps",
+              "rating": 8,
+              "points": 1.5999999999999999,
+              "example": "[q1s1] Stop tonight, gentle cleanser, log, calm baseline, small-spot retest, red-flag escalation. [q2s1] Section E: ask employer, ride route at rush hour, negotiate, write exit rule. [q3s1] T7 and T11: one concrete request, after a good evening, raised once. [q4s1] T6 afternoon running numbers, asking married friend about a Tuesday. [q5s1] Section E: compare published ocean and atmospheric heat-transport estimates.",
+              "limitation": "[q1s1] Minor: no concrete length for calm phase before retesting. [q2s1] minor: no ordering of steps before the offer deadline. [q3s1] minor: no step for what to do if she agrees but nothing changes. [q4s1] minor: T4's warning about envy-driven trials not reconciled with T6 steps. [q5s1] minor: step vague; no source type or starting point named."
+            }
+          ]
+        },
+        {
+          "name": "Clarity and engagement",
+          "max": 10,
+          "points": 8.344,
+          "sub": [
+            {
+              "name": "Accessible language",
+              "rating": 8.620000000000001,
+              "points": 1.7239999999999998,
+              "example": "[q1s1] Plain words throughout; 'measuring the damage, not the product' in T6. [q2s1] Turn 4's arithmetic stated in plain steps the user can compute. [q3s1] Plain scripts like 'Could you suggest the next plan?' (T7). [q4s1] T9 'an alarm with no label' plain and precise. [q5s1] T6 warehouse and delivery truck makes heat storage plain.",
+              "limitation": "[q1s1] Minor: T9 'product B' label never defined earlier. [q2s1] minor: 'tripwire' and 'life cost' used without brief gloss. [q3s1] minor: T5 'the answer will be noisy' is slightly technical. [q4s1] minor: T10 'audience' and 'ruler' metaphors stay abstract. [q5s1] minor: 'heat transport' in Section E unexplained for lay reader."
+            },
+            {
+              "name": "Traceable arguments and references",
+              "rating": 8.16,
+              "points": 1.6320000000000001,
+              "example": "[q1s1] 'That's the trap exactly' (T6) clearly points to T5; 'I'll accept that' to T9. [q2s1] Turn 8 'that's Gilbert turned on me' clearly targets turn 7. [q3s1] T4 names 'Skeptic's alternative stories' explicitly. [q4s1] T5 'Fair hit' and T8 'conceded too tidily' map to T4 and T5. [q5s1] T5 'That's the gap' clearly points to T4's caveat.",
+              "limitation": "[q1s1] Minor: T9 'product B' has no referent in any prior turn. [q2s1] material: turn 10 'Duke and I still disagree' points to the wrong mind. [q3s1] minor: T10 'calling acceptance maturity' has no clear source turn. [q4s1] minor: T10 'That part is slower' has a loose referent. [q5s1] minor: T3 'its Pacific counterpart' vague about which places."
+            },
+            {
+              "name": "Manageable pacing and turn length",
+              "rating": 8.72,
+              "points": 1.7439999999999998,
+              "example": "[q1s1] Ten turns, each 47 to 52 words, steady pacing. [q2s1] Ten turns, all 45 to 64 words. [q3s1] Eleven turns, all 40 to 54 words. [q4s1] 11 turns, all 37-46 words, digestible throughout. [q5s1] Ten turns, each roughly 45-60 words, evenly paced.",
+              "limitation": "[q1s1] Minor: uniform turn length gives little rhythmic variation. [q2s1] minor: turns 4, 8, 10 near the 65-word ceiling. [q3s1] none [q4s1] none [q5s1] minor: Sections D and E longer than any turn, dense."
+            },
+            {
+              "name": "Distinguishable positions and voices",
+              "rating": 8.139999999999999,
+              "points": 1.6280000000000001,
+              "example": "[q1s1] Three distinct lenses; T7 states explicit change of position. [q2s1] Accountant counts, Skeptic doubts forecasts, Designer tests; turn 8 shift explicit. [q3s1] Plain Speaker directive, Skeptic cautious, Idealist reflective; T6 shift marked 'I lean'. [q4s1] Three titled minds; T5 and T8 mark explicit shifts. [q5s1] Tracer, Reader, Comparer hold clearly different lenses; T9 shift explicit.",
+              "limitation": "[q1s1] Minor: Subtractor and Skeptic converge by T8-T9, voices blur. [q2s1] minor: Skeptic and Designer share a similar measured register. [q3s1] minor: T6 and T7 converge on near-identical invitation scripts. [q4s1] minor: Experimenter reads as moderator more than a distinct voice. [q5s1] minor: openers 'That's too neat', 'Fair', 'Good' sound alike across minds."
+            },
+            {
+              "name": "Economy and sustained attention",
+              "rating": 8.08,
+              "points": 1.616,
+              "example": "[q1s1] Little repetition; section E red flags repeat T8 with purpose. [q2s1] Section E condenses branches without repeating debate text. [q3s1] Each turn adds a move; no verbatim repetition. [q4s1] Few recaps; each turn adds a step. [q5s1] Turns mostly add a new point each.",
+              "limitation": "[q1s1] Minor: T4 and T6 both prescribe logging, slight overlap. [q2s1] minor: turn 9 re-lists testing ideas from turn 3. [q3s1] minor: section E partly restates T9's branches. [q4s1] minor: section E repeats T6 trials nearly verbatim ('curiosity, dread, or relief'). [q5s1] minor: Section D recaps causes already listed in T8-T9."
+            }
+          ]
+        },
+        {
+          "name": "Drama and entertainment",
+          "max": 10,
+          "points": 7.260000000000001,
+          "sub": [
+            {
+              "name": "Meaningful stakes and tension",
+              "rating": 6.94,
+              "points": 1.3880000000000001,
+              "example": "[q1s1] T8 red flags raise stakes; T5 threatens the whole method. [q2s1] Turn 1: does 25% buy eighteen weeks of your life? [q3s1] T6: friend fails a test she didn't know she was taking. [q4s1] T7 fertility window raises real stakes from the issue itself. [q5s1] T7 links the credit split to Europe's fate if circulation weakens.",
+              "limitation": "[q1s1] Minor: low-stakes polite register; tension resolves quickly by T7. [q2s1] minor: stakes stay abstract; no lived scene of a commuting day. [q3s1] minor: risk of losing the friendship never voiced, so stakes stay muted. [q4s1] minor: tension stays polite and low throughout. [q5s1] material: stakes stay abstract until T7, mostly an academic dispute."
+            },
+            {
+              "name": "Surprise and reversals",
+              "rating": 7.74,
+              "points": 1.548,
+              "example": "[q1s1] T7 revises method, citing T6's point that irritated skin falsifies retests. [q2s1] Turn 8 Skeptic concedes after turn 7: 'we adapt to money too'. [q3s1] T6 Idealist moves to speaking because T5's silent test has its own cost. [q4s1] T8 Dissenter reverses, citing T7's practical deadlines as cause. [q5s1] T3 concedes, citing T2's Pacific counterexample; T9 narrows after T8.",
+              "limitation": "[q1s1] Minor: refinements rather than reversals; no position truly overturned. [q2s1] minor: turn 10 concession is partial and expected from turn 9. [q3s1] minor: shifts are mild concessions; no turn overturns a prior position. [q4s1] minor: Dissenter's two concessions (T5, T8) follow a scripted pattern. [q5s1] minor: reversals partial and expected; no genuine surprise."
+            },
+            {
+              "name": "Personality and expressive voice",
+              "rating": 7.12,
+              "points": 1.4240000000000002,
+              "example": "[q1s1] Subtractor's 'not a puzzle for a diary' (T8) has some edge. [q2s1] Accountant's blunt 'Otherwise it's decoration' in turn 7. [q3s1] Plain Speaker's blunt 'It curdles' (T1). [q4s1] T2 Thoreau's drummer gives the Dissenter some colour. [q5s1] T1 'opposite plumbing' gives the Tracer a confident voice.",
+              "limitation": "[q1s1] Minor: all three share one measured, courteous tone; voices fairly flat. [q2s1] minor: Thoreau mind lacks Thoreauvian flavour beyond turn 1. [q3s1] minor: Skeptic's voice stays procedural across T2, T5, T8, T11. [q4s1] minor: voices restrained; Thoreau lacks his sardonic bite. [q5s1] minor: Reader and Comparer voices fairly flat and neutral."
+            },
+            {
+              "name": "Memorable delivery",
+              "rating": 7.959999999999999,
+              "points": 1.5919999999999999,
+              "example": "[q1s1] 'Dropping B is a decision, not a diagnosis' (T9); 'measuring the damage' (T6). [q2s1] Turn 5: 'a seat on a train with a book' versus 'a clenched drive'. [q3s1] T3: wonderful in a room and useless in a group chat. [q4s1] T1 'a ruler you never chose'; T9 'alarm with no label'. [q5s1] T6 'wind is the delivery truck and the ocean is the warehouse'.",
+              "limitation": "[q1s1] Minor: no vivid analogy or example beyond lists of suspects. [q2s1] minor: no humour; few images after turn 5. [q3s1] minor: memorable lines cluster in T3 and T6; later turns plainer. [q4s1] minor: few concrete images beyond T6's ordinary Tuesday. [q5s1] minor: few vivid concrete examples beyond Vancouver."
+            },
+            {
+              "name": "Anticipation and emotional movement",
+              "rating": 6.540000000000001,
+              "points": 1.308,
+              "example": "[q1s1] T5's 'Worse' builds a turn of concern. [q2s1] Turn 7's challenge raises tension before turn 8's concession. [q3s1] T10 leaves an open disagreement that T11 accepts and redirects. [q4s1] T7-T8 brief rise in stakes. [q5s1] T7 'that sharpens the disagreement' raises momentum mid-debate.",
+              "limitation": "[q1s1] Minor: constant even intensity; little emotional movement across turns. [q2s1] material: even, measured intensity throughout; little emotional rise or release. [q3s1] minor: even, mild intensity throughout; little rhythm variation. [q4s1] material: near-identical turn lengths and even tone give flat rhythm. [q5s1] material: tone uniformly even; little rhythm or emotional variation."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "pairs": [],
+  "paired": {
+    "tie": 0,
+    "v1": 0
+  },
+  "preferredVersion": null,
+  "savedAt": "2026-10-14T08:36:11.967Z"
+}

@@ -1,0 +1,118 @@
+{
+  "lineage": "gemini",
+  "lane": "gemini",
+  "q": 4,
+  "version": 1,
+  "sample": 1,
+  "model": "gemini-3.1-flash-lite",
+  "settings": {
+    "thinkingLevel": "MEDIUM",
+    "temperature": 0.9,
+    "maxOutputTokens": 16384,
+    "fallback": "none"
+  },
+  "latencyMs": 10618,
+  "output": {
+    "situation": "The user feels a sense of being behind because their social circle is hitting milestones like marriage and homeownership. They are uncertain if they desire these outcomes, yet they experience anxiety about their current path.",
+    "minds": [
+      {
+        "title": "The Social Observer",
+        "concern": "Mimetic desire and social imitation",
+        "author": "René Girard",
+        "book": "Deceit, Desire, and the Novel",
+        "year": 1961
+      },
+      {
+        "title": "The Stoic Pragmatist",
+        "concern": "Distinguishing internal character from external events",
+        "author": "Epictetus",
+        "book": "Enchiridion",
+        "year": 135
+      },
+      {
+        "title": "The Developmental Coach",
+        "concern": "The urgency of long-term identity formation",
+        "author": "Meg Jay",
+        "book": "The Defining Decade",
+        "year": 2012
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Social Observer",
+        "text": "You might feel behind because you are imitating the desires of your peers rather than pursuing what you truly value. If you see them achieving, you perhaps assume their goals are the standard for success.",
+        "author": "René Girard",
+        "book": "Deceit, Desire, and the Novel",
+        "pd": false,
+        "basis": "[Basis: René Girard, Deceit, Desire, and the Novel, Chapter 1]"
+      },
+      {
+        "speaker": "The Developmental Coach",
+        "text": "While social imitation is a factor, you could be overlooking the importance of using your twenties or thirties to build the capital that leads to a life you actually want. If you ignore these milestones, you might find yourself empty-handed later.",
+        "author": "Meg Jay",
+        "book": "The Defining Decade",
+        "pd": false,
+        "basis": "[Basis: Meg Jay, The Defining Decade, Chapter 1]"
+      },
+      {
+        "speaker": "The Stoic Pragmatist",
+        "text": "You are distressed by things that are not within your own control, specifically the timelines of other people. If you wish to be free, you must accept that you have no power over whether your friends buy homes or marry.",
+        "author": "Epictetus",
+        "book": "Enchiridion",
+        "pd": true,
+        "basis": "[Basis: Epictetus, Enchiridion, Section 1](http://classics.mit.edu/Epictetus/epicench.html)"
+      },
+      {
+        "speaker": "The Social Observer",
+        "text": "Responding to The Stoic Pragmatist, you say that I should focus on my own control, but you ignore that our sense of self is constructed in relation to others. If I disconnect from my peers, I risk losing the very framework that helps me measure my growth.",
+        "author": "René Girard",
+        "book": "Deceit, Desire, and the Novel",
+        "pd": false,
+        "basis": "[Basis: René Girard, Deceit, Desire, and the Novel, Chapter 2]"
+      },
+      {
+        "speaker": "The Developmental Coach",
+        "text": "Responding to The Social Observer, you claim that my focus on milestones ignores the complexity of social growth, but waiting until you are certain about what you want might mean you miss the window to build the identity you need.",
+        "author": "Meg Jay",
+        "book": "The Defining Decade",
+        "pd": false,
+        "basis": "[Basis: Meg Jay, The Defining Decade, Chapter 2]"
+      },
+      {
+        "speaker": "The Stoic Pragmatist",
+        "text": "I suggest you take a specific step: read the first three sections of the Enchiridion today. It might help you distinguish between what is up to you—your judgments—and what is not, like your friends' life choices.",
+        "author": "Epictetus",
+        "book": "Enchiridion",
+        "pd": true,
+        "basis": "[Basis: Epictetus, Enchiridion, Section 1-3](http://classics.mit.edu/Epictetus/epicench.html)"
+      },
+      {
+        "speaker": "The Developmental Coach",
+        "text": "If I follow that step, I might gain peace, but I worry about the cost. Reading about Stoicism does not help you build the concrete skills or financial security that you might want if you eventually decide those traditional milestones matter.",
+        "author": "Meg Jay",
+        "book": "The Defining Decade",
+        "pd": false,
+        "basis": "[Basis: Meg Jay, The Defining Decade, Chapter 3]"
+      },
+      {
+        "speaker": "The Social Observer",
+        "text": "I drop my claim that you are just imitating your friends; I now see that you might be feeling a genuine conflict between your fear of being left behind and your fear of a life that does not suit you.",
+        "author": "René Girard",
+        "book": "Deceit, Desire, and the Novel",
+        "pd": false,
+        "basis": "[Basis: René Girard, Deceit, Desire, and the Novel, Chapter 3]"
+      },
+      {
+        "speaker": "The Stoic Pragmatist",
+        "text": "We remain divided on whether this conflict is a problem to be solved or a state of mind to be endured. The decision depends on whether you value internal tranquility over the social validation that comes from meeting these milestones.",
+        "author": "Epictetus",
+        "book": "Enchiridion",
+        "pd": true,
+        "basis": "[Basis: Epictetus, Enchiridion, Section 14](http://classics.mit.edu/Epictetus/epicench.html)"
+      }
+    ],
+    "clearer": "The main insight is that your anxiety likely stems from a tension between the need for social belonging and the need for authentic identity. While the minds agree that your current distress is a choice, they dispute whether the remedy lies in inward reflection or outward action. A possible self-reflection is to ask if your feeling of being behind is about the milestones themselves, or about the fear of losing your connection to the people who are achieving them.",
+    "dependsOn": "- If you value autonomy and internal peace over social conformity → the Stoic approach of reframing your judgments becomes more reasonable, because it releases you from the burden of others' timelines.\n- If you value long-term flexibility and the ability to choose your life later → the developmental approach becomes more reasonable, because it emphasizes building the resources now that keep your future options open.\n- If you feel an intense fear of isolation or loss of connection → this indicates that your choice depends on whether you can maintain your identity while diverging from your friends. You can learn this by noticing if you feel more relief or more anxiety when you envision a life different from theirs."
+  },
+  "savedAt": "2026-10-14T08:30:30.379Z"
+}

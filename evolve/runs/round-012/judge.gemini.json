@@ -1,0 +1,381 @@
+{
+  "lineage": "gemini",
+  "lane": "gemini",
+  "kind": "panel",
+  "samplesPerQuestion": 1,
+  "questions": [
+    {
+      "idx": 1,
+      "id": "health-04",
+      "category": "Health",
+      "label": "Skincare troubleshooting"
+    },
+    {
+      "idx": 2,
+      "id": "wealth-03",
+      "category": "Wealth",
+      "label": "Career tradeoff"
+    },
+    {
+      "idx": 3,
+      "id": "love-03",
+      "category": "Love",
+      "label": "One-sided friendship"
+    },
+    {
+      "idx": 4,
+      "id": "purpose-03",
+      "category": "Purpose",
+      "label": "Comparison and expectations"
+    },
+    {
+      "idx": 5,
+      "id": "wonder-03",
+      "category": "Wonder",
+      "label": "Geography and causation"
+    }
+  ],
+  "versions": {
+    "v1": {
+      "mean": 48.54,
+      "min": 37.3,
+      "max": 54.68,
+      "cards": 5,
+      "perQuestion": {
+        "q1": {
+          "mean": 51.24,
+          "samples": [
+            51.24
+          ]
+        },
+        "q2": {
+          "mean": 54.68,
+          "samples": [
+            54.68
+          ]
+        },
+        "q3": {
+          "mean": 50.4,
+          "samples": [
+            50.4
+          ]
+        },
+        "q4": {
+          "mean": 49.08,
+          "samples": [
+            49.08
+          ]
+        },
+        "q5": {
+          "mean": 37.3,
+          "samples": [
+            37.3
+          ]
+        }
+      },
+      "criteria": [
+        {
+          "name": "Quality of discussion",
+          "max": 20,
+          "points": 10.04,
+          "sub": [
+            {
+              "name": "Continuity and responsiveness",
+              "rating": 5.68,
+              "points": 2.2720000000000002,
+              "example": "[q1s1] Turns 4 and 5 explicitly take up the prior speaker's claim. [q2s1] T4-T6 each answer the prior speaker's claim by name. [q3s1] Turn 9 answers turn 8's wait test; turn 5 rebuts turn 4. [q4s1] Turn 7 answers turn 6's reading step with its concrete cost. [q5s1] Turns 4-6 name and answer prior turns' claims about water, land, pressure.",
+              "limitation": "[q1s1] material: Healer turns 3 and 6 ignore prior objections; near-monologue. [q2s1] Material: templated 'X claims... but' openers, T2-T9; replies restate rather than build. [q3s1] Material: turns 1-3 are parallel monologues; turn 3 ignores turn 2. [q4s1] Material: turns 1-3 are parallel openings; turn 5 answers a claim nobody made. [q5s1] Minor: turn 7 ignores turn 6; turn 8 discusses reading difficulty, not climate."
+            },
+            {
+              "name": "Development of ideas",
+              "rating": 5.12,
+              "points": 2.048,
+              "example": "[q1s1] Turn 5 adds inflamed-baseline confound; turn 7 builds a 7-day wait on it. [q2s1] T4 adds burnout eroding productivity; T8 adds simulated-commute test. [q3s1] Turn 6 introduces habit versus indifference; turn 7 reframes as unshared expectations. [q4s1] Turn 8 introduces two competing fears: being left behind versus an ill-fitting life. [q5s1] Turn 3 adds NAO variability beyond the two openings.",
+              "limitation": "[q1s1] material: turn 6 restates turn 3, adding nothing new. [q2s1] Material: no mid-debate distinction is taken up later; T5 sovereignty dropped after T6. [q3s1] Material: habit distinction never feeds turns 8-10 or how to speak up. [q4s1] Material: turn 8's distinction arrives late; turn 9 reframes rather than uses it. [q5s1] Material: no mid-debate distinction later used; turns 7-8 add nothing new."
+            },
+            {
+              "name": "Exploration of central tensions",
+              "rating": 4.680000000000001,
+              "points": 1.8719999999999999,
+              "example": "[q1s1] Turn 9 frames single ingredient versus cumulative change. [q2s1] T2-T3 set present time against future earning power. [q3s1] Turn 8 versus turn 9: testing by silence against the anxiety it costs. [q4s1] Turns 1-3 set imitation, building capital, and control against each other. [q5s1] Turns 4-5 contrast heat transport with how land distributes heat.",
+              "limitation": "[q1s1] material: irritant vs allergic reaction, strong actives, when to see a doctor never raised. [q2s1] Material: commute mode, remote days, family time never raised by any mind. [q3s1] Material: whether and how to say something, the user's question, is never examined. [q4s1] Material: whether the user wants homes or marriage at all is never probed. [q5s1] Material: prevailing westerlies, west-versus-east-coast contrast, ocean heat storage never raised."
+            },
+            {
+              "name": "Integration of perspectives",
+              "rating": 4.720000000000001,
+              "points": 1.888,
+              "example": "[q1s1] Turn 7: Reductionist absorbs Minimalist's recovery pause into the protocol. [q2s1] T7 Optimizer reshapes view toward Strategist's capital point. [q3s1] Turn 7: Attachment Theorist drops pure attachment framing after turn 6. [q4s1] Turn 8 Social Observer drops the imitation claim for a conflict reading. [q5s1] Turn 9 combines current heat with atmospheric pressure.",
+              "limitation": "[q1s1] material: Healer's stress view never integrated or tested by others. [q2s1] Material: T7 shift unexplained; Stoic and Strategist never qualify each other. [q3s1] Material: turn 4's dismissal of Aristotle never answered; turn 9 objection left hanging. [q4s1] Material: turn 8 concession has no cause; Coach and Stoic never reshape each other. [q5s1] Material: turn 9 synergy is forced agreement with no traced cause."
+            },
+            {
+              "name": "Progress toward understanding",
+              "rating": 4.9,
+              "points": 1.9600000000000002,
+              "example": "[q1s1] Section E ends with an observable 48-hour water test. [q2s1] Section D frames sovereignty now versus leverage later. [q3s1] Section E separates oblivious from indifferent friend. [q4s1] Section D sharpens to milestones themselves versus fear of losing connection. [q5s1] Section D separates heat source from heat distribution.",
+              "limitation": "[q1s1] material: section D's 'cumulative stress' insight is vaguer than turn 5's concrete point. [q2s1] Material: ends on rhetorical T9 question, no sharper test of growth claim. [q3s1] Material: turn 10 ends on vague truth-versus-comfort; open question not sharper. [q4s1] Material: section D claims minds agree distress is a choice; no turn says so. [q5s1] Material: ending asks what user values, not a sharper causal question."
+            }
+          ]
+        },
+        {
+          "name": "Quality of disagreement, trust and grounding",
+          "max": 20,
+          "points": 9.44,
+          "sub": [
+            {
+              "name": "Faithful engagement",
+              "rating": 4.62,
+              "points": 1.848,
+              "example": "[q1s1] Turn 5 restates Reductionist's unsolved-question concern accurately. [q2s1] T4 restates Strategist's option argument accurately before objecting. [q3s1] Turn 6 grants friend may value the friendship while conceding the habit. [q4s1] Turn 7 states the Stoic step's benefit before objecting to its cost. [q5s1] Turn 4 restates Analyst's barrier claim before rebutting it.",
+              "limitation": "[q1s1] material: turn 2 opposes testing though turn 1 already stops all three products. [q2s1] Material: T7 credits Strategist with 'reduce hours elsewhere', never said; T3 dismisses Stoic. [q3s1] Material: turn 5 caricatures economist as treating people like assets; turn 4 misstates Aristotle. [q4s1] Material: turn 5 attributes an unsaid claim; turn 4 recasts Stoicism as disconnecting from peers. [q5s1] Material: turn 5 strawmans 'current is everything'; turn 9 drops a claim never made."
+            },
+            {
+              "name": "Substance of challenges",
+              "rating": 4.9399999999999995,
+              "points": 1.9760000000000002,
+              "example": "[q1s1] Turn 5 names the clean-baseline assumption and the misread it causes; turn 7 answers. [q2s1] T4 names burnout assumption undermining T3's long-term gains. [q3s1] Turn 9 names the anxiety cost of turn 8's three-week wait. [q4s1] Turn 7: Stoic reading builds no skills or financial security if milestones matter. [q5s1] Turn 4: topography does not transport heat, unlike currents.",
+              "limitation": "[q1s1] material: turn 6 objection is unspecific and unanswered by anyone. [q2s1] Material: T6 overstates a 25% raise ending wage work; T4 'high probability' unsupported. [q3s1] Material: economist never answers turn 9; turn 5 assumption not tested. [q4s1] Material: turn 4 objection attacks a position turn 3 never took; no target answers. [q5s1] Material: no objection names an assumption and what breaks; turn 6 restates."
+            },
+            {
+              "name": "Accuracy and support",
+              "rating": 4.48,
+              "points": 1.7920000000000003,
+              "example": "[q1s1] No quotation marks; all pd false; books exist. [q2s1] T2 paraphrase of Seneca's 'life is long' line is faithful. [q3s1] No quotation marks; paraphrases of Aristotle Book VIII equality broadly faithful. [q4s1] Turn 3 renders Enchiridion section 1 on control faithfully. [q5s1] Stommel's The Gulf Stream is a real, apt source.",
+              "limitation": "[q1s1] material: turns 3, 6 stretch van der Kolk to skin stinging; section E inference unsupported. [q2s1] Material: optionality pinned on Skin in the Game; T4 burnout probability unsupported. [q3s1] Minor: turn 8's three weeks unsupported; turn 5 avoidant typology loosely Bowlby's. [q4s1] Material: turn 4 inverts Girard, who treats mimetic dependence as illusion; vague chapter bases. [q5s1] Material: Diamond ch.10 concerns crop diffusion; Lamb title garbled; turn 6 NAO 'override entirely' overstated."
+            },
+            {
+              "name": "Calibration and transparency",
+              "rating": 4.82,
+              "points": 1.9280000000000002,
+              "example": "[q1s1] Turns hedge with 'might' rather than asserting diagnoses. [q2s1] Frequent 'might' and 'if' hedges in T1, T3, T6. [q3s1] Turns 1, 5, 6 hedge with maybe and might. [q4s1] Turn 1 hedges: 'you might feel behind because you are imitating'. [q5s1] Turn 6 frames temporary trend as something to wonder about.",
+              "limitation": "[q1s1] material: section E says 'likely reacting to a specific chemical' from a 24-hour stop. [q2s1] Material: T2 'no sum of money can replace' and T4 'high probability' overconfident. [q3s1] Material: turn 8 asserts three weeks is long enough with no evidence. [q4s1] Material: turn 3 states the cause of distress as fact; section D overstates agreement. [q5s1] Material: turn 1 asserts 'primary driver' flatly; contested science presented without hedging."
+            },
+            {
+              "name": "Intellectual honesty and revision",
+              "rating": 4.74,
+              "points": 1.8960000000000001,
+              "example": "[q1s1] Turn 7: Reductionist explicitly drops immediate testing. [q2s1] T7 Optimizer explicitly drops his T1 hourly-wage claim. [q3s1] Turn 7 explicitly revises the Attachment Theorist's position. [q4s1] Turn 8 explicitly withdraws the imitation claim. [q5s1] Turn 9 Historian explicitly drops a prior claim.",
+              "limitation": "[q1s1] material: Healer never answers turn 4's unsolved-culprit objection. [q2s1] Material: T7 drops sound claim for vague reason; Stoic never answers T6. [q3s1] Material: Social Economist never concedes turn 5 or turn 9; withheld concession. [q4s1] Material: turn 8 revision unexplained; Coach never answers turn 4 or concedes anything. [q5s1] Material: Theorist never concedes atmosphere's role; turn 9 revision lacks stated reason."
+            }
+          ]
+        },
+        {
+          "name": "Personal relevance",
+          "max": 10,
+          "points": 4.236,
+          "sub": [
+            {
+              "name": "Identification of the actual concern",
+              "rating": 5.4,
+              "points": 1.08,
+              "example": "[q1s1] Section D separates finding the culprit from ending discomfort. [q2s1] Section A frames math problem versus lifestyle question. [q3s1] Turn 10 names whether you should speak up as the open question. [q4s1] Section D asks whether 'behind' concerns milestones or losing friends. [q5s1] Section A frames ocean currents versus geography as the question.",
+              "limitation": "[q1s1] material: severity and safety of the reaction never treated as part of the concern. [q2s1] Material: never asks what 'worth it' means to this user. [q3s1] Material: never asks what saying something would mean or what the user wants from it. [q4s1] Minor: not wanting milestones yet feeling behind stays implicit until section D. [q5s1] Material: factual question recast as preference in turn 9 and section D."
+            },
+            {
+              "name": "Meaningful use of personal context",
+              "rating": 4.2,
+              "points": 0.8399999999999999,
+              "example": "[q1s1] Turn 1 uses three products started together to set isolation. [q2s1] Section E converts 90 minutes into 15 hours weekly. [q3s1] Turn 9 uses the user's 'lovely' meetings to weigh the wait's cost. [q4s1] Turn 3 names friends' homes and marriages as outside the user's control. [q5s1] Turn 8 considers user's possible lack of oceanography background.",
+              "limitation": "[q1s1] material: product types or ingredients never used to shape the reasoning. [q2s1] Material: only the two given numbers used; current commute never considered. [q3s1] Material: 'if I stop texting, nothing happens' detail barely shapes reasoning. [q4s1] Material: context is generic; no detail changes an argument or next step. [q5s1] Material: no user detail shapes any argument; places compared never specified."
+            },
+            {
+              "name": "Fit with goals and values",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "[q1s1] Turn 8 weighs lost skincare progress against clarity. [q2s1] Section E branches on capital need versus daily well-being. [q3s1] Section E ties choice to whether energy feels drained. [q4s1] Turn 7 conditions milestones on 'if you eventually decide those matter'. [q5s1] Section E routes answer by what the user wants explained.",
+              "limitation": "[q1s1] minor: user's skincare goals assumed, not identified. [q2s1] Material: user's own priorities never asked; speakers' values dominate T2, T5. [q3s1] Material: turn 10 truth-versus-comfort is the speakers' framing, not the user's stated aim. [q4s1] Material: turns 2 and 5 push milestone urgency the user doubts wanting. [q5s1] Material: turn 9 asks which mechanism user 'values', not which is true."
+            },
+            {
+              "name": "Attention to constraints and stakes",
+              "rating": 3.72,
+              "points": 0.744,
+              "example": "[q1s1] Turn 5 flags reintroducing on inflamed skin as risky. [q2s1] T8 trial respects time cost of two weeks. [q3s1] Turn 9 notes losing the lovely meetings during silence. [q4s1] Turn 7 mentions financial security as a stake. [q5s1] Turn 8 notes technical density cost of Stommel's heat budget.",
+              "limitation": "[q1s1] material: no warning signs (swelling, eyes, hives) or medical threshold. [q2s1] Material: T6 invents existing financial constraints; transit mode, family, remote ignored. [q3s1] Material: turn 10 invents confrontation stakes; friendship length, friend's circumstances ignored. [q4s1] Material: turn 5 invents a closing window; age, finances, relationships never considered. [q5s1] Material: section A invents user's intent; turn 8 assumes missing background."
+            },
+            {
+              "name": "Responsiveness to information",
+              "rating": 3.3600000000000003,
+              "points": 0.672,
+              "example": "[q1s1] Turn 8 asks whether one product feels harshest. [q2s1] Section E gives three conditional branches. [q3s1] Section E branches on fear of loss versus drained energy. [q4s1] Section E branches on whether fear of isolation is intense. [q5s1] Section E branches on what the user seeks.",
+              "limitation": "[q1s1] material: never asks which products, actives like retinoids or acids, or severity. [q2s1] Material: no question on transit mode, current commute, or remote options. [q3s1] Material: no question about friend's life, history, or prior conversations; needed detail never asked. [q4s1] Material: no question asks age, partner status, or whether user wants these things. [q5s1] Material: never asks which places are compared, e.g. Norway versus Labrador."
+            }
+          ]
+        },
+        {
+          "name": "Constructive self-discovery",
+          "max": 20,
+          "points": 9.984,
+          "sub": [
+            {
+              "name": "Clarification of desires and motivations",
+              "rating": 5.6,
+              "points": 2.24,
+              "example": "[q1s1] Section D offers culprit-finding versus quick relief as alternatives with a question. [q2s1] Section D: fear of stagnation versus wanting the lifestyle, as alternatives. [q3s1] Section D: notice whether fear of losing friend outweighs valuing your energy. [q4s1] Section D offers milestones versus fear of losing connection as alternatives. [q5s1] Section D: interest in mechanism versus historical stability patterns.",
+              "limitation": "[q1s1] material: appears only in summary; debate turns never explore it. [q2s1] Material: appears only in summary; no debate turn explores either motive. [q3s1] Material: turn 1 offers a single motive; debate focuses on friend's motives, not user's. [q4s1] Material: turn 1 leads with imitation, turn 3 asserts distress cause; alternatives only at end. [q5s1] Material: alternatives forced onto a factual question; no answerable question beyond turn 9."
+            },
+            {
+              "name": "Examination of assumptions",
+              "rating": 5.36,
+              "points": 2.144,
+              "example": "[q1s1] Turn 9 questions the assumption that one ingredient is to blame. [q2s1] T2 surfaces assumption that time is merely currency. [q3s1] Turn 6 questions that non-initiation means indifference; could be habit. [q4s1] Turn 1 surfaces assuming peers' goals are the standard for success. [q5s1] Turn 3 challenges treating climate differences as static.",
+              "limitation": "[q1s1] material: assumption that products caused it at all, or need for all three, unexamined. [q2s1] Material: assumption that the job brings growth (T3) never examined. [q3s1] Material: user's assumption that speaking up means confrontation never surfaced. [q4s1] Material: assumption that 'behind' implies a shared timeline is never examined directly. [q5s1] Material: user's assumption that one factor dominates is never examined directly."
+            },
+            {
+              "name": "Clarification of values and priorities",
+              "rating": 4.8,
+              "points": 1.9200000000000004,
+              "example": "[q1s1] Turn 8: clarity versus routine progress. [q2s1] T5 sovereignty over one's day set against T6 future independence. [q3s1] Turn 10 and section D: reciprocity versus preserving harmony. [q4s1] Section E sets autonomy and peace against long-term flexibility. [q5s1] Turn 9 contrasts ocean mechanism with wind mechanism.",
+              "limitation": "[q1s1] material: conflict raised once, never weighed by other minds. [q2s1] Material: no question asking the user to rank these values. [q3s1] Material: truth-versus-comfort is a false binary; other values left unexplored. [q4s1] Material: turn 9 frames the alternative as 'social validation', loading the choice. [q5s1] Material: valuing a mechanism is misplaced; no real priority conflict clarified."
+            },
+            {
+              "name": "Recognition of fears and outside expectations",
+              "rating": 3.9,
+              "points": 1.56,
+              "example": "[q1s1] Turn 3 notes being overwhelmed by changes. [q2s1] Section D names fear of stagnation. [q3s1] Turn 9 names anxiety a silent wait might bring. [q4s1] Turn 8 names fear of being left behind and fear of an unsuitable life. [q5s1] Turn 8 acknowledges data may feel dense.",
+              "limitation": "[q1s1] material: turn 3 casts stinging as skin reflecting stress, edging toward pathologising. [q2s1] Material: social, family or obligation pressures never mentioned anywhere. [q3s1] Material: turn 5 labels friend avoidant; resentment, fairness norms unexplored. [q4s1] Material: turn 2 amplifies fear ('empty-handed later') rather than examining it. [q5s1] Material: absent; no expectation or pressure behind the curiosity explored."
+            },
+            {
+              "name": "Agency and reflective ownership",
+              "rating": 5.3,
+              "points": 2.12,
+              "example": "[q1s1] Section E gives branches the user can choose among. [q2s1] T8 trial and section E branches are user-testable. [q3s1] Section E conditions the user can accept or reject. [q4s1] Section E: notice relief or anxiety when envisioning a different life. [q5s1] Section E offers three conditional lenses user can pick.",
+              "limitation": "[q1s1] material: few distinctions the user could refine; mostly a protocol handed down. [q2s1] Material: T9 closes with leading 'can you really have both?'. [q3s1] Material: few questions posed to the user; turn 8 prescribes rather than invites. [q4s1] Minor: debate turns mostly prescribe; ownership offered only in sections D and E. [q5s1] Material: options are framings, not distinctions user can test or refine."
+            }
+          ]
+        },
+        {
+          "name": "Decision usefulness",
+          "max": 10,
+          "points": 4.608,
+          "sub": [
+            {
+              "name": "Definition of the decision and options",
+              "rating": 4.66,
+              "points": 0.932,
+              "example": "[q1s1] Turns 1, 2, 7: stop all, full pause, staged reintroduction. [q2s1] Section E frames accept versus decline by priority. [q3s1] Section E: keep initiating, pause, or neutral request to lead next time. [q4s1] Turn 9 frames inward reframing versus outward action. [q5s1] Section E names ocean, landmass and NAO explanations.",
+              "limitation": "[q1s1] material: patch testing, keeping one product, or seeing a dermatologist never offered. [q2s1] Material: negotiation, remote days, relocation, or counteroffer never raised. [q3s1] Material: speaking up directly, and how, never laid out as an option. [q4s1] Material: no concrete options named; waiting or a small experiment never defined. [q5s1] Material: no real decision defined; explanatory weighting never resolved."
+            },
+            {
+              "name": "Explanation of tradeoffs",
+              "rating": 4.82,
+              "points": 0.9640000000000001,
+              "example": "[q1s1] Turn 8 names lost time as cost of the 7-day wait. [q2s1] Section E: 15 hours weekly against salary jump. [q3s1] Turn 9 gives the cost of the waiting test. [q4s1] Turn 7 names the cost of the Stoic path: no skills or security built. [q5s1] Turn 8: heat-budget focus costs sight of wind patterns.",
+              "limitation": "[q1s1] material: cost of the multi-week protocol never totalled or compared. [q2s1] Material: T1 hourly-wage calculation never done; raise value never quantified. [q3s1] Material: cost of continuing to initiate never weighed; speaking up costed only as confrontation. [q4s1] Material: costs of pursuing milestones one doubts wanting are never stated. [q5s1] Material: other lenses' costs not named."
+            },
+            {
+              "name": "Identification of decisive conditions",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "[q1s1] Section E: sting after 48 hours of water favours recovery. [q2s1] T8: after 14 days, does money feel worth the time. [q3s1] Section E: observe response to one neutral request to lead. [q4s1] Section E: relief versus anxiety when picturing a divergent life. [q5s1] Section E: year-to-year variation points to NAO data.",
+              "limitation": "[q1s1] material: 7 and 3 day figures not drawn from user facts; branch logic doubtful. [q2s1] Material: section E conditions not countable; no observable growth threshold. [q3s1] Material: turn 8's three weeks not drawn from user facts; no observable threshold. [q4s1] Material: first two section E conditions are abstract value preferences, not observable. [q5s1] Material: no observable test, e.g. comparing west versus east coasts."
+            },
+            {
+              "name": "Treatment of uncertainty",
+              "rating": 3.7600000000000002,
+              "points": 0.752,
+              "example": "[q1s1] Turn 9 names the unresolved cause question. [q2s1] T3 and T6 flag growth as conditional 'if'. [q3s1] Section E separates oblivious from indifferent friend. [q4s1] Turn 7 allows the user may 'eventually decide' milestones matter. [q5s1] Turn 6 raises temporary trend versus permanent state.",
+              "limitation": "[q1s1] material: allergy versus irritation, the consequential unknown, never separated. [q2s1] Material: growth and burnout uncertainty not separated from minor unknowns. [q3s1] Material: consequential unknowns not ranked against minor ones. [q4s1] Material: consequential unknowns are not separated from minor ones anywhere. [q5s1] Material: consensus versus contested mechanisms never separated."
+            },
+            {
+              "name": "Proportionate next steps",
+              "rating": 5.3,
+              "points": 1.06,
+              "example": "[q1s1] Section E: log reintroductions one product every 3 days. [q2s1] T8 simulated commute for 14 days is cheap and concrete. [q3s1] Section E's single neutral request is low-cost and proportionate. [q4s1] Turn 6: read Enchiridion sections 1-3 today. [q5s1] Turn 7 Stommel chapter 1; section E NAO data.",
+              "limitation": "[q1s1] material: no escalation step if symptoms worsen. [q2s1] Minor: section E 'inquire' step lacks specifics on what to ask. [q3s1] Material: turn 8's three-week silence is arbitrary and heavier than needed. [q4s1] Material: only the Stoic path gets a step; Coach's path has none. [q5s1] Minor: steps generic; no simple map or coast comparison suggested."
+            }
+          ]
+        },
+        {
+          "name": "Clarity and engagement",
+          "max": 10,
+          "points": 6.220000000000001,
+          "sub": [
+            {
+              "name": "Accessible language",
+              "rating": 6.959999999999999,
+              "points": 1.392,
+              "example": "[q1s1] Turn 7 states plain days and steps. [q2s1] Plain phrasing throughout; T8 instructions concrete. [q3s1] Plain phrasing throughout, e.g. turn 6 habit that could be corrected. [q4s1] Turn 3 explains control in plain terms about friends' timelines. [q5s1] Turn 1 conveyor-belt image explains heat transport plainly.",
+              "limitation": "[q1s1] minor: turn 6 'cumulative pressure of routines' is vague. [q2s1] Minor: T2 'carriage of transit', T4 'marginal productivity' slightly opaque. [q3s1] Minor: turn 4 'subsidizing' and turn 2 'skin in the game' lean on jargon. [q4s1] Minor: 'build the capital' and 'identity you need' in turns 2, 5 stay abstract. [q5s1] Minor: 'synergy', 'steady-state heat budget' left unexplained."
+            },
+            {
+              "name": "Traceable arguments and references",
+              "rating": 5.720000000000001,
+              "points": 1.1440000000000001,
+              "example": "[q1s1] Turns 4 and 5 name the speaker they answer. [q2s1] Each turn names whose point it answers, T2-T9. [q3s1] Turn 9's 'That 3-week wait' clearly points to turn 8. [q4s1] Turns 4 and 5 open by naming whom they answer. [q5s1] Turns 4-6 name the mind they answer.",
+              "limitation": "[q1s1] minor: turn 6 'If you feel' target ambiguous; turn 3 answers unnamed testing. [q2s1] Material: T7 'as the Strategist suggests' maps to no clear turn. [q3s1] Material: turns 4 and 5 'you' ambiguously addresses a mind or the user. [q4s1] Material: turns 4 and 7 use 'I' ambiguously; turn 5 cites a claim never made. [q5s1] Material: turn 9 'the claim' points to turn 3, which never made it."
+            },
+            {
+              "name": "Manageable pacing and turn length",
+              "rating": 6.960000000000001,
+              "points": 1.392,
+              "example": "[q1s1] Nine turns, each within 25 to 65 words. [q2s1] Nine turns, each roughly 45 to 60 words. [q3s1] Ten short turns, easy to read. [q4s1] Nine turns, each roughly 36 to 47 words. [q5s1] Nine turns, each within length limits.",
+              "limitation": "[q1s1] minor: Healer's turns stall pace at 3 and 6. [q2s1] Minor: uniform turn rhythm, no short sharp exchanges. [q3s1] Material: turns 1, 3, 4, 9 fall under 25 words. [q4s1] Minor: uniform turn length gives an even, unvaried pace. [q5s1] Minor: uniform rhythm; turns 7-8 stall the argument."
+            },
+            {
+              "name": "Distinguishable positions and voices",
+              "rating": 5.46,
+              "points": 1.092,
+              "example": "[q1s1] Reductionist's isolation stance is distinct. [q2s1] Optimizer, Stoic, Strategist hold distinct positions. [q3s1] Three distinct lenses; turn 7 explicitly changes position. [q4s1] Three titled minds hold distinct positions on imitation, control, timing. [q5s1] Each mind holds a distinct factor: ocean, land, pressure.",
+              "limitation": "[q1s1] material: Minimalist and Healer both argue a pause; all speak in identical 'you might' hedges. [q2s1] Material: all three use identical 'X claims... but' openers; voices sound alike. [q3s1] Minor: voices similar in tone; Aristotle marked only by 'In truth'. [q4s1] Material: shared hedged register; turn 8 position change stated without cause. [q5s1] Material: all three speak in the same 'You might' register."
+            },
+            {
+              "name": "Economy and sustained attention",
+              "rating": 6,
+              "points": 1.2,
+              "example": "[q1s1] Section E condenses the debate into three branches. [q2s1] T8 introduces fresh practical content late. [q3s1] No verbatim repetition across turns. [q4s1] Little repetition across turns; each adds a point. [q5s1] Short turns keep the exchange brief.",
+              "limitation": "[q1s1] material: turn 6 repeats turn 3's overwhelm point. [q2s1] Material: openers recap prior turns verbatim, e.g. T5, T6. [q3s1] Minor: section D partly restates turn 10's truth-versus-comfort. [q4s1] Minor: turn 5 restates turn 2's window worry without new content. [q5s1] Material: turn 5 restates turn 2; turns 7-8 meta-discussion of reading."
+            }
+          ]
+        },
+        {
+          "name": "Drama and entertainment",
+          "max": 10,
+          "points": 4.012,
+          "sub": [
+            {
+              "name": "Meaningful stakes and tension",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "[q1s1] Turn 4: culprit may stay unknown if you just quit. [q2s1] T5 frames commute as trading sovereignty for wage. [q3s1] Turn 4: subsidizing their social life while getting nothing back. [q4s1] Turn 7 sets peace against future security as a real cost. [q5s1] Turn 4 pits ocean scale against land barriers.",
+              "limitation": "[q1s1] material: tension low; turns 1 and 2 largely agree on stopping. [q2s1] Material: tension stays abstract; no concrete life cost named. [q3s1] Material: tension dissipates after turn 7; low stakes overall. [q4s1] Material: stakes stay abstract; no concrete scene of the user's life. [q5s1] Material: tension is abstract; no vivid contrast like Bergen versus Labrador."
+            },
+            {
+              "name": "Surprise and reversals",
+              "rating": 3.7,
+              "points": 0.74,
+              "example": "[q1s1] Turn 7: Reductionist drops immediate testing. [q2s1] T7 Optimizer abandons his T1 calculation. [q3s1] Turn 7 Attachment Theorist drops attachment framing. [q4s1] Turn 8 Social Observer drops the imitation claim. [q5s1] Turn 9 Historian drops NAO primacy.",
+              "limitation": "[q1s1] material: turn 7 reversal names no turn or argument that changed his mind. [q2s1] Material: T7 reversal has no traced cause from an earlier argument. [q3s1] Material: turn 7 names no argument that changed its mind; templated reversal. [q4s1] Material: turn 8 reversal names no earlier argument that changed its mind. [q5s1] Material: reversal has no stated cause; template, not traced change."
+            },
+            {
+              "name": "Personality and expressive voice",
+              "rating": 4,
+              "points": 0.8,
+              "example": "[q1s1] Healer's body-signal framing gives slight colour. [q2s1] Stoic's T2 Seneca-flavoured line has some colour. [q3s1] Turn 5's sharp 'You treat people like assets'. [q4s1] Turn 3 Stoic: 'If you wish to be free, you must accept'. [q5s1] Turn 7 Theorist cites 'my book' with authorial pride.",
+              "limitation": "[q1s1] material: all three minds flat, uniformly hedged. [q2s1] Material: Optimizer and Strategist read as flat, templated voices. [q3s1] Material: flat expression throughout; turn 5 edges toward caricature. [q4s1] Material: minds sound alike, flat hedged phrasing throughout. [q5s1] Material: voices flat and interchangeable across all nine turns."
+            },
+            {
+              "name": "Memorable delivery",
+              "rating": 4.0600000000000005,
+              "points": 0.8119999999999999,
+              "example": "[q1s1] Turn 9's 48-hour water test is concrete. [q2s1] T8: sit in a chair 90 minutes before and after work. [q3s1] Turn 4's subsidizing image is the one vivid line. [q4s1] Turn 2: 'you might find yourself empty-handed later'. [q5s1] Turn 1 conveyor belt; turn 5 Canadian Shield hypothetical.",
+              "limitation": "[q1s1] material: no analogy, vivid example or sharp line anywhere. [q2s1] Material: few analogies or sharp lines beyond T8. [q3s1] Material: no analogies or concrete scenes elsewhere. [q4s1] Material: no analogies, vivid examples, or sharp lines anywhere. [q5s1] Material: no sharp or concrete example lands."
+            },
+            {
+              "name": "Anticipation and emotional movement",
+              "rating": 3.8,
+              "points": 0.76,
+              "example": "[q1s1] Turn 9 sets up an unresolved test. [q2s1] T9 ends on a pointed question. [q3s1] Turns 8-9 create brief suspense over the waiting test. [q4s1] Turn 8 shifts tone from diagnosis to recognising two fears. [q5s1] Turn 3 widens the frame to centuries.",
+              "limitation": "[q1s1] material: uniform low intensity across all nine turns. [q2s1] Material: constant even intensity; no build or release across turns. [q3s1] Material: turn 10 fizzles to 'remains open'; uniform rhythm. [q4s1] Material: constant even tone; no build or release across turns. [q5s1] Material: constant low intensity; ending dissolves into preference."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "pairs": [],
+  "paired": {
+    "tie": 0,
+    "v1": 0
+  },
+  "preferredVersion": null,
+  "savedAt": "2026-10-14T08:35:49.098Z"
+}

@@ -1,0 +1,319 @@
+{
+ "A": {
+  "criteria": [
+   {
+    "name": "Quality of discussion",
+    "max": 20.0,
+    "points": 7.92,
+    "sub": [
+     {
+      "name": "Continuity and responsiveness",
+      "rating": 5.2,
+      "points": 2.08,
+      "example": "Turns 4-6 name and answer prior turns' claims about water, land, pressure.",
+      "limitation": "Minor: turn 7 ignores turn 6; turn 8 discusses reading difficulty, not climate."
+     },
+     {
+      "name": "Development of ideas",
+      "rating": 3.5,
+      "points": 1.4,
+      "example": "Turn 3 adds NAO variability beyond the two openings.",
+      "limitation": "Material: no mid-debate distinction later used; turns 7-8 add nothing new."
+     },
+     {
+      "name": "Exploration of central tensions",
+      "rating": 3.8,
+      "points": 1.52,
+      "example": "Turns 4-5 contrast heat transport with how land distributes heat.",
+      "limitation": "Material: prevailing westerlies, west-versus-east-coast contrast, ocean heat storage never raised."
+     },
+     {
+      "name": "Integration of perspectives",
+      "rating": 3.8,
+      "points": 1.52,
+      "example": "Turn 9 combines current heat with atmospheric pressure.",
+      "limitation": "Material: turn 9 synergy is forced agreement with no traced cause."
+     },
+     {
+      "name": "Progress toward understanding",
+      "rating": 3.5,
+      "points": 1.4,
+      "example": "Section D separates heat source from heat distribution.",
+      "limitation": "Material: ending asks what user values, not a sharper causal question."
+     }
+    ]
+   },
+   {
+    "name": "Quality of disagreement, trust and grounding",
+    "max": 20.0,
+    "points": 7.44,
+    "sub": [
+     {
+      "name": "Faithful engagement",
+      "rating": 4.5,
+      "points": 1.8,
+      "example": "Turn 4 restates Analyst's barrier claim before rebutting it.",
+      "limitation": "Material: turn 5 strawmans 'current is everything'; turn 9 drops a claim never made."
+     },
+     {
+      "name": "Substance of challenges",
+      "rating": 4.2,
+      "points": 1.68,
+      "example": "Turn 4: topography does not transport heat, unlike currents.",
+      "limitation": "Material: no objection names an assumption and what breaks; turn 6 restates."
+     },
+     {
+      "name": "Accuracy and support",
+      "rating": 2.8,
+      "points": 1.12,
+      "example": "Stommel's The Gulf Stream is a real, apt source.",
+      "limitation": "Material: Diamond ch.10 concerns crop diffusion; Lamb title garbled; turn 6 NAO 'override entirely' overstated."
+     },
+     {
+      "name": "Calibration and transparency",
+      "rating": 3.5,
+      "points": 1.4,
+      "example": "Turn 6 frames temporary trend as something to wonder about.",
+      "limitation": "Material: turn 1 asserts 'primary driver' flatly; contested science presented without hedging."
+     },
+     {
+      "name": "Intellectual honesty and revision",
+      "rating": 3.6,
+      "points": 1.44,
+      "example": "Turn 9 Historian explicitly drops a prior claim.",
+      "limitation": "Material: Theorist never concedes atmosphere's role; turn 9 revision lacks stated reason."
+     }
+    ]
+   },
+   {
+    "name": "Personal relevance",
+    "max": 10.0,
+    "points": 3.0,
+    "sub": [
+     {
+      "name": "Identification of the actual concern",
+      "rating": 3.5,
+      "points": 0.7,
+      "example": "Section A frames ocean currents versus geography as the question.",
+      "limitation": "Material: factual question recast as preference in turn 9 and section D."
+     },
+     {
+      "name": "Meaningful use of personal context",
+      "rating": 2.5,
+      "points": 0.5,
+      "example": "Turn 8 considers user's possible lack of oceanography background.",
+      "limitation": "Material: no user detail shapes any argument; places compared never specified."
+     },
+     {
+      "name": "Fit with goals and values",
+      "rating": 3.5,
+      "points": 0.7,
+      "example": "Section E routes answer by what the user wants explained.",
+      "limitation": "Material: turn 9 asks which mechanism user 'values', not which is true."
+     },
+     {
+      "name": "Attention to constraints and stakes",
+      "rating": 3.0,
+      "points": 0.6,
+      "example": "Turn 8 notes technical density cost of Stommel's heat budget.",
+      "limitation": "Material: section A invents user's intent; turn 8 assumes missing background."
+     },
+     {
+      "name": "Responsiveness to information",
+      "rating": 2.5,
+      "points": 0.5,
+      "example": "Section E branches on what the user seeks.",
+      "limitation": "Material: never asks which places are compared, e.g. Norway versus Labrador."
+     }
+    ]
+   },
+   {
+    "name": "Constructive self-discovery",
+    "max": 20.0,
+    "points": 6.4,
+    "sub": [
+     {
+      "name": "Clarification of desires and motivations",
+      "rating": 3.5,
+      "points": 1.4,
+      "example": "Section D: interest in mechanism versus historical stability patterns.",
+      "limitation": "Material: alternatives forced onto a factual question; no answerable question beyond turn 9."
+     },
+     {
+      "name": "Examination of assumptions",
+      "rating": 4.5,
+      "points": 1.8,
+      "example": "Turn 3 challenges treating climate differences as static.",
+      "limitation": "Material: user's assumption that one factor dominates is never examined directly."
+     },
+     {
+      "name": "Clarification of values and priorities",
+      "rating": 2.5,
+      "points": 1.0,
+      "example": "Turn 9 contrasts ocean mechanism with wind mechanism.",
+      "limitation": "Material: valuing a mechanism is misplaced; no real priority conflict clarified."
+     },
+     {
+      "name": "Recognition of fears and outside expectations",
+      "rating": 1.5,
+      "points": 0.6,
+      "example": "Turn 8 acknowledges data may feel dense.",
+      "limitation": "Material: absent; no expectation or pressure behind the curiosity explored."
+     },
+     {
+      "name": "Agency and reflective ownership",
+      "rating": 4.0,
+      "points": 1.6,
+      "example": "Section E offers three conditional lenses user can pick.",
+      "limitation": "Material: options are framings, not distinctions user can test or refine."
+     }
+    ]
+   },
+   {
+    "name": "Decision usefulness",
+    "max": 10.0,
+    "points": 3.5,
+    "sub": [
+     {
+      "name": "Definition of the decision and options",
+      "rating": 3.5,
+      "points": 0.7,
+      "example": "Section E names ocean, landmass and NAO explanations.",
+      "limitation": "Material: no real decision defined; explanatory weighting never resolved."
+     },
+     {
+      "name": "Explanation of tradeoffs",
+      "rating": 3.5,
+      "points": 0.7,
+      "example": "Turn 8: heat-budget focus costs sight of wind patterns.",
+      "limitation": "Material: other lenses' costs not named."
+     },
+     {
+      "name": "Identification of decisive conditions",
+      "rating": 3.0,
+      "points": 0.6,
+      "example": "Section E: year-to-year variation points to NAO data.",
+      "limitation": "Material: no observable test, e.g. comparing west versus east coasts."
+     },
+     {
+      "name": "Treatment of uncertainty",
+      "rating": 3.0,
+      "points": 0.6,
+      "example": "Turn 6 raises temporary trend versus permanent state.",
+      "limitation": "Material: consensus versus contested mechanisms never separated."
+     },
+     {
+      "name": "Proportionate next steps",
+      "rating": 4.5,
+      "points": 0.9,
+      "example": "Turn 7 Stommel chapter 1; section E NAO data.",
+      "limitation": "Minor: steps generic; no simple map or coast comparison suggested."
+     }
+    ]
+   },
+   {
+    "name": "Clarity and engagement",
+    "max": 10.0,
+    "points": 5.84,
+    "sub": [
+     {
+      "name": "Accessible language",
+      "rating": 6.5,
+      "points": 1.3,
+      "example": "Turn 1 conveyor-belt image explains heat transport plainly.",
+      "limitation": "Minor: 'synergy', 'steady-state heat budget' left unexplained."
+     },
+     {
+      "name": "Traceable arguments and references",
+      "rating": 6.0,
+      "points": 1.2,
+      "example": "Turns 4-6 name the mind they answer.",
+      "limitation": "Material: turn 9 'the claim' points to turn 3, which never made it."
+     },
+     {
+      "name": "Manageable pacing and turn length",
+      "rating": 7.2,
+      "points": 1.44,
+      "example": "Nine turns, each within length limits.",
+      "limitation": "Minor: uniform rhythm; turns 7-8 stall the argument."
+     },
+     {
+      "name": "Distinguishable positions and voices",
+      "rating": 4.5,
+      "points": 0.9,
+      "example": "Each mind holds a distinct factor: ocean, land, pressure.",
+      "limitation": "Material: all three speak in the same 'You might' register."
+     },
+     {
+      "name": "Economy and sustained attention",
+      "rating": 5.0,
+      "points": 1.0,
+      "example": "Short turns keep the exchange brief.",
+      "limitation": "Material: turn 5 restates turn 2; turns 7-8 meta-discussion of reading."
+     }
+    ]
+   },
+   {
+    "name": "Drama and entertainment",
+    "max": 10.0,
+    "points": 3.2,
+    "sub": [
+     {
+      "name": "Meaningful stakes and tension",
+      "rating": 3.0,
+      "points": 0.6,
+      "example": "Turn 4 pits ocean scale against land barriers.",
+      "limitation": "Material: tension is abstract; no vivid contrast like Bergen versus Labrador."
+     },
+     {
+      "name": "Surprise and reversals",
+      "rating": 2.5,
+      "points": 0.5,
+      "example": "Turn 9 Historian drops NAO primacy.",
+      "limitation": "Material: reversal has no stated cause; template, not traced change."
+     },
+     {
+      "name": "Personality and expressive voice",
+      "rating": 3.5,
+      "points": 0.7,
+      "example": "Turn 7 Theorist cites 'my book' with authorial pride.",
+      "limitation": "Material: voices flat and interchangeable across all nine turns."
+     },
+     {
+      "name": "Memorable delivery",
+      "rating": 4.0,
+      "points": 0.8,
+      "example": "Turn 1 conveyor belt; turn 5 Canadian Shield hypothetical.",
+      "limitation": "Material: no sharp or concrete example lands."
+     },
+     {
+      "name": "Anticipation and emotional movement",
+      "rating": 3.0,
+      "points": 0.6,
+      "example": "Turn 3 widens the frame to centuries.",
+      "limitation": "Material: constant low intensity; ending dissolves into preference."
+     }
+    ]
+   }
+  ],
+  "uncapped": 37.3,
+  "score": 37.3,
+  "capReason": null,
+  "strengths": [
+   "Turns 4-6 answer named prior claims rather than ignoring them.",
+   "Turn 3 adds NAO variability, widening the frame beyond static causes.",
+   "Section E gives conditional lenses for what the user wants explained."
+  ],
+  "weaknesses": [
+   "Environmental Analyst leans on Diamond ch.10, about crop diffusion, not climate; Lamb title garbled.",
+   "Westerlies and west-versus-east-coast contrast never raised; core mechanism missing.",
+   "Turn 9 reversal and 'which do you value' recast a factual question as preference."
+  ],
+  "editorNotes": [
+   "For factual questions, require minds whose sources actually address the mechanism asked about.",
+   "Require at least one mid-debate distinction (e.g. west versus east coast) later turns must use.",
+   "Forbid reversals without naming the earlier turn's argument that caused them.",
+   "Do not convert factual questions into value preferences; end with a testable comparison."
+  ]
+ }
+}

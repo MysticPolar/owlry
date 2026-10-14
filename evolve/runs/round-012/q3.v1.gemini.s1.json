@@ -1,0 +1,126 @@
+{
+  "lineage": "gemini",
+  "lane": "gemini",
+  "q": 3,
+  "version": 1,
+  "sample": 1,
+  "model": "gemini-3.1-flash-lite",
+  "settings": {
+    "thinkingLevel": "MEDIUM",
+    "temperature": 0.9,
+    "maxOutputTokens": 16384,
+    "fallback": "none"
+  },
+  "latencyMs": 13286,
+  "output": {
+    "situation": "You are the sole initiator of plans with a friend who appears to enjoy your company once you meet, yet they never reach out first. You are caught between valuing the time you spend together and feeling uncertain about whether your connection is reciprocal or sustainable without your constant effort.",
+    "minds": [
+      {
+        "title": "The Attachment Theorist",
+        "concern": "Understanding the underlying patterns of emotional security and connection.",
+        "author": "John Bowlby",
+        "book": "A Secure Base",
+        "year": 1988
+      },
+      {
+        "title": "The Social Economist",
+        "concern": "Evaluating the asymmetry of risk and investment in social interactions.",
+        "author": "Nassim Nicholas Taleb",
+        "book": "Skin in the Game",
+        "year": 2018
+      },
+      {
+        "title": "The Aristotelian Friend",
+        "concern": "Distinguishing between utility, pleasure, and virtue in relationships.",
+        "author": "Aristotle",
+        "book": "Nicomachean Ethics",
+        "year": -350
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Attachment Theorist",
+        "text": "Maybe you worry because the pattern feels unstable, as if your connection might vanish if your active effort stops.",
+        "author": "John Bowlby",
+        "book": "A Secure Base",
+        "pd": false,
+        "basis": "[Basis: John Bowlby, A Secure Base](https://www.worldcat.org/title/secure-base-parent-child-attachment-and-healthy-human-development/oclc/18558450)"
+      },
+      {
+        "speaker": "The Social Economist",
+        "text": "I would say this asymmetry reflects a lack of skin in the game; if your friend values the connection, they should bear the cost of initiating at least occasionally.",
+        "author": "Nassim Nicholas Taleb",
+        "book": "Skin in the Game",
+        "pd": false,
+        "basis": "[Basis: Nassim Nicholas Taleb, Skin in the Game](https://www.worldcat.org/title/skin-in-the-game-hidden-asymmetries-in-daily-life/oclc/1013444497)"
+      },
+      {
+        "speaker": "The Aristotelian Friend",
+        "text": "In truth, friendships of virtue require equality, for if one person does all the choosing, the mutual goodwill might be lacking.",
+        "author": "Aristotle",
+        "book": "Nicomachean Ethics",
+        "pd": true,
+        "basis": "[Basis: Aristotle, Nicomachean Ethics, Book VIII](https://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.01.0054%3Abook%3D8)"
+      },
+      {
+        "speaker": "The Social Economist",
+        "text": "You dispute the idea that friendship is purely virtuous; without reciprocal action, you are perhaps subsidizing their social life while getting nothing in return.",
+        "author": "Nassim Nicholas Taleb",
+        "book": "Skin in the Game",
+        "pd": false,
+        "basis": "[Basis: Nassim Nicholas Taleb, Skin in the Game](https://www.worldcat.org/title/skin-in-the-game-hidden-asymmetries-in-daily-life/oclc/1013444497)"
+      },
+      {
+        "speaker": "The Attachment Theorist",
+        "text": "You treat people like assets, ignoring that they might suffer from avoidant attachment, where initiating feels too risky for them even if they care for you.",
+        "author": "John Bowlby",
+        "book": "A Secure Base",
+        "pd": false,
+        "basis": "[Basis: John Bowlby, A Secure Base](https://www.worldcat.org/title/secure-base-parent-child-attachment-and-healthy-human-development/oclc/18558450)"
+      },
+      {
+        "speaker": "The Aristotelian Friend",
+        "text": "Perhaps they value the friendship, but maybe they are simply accustomed to your initiative, which is a habit that could be corrected without harsh accusation.",
+        "author": "Aristotle",
+        "book": "Nicomachean Ethics",
+        "pd": true,
+        "basis": "[Basis: Aristotle, Nicomachean Ethics, Book VIII](https://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.01.0054%3Abook%3D8)"
+      },
+      {
+        "speaker": "The Attachment Theorist",
+        "text": "I drop the idea that this is purely about internal attachment styles; I now see it might be a simple lack of shared expectations that you could clarify.",
+        "author": "John Bowlby",
+        "book": "A Secure Base",
+        "pd": false,
+        "basis": "[Basis: John Bowlby, A Secure Base](https://www.worldcat.org/title/secure-base-parent-child-attachment-and-healthy-human-development/oclc/18558450)"
+      },
+      {
+        "speaker": "The Social Economist",
+        "text": "To test this, wait 3 weeks before reaching out to see if they initiate, which is a period long enough to show if their interest is real.",
+        "author": "Nassim Nicholas Taleb",
+        "book": "Skin in the Game",
+        "pd": false,
+        "basis": "[Basis: Nassim Nicholas Taleb, Skin in the Game](https://www.worldcat.org/title/skin-in-the-game-hidden-asymmetries-in-daily-life/oclc/1013444497)"
+      },
+      {
+        "speaker": "The Attachment Theorist",
+        "text": "That 3-week wait might cause you significant anxiety, as you described feeling lovely when together, which you might lose if the silence persists.",
+        "author": "John Bowlby",
+        "book": "A Secure Base",
+        "pd": false,
+        "basis": "[Basis: John Bowlby, A Secure Base](https://www.worldcat.org/title/secure-base-parent-child-attachment-and-healthy-human-development/oclc/18558450)"
+      },
+      {
+        "speaker": "The Aristotelian Friend",
+        "text": "Whether you should speak up remains open, for the risk of confrontation might damage the existing harmony you value, and the decision depends on whether you prize truth over comfort.",
+        "author": "Aristotle",
+        "book": "Nicomachean Ethics",
+        "pd": true,
+        "basis": "[Basis: Aristotle, Nicomachean Ethics, Book IX](https://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.01.0054%3Abook%3D9)"
+      }
+    ],
+    "clearer": "The discussion clarified that your situation involves a trade-off between maintaining existing comfort and establishing necessary reciprocity. The main disagreement remains whether you should prioritize the safety of your current lovely interactions or the truth of your friend's engagement levels. A possible self-reflection is to notice whether you fear losing the friend more than you value your own energy.",
+    "dependsOn": "If you fear that speaking up will end a friendship you find valuable, then continuing to initiate might be the most reasonable choice, as it preserves the interaction. If you feel that your time and emotional energy are being drained by the asymmetry, then taking a break from initiating becomes more reasonable, as it tests the friend's actual commitment. If you remain unsure if your friend is simply oblivious or truly indifferent, you can observe their response to a single, neutral request for them to lead next time to see if they notice your pattern."
+  },
+  "savedAt": "2026-10-14T08:30:19.758Z"
+}

@@ -1,0 +1,330 @@
+{
+  "lineage": "sonnet",
+  "q": 1,
+  "sample": 1,
+  "blind": {
+    "A": 1,
+    "B": null
+  },
+  "scores": {
+    "v1": {
+      "criteria": [
+        {
+          "name": "Quality of discussion",
+          "max": 20,
+          "points": 16.16,
+          "sub": [
+            {
+              "name": "Continuity and responsiveness",
+              "rating": 8.6,
+              "points": 3.44,
+              "example": "T3 challenges T1-T2 assumption; T4, T6, T10 answer named prior turns directly.",
+              "limitation": "Minor: T8 restates waiting cost without engaging T7's calm-baseline revision."
+            },
+            {
+              "name": "Development of ideas",
+              "rating": 8.7,
+              "points": 3.48,
+              "example": "T5 introduces layering interaction absent from openings; T10 uses it as a real finding.",
+              "limitation": "Minor: T1's dismissal of ingredient lists never revisited or refined."
+            },
+            {
+              "name": "Exploration of central tensions",
+              "rating": 6.8,
+              "points": 2.72,
+              "example": "Rigor versus speed and single culprit versus interaction examined in T5-T7.",
+              "limitation": "Material: drop-the-strongest-active option only surfaces in section D, never debated."
+            },
+            {
+              "name": "Integration of perspectives",
+              "rating": 8,
+              "points": 3.2,
+              "example": "T7 reshapes Experimenter's method using T5 and T6; T10 absorbs T9.",
+              "limitation": "Minor: T8-T10 converge smoothly; little residual disagreement survives to the end."
+            },
+            {
+              "name": "Progress toward understanding",
+              "rating": 8.3,
+              "points": 3.32,
+              "example": "Ending sequence: calm, isolate, repeat; T9 sharpens association versus diagnosis.",
+              "limitation": "Minor: speed-versus-certainty question left in section D, not sharpened in turns."
+            }
+          ]
+        },
+        {
+          "name": "Quality of disagreement, trust and grounding",
+          "max": 20,
+          "points": 16.4,
+          "sub": [
+            {
+              "name": "Faithful engagement",
+              "rating": 8.2,
+              "points": 3.28,
+              "example": "T5 states the one-at-a-time method accurately before showing its blind spot.",
+              "limitation": "Minor: T1's ingredient-list claim never given or tested in its strongest form."
+            },
+            {
+              "name": "Substance of challenges",
+              "rating": 8.7,
+              "points": 3.48,
+              "example": "T5 names independence assumption and what breaks; T7 and T10 answer, not restate.",
+              "limitation": "Minor: T3's laundry detergent and weather suspects thin for facial sting."
+            },
+            {
+              "name": "Accuracy and support",
+              "rating": 7.2,
+              "points": 2.88,
+              "example": "Mill's method of difference, Kahneman's WYSIATI, Taleb's via negativa used faithfully.",
+              "limitation": "Minor: T1 calls ingredient lists guesswork; known irritant actives give real priors."
+            },
+            {
+              "name": "Calibration and transparency",
+              "rating": 8.3,
+              "points": 3.32,
+              "example": "T9 separates association from diagnosis; basis notes mark red flags as character's own.",
+              "limitation": "Minor: T1 overconfident, calling the comparison evidence and ingredient reading guesswork."
+            },
+            {
+              "name": "Intellectual honesty and revision",
+              "rating": 8.6,
+              "points": 3.44,
+              "example": "T7 explicitly revises to calm baseline and concedes slowness; T10 accepts T9.",
+              "limitation": "Minor: ingredient-list overstatement in T1 never pressed nor conceded."
+            }
+          ]
+        },
+        {
+          "name": "Personal relevance",
+          "max": 10,
+          "points": 7.4,
+          "sub": [
+            {
+              "name": "Identification of the actual concern",
+              "rating": 8.2,
+              "points": 1.64,
+              "example": "Section D asks whether finding the cause matters more than calm skin.",
+              "limitation": "Minor: never asks what the three products actually are."
+            },
+            {
+              "name": "Meaningful use of personal context",
+              "rating": 7.5,
+              "points": 1.5,
+              "example": "Three products started together within a week drives T3 and T5's interaction point.",
+              "limitation": "Minor: product types unknown, so little personal detail changes the argument."
+            },
+            {
+              "name": "Fit with goals and values",
+              "rating": 7.6,
+              "points": 1.52,
+              "example": "T1-T10 stay on identifying cause, as the user asked.",
+              "limitation": "Minor: user's priority between relief and knowledge raised only in section D."
+            },
+            {
+              "name": "Attention to constraints and stakes",
+              "rating": 7.2,
+              "points": 1.44,
+              "example": "T8 red flags and section A severity framing fit the stakes.",
+              "limitation": "Minor: T5 assumes three actives layered; product types never given."
+            },
+            {
+              "name": "Responsiveness to information",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "T2 asks what else changed; section E branches on severity and persistence.",
+              "limitation": "Material: product identities (retinoid, acid, fragrance) never asked though they reorder suspects."
+            }
+          ]
+        },
+        {
+          "name": "Constructive self-discovery",
+          "max": 20,
+          "points": 14.2,
+          "sub": [
+            {
+              "name": "Clarification of desires and motivations",
+              "rating": 6.8,
+              "points": 2.72,
+              "example": "Section D offers cause-finding versus calm skin as alternatives with a question.",
+              "limitation": "Material: only in section D; motives never explored within the turns."
+            },
+            {
+              "name": "Examination of assumptions",
+              "rating": 8.4,
+              "points": 3.36,
+              "example": "T3 exposes 'culprit is among the three'; T9 exposes 'result equals diagnosis'.",
+              "limitation": "Minor: assumption that the sting is harmful, not expected adjustment, never examined."
+            },
+            {
+              "name": "Clarification of values and priorities",
+              "rating": 7.3,
+              "points": 2.92,
+              "example": "T7 frames speed versus trustworthy result; T8 safety over knowledge.",
+              "limitation": "Minor: user's own ranking of these never put to them in turns."
+            },
+            {
+              "name": "Recognition of fears and outside expectations",
+              "rating": 5.2,
+              "points": 2.08,
+              "example": "T8's red flags address fear of a serious reaction implicitly.",
+              "limitation": "Material: worry, sunk cost in products, reluctance to abandon them never named."
+            },
+            {
+              "name": "Agency and reflective ownership",
+              "rating": 7.8,
+              "points": 3.12,
+              "example": "T9 'decision, not a diagnosis' and section D question are user-refinable.",
+              "limitation": "Minor: few distinctions framed as questions inside the debate itself."
+            }
+          ]
+        },
+        {
+          "name": "Decision usefulness",
+          "max": 10,
+          "points": 7.86,
+          "sub": [
+            {
+              "name": "Definition of the decision and options",
+              "rating": 7.6,
+              "points": 1.52,
+              "example": "Stop all, reintroduce, simplify layering, seek care; waiting included in T8.",
+              "limitation": "Minor: dropping newest or strongest product named only in section D."
+            },
+            {
+              "name": "Explanation of tradeoffs",
+              "rating": 7,
+              "points": 1.4,
+              "example": "T7 trades speed for trust; T8 weighs waiting against pushing through.",
+              "limitation": "Minor: cost of weeks without products or their benefits never stated."
+            },
+            {
+              "name": "Identification of decisive conditions",
+              "rating": 8.4,
+              "points": 1.68,
+              "example": "Section E: fades, pass-alone-sting-together, red flags, persists two weeks; each favours an option.",
+              "limitation": "Minor: 'several days' calm period and reintroduction gap left vague."
+            },
+            {
+              "name": "Treatment of uncertainty",
+              "rating": 8,
+              "points": 1.6,
+              "example": "Section A flags severity as consequential; T9 separates allergy, irritant, strength.",
+              "limitation": "Minor: unknown product types not flagged as a consequential unknown."
+            },
+            {
+              "name": "Proportionate next steps",
+              "rating": 8.3,
+              "points": 1.66,
+              "example": "Stop tonight, gentle cleanser, log, calm baseline, small-spot retest, red-flag escalation.",
+              "limitation": "Minor: no concrete length for calm phase before retesting."
+            }
+          ]
+        },
+        {
+          "name": "Clarity and engagement",
+          "max": 10,
+          "points": 8.42,
+          "sub": [
+            {
+              "name": "Accessible language",
+              "rating": 8.6,
+              "points": 1.72,
+              "example": "Plain words throughout; 'measuring the damage, not the product' in T6.",
+              "limitation": "Minor: T9 'product B' label never defined earlier."
+            },
+            {
+              "name": "Traceable arguments and references",
+              "rating": 8.4,
+              "points": 1.68,
+              "example": "'That's the trap exactly' (T6) clearly points to T5; 'I'll accept that' to T9.",
+              "limitation": "Minor: T9 'product B' has no referent in any prior turn."
+            },
+            {
+              "name": "Manageable pacing and turn length",
+              "rating": 8.7,
+              "points": 1.74,
+              "example": "Ten turns, each 47 to 52 words, steady pacing.",
+              "limitation": "Minor: uniform turn length gives little rhythmic variation."
+            },
+            {
+              "name": "Distinguishable positions and voices",
+              "rating": 8,
+              "points": 1.6,
+              "example": "Three distinct lenses; T7 states explicit change of position.",
+              "limitation": "Minor: Subtractor and Skeptic converge by T8-T9, voices blur."
+            },
+            {
+              "name": "Economy and sustained attention",
+              "rating": 8.4,
+              "points": 1.68,
+              "example": "Little repetition; section E red flags repeat T8 with purpose.",
+              "limitation": "Minor: T4 and T6 both prescribe logging, slight overlap."
+            }
+          ]
+        },
+        {
+          "name": "Drama and entertainment",
+          "max": 10,
+          "points": 7.06,
+          "sub": [
+            {
+              "name": "Meaningful stakes and tension",
+              "rating": 6.8,
+              "points": 1.36,
+              "example": "T8 red flags raise stakes; T5 threatens the whole method.",
+              "limitation": "Minor: low-stakes polite register; tension resolves quickly by T7."
+            },
+            {
+              "name": "Surprise and reversals",
+              "rating": 7.6,
+              "points": 1.52,
+              "example": "T7 revises method, citing T6's point that irritated skin falsifies retests.",
+              "limitation": "Minor: refinements rather than reversals; no position truly overturned."
+            },
+            {
+              "name": "Personality and expressive voice",
+              "rating": 6.8,
+              "points": 1.36,
+              "example": "Subtractor's 'not a puzzle for a diary' (T8) has some edge.",
+              "limitation": "Minor: all three share one measured, courteous tone; voices fairly flat."
+            },
+            {
+              "name": "Memorable delivery",
+              "rating": 7.8,
+              "points": 1.56,
+              "example": "'Dropping B is a decision, not a diagnosis' (T9); 'measuring the damage' (T6).",
+              "limitation": "Minor: no vivid analogy or example beyond lists of suspects."
+            },
+            {
+              "name": "Anticipation and emotional movement",
+              "rating": 6.3,
+              "points": 1.26,
+              "example": "T5's 'Worse' builds a turn of concern.",
+              "limitation": "Minor: constant even intensity; little emotional movement across turns."
+            }
+          ]
+        }
+      ],
+      "uncapped": 77.5,
+      "score": 77.5,
+      "capReason": null,
+      "strengths": [
+        "T5 layering objection names assumption; T7 and T10 genuinely revise in response.",
+        "Section E gives observable, branch-specific conditions including red flags and persistence.",
+        "T9 separates association from diagnosis, calibrating what any test can show."
+      ],
+      "weaknesses": [
+        "Product identities never asked (T1-T10), though actives like retinoids would reorder suspects.",
+        "Fears, sunk cost and reluctance to drop products never named by any mind.",
+        "Drop-the-strongest option debated only in section D, not in turns."
+      ],
+      "editorNotes": [
+        "Require one turn asking for the missing fact that most reorders options, with each answer's implication.",
+        "Require a mind to test the strongest alternative option (drop the harshest product) inside the turns.",
+        "Ask one mind to name a plausible fear or obligation as a question, not an assertion.",
+        "Push voices apart in register and let one disagreement survive to the final turn."
+      ]
+    }
+  },
+  "preferredVersion": null,
+  "savedAt": "2026-10-14T08:36:11.667Z"
+}

@@ -1,0 +1,330 @@
+{
+  "lineage": "sonnet",
+  "q": 4,
+  "sample": 1,
+  "blind": {
+    "A": 1,
+    "B": null
+  },
+  "scores": {
+    "v1": {
+      "criteria": [
+        {
+          "name": "Quality of discussion",
+          "max": 20,
+          "points": 16.16,
+          "sub": [
+            {
+              "name": "Continuity and responsiveness",
+              "rating": 8.3,
+              "points": 3.32,
+              "example": "T4 'Partly agreed, with a catch'; T5 'Fair hit'; T8 revisits own T5 concession.",
+              "limitation": "minor: T6 moves to trials without answering T4's contamination objection."
+            },
+            {
+              "name": "Development of ideas",
+              "rating": 8.6,
+              "points": 3.44,
+              "example": "T7 splits social from practical clocks, absent from openings; T8 and T9 build on it.",
+              "limitation": "minor: T4's 'wanting thing vs wanting relief' distinction never explicitly reused."
+            },
+            {
+              "name": "Exploration of central tensions",
+              "rating": 6.8,
+              "points": 2.72,
+              "example": "Comparison-as-noise versus feeling-as-information examined across T1-T9.",
+              "limitation": "material: nobody raises drifting apart from friends or belonging as the source of 'behind'."
+            },
+            {
+              "name": "Integration of perspectives",
+              "rating": 8.2,
+              "points": 3.28,
+              "example": "Dissenter revises in T5 and T8; T10-T11 keep an honest split.",
+              "limitation": "minor: Experimenter's position is never reshaped by the others."
+            },
+            {
+              "name": "Progress toward understanding",
+              "rating": 8.5,
+              "points": 3.4,
+              "example": "T9 sharpens to 'what specifically would you be late for'.",
+              "limitation": "minor: T10-T11 mute-versus-audience dispute ends abstract."
+            }
+          ]
+        },
+        {
+          "name": "Quality of disagreement, trust and grounding",
+          "max": 20,
+          "points": 16,
+          "sub": [
+            {
+              "name": "Faithful engagement",
+              "rating": 8,
+              "points": 3.2,
+              "example": "T3 restates Dissenter fairly before distinguishing uncertainty from refusal.",
+              "limitation": "minor: T11 restates position rather than engaging T10's swap-of-comparisons argument."
+            },
+            {
+              "name": "Substance of challenges",
+              "rating": 8.2,
+              "points": 3.28,
+              "example": "T4 names assumption that trials are uncontaminated by envy; T5 answers.",
+              "limitation": "minor: Experimenter (T6) never answers T4's objection to its own method."
+            },
+            {
+              "name": "Accuracy and support",
+              "rating": 8,
+              "points": 3.2,
+              "example": "T2 drummer paraphrase and T5 two-year Walden stay accurate.",
+              "limitation": "minor: T3 puts 'I don't want these' in quote marks with pd false; not user's words."
+            },
+            {
+              "name": "Calibration and transparency",
+              "rating": 7.8,
+              "points": 3.12,
+              "example": "T9 'the alarm may be mostly noise' hedges appropriately.",
+              "limitation": "minor: T1 'a ruler you never chose' asserted as fact about the user."
+            },
+            {
+              "name": "Intellectual honesty and revision",
+              "rating": 8,
+              "points": 3.2,
+              "example": "T8 'I conceded too tidily, then' revises after T7.",
+              "limitation": "minor: T11 holds its view without answering T10's objection."
+            }
+          ]
+        },
+        {
+          "name": "Personal relevance",
+          "max": 10,
+          "points": 7.78,
+          "sub": [
+            {
+              "name": "Identification of the actual concern",
+              "rating": 8.5,
+              "points": 1.7,
+              "example": "T3 catches 'not sure' as uncertainty, not refusal.",
+              "limitation": "minor: possibility the worry is about losing friends never considered."
+            },
+            {
+              "name": "Meaningful use of personal context",
+              "rating": 7.5,
+              "points": 1.5,
+              "example": "T4 ties house-hunting test to the friends' example.",
+              "limitation": "minor: homes and marriage treated generically; their differences never used."
+            },
+            {
+              "name": "Fit with goals and values",
+              "rating": 7.8,
+              "points": 1.56,
+              "example": "Debate respects user's stated uncertainty rather than pushing milestones.",
+              "limitation": "minor: Dissenter's muting agenda (T11) pressed over user's open stance."
+            },
+            {
+              "name": "Attention to constraints and stakes",
+              "rating": 7.5,
+              "points": 1.5,
+              "example": "T7 names fertility window, partner timeline, rate lock as practical clocks.",
+              "limitation": "minor: partner and finances raised as examples, never asked about directly."
+            },
+            {
+              "name": "Responsiveness to information",
+              "rating": 7.6,
+              "points": 1.52,
+              "example": "Section E branches on naming a concrete deadline versus feeling fading.",
+              "limitation": "minor: age, relationship status, finances never turned into questions with implications."
+            }
+          ]
+        },
+        {
+          "name": "Constructive self-discovery",
+          "max": 20,
+          "points": 15.92,
+          "sub": [
+            {
+              "name": "Clarification of desires and motivations",
+              "rating": 8.5,
+              "points": 3.4,
+              "example": "T4 wanting the thing versus wanting to stop feeling behind; section D question.",
+              "limitation": "minor: belonging or fear of being left out not offered as alternative motive."
+            },
+            {
+              "name": "Examination of assumptions",
+              "rating": 8.6,
+              "points": 3.44,
+              "example": "T5 exposes defiance as letting friends set terms; T1 the borrowed ruler.",
+              "limitation": "minor: assumption that milestones are the relevant measure only partly probed."
+            },
+            {
+              "name": "Clarification of values and priorities",
+              "rating": 6.8,
+              "points": 2.72,
+              "example": "T10 proposes building a ruler from what you value.",
+              "limitation": "material: no turn asks what the user actually values or where values conflict."
+            },
+            {
+              "name": "Recognition of fears and outside expectations",
+              "rating": 7.4,
+              "points": 2.96,
+              "example": "T7-T8 separate peer pressure from body clock without pathologising.",
+              "limitation": "minor: fear of isolation as friends pair off left unexamined."
+            },
+            {
+              "name": "Agency and reflective ownership",
+              "rating": 8.5,
+              "points": 3.4,
+              "example": "Section D offers a self-check the user can accept or reject.",
+              "limitation": "minor: section E trials listed somewhat prescriptively."
+            }
+          ]
+        },
+        {
+          "name": "Decision usefulness",
+          "max": 10,
+          "points": 7.98,
+          "sub": [
+            {
+              "name": "Definition of the decision and options",
+              "rating": 7.8,
+              "points": 1.56,
+              "example": "Section E: small test, patience, or own yardstick.",
+              "limitation": "minor: options never laid out side by side within the debate."
+            },
+            {
+              "name": "Explanation of tradeoffs",
+              "rating": 7.3,
+              "points": 1.46,
+              "example": "T4 contamination cost of trials; T10 abstaining swaps comparisons.",
+              "limitation": "minor: time or money cost of trials and of waiting not stated."
+            },
+            {
+              "name": "Identification of decisive conditions",
+              "rating": 8.4,
+              "points": 1.68,
+              "example": "Section E: nameable deadline favours testing; fading feeling favours patience.",
+              "limitation": "minor: 'imagine friends not caring' test is introspective, not observable."
+            },
+            {
+              "name": "Treatment of uncertainty",
+              "rating": 8,
+              "points": 1.6,
+              "example": "T7 separates practical deadlines from social ones.",
+              "limitation": "minor: unknowns not ranked by consequence."
+            },
+            {
+              "name": "Proportionate next steps",
+              "rating": 8.4,
+              "points": 1.68,
+              "example": "T6 afternoon running numbers, asking married friend about a Tuesday.",
+              "limitation": "minor: T4's warning about envy-driven trials not reconciled with T6 steps."
+            }
+          ]
+        },
+        {
+          "name": "Clarity and engagement",
+          "max": 10,
+          "points": 8.6,
+          "sub": [
+            {
+              "name": "Accessible language",
+              "rating": 8.8,
+              "points": 1.76,
+              "example": "T9 'an alarm with no label' plain and precise.",
+              "limitation": "minor: T10 'audience' and 'ruler' metaphors stay abstract."
+            },
+            {
+              "name": "Traceable arguments and references",
+              "rating": 8.7,
+              "points": 1.74,
+              "example": "T5 'Fair hit' and T8 'conceded too tidily' map to T4 and T5.",
+              "limitation": "minor: T10 'That part is slower' has a loose referent."
+            },
+            {
+              "name": "Manageable pacing and turn length",
+              "rating": 9,
+              "points": 1.8,
+              "example": "11 turns, all 37-46 words, digestible throughout.",
+              "limitation": "none"
+            },
+            {
+              "name": "Distinguishable positions and voices",
+              "rating": 8.5,
+              "points": 1.7,
+              "example": "Three titled minds; T5 and T8 mark explicit shifts.",
+              "limitation": "minor: Experimenter reads as moderator more than a distinct voice."
+            },
+            {
+              "name": "Economy and sustained attention",
+              "rating": 8,
+              "points": 1.6,
+              "example": "Few recaps; each turn adds a step.",
+              "limitation": "minor: section E repeats T6 trials nearly verbatim ('curiosity, dread, or relief')."
+            }
+          ]
+        },
+        {
+          "name": "Drama and entertainment",
+          "max": 10,
+          "points": 7.42,
+          "sub": [
+            {
+              "name": "Meaningful stakes and tension",
+              "rating": 7,
+              "points": 1.4,
+              "example": "T7 fertility window raises real stakes from the issue itself.",
+              "limitation": "minor: tension stays polite and low throughout."
+            },
+            {
+              "name": "Surprise and reversals",
+              "rating": 8.3,
+              "points": 1.66,
+              "example": "T8 Dissenter reverses, citing T7's practical deadlines as cause.",
+              "limitation": "minor: Dissenter's two concessions (T5, T8) follow a scripted pattern."
+            },
+            {
+              "name": "Personality and expressive voice",
+              "rating": 7,
+              "points": 1.4,
+              "example": "T2 Thoreau's drummer gives the Dissenter some colour.",
+              "limitation": "minor: voices restrained; Thoreau lacks his sardonic bite."
+            },
+            {
+              "name": "Memorable delivery",
+              "rating": 8,
+              "points": 1.6,
+              "example": "T1 'a ruler you never chose'; T9 'alarm with no label'.",
+              "limitation": "minor: few concrete images beyond T6's ordinary Tuesday."
+            },
+            {
+              "name": "Anticipation and emotional movement",
+              "rating": 6.8,
+              "points": 1.36,
+              "example": "T7-T8 brief rise in stakes.",
+              "limitation": "material: near-identical turn lengths and even tone give flat rhythm."
+            }
+          ]
+        }
+      ],
+      "uncapped": 79.86,
+      "score": 79.86,
+      "capReason": null,
+      "strengths": [
+        "T7 social-versus-practical clocks distinction drives T8 reversal and T9 'what would you be late for'.",
+        "T3-T4 separate uncertainty from refusal and wanting from relief, giving real reflection material.",
+        "Section E converts the debate into observable conditions and small reversible trials."
+      ],
+      "weaknesses": [
+        "Nobody raises friendship drift or belonging as what 'behind' may mean.",
+        "Values never elicited: T10 says build your own ruler but asks nothing about the user's.",
+        "Flat rhythm: identical-length polite turns; Experimenter never answers T4's contamination objection."
+      ],
+      "editorNotes": [
+        "Require one turn to name a consideration none of the minds' books covers, such as social or relational loss.",
+        "Require a mind to ask the user a direct values question with what each answer would imply.",
+        "Require the targeted mind to answer each named objection in its next turn before moving on.",
+        "Vary turn length and intensity deliberately; allow one short, sharp turn."
+      ]
+    }
+  },
+  "preferredVersion": null,
+  "savedAt": "2026-10-14T08:36:11.896Z"
+}

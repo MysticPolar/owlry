@@ -1,0 +1,133 @@
+{
+  "lineage": "sonnet",
+  "lane": "sonnet",
+  "q": 4,
+  "version": 1,
+  "sample": 1,
+  "model": "sonnet",
+  "settings": {
+    "agentType": "Explore",
+    "effort": "medium",
+    "note": "latency includes Claude Code subagent overhead"
+  },
+  "latencyMs": 45339,
+  "output": {
+    "situation": "You're watching friends hit milestones like buying a home or getting married, and you feel behind even though you're unsure you want those things. What you've reported is the feeling of lagging and your uncertainty about the goals. What's unknown is whether the feeling points to a real wish, a real deadline, or just the pull of comparison. The tension is between treating 'behind' as a false measurement and treating it as information worth checking.",
+    "minds": [
+      {
+        "title": "The Status Analyst",
+        "concern": "Where the feeling of being behind comes from, and how comparison with peers shapes what we think we want.",
+        "author": "Alain de Botton",
+        "book": "Status Anxiety",
+        "year": 2004
+      },
+      {
+        "title": "The Solitary Dissenter",
+        "concern": "Living by your own measure instead of the pace and scripts of the people around you.",
+        "author": "Henry David Thoreau",
+        "book": "Walden",
+        "year": 1854
+      },
+      {
+        "title": "The Experimenter",
+        "concern": "Learning what fits through small, reversible trials rather than through introspection alone.",
+        "author": "Herminia Ibarra",
+        "book": "Working Identity",
+        "year": 2003
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Status Analyst",
+        "text": "Feeling behind isn't a verdict on your life. It's a reading from a ruler you never chose. Status anxiety grows when we compare ourselves with people who started where we did, and weddings and mortgages are the most visible, datable scoreboard around.",
+        "author": "Alain de Botton",
+        "book": "Status Anxiety",
+        "pd": false,
+        "basis": "[Basis: Alain de Botton, Status Anxiety (source not verified)]"
+      },
+      {
+        "speaker": "The Solitary Dissenter",
+        "text": "Then stop measuring. Thoreau said a person out of step with companions may simply hear a different drummer. Why treat that lag as a problem to fix, rather than a sign you're walking a different road, however far off the music sounds?",
+        "author": "Henry David Thoreau",
+        "book": "Walden",
+        "pd": true,
+        "basis": "[Basis: Henry David Thoreau, Walden (source not verified)]"
+      },
+      {
+        "speaker": "The Experimenter",
+        "text": "Careful. They said they're 'not sure', not 'I don't want these'. Uncertainty is different from refusal. Quitting the race by pure reflection is as untested as joining it by default. We usually learn what fits by trying things, not by thinking harder.",
+        "author": "Herminia Ibarra",
+        "book": "Working Identity",
+        "pd": false,
+        "basis": "[Basis: Herminia Ibarra, Working Identity (source not verified)]"
+      },
+      {
+        "speaker": "The Status Analyst",
+        "text": "Partly agreed, with a catch. Experiments run on borrowed scripts too. If you test house-hunting because everyone else is, envy contaminates the result. You'd need to separate wanting the thing from wanting to stop feeling behind. They can feel identical from inside.",
+        "author": "Alain de Botton",
+        "book": "Status Anxiety",
+        "pd": false,
+        "basis": "[Basis: Alain de Botton, Status Anxiety (source not verified)]"
+      },
+      {
+        "speaker": "The Solitary Dissenter",
+        "text": "Fair hit, and I'd go further than the drummer line. Pure defiance is another way of letting your friends set the terms, since you're defining yourself against them. Thoreau went to the woods as a trial and left after two years. Refusal should be provisional too.",
+        "author": "Henry David Thoreau",
+        "book": "Walden",
+        "pd": true,
+        "basis": "[Basis: Henry David Thoreau, Walden (source not verified)]"
+      },
+      {
+        "speaker": "The Experimenter",
+        "text": "Then make the trials small and reversible. Spend an afternoon running the real numbers on buying. Ask a married friend what an ordinary Tuesday looks like. Notice whether you feel curiosity, dread, or relief. Each is data a daydream can't give you.",
+        "author": "Herminia Ibarra",
+        "book": "Working Identity",
+        "pd": false,
+        "basis": "[Basis: Herminia Ibarra, Working Identity (source not verified)]"
+      },
+      {
+        "speaker": "The Status Analyst",
+        "text": "But don't dismiss every clock as imaginary. Some are social, like being 'behind' at a given age. Others are practical, like a fertility window, a partner's timeline, or a rate you can only lock in now. The anxiety treats all of them as one pressure.",
+        "author": "Alain de Botton",
+        "book": "Status Anxiety",
+        "pd": false,
+        "basis": "[Basis: Alain de Botton, Status Anxiety (source not verified)]"
+      },
+      {
+        "speaker": "The Solitary Dissenter",
+        "text": "I conceded too tidily, then. Some deadlines are real. But the feeling can't tell you which ones. A body clock and a peer clock produce the same sinking sensation, so the feeling is a poor judge of its own cause.",
+        "author": "Henry David Thoreau",
+        "book": "Walden",
+        "pd": true,
+        "basis": "[Basis: Henry David Thoreau, Walden (source not verified)]"
+      },
+      {
+        "speaker": "The Experimenter",
+        "text": "So treat it as an alarm with no label. Instead of asking whether you're behind, ask what specifically you'd be late for. If you can name something, test it. If you can't, that's useful too, and the alarm may be mostly noise.",
+        "author": "Herminia Ibarra",
+        "book": "Working Identity",
+        "pd": false,
+        "basis": "[Basis: Herminia Ibarra, Working Identity (source not verified)]"
+      },
+      {
+        "speaker": "The Status Analyst",
+        "text": "I still doubt anyone fully steps out of the audience. Abstaining to dodge anxiety can just swap one comparison for another. A better aim is choosing which audience counts, and building a ruler from what you value. That part is slower and unfinished.",
+        "author": "Alain de Botton",
+        "book": "Status Anxiety",
+        "pd": false,
+        "basis": "[Basis: Alain de Botton, Status Anxiety (source not verified)]"
+      },
+      {
+        "speaker": "The Solitary Dissenter",
+        "text": "And I still think more of that audience can be muted than you allow. We remain split on whether to turn the comparison down or to pick better people to compare with. Both beat obeying it unexamined.",
+        "author": "Henry David Thoreau",
+        "book": "Walden",
+        "pd": true,
+        "basis": "[Basis: Henry David Thoreau, Walden (source not verified)]"
+      }
+    ],
+    "clearer": "The main insight is that 'feeling behind' and 'wanting these things' are separate signals, and the feeling alone can't tell you whether a want, a real deadline, or social comparison is behind it. Still disputed is whether the healthier move is to quiet the comparison (the Dissenter) or to choose a more meaningful audience and measure (the Analyst), with the Experimenter holding that only small trials will settle what you actually want. A possible self-reflection is what specifically you would feel you were late for, and whether that answer holds when your friends are out of the picture.",
+    "dependsOn": "If you can name a concrete thing you'd be late for, such as wanting children, a partner's timeline, or a financial window, then a small, low-cost test of it becomes more reasonable, because real deadlines don't care whether the pressure behind them is social. If the sense of lag fades when you imagine your friends not knowing or caring, then the feeling is more likely comparison, and patience or building your own yardstick becomes more reasonable. If you can't tell which of these applies, a few reversible trials are a proportionate way to find out: run the real numbers on buying, spend time seeing how committed relationships work day to day, and notice whether you feel curiosity, dread, or relief."
+  },
+  "savedAt": "2026-10-14T08:32:24.538Z"
+}

@@ -1,0 +1,330 @@
+{
+  "lineage": "gemini",
+  "q": 2,
+  "sample": 1,
+  "blind": {
+    "A": 1,
+    "B": null
+  },
+  "scores": {
+    "v1": {
+      "criteria": [
+        {
+          "name": "Quality of discussion",
+          "max": 20,
+          "points": 11.24,
+          "sub": [
+            {
+              "name": "Continuity and responsiveness",
+              "rating": 6.5,
+              "points": 2.6,
+              "example": "T4-T6 each answer the prior speaker's claim by name.",
+              "limitation": "Material: templated 'X claims... but' openers, T2-T9; replies restate rather than build."
+            },
+            {
+              "name": "Development of ideas",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "T4 adds burnout eroding productivity; T8 adds simulated-commute test.",
+              "limitation": "Material: no mid-debate distinction is taken up later; T5 sovereignty dropped after T6."
+            },
+            {
+              "name": "Exploration of central tensions",
+              "rating": 5.3,
+              "points": 2.12,
+              "example": "T2-T3 set present time against future earning power.",
+              "limitation": "Material: commute mode, remote days, family time never raised by any mind."
+            },
+            {
+              "name": "Integration of perspectives",
+              "rating": 4.8,
+              "points": 1.92,
+              "example": "T7 Optimizer reshapes view toward Strategist's capital point.",
+              "limitation": "Material: T7 shift unexplained; Stoic and Strategist never qualify each other."
+            },
+            {
+              "name": "Progress toward understanding",
+              "rating": 6,
+              "points": 2.4,
+              "example": "Section D frames sovereignty now versus leverage later.",
+              "limitation": "Material: ends on rhetorical T9 question, no sharper test of growth claim."
+            }
+          ]
+        },
+        {
+          "name": "Quality of disagreement, trust and grounding",
+          "max": 20,
+          "points": 10.56,
+          "sub": [
+            {
+              "name": "Faithful engagement",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "T4 restates Strategist's option argument accurately before objecting.",
+              "limitation": "Material: T7 credits Strategist with 'reduce hours elsewhere', never said; T3 dismisses Stoic."
+            },
+            {
+              "name": "Substance of challenges",
+              "rating": 5,
+              "points": 2,
+              "example": "T4 names burnout assumption undermining T3's long-term gains.",
+              "limitation": "Material: T6 overstates a 25% raise ending wage work; T4 'high probability' unsupported."
+            },
+            {
+              "name": "Accuracy and support",
+              "rating": 5.8,
+              "points": 2.32,
+              "example": "T2 paraphrase of Seneca's 'life is long' line is faithful.",
+              "limitation": "Material: optionality pinned on Skin in the Game; T4 burnout probability unsupported."
+            },
+            {
+              "name": "Calibration and transparency",
+              "rating": 5.3,
+              "points": 2.12,
+              "example": "Frequent 'might' and 'if' hedges in T1, T3, T6.",
+              "limitation": "Material: T2 'no sum of money can replace' and T4 'high probability' overconfident."
+            },
+            {
+              "name": "Intellectual honesty and revision",
+              "rating": 4.8,
+              "points": 1.92,
+              "example": "T7 Optimizer explicitly drops his T1 hourly-wage claim.",
+              "limitation": "Material: T7 drops sound claim for vague reason; Stoic never answers T6."
+            }
+          ]
+        },
+        {
+          "name": "Personal relevance",
+          "max": 10,
+          "points": 4.46,
+          "sub": [
+            {
+              "name": "Identification of the actual concern",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Section A frames math problem versus lifestyle question.",
+              "limitation": "Material: never asks what 'worth it' means to this user."
+            },
+            {
+              "name": "Meaningful use of personal context",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Section E converts 90 minutes into 15 hours weekly.",
+              "limitation": "Material: only the two given numbers used; current commute never considered."
+            },
+            {
+              "name": "Fit with goals and values",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Section E branches on capital need versus daily well-being.",
+              "limitation": "Material: user's own priorities never asked; speakers' values dominate T2, T5."
+            },
+            {
+              "name": "Attention to constraints and stakes",
+              "rating": 3.8,
+              "points": 0.76,
+              "example": "T8 trial respects time cost of two weeks.",
+              "limitation": "Material: T6 invents existing financial constraints; transit mode, family, remote ignored."
+            },
+            {
+              "name": "Responsiveness to information",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Section E gives three conditional branches.",
+              "limitation": "Material: no question on transit mode, current commute, or remote options."
+            }
+          ]
+        },
+        {
+          "name": "Constructive self-discovery",
+          "max": 20,
+          "points": 11.52,
+          "sub": [
+            {
+              "name": "Clarification of desires and motivations",
+              "rating": 6.3,
+              "points": 2.52,
+              "example": "Section D: fear of stagnation versus wanting the lifestyle, as alternatives.",
+              "limitation": "Material: appears only in summary; no debate turn explores either motive."
+            },
+            {
+              "name": "Examination of assumptions",
+              "rating": 5.8,
+              "points": 2.32,
+              "example": "T2 surfaces assumption that time is merely currency.",
+              "limitation": "Material: assumption that the job brings growth (T3) never examined."
+            },
+            {
+              "name": "Clarification of values and priorities",
+              "rating": 6,
+              "points": 2.4,
+              "example": "T5 sovereignty over one's day set against T6 future independence.",
+              "limitation": "Material: no question asking the user to rank these values."
+            },
+            {
+              "name": "Recognition of fears and outside expectations",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Section D names fear of stagnation.",
+              "limitation": "Material: social, family or obligation pressures never mentioned anywhere."
+            },
+            {
+              "name": "Agency and reflective ownership",
+              "rating": 6.2,
+              "points": 2.48,
+              "example": "T8 trial and section E branches are user-testable.",
+              "limitation": "Material: T9 closes with leading 'can you really have both?'."
+            }
+          ]
+        },
+        {
+          "name": "Decision usefulness",
+          "max": 10,
+          "points": 5.18,
+          "sub": [
+            {
+              "name": "Definition of the decision and options",
+              "rating": 4.8,
+              "points": 0.96,
+              "example": "Section E frames accept versus decline by priority.",
+              "limitation": "Material: negotiation, remote days, relocation, or counteroffer never raised."
+            },
+            {
+              "name": "Explanation of tradeoffs",
+              "rating": 5.3,
+              "points": 1.06,
+              "example": "Section E: 15 hours weekly against salary jump.",
+              "limitation": "Material: T1 hourly-wage calculation never done; raise value never quantified."
+            },
+            {
+              "name": "Identification of decisive conditions",
+              "rating": 5,
+              "points": 1,
+              "example": "T8: after 14 days, does money feel worth the time.",
+              "limitation": "Material: section E conditions not countable; no observable growth threshold."
+            },
+            {
+              "name": "Treatment of uncertainty",
+              "rating": 4.3,
+              "points": 0.86,
+              "example": "T3 and T6 flag growth as conditional 'if'.",
+              "limitation": "Material: growth and burnout uncertainty not separated from minor unknowns."
+            },
+            {
+              "name": "Proportionate next steps",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "T8 simulated commute for 14 days is cheap and concrete.",
+              "limitation": "Minor: section E 'inquire' step lacks specifics on what to ask."
+            }
+          ]
+        },
+        {
+          "name": "Clarity and engagement",
+          "max": 10,
+          "points": 6.72,
+          "sub": [
+            {
+              "name": "Accessible language",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Plain phrasing throughout; T8 instructions concrete.",
+              "limitation": "Minor: T2 'carriage of transit', T4 'marginal productivity' slightly opaque."
+            },
+            {
+              "name": "Traceable arguments and references",
+              "rating": 6.8,
+              "points": 1.36,
+              "example": "Each turn names whose point it answers, T2-T9.",
+              "limitation": "Material: T7 'as the Strategist suggests' maps to no clear turn."
+            },
+            {
+              "name": "Manageable pacing and turn length",
+              "rating": 7.3,
+              "points": 1.46,
+              "example": "Nine turns, each roughly 45 to 60 words.",
+              "limitation": "Minor: uniform turn rhythm, no short sharp exchanges."
+            },
+            {
+              "name": "Distinguishable positions and voices",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "Optimizer, Stoic, Strategist hold distinct positions.",
+              "limitation": "Material: all three use identical 'X claims... but' openers; voices sound alike."
+            },
+            {
+              "name": "Economy and sustained attention",
+              "rating": 6,
+              "points": 1.2,
+              "example": "T8 introduces fresh practical content late.",
+              "limitation": "Material: openers recap prior turns verbatim, e.g. T5, T6."
+            }
+          ]
+        },
+        {
+          "name": "Drama and entertainment",
+          "max": 10,
+          "points": 5,
+          "sub": [
+            {
+              "name": "Meaningful stakes and tension",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "T5 frames commute as trading sovereignty for wage.",
+              "limitation": "Material: tension stays abstract; no concrete life cost named."
+            },
+            {
+              "name": "Surprise and reversals",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "T7 Optimizer abandons his T1 calculation.",
+              "limitation": "Material: T7 reversal has no traced cause from an earlier argument."
+            },
+            {
+              "name": "Personality and expressive voice",
+              "rating": 5,
+              "points": 1,
+              "example": "Stoic's T2 Seneca-flavoured line has some colour.",
+              "limitation": "Material: Optimizer and Strategist read as flat, templated voices."
+            },
+            {
+              "name": "Memorable delivery",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "T8: sit in a chair 90 minutes before and after work.",
+              "limitation": "Material: few analogies or sharp lines beyond T8."
+            },
+            {
+              "name": "Anticipation and emotional movement",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "T9 ends on a pointed question.",
+              "limitation": "Material: constant even intensity; no build or release across turns."
+            }
+          ]
+        }
+      ],
+      "uncapped": 54.68,
+      "score": 54.68,
+      "capReason": null,
+      "strengths": [
+        "T8 simulated 14-day commute is a concrete, cheap test the user can run.",
+        "Section D frames sovereignty now versus leverage later, offering two motives as alternatives.",
+        "Three distinct positions (utility, finite life, optionality) each answer the prior speaker."
+      ],
+      "weaknesses": [
+        "Personal relevance thin: no question on transit mode, current commute, remote days or family (all minds).",
+        "T7 Optimizer reversal lacks a traced cause and drops the useful hourly-wage calculation.",
+        "Templated 'X claims... but' openers flatten voices and recap prior turns, T2-T9."
+      ],
+      "editorNotes": [
+        "Require at least two turns to pose questions on missing facts (transit mode, remote days, current commute) with what each answer implies.",
+        "Require any reversal to cite the specific earlier turn and argument that changed the speaker's mind.",
+        "Ban formulaic openers restating the prior speaker; require a mid-debate distinction that a later turn uses.",
+        "Ask for one countable threshold from the user's own numbers, e.g. effective hourly wage after commute."
+      ]
+    }
+  },
+  "preferredVersion": null,
+  "savedAt": "2026-10-14T08:35:48.887Z"
+}

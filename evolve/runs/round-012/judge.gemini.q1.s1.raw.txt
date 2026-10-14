@@ -1,0 +1,81 @@
+{
+  "A": {
+    "criteria": [
+      {"name": "Quality of discussion", "max": 20.00, "points": 11.12,
+       "sub": [
+        {"name": "Continuity and responsiveness", "rating": 6.00, "points": 2.40, "example": "Turns 4 and 5 explicitly take up the prior speaker's claim.", "limitation": "material: Healer turns 3 and 6 ignore prior objections; near-monologue."},
+        {"name": "Development of ideas", "rating": 6.80, "points": 2.72, "example": "Turn 5 adds inflamed-baseline confound; turn 7 builds a 7-day wait on it.", "limitation": "material: turn 6 restates turn 3, adding nothing new."},
+        {"name": "Exploration of central tensions", "rating": 4.50, "points": 1.80, "example": "Turn 9 frames single ingredient versus cumulative change.", "limitation": "material: irritant vs allergic reaction, strong actives, when to see a doctor never raised."},
+        {"name": "Integration of perspectives", "rating": 5.50, "points": 2.20, "example": "Turn 7: Reductionist absorbs Minimalist's recovery pause into the protocol.", "limitation": "material: Healer's stress view never integrated or tested by others."},
+        {"name": "Progress toward understanding", "rating": 5.00, "points": 2.00, "example": "Section E ends with an observable 48-hour water test.", "limitation": "material: section D's 'cumulative stress' insight is vaguer than turn 5's concrete point."}
+       ]},
+      {"name": "Quality of disagreement, trust and grounding", "max": 20.00, "points": 10.16,
+       "sub": [
+        {"name": "Faithful engagement", "rating": 4.80, "points": 1.92, "example": "Turn 5 restates Reductionist's unsolved-question concern accurately.", "limitation": "material: turn 2 opposes testing though turn 1 already stops all three products."},
+        {"name": "Substance of challenges", "rating": 6.00, "points": 2.40, "example": "Turn 5 names the clean-baseline assumption and the misread it causes; turn 7 answers.", "limitation": "material: turn 6 objection is unspecific and unanswered by anyone."},
+        {"name": "Accuracy and support", "rating": 3.80, "points": 1.52, "example": "No quotation marks; all pd false; books exist.", "limitation": "material: turns 3, 6 stretch van der Kolk to skin stinging; section E inference unsupported."},
+        {"name": "Calibration and transparency", "rating": 5.00, "points": 2.00, "example": "Turns hedge with 'might' rather than asserting diagnoses.", "limitation": "material: section E says 'likely reacting to a specific chemical' from a 24-hour stop."},
+        {"name": "Intellectual honesty and revision", "rating": 5.80, "points": 2.32, "example": "Turn 7: Reductionist explicitly drops immediate testing.", "limitation": "material: Healer never answers turn 4's unsolved-culprit objection."}
+       ]},
+      {"name": "Personal relevance", "max": 10.00, "points": 4.52,
+       "sub": [
+        {"name": "Identification of the actual concern", "rating": 6.00, "points": 1.20, "example": "Section D separates finding the culprit from ending discomfort.", "limitation": "material: severity and safety of the reaction never treated as part of the concern."},
+        {"name": "Meaningful use of personal context", "rating": 4.50, "points": 0.90, "example": "Turn 1 uses three products started together to set isolation.", "limitation": "material: product types or ingredients never used to shape the reasoning."},
+        {"name": "Fit with goals and values", "rating": 5.50, "points": 1.10, "example": "Turn 8 weighs lost skincare progress against clarity.", "limitation": "minor: user's skincare goals assumed, not identified."},
+        {"name": "Attention to constraints and stakes", "rating": 3.80, "points": 0.76, "example": "Turn 5 flags reintroducing on inflamed skin as risky.", "limitation": "material: no warning signs (swelling, eyes, hives) or medical threshold."},
+        {"name": "Responsiveness to information", "rating": 2.80, "points": 0.56, "example": "Turn 8 asks whether one product feels harshest.", "limitation": "material: never asks which products, actives like retinoids or acids, or severity."}
+       ]},
+      {"name": "Constructive self-discovery", "max": 20.00, "points": 10.40,
+       "sub": [
+        {"name": "Clarification of desires and motivations", "rating": 6.50, "points": 2.60, "example": "Section D offers culprit-finding versus quick relief as alternatives with a question.", "limitation": "material: appears only in summary; debate turns never explore it."},
+        {"name": "Examination of assumptions", "rating": 5.50, "points": 2.20, "example": "Turn 9 questions the assumption that one ingredient is to blame.", "limitation": "material: assumption that products caused it at all, or need for all three, unexamined."},
+        {"name": "Clarification of values and priorities", "rating": 5.00, "points": 2.00, "example": "Turn 8: clarity versus routine progress.", "limitation": "material: conflict raised once, never weighed by other minds."},
+        {"name": "Recognition of fears and outside expectations", "rating": 3.50, "points": 1.40, "example": "Turn 3 notes being overwhelmed by changes.", "limitation": "material: turn 3 casts stinging as skin reflecting stress, edging toward pathologising."},
+        {"name": "Agency and reflective ownership", "rating": 5.50, "points": 2.20, "example": "Section E gives branches the user can choose among.", "limitation": "material: few distinctions the user could refine; mostly a protocol handed down."}
+       ]},
+      {"name": "Decision usefulness", "max": 10.00, "points": 5.00,
+       "sub": [
+        {"name": "Definition of the decision and options", "rating": 5.50, "points": 1.10, "example": "Turns 1, 2, 7: stop all, full pause, staged reintroduction.", "limitation": "material: patch testing, keeping one product, or seeing a dermatologist never offered."},
+        {"name": "Explanation of tradeoffs", "rating": 5.50, "points": 1.10, "example": "Turn 8 names lost time as cost of the 7-day wait.", "limitation": "material: cost of the multi-week protocol never totalled or compared."},
+        {"name": "Identification of decisive conditions", "rating": 5.00, "points": 1.00, "example": "Section E: sting after 48 hours of water favours recovery.", "limitation": "material: 7 and 3 day figures not drawn from user facts; branch logic doubtful."},
+        {"name": "Treatment of uncertainty", "rating": 3.50, "points": 0.70, "example": "Turn 9 names the unresolved cause question.", "limitation": "material: allergy versus irritation, the consequential unknown, never separated."},
+        {"name": "Proportionate next steps", "rating": 5.50, "points": 1.10, "example": "Section E: log reintroductions one product every 3 days.", "limitation": "material: no escalation step if symptoms worsen."}
+       ]},
+      {"name": "Clarity and engagement", "max": 10.00, "points": 6.58,
+       "sub": [
+        {"name": "Accessible language", "rating": 7.50, "points": 1.50, "example": "Turn 7 states plain days and steps.", "limitation": "minor: turn 6 'cumulative pressure of routines' is vague."},
+        {"name": "Traceable arguments and references", "rating": 6.80, "points": 1.36, "example": "Turns 4 and 5 name the speaker they answer.", "limitation": "minor: turn 6 'If you feel' target ambiguous; turn 3 answers unnamed testing."},
+        {"name": "Manageable pacing and turn length", "rating": 7.80, "points": 1.56, "example": "Nine turns, each within 25 to 65 words.", "limitation": "minor: Healer's turns stall pace at 3 and 6."},
+        {"name": "Distinguishable positions and voices", "rating": 4.80, "points": 0.96, "example": "Reductionist's isolation stance is distinct.", "limitation": "material: Minimalist and Healer both argue a pause; all speak in identical 'you might' hedges."},
+        {"name": "Economy and sustained attention", "rating": 6.00, "points": 1.20, "example": "Section E condenses the debate into three branches.", "limitation": "material: turn 6 repeats turn 3's overwhelm point."}
+       ]},
+      {"name": "Drama and entertainment", "max": 10.00, "points": 3.46,
+       "sub": [
+        {"name": "Meaningful stakes and tension", "rating": 4.00, "points": 0.80, "example": "Turn 4: culprit may stay unknown if you just quit.", "limitation": "material: tension low; turns 1 and 2 largely agree on stopping."},
+        {"name": "Surprise and reversals", "rating": 4.00, "points": 0.80, "example": "Turn 7: Reductionist drops immediate testing.", "limitation": "material: turn 7 reversal names no turn or argument that changed his mind."},
+        {"name": "Personality and expressive voice", "rating": 3.00, "points": 0.60, "example": "Healer's body-signal framing gives slight colour.", "limitation": "material: all three minds flat, uniformly hedged."},
+        {"name": "Memorable delivery", "rating": 2.80, "points": 0.56, "example": "Turn 9's 48-hour water test is concrete.", "limitation": "material: no analogy, vivid example or sharp line anywhere."},
+        {"name": "Anticipation and emotional movement", "rating": 3.50, "points": 0.70, "example": "Turn 9 sets up an unresolved test.", "limitation": "material: uniform low intensity across all nine turns."}
+       ]}
+    ],
+    "uncapped": 51.24,
+    "score": 51.24,
+    "capReason": null,
+    "strengths": [
+      "Turn 5's inflamed-baseline confound is a real mid-debate distinction that turn 7 uses.",
+      "Section E gives observable conditions (48-hour water test) tied to options.",
+      "Section D poses culprit versus quick relief as a question the user can answer."
+    ],
+    "weaknesses": [
+      "Never asks which products or actives, nor gives warning signs for seeing a doctor.",
+      "Healer (turns 3, 6) misapplies trauma framing to skin stinging and repeats itself.",
+      "Turn 7 reversal unexplained; all three voices flat and alike in hedging."
+    ],
+    "editorNotes": [
+      "Require one turn to ask for the consequential missing facts (product names, actives, severity) with what each answer implies.",
+      "Require minds whose sources actually fit the domain; forbid stretching a book to an unrelated mechanism.",
+      "Require any change of position to name the earlier turn and argument that caused it.",
+      "For health situations, require a safety threshold branch (when to stop and see a professional)."
+    ]
+  }
+}

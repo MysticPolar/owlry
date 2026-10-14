@@ -1,0 +1,330 @@
+{
+  "lineage": "sonnet",
+  "q": 3,
+  "sample": 1,
+  "blind": {
+    "A": 1,
+    "B": null
+  },
+  "scores": {
+    "v1": {
+      "criteria": [
+        {
+          "name": "Quality of discussion",
+          "max": 20,
+          "points": 16.36,
+          "sub": [
+            {
+              "name": "Continuity and responsiveness",
+              "rating": 8.2,
+              "points": 3.28,
+              "example": "T4 turns Skeptic's alternative stories into the case for speaking; T5 opens 'Fair'.",
+              "limitation": "minor: T3 adds a fresh frame rather than answering T2 directly."
+            },
+            {
+              "name": "Development of ideas",
+              "rating": 8.4,
+              "points": 3.36,
+              "example": "T8 introduces 'decide which answers would change what you do'; T9 builds answer branches on it.",
+              "limitation": "minor: T10 largely restates T4's resentment-leaks point."
+            },
+            {
+              "name": "Exploration of central tensions",
+              "rating": 7.6,
+              "points": 3.04,
+              "example": "Speaking versus giving without a ledger examined across T3, T6, T9, T10.",
+              "limitation": "minor: section A's 'less interest' possibility never examined squarely in any turn."
+            },
+            {
+              "name": "Integration of perspectives",
+              "rating": 8.3,
+              "points": 3.32,
+              "example": "T6 Idealist reshapes speaking into invitation; T7 sharpens it; T10 keeps real disagreement.",
+              "limitation": "minor: T7 'Agreed' converges quickly without testing T6's framing."
+            },
+            {
+              "name": "Progress toward understanding",
+              "rating": 8.4,
+              "points": 3.36,
+              "example": "Section D reframes choice as what the conversation should find out.",
+              "limitation": "minor: wisdom-versus-avoidance split (T10) left with little argument either side."
+            }
+          ]
+        },
+        {
+          "name": "Quality of disagreement, trust and grounding",
+          "max": 20,
+          "points": 15.84,
+          "sub": [
+            {
+              "name": "Faithful engagement",
+              "rating": 8,
+              "points": 3.2,
+              "example": "T4 accurately restates Skeptic's T2 alternatives before using them.",
+              "limitation": "minor: T10 attributes 'maturity' framing to acceptance; no speaker used it."
+            },
+            {
+              "name": "Substance of challenges",
+              "rating": 8.3,
+              "points": 3.32,
+              "example": "T8 names assumption initiating equals caring and says replies get spun otherwise.",
+              "limitation": "minor: Plain Speaker, T8's real target, never answers the initiating-equals-caring objection."
+            },
+            {
+              "name": "Accuracy and support",
+              "rating": 7.4,
+              "points": 2.96,
+              "example": "Rosenberg's observation-request distinction (T7) and Emerson's sincerity (T6) faithfully used.",
+              "limitation": "minor: T5 'defensiveness is the fast reaction' stretches Kahneman; single-quoted phrases in pd=false turns."
+            },
+            {
+              "name": "Calibration and transparency",
+              "rating": 7.4,
+              "points": 2.96,
+              "example": "T9 basis marks lopsided-friendship extension as the speaker's own, not Emerson's.",
+              "limitation": "minor: T1 'It curdles' and T4 'Resentment leaks' asserted as certainties."
+            },
+            {
+              "name": "Intellectual honesty and revision",
+              "rating": 8.5,
+              "points": 3.4,
+              "example": "T5 concedes asking beats guessing; T10 concedes possible unfixable mismatch.",
+              "limitation": "minor: no speaker revises after T8's challenge to the request's premise."
+            }
+          ]
+        },
+        {
+          "name": "Personal relevance",
+          "max": 10,
+          "points": 7.6,
+          "sub": [
+            {
+              "name": "Identification of the actual concern",
+              "rating": 8.2,
+              "points": 1.64,
+              "example": "Section A: unknown reason decides whether speaking is request, test, or accusation.",
+              "limitation": "minor: never asks whether user seeks reassurance, fairness, or permission to stop."
+            },
+            {
+              "name": "Meaningful use of personal context",
+              "rating": 8,
+              "points": 1.6,
+              "example": "Lovely meetings used as evidence (T3) and as timing for asking (T11).",
+              "limitation": "minor: the 'if I stop texting' detail is probed (T5) but not tied to user's history."
+            },
+            {
+              "name": "Fit with goals and values",
+              "rating": 7.6,
+              "points": 1.52,
+              "example": "T6 invitation keeps the warmth the user values in the meetings.",
+              "limitation": "minor: speakers' values (sincerity, no ledger) dominate; user's own priority never asked."
+            },
+            {
+              "name": "Attention to constraints and stakes",
+              "rating": 7,
+              "points": 1.4,
+              "example": "T11 weighs timing: raise after a good meeting, not after silence.",
+              "limitation": "material: T1 invents 'months'; T6, T9, T11 assume the friend is female."
+            },
+            {
+              "name": "Responsiveness to information",
+              "rating": 7.2,
+              "points": 1.44,
+              "example": "T9 branches on friend's two possible answers and what each implies.",
+              "limitation": "minor: duration of pattern and prior hints never asked as questions."
+            }
+          ]
+        },
+        {
+          "name": "Constructive self-discovery",
+          "max": 20,
+          "points": 16.16,
+          "sub": [
+            {
+              "name": "Clarification of desires and motivations",
+              "rating": 8.4,
+              "points": 3.36,
+              "example": "Section D: does lopsidedness bother you itself, or only what it means about caring?",
+              "limitation": "minor: the motive question appears only in section D, not inside the debate."
+            },
+            {
+              "name": "Examination of assumptions",
+              "rating": 8.6,
+              "points": 3.44,
+              "example": "T8 surfaces initiating equals caring; T5 questions whether the stop-texting test was run.",
+              "limitation": "minor: assumption that the meetings are mutual delight never examined."
+            },
+            {
+              "name": "Clarification of values and priorities",
+              "rating": 8.2,
+              "points": 3.28,
+              "example": "T9 and T10 set giving freely against naming an unmet need.",
+              "limitation": "minor: user's own weighting of reciprocity versus ease never put as a question."
+            },
+            {
+              "name": "Recognition of fears and outside expectations",
+              "rating": 6.8,
+              "points": 2.72,
+              "example": "T10 names the persisting pang as a signal, not a flaw.",
+              "limitation": "material: fear that asking reveals she cares less, or loses the friend, never explored."
+            },
+            {
+              "name": "Agency and reflective ownership",
+              "rating": 8.4,
+              "points": 3.36,
+              "example": "Section E: user decides freely how much planning to keep after asking.",
+              "limitation": "minor: T10 disagreement handed over without a question the user could answer."
+            }
+          ]
+        },
+        {
+          "name": "Decision usefulness",
+          "max": 10,
+          "points": 8.28,
+          "sub": [
+            {
+              "name": "Definition of the decision and options",
+              "rating": 8.4,
+              "points": 1.68,
+              "example": "Speak, accept, silent test, or observe then ask once: T3, T5, T6, section E.",
+              "limitation": "minor: letting the friendship shrink or stepping back is never named as an option."
+            },
+            {
+              "name": "Explanation of tradeoffs",
+              "rating": 8,
+              "points": 1.6,
+              "example": "T6 cost of silent test; T10 speaking may reveal an unfixable mismatch.",
+              "limitation": "minor: cost of asking to the friend's comfort barely weighed."
+            },
+            {
+              "name": "Identification of decisive conditions",
+              "rating": 8.4,
+              "points": 1.68,
+              "example": "Section E: energized versus drained after meetings; shares effort once asked means habit.",
+              "limitation": "minor: 'a few meetings' gives no observable threshold for drained enough."
+            },
+            {
+              "name": "Treatment of uncertainty",
+              "rating": 8,
+              "points": 1.6,
+              "example": "Friend's reasons named the decisive unknown; T5 flags busy-season noise.",
+              "limitation": "minor: minor unknowns not explicitly ranked below the friend's reasons."
+            },
+            {
+              "name": "Proportionate next steps",
+              "rating": 8.6,
+              "points": 1.72,
+              "example": "T7 and T11: one concrete request, after a good evening, raised once.",
+              "limitation": "minor: no step for what to do if she agrees but nothing changes."
+            }
+          ]
+        },
+        {
+          "name": "Clarity and engagement",
+          "max": 10,
+          "points": 8.52,
+          "sub": [
+            {
+              "name": "Accessible language",
+              "rating": 8.8,
+              "points": 1.76,
+              "example": "Plain scripts like 'Could you suggest the next plan?' (T7).",
+              "limitation": "minor: T5 'the answer will be noisy' is slightly technical."
+            },
+            {
+              "name": "Traceable arguments and references",
+              "rating": 8,
+              "points": 1.6,
+              "example": "T4 names 'Skeptic's alternative stories' explicitly.",
+              "limitation": "minor: T10 'calling acceptance maturity' has no clear source turn."
+            },
+            {
+              "name": "Manageable pacing and turn length",
+              "rating": 9,
+              "points": 1.8,
+              "example": "Eleven turns, all 40 to 54 words.",
+              "limitation": "none"
+            },
+            {
+              "name": "Distinguishable positions and voices",
+              "rating": 8.6,
+              "points": 1.72,
+              "example": "Plain Speaker directive, Skeptic cautious, Idealist reflective; T6 shift marked 'I lean'.",
+              "limitation": "minor: T6 and T7 converge on near-identical invitation scripts."
+            },
+            {
+              "name": "Economy and sustained attention",
+              "rating": 8.2,
+              "points": 1.64,
+              "example": "Each turn adds a move; no verbatim repetition.",
+              "limitation": "minor: section E partly restates T9's branches."
+            }
+          ]
+        },
+        {
+          "name": "Drama and entertainment",
+          "max": 10,
+          "points": 7.68,
+          "sub": [
+            {
+              "name": "Meaningful stakes and tension",
+              "rating": 7.4,
+              "points": 1.48,
+              "example": "T6: friend fails a test she didn't know she was taking.",
+              "limitation": "minor: risk of losing the friendship never voiced, so stakes stay muted."
+            },
+            {
+              "name": "Surprise and reversals",
+              "rating": 7.6,
+              "points": 1.52,
+              "example": "T6 Idealist moves to speaking because T5's silent test has its own cost.",
+              "limitation": "minor: shifts are mild concessions; no turn overturns a prior position."
+            },
+            {
+              "name": "Personality and expressive voice",
+              "rating": 7.8,
+              "points": 1.56,
+              "example": "Plain Speaker's blunt 'It curdles' (T1).",
+              "limitation": "minor: Skeptic's voice stays procedural across T2, T5, T8, T11."
+            },
+            {
+              "name": "Memorable delivery",
+              "rating": 8.4,
+              "points": 1.68,
+              "example": "T3: wonderful in a room and useless in a group chat.",
+              "limitation": "minor: memorable lines cluster in T3 and T6; later turns plainer."
+            },
+            {
+              "name": "Anticipation and emotional movement",
+              "rating": 7.2,
+              "points": 1.44,
+              "example": "T10 leaves an open disagreement that T11 accepts and redirects.",
+              "limitation": "minor: even, mild intensity throughout; little rhythm variation."
+            }
+          ]
+        }
+      ],
+      "uncapped": 80.44,
+      "score": 80.44,
+      "capReason": null,
+      "strengths": [
+        "T8 names the initiating-equals-caring assumption and T9 turns it into answer branches.",
+        "Concrete, proportionate next step: one specific request after a good evening (T7, T11).",
+        "Real concessions (T5, T10) with an honestly stated remaining disagreement."
+      ],
+      "weaknesses": [
+        "Fear of what asking might reveal or cost is never explored (all minds).",
+        "Invented context: 'months' in T1 and a female friend in T6, T9, T11.",
+        "Plain Speaker never answers T8's challenge to the request's premise."
+      ],
+      "editorNotes": [
+        "Forbid inventing duration, gender or history; use 'your friend' unless the user specified.",
+        "Require one turn to name the user's likely fear and offer it as a question, not a fact.",
+        "Require the target of a named-assumption objection to answer it in their next turn.",
+        "Ask that at least one motive question for the user appear inside a debate turn."
+      ]
+    }
+  },
+  "preferredVersion": null,
+  "savedAt": "2026-10-14T08:36:11.827Z"
+}

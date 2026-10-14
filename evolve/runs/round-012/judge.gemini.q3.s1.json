@@ -1,0 +1,330 @@
+{
+  "lineage": "gemini",
+  "q": 3,
+  "sample": 1,
+  "blind": {
+    "A": 1,
+    "B": null
+  },
+  "scores": {
+    "v1": {
+      "criteria": [
+        {
+          "name": "Quality of discussion",
+          "max": 20,
+          "points": 9.8,
+          "sub": [
+            {
+              "name": "Continuity and responsiveness",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turn 9 answers turn 8's wait test; turn 5 rebuts turn 4.",
+              "limitation": "Material: turns 1-3 are parallel monologues; turn 3 ignores turn 2."
+            },
+            {
+              "name": "Development of ideas",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 6 introduces habit versus indifference; turn 7 reframes as unshared expectations.",
+              "limitation": "Material: habit distinction never feeds turns 8-10 or how to speak up."
+            },
+            {
+              "name": "Exploration of central tensions",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Turn 8 versus turn 9: testing by silence against the anxiety it costs.",
+              "limitation": "Material: whether and how to say something, the user's question, is never examined."
+            },
+            {
+              "name": "Integration of perspectives",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 7: Attachment Theorist drops pure attachment framing after turn 6.",
+              "limitation": "Material: turn 4's dismissal of Aristotle never answered; turn 9 objection left hanging."
+            },
+            {
+              "name": "Progress toward understanding",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Section E separates oblivious from indifferent friend.",
+              "limitation": "Material: turn 10 ends on vague truth-versus-comfort; open question not sharper."
+            }
+          ]
+        },
+        {
+          "name": "Quality of disagreement, trust and grounding",
+          "max": 20,
+          "points": 10.2,
+          "sub": [
+            {
+              "name": "Faithful engagement",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Turn 6 grants friend may value the friendship while conceding the habit.",
+              "limitation": "Material: turn 5 caricatures economist as treating people like assets; turn 4 misstates Aristotle."
+            },
+            {
+              "name": "Substance of challenges",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 9 names the anxiety cost of turn 8's three-week wait.",
+              "limitation": "Material: economist never answers turn 9; turn 5 assumption not tested."
+            },
+            {
+              "name": "Accuracy and support",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "No quotation marks; paraphrases of Aristotle Book VIII equality broadly faithful.",
+              "limitation": "Minor: turn 8's three weeks unsupported; turn 5 avoidant typology loosely Bowlby's."
+            },
+            {
+              "name": "Calibration and transparency",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turns 1, 5, 6 hedge with maybe and might.",
+              "limitation": "Material: turn 8 asserts three weeks is long enough with no evidence."
+            },
+            {
+              "name": "Intellectual honesty and revision",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 7 explicitly revises the Attachment Theorist's position.",
+              "limitation": "Material: Social Economist never concedes turn 5 or turn 9; withheld concession."
+            }
+          ]
+        },
+        {
+          "name": "Personal relevance",
+          "max": 10,
+          "points": 4.9,
+          "sub": [
+            {
+              "name": "Identification of the actual concern",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Turn 10 names whether you should speak up as the open question.",
+              "limitation": "Material: never asks what saying something would mean or what the user wants from it."
+            },
+            {
+              "name": "Meaningful use of personal context",
+              "rating": 5,
+              "points": 1,
+              "example": "Turn 9 uses the user's 'lovely' meetings to weigh the wait's cost.",
+              "limitation": "Material: 'if I stop texting, nothing happens' detail barely shapes reasoning."
+            },
+            {
+              "name": "Fit with goals and values",
+              "rating": 5,
+              "points": 1,
+              "example": "Section E ties choice to whether energy feels drained.",
+              "limitation": "Material: turn 10 truth-versus-comfort is the speakers' framing, not the user's stated aim."
+            },
+            {
+              "name": "Attention to constraints and stakes",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Turn 9 notes losing the lovely meetings during silence.",
+              "limitation": "Material: turn 10 invents confrontation stakes; friendship length, friend's circumstances ignored."
+            },
+            {
+              "name": "Responsiveness to information",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Section E branches on fear of loss versus drained energy.",
+              "limitation": "Material: no question about friend's life, history, or prior conversations; needed detail never asked."
+            }
+          ]
+        },
+        {
+          "name": "Constructive self-discovery",
+          "max": 20,
+          "points": 10.2,
+          "sub": [
+            {
+              "name": "Clarification of desires and motivations",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Section D: notice whether fear of losing friend outweighs valuing your energy.",
+              "limitation": "Material: turn 1 offers a single motive; debate focuses on friend's motives, not user's."
+            },
+            {
+              "name": "Examination of assumptions",
+              "rating": 5.5,
+              "points": 2.2,
+              "example": "Turn 6 questions that non-initiation means indifference; could be habit.",
+              "limitation": "Material: user's assumption that speaking up means confrontation never surfaced."
+            },
+            {
+              "name": "Clarification of values and priorities",
+              "rating": 5,
+              "points": 2,
+              "example": "Turn 10 and section D: reciprocity versus preserving harmony.",
+              "limitation": "Material: truth-versus-comfort is a false binary; other values left unexplored."
+            },
+            {
+              "name": "Recognition of fears and outside expectations",
+              "rating": 4.5,
+              "points": 1.8,
+              "example": "Turn 9 names anxiety a silent wait might bring.",
+              "limitation": "Material: turn 5 labels friend avoidant; resentment, fairness norms unexplored."
+            },
+            {
+              "name": "Agency and reflective ownership",
+              "rating": 5,
+              "points": 2,
+              "example": "Section E conditions the user can accept or reject.",
+              "limitation": "Material: few questions posed to the user; turn 8 prescribes rather than invites."
+            }
+          ]
+        },
+        {
+          "name": "Decision usefulness",
+          "max": 10,
+          "points": 5.1,
+          "sub": [
+            {
+              "name": "Definition of the decision and options",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Section E: keep initiating, pause, or neutral request to lead next time.",
+              "limitation": "Material: speaking up directly, and how, never laid out as an option."
+            },
+            {
+              "name": "Explanation of tradeoffs",
+              "rating": 5,
+              "points": 1,
+              "example": "Turn 9 gives the cost of the waiting test.",
+              "limitation": "Material: cost of continuing to initiate never weighed; speaking up costed only as confrontation."
+            },
+            {
+              "name": "Identification of decisive conditions",
+              "rating": 5,
+              "points": 1,
+              "example": "Section E: observe response to one neutral request to lead.",
+              "limitation": "Material: turn 8's three weeks not drawn from user facts; no observable threshold."
+            },
+            {
+              "name": "Treatment of uncertainty",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Section E separates oblivious from indifferent friend.",
+              "limitation": "Material: consequential unknowns not ranked against minor ones."
+            },
+            {
+              "name": "Proportionate next steps",
+              "rating": 5.5,
+              "points": 1.1,
+              "example": "Section E's single neutral request is low-cost and proportionate.",
+              "limitation": "Material: turn 8's three-week silence is arbitrary and heavier than needed."
+            }
+          ]
+        },
+        {
+          "name": "Clarity and engagement",
+          "max": 10,
+          "points": 5.8,
+          "sub": [
+            {
+              "name": "Accessible language",
+              "rating": 7,
+              "points": 1.4,
+              "example": "Plain phrasing throughout, e.g. turn 6 habit that could be corrected.",
+              "limitation": "Minor: turn 4 'subsidizing' and turn 2 'skin in the game' lean on jargon."
+            },
+            {
+              "name": "Traceable arguments and references",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Turn 9's 'That 3-week wait' clearly points to turn 8.",
+              "limitation": "Material: turns 4 and 5 'you' ambiguously addresses a mind or the user."
+            },
+            {
+              "name": "Manageable pacing and turn length",
+              "rating": 5,
+              "points": 1,
+              "example": "Ten short turns, easy to read.",
+              "limitation": "Material: turns 1, 3, 4, 9 fall under 25 words."
+            },
+            {
+              "name": "Distinguishable positions and voices",
+              "rating": 6,
+              "points": 1.2,
+              "example": "Three distinct lenses; turn 7 explicitly changes position.",
+              "limitation": "Minor: voices similar in tone; Aristotle marked only by 'In truth'."
+            },
+            {
+              "name": "Economy and sustained attention",
+              "rating": 6.5,
+              "points": 1.3,
+              "example": "No verbatim repetition across turns.",
+              "limitation": "Minor: section D partly restates turn 10's truth-versus-comfort."
+            }
+          ]
+        },
+        {
+          "name": "Drama and entertainment",
+          "max": 10,
+          "points": 4.4,
+          "sub": [
+            {
+              "name": "Meaningful stakes and tension",
+              "rating": 5,
+              "points": 1,
+              "example": "Turn 4: subsidizing their social life while getting nothing back.",
+              "limitation": "Material: tension dissipates after turn 7; low stakes overall."
+            },
+            {
+              "name": "Surprise and reversals",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Turn 7 Attachment Theorist drops attachment framing.",
+              "limitation": "Material: turn 7 names no argument that changed its mind; templated reversal."
+            },
+            {
+              "name": "Personality and expressive voice",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Turn 5's sharp 'You treat people like assets'.",
+              "limitation": "Material: flat expression throughout; turn 5 edges toward caricature."
+            },
+            {
+              "name": "Memorable delivery",
+              "rating": 4.5,
+              "points": 0.9,
+              "example": "Turn 4's subsidizing image is the one vivid line.",
+              "limitation": "Material: no analogies or concrete scenes elsewhere."
+            },
+            {
+              "name": "Anticipation and emotional movement",
+              "rating": 4,
+              "points": 0.8,
+              "example": "Turns 8-9 create brief suspense over the waiting test.",
+              "limitation": "Material: turn 10 fizzles to 'remains open'; uniform rhythm."
+            }
+          ]
+        }
+      ],
+      "uncapped": 50.4,
+      "score": 50.4,
+      "capReason": null,
+      "strengths": [
+        "Turn 6 reframes non-initiation as possible habit, opening a gentler path than accusation.",
+        "Section E offers a low-cost observable step: one neutral request for the friend to lead.",
+        "Turn 9 tests turn 8's waiting plan by naming its emotional cost."
+      ],
+      "weaknesses": [
+        "Debate never addresses what saying something would look like, the user's actual question (turns 1-10).",
+        "Social Economist never answers turn 5 or turn 9; turn 7's reversal names no cause.",
+        "Turn 8's three-week number is invented; turns 1, 3, 4, 9 fall under 25 words."
+      ],
+      "editorNotes": [
+        "Require at least one turn to draft and test the literal words the user could say.",
+        "Require each challenged mind to answer the objection in its next turn, conceding or rebutting.",
+        "Forbid numbers not drawn from the user's facts; ask focused questions about missing facts instead.",
+        "Require any change of position to name the earlier turn and argument that caused it."
+      ]
+    }
+  },
+  "preferredVersion": null,
+  "savedAt": "2026-10-14T08:35:48.956Z"
+}

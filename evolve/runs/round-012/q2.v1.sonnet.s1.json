@@ -1,0 +1,125 @@
+{
+  "lineage": "sonnet",
+  "lane": "sonnet",
+  "q": 2,
+  "version": 1,
+  "sample": 1,
+  "model": "sonnet",
+  "settings": {
+    "agentType": "Explore",
+    "effort": "medium",
+    "note": "latency includes Claude Code subagent overhead"
+  },
+  "latencyMs": 52082,
+  "output": {
+    "situation": "You have an offer paying 25% more, but it adds 90 minutes each way, so about three hours a day. If you go in five days a week, that comes to roughly 700 hours a year. What you've reported is the raise and the commute length. Still unknown: how many days you'd be on site, how you'd travel, what the raise is worth after tax and commute costs, how the job compares to your current one apart from pay, and whether the move is reversible. The question may be less 'is 25% worth 3 hours?' and more 'what would the money do for me, what would the time have done, and how could I learn that before committing?'",
+    "minds": [
+      {
+        "title": "The Life-Cost Accountant",
+        "concern": "Every paycheck is paid for with hours of your life, so the real price of the job has to be counted honestly.",
+        "author": "Henry David Thoreau",
+        "book": "Walden",
+        "year": 1854
+      },
+      {
+        "title": "The Forecast Skeptic",
+        "concern": "People are poor at predicting how a raise or a hardship will feel once it becomes daily routine, so imagined feelings are weak evidence.",
+        "author": "Daniel Gilbert",
+        "book": "Stumbling on Happiness",
+        "year": 2006
+      },
+      {
+        "title": "The Bet Designer",
+        "concern": "This is a decision under uncertainty, so it should be made with the cheapest tests available, a pre-set exit rule, and no judging the choice only by how it turns out.",
+        "author": "Annie Duke",
+        "book": "Thinking in Bets",
+        "year": 2018
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Life-Cost Accountant",
+        "text": "Start with the real price. Three hours a day over a work year is about eighteen forty-hour weeks. Thoreau put it bluntly: \"The cost of a thing is the amount of what I will call life which is required to be exchanged for it.\" So does 25% buy eighteen weeks of your life?",
+        "author": "Henry David Thoreau",
+        "book": "Walden",
+        "pd": true,
+        "basis": "[Basis: Henry David Thoreau, Walden, 'Economy' chapter; source not verified online, no link provided]"
+      },
+      {
+        "speaker": "The Forecast Skeptic",
+        "text": "You're pricing both sides with a confidence neither deserves. Gilbert's work shows we misjudge how long a gain or a loss will actually sting. I'd go further than Gilbert: constant, unpredictable irritants like traffic seem to resist adapting to, while a raise fades fast. That favors your side, but it's my extension, not proof.",
+        "author": "Daniel Gilbert",
+        "book": "Stumbling on Happiness",
+        "pd": false,
+        "basis": "[Basis: Daniel Gilbert, Stumbling on Happiness (impact bias and adaptation); section not verified, no link provided]"
+      },
+      {
+        "speaker": "The Bet Designer",
+        "text": "You're both predicting from an armchair. Instead of arguing about forecasts, shrink the unknowns cheaply. Do the route at rush hour for a week, ask whether any days can be remote, and see if the offer is negotiable. Also, don't judge the choice only by how it turns out. Judge the information you had.",
+        "author": "Annie Duke",
+        "book": "Thinking in Bets",
+        "pd": false,
+        "basis": "[Basis: Annie Duke, Thinking in Bets (decision quality versus outcome quality); section not verified, no link provided]"
+      },
+      {
+        "speaker": "The Life-Cost Accountant",
+        "text": "I'll take the test drive, but one week measures novelty, not year two. So do the arithmetic too. Take the raise after tax, subtract fuel or fares and parking, and divide by about 700 hours. If that comes to less than what an hour of your free time is worth to you, the offer is a bad trade, whatever the percentage looks like.",
+        "author": "Henry David Thoreau",
+        "book": "Walden",
+        "pd": true,
+        "basis": "[Basis: Henry David Thoreau, Walden, 'Economy' chapter; source not verified online, no link provided]"
+      },
+      {
+        "speaker": "The Forecast Skeptic",
+        "text": "Your hourly figure treats every hour as identical. A seat on a train with a book is not a clenched drive in traffic, and the extra money might do something specific, like clearing debt or paying to move closer. If the raise can eliminate the commute, 'worth it' becomes a different question.",
+        "author": "Daniel Gilbert",
+        "book": "Stumbling on Happiness",
+        "pd": false,
+        "basis": "[Basis: Daniel Gilbert, Stumbling on Happiness (imagining future experience); section not verified, no link provided]"
+      },
+      {
+        "speaker": "The Bet Designer",
+        "text": "Then take that as a conditional plan, not a mood. Decide now, in writing, that if you haven't moved closer, or gotten remote days, within six months, you re-open the search. A tripwire set before the job starts beats a rationalization written after you're settled.",
+        "author": "Annie Duke",
+        "book": "Thinking in Bets",
+        "pd": false,
+        "basis": "[Basis: Annie Duke, Thinking in Bets (pre-commitment and quitting criteria); section not verified, no link provided]"
+      },
+      {
+        "speaker": "The Life-Cost Accountant",
+        "text": "Tripwires are cheap to write and hard to honor. Salaries get spent. Once the mortgage or lifestyle absorbs the extra 25%, leaving costs real money, while the commute keeps taking the same three hours. The tripwire has to survive the moment it becomes inconvenient. Otherwise it's decoration.",
+        "author": "Henry David Thoreau",
+        "book": "Walden",
+        "pd": true,
+        "basis": "[Basis: Henry David Thoreau, Walden, 'Economy' chapter; source not verified online, no link provided]"
+      },
+      {
+        "speaker": "The Forecast Skeptic",
+        "text": "Fair, and that's Gilbert turned on me: we adapt to money too. But the same mechanism may soften the commute, since people build routines around podcasts or reading. I'll concede my claim about commutes is the shakiest thing I've said. We also keep ignoring what the work, the boss, and the growth would be like, which will shape most days more than either number.",
+        "author": "Daniel Gilbert",
+        "book": "Stumbling on Happiness",
+        "pd": false,
+        "basis": "[Basis: Daniel Gilbert, Stumbling on Happiness (adaptation, and misjudging what drives daily experience); section not verified, no link provided]"
+      },
+      {
+        "speaker": "The Bet Designer",
+        "text": "That gives us better things to test. Talk to people who work there. Ask what flexibility actually exists and whether 'office five days' is real. And try a counteroffer: a smaller raise with two remote days might beat the full 25%. Staying put is also a bet, not a neutral default.",
+        "author": "Annie Duke",
+        "book": "Thinking in Bets",
+        "pd": false,
+        "basis": "[Basis: Annie Duke, Thinking in Bets (using small experiments and gathering information before committing); section not verified, no link provided]"
+      },
+      {
+        "speaker": "The Life-Cost Accountant",
+        "text": "I'll concede that flexibility changes my math completely. At two office days the life cost drops by 60%, and I'd call the offer worth serious thought. At five days with no plan to shorten the trip, I still say 25% rarely pays for itself. Whether you can trust your own forecast of enduring it is what Duke and I still disagree on.",
+        "author": "Henry David Thoreau",
+        "book": "Walden",
+        "pd": true,
+        "basis": "[Basis: Henry David Thoreau, Walden, 'Economy' chapter; source not verified online, no link provided]"
+      }
+    ],
+    "clearer": "The main insight is that the offer is really several different offers, depending on days on site, how you travel, what the money is for, and whether the arrangement can be changed. The three minds agree that a bare '25% versus 90 minutes' comparison hides more than it shows. They still disagree about how much to trust forecasts of adaptation (whether you'd get used to the commute, or to the extra money) and about whether a short trial or a written exit rule can really protect you from drift. A possible self-reflection is what you would use the extra income for, and what you would otherwise do with those three hours. These are things to examine, not conclusions about you. The sources cited are described from general knowledge, and none was checked online in this response.",
+    "dependsOn": "If the role allows two or three remote days, or the raise lets you move closer within a year, the offer becomes more reasonable, because the time cost shrinks or ends while the pay stays. If you'd be on site five days a week and the extra money has no specific purpose (debt, savings goal, relocation), the offer becomes less reasonable, because you'd be paying about 700 hours a year for money that tends to get absorbed into ordinary spending. If you're unhappy in your current job, staying has costs too, so compare the new offer to your real alternatives, not to an ideal. The unknowns that matter most are the true on-site requirement, the after-tax and after-commute value of the raise, and how you'd experience the route. Learn them by asking the employer directly, riding the route at rush hour, negotiating, and writing down an exit rule before you accept."
+  },
+  "savedAt": "2026-10-14T08:32:24.394Z"
+}
