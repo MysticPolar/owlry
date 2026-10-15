@@ -449,6 +449,13 @@ async function ingest(L: Lineage) {
         // cells are identified by id; the 35 long names are the runner's, so an evaluator that shortens one does not lose
         // the whole card (the schema requires each name verbatim)
         if (Array.isArray(raw.cells)) raw.cells = raw.cells.map((c) => (c && typeof c === "object" && CELL_NAME[c.id] ? { ...c, name: CELL_NAME[c.id] } : c));
+        // a mechanical pattern seen across the whole debate (uniform length, one register) comes with an empty turn list;
+        // the schema wants at least one turn, so the empty list is read as "every turn" (first live run: 4 of 10 cards)
+        if (Array.isArray(raw.mechanical) && raw.mechanical.some((m) => Array.isArray(m?.turns) && !m.turns.length)) {
+          const g = exp.jobs[id.replace(/^rubric\./, "gen.")];
+          const n = g?.cacheKey ? ((await readJson(`${C(exp)}/gen/${g.cacheKey}.json`)).debate?.debate?.length ?? 0) : 0;
+          if (n) for (const m of raw.mechanical) if (Array.isArray(m?.turns) && !m.turns.length) m.turns = Array.from({ length: n }, (_, i) => i + 1);
+        }
         await normalise(`${ROOT}/${cfg.agents.rubric.schema}`, raw);
         const problems = await schemaProblems(`${ROOT}/${cfg.agents.rubric.schema}`, raw);
         if (!problems.length) problems.push(...validateRaw(raw, RUBRIC_MAP).problems);
@@ -499,7 +506,7 @@ async function ingestOptimizer(L: Lineage, exp: ExpState, j: Job, obj: Record<st
     exp.state = transition(exp.state, "lint_failed"); exp.reason = problems.join(" | ");
     if (j.attempts >= 2) { j.done = true; await recordNonProposal(L, exp, "KEEP", `optimizer output rejected twice: ${exp.reason}`); exp.state = "KEPT"; invalid.push(`optimizer: rejected twice; iteration closed as KEEP`); return; }
     await appendText(j.promptPath ?? `${expDir(L, exp)}/jobs/optimizer.md`, `\n\n=== PREVIOUS ATTEMPT REJECTED BY THE RUNNER ===\n${problems.join("\n")}\nReturn the JSON object again, correcting these; do not change anything else.`);
-    await Deno.remove(j.outPath).catch(() => {}); invalid.push(`optimizer: ${exp.reason} — the input file now carries the problems; respawn the job once`); return;
+    await setAside(j); invalid.push(`optimizer: ${exp.reason} — the input file now carries the problems; respawn the job once`); return;
   }
   j.done = true;
   if (out.action === "no_change") { await recordNonProposal(L, exp, "KEEP", `optimizer: no_change — ${out.change_summary}`); exp.state = "KEPT"; exp.reason = out.change_summary; return; }
@@ -517,8 +524,12 @@ async function retire(L: Lineage, exp: ExpState, id: string, j: Job, invalid: st
   const why = problems.slice(0, 5).join("; ");
   if (j.attempts >= 2) { await closeMissing(L, exp, id, j, invalid, why); return; }
   if (j.promptPath) await appendText(j.promptPath, `\n\n=== PREVIOUS ATTEMPT REJECTED BY THE RUNNER ===\n${problems.slice(0, 10).join("\n")}\nReturn the JSON object again, correcting these; do not change anything else.\n`);
-  await Deno.remove(j.outPath).catch(() => {}); invalid.push(`${id}: ${why} — respawn once`);
+  await setAside(j); invalid.push(`${id}: ${why} — respawn once`);
 }
+
+/** A rejected output is kept next to its job as <outPath>.rejected<N> (README 10: raw outputs are preserved), never
+ *  deleted: a fix to the runner's checks can then re-read it instead of paying for the call again. */
+async function setAside(j: Job) { await Deno.rename(j.outPath, `${j.outPath}.rejected${j.attempts}`).catch(() => {}); }
 
 /** Close a job that will not produce a usable output. An optimizer closes the iteration as KEEP. */
 async function closeMissing(L: Lineage, exp: ExpState, id: string, j: Job, invalid: string[], why: string) {
@@ -866,7 +877,7 @@ async function capabilityIngest() {
     if (!problems.length) { await writeJson(p.outPath, v); p.checked = true; continue; }
     if (p.attempts >= 2) { p.checked = true; console.log(`capability: INVALID ${p.id}: ${problems.join("; ")} — closed as missing`); continue; }
     await appendText(p.outPath.replace("/out/", "/jobs/").replace(/\.json$/, ".md"), `\n\n=== PREVIOUS ATTEMPT REJECTED BY THE RUNNER ===\n${problems.join("\n")}\nReturn the JSON object again, correcting these; do not change anything else.\n`);
-    await Deno.remove(p.outPath).catch(() => {});
+    await Deno.rename(p.outPath, `${p.outPath}.rejected${p.attempts}`).catch(() => {});
     console.log(`capability: INVALID ${p.id}: ${problems.join("; ")} — respawn once (evo4 capability --blind prints it)`);
   }
   if (!changed) return;

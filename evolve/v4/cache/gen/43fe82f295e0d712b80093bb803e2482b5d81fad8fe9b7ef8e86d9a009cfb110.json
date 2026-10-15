@@ -1,0 +1,150 @@
+{
+  "jobId": "gen.v0.q2.s1",
+  "lineage": "sonnet",
+  "version": "v0",
+  "q": 2,
+  "s": 1,
+  "model": "sonnet",
+  "settings": {
+    "agentType": "general-purpose",
+    "effort": "medium"
+  },
+  "debate": {
+    "situation": "You have a job offer paying 25% more, but it adds a 90-minute commute each way, about three hours a day. You have reported the raise and the commute length. Still unknown: your current salary and commute, whether any days could be remote, how you would travel (a train you can read or work on, or driving), what else changes in the new role, and how you weigh money against free time. The decisive uncertainty is whether the extra pay buys something you want enough to give up roughly fifteen hours a week.",
+    "minds": [
+      {
+        "title": "The Time Accountant",
+        "concern": "Time is finite, so every yes costs hours you will not get back; the real price of the offer is what those hours could have been.",
+        "author": "Oliver Burkeman",
+        "book": "Four Thousand Weeks",
+        "year": 2021
+      },
+      {
+        "title": "The Forecast Skeptic",
+        "concern": "People misjudge how a raise and a commute will feel once they are living them, so the decision should rest on lived experience rather than on the number or the dread.",
+        "author": "Daniel Kahneman",
+        "book": "Thinking, Fast and Slow",
+        "year": 2011
+      },
+      {
+        "title": "The Experimenter",
+        "concern": "You learn what suits you by trying things, so the sensible move is a cheap test before an irreversible commitment.",
+        "author": "Herminia Ibarra",
+        "book": "Working Identity",
+        "year": 2003
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Time Accountant",
+        "text": "Start with arithmetic. Three hours a day is about fifteen hours a week, close to a second part-time job that pays nothing. Take a 25% raise on a hypothetical salary, divide by those extra hours, and the raise may shrink to a modest hourly wage. Money is easy to count; hours are what you actually spend.",
+        "author": "Oliver Burkeman",
+        "book": "Four Thousand Weeks",
+        "pd": false,
+        "basis": "[Basis: Oliver Burkeman, Four Thousand Weeks (source not verified, no link available)]"
+      },
+      {
+        "speaker": "The Forecast Skeptic",
+        "text": "Careful, that spreadsheet feels objective and isn't. Hours and dollars aren't the same currency, and right now you're staring at one vivid number. Whatever you're thinking about looms larger than it will in daily life. I'd be just as suspicious of a raise that looks thrilling today and fades into the background.",
+        "author": "Daniel Kahneman",
+        "book": "Thinking, Fast and Slow",
+        "pd": false,
+        "basis": "[Basis: Daniel Kahneman, Thinking, Fast and Slow, on the focusing illusion (source not verified, no link available)]"
+      },
+      {
+        "speaker": "The Time Accountant",
+        "text": "Fair, but that cuts both ways. If the raise will fade into the background, the commute might too, which is your claim. I'd go further than Burkeman here: hours are the one thing you can't earn back, so when both fade, the thing you can't replace should get the benefit of the doubt.",
+        "author": "Oliver Burkeman",
+        "book": "Four Thousand Weeks",
+        "pd": false,
+        "basis": "[Basis: Oliver Burkeman, Four Thousand Weeks (source not verified, no link available)]"
+      },
+      {
+        "speaker": "The Experimenter",
+        "text": "You're both arguing from a desk chair about a future nobody has tried. Why guess? Do the drive or ride on a few real mornings at real rush hour. Ask whether the new job offers remote days or a trial period. A rehearsal costs little, and a wrong guess about three hours a day costs a lot.",
+        "author": "Herminia Ibarra",
+        "book": "Working Identity",
+        "pd": false,
+        "basis": "[Basis: Herminia Ibarra, Working Identity (source not verified, no link available)]"
+      },
+      {
+        "speaker": "The Forecast Skeptic",
+        "text": "Rehearsals help, but a single trial commute is a bad sample. It's novel, so you'll pay attention to it. Day two hundred is what matters. I'd rather ask people who live a similar commute how the daily routine feels, and weigh how it goes in the memory against how it goes in the moment.",
+        "author": "Daniel Kahneman",
+        "book": "Thinking, Fast and Slow",
+        "pd": false,
+        "basis": "[Basis: Daniel Kahneman, Thinking, Fast and Slow, on experienced versus remembered well-being (source not verified, no link available)]"
+      },
+      {
+        "speaker": "The Experimenter",
+        "text": "Then extend the test: shadow someone there for a week, or negotiate two remote days to begin. Better still, test the job itself. The commute is only worth bearing if the work gives you something that your current job can't. The thing worth testing isn't the miles but what you'd become there.",
+        "author": "Herminia Ibarra",
+        "book": "Working Identity",
+        "pd": false,
+        "basis": "[Basis: Herminia Ibarra, Working Identity (source not verified, no link available)]"
+      },
+      {
+        "speaker": "The Time Accountant",
+        "text": "Now you've changed the question, and I like it. If the job offers real growth, those hours are an investment. If it's the same work for more money, they're a toll. But beware optimizing everything. Burkeman warns that squeezing a commute for productivity can turn life into one long to-do list.",
+        "author": "Oliver Burkeman",
+        "book": "Four Thousand Weeks",
+        "pd": false,
+        "basis": "[Basis: Oliver Burkeman, Four Thousand Weeks (source not verified, no link available)]"
+      },
+      {
+        "speaker": "The Forecast Skeptic",
+        "text": "Here's a challenge for both of you. Growth is also something we overrate when we're excited. And the raise might be solving a real problem, such as debt or a savings goal. If so, three hours a day for two years might be a perfectly sane trade. The reason for the money matters more than the percentage.",
+        "author": "Daniel Kahneman",
+        "book": "Thinking, Fast and Slow",
+        "pd": false,
+        "basis": "[Basis: Daniel Kahneman, Thinking, Fast and Slow (source not verified, no link available)]"
+      },
+      {
+        "speaker": "The Time Accountant",
+        "text": "I'll concede that. A time-limited sacrifice with a clear purpose differs from an open-ended one. Two years of commuting to clear a debt is a bargain you can choose. Commuting indefinitely because the raise looked bigger than the hours is a drift. I still say the hours deserve a vote before the salary gets one.",
+        "author": "Oliver Burkeman",
+        "book": "Four Thousand Weeks",
+        "pd": false,
+        "basis": "[Basis: Oliver Burkeman, Four Thousand Weeks (source not verified, no link available)]"
+      },
+      {
+        "speaker": "The Experimenter",
+        "text": "So we agree on more than we admit. Put a time limit on it, run a small trial, and decide what the money is for. Where we still differ is whether to trust a forecast at all. My view is that a rehearsal beats any prediction, and you can undo a failed experiment, which you can't do with a failed forecast.",
+        "author": "Herminia Ibarra",
+        "book": "Working Identity",
+        "pd": false,
+        "basis": "[Basis: Herminia Ibarra, Working Identity (source not verified, no link available)]"
+      }
+    ],
+    "clearer": "The main insight is that the question may be less 'is 25% worth 90 minutes?' and more 'what is the extra money for, what would the extra hours otherwise hold, and does the job itself offer something new?' The minds agreed that the raise and the commute are both easy to misjudge in advance, and that a time-limited, purposeful sacrifice differs from an open-ended one. They still disagree about how far a short trial or a forecast can be trusted, and about whether hours should outrank money by default. A possible self-reflection: if the raise vanished and only the job remained, would you still want it, and if the job were here with a short commute, would the extra money tempt you to accept the longer one?",
+    "dependsOn": "If the raise has a specific, finite purpose (clearing debt, building a deposit) and the role is something you actually want, accepting becomes more reasonable, because a defined stretch of cost buys a defined benefit. If you can get hybrid or remote days, or the journey is on a train where you can read, rest or work, the commute costs less than its raw hours and the offer improves. If the job is much the same as your current one, the pay gain is modest after commuting costs and tax, and you value evenings, sleep, family or health time, staying or negotiating becomes more reasonable, because the hours are the larger loss. If you don't know how the commute will feel day to day, you can learn it in proportion to the stakes: ride or drive the route at real rush hour several times, ask current employees how often people work from home, ask whether a start-date or trial arrangement is possible, and work out your true hourly gain after fares, fuel, tax and time."
+  },
+  "validity": {
+    "ok": true,
+    "problems": []
+  },
+  "metrics": {
+    "turns": 10,
+    "words": 548,
+    "meanWordsPerTurn": 54.8,
+    "shortTurns": 0,
+    "longTurns": 0,
+    "hedges": 8,
+    "hedgeDensity": 1.46,
+    "bannedCertainty": 0,
+    "templatedOpeners": 0,
+    "slotMarkers": 0,
+    "questionsToUser": 1,
+    "theUser": 0,
+    "pdFalseQuoteTurns": 0,
+    "fabricatedBasisTurns": 0,
+    "distinctSpeakers": 3,
+    "distinctBooks": 3
+  },
+  "unusable": false,
+  "latencyMs": null,
+  "tokens": null,
+  "raw": "{\"situation\":\"You have a job offer paying 25% more, but it adds a 90-minute commute each way, about three hours a day. You have reported the raise and the commute length. Still unknown: your current salary and commute, whether any days could be remote, how you would travel (a train you can read or work on, or driving), what else changes in the new role, and how you weigh money against free time. The decisive uncertainty is whether the extra pay buys something you want enough to give up roughly fifteen hours a week.\",\"minds\":[{\"title\":\"The Time Accountant\",\"concern\":\"Time is finite, so every yes costs hours you will not get back; the real price of the offer is what those hours could have been.\",\"author\":\"Oliver Burkeman\",\"book\":\"Four Thousand Weeks\",\"year\":2021},{\"title\":\"The Forecast Skeptic\",\"concern\":\"People misjudge how a raise and a commute will feel once they are living them, so the decision should rest on lived experience rather than on the number or the dread.\",\"author\":\"Daniel Kahneman\",\"book\":\"Thinking, Fast and Slow\",\"year\":2011},{\"title\":\"The Experimenter\",\"concern\":\"You learn what suits you by trying things, so the sensible move is a cheap test before an irreversible commitment.\",\"author\":\"Herminia Ibarra\",\"book\":\"Working Identity\",\"year\":2003}],\"debate\":[{\"speaker\":\"The Time Accountant\",\"text\":\"Start with arithmetic. Three hours a day is about fifteen hours a week, close to a second part-time job that pays nothing. Take a 25% raise on a hypothetical salary, divide by those extra hours, and the raise may shrink to a modest hourly wage. Money is easy to count; hours are what you actually spend.\",\"author\":\"Oliver Burkeman\",\"book\":\"Four Thousand Weeks\",\"pd\":false,\"basis\":\"[Basis: Oliver Burkeman, Four Thousand Weeks (source not verified, no link available)]\"},{\"speaker\":\"The Forecast Skeptic\",\"text\":\"Careful, that spreadsheet feels objective and isn't. Hours and dollars aren't the same currency, and right now you're staring at one vivid number. Whatever you're thinking about looms larger than it will in daily life. I'd be just as suspicious of a raise that looks thrilling today and fades into the background.\",\"author\":\"Daniel Kahneman\",\"book\":\"Thinking, Fast and Slow\",\"pd\":false,\"basis\":\"[Basis: Daniel Kahneman, Thinking, Fast and Slow, on the focusing illusion (source not verified, no link available)]\"},{\"speaker\":\"The Time Accountant\",\"text\":\"Fair, but that cuts both ways. If the raise will fade into the background, the commute might too, which is your claim. I'd go further than Burkeman here: hours are the one thing you can't earn back, so when both fade, the thing you can't replace should get the benefit of the doubt.\",\"author\":\"Oliver Burkeman\",\"book\":\"Four Thousand Weeks\",\"pd\":false,\"basis\":\"[Basis: Oliver Burkeman, Four Thousand Weeks (source not verified, no link available)]\"},{\"speaker\":\"The Experimenter\",\"text\":\"You're both arguing from a desk chair about a future nobody has tried. Why guess? Do the drive or ride on a few real mornings at real rush hour. Ask whether the new job offers remote days or a trial period. A rehearsal costs little, and a wrong guess about three hours a day costs a lot.\",\"author\":\"Herminia Ibarra\",\"book\":\"Working Identity\",\"pd\":false,\"basis\":\"[Basis: Herminia Ibarra, Working Identity (source not verified, no link available)]\"},{\"speaker\":\"The Forecast Skeptic\",\"text\":\"Rehearsals help, but a single trial commute is a bad sample. It's novel, so you'll pay attention to it. Day two hundred is what matters. I'd rather ask people who live a similar commute how the daily routine feels, and weigh how it goes in the memory against how it goes in the moment.\",\"author\":\"Daniel Kahneman\",\"book\":\"Thinking, Fast and Slow\",\"pd\":false,\"basis\":\"[Basis: Daniel Kahneman, Thinking, Fast and Slow, on experienced versus remembered well-being (source not verified, no link available)]\"},{\"speaker\":\"The Experimenter\",\"text\":\"Then extend the test: shadow someone there for a week, or negotiate two remote days to begin. Better still, test the job itself. The commute is only worth bearing if the work gives you something that your current job can't. The thing worth testing isn't the miles but what you'd become there.\",\"author\":\"Herminia Ibarra\",\"book\":\"Working Identity\",\"pd\":false,\"basis\":\"[Basis: Herminia Ibarra, Working Identity (source not verified, no link available)]\"},{\"speaker\":\"The Time Accountant\",\"text\":\"Now you've changed the question, and I like it. If the job offers real growth, those hours are an investment. If it's the same work for more money, they're a toll. But beware optimizing everything. Burkeman warns that squeezing a commute for productivity can turn life into one long to-do list.\",\"author\":\"Oliver Burkeman\",\"book\":\"Four Thousand Weeks\",\"pd\":false,\"basis\":\"[Basis: Oliver Burkeman, Four Thousand Weeks (source not verified, no link available)]\"},{\"speaker\":\"The Forecast Skeptic\",\"text\":\"Here's a challenge for both of you. Growth is also something we overrate when we're excited. And the raise might be solving a real problem, such as debt or a savings goal. If so, three hours a day for two years might be a perfectly sane trade. The reason for the money matters more than the percentage.\",\"author\":\"Daniel Kahneman\",\"book\":\"Thinking, Fast and Slow\",\"pd\":false,\"basis\":\"[Basis: Daniel Kahneman, Thinking, Fast and Slow (source not verified, no link available)]\"},{\"speaker\":\"The Time Accountant\",\"text\":\"I'll concede that. A time-limited sacrifice with a clear purpose differs from an open-ended one. Two years of commuting to clear a debt is a bargain you can choose. Commuting indefinitely because the raise looked bigger than the hours is a drift. I still say the hours deserve a vote before the salary gets one.\",\"author\":\"Oliver Burkeman\",\"book\":\"Four Thousand Weeks\",\"pd\":false,\"basis\":\"[Basis: Oliver Burkeman, Four Thousand Weeks (source not verified, no link available)]\"},{\"speaker\":\"The Experimenter\",\"text\":\"So we agree on more than we admit. Put a time limit on it, run a small trial, and decide what the money is for. Where we still differ is whether to trust a forecast at all. My view is that a rehearsal beats any prediction, and you can undo a failed experiment, which you can't do with a failed forecast.\",\"author\":\"Herminia Ibarra\",\"book\":\"Working Identity\",\"pd\":false,\"basis\":\"[Basis: Herminia Ibarra, Working Identity (source not verified, no link available)]\"}],\"clearer\":\"The main insight is that the question may be less 'is 25% worth 90 minutes?' and more 'what is the extra money for, what would the extra hours otherwise hold, and does the job itself offer something new?' The minds agreed that the raise and the commute are both easy to misjudge in advance, and that a time-limited, purposeful sacrifice differs from an open-ended one. They still disagree about how far a short trial or a forecast can be trusted, and about whether hours should outrank money by default. A possible self-reflection: if the raise vanished and only the job remained, would you still want it, and if the job were here with a short commute, would the extra money tempt you to accept the longer one?\",\"dependsOn\":\"If the raise has a specific, finite purpose (clearing debt, building a deposit) and the role is something you actually want, accepting becomes more reasonable, because a defined stretch of cost buys a defined benefit. If you can get hybrid or remote days, or the journey is on a train where you can read, rest or work, the commute costs less than its raw hours and the offer improves. If the job is much the same as your current one, the pay gain is modest after commuting costs and tax, and you value evenings, sleep, family or health time, staying or negotiating becomes more reasonable, because the hours are the larger loss. If you don't know how the commute will feel day to day, you can learn it in proportion to the stakes: ride or drive the route at real rush hour several times, ask current employees how often people work from home, ask whether a start-date or trial arrangement is possible, and work out your true hourly gain after fares, fuel, tax and time.\"}\n",
+  "transcriptHash": "3e4cf9b4f6db60a46e0db8d4611496b466fcfcc0a5afcf20adf4a2a6d028cc4d",
+  "savedAt": "2026-10-15T09:14:37.812Z"
+}

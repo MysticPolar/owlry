@@ -502,6 +502,7 @@ await T("an evaluator that shortens a cell name keeps its card; an invalid card 
   ok(ing.includes(`INVALID ${jobs[1].id}`) && !ing.includes(`INVALID ${jobs[0].id}`), ing);
   const input = await Deno.readTextFile(jobs[1].promptPath);
   ok(input.includes("=== PREVIOUS ATTEMPT REJECTED BY THE RUNNER ===") && input.includes("C1.1"), "the problems are appended for the repair");
+  ok(await exists(`${jobs[1].outPath}.rejected1`), "the rejected output is kept, not deleted");
   const again = (await must(root, "next", "--lineage", "sonnet")).split("\n").filter((l) => l.startsWith("{")).map((l) => JSON.parse(l));
   eq(again.map((j) => j.id), [jobs[1].id], "only the invalid job is printed again");
   await Deno.writeTextFile(again[0].outPath, JSON.stringify(rawCard(6.5)));
@@ -706,6 +707,8 @@ await T("harmless variations are accepted: extra fields, a 'None' limitation, a 
   for (const j of jobs) {
     const c: any = rawCard(9.2, {}, { question_type_note: null as unknown as string });
     c.overall_comment = "fine"; c.cells[0].criterion = "C1"; c.cells.forEach((x: any) => (x.limitation = "None"));
+    c.rubric_fit_notes = "The matrix fits this decision question.";   // a string, as 9 of 10 live evaluators wrote it
+    c.mechanical = [{ pattern: "hedge_saturation", turns: [] }];        // a whole-debate pattern, as 4 of 10 live cards wrote it
     await Deno.writeTextFile(j.outPath, "```json\n" + JSON.stringify(c) + "\n```\nTotals omitted {per the brief}.");
   }
   const ing = await must(root, "ingest", "--lineage", "sonnet");

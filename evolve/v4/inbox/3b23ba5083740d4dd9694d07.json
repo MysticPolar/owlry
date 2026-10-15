@@ -1,0 +1,73 @@
+{
+  "schema_version": "rubric-evaluator-4.2.0",
+  "rubric_version": "owlry-matrix-v2-bands",
+  "evaluation_status": "complete",
+  "cells": [
+    {"id": "C1.1", "name": "Continuity and responsiveness", "rating": 8.0, "example": "T2 answers T1's verdict; T6 concedes T5; T9 calls T8's resentment point the hinge.", "limitation": "T8 pivots to a new option and T11 adds a step without answering T10.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C1.2", "name": "Development of ideas", "rating": 9.0, "example": "T8 introduces resentment as the real question; T9 builds on it and section D splits both questions.", "limitation": "T11's open-bid test reprises T3's going-quiet test without new distinction.", "limitation_severity": "minor", "excellent_anchor_met": true},
+    {"id": "C1.3", "name": "Exploration of central tensions", "rating": 8.0, "example": "T3 to T6 weigh a silent test against a curious conversation; T7 raises demand versus question.", "limitation": "Fear of learning the friend cares less stays beneath the surface across all turns.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C1.4", "name": "Integration of perspectives", "rating": 8.0, "example": "T6 narrows its point after T5; T10 softens T1; section D keeps disputes open.", "limitation": "T11 proposes another test without meeting T4's objection that silences get misread.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C1.5", "name": "Progress toward understanding", "rating": 8.5, "example": "Section D separates what the pattern means about the friend from what it does to the user.", "limitation": "Test-versus-conversation dispute in section D ends without saying which condition settles it.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C2.1", "name": "Faithful engagement", "rating": 8.0, "example": "T2 restates T1's evidence fairly before challenging the leap from one pattern.", "limitation": "T4 treats T3's going quiet as purely silent, skipping T3's admitted cost.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C2.2", "name": "Substance of challenges", "rating": 9.0, "example": "T2 names counting first texts as the assumption; T3 answers that replying is not reaching.", "limitation": "T11's open-bid step goes unchallenged as the final turn.", "limitation_severity": "minor", "excellent_anchor_met": true},
+    {"id": "C2.3", "name": "Accuracy and support", "rating": 6.5, "example": "Aristotle on pleasure friendships and Gottman on bids are paraphrased accurately in T1 and T2.", "limitation": "T5, pd=false, uses quotation marks; T1, T7, T10 bases cite book numbers.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C2.4", "name": "Calibration and transparency", "rating": 8.5, "example": "T3 says it goes further than Aristotle; bases mark extensions as the speaker's own.", "limitation": "T11 calls a week's non-response information without weighing T2's low-initiator point.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C2.5", "name": "Intellectual honesty and revision", "rating": 7.5, "example": "T6 concedes T5's point and states how it narrows the Mapper's position.", "limitation": "T10 softens without naming T2 as cause; Realist never answers T4's objection.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C3.1", "name": "Identification of the actual concern", "rating": 8.5, "example": "Section A frames speaking up as a request, a test, or a risk depending on unknowns.", "limitation": "The user's possible hurt at feeling less valued is named only indirectly in T9.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C3.2", "name": "Meaningful use of personal context", "rating": 8.0, "example": "T8 uses the lovely meetings to make continuing to plan a real option.", "limitation": "T5 and T11 offer generic tactics not tied to this friendship's details.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C3.3", "name": "Fit with goals and values", "rating": 7.5, "example": "T7 asks whether the user would still want a replier-style friendship.", "limitation": "T1 imposes the Realist's own test-before-investing preference on the user.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C3.4", "name": "Attention to constraints and stakes", "rating": 7.5, "example": "T8 and T9 weigh the risk of inventing a problem against unspoken resentment.", "limitation": "How long the pattern has lasted and the friend's circumstances never enter.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C3.5", "name": "Responsiveness to information", "rating": 8.0, "example": "Section E branches on resentment, on the friend's response, and on unknown reasons.", "limitation": "No question on pattern duration or recent life changes for the friend.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C4.1", "name": "Clarification of desires and motivations", "rating": 8.0, "example": "T7 distinguishes wanting them to text from genuine curiosity, framed conditionally.", "limitation": "Motives are not laid side by side as alternatives with one answerable question.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C4.2", "name": "Examination of assumptions", "rating": 8.5, "example": "T2 surfaces the assumption that initiating equals interest; T4 that silence is a neutral test.", "limitation": "Whether equal initiation is the right norm for this user is probed only in T7.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C4.3", "name": "Clarification of values and priorities", "rating": 8.5, "example": "T7 sets warm meetings against reciprocity: some friendships worth keeping on those terms.", "limitation": "The weight the user places on being sought out is left implicit.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C4.4", "name": "Recognition of fears and outside expectations", "rating": 7.0, "example": "T9 names a tightening each time the user opens their phone.", "limitation": "Fear of what a direct ask might reveal is never named in any turn.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C4.5", "name": "Agency and reflective ownership", "rating": 8.5, "example": "Section D ends with a question the user can answer about a replier-style friend.", "limitation": "T1's acquaintance verdict is offered before the user's view is invited.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C5.1", "name": "Definition of the decision and options", "rating": 8.5, "example": "Options span keep planning (T8), going quiet (T3), small ask (T5), talk (T6), open bid (T11).", "limitation": "Section E never lists the options together before branching.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C5.2", "name": "Explanation of tradeoffs", "rating": 8.5, "example": "T3 names going quiet's cost; T5 the talk's risk; T8 resentment as planning's cost.", "limitation": "T11's open-bid step is presented as costless to both people.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C5.3", "name": "Identification of decisive conditions", "rating": 9.0, "example": "T9: no sting favors silence; tightening favors speaking soon, in person.", "limitation": "T11's one-week window is not drawn from the user's facts.", "limitation_severity": "minor", "excellent_anchor_met": true},
+    {"id": "C5.4", "name": "Treatment of uncertainty", "rating": 8.0, "example": "Section A names why the friend does not initiate as the deciding unknown.", "limitation": "Section E does not say how to read a non-response given T2's low-initiator point.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C5.5", "name": "Proportionate next steps", "rating": 8.0, "example": "T9 suggests in person or a call; T11 a casual opening before asking.", "limitation": "T11's step echoes the silent test T4 criticised, unaddressed.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C6.1", "name": "Accessible language", "rating": 8.5, "example": "T5 explains the risk with a plain example of a small, specific ask.", "limitation": "Pleasure friendships in T1 go unexplained for a general reader.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C6.2", "name": "Traceable arguments and references", "rating": 9.2, "example": "T6 'concede that' maps to T5; T9 'the hinge' to T8; T10 'first claim' to T1.", "limitation": "none", "limitation_severity": "none", "excellent_anchor_met": true},
+    {"id": "C6.3", "name": "Manageable pacing and turn length", "rating": 8.5, "example": "Eleven turns, all within range; options unfold one per turn from T3 to T11.", "limitation": "Turn lengths sit in a narrow band, giving a flat cadence across T1 to T11.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C6.4", "name": "Distinguishable positions and voices", "rating": 7.5, "example": "Realist judges reciprocity, Mapper frames talks, Bid Watcher counts small reaches.", "limitation": "Mapper and Bid Watcher share one calm advisory register across turns.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C6.5", "name": "Economy and sustained attention", "rating": 8.0, "example": "Turns rarely recap; T3 opens with two words before advancing.", "limitation": "T11 reprises T3's testing idea; section E repeats section D's split.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C7.1", "name": "Meaningful stakes and tension", "rating": 7.5, "example": "T1 raises whether this is a friendship at all; T7 whether it is worth keeping.", "limitation": "After T7 the tension eases into advice without a sharpened stake.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C7.2", "name": "Surprise and reversals", "rating": 8.5, "example": "T6 concedes T5's point and names how it narrows the Mapper's claim.", "limitation": "T10's softening of T1 names no earlier argument as its cause.", "limitation_severity": "minor", "excellent_anchor_met": true},
+    {"id": "C7.3", "name": "Personality and expressive voice", "rating": 7.5, "example": "Realist's blunt 'acquaintance wearing a friend's coat' in T1.", "limitation": "Bid Watcher and Mapper show little personal voice beyond role.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C7.4", "name": "Memorable delivery", "rating": 8.0, "example": "T7 'a demand wearing a question'; T9 tightening when opening the phone.", "limitation": "Vivid images come mostly from the Realist; T5 and T11 are plain.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C7.5", "name": "Anticipation and emotional movement", "rating": 7.0, "example": "T9's hinge creates a turn from analysis to the user's own feeling.", "limitation": "Even intensity and similar turn lengths from T1 to T11 give little rise or release.", "limitation_severity": "minor", "excellent_anchor_met": false}
+  ],
+  "strengths": [
+    "T8 introduces resentment as the real question; T9 and section D build the debate's key split on it.",
+    "T2 and T3 exchange a genuine objection and answer: responsiveness versus reaching.",
+    "Section E gives conditions the user can observe, such as felt resentment and the friend's response."
+  ],
+  "weaknesses": [
+    "T5 (Bid Watcher, pd=false) places suggested phrasings in quotation marks; bases in T1, T7, T10 cite book numbers.",
+    "The Friendship Realist never answers T4's objection to going quiet, and T10 softens without naming a cause.",
+    "Fear of what a direct ask might reveal is never named by any mind."
+  ],
+  "symptoms": [
+    {"cell_id": "C2.3", "turns": [5], "observed": "A pd=false turn wraps suggested wording in quotation marks.", "evidence": "'you never text first' feels like a failing they can't fix"},
+    {"cell_id": "C2.5", "turns": [3, 4, 10], "observed": "Realist drops the going-quiet test after T4 and softens T1 without naming why.", "evidence": "I'll soften my first claim. One lopsided pattern doesn't prove"},
+    {"cell_id": "C4.4", "turns": [7, 9], "observed": "No mind names fear of learning the friend values the user less.", "evidence": "If you notice a tightening each time you open your phone"},
+    {"cell_id": "C5.5", "turns": [4, 11], "observed": "T11 proposes a quiet test; T4's objection that silences get misread goes unmet.", "evidence": "leave it open for a week. If they pick it up"},
+    {"cell_id": "C3.4", "turns": [1, 2], "observed": "Pattern duration and friend's circumstances never asked or branched.", "evidence": "Start with the evidence: you plan, they enjoy it"}
+  ],
+  "mechanical": [
+    {"pattern": "uncaused_reversal", "turns": [10]},
+    {"pattern": "ungrounded_number", "turns": [11]}
+  ],
+  "findings": [
+    {"type": "format", "severity": "material", "status": "observed", "location": "Turn 5 (Bid Watcher, pd=false)", "description": "Single quotation marks enclose two suggested phrasings in a pd=false turn; deterministic check also reports one such turn.", "evidence_ids": []},
+    {"type": "format", "severity": "minor", "status": "observed", "location": "Basis fields of Turns 1, 7, 10", "description": "Bases cite Nicomachean Ethics book numbers (VIII-IX) from a worker that could not browse; the divisions are real but are references nonetheless.", "evidence_ids": []},
+    {"type": "unverified_grounding", "severity": "minor", "status": "unverified", "location": "Turns 2, 4, 5, 6, 8, 9, 11", "description": "Paraphrases of Gottman and of Stone, Patton and Heen match general knowledge of these books but no source evidence is attached.", "evidence_ids": []}
+  ],
+  "cap_reasons": [
+    {"reason": "pd_false_quotation_marks", "finding_index": 0}
+  ],
+  "rubric_fit_notes": ["The T5 quotation marks enclose suggested wording, not attributed quotations; the cap applies by the stated rule though the substance is not a misquotation."],
+  "question_type_note": "Read as a relationship decision, so every cell was applied as written, with options including waiting and a limited step."
+}

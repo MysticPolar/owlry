@@ -1,0 +1,143 @@
+{
+  "jobId": "gen.v0.q3.s2",
+  "lineage": "gemini",
+  "version": "v0",
+  "q": 3,
+  "s": 2,
+  "model": "gemini-3.1-flash-lite",
+  "settings": {
+    "temperature": 0.5,
+    "thinkingLevel": "MEDIUM",
+    "maxOutputTokens": 16384
+  },
+  "debate": {
+    "situation": "The user consistently initiates contact with a friend, creating a pattern where the friendship feels one-sided despite positive interactions. The user is unsure whether to address this imbalance directly or accept it, fearing the consequences of speaking up or the pain of remaining silent.",
+    "minds": [
+      {
+        "title": "The Reciprocity Analyst",
+        "concern": "The social exchange and the unspoken rules of mutual obligation.",
+        "author": "Robert Cialdini",
+        "book": "Influence",
+        "year": 1984
+      },
+      {
+        "title": "The Radical Honest",
+        "concern": "The necessity of truth over social comfort and the strength to endure reality.",
+        "author": "Friedrich Nietzsche",
+        "book": "Beyond Good and Evil",
+        "year": 1886
+      },
+      {
+        "title": "The Attachment Theorist",
+        "concern": "The underlying emotional security and the patterns of seeking connection.",
+        "author": "John Bowlby",
+        "book": "Attachment and Loss",
+        "year": 1969
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Reciprocity Analyst",
+        "text": "You are caught in a broken social cycle. Human relationships thrive on a sense of obligation, where one favor is returned by another. By always initiating, you have inadvertently signaled that your presence is a free good, removing the pressure for your friend to contribute.",
+        "author": "Robert Cialdini",
+        "book": "Influence",
+        "pd": false,
+        "basis": "Basis: Robert Cialdini, Influence"
+      },
+      {
+        "speaker": "The Attachment Theorist",
+        "text": "But why does the lack of initiation feel so heavy? You are likely seeking a specific type of responsiveness to feel secure. If you stop texting, you are not just testing the friendship; you are testing whether you are worthy of being sought out.",
+        "author": "John Bowlby",
+        "book": "Attachment and Loss",
+        "pd": false,
+        "basis": "Basis: John Bowlby, Attachment and Loss"
+      },
+      {
+        "speaker": "The Radical Honest",
+        "text": "You are both dancing around the core issue. As Nietzsche wrote, There are no moral phenomena at all, but only a moral interpretation of phenomena. You have interpreted this silence as a slight, yet you lack the courage to force a confrontation that might reveal the truth of your bond.",
+        "author": "Friedrich Nietzsche",
+        "book": "Beyond Good and Evil",
+        "pd": true,
+        "basis": "Basis: Friedrich Nietzsche, Beyond Good and Evil"
+      },
+      {
+        "speaker": "The Reciprocity Analyst",
+        "text": "A confrontation is a high-risk move that often triggers defensiveness rather than cooperation. It is better to subtly shift the dynamic by withdrawing slightly, allowing the vacuum to exist so the other person has the space to step forward.",
+        "author": "Robert Cialdini",
+        "book": "Influence",
+        "pd": false,
+        "basis": "Basis: Robert Cialdini, Influence"
+      },
+      {
+        "speaker": "The Attachment Theorist",
+        "text": "Withdrawal is just another form of manipulation. If you pull back to force their hand, you are still operating from a place of anxiety. The goal should be to understand if your needs for connection are being met, not to engineer a specific response.",
+        "author": "John Bowlby",
+        "book": "Attachment and Loss",
+        "pd": false,
+        "basis": "Basis: John Bowlby, Attachment and Loss"
+      },
+      {
+        "speaker": "The Radical Honest",
+        "text": "Exactly. You are playing games to avoid the possibility of rejection. To be truly strong is to state your desire for a more balanced friendship without needing the other person to agree. Honesty is the only way to strip away the pretense.",
+        "author": "Friedrich Nietzsche",
+        "book": "Beyond Good and Evil",
+        "pd": true,
+        "basis": "Basis: Friedrich Nietzsche, Beyond Good and Evil"
+      },
+      {
+        "speaker": "The Reciprocity Analyst",
+        "text": "I disagree that honesty is always the best path to resolution. People are social animals who respond to cues. If you simply express your frustration, you risk violating the social contract of the friendship, which might lead to an awkward end.",
+        "author": "Robert Cialdini",
+        "book": "Influence",
+        "pd": false,
+        "basis": "Basis: Robert Cialdini, Influence"
+      },
+      {
+        "speaker": "The Attachment Theorist",
+        "text": "If the friendship ends because you asked for more balance, it was likely based on an insecure foundation anyway. You deserve to know if the person on the other end is capable of providing the emotional support you need.",
+        "author": "John Bowlby",
+        "book": "Attachment and Loss",
+        "pd": false,
+        "basis": "Basis: John Bowlby, Attachment and Loss"
+      },
+      {
+        "speaker": "The Radical Honest",
+        "text": "Most people prefer to live in a comfortable lie rather than face the reality of their connections. If you want to know where you stand, you must be willing to lose the friendship to find the truth of it.",
+        "author": "Friedrich Nietzsche",
+        "book": "Beyond Good and Evil",
+        "pd": true,
+        "basis": "Basis: Friedrich Nietzsche, Beyond Good and Evil"
+      }
+    ],
+    "clearer": "The debate clarified that the user's struggle is caught between the desire for social harmony (Reciprocity), the fear of emotional insecurity (Attachment), and the demand for authentic truth (Radical Honesty). It remains disputed whether the imbalance is a structural error to be corrected or a diagnostic signal of the friendship's limits.",
+    "dependsOn": "If the friendship is valued primarily for its current interactions, then a gentle, non-confrontational shift in behavior is most reasonable. If the user requires a deep, reciprocal connection to feel secure, then a direct conversation about expectations is necessary, even at the risk of the friendship ending. If the user is unsure of the friend's capacity, a period of intentional silence remains the most effective way to observe the friend's natural inclination without forcing a result."
+  },
+  "validity": {
+    "ok": true,
+    "problems": []
+  },
+  "metrics": {
+    "turns": 9,
+    "words": 383,
+    "meanWordsPerTurn": 42.56,
+    "shortTurns": 0,
+    "longTurns": 0,
+    "hedges": 9,
+    "hedgeDensity": 2.35,
+    "bannedCertainty": 3,
+    "templatedOpeners": 0,
+    "slotMarkers": 0,
+    "questionsToUser": 1,
+    "theUser": 0,
+    "pdFalseQuoteTurns": 0,
+    "fabricatedBasisTurns": 0,
+    "distinctSpeakers": 3,
+    "distinctBooks": 3
+  },
+  "unusable": false,
+  "latencyMs": 35231,
+  "tokens": null,
+  "raw": "{\n  \"output\": {\n    \"situation\": \"The user consistently initiates contact with a friend, creating a pattern where the friendship feels one-sided despite positive interactions. The user is unsure whether to address this imbalance directly or accept it, fearing the consequences of speaking up or the pain of remaining silent.\",\n    \"minds\": [\n      {\n        \"title\": \"The Reciprocity Analyst\",\n        \"concern\": \"The social exchange and the unspoken rules of mutual obligation.\",\n        \"author\": \"Robert Cialdini\",\n        \"book\": \"Influence\",\n        \"year\": 1984\n      },\n      {\n        \"title\": \"The Radical Honest\",\n        \"concern\": \"The necessity of truth over social comfort and the strength to endure reality.\",\n        \"author\": \"Friedrich Nietzsche\",\n        \"book\": \"Beyond Good and Evil\",\n        \"year\": 1886\n      },\n      {\n        \"title\": \"The Attachment Theorist\",\n        \"concern\": \"The underlying emotional security and the patterns of seeking connection.\",\n        \"author\": \"John Bowlby\",\n        \"book\": \"Attachment and Loss\",\n        \"year\": 1969\n      }\n    ],\n    \"debate\": [\n      {\n        \"speaker\": \"The Reciprocity Analyst\",\n        \"text\": \"You are caught in a broken social cycle. Human relationships thrive on a sense of obligation, where one favor is returned by another. By always initiating, you have inadvertently signaled that your presence is a free good, removing the pressure for your friend to contribute.\",\n        \"author\": \"Robert Cialdini\",\n        \"book\": \"Influence\",\n        \"pd\": false,\n        \"basis\": \"Basis: Robert Cialdini, Influence\"\n      },\n      {\n        \"speaker\": \"The Attachment Theorist\",\n        \"text\": \"But why does the lack of initiation feel so heavy? You are likely seeking a specific type of responsiveness to feel secure. If you stop texting, you are not just testing the friendship; you are testing whether you are worthy of being sought out.\",\n        \"author\": \"John Bowlby\",\n        \"book\": \"Attachment and Loss\",\n        \"pd\": false,\n        \"basis\": \"Basis: John Bowlby, Attachment and Loss\"\n      },\n      {\n        \"speaker\": \"The Radical Honest\",\n        \"text\": \"You are both dancing around the core issue. As Nietzsche wrote, There are no moral phenomena at all, but only a moral interpretation of phenomena. You have interpreted this silence as a slight, yet you lack the courage to force a confrontation that might reveal the truth of your bond.\",\n        \"author\": \"Friedrich Nietzsche\",\n        \"book\": \"Beyond Good and Evil\",\n        \"pd\": true,\n        \"basis\": \"Basis: Friedrich Nietzsche, Beyond Good and Evil\"\n      },\n      {\n        \"speaker\": \"The Reciprocity Analyst\",\n        \"text\": \"A confrontation is a high-risk move that often triggers defensiveness rather than cooperation. It is better to subtly shift the dynamic by withdrawing slightly, allowing the vacuum to exist so the other person has the space to step forward.\",\n        \"author\": \"Robert Cialdini\",\n        \"book\": \"Influence\",\n        \"pd\": false,\n        \"basis\": \"Basis: Robert Cialdini, Influence\"\n      },\n      {\n        \"speaker\": \"The Attachment Theorist\",\n        \"text\": \"Withdrawal is just another form of manipulation. If you pull back to force their hand, you are still operating from a place of anxiety. The goal should be to understand if your needs for connection are being met, not to engineer a specific response.\",\n        \"author\": \"John Bowlby\",\n        \"book\": \"Attachment and Loss\",\n        \"pd\": false,\n        \"basis\": \"Basis: John Bowlby, Attachment and Loss\"\n      },\n      {\n        \"speaker\": \"The Radical Honest\",\n        \"text\": \"Exactly. You are playing games to avoid the possibility of rejection. To be truly strong is to state your desire for a more balanced friendship without needing the other person to agree. Honesty is the only way to strip away the pretense.\",\n        \"author\": \"Friedrich Nietzsche\",\n        \"book\": \"Beyond Good and Evil\",\n        \"pd\": true,\n        \"basis\": \"Basis: Friedrich Nietzsche, Beyond Good and Evil\"\n      },\n      {\n        \"speaker\": \"The Reciprocity Analyst\",\n        \"text\": \"I disagree that honesty is always the best path to resolution. People are social animals who respond to cues. If you simply express your frustration, you risk violating the social contract of the friendship, which might lead to an awkward end.\",\n        \"author\": \"Robert Cialdini\",\n        \"book\": \"Influence\",\n        \"pd\": false,\n        \"basis\": \"Basis: Robert Cialdini, Influence\"\n      },\n      {\n        \"speaker\": \"The Attachment Theorist\",\n        \"text\": \"If the friendship ends because you asked for more balance, it was likely based on an insecure foundation anyway. You deserve to know if the person on the other end is capable of providing the emotional support you need.\",\n        \"author\": \"John Bowlby\",\n        \"book\": \"Attachment and Loss\",\n        \"pd\": false,\n        \"basis\": \"Basis: John Bowlby, Attachment and Loss\"\n      },\n      {\n        \"speaker\": \"The Radical Honest\",\n        \"text\": \"Most people prefer to live in a comfortable lie rather than face the reality of their connections. If you want to know where you stand, you must be willing to lose the friendship to find the truth of it.\",\n        \"author\": \"Friedrich Nietzsche\",\n        \"book\": \"Beyond Good and Evil\",\n        \"pd\": true,\n        \"basis\": \"Basis: Friedrich Nietzsche, Beyond Good and Evil\"\n      }\n    ],\n    \"clearer\": \"The debate clarified that the user's struggle is caught between the desire for social harmony (Reciprocity), the fear of emotional insecurity (Attachment), and the demand for authentic truth (Radical Honesty). It remains disputed whether the imbalance is a structural error to be corrected or a diagnostic signal of the friendship's limits.\",\n    \"dependsOn\": \"If the friendship is valued primarily for its current interactions, then a gentle, non-confrontational shift in behavior is most reasonable. If the user requires a deep, reciprocal connection to feel secure, then a direct conversation about expectations is necessary, even at the risk of the friendship ending. If the user is unsure of the friend's capacity, a period of intentional silence remains the most effective way to observe the friend's natural inclination without forcing a result.\"\n  },\n  \"latencyMs\": 35231,\n  \"tokens\": null\n}",
+  "transcriptHash": "1eba9bb9b177ff5e10b80cfe3fda8ba15a22dc659c721a5b0d7626f2baee06fa",
+  "savedAt": "2026-10-15T09:17:39.722Z"
+}

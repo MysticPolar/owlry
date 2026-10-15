@@ -1,0 +1,971 @@
+{
+  "jobId": "rubric.v0.q1.s1",
+  "raw": {
+    "schema_version": "rubric-evaluator-4.2.0",
+    "rubric_version": "owlry-matrix-v2-bands",
+    "evaluation_status": "complete",
+    "cells": [
+      {
+        "id": "C1.1",
+        "name": "Continuity and responsiveness",
+        "rating": 8.4,
+        "example": "T4 picks up T3's 'somewhere else'; T8 targets T7's patch-test sequence directly.",
+        "limitation": "T6 and T7 extend the plan cooperatively, adding steps rather than answering a challenge.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.2",
+        "name": "Development of ideas",
+        "rating": 9,
+        "example": "T3 adds fades-versus-persists as a diagnostic; T4 and section E build on it.",
+        "limitation": "T9's combination-effect distinction is never taken up by T10 or section E.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C1.3",
+        "name": "Exploration of central tensions",
+        "rating": 6.3,
+        "example": "Pause-first versus test-now (T1-T3) and one-strike versus repeat (T8-T10) are examined.",
+        "limitation": "No turn raises active ingredients or irritation versus allergy, the likeliest explanations for stinging.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.4",
+        "name": "Integration of perspectives",
+        "rating": 8.5,
+        "example": "T3 folds T2's pause into a control; T9 concedes T8 yet keeps sequencing.",
+        "limitation": "T6 agrees quickly with T5 rather than reshaping it; integration is somewhat smooth.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.5",
+        "name": "Progress toward understanding",
+        "rating": 8.2,
+        "example": "Section D reframes to how to make the answer readable, and names the open dispute.",
+        "limitation": "Irritation versus allergy, named in section A, ends no clearer than it began.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.1",
+        "name": "Faithful engagement",
+        "rating": 8.3,
+        "example": "T3 accepts T2's strongest point, that testing adds load to irritated skin.",
+        "limitation": "T8 frames the Experimenter as repeating for purity of method, which T7 never proposed.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.2",
+        "name": "Substance of challenges",
+        "rating": 9,
+        "example": "T2 names the assumption (testing on irritated skin) and the harm; T3 answers it.",
+        "limitation": "T10's coincidence objection is not weighed against a reaction reproduced on reintroduction.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C2.3",
+        "name": "Accuracy and support",
+        "rating": 6.4,
+        "example": "T7's delayed allergic reaction claim and the attributions to Bernard, Kahneman, Taleb fit their themes.",
+        "limitation": "T4, a pd=false turn, uses quotation marks around 'somewhere else' (observed in deterministic checks).",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.4",
+        "name": "Calibration and transparency",
+        "rating": 8.5,
+        "example": "Section A separates known from inferred; T6 and T10 bases mark their own extensions.",
+        "limitation": "Section E's a week or more threshold is offered without stating its basis.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.5",
+        "name": "Intellectual honesty and revision",
+        "rating": 8.7,
+        "example": "T9 concedes one clear reaction suffices, but holds the sequence with a stated reason.",
+        "limitation": "T9's combination point goes unanswered; T10 moves to sample size instead.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.1",
+        "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+        "rating": 7.8,
+        "example": "Section A names which product, irritation versus allergy, and other changes as decisive unknowns.",
+        "limitation": "The irritation-versus-allergy ambiguity in section A is not carried into the debate's method.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.2",
+        "name": "Meaningful use of personal context",
+        "rating": 7,
+        "example": "T1 turns three products started at once into the core confound shaping the plan.",
+        "limitation": "Beyond count and timing, no detail of the user's products or routine shapes reasoning.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.3",
+        "name": "Fit with goals and values",
+        "rating": 7.5,
+        "example": "T9 protects the user's goal of finding the cause without discarding a usable product.",
+        "limitation": "Whether the user wants to keep a particular product is never distinguished or asked.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.4",
+        "name": "Attention to constraints and stakes",
+        "rating": 7.8,
+        "example": "Section E separates severe signs needing prompt care from home testing; T5 weighs skin damage.",
+        "limitation": "T4 lists other changes as possibilities without asking; stakes stay generic.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.5",
+        "name": "Responsiveness to information",
+        "rating": 6,
+        "example": "Section E branches on severity, fading versus persisting, and immediate versus delayed sting.",
+        "limitation": "No turn asks what the three products contain or whether they were layered together.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.1",
+        "name": "Clarification of desires and motivations",
+        "rating": 4.5,
+        "example": "Section D asks which product the user most expected to be the culprit, and why.",
+        "limitation": "No plausible motives (keeping a costly product, wanting speed) are offered as alternatives.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.2",
+        "name": "Examination of assumptions",
+        "rating": 7.6,
+        "example": "T4 makes visible the assumption that the newest bottles caused the sting.",
+        "limitation": "T2 assumes the kept moisturizer and sunscreen are not among the new products; unexamined.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.3",
+        "name": "Clarification of values and priorities",
+        "rating": 5.5,
+        "example": "T5 weighs skin safety against keeping the routine; T9 against discarding needlessly.",
+        "limitation": "The user's own priority between speed, certainty and keeping products is never put to them.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.4",
+        "name": "Recognition of fears and outside expectations",
+        "rating": 6,
+        "example": "T6 notes watching for stinging amplifies it, without pathologising the user.",
+        "limitation": "Worry about skin damage or wasted money is touched only implicitly in T5.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.5",
+        "name": "Agency and reflective ownership",
+        "rating": 7,
+        "example": "Section D leaves the one-strike versus repeat question for the user to settle.",
+        "limitation": "Section D's reflection question is the only invitation; the debate otherwise prescribes steps.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.1",
+        "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+        "rating": 8,
+        "example": "Stop all, reintroduce singly, look elsewhere, or see a clinician are laid out (T2, T7, E).",
+        "limitation": "Stopping only the most likely culprit as a limited step is never considered.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.2",
+        "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+        "rating": 8.3,
+        "example": "T5: stopping costs a boring week; continuing risks damaged skin.",
+        "limitation": "The time cost of sequential reintroduction across three products is never stated.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.3",
+        "name": "Identification of decisive conditions",
+        "rating": 9,
+        "example": "Section E: sting fading after stopping favours reintroduction; persisting favours looking elsewhere.",
+        "limitation": "Section E notes timing of the sting but not what immediate versus delayed implies.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C5.4",
+        "name": "Treatment of uncertainty",
+        "rating": 7.8,
+        "example": "Section E separates severe-sign uncertainty from ordinary identification; T10 flags coincidence.",
+        "limitation": "Irritation versus allergy is named as decisive in section A but never ranked or resolved.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.5",
+        "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+        "rating": 8.5,
+        "example": "Pause, daily one-to-five rating, single-product patch reintroduction (T2, T6, T7).",
+        "limitation": "T7's start with the gentlest-sounding gives no way to judge which is gentlest.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.1",
+        "name": "Accessible language",
+        "rating": 8.8,
+        "example": "T5 states the asymmetry in plain terms: boring skincare versus damaged skin.",
+        "limitation": "T9's stings alongside another may be fine alone is compressed and easy to misread.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.2",
+        "name": "Traceable arguments and references",
+        "rating": 9,
+        "example": "T4 quotes T3's phrase; T8 names the Experimenter; T6 'the pause' points to T5.",
+        "limitation": "T10's single clean result could refer to T8 or T9; slightly ambiguous.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C6.3",
+        "name": "Manageable pacing and turn length",
+        "rating": 8.8,
+        "example": "Ten turns, all within the word range, each adding one step.",
+        "limitation": "none",
+        "limitation_severity": "none",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.4",
+        "name": "Distinguishable positions and voices, with explicit changes of position",
+        "rating": 7.3,
+        "example": "Stopper, tester and doubter hold distinct positions; T8-T9 shift is explicit.",
+        "limitation": "T1-T10 share one plain register at near-identical length; voices differ by stance only.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.5",
+        "name": "Economy and sustained attention",
+        "rating": 8.2,
+        "example": "Section D compresses the method into one ordered sequence with purpose.",
+        "limitation": "Section E repeats T3 and T7 reintroduction steps nearly verbatim.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.1",
+        "name": "Meaningful stakes and tension arising from the issue itself",
+        "rating": 7,
+        "example": "T5 and T8 set skin harm against methodological thoroughness.",
+        "limitation": "Tension stays low-key; the severe-reaction stake appears only in T10 and section E.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.2",
+        "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+        "rating": 9,
+        "example": "T9 concedes because of T8's argument that one clear reaction ends the question.",
+        "limitation": "Reversals are small concessions; none surprises.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C7.3",
+        "name": "Personality and expressive voice without caricature",
+        "rating": 7.1,
+        "example": "T2's 'Hold on, you're already adding' gives the Subtractor a distinct bite.",
+        "limitation": "Experimenter and Story Doubter speak in the same measured register throughout.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.4",
+        "name": "Memorable delivery",
+        "rating": 7.7,
+        "example": "T4: the products are the suspect we notice, not necessarily the guilty one.",
+        "limitation": "Few analogies or vivid examples beyond T4's suspect framing.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.5",
+        "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+        "rating": 6.7,
+        "example": "T10 ends on an open disagreement that leaves the user something to weigh.",
+        "limitation": "Uniform turn length and register across T1-T10 flatten rhythm.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      }
+    ],
+    "strengths": [
+      "T1-T3 build a sound method: pause, calm baseline as control, then single-product reintroduction.",
+      "Section E gives observable branches (severe signs, fading versus persisting) with the option each favours.",
+      "T8-T9 show a caused concession: the Experimenter accepts one-strike while defending sequencing."
+    ],
+    "weaknesses": [
+      "No mind asks what the three products contain (acids, retinoids, fragrance) or whether they were layered.",
+      "T4 (Story Doubter, pd=false) uses quotation marks around 'somewhere else'.",
+      "All three minds share one register at near-identical turn length across T1-T10."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C3.5",
+        "turns": [
+          1,
+          2,
+          7
+        ],
+        "observed": "No turn asks which ingredients the products contain or whether they were layered.",
+        "evidence": "One product at a time, starting with the gentlest-sounding"
+      },
+      {
+        "cell_id": "C2.3",
+        "turns": [
+          4
+        ],
+        "observed": "A pd=false turn wraps a phrase in quotation marks.",
+        "evidence": "Your 'somewhere else' deserves more respect."
+      },
+      {
+        "cell_id": "C1.3",
+        "turns": [
+          7,
+          10
+        ],
+        "observed": "Irritation versus allergy, named in section A, is never examined as a tension.",
+        "evidence": "allergic reactions can show up a day or two late"
+      },
+      {
+        "cell_id": "C4.1",
+        "turns": [
+          5,
+          9
+        ],
+        "observed": "No alternative motives offered; only section D asks one expectation question.",
+        "evidence": "you'd throw it away needlessly"
+      },
+      {
+        "cell_id": "C7.5",
+        "turns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "observed": "Every turn runs about 45-55 words in one shared register.",
+        "evidence": "Agreed on the pause. But watch what happens during it."
+      }
+    ],
+    "mechanical": [
+      {
+        "pattern": "uniform_voice",
+        "turns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "type": "format",
+        "severity": "material",
+        "status": "observed",
+        "location": "Turn 4 (The Story Doubter, pd=false)",
+        "description": "Single quotation marks around 'somewhere else' in a pd=false turn; confirmed by the deterministic check.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "unverified",
+        "location": "Basis fields, Turns 1-10",
+        "description": "Attributions to Bernard, Kahneman and Taleb are cited from memory; themes are consistent with the books.",
+        "evidence_ids": []
+      },
+      {
+        "type": "rubric_mismatch",
+        "severity": "minor",
+        "status": "observed",
+        "location": "Criterion 4",
+        "description": "A skincare troubleshooting question offers little room for motives and values; C4 scores reflect limited opportunity.",
+        "evidence_ids": []
+      }
+    ],
+    "cap_reasons": [
+      {
+        "reason": "pd_false_quotation_marks",
+        "finding_index": 0
+      }
+    ],
+    "rubric_fit_notes": [
+      "Criterion 4 fits a practical troubleshooting question loosely; low C4 ratings partly reflect the question's narrow motive space rather than debate failure. The T4 quotation marks quote the previous speaker, not the author, yet still count under the pd=false rule."
+    ],
+    "question_type_note": "Read as a decision (troubleshooting) question, so C5 was scored on concrete, observable diagnostic branches and next steps."
+  },
+  "card": {
+    "criteria": [
+      {
+        "id": "C1",
+        "name": "Quality of discussion",
+        "max": 20,
+        "points": 16.16,
+        "sub": [
+          {
+            "id": "C1.1",
+            "name": "Continuity and responsiveness",
+            "rating": 8.4,
+            "points": 3.36,
+            "example": "T4 picks up T3's 'somewhere else'; T8 targets T7's patch-test sequence directly.",
+            "limitation": "T6 and T7 extend the plan cooperatively, adding steps rather than answering a challenge.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.2",
+            "name": "Development of ideas",
+            "rating": 9,
+            "points": 3.6,
+            "example": "T3 adds fades-versus-persists as a diagnostic; T4 and section E build on it.",
+            "limitation": "T9's combination-effect distinction is never taken up by T10 or section E.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C1.3",
+            "name": "Exploration of central tensions",
+            "rating": 6.3,
+            "points": 2.52,
+            "example": "Pause-first versus test-now (T1-T3) and one-strike versus repeat (T8-T10) are examined.",
+            "limitation": "No turn raises active ingredients or irritation versus allergy, the likeliest explanations for stinging.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.4",
+            "name": "Integration of perspectives",
+            "rating": 8.5,
+            "points": 3.4,
+            "example": "T3 folds T2's pause into a control; T9 concedes T8 yet keeps sequencing.",
+            "limitation": "T6 agrees quickly with T5 rather than reshaping it; integration is somewhat smooth.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.5",
+            "name": "Progress toward understanding",
+            "rating": 8.2,
+            "points": 3.28,
+            "example": "Section D reframes to how to make the answer readable, and names the open dispute.",
+            "limitation": "Irritation versus allergy, named in section A, ends no clearer than it began.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C2",
+        "name": "Quality of disagreement, trust and grounding",
+        "max": 20,
+        "points": 16.36,
+        "sub": [
+          {
+            "id": "C2.1",
+            "name": "Faithful engagement",
+            "rating": 8.3,
+            "points": 3.32,
+            "example": "T3 accepts T2's strongest point, that testing adds load to irritated skin.",
+            "limitation": "T8 frames the Experimenter as repeating for purity of method, which T7 never proposed.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.2",
+            "name": "Substance of challenges",
+            "rating": 9,
+            "points": 3.6,
+            "example": "T2 names the assumption (testing on irritated skin) and the harm; T3 answers it.",
+            "limitation": "T10's coincidence objection is not weighed against a reaction reproduced on reintroduction.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C2.3",
+            "name": "Accuracy and support",
+            "rating": 6.4,
+            "points": 2.56,
+            "example": "T7's delayed allergic reaction claim and the attributions to Bernard, Kahneman, Taleb fit their themes.",
+            "limitation": "T4, a pd=false turn, uses quotation marks around 'somewhere else' (observed in deterministic checks).",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.4",
+            "name": "Calibration and transparency",
+            "rating": 8.5,
+            "points": 3.4,
+            "example": "Section A separates known from inferred; T6 and T10 bases mark their own extensions.",
+            "limitation": "Section E's a week or more threshold is offered without stating its basis.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.5",
+            "name": "Intellectual honesty and revision",
+            "rating": 8.7,
+            "points": 3.48,
+            "example": "T9 concedes one clear reaction suffices, but holds the sequence with a stated reason.",
+            "limitation": "T9's combination point goes unanswered; T10 moves to sample size instead.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C3",
+        "name": "Personal relevance",
+        "max": 10,
+        "points": 7.22,
+        "sub": [
+          {
+            "id": "C3.1",
+            "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+            "rating": 7.8,
+            "points": 1.56,
+            "example": "Section A names which product, irritation versus allergy, and other changes as decisive unknowns.",
+            "limitation": "The irritation-versus-allergy ambiguity in section A is not carried into the debate's method.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.2",
+            "name": "Meaningful use of personal context",
+            "rating": 7,
+            "points": 1.4,
+            "example": "T1 turns three products started at once into the core confound shaping the plan.",
+            "limitation": "Beyond count and timing, no detail of the user's products or routine shapes reasoning.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.3",
+            "name": "Fit with goals and values",
+            "rating": 7.5,
+            "points": 1.5,
+            "example": "T9 protects the user's goal of finding the cause without discarding a usable product.",
+            "limitation": "Whether the user wants to keep a particular product is never distinguished or asked.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.4",
+            "name": "Attention to constraints and stakes",
+            "rating": 7.8,
+            "points": 1.56,
+            "example": "Section E separates severe signs needing prompt care from home testing; T5 weighs skin damage.",
+            "limitation": "T4 lists other changes as possibilities without asking; stakes stay generic.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.5",
+            "name": "Responsiveness to information",
+            "rating": 6,
+            "points": 1.2,
+            "example": "Section E branches on severity, fading versus persisting, and immediate versus delayed sting.",
+            "limitation": "No turn asks what the three products contain or whether they were layered together.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C4",
+        "name": "Constructive self-discovery",
+        "max": 20,
+        "points": 12.24,
+        "sub": [
+          {
+            "id": "C4.1",
+            "name": "Clarification of desires and motivations",
+            "rating": 4.5,
+            "points": 1.8,
+            "example": "Section D asks which product the user most expected to be the culprit, and why.",
+            "limitation": "No plausible motives (keeping a costly product, wanting speed) are offered as alternatives.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.2",
+            "name": "Examination of assumptions",
+            "rating": 7.6,
+            "points": 3.04,
+            "example": "T4 makes visible the assumption that the newest bottles caused the sting.",
+            "limitation": "T2 assumes the kept moisturizer and sunscreen are not among the new products; unexamined.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.3",
+            "name": "Clarification of values and priorities",
+            "rating": 5.5,
+            "points": 2.2,
+            "example": "T5 weighs skin safety against keeping the routine; T9 against discarding needlessly.",
+            "limitation": "The user's own priority between speed, certainty and keeping products is never put to them.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.4",
+            "name": "Recognition of fears and outside expectations",
+            "rating": 6,
+            "points": 2.4,
+            "example": "T6 notes watching for stinging amplifies it, without pathologising the user.",
+            "limitation": "Worry about skin damage or wasted money is touched only implicitly in T5.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.5",
+            "name": "Agency and reflective ownership",
+            "rating": 7,
+            "points": 2.8,
+            "example": "Section D leaves the one-strike versus repeat question for the user to settle.",
+            "limitation": "Section D's reflection question is the only invitation; the debate otherwise prescribes steps.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C5",
+        "name": "Decision usefulness",
+        "max": 10,
+        "points": 8.32,
+        "sub": [
+          {
+            "id": "C5.1",
+            "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+            "rating": 8,
+            "points": 1.6,
+            "example": "Stop all, reintroduce singly, look elsewhere, or see a clinician are laid out (T2, T7, E).",
+            "limitation": "Stopping only the most likely culprit as a limited step is never considered.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.2",
+            "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+            "rating": 8.3,
+            "points": 1.66,
+            "example": "T5: stopping costs a boring week; continuing risks damaged skin.",
+            "limitation": "The time cost of sequential reintroduction across three products is never stated.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.3",
+            "name": "Identification of decisive conditions",
+            "rating": 9,
+            "points": 1.8,
+            "example": "Section E: sting fading after stopping favours reintroduction; persisting favours looking elsewhere.",
+            "limitation": "Section E notes timing of the sting but not what immediate versus delayed implies.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C5.4",
+            "name": "Treatment of uncertainty",
+            "rating": 7.8,
+            "points": 1.56,
+            "example": "Section E separates severe-sign uncertainty from ordinary identification; T10 flags coincidence.",
+            "limitation": "Irritation versus allergy is named as decisive in section A but never ranked or resolved.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.5",
+            "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+            "rating": 8.5,
+            "points": 1.7,
+            "example": "Pause, daily one-to-five rating, single-product patch reintroduction (T2, T6, T7).",
+            "limitation": "T7's start with the gentlest-sounding gives no way to judge which is gentlest.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C6",
+        "name": "Clarity and engagement",
+        "max": 10,
+        "points": 8.42,
+        "sub": [
+          {
+            "id": "C6.1",
+            "name": "Accessible language",
+            "rating": 8.8,
+            "points": 1.76,
+            "example": "T5 states the asymmetry in plain terms: boring skincare versus damaged skin.",
+            "limitation": "T9's stings alongside another may be fine alone is compressed and easy to misread.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.2",
+            "name": "Traceable arguments and references",
+            "rating": 9,
+            "points": 1.8,
+            "example": "T4 quotes T3's phrase; T8 names the Experimenter; T6 'the pause' points to T5.",
+            "limitation": "T10's single clean result could refer to T8 or T9; slightly ambiguous.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C6.3",
+            "name": "Manageable pacing and turn length",
+            "rating": 8.8,
+            "points": 1.76,
+            "example": "Ten turns, all within the word range, each adding one step.",
+            "limitation": "none",
+            "severity": "none",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.4",
+            "name": "Distinguishable positions and voices, with explicit changes of position",
+            "rating": 7.3,
+            "points": 1.46,
+            "example": "Stopper, tester and doubter hold distinct positions; T8-T9 shift is explicit.",
+            "limitation": "T1-T10 share one plain register at near-identical length; voices differ by stance only.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.5",
+            "name": "Economy and sustained attention",
+            "rating": 8.2,
+            "points": 1.64,
+            "example": "Section D compresses the method into one ordered sequence with purpose.",
+            "limitation": "Section E repeats T3 and T7 reintroduction steps nearly verbatim.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C7",
+        "name": "Drama and entertainment",
+        "max": 10,
+        "points": 7.5,
+        "sub": [
+          {
+            "id": "C7.1",
+            "name": "Meaningful stakes and tension arising from the issue itself",
+            "rating": 7,
+            "points": 1.4,
+            "example": "T5 and T8 set skin harm against methodological thoroughness.",
+            "limitation": "Tension stays low-key; the severe-reaction stake appears only in T10 and section E.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.2",
+            "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+            "rating": 9,
+            "points": 1.8,
+            "example": "T9 concedes because of T8's argument that one clear reaction ends the question.",
+            "limitation": "Reversals are small concessions; none surprises.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C7.3",
+            "name": "Personality and expressive voice without caricature",
+            "rating": 7.1,
+            "points": 1.42,
+            "example": "T2's 'Hold on, you're already adding' gives the Subtractor a distinct bite.",
+            "limitation": "Experimenter and Story Doubter speak in the same measured register throughout.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.4",
+            "name": "Memorable delivery",
+            "rating": 7.7,
+            "points": 1.54,
+            "example": "T4: the products are the suspect we notice, not necessarily the guilty one.",
+            "limitation": "Few analogies or vivid examples beyond T4's suspect framing.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.5",
+            "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+            "rating": 6.7,
+            "points": 1.34,
+            "example": "T10 ends on an open disagreement that leaves the user something to weigh.",
+            "limitation": "Uniform turn length and register across T1-T10 flatten rhythm.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      }
+    ],
+    "uncapped": 76.22,
+    "score": 76.22,
+    "capReason": "pd_false_quotation_marks",
+    "provisional": false,
+    "strengths": [
+      "T1-T3 build a sound method: pause, calm baseline as control, then single-product reintroduction.",
+      "Section E gives observable branches (severe signs, fading versus persisting) with the option each favours.",
+      "T8-T9 show a caused concession: the Experimenter accepts one-strike while defending sequencing."
+    ],
+    "weaknesses": [
+      "No mind asks what the three products contain (acids, retinoids, fragrance) or whether they were layered.",
+      "T4 (Story Doubter, pd=false) uses quotation marks around 'somewhere else'.",
+      "All three minds share one register at near-identical turn length across T1-T10."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C3.5",
+        "turns": [
+          1,
+          2,
+          7
+        ],
+        "observed": "No turn asks which ingredients the products contain or whether they were layered.",
+        "evidence": "One product at a time, starting with the gentlest-sounding"
+      },
+      {
+        "cell_id": "C2.3",
+        "turns": [
+          4
+        ],
+        "observed": "A pd=false turn wraps a phrase in quotation marks.",
+        "evidence": "Your 'somewhere else' deserves more respect."
+      },
+      {
+        "cell_id": "C1.3",
+        "turns": [
+          7,
+          10
+        ],
+        "observed": "Irritation versus allergy, named in section A, is never examined as a tension.",
+        "evidence": "allergic reactions can show up a day or two late"
+      },
+      {
+        "cell_id": "C4.1",
+        "turns": [
+          5,
+          9
+        ],
+        "observed": "No alternative motives offered; only section D asks one expectation question.",
+        "evidence": "you'd throw it away needlessly"
+      },
+      {
+        "cell_id": "C7.5",
+        "turns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "observed": "Every turn runs about 45-55 words in one shared register.",
+        "evidence": "Agreed on the pause. But watch what happens during it."
+      }
+    ],
+    "mechanical": [
+      {
+        "pattern": "uniform_voice",
+        "turns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "type": "format",
+        "severity": "material",
+        "status": "observed",
+        "location": "Turn 4 (The Story Doubter, pd=false)",
+        "description": "Single quotation marks around 'somewhere else' in a pd=false turn; confirmed by the deterministic check.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "unverified",
+        "location": "Basis fields, Turns 1-10",
+        "description": "Attributions to Bernard, Kahneman and Taleb are cited from memory; themes are consistent with the books.",
+        "evidence_ids": []
+      },
+      {
+        "type": "rubric_mismatch",
+        "severity": "minor",
+        "status": "observed",
+        "location": "Criterion 4",
+        "description": "A skincare troubleshooting question offers little room for motives and values; C4 scores reflect limited opportunity.",
+        "evidence_ids": []
+      }
+    ],
+    "rubricFitNotes": [
+      "Criterion 4 fits a practical troubleshooting question loosely; low C4 ratings partly reflect the question's narrow motive space rather than debate failure. The T4 quotation marks quote the previous speaker, not the author, yet still count under the pd=false rule."
+    ],
+    "questionTypeNote": "Read as a decision (troubleshooting) question, so C5 was scored on concrete, observable diagnostic branches and next steps."
+  },
+  "rubricVersion": "rubric-evaluator-4.2.0",
+  "savedAt": "2026-10-15T09:19:36.158Z"
+}

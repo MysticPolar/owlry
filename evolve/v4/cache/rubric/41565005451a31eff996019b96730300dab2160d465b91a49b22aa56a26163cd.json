@@ -1,0 +1,1018 @@
+{
+  "jobId": "rubric.v0.q5.s2",
+  "raw": {
+    "schema_version": "rubric-evaluator-4.2.0",
+    "rubric_version": "owlry-matrix-v2-bands",
+    "evaluation_status": "complete",
+    "cells": [
+      {
+        "id": "C1.1",
+        "name": "Continuity and responsiveness",
+        "rating": 5,
+        "example": "T8 answers T7's stage metaphor: the stage is not passive.",
+        "limitation": "Historian T6 and T9 comment on the others rather than engaging their mechanisms.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.2",
+        "name": "Development of ideas",
+        "rating": 4,
+        "example": "T5 adds salinity-driven density flow as a new mechanism.",
+        "limitation": "T5 salinity and T7 pressure gradient are never used or developed by any later turn.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.3",
+        "name": "Exploration of central tensions",
+        "rating": 3,
+        "example": "T4 versus T5: landmass layout against ocean circulation as the driver.",
+        "limitation": "Westerlies, west-versus-east coast contrast, and mild coastal British Columbia never raised by any mind.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.4",
+        "name": "Integration of perspectives",
+        "rating": 4.5,
+        "example": "T7 concedes dynamics while keeping geography as the stage.",
+        "limitation": "Section D merges views into an interplay without settling how much each contributes.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.5",
+        "name": "Progress toward understanding",
+        "rating": 3,
+        "example": "Section D names geography plus ocean-atmosphere interplay.",
+        "limitation": "T9 ends on generic paradigm doubt; the causal answer is vaguer than T2's.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.1",
+        "name": "Faithful engagement",
+        "rating": 4,
+        "example": "T4 accepts the paradigm point before defending landmass physics.",
+        "limitation": "T5 reduces the Geographer's case to a mere boundary condition without engaging it.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.2",
+        "name": "Substance of challenges",
+        "rating": 3.5,
+        "example": "T4 challenges T3: a paradigm shift does not negate physical landmass.",
+        "limitation": "No objection names an assumption and what breaks; T3's caution targets no claim.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.3",
+        "name": "Accuracy and support",
+        "rating": 3,
+        "example": "T2 correctly names the North Atlantic Drift as heat transport.",
+        "limitation": "T4 calls Canada flat; T6 attributes climate oscillators to Kuhn; Mackinder's essay is geopolitics.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.4",
+        "name": "Calibration and transparency",
+        "rating": 3.5,
+        "example": "T9 flags explanation as tied to current consensus.",
+        "limitation": "T5 states the flow stalls if salinity drops as flat fact.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.5",
+        "name": "Intellectual honesty and revision",
+        "rating": 4,
+        "example": "T7: I concede that the dynamics are critical.",
+        "limitation": "T7 concession names no argument and restates the original geography claim unchanged.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.1",
+        "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+        "rating": 3,
+        "example": "Section A restates the latitude-temperature puzzle accurately.",
+        "limitation": "Section E recasts the why-question as which perspective the user prefers.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.2",
+        "name": "Meaningful use of personal context",
+        "rating": 3,
+        "example": "T4 contrasts European coastal exposure with continental Canada.",
+        "limitation": "No turn uses which Canadian regions compare; coastal versus interior Canada never distinguished.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.3",
+        "name": "Fit with goals and values",
+        "rating": 3.5,
+        "example": "T2 and T5 address the causal mechanism the user asked about.",
+        "limitation": "T3, T6, T9 serve a history-of-science goal the user never stated.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.4",
+        "name": "Attention to constraints and stakes",
+        "rating": 3.5,
+        "example": "T5 notes the warmth depends on a fragile circulation state.",
+        "limitation": "Section A invents a static-versus-dynamic tension the user did not raise.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.5",
+        "name": "Responsiveness to information",
+        "rating": 1.5,
+        "example": "Section E offers three conditional branches by focus.",
+        "limitation": "No question or branch on which places are compared, east or west Canada.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.1",
+        "name": "Clarification of desires and motivations",
+        "rating": 1.5,
+        "example": "Section E hints at stability, sensitivity, or explanation-history interests.",
+        "limitation": "No alternative motives for wanting the explanation offered with an answerable question.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.2",
+        "name": "Examination of assumptions",
+        "rating": 3,
+        "example": "T3 warns modern paradigms shape the explanation.",
+        "limitation": "The common assumption that the Gulf Stream alone explains it is never surfaced.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.3",
+        "name": "Clarification of values and priorities",
+        "rating": 2,
+        "example": "Section E separates long-term stability from climate sensitivity interests.",
+        "limitation": "No examination of what the user wants from understanding the question.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.4",
+        "name": "Recognition of fears and outside expectations",
+        "rating": 1.5,
+        "example": "T5 fragility of the circulation could touch climate-change worry.",
+        "limitation": "No fear, expectation, or received explanation the user might hold is named.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.5",
+        "name": "Agency and reflective ownership",
+        "rating": 3,
+        "example": "Section E offers three lenses the user could adopt or reject.",
+        "limitation": "Lenses are offered as preferences, not distinctions the user can test.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.1",
+        "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+        "rating": 4,
+        "example": "T4, T5 define landmass layout and ocean circulation as competing explanations.",
+        "limitation": "Atmospheric westerlies and Rocky-driven Arctic outflow absent as candidate explanations.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.2",
+        "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+        "rating": 2,
+        "example": "T7 notes ocean dynamics without landmass scale leave gaps.",
+        "limitation": "No turn states what evidence each explanation needs or fails to explain.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.3",
+        "name": "Identification of decisive conditions",
+        "rating": 1,
+        "example": "Section E keys perspectives to the user's focus.",
+        "limitation": "No observable fact, such as Vancouver versus Halifax winters, decides between explanations.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.4",
+        "name": "Treatment of uncertainty",
+        "rating": 2.5,
+        "example": "T9 says future anomalies might force a rethink.",
+        "limitation": "The consequential unknown, ocean versus atmosphere share, never separated from generic doubt.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.5",
+        "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+        "rating": 1,
+        "example": "Section E names which mind to follow per focus.",
+        "limitation": "No specific comparison, map, or fact to look at follows from the debate.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.1",
+        "name": "Accessible language",
+        "rating": 6.5,
+        "example": "T2 stock-and-flow inflow image is plain and concrete.",
+        "limitation": "T6 coupled oscillators and T5 boundary condition left unexplained.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.2",
+        "name": "Traceable arguments and references",
+        "rating": 6,
+        "example": "T6 'You both' clearly points to T4 and T5.",
+        "limitation": "T4 'that heat' and T8 'the inflow' have loose referents across turns.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.3",
+        "name": "Manageable pacing and turn length",
+        "rating": 7,
+        "example": "Nine turns, all within the word range per checks.",
+        "limitation": "Strict speaker rotation with similar lengths makes pacing monotone.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.4",
+        "name": "Distinguishable positions and voices, with explicit changes of position",
+        "rating": 5,
+        "example": "Three lenses distinct: landmass, feedback, paradigm.",
+        "limitation": "All three share one formal lecturing register; content differs, voice does not.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.5",
+        "name": "Economy and sustained attention",
+        "rating": 4.5,
+        "example": "T5 compresses the salinity mechanism into four short sentences.",
+        "limitation": "T3, T6, T9 repeat the same paradigm-shift point three times.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.1",
+        "name": "Meaningful stakes and tension arising from the issue itself",
+        "rating": 3.5,
+        "example": "T5: the warmth is a state of the system, not permanent.",
+        "limitation": "Fragility stake raised in T5 and T8 but never pressed or contested.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.2",
+        "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+        "rating": 2.5,
+        "example": "T7 Geographer concedes dynamics are critical.",
+        "limitation": "T7 reversal names no earlier argument as cause and changes no claim.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.3",
+        "name": "Personality and expressive voice without caricature",
+        "rating": 3,
+        "example": "T8 'The stage is not passive' has some bite.",
+        "limitation": "Minds speak as interchangeable lecturers; no humour, temperament, or idiom.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.4",
+        "name": "Memorable delivery",
+        "rating": 4.5,
+        "example": "T7 'Geography remains the stage upon which these systems play.'",
+        "limitation": "No vivid example such as a named city pair anchors the contrast.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.5",
+        "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+        "rating": 3,
+        "example": "T8 raises massive shifts from small inflow changes.",
+        "limitation": "Even rhythm throughout; T9 dissipates rather than resolves the T8 tension.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      }
+    ],
+    "strengths": [
+      "T5 introduces density and salinity as the driver of North Atlantic heat transport, a genuine mechanism.",
+      "T7 and T8 build on each other through the stage metaphor, showing some responsive exchange.",
+      "Three minds hold distinct lenses (landmass, feedback system, paradigm) that the user can tell apart."
+    ],
+    "weaknesses": [
+      "No mind raises prevailing westerlies or the west-coast versus east-coast contrast, so the core explanation is missing.",
+      "Section E ends on which perspective the user prefers instead of what fact would decide between explanations.",
+      "The Historian (T3, T6, T9) repeats a paradigm-shift point that does not advance the causal answer."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C1.3",
+        "turns": [
+          2,
+          4,
+          5,
+          7
+        ],
+        "observed": "Westerlies carrying ocean air onto western coasts never raised; Gulf Stream assumed central.",
+        "evidence": "the warmth is a constant inflow that prevents the freezing"
+      },
+      {
+        "cell_id": "C5.3",
+        "turns": [],
+        "observed": "Section E keys explanations to user focus, not an observable deciding fact.",
+        "evidence": "If the focus is on long-term stability, the Geographer's perspective"
+      },
+      {
+        "cell_id": "C6.5",
+        "turns": [
+          3,
+          6,
+          9
+        ],
+        "observed": "Historian restates the paradigm-shift point three times without adding mechanism.",
+        "evidence": "our understanding is limited by the current scientific consensus"
+      },
+      {
+        "cell_id": "C2.3",
+        "turns": [
+          4,
+          6
+        ],
+        "observed": "Canada called flat despite the Rockies; climate oscillators attributed to Kuhn.",
+        "evidence": "the vast, flat, and continental nature of Canada"
+      },
+      {
+        "cell_id": "C7.2",
+        "turns": [
+          7
+        ],
+        "observed": "Concession names no argument that caused it and leaves the claim unchanged.",
+        "evidence": "I concede that the dynamics are critical, yet we cannot"
+      }
+    ],
+    "mechanical": [
+      {
+        "pattern": "uncaused_reversal",
+        "turns": [
+          7
+        ]
+      },
+      {
+        "pattern": "misfit_slot",
+        "turns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      },
+      {
+        "pattern": "uniform_voice",
+        "turns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "type": "unsupported_claim",
+        "severity": "material",
+        "status": "suspected",
+        "location": "T4",
+        "description": "Canada described as flat; western Canada has the Rockies, which shape the very airflow at issue.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "T6",
+        "description": "Kuhn would note climate as coupled oscillators attributes a domain claim Kuhn's book does not make.",
+        "evidence_ids": []
+      },
+      {
+        "type": "source_error",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "B. MINDS, T1",
+        "description": "Mackinder's 1904 essay is geopolitical, not about climate; basis fits the mind's described lens poorly.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "T2, T5",
+        "description": "Ocean inflow presented as the full explanation and salinity drop as stalling flow outright; overstated relative to atmospheric contribution.",
+        "evidence_ids": []
+      },
+      {
+        "type": "rubric_mismatch",
+        "severity": "minor",
+        "status": "observed",
+        "location": "criterion 4",
+        "description": "A purely factual exploratory question with no personal context leaves little material for self-discovery cells.",
+        "evidence_ids": []
+      }
+    ],
+    "cap_reasons": [],
+    "rubric_fit_notes": [
+      "The question is a factual science explanation with no personal details; criteria 3 and 4 have thin material regardless of debate quality. Accuracy concerns rest on general knowledge, reported as suspected, not established."
+    ],
+    "question_type_note": "Read as exploratory: criterion 5 judged on defining competing explanations and an observable deciding fact, and Section E's focus-based ending cost C3.1 and C5.3."
+  },
+  "card": {
+    "criteria": [
+      {
+        "id": "C1",
+        "name": "Quality of discussion",
+        "max": 20,
+        "points": 7.8,
+        "sub": [
+          {
+            "id": "C1.1",
+            "name": "Continuity and responsiveness",
+            "rating": 5,
+            "points": 2,
+            "example": "T8 answers T7's stage metaphor: the stage is not passive.",
+            "limitation": "Historian T6 and T9 comment on the others rather than engaging their mechanisms.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.2",
+            "name": "Development of ideas",
+            "rating": 4,
+            "points": 1.6,
+            "example": "T5 adds salinity-driven density flow as a new mechanism.",
+            "limitation": "T5 salinity and T7 pressure gradient are never used or developed by any later turn.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.3",
+            "name": "Exploration of central tensions",
+            "rating": 3,
+            "points": 1.2,
+            "example": "T4 versus T5: landmass layout against ocean circulation as the driver.",
+            "limitation": "Westerlies, west-versus-east coast contrast, and mild coastal British Columbia never raised by any mind.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.4",
+            "name": "Integration of perspectives",
+            "rating": 4.5,
+            "points": 1.8,
+            "example": "T7 concedes dynamics while keeping geography as the stage.",
+            "limitation": "Section D merges views into an interplay without settling how much each contributes.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.5",
+            "name": "Progress toward understanding",
+            "rating": 3,
+            "points": 1.2,
+            "example": "Section D names geography plus ocean-atmosphere interplay.",
+            "limitation": "T9 ends on generic paradigm doubt; the causal answer is vaguer than T2's.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C2",
+        "name": "Quality of disagreement, trust and grounding",
+        "max": 20,
+        "points": 7.2,
+        "sub": [
+          {
+            "id": "C2.1",
+            "name": "Faithful engagement",
+            "rating": 4,
+            "points": 1.6,
+            "example": "T4 accepts the paradigm point before defending landmass physics.",
+            "limitation": "T5 reduces the Geographer's case to a mere boundary condition without engaging it.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.2",
+            "name": "Substance of challenges",
+            "rating": 3.5,
+            "points": 1.4,
+            "example": "T4 challenges T3: a paradigm shift does not negate physical landmass.",
+            "limitation": "No objection names an assumption and what breaks; T3's caution targets no claim.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.3",
+            "name": "Accuracy and support",
+            "rating": 3,
+            "points": 1.2,
+            "example": "T2 correctly names the North Atlantic Drift as heat transport.",
+            "limitation": "T4 calls Canada flat; T6 attributes climate oscillators to Kuhn; Mackinder's essay is geopolitics.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.4",
+            "name": "Calibration and transparency",
+            "rating": 3.5,
+            "points": 1.4,
+            "example": "T9 flags explanation as tied to current consensus.",
+            "limitation": "T5 states the flow stalls if salinity drops as flat fact.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.5",
+            "name": "Intellectual honesty and revision",
+            "rating": 4,
+            "points": 1.6,
+            "example": "T7: I concede that the dynamics are critical.",
+            "limitation": "T7 concession names no argument and restates the original geography claim unchanged.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C3",
+        "name": "Personal relevance",
+        "max": 10,
+        "points": 2.9,
+        "sub": [
+          {
+            "id": "C3.1",
+            "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+            "rating": 3,
+            "points": 0.6,
+            "example": "Section A restates the latitude-temperature puzzle accurately.",
+            "limitation": "Section E recasts the why-question as which perspective the user prefers.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.2",
+            "name": "Meaningful use of personal context",
+            "rating": 3,
+            "points": 0.6,
+            "example": "T4 contrasts European coastal exposure with continental Canada.",
+            "limitation": "No turn uses which Canadian regions compare; coastal versus interior Canada never distinguished.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.3",
+            "name": "Fit with goals and values",
+            "rating": 3.5,
+            "points": 0.7,
+            "example": "T2 and T5 address the causal mechanism the user asked about.",
+            "limitation": "T3, T6, T9 serve a history-of-science goal the user never stated.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.4",
+            "name": "Attention to constraints and stakes",
+            "rating": 3.5,
+            "points": 0.7,
+            "example": "T5 notes the warmth depends on a fragile circulation state.",
+            "limitation": "Section A invents a static-versus-dynamic tension the user did not raise.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.5",
+            "name": "Responsiveness to information",
+            "rating": 1.5,
+            "points": 0.3,
+            "example": "Section E offers three conditional branches by focus.",
+            "limitation": "No question or branch on which places are compared, east or west Canada.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C4",
+        "name": "Constructive self-discovery",
+        "max": 20,
+        "points": 4.4,
+        "sub": [
+          {
+            "id": "C4.1",
+            "name": "Clarification of desires and motivations",
+            "rating": 1.5,
+            "points": 0.6,
+            "example": "Section E hints at stability, sensitivity, or explanation-history interests.",
+            "limitation": "No alternative motives for wanting the explanation offered with an answerable question.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.2",
+            "name": "Examination of assumptions",
+            "rating": 3,
+            "points": 1.2,
+            "example": "T3 warns modern paradigms shape the explanation.",
+            "limitation": "The common assumption that the Gulf Stream alone explains it is never surfaced.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.3",
+            "name": "Clarification of values and priorities",
+            "rating": 2,
+            "points": 0.8,
+            "example": "Section E separates long-term stability from climate sensitivity interests.",
+            "limitation": "No examination of what the user wants from understanding the question.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.4",
+            "name": "Recognition of fears and outside expectations",
+            "rating": 1.5,
+            "points": 0.6,
+            "example": "T5 fragility of the circulation could touch climate-change worry.",
+            "limitation": "No fear, expectation, or received explanation the user might hold is named.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.5",
+            "name": "Agency and reflective ownership",
+            "rating": 3,
+            "points": 1.2,
+            "example": "Section E offers three lenses the user could adopt or reject.",
+            "limitation": "Lenses are offered as preferences, not distinctions the user can test.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C5",
+        "name": "Decision usefulness",
+        "max": 10,
+        "points": 2.1,
+        "sub": [
+          {
+            "id": "C5.1",
+            "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+            "rating": 4,
+            "points": 0.8,
+            "example": "T4, T5 define landmass layout and ocean circulation as competing explanations.",
+            "limitation": "Atmospheric westerlies and Rocky-driven Arctic outflow absent as candidate explanations.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.2",
+            "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+            "rating": 2,
+            "points": 0.4,
+            "example": "T7 notes ocean dynamics without landmass scale leave gaps.",
+            "limitation": "No turn states what evidence each explanation needs or fails to explain.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.3",
+            "name": "Identification of decisive conditions",
+            "rating": 1,
+            "points": 0.2,
+            "example": "Section E keys perspectives to the user's focus.",
+            "limitation": "No observable fact, such as Vancouver versus Halifax winters, decides between explanations.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.4",
+            "name": "Treatment of uncertainty",
+            "rating": 2.5,
+            "points": 0.5,
+            "example": "T9 says future anomalies might force a rethink.",
+            "limitation": "The consequential unknown, ocean versus atmosphere share, never separated from generic doubt.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.5",
+            "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+            "rating": 1,
+            "points": 0.2,
+            "example": "Section E names which mind to follow per focus.",
+            "limitation": "No specific comparison, map, or fact to look at follows from the debate.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C6",
+        "name": "Clarity and engagement",
+        "max": 10,
+        "points": 5.8,
+        "sub": [
+          {
+            "id": "C6.1",
+            "name": "Accessible language",
+            "rating": 6.5,
+            "points": 1.3,
+            "example": "T2 stock-and-flow inflow image is plain and concrete.",
+            "limitation": "T6 coupled oscillators and T5 boundary condition left unexplained.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.2",
+            "name": "Traceable arguments and references",
+            "rating": 6,
+            "points": 1.2,
+            "example": "T6 'You both' clearly points to T4 and T5.",
+            "limitation": "T4 'that heat' and T8 'the inflow' have loose referents across turns.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.3",
+            "name": "Manageable pacing and turn length",
+            "rating": 7,
+            "points": 1.4,
+            "example": "Nine turns, all within the word range per checks.",
+            "limitation": "Strict speaker rotation with similar lengths makes pacing monotone.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.4",
+            "name": "Distinguishable positions and voices, with explicit changes of position",
+            "rating": 5,
+            "points": 1,
+            "example": "Three lenses distinct: landmass, feedback, paradigm.",
+            "limitation": "All three share one formal lecturing register; content differs, voice does not.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.5",
+            "name": "Economy and sustained attention",
+            "rating": 4.5,
+            "points": 0.9,
+            "example": "T5 compresses the salinity mechanism into four short sentences.",
+            "limitation": "T3, T6, T9 repeat the same paradigm-shift point three times.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C7",
+        "name": "Drama and entertainment",
+        "max": 10,
+        "points": 3.3,
+        "sub": [
+          {
+            "id": "C7.1",
+            "name": "Meaningful stakes and tension arising from the issue itself",
+            "rating": 3.5,
+            "points": 0.7,
+            "example": "T5: the warmth is a state of the system, not permanent.",
+            "limitation": "Fragility stake raised in T5 and T8 but never pressed or contested.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.2",
+            "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+            "rating": 2.5,
+            "points": 0.5,
+            "example": "T7 Geographer concedes dynamics are critical.",
+            "limitation": "T7 reversal names no earlier argument as cause and changes no claim.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.3",
+            "name": "Personality and expressive voice without caricature",
+            "rating": 3,
+            "points": 0.6,
+            "example": "T8 'The stage is not passive' has some bite.",
+            "limitation": "Minds speak as interchangeable lecturers; no humour, temperament, or idiom.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.4",
+            "name": "Memorable delivery",
+            "rating": 4.5,
+            "points": 0.9,
+            "example": "T7 'Geography remains the stage upon which these systems play.'",
+            "limitation": "No vivid example such as a named city pair anchors the contrast.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.5",
+            "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+            "rating": 3,
+            "points": 0.6,
+            "example": "T8 raises massive shifts from small inflow changes.",
+            "limitation": "Even rhythm throughout; T9 dissipates rather than resolves the T8 tension.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      }
+    ],
+    "uncapped": 33.5,
+    "score": 33.5,
+    "capReason": null,
+    "provisional": false,
+    "strengths": [
+      "T5 introduces density and salinity as the driver of North Atlantic heat transport, a genuine mechanism.",
+      "T7 and T8 build on each other through the stage metaphor, showing some responsive exchange.",
+      "Three minds hold distinct lenses (landmass, feedback system, paradigm) that the user can tell apart."
+    ],
+    "weaknesses": [
+      "No mind raises prevailing westerlies or the west-coast versus east-coast contrast, so the core explanation is missing.",
+      "Section E ends on which perspective the user prefers instead of what fact would decide between explanations.",
+      "The Historian (T3, T6, T9) repeats a paradigm-shift point that does not advance the causal answer."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C1.3",
+        "turns": [
+          2,
+          4,
+          5,
+          7
+        ],
+        "observed": "Westerlies carrying ocean air onto western coasts never raised; Gulf Stream assumed central.",
+        "evidence": "the warmth is a constant inflow that prevents the freezing"
+      },
+      {
+        "cell_id": "C5.3",
+        "turns": [],
+        "observed": "Section E keys explanations to user focus, not an observable deciding fact.",
+        "evidence": "If the focus is on long-term stability, the Geographer's perspective"
+      },
+      {
+        "cell_id": "C6.5",
+        "turns": [
+          3,
+          6,
+          9
+        ],
+        "observed": "Historian restates the paradigm-shift point three times without adding mechanism.",
+        "evidence": "our understanding is limited by the current scientific consensus"
+      },
+      {
+        "cell_id": "C2.3",
+        "turns": [
+          4,
+          6
+        ],
+        "observed": "Canada called flat despite the Rockies; climate oscillators attributed to Kuhn.",
+        "evidence": "the vast, flat, and continental nature of Canada"
+      },
+      {
+        "cell_id": "C7.2",
+        "turns": [
+          7
+        ],
+        "observed": "Concession names no argument that caused it and leaves the claim unchanged.",
+        "evidence": "I concede that the dynamics are critical, yet we cannot"
+      }
+    ],
+    "mechanical": [
+      {
+        "pattern": "uncaused_reversal",
+        "turns": [
+          7
+        ]
+      },
+      {
+        "pattern": "misfit_slot",
+        "turns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      },
+      {
+        "pattern": "uniform_voice",
+        "turns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "type": "unsupported_claim",
+        "severity": "material",
+        "status": "suspected",
+        "location": "T4",
+        "description": "Canada described as flat; western Canada has the Rockies, which shape the very airflow at issue.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "T6",
+        "description": "Kuhn would note climate as coupled oscillators attributes a domain claim Kuhn's book does not make.",
+        "evidence_ids": []
+      },
+      {
+        "type": "source_error",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "B. MINDS, T1",
+        "description": "Mackinder's 1904 essay is geopolitical, not about climate; basis fits the mind's described lens poorly.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "T2, T5",
+        "description": "Ocean inflow presented as the full explanation and salinity drop as stalling flow outright; overstated relative to atmospheric contribution.",
+        "evidence_ids": []
+      },
+      {
+        "type": "rubric_mismatch",
+        "severity": "minor",
+        "status": "observed",
+        "location": "criterion 4",
+        "description": "A purely factual exploratory question with no personal context leaves little material for self-discovery cells.",
+        "evidence_ids": []
+      }
+    ],
+    "rubricFitNotes": [
+      "The question is a factual science explanation with no personal details; criteria 3 and 4 have thin material regardless of debate quality. Accuracy concerns rest on general knowledge, reported as suspected, not established."
+    ],
+    "questionTypeNote": "Read as exploratory: criterion 5 judged on defining competing explanations and an observable deciding fact, and Section E's focus-based ending cost C3.1 and C5.3."
+  },
+  "rubricVersion": "rubric-evaluator-4.2.0",
+  "savedAt": "2026-10-15T09:23:25.161Z"
+}

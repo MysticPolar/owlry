@@ -25,6 +25,9 @@ export async function normalise(schemaPath: string, data: unknown): Promise<void
     if (c && typeof c === "object" && c.limitation_severity === "none" && typeof c.limitation === "string" && /^\s*none\.?\s*$/i.test(c.limitation)) c.limitation = "none";
   }
   if ("question_type_note" in o && o.question_type_note === null) o.question_type_note = "";
+  // the rubric brief describes rubric_fit_notes as "observations" without saying "list": a single string is one note
+  // (first live run, 2026-10-15: 9 of 10 evaluators wrote a string)
+  for (const k of ["rubric_fit_notes"]) if (typeof o[k] === "string") o[k] = (o[k] as string).trim() && !/^\s*none\.?\s*$/i.test(o[k] as string) ? [(o[k] as string).trim()] : [];
   for (const k of ["findings", "cap_reasons", "rubric_fit_notes", "mechanical", "concerns"]) if (k in o && o[k] == null) o[k] = [];
   if (Array.isArray(o.concerns)) for (const c of o.concerns as Record<string, unknown>[]) if (c && typeof c === "object" && c.evidence_ids == null) c.evidence_ids = [];
   if (Array.isArray(o.findings)) for (const f of o.findings as Record<string, unknown>[]) if (f && typeof f === "object" && f.evidence_ids == null) f.evidence_ids = [];

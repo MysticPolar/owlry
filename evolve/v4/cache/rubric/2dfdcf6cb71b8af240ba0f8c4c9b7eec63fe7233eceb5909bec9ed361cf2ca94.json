@@ -1,0 +1,986 @@
+{
+  "jobId": "rubric.v0.q4.s2",
+  "raw": {
+    "schema_version": "rubric-evaluator-4.2.0",
+    "rubric_version": "owlry-matrix-v2-bands",
+    "evaluation_status": "complete",
+    "cells": [
+      {
+        "id": "C1.1",
+        "name": "Continuity and responsiveness",
+        "rating": 5.2,
+        "example": "T2 answers T1 directly: 'That sounds noble, but it ignores the field.'",
+        "limitation": "Stoic turns T3, T6, T9 restate doctrine; T9 ignores T8's challenge entirely.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.2",
+        "name": "Development of ideas",
+        "rating": 4.8,
+        "example": "T8 adds new idea: even self-made metrics are socially shaped.",
+        "limitation": "T8's distinction is never used; T9 reverts to the T3 opening position.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.3",
+        "name": "Exploration of central tensions",
+        "rating": 4.8,
+        "example": "T5 vs T4: authentic choice versus structural pressure is examined.",
+        "limitation": "Whether the user wants partnership or stability in another form is never examined.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.4",
+        "name": "Integration of perspectives",
+        "rating": 4.5,
+        "example": "T7 accepts the Stoic's control point and adds that judgment is not fixed.",
+        "limitation": "No mind's position is reshaped; all three end where T1-T3 started.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.5",
+        "name": "Progress toward understanding",
+        "rating": 5,
+        "example": "Section D sharpens the dispute: can one opt out of the social game?",
+        "limitation": "T9 closes on an assertion rather than the sharpened open question.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.1",
+        "name": "Faithful engagement",
+        "rating": 5.2,
+        "example": "T2 grants T1's nobility before naming what it ignores.",
+        "limitation": "T4 reduces the Stoic's T3 position to 'just ignore it'.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.2",
+        "name": "Substance of challenges",
+        "rating": 4.5,
+        "example": "T8 names the assumption that new metrics escape social forces.",
+        "limitation": "T9 never answers T8; T6 dismisses T5's distinction without argument.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.3",
+        "name": "Accuracy and support",
+        "rating": 3,
+        "example": "T6 control dichotomy fairly represents Stoic doctrine.",
+        "limitation": "T3 quotation is a widely circulated misattribution, not in Meditations (suspected).",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.4",
+        "name": "Calibration and transparency",
+        "rating": 3.5,
+        "example": "T5 frames discomfort as a 'rational response', an interpretation, not diagnosis.",
+        "limitation": "T9 asserts 'the feeling of being behind will vanish'; T2 says system 'designed'.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.5",
+        "name": "Intellectual honesty and revision",
+        "rating": 4.5,
+        "example": "T4 concedes 'The Stoic is right about the indifference of the crowd.'",
+        "limitation": "T8's objection goes unanswered; no claim is revised across nine turns.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.1",
+        "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+        "rating": 5.6,
+        "example": "Section A names three possible sources: desire, fear of missing out, expectations.",
+        "limitation": "T1 assumes the user does not want these things; the ambiguity drops away.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.2",
+        "name": "Meaningful use of personal context",
+        "rating": 4.5,
+        "example": "T6 uses the friends' purchases and marriages as uncontrollable externals.",
+        "limitation": "Friends become an abstract 'crowd'; the friendships themselves never shape the argument.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.3",
+        "name": "Fit with goals and values",
+        "rating": 4,
+        "example": "T1 keeps the user's uncertainty conditional: 'If you do not want these things.'",
+        "limitation": "T9 imposes the Stoic's value: 'the only victory that matters'.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.4",
+        "name": "Attention to constraints and stakes",
+        "rating": 3.5,
+        "example": "T5 names the real cost of deviating: friction in a status-rewarding society.",
+        "limitation": "Timing, age, finances and drifting friendships are never considered anywhere.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.5",
+        "name": "Responsiveness to information",
+        "rating": 3,
+        "example": "Section E branches on external validation versus genuine conflict.",
+        "limitation": "No question about which milestone, partner, age or money; branches unobservable.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.1",
+        "name": "Clarification of desires and motivations",
+        "rating": 5,
+        "example": "Section E offers validation-seeking versus norm conflict as alternative sources.",
+        "limitation": "No turn offers motives with a question; T1 and T7 declare the cause.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.2",
+        "name": "Examination of assumptions",
+        "rating": 5.8,
+        "example": "T7 surfaces the borrowed yardstick; T1 the pre-written script.",
+        "limitation": "What 'behind' actually measures (time, money, loneliness) is never examined.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.3",
+        "name": "Clarification of values and priorities",
+        "rating": 4.5,
+        "example": "T5 sets authenticity against social status and belonging.",
+        "limitation": "Conflict between staying close to friends and an own path never named.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.4",
+        "name": "Recognition of fears and outside expectations",
+        "rating": 6.3,
+        "example": "T5: 'You are not failing to be authentic', pressure normalised, not pathologised.",
+        "limitation": "Specific fears, being left out by friends or alone later, go unnamed.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.5",
+        "name": "Agency and reflective ownership",
+        "rating": 4.5,
+        "example": "Section E's month-long test lets the user check the feeling themselves.",
+        "limitation": "T4, T6 issue 'You must' directives the user can only obey.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.1",
+        "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+        "rating": 3.5,
+        "example": "T4 frames rejecting milestones actively versus passively.",
+        "limitation": "Options never laid out; Section E chooses between philosophies, not paths.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.2",
+        "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+        "rating": 3.5,
+        "example": "T5 names status friction as the cost of living differently.",
+        "limitation": "No cost of forgoing a home or partnership, nor of pursuing them, discussed.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.3",
+        "name": "Identification of decisive conditions",
+        "rating": 3,
+        "example": "Section E: if the feeling persists during a zero-status project.",
+        "limitation": "'Purely for external validation' is unobservable; one month is ungrounded.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.4",
+        "name": "Treatment of uncertainty",
+        "rating": 3,
+        "example": "Section E: 'If you remain unsure' opens a testing branch.",
+        "limitation": "Consequential unknowns are never separated from minor ones anywhere.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.5",
+        "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+        "rating": 4,
+        "example": "Section E proposes a personal-meaning project as a small experiment.",
+        "limitation": "Month-long duration is arbitrary; step loosely follows from T1-T9.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.1",
+        "name": "Accessible language",
+        "rating": 7,
+        "example": "T6 plain: 'You cannot control what your friends buy or who they marry.'",
+        "limitation": "T2 'field' and 'capital', T3 'thing indifferent' go unexplained.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.2",
+        "name": "Traceable arguments and references",
+        "rating": 7.2,
+        "example": "T4 and T7 name their target: 'The Stoic is right', 'I agree with the Stoic'.",
+        "limitation": "T6 'Whether the pressure is social or internal' answers T5 without naming it.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.3",
+        "name": "Manageable pacing and turn length",
+        "rating": 7.5,
+        "example": "Nine turns, all within 25-65 words; easy to read.",
+        "limitation": "Fixed A-B-C rotation and near-equal lengths give a flat rhythm.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.4",
+        "name": "Distinguishable positions and voices, with explicit changes of position",
+        "rating": 5.3,
+        "example": "Each mind holds a distinct framework: freedom, structure, control.",
+        "limitation": "All three lecture in one second-person register; no explicit position changes.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.5",
+        "name": "Economy and sustained attention",
+        "rating": 5.8,
+        "example": "T8 compresses a sharp point into one line about counter-culture.",
+        "limitation": "T7 repeats T1/T4 own-values point; T9 repeats T3/T6 control point.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.1",
+        "name": "Meaningful stakes and tension arising from the issue itself",
+        "rating": 4.5,
+        "example": "T2 raises stakes: deviation costs social legitimacy.",
+        "limitation": "Stakes stay abstract; the user's friendships and future never dramatised.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.2",
+        "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+        "rating": 2,
+        "example": "T8 turns the Existentialist's escape route back on itself.",
+        "limitation": "No reversal anywhere; every mind holds its T1-T3 position to the end.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.3",
+        "name": "Personality and expressive voice without caricature",
+        "rating": 4.5,
+        "example": "T8 'even counter-culture is still a culture' has a distinct bite.",
+        "limitation": "Sartre and Aurelius speak in interchangeable advice-column cadence across T1-T9.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.4",
+        "name": "Memorable delivery",
+        "rating": 5.8,
+        "example": "T1 'you are the author'; T3 'external theater of property and status'.",
+        "limitation": "No concrete example or analogy drawn from the user's life.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.5",
+        "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+        "rating": 3.5,
+        "example": "T8's warning briefly lifts the tension before the close.",
+        "limitation": "Even, didactic intensity throughout; T9 resolves by decree, not build.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      }
+    ],
+    "strengths": [
+      "T8 (Social Critic) adds a genuine new distinction: self-made metrics are themselves socially shaped.",
+      "T5 normalises the user's discomfort as a rational response to pressure, not a personal failing.",
+      "Section A names three plausible sources of the feeling: desire, fear of missing out, expectation."
+    ],
+    "weaknesses": [
+      "The user's thin context is never probed: no question about which milestone, age, partner or money (T1-T9, Section E).",
+      "T3 (Stoic) presents a widely misattributed line as written in Meditations; T9 promises the feeling 'will vanish'.",
+      "No mind changes position; T9 ignores T8's challenge and the debate runs as alternating monologues."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C3.5",
+        "turns": [
+          1,
+          7,
+          9
+        ],
+        "observed": "No question asks which milestone matters, age, partner or finances; branches are unobservable.",
+        "evidence": "If you find that your desire for these milestones is purely"
+      },
+      {
+        "cell_id": "C2.3",
+        "turns": [
+          3
+        ],
+        "observed": "A popular misattributed quotation is presented as text from Meditations.",
+        "evidence": "As it is written, Everything we hear is an opinion"
+      },
+      {
+        "cell_id": "C2.2",
+        "turns": [
+          8,
+          9
+        ],
+        "observed": "T8's objection to self-made metrics goes unanswered; T9 restates the Stoic opening.",
+        "evidence": "When you stop seeking their approval, the feeling of being behind will vanish"
+      },
+      {
+        "cell_id": "C5.3",
+        "turns": [],
+        "observed": "Section E's conditions are not observable; the one-month test has no basis in user facts.",
+        "evidence": "intentionally spending a month pursuing a project that has zero social status"
+      },
+      {
+        "cell_id": "C7.2",
+        "turns": [
+          4,
+          7
+        ],
+        "observed": "Concessions are partial agreements; no mind revises its position because of an argument.",
+        "evidence": "I agree with the Stoic on control, but I would argue"
+      }
+    ],
+    "mechanical": [
+      {
+        "pattern": "uniform_voice",
+        "turns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      },
+      {
+        "pattern": "ungrounded_number",
+        "turns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "type": "source_error",
+        "severity": "material",
+        "status": "suspected",
+        "location": "T3",
+        "description": "The line 'Everything we hear is an opinion, not a fact...' is widely reported as a misattribution, not found in Meditations; presented as 'As it is written'.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "observed",
+        "location": "T9",
+        "description": "Asserts with certainty that the feeling of being behind will vanish once approval-seeking stops.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "T2",
+        "description": "Says the system is 'designed' to make the user feel behind; Bourdieu describes structural reproduction, not deliberate design.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "unverified",
+        "location": "T1-T9 basis fields",
+        "description": "Paraphrased attributions to Sartre, Bourdieu and Marcus Aurelius cannot be checked without source evidence.",
+        "evidence_ids": []
+      }
+    ],
+    "cap_reasons": [],
+    "rubric_fit_notes": [
+      "The user's situation is two sentences; low C3 scores reflect the debate's failure to ask or branch on missing facts, not invented context. The T3 misattribution is judged from memory only, so it is reported as suspected and carries no cap."
+    ],
+    "question_type_note": "Read as a decision of the self-reflection kind, so C5 looked for options and observable conditions about pursuing, deferring or setting aside the milestones."
+  },
+  "card": {
+    "criteria": [
+      {
+        "id": "C1",
+        "name": "Quality of discussion",
+        "max": 20,
+        "points": 9.72,
+        "sub": [
+          {
+            "id": "C1.1",
+            "name": "Continuity and responsiveness",
+            "rating": 5.2,
+            "points": 2.08,
+            "example": "T2 answers T1 directly: 'That sounds noble, but it ignores the field.'",
+            "limitation": "Stoic turns T3, T6, T9 restate doctrine; T9 ignores T8's challenge entirely.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.2",
+            "name": "Development of ideas",
+            "rating": 4.8,
+            "points": 1.92,
+            "example": "T8 adds new idea: even self-made metrics are socially shaped.",
+            "limitation": "T8's distinction is never used; T9 reverts to the T3 opening position.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.3",
+            "name": "Exploration of central tensions",
+            "rating": 4.8,
+            "points": 1.92,
+            "example": "T5 vs T4: authentic choice versus structural pressure is examined.",
+            "limitation": "Whether the user wants partnership or stability in another form is never examined.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.4",
+            "name": "Integration of perspectives",
+            "rating": 4.5,
+            "points": 1.8,
+            "example": "T7 accepts the Stoic's control point and adds that judgment is not fixed.",
+            "limitation": "No mind's position is reshaped; all three end where T1-T3 started.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.5",
+            "name": "Progress toward understanding",
+            "rating": 5,
+            "points": 2,
+            "example": "Section D sharpens the dispute: can one opt out of the social game?",
+            "limitation": "T9 closes on an assertion rather than the sharpened open question.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C2",
+        "name": "Quality of disagreement, trust and grounding",
+        "max": 20,
+        "points": 8.28,
+        "sub": [
+          {
+            "id": "C2.1",
+            "name": "Faithful engagement",
+            "rating": 5.2,
+            "points": 2.08,
+            "example": "T2 grants T1's nobility before naming what it ignores.",
+            "limitation": "T4 reduces the Stoic's T3 position to 'just ignore it'.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.2",
+            "name": "Substance of challenges",
+            "rating": 4.5,
+            "points": 1.8,
+            "example": "T8 names the assumption that new metrics escape social forces.",
+            "limitation": "T9 never answers T8; T6 dismisses T5's distinction without argument.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.3",
+            "name": "Accuracy and support",
+            "rating": 3,
+            "points": 1.2,
+            "example": "T6 control dichotomy fairly represents Stoic doctrine.",
+            "limitation": "T3 quotation is a widely circulated misattribution, not in Meditations (suspected).",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.4",
+            "name": "Calibration and transparency",
+            "rating": 3.5,
+            "points": 1.4,
+            "example": "T5 frames discomfort as a 'rational response', an interpretation, not diagnosis.",
+            "limitation": "T9 asserts 'the feeling of being behind will vanish'; T2 says system 'designed'.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.5",
+            "name": "Intellectual honesty and revision",
+            "rating": 4.5,
+            "points": 1.8,
+            "example": "T4 concedes 'The Stoic is right about the indifference of the crowd.'",
+            "limitation": "T8's objection goes unanswered; no claim is revised across nine turns.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C3",
+        "name": "Personal relevance",
+        "max": 10,
+        "points": 4.12,
+        "sub": [
+          {
+            "id": "C3.1",
+            "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+            "rating": 5.6,
+            "points": 1.12,
+            "example": "Section A names three possible sources: desire, fear of missing out, expectations.",
+            "limitation": "T1 assumes the user does not want these things; the ambiguity drops away.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.2",
+            "name": "Meaningful use of personal context",
+            "rating": 4.5,
+            "points": 0.9,
+            "example": "T6 uses the friends' purchases and marriages as uncontrollable externals.",
+            "limitation": "Friends become an abstract 'crowd'; the friendships themselves never shape the argument.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.3",
+            "name": "Fit with goals and values",
+            "rating": 4,
+            "points": 0.8,
+            "example": "T1 keeps the user's uncertainty conditional: 'If you do not want these things.'",
+            "limitation": "T9 imposes the Stoic's value: 'the only victory that matters'.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.4",
+            "name": "Attention to constraints and stakes",
+            "rating": 3.5,
+            "points": 0.7,
+            "example": "T5 names the real cost of deviating: friction in a status-rewarding society.",
+            "limitation": "Timing, age, finances and drifting friendships are never considered anywhere.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.5",
+            "name": "Responsiveness to information",
+            "rating": 3,
+            "points": 0.6,
+            "example": "Section E branches on external validation versus genuine conflict.",
+            "limitation": "No question about which milestone, partner, age or money; branches unobservable.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C4",
+        "name": "Constructive self-discovery",
+        "max": 20,
+        "points": 10.44,
+        "sub": [
+          {
+            "id": "C4.1",
+            "name": "Clarification of desires and motivations",
+            "rating": 5,
+            "points": 2,
+            "example": "Section E offers validation-seeking versus norm conflict as alternative sources.",
+            "limitation": "No turn offers motives with a question; T1 and T7 declare the cause.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.2",
+            "name": "Examination of assumptions",
+            "rating": 5.8,
+            "points": 2.32,
+            "example": "T7 surfaces the borrowed yardstick; T1 the pre-written script.",
+            "limitation": "What 'behind' actually measures (time, money, loneliness) is never examined.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.3",
+            "name": "Clarification of values and priorities",
+            "rating": 4.5,
+            "points": 1.8,
+            "example": "T5 sets authenticity against social status and belonging.",
+            "limitation": "Conflict between staying close to friends and an own path never named.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.4",
+            "name": "Recognition of fears and outside expectations",
+            "rating": 6.3,
+            "points": 2.52,
+            "example": "T5: 'You are not failing to be authentic', pressure normalised, not pathologised.",
+            "limitation": "Specific fears, being left out by friends or alone later, go unnamed.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.5",
+            "name": "Agency and reflective ownership",
+            "rating": 4.5,
+            "points": 1.8,
+            "example": "Section E's month-long test lets the user check the feeling themselves.",
+            "limitation": "T4, T6 issue 'You must' directives the user can only obey.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C5",
+        "name": "Decision usefulness",
+        "max": 10,
+        "points": 3.4,
+        "sub": [
+          {
+            "id": "C5.1",
+            "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+            "rating": 3.5,
+            "points": 0.7,
+            "example": "T4 frames rejecting milestones actively versus passively.",
+            "limitation": "Options never laid out; Section E chooses between philosophies, not paths.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.2",
+            "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+            "rating": 3.5,
+            "points": 0.7,
+            "example": "T5 names status friction as the cost of living differently.",
+            "limitation": "No cost of forgoing a home or partnership, nor of pursuing them, discussed.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.3",
+            "name": "Identification of decisive conditions",
+            "rating": 3,
+            "points": 0.6,
+            "example": "Section E: if the feeling persists during a zero-status project.",
+            "limitation": "'Purely for external validation' is unobservable; one month is ungrounded.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.4",
+            "name": "Treatment of uncertainty",
+            "rating": 3,
+            "points": 0.6,
+            "example": "Section E: 'If you remain unsure' opens a testing branch.",
+            "limitation": "Consequential unknowns are never separated from minor ones anywhere.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.5",
+            "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+            "rating": 4,
+            "points": 0.8,
+            "example": "Section E proposes a personal-meaning project as a small experiment.",
+            "limitation": "Month-long duration is arbitrary; step loosely follows from T1-T9.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C6",
+        "name": "Clarity and engagement",
+        "max": 10,
+        "points": 6.56,
+        "sub": [
+          {
+            "id": "C6.1",
+            "name": "Accessible language",
+            "rating": 7,
+            "points": 1.4,
+            "example": "T6 plain: 'You cannot control what your friends buy or who they marry.'",
+            "limitation": "T2 'field' and 'capital', T3 'thing indifferent' go unexplained.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.2",
+            "name": "Traceable arguments and references",
+            "rating": 7.2,
+            "points": 1.44,
+            "example": "T4 and T7 name their target: 'The Stoic is right', 'I agree with the Stoic'.",
+            "limitation": "T6 'Whether the pressure is social or internal' answers T5 without naming it.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.3",
+            "name": "Manageable pacing and turn length",
+            "rating": 7.5,
+            "points": 1.5,
+            "example": "Nine turns, all within 25-65 words; easy to read.",
+            "limitation": "Fixed A-B-C rotation and near-equal lengths give a flat rhythm.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.4",
+            "name": "Distinguishable positions and voices, with explicit changes of position",
+            "rating": 5.3,
+            "points": 1.06,
+            "example": "Each mind holds a distinct framework: freedom, structure, control.",
+            "limitation": "All three lecture in one second-person register; no explicit position changes.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.5",
+            "name": "Economy and sustained attention",
+            "rating": 5.8,
+            "points": 1.16,
+            "example": "T8 compresses a sharp point into one line about counter-culture.",
+            "limitation": "T7 repeats T1/T4 own-values point; T9 repeats T3/T6 control point.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C7",
+        "name": "Drama and entertainment",
+        "max": 10,
+        "points": 4.06,
+        "sub": [
+          {
+            "id": "C7.1",
+            "name": "Meaningful stakes and tension arising from the issue itself",
+            "rating": 4.5,
+            "points": 0.9,
+            "example": "T2 raises stakes: deviation costs social legitimacy.",
+            "limitation": "Stakes stay abstract; the user's friendships and future never dramatised.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.2",
+            "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+            "rating": 2,
+            "points": 0.4,
+            "example": "T8 turns the Existentialist's escape route back on itself.",
+            "limitation": "No reversal anywhere; every mind holds its T1-T3 position to the end.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.3",
+            "name": "Personality and expressive voice without caricature",
+            "rating": 4.5,
+            "points": 0.9,
+            "example": "T8 'even counter-culture is still a culture' has a distinct bite.",
+            "limitation": "Sartre and Aurelius speak in interchangeable advice-column cadence across T1-T9.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.4",
+            "name": "Memorable delivery",
+            "rating": 5.8,
+            "points": 1.16,
+            "example": "T1 'you are the author'; T3 'external theater of property and status'.",
+            "limitation": "No concrete example or analogy drawn from the user's life.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.5",
+            "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+            "rating": 3.5,
+            "points": 0.7,
+            "example": "T8's warning briefly lifts the tension before the close.",
+            "limitation": "Even, didactic intensity throughout; T9 resolves by decree, not build.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      }
+    ],
+    "uncapped": 46.58,
+    "score": 46.58,
+    "capReason": null,
+    "provisional": false,
+    "strengths": [
+      "T8 (Social Critic) adds a genuine new distinction: self-made metrics are themselves socially shaped.",
+      "T5 normalises the user's discomfort as a rational response to pressure, not a personal failing.",
+      "Section A names three plausible sources of the feeling: desire, fear of missing out, expectation."
+    ],
+    "weaknesses": [
+      "The user's thin context is never probed: no question about which milestone, age, partner or money (T1-T9, Section E).",
+      "T3 (Stoic) presents a widely misattributed line as written in Meditations; T9 promises the feeling 'will vanish'.",
+      "No mind changes position; T9 ignores T8's challenge and the debate runs as alternating monologues."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C3.5",
+        "turns": [
+          1,
+          7,
+          9
+        ],
+        "observed": "No question asks which milestone matters, age, partner or finances; branches are unobservable.",
+        "evidence": "If you find that your desire for these milestones is purely"
+      },
+      {
+        "cell_id": "C2.3",
+        "turns": [
+          3
+        ],
+        "observed": "A popular misattributed quotation is presented as text from Meditations.",
+        "evidence": "As it is written, Everything we hear is an opinion"
+      },
+      {
+        "cell_id": "C2.2",
+        "turns": [
+          8,
+          9
+        ],
+        "observed": "T8's objection to self-made metrics goes unanswered; T9 restates the Stoic opening.",
+        "evidence": "When you stop seeking their approval, the feeling of being behind will vanish"
+      },
+      {
+        "cell_id": "C5.3",
+        "turns": [],
+        "observed": "Section E's conditions are not observable; the one-month test has no basis in user facts.",
+        "evidence": "intentionally spending a month pursuing a project that has zero social status"
+      },
+      {
+        "cell_id": "C7.2",
+        "turns": [
+          4,
+          7
+        ],
+        "observed": "Concessions are partial agreements; no mind revises its position because of an argument.",
+        "evidence": "I agree with the Stoic on control, but I would argue"
+      }
+    ],
+    "mechanical": [
+      {
+        "pattern": "uniform_voice",
+        "turns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      },
+      {
+        "pattern": "ungrounded_number",
+        "turns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "type": "source_error",
+        "severity": "material",
+        "status": "suspected",
+        "location": "T3",
+        "description": "The line 'Everything we hear is an opinion, not a fact...' is widely reported as a misattribution, not found in Meditations; presented as 'As it is written'.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "observed",
+        "location": "T9",
+        "description": "Asserts with certainty that the feeling of being behind will vanish once approval-seeking stops.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "T2",
+        "description": "Says the system is 'designed' to make the user feel behind; Bourdieu describes structural reproduction, not deliberate design.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "unverified",
+        "location": "T1-T9 basis fields",
+        "description": "Paraphrased attributions to Sartre, Bourdieu and Marcus Aurelius cannot be checked without source evidence.",
+        "evidence_ids": []
+      }
+    ],
+    "rubricFitNotes": [
+      "The user's situation is two sentences; low C3 scores reflect the debate's failure to ask or branch on missing facts, not invented context. The T3 misattribution is judged from memory only, so it is reported as suspected and carries no cap."
+    ],
+    "questionTypeNote": "Read as a decision of the self-reflection kind, so C5 looked for options and observable conditions about pursuing, deferring or setting aside the milestones."
+  },
+  "rubricVersion": "rubric-evaluator-4.2.0",
+  "savedAt": "2026-10-15T09:23:25.159Z"
+}

@@ -79,6 +79,30 @@ Operations:
 - `bootstrap` and `validate` refuse unsafe use.
 - The gate and promotion side effects are idempotent across a crash.
 
+## First live run: bootstrap, 2026-10-15
+
+Option 1 was chosen: the controls are `prompts/castDebate.{sonnet,gemini}.v2-plain.md` (built by `tools/make_plain_controls.ts`), and they have not run yet. Only the two baselines ran. `deno run -A evolve/v4/tools/baseline_summary.ts` prints them.
+
+| | Sonnet v0 | Gemini v0 |
+|---|---|---|
+| mean of 10 cards | 78.20 | 43.92 |
+| range | 73.36 – 83.44 | 33.20 – 53.32 |
+| largest gap between two samples of one question | 7.2 | 19.9 |
+| basis with a chapter, section or link | 5 | 0 |
+| quoted pd=false turns | 2 | 1 |
+
+Calls spent: 10 Sonnet workers, 10 Gemini (one 503, retried), 20 Opus evaluations, and 9 short format repairs. The repairs resumed the same evaluator agents to rewrite one field.
+
+Found on the live run and fixed:
+- The rubric brief calls `rubric_fit_notes` "observations" and never says list, so 9 of 10 evaluators wrote a string. A string is now read as one note.
+- A pattern seen across the whole debate came with an empty turn list (4 of 10 cards). That is now read as every turn.
+- The runner used to delete a rejected output. It now keeps it as `<out>.rejected<N>`, so a fix to the runner's checks can re-read it instead of paying for the call again. The four Gemini cards were recovered this way.
+
+Observations for the next decisions:
+- **Sonnet's own champion fails the form checks** (WARNING at baseline). It is the Option 2 question, still open.
+- **Gemini's spread is about twice what the gate assumes.** Its pooled per-sample spread over these 5 pairs is about 7 points; the gate's numbers assume 3.11. Sonnet's is about 3. Five pairs is a small sample.
+- **24 of the 35 cells are capability-bound** under the rule: Sonnet leads by at least 2 rating points on every question. The Gemini optimizer is told to treat those as model-limited, so it may target only the other 11 or escalate early.
+
 ## Tests
 
 ```bash

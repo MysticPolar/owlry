@@ -1,0 +1,966 @@
+{
+  "jobId": "rubric.v0.q1.s2",
+  "raw": {
+    "schema_version": "rubric-evaluator-4.2.0",
+    "rubric_version": "owlry-matrix-v2-bands",
+    "evaluation_status": "complete",
+    "cells": [
+      {
+        "id": "C1.1",
+        "name": "Continuity and responsiveness",
+        "rating": 4.5,
+        "example": "T4 answers T3's stop-everything plan directly: a reset gives no data.",
+        "limitation": "T6 and T8 ignore the turn before; T8 restates T2's let-alone stance.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.2",
+        "name": "Development of ideas",
+        "rating": 2.5,
+        "example": "T7 adds falsification framing: stopping all never tests whether one product is safe.",
+        "limitation": "T9 repeats T3 nearly verbatim; no distinction is introduced after T4.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.3",
+        "name": "Exploration of central tensions",
+        "rating": 3.5,
+        "example": "T5 sets comfort against data: data is a poor consolation for stinging.",
+        "limitation": "Irritation versus allergy, actives, or interaction between products never raised by any mind.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.4",
+        "name": "Integration of perspectives",
+        "rating": 3,
+        "example": "T9 merges recovery with one-at-a-time reintroduction from T3 and T4.",
+        "limitation": "T10 Skeptic simply agrees; Minimalist's position never reshapes or gets reshaped.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.5",
+        "name": "Progress toward understanding",
+        "rating": 3.5,
+        "example": "Section E lands on stop all, reach baseline, reintroduce one by one.",
+        "limitation": "Same plan was in T3; Section D calls settled point still disputed.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.1",
+        "name": "Faithful engagement",
+        "rating": 2.5,
+        "example": "T4 accurately notes that stopping alone is a reset, not a test.",
+        "limitation": "T4 and T7 treat T3 as stop-only, though T3 included one-at-a-time reintroduction.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.2",
+        "name": "Substance of challenges",
+        "rating": 3,
+        "example": "T5 challenges the cost of experimentation against the user's comfort.",
+        "limitation": "T7's objection rests on misreading T3; target never answers it, only restates.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.3",
+        "name": "Accuracy and support",
+        "rating": 4,
+        "example": "T2, T5, T8 Walden lines match Thoreau's text as remembered.",
+        "limitation": "T4 implies continuing products on stinging skin; T7 claims stopping all yields no knowledge.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.4",
+        "name": "Calibration and transparency",
+        "rating": 3,
+        "example": "Section E conditions advice on severity rather than asserting one path.",
+        "limitation": "T10 calls it the only logical way; T3 asserts the system is failing.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.5",
+        "name": "Intellectual honesty and revision",
+        "rating": 3,
+        "example": "T10 Skeptic accepts T9's baseline-first sequence.",
+        "limitation": "T10 concession names no cause; Minimalist never answers T7's identification objection.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.1",
+        "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+        "rating": 5,
+        "example": "Section A frames finding the irritant versus healing quickly.",
+        "limitation": "Whether stinging is expected adjustment, irritation or allergy is never distinguished.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.2",
+        "name": "Meaningful use of personal context",
+        "rating": 4,
+        "example": "T1 uses the three new products as three variables, one result.",
+        "limitation": "Timing of last week and product types never shape the argument.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.3",
+        "name": "Fit with goals and values",
+        "rating": 4,
+        "example": "T1 and T10 address the user's stated goal of finding the cause.",
+        "limitation": "T2 and T8 push Minimalist's let-alone value over the user's diagnostic goal.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.4",
+        "name": "Attention to constraints and stakes",
+        "rating": 3,
+        "example": "Section E separates severe from mild irritation.",
+        "limitation": "No mention of swelling, hives or when to see a clinician; stakes stay vague.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.5",
+        "name": "Responsiveness to information",
+        "rating": 2.5,
+        "example": "Section E branches on severity of the irritation.",
+        "limitation": "Never asks which products or ingredients, or if any are acids or retinoids.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.1",
+        "name": "Clarification of desires and motivations",
+        "rating": 1.5,
+        "example": "Section A names a desire to restore skin quickly.",
+        "limitation": "No alternative motives offered; why the user chose three products never explored.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.2",
+        "name": "Examination of assumptions",
+        "rating": 2,
+        "example": "T7 questions the assumption that untested products are safe.",
+        "limitation": "Assumption that a single product is the culprit, not a combination, goes unexamined.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.3",
+        "name": "Clarification of values and priorities",
+        "rating": 3.5,
+        "example": "Section D names data versus relief as the competing priorities.",
+        "limitation": "User is never invited to weigh knowing the culprit against simplifying the routine.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.4",
+        "name": "Recognition of fears and outside expectations",
+        "rating": 1.5,
+        "example": "T5 acknowledges the discomfort of a stinging face.",
+        "limitation": "No fear, worry about damage, or pressure behind the new routine is touched.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.5",
+        "name": "Agency and reflective ownership",
+        "rating": 2.5,
+        "example": "Section E lets the user place themselves on severity.",
+        "limitation": "No question or distinction offered for the user to accept or refine.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.1",
+        "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+        "rating": 4.5,
+        "example": "T3, T4, T8 lay out stop-and-reintroduce, test while continuing, and simplify.",
+        "limitation": "Patch testing and seeing a dermatologist are never listed as options.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.2",
+        "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+        "rating": 4,
+        "example": "T5 weighs data gained against continued discomfort.",
+        "limitation": "Time cost of serial reintroduction and loss of product benefits never stated.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.3",
+        "name": "Identification of decisive conditions",
+        "rating": 3,
+        "example": "Section E splits on severe versus mild irritation.",
+        "limitation": "Both branches stop all products; no observable sign defines severe.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.4",
+        "name": "Treatment of uncertainty",
+        "rating": 2,
+        "example": "T7 notes the user remains in the dark about the irritant.",
+        "limitation": "Consequential unknowns (allergy, actives, interactions) never separated from minor ones.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.5",
+        "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+        "rating": 5,
+        "example": "Section E: stop, wait for baseline, reintroduce one by one, days apart.",
+        "limitation": "No patch-test step or point at which to seek medical help.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.1",
+        "name": "Accessible language",
+        "rating": 6.5,
+        "example": "T3 and T9 state the plan in plain steps.",
+        "limitation": "T7's falsify the hypothesis phrasing adds abstraction to a simple point.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.2",
+        "name": "Traceable arguments and references",
+        "rating": 6,
+        "example": "T10's that clearly refers to T9's sequence.",
+        "limitation": "T5 and T6 you could mean the user or another mind; addressee unclear.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.3",
+        "name": "Manageable pacing and turn length",
+        "rating": 4.5,
+        "example": "Ten turns, quick to read.",
+        "limitation": "T1, T2, T3, T6 fall under 25 words.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.4",
+        "name": "Distinguishable positions and voices, with explicit changes of position",
+        "rating": 5.5,
+        "example": "Minimalist's Walden lines in T2, T5, T8 mark a distinct voice.",
+        "limitation": "Skeptic and Efficiency Expert converge on one plan by T10 in similar register.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.5",
+        "name": "Economy and sustained attention",
+        "rating": 4,
+        "example": "Turns stay brief without long recaps.",
+        "limitation": "T9 repeats T3; T10 repeats T4; Section D restates Section A.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.1",
+        "name": "Meaningful stakes and tension arising from the issue itself",
+        "rating": 3.5,
+        "example": "T5 contrasts a stinging face with abstract data.",
+        "limitation": "Tension stays low; skin harm stakes never made concrete.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.2",
+        "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+        "rating": 1.5,
+        "example": "T10 Skeptic moves to the baseline-first plan.",
+        "limitation": "T10 reversal names no argument that changed the Skeptic's mind.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.3",
+        "name": "Personality and expressive voice without caricature",
+        "rating": 4,
+        "example": "T8 Minimalist: let the skin breathe, with Thoreau's let-alone line.",
+        "limitation": "Efficiency Expert in T3, T6, T9 speaks in generic system jargon.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.4",
+        "name": "Memorable delivery",
+        "rating": 4,
+        "example": "T6: your routine is a liability, not a habit.",
+        "limitation": "Memorable lines are borrowed Walden quotations; no analogy built for skincare.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.5",
+        "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+        "rating": 2.5,
+        "example": "T5 brief emotional turn toward the user's discomfort.",
+        "limitation": "Flat rhythm throughout; no build toward the T10 convergence.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      }
+    ],
+    "strengths": [
+      "Section E gives a standard, usable plan: stop all, reach baseline, reintroduce one at a time.",
+      "Minimalist's Walden lines in T2, T5, T8 give one distinct, recognisable voice.",
+      "T5 names the real tension between relief from stinging and diagnostic data."
+    ],
+    "weaknesses": [
+      "No mind asks which products or ingredients, or flags allergy signs needing medical care.",
+      "T4 and T7 misread T3's plan as stop-only, so the main disagreement is illusory.",
+      "T10 Skeptic agrees with no stated cause; T9 and T10 repeat T3 and T4."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C3.5",
+        "turns": [
+          1,
+          4,
+          7,
+          10
+        ],
+        "observed": "Never asks which products or ingredients, though that decides the testing order.",
+        "evidence": "You have three variables and one result."
+      },
+      {
+        "cell_id": "C2.1",
+        "turns": [
+          4,
+          7
+        ],
+        "observed": "Skeptic treats T3's stop-then-reintroduce plan as stopping only.",
+        "evidence": "If you stop all, you never falsify the hypothesis"
+      },
+      {
+        "cell_id": "C7.2",
+        "turns": [
+          10
+        ],
+        "observed": "Skeptic converges on T9's plan without naming what changed his mind.",
+        "evidence": "That is the only logical way to gain knowledge."
+      },
+      {
+        "cell_id": "C3.4",
+        "turns": [
+          3,
+          9
+        ],
+        "observed": "No turn or section mentions allergy warning signs or seeing a clinician.",
+        "evidence": "If the skin irritation is severe, stop all products immediately"
+      },
+      {
+        "cell_id": "C1.2",
+        "turns": [
+          3,
+          9
+        ],
+        "observed": "T9 repeats T3's plan; no new distinction after T4.",
+        "evidence": "stop all, wait for the baseline, then introduce one at a time"
+      }
+    ],
+    "mechanical": [
+      {
+        "pattern": "uncaused_reversal",
+        "turns": [
+          10
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "type": "format",
+        "severity": "minor",
+        "status": "observed",
+        "location": "T1, T2, T3, T6",
+        "description": "Four turns fall under 25 words, per deterministic checks.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "material",
+        "status": "observed",
+        "location": "T4, T7",
+        "description": "T4 implies keeping products in use on stinging skin while testing; T7 claims stopping all yields no knowledge, though T3 included reintroduction.",
+        "evidence_ids": []
+      },
+      {
+        "type": "safety",
+        "severity": "material",
+        "status": "observed",
+        "location": "whole debate, Section E",
+        "description": "No mention of allergic-reaction signs (swelling, hives, blistering) or when to seek medical care.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "observed",
+        "location": "Section D",
+        "description": "Calls it disputed whether data is worth continued irritation, though the agreed plan involves no continued irritation.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "unverified",
+        "location": "T2, T5, T8",
+        "description": "Walden lines in pd=true turns appear close to Thoreau's text from memory; not checked against a source.",
+        "evidence_ids": []
+      }
+    ],
+    "cap_reasons": [],
+    "rubric_fit_notes": [
+      "A practical troubleshooting question gives criterion 4 little natural material; low C4 ratings reflect missed openings (why three products at once, worry about damage) rather than rubric mismatch. Popper and Clear fit the topic loosely."
+    ],
+    "question_type_note": "Read as a decision: choosing a troubleshooting procedure, so C5 rewarded the stop-and-reintroduce plan and penalised missing thresholds and medical-care branch."
+  },
+  "card": {
+    "criteria": [
+      {
+        "id": "C1",
+        "name": "Quality of discussion",
+        "max": 20,
+        "points": 6.8,
+        "sub": [
+          {
+            "id": "C1.1",
+            "name": "Continuity and responsiveness",
+            "rating": 4.5,
+            "points": 1.8,
+            "example": "T4 answers T3's stop-everything plan directly: a reset gives no data.",
+            "limitation": "T6 and T8 ignore the turn before; T8 restates T2's let-alone stance.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.2",
+            "name": "Development of ideas",
+            "rating": 2.5,
+            "points": 1,
+            "example": "T7 adds falsification framing: stopping all never tests whether one product is safe.",
+            "limitation": "T9 repeats T3 nearly verbatim; no distinction is introduced after T4.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.3",
+            "name": "Exploration of central tensions",
+            "rating": 3.5,
+            "points": 1.4,
+            "example": "T5 sets comfort against data: data is a poor consolation for stinging.",
+            "limitation": "Irritation versus allergy, actives, or interaction between products never raised by any mind.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.4",
+            "name": "Integration of perspectives",
+            "rating": 3,
+            "points": 1.2,
+            "example": "T9 merges recovery with one-at-a-time reintroduction from T3 and T4.",
+            "limitation": "T10 Skeptic simply agrees; Minimalist's position never reshapes or gets reshaped.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.5",
+            "name": "Progress toward understanding",
+            "rating": 3.5,
+            "points": 1.4,
+            "example": "Section E lands on stop all, reach baseline, reintroduce one by one.",
+            "limitation": "Same plan was in T3; Section D calls settled point still disputed.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C2",
+        "name": "Quality of disagreement, trust and grounding",
+        "max": 20,
+        "points": 6.2,
+        "sub": [
+          {
+            "id": "C2.1",
+            "name": "Faithful engagement",
+            "rating": 2.5,
+            "points": 1,
+            "example": "T4 accurately notes that stopping alone is a reset, not a test.",
+            "limitation": "T4 and T7 treat T3 as stop-only, though T3 included one-at-a-time reintroduction.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.2",
+            "name": "Substance of challenges",
+            "rating": 3,
+            "points": 1.2,
+            "example": "T5 challenges the cost of experimentation against the user's comfort.",
+            "limitation": "T7's objection rests on misreading T3; target never answers it, only restates.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.3",
+            "name": "Accuracy and support",
+            "rating": 4,
+            "points": 1.6,
+            "example": "T2, T5, T8 Walden lines match Thoreau's text as remembered.",
+            "limitation": "T4 implies continuing products on stinging skin; T7 claims stopping all yields no knowledge.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.4",
+            "name": "Calibration and transparency",
+            "rating": 3,
+            "points": 1.2,
+            "example": "Section E conditions advice on severity rather than asserting one path.",
+            "limitation": "T10 calls it the only logical way; T3 asserts the system is failing.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.5",
+            "name": "Intellectual honesty and revision",
+            "rating": 3,
+            "points": 1.2,
+            "example": "T10 Skeptic accepts T9's baseline-first sequence.",
+            "limitation": "T10 concession names no cause; Minimalist never answers T7's identification objection.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C3",
+        "name": "Personal relevance",
+        "max": 10,
+        "points": 3.7,
+        "sub": [
+          {
+            "id": "C3.1",
+            "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+            "rating": 5,
+            "points": 1,
+            "example": "Section A frames finding the irritant versus healing quickly.",
+            "limitation": "Whether stinging is expected adjustment, irritation or allergy is never distinguished.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.2",
+            "name": "Meaningful use of personal context",
+            "rating": 4,
+            "points": 0.8,
+            "example": "T1 uses the three new products as three variables, one result.",
+            "limitation": "Timing of last week and product types never shape the argument.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.3",
+            "name": "Fit with goals and values",
+            "rating": 4,
+            "points": 0.8,
+            "example": "T1 and T10 address the user's stated goal of finding the cause.",
+            "limitation": "T2 and T8 push Minimalist's let-alone value over the user's diagnostic goal.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.4",
+            "name": "Attention to constraints and stakes",
+            "rating": 3,
+            "points": 0.6,
+            "example": "Section E separates severe from mild irritation.",
+            "limitation": "No mention of swelling, hives or when to see a clinician; stakes stay vague.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.5",
+            "name": "Responsiveness to information",
+            "rating": 2.5,
+            "points": 0.5,
+            "example": "Section E branches on severity of the irritation.",
+            "limitation": "Never asks which products or ingredients, or if any are acids or retinoids.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C4",
+        "name": "Constructive self-discovery",
+        "max": 20,
+        "points": 4.4,
+        "sub": [
+          {
+            "id": "C4.1",
+            "name": "Clarification of desires and motivations",
+            "rating": 1.5,
+            "points": 0.6,
+            "example": "Section A names a desire to restore skin quickly.",
+            "limitation": "No alternative motives offered; why the user chose three products never explored.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.2",
+            "name": "Examination of assumptions",
+            "rating": 2,
+            "points": 0.8,
+            "example": "T7 questions the assumption that untested products are safe.",
+            "limitation": "Assumption that a single product is the culprit, not a combination, goes unexamined.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.3",
+            "name": "Clarification of values and priorities",
+            "rating": 3.5,
+            "points": 1.4,
+            "example": "Section D names data versus relief as the competing priorities.",
+            "limitation": "User is never invited to weigh knowing the culprit against simplifying the routine.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.4",
+            "name": "Recognition of fears and outside expectations",
+            "rating": 1.5,
+            "points": 0.6,
+            "example": "T5 acknowledges the discomfort of a stinging face.",
+            "limitation": "No fear, worry about damage, or pressure behind the new routine is touched.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.5",
+            "name": "Agency and reflective ownership",
+            "rating": 2.5,
+            "points": 1,
+            "example": "Section E lets the user place themselves on severity.",
+            "limitation": "No question or distinction offered for the user to accept or refine.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C5",
+        "name": "Decision usefulness",
+        "max": 10,
+        "points": 3.7,
+        "sub": [
+          {
+            "id": "C5.1",
+            "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+            "rating": 4.5,
+            "points": 0.9,
+            "example": "T3, T4, T8 lay out stop-and-reintroduce, test while continuing, and simplify.",
+            "limitation": "Patch testing and seeing a dermatologist are never listed as options.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.2",
+            "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+            "rating": 4,
+            "points": 0.8,
+            "example": "T5 weighs data gained against continued discomfort.",
+            "limitation": "Time cost of serial reintroduction and loss of product benefits never stated.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.3",
+            "name": "Identification of decisive conditions",
+            "rating": 3,
+            "points": 0.6,
+            "example": "Section E splits on severe versus mild irritation.",
+            "limitation": "Both branches stop all products; no observable sign defines severe.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.4",
+            "name": "Treatment of uncertainty",
+            "rating": 2,
+            "points": 0.4,
+            "example": "T7 notes the user remains in the dark about the irritant.",
+            "limitation": "Consequential unknowns (allergy, actives, interactions) never separated from minor ones.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.5",
+            "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+            "rating": 5,
+            "points": 1,
+            "example": "Section E: stop, wait for baseline, reintroduce one by one, days apart.",
+            "limitation": "No patch-test step or point at which to seek medical help.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C6",
+        "name": "Clarity and engagement",
+        "max": 10,
+        "points": 5.3,
+        "sub": [
+          {
+            "id": "C6.1",
+            "name": "Accessible language",
+            "rating": 6.5,
+            "points": 1.3,
+            "example": "T3 and T9 state the plan in plain steps.",
+            "limitation": "T7's falsify the hypothesis phrasing adds abstraction to a simple point.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.2",
+            "name": "Traceable arguments and references",
+            "rating": 6,
+            "points": 1.2,
+            "example": "T10's that clearly refers to T9's sequence.",
+            "limitation": "T5 and T6 you could mean the user or another mind; addressee unclear.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.3",
+            "name": "Manageable pacing and turn length",
+            "rating": 4.5,
+            "points": 0.9,
+            "example": "Ten turns, quick to read.",
+            "limitation": "T1, T2, T3, T6 fall under 25 words.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.4",
+            "name": "Distinguishable positions and voices, with explicit changes of position",
+            "rating": 5.5,
+            "points": 1.1,
+            "example": "Minimalist's Walden lines in T2, T5, T8 mark a distinct voice.",
+            "limitation": "Skeptic and Efficiency Expert converge on one plan by T10 in similar register.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.5",
+            "name": "Economy and sustained attention",
+            "rating": 4,
+            "points": 0.8,
+            "example": "Turns stay brief without long recaps.",
+            "limitation": "T9 repeats T3; T10 repeats T4; Section D restates Section A.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C7",
+        "name": "Drama and entertainment",
+        "max": 10,
+        "points": 3.1,
+        "sub": [
+          {
+            "id": "C7.1",
+            "name": "Meaningful stakes and tension arising from the issue itself",
+            "rating": 3.5,
+            "points": 0.7,
+            "example": "T5 contrasts a stinging face with abstract data.",
+            "limitation": "Tension stays low; skin harm stakes never made concrete.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.2",
+            "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+            "rating": 1.5,
+            "points": 0.3,
+            "example": "T10 Skeptic moves to the baseline-first plan.",
+            "limitation": "T10 reversal names no argument that changed the Skeptic's mind.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.3",
+            "name": "Personality and expressive voice without caricature",
+            "rating": 4,
+            "points": 0.8,
+            "example": "T8 Minimalist: let the skin breathe, with Thoreau's let-alone line.",
+            "limitation": "Efficiency Expert in T3, T6, T9 speaks in generic system jargon.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.4",
+            "name": "Memorable delivery",
+            "rating": 4,
+            "points": 0.8,
+            "example": "T6: your routine is a liability, not a habit.",
+            "limitation": "Memorable lines are borrowed Walden quotations; no analogy built for skincare.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.5",
+            "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+            "rating": 2.5,
+            "points": 0.5,
+            "example": "T5 brief emotional turn toward the user's discomfort.",
+            "limitation": "Flat rhythm throughout; no build toward the T10 convergence.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      }
+    ],
+    "uncapped": 33.2,
+    "score": 33.2,
+    "capReason": null,
+    "provisional": false,
+    "strengths": [
+      "Section E gives a standard, usable plan: stop all, reach baseline, reintroduce one at a time.",
+      "Minimalist's Walden lines in T2, T5, T8 give one distinct, recognisable voice.",
+      "T5 names the real tension between relief from stinging and diagnostic data."
+    ],
+    "weaknesses": [
+      "No mind asks which products or ingredients, or flags allergy signs needing medical care.",
+      "T4 and T7 misread T3's plan as stop-only, so the main disagreement is illusory.",
+      "T10 Skeptic agrees with no stated cause; T9 and T10 repeat T3 and T4."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C3.5",
+        "turns": [
+          1,
+          4,
+          7,
+          10
+        ],
+        "observed": "Never asks which products or ingredients, though that decides the testing order.",
+        "evidence": "You have three variables and one result."
+      },
+      {
+        "cell_id": "C2.1",
+        "turns": [
+          4,
+          7
+        ],
+        "observed": "Skeptic treats T3's stop-then-reintroduce plan as stopping only.",
+        "evidence": "If you stop all, you never falsify the hypothesis"
+      },
+      {
+        "cell_id": "C7.2",
+        "turns": [
+          10
+        ],
+        "observed": "Skeptic converges on T9's plan without naming what changed his mind.",
+        "evidence": "That is the only logical way to gain knowledge."
+      },
+      {
+        "cell_id": "C3.4",
+        "turns": [
+          3,
+          9
+        ],
+        "observed": "No turn or section mentions allergy warning signs or seeing a clinician.",
+        "evidence": "If the skin irritation is severe, stop all products immediately"
+      },
+      {
+        "cell_id": "C1.2",
+        "turns": [
+          3,
+          9
+        ],
+        "observed": "T9 repeats T3's plan; no new distinction after T4.",
+        "evidence": "stop all, wait for the baseline, then introduce one at a time"
+      }
+    ],
+    "mechanical": [
+      {
+        "pattern": "uncaused_reversal",
+        "turns": [
+          10
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "type": "format",
+        "severity": "minor",
+        "status": "observed",
+        "location": "T1, T2, T3, T6",
+        "description": "Four turns fall under 25 words, per deterministic checks.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "material",
+        "status": "observed",
+        "location": "T4, T7",
+        "description": "T4 implies keeping products in use on stinging skin while testing; T7 claims stopping all yields no knowledge, though T3 included reintroduction.",
+        "evidence_ids": []
+      },
+      {
+        "type": "safety",
+        "severity": "material",
+        "status": "observed",
+        "location": "whole debate, Section E",
+        "description": "No mention of allergic-reaction signs (swelling, hives, blistering) or when to seek medical care.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "observed",
+        "location": "Section D",
+        "description": "Calls it disputed whether data is worth continued irritation, though the agreed plan involves no continued irritation.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "unverified",
+        "location": "T2, T5, T8",
+        "description": "Walden lines in pd=true turns appear close to Thoreau's text from memory; not checked against a source.",
+        "evidence_ids": []
+      }
+    ],
+    "rubricFitNotes": [
+      "A practical troubleshooting question gives criterion 4 little natural material; low C4 ratings reflect missed openings (why three products at once, worry about damage) rather than rubric mismatch. Popper and Clear fit the topic loosely."
+    ],
+    "questionTypeNote": "Read as a decision: choosing a troubleshooting procedure, so C5 rewarded the stop-and-reintroduce plan and penalised missing thresholds and medical-care branch."
+  },
+  "rubricVersion": "rubric-evaluator-4.2.0",
+  "savedAt": "2026-10-15T09:22:40.277Z"
+}
