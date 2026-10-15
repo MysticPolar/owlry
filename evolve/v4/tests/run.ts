@@ -2,6 +2,7 @@
 import { test, eq, ok, near, report } from "./harness.ts";
 import { cleanDebate, roteDebate, card, rawCard, pairs, ledgerEntry, RUBRIC_MAP } from "./fixtures.ts";
 import { formMetrics, validity, fabricatedBasis } from "../runner/metrics.ts";
+import { parseJsonLoose } from "../runner/parse.ts";
 import { lintDiff, lintText, topicSet, candidateTopicWords, addedText } from "../runner/lint.ts";
 import { tally, questionTally, decide, regressionCheck, criticalCheck, escalation, releaseDecide, binomUpperTail, challengerCredit } from "../runner/gate.ts";
 import { transition, canTransition, stopReason } from "../runner/state.ts";
@@ -41,6 +42,27 @@ await test("metrics: rote debate is counted (opener, slot markers, pd-false quot
 });
 await test("metrics: fabricated basis is ignored when the worker can browse", () => {
   eq(formMetrics(roteDebate(), { ...M, canBrowse: true }).fabricatedBasisTurns, 0);
+});
+await test("parse: the one JSON object is found in a fence, after prose, or between prose braces; prose alone is null", () => {
+  const obj = '{"winner":"A","note":"a } inside a string"}';
+  eq(parseJsonLoose(obj)?.winner, "A");
+  eq(parseJsonLoose("Evaluation of the debate {anonymous}:\n" + obj)?.winner, "A");
+  eq(parseJsonLoose("```json\n" + obj + "\n```\nNote: totals omitted {see brief}")?.winner, "A");
+  eq(parseJsonLoose("Here it is: " + obj + " — done."), JSON.parse(obj));
+  eq(parseJsonLoose("I think the prompt is fine."), null);
+  eq(parseJsonLoose("[1,2,3]"), null, "an array is not the object asked for");
+});
+await test("metrics: apostrophes inside words (straight or curly) are not quotation marks; quoted phrases are", () => {
+  const d = cleanDebate();
+  const post = d.debate.filter((t) => t.pd === false);
+  post[0].text = "Let’s be plain: it’s not the product, and I don’t think Prince’s rose is a symbol here. " + "word ".repeat(20);
+  post[1].text = "Let's be plain: it's not that, and I don't agree with the friends' plan as stated so far. " + "word ".repeat(20);
+  eq(formMetrics(d, M).pdFalseQuoteTurns, 1, "the plural possessive friends' still counts (as before); contractions do not");
+  post[1].text = "Nothing quoted here at all, just plain reasoning in my own words today. " + "word ".repeat(20);
+  eq(formMetrics(d, M).pdFalseQuoteTurns, 0);
+  post[0].text = "You keep saying ‘behind’ as if it were a verdict. " + "word ".repeat(20);
+  post[1].text = "He called it “a calling” and meant something else entirely. " + "word ".repeat(20);
+  eq(formMetrics(d, M).pdFalseQuoteTurns, 2);
 });
 await test("metrics: a basis that names a marker only to disclaim it is not fabricated; a real chapter or link is", () => {
   eq(fabricatedBasis("[Basis: Daniel Gilbert, Stumbling on Happiness (impact bias and adaptation); section not verified, no link provided]"), false);

@@ -39,7 +39,8 @@
 import { formMetrics, validity, type MetricOptions } from "./metrics.ts";
 import { challengerCredit, criticalCheck, decide, escalation, questionTally, regressionCheck, releaseDecide, tally } from "./gate.ts";
 import { blindKey, championSlot, genKey, promptHash, rubricKey, sha256, transcriptHash } from "./cache.ts";
-import { schemaProblems } from "./validate.ts";
+import { normalise, schemaProblems } from "./validate.ts";
+import { parseJsonLoose } from "./parse.ts";
 import { stopReason, transition, type Event, type State } from "./state.ts";
 import { buildBlindInput, buildOptimizerInput, buildRubricInput, diffSummary, type ChampionResult, type DeterministicCheck } from "./inputs.ts";
 import { scoreCard, validateRaw, pointsLost, type RubricMap } from "./scoring.ts";
@@ -71,9 +72,11 @@ interface ExpState {
   jobs: Record<string, Job>; decision?: string; reason?: string; manual?: boolean; ablation?: boolean; createdAt: string; updatedAt: string;
   questions?: Question[];   // validation only: the Set B questions this validation opened with
   refills?: Record<string, number>;   // baseline slots redrawn after a failure (slot → refill round), salted into the draw
-  setBUses?: boolean;       // validation only: this validation has been counted in setB.json uses (idempotent)
+  queued?: { system: string; note: string; file: string };   // a manual challenger entered before the baseline closed
+  setBUses?: boolean;       // validation only: this validation's use of Set B was reserved in setB.json when it opened
 }
-interface Baseline { version: string; draw: string; comparisons: number; gen: Record<string, string>; rubric: Record<string, string>; missing?: string[]; fingerprint?: string; completedAt: string }
+interface Baseline { version: string; draw: string; comparisons: number; gen: Record<string, string>; rubric: Record<string, string>; missing?: string[]; fingerprint?: string; championCritical?: string[]; completedAt: string }
+const MAX_REFILLS = 2;   // a failed baseline slot is redrawn alone up to twice before it is left out (or, past half the slots, a person is asked)
 interface Champion { working: string; release: string | null; initialReleaseReference: string; promotions: number; promotionsSinceValidation: number }
 /** A session bounds the stop rules: they count ledger entries and calls since `start`, and `evo4 session` opens a new one. */
 interface Session { startedAt: string; ledgerStart: number; callsStart: number }
@@ -106,20 +109,21 @@ function oneLineage(): string {
 }
 
 async function eachLineage(fn: (L: Lineage) => Promise<void>) {
-  let failed = false;
+  let failed = 0;
   for (const l of lineagesRequested) {
     try { await fn(new Lineage(l)); }
-    catch (e) { failed = true; console.log(`${l}: ERROR ${(e as Error).message}`); }
+    catch (e) { failed++; console.log(`${l}: ERROR ${(e as Error).message}`); }
   }
-  if (failed) Deno.exit(1);
+  // exit 1 only when no lineage could run: an ERROR line for one lineage is that lineage's stop, not the command's failure
+  if (failed && failed === lineagesRequested.length) Deno.exit(1);
 }
 
 switch (args._[0]) {
   case "bootstrap": await eachLineage(bootstrap); break;
   case "next": PRINT = true; await eachLineage(next); break;
-  case "ingest": await eachLineage(ingest); break;
-  case "challenge": await challenge(new Lineage(oneLineage())); break;
-  case "validate": await validateCmd(new Lineage(oneLineage())); break;
+  case "ingest": await eachLineage(ingest); await capabilityIngest().catch((e) => console.log(`capability: ERROR ${(e as Error).message}`)); break;
+  case "challenge": await challenge(new Lineage(oneLineage())).catch((e) => { console.log(`${args.lineage}: ERROR ${(e as Error).message}`); Deno.exit(1); }); break;
+  case "validate": await validateCmd(new Lineage(oneLineage())).catch((e) => { console.log(`${args.lineage}: ERROR ${(e as Error).message}`); Deno.exit(1); }); break;
   case "capability": PRINT = true; await capability(); break;
   case "session": await eachLineage(newSession); break;
   case "status": await eachLineage(status); break;
@@ -164,8 +168,10 @@ async function next(L: Lineage): Promise<void> {
   // the stop rules are applied in emitOptimizer, at the iteration boundary: stopping here could overwrite PROMOTED
   // before the pointer moves, or abandon a DECIDING experiment whose judgments are already paid for
   // outputs written but not yet ingested: printing their jobs again would invite a second spawn
+  // Gemini outputs are left out: the background batch writes them one by one, it never needs a respawn, and a WAIT here
+  // would send the dispatcher to ingest before it spawned the other lineage's freshly printed jobs (counting them as misses)
   const unread: string[] = [];
-  for (const [id, j] of Object.entries(exp.jobs)) if (!j.done && j.outPath && (await exists(j.outPath))) unread.push(id);
+  for (const [id, j] of Object.entries(exp.jobs)) if (!j.done && j.kind !== "gemini" && j.outPath && (await exists(j.outPath))) unread.push(id);
   if (unread.length) { console.log(`${L.name}: WAIT ${unread.length} output(s) not yet ingested (${unread.slice(0, 3).join(", ")}${unread.length > 3 ? ", …" : ""}); run ingest`); return; }
   switch (exp.state) {
     case "BASELINE": case "REBASELINING":
@@ -196,7 +202,7 @@ async function next(L: Lineage): Promise<void> {
 }
 
 async function emitGeneration(L: Lineage, exp: ExpState, versions: string[], questions: Question[], fromSample: number, toSample: number) {
-  let geminiPending = 0;
+  let geminiPending = 0, geminiWritten = 0;
   for (const v of versions) {
     const { system, userTemplate, hash } = await loadVersion(L, v);
     for (const q of questions) {
@@ -210,11 +216,15 @@ async function emitGeneration(L: Lineage, exp: ExpState, versions: string[], que
         const key = await genKey({ lineage: L.name, lane: L.def.lane, promptHash: hash, model: L.lane.model, settings: { ...L.laneSettings(), draw }, questionId: q.id, questionText: q.text, envelopeVersion: cfg.envelopeVersion ?? "1", sample: s });
         const prev = exp.jobs[jobId];
         const base = { lineage: L.name, cacheKey: key, version: v, q: q.idx, s, attempts: prev?.attempts ?? 0, misses: prev?.misses ?? 0 };
-        if (await exists(`${ROOT}/cache/gen/${key}.json`)) { exp.jobs[jobId] = { kind: L.lane.kind === "api" ? "gemini" : "generate", outPath: "", done: true, ...base, unusable: Boolean((await readJson(`${ROOT}/cache/gen/${key}.json`)).unusable) }; continue; }
+        if (await exists(`${C(exp)}/gen/${key}.json`)) { exp.jobs[jobId] = { kind: L.lane.kind === "api" ? "gemini" : "generate", outPath: "", done: true, ...base, unusable: Boolean((await readJson(`${C(exp)}/gen/${key}.json`)).unusable) }; continue; }
         const user = userTemplate.replace("{{question}}", q.text) + "\n\n" + envelopeNote();
         // a refilled slot gets new file names too: the failed attempt's output is still on disk and must not be read again
         const salt = refill ? `#refill${refill}` : "";
-        if (L.lane.kind === "api") { exp.jobs[jobId] = { kind: "gemini", outPath: `${expDir(L, exp)}/out/${jobId}${refill ? `.refill${refill}` : ""}.json`, done: false, ...base }; geminiPending++; }
+        if (L.lane.kind === "api") {
+          const outPath = `${expDir(L, exp)}/out/${jobId}${refill ? `.refill${refill}` : ""}.json`;
+          exp.jobs[jobId] = { kind: "gemini", outPath, done: false, ...base };
+          if (await exists(outPath)) geminiWritten++; else geminiPending++;
+        }
         else {
           // the worker's files sit under an opaque name: the path must not tell it its version, lineage or experiment
           const { promptPath, outPath } = prev?.promptPath ? { promptPath: prev.promptPath, outPath: prev.outPath } : await inboxPaths(L, exp, jobId + salt);
@@ -229,9 +239,10 @@ async function emitGeneration(L: Lineage, exp: ExpState, versions: string[], que
   if (geminiPending) {
     // one batch per experiment at a time: a second process would call the free-tier API for the same jobs
     const lock = await readJson(`${expDir(L, exp)}/gemini.lock`).catch(() => null) as { heartbeat: number } | null;
-    if (lock && Date.now() - lock.heartbeat < GEMINI_LOCK_STALE_MS) { if (PRINT) console.log(`${L.name}: WAIT gemini-batch running (${geminiPending} generation(s) pending)`); }
+    if (lock && Date.now() - lock.heartbeat < GEMINI_LOCK_STALE_MS) { if (PRINT) console.log(`${L.name}: WAIT gemini-batch running (${geminiWritten} written, ${geminiPending} to go)`); }
     else emit({ id: "gemini-batch", lineage: L.name, kind: "gemini-batch", pending: geminiPending, command: `${EVO4} gemini-batch --lineage ${L.name} --exp ${exp.id}` });
   }
+  else if (geminiWritten) { if (PRINT) console.log(`${L.name}: WAIT ${geminiWritten} Gemini output(s) written; the next ingest reads them`); }
   else if (allDone(exp, ["generate", "gemini"])) await afterGeneration(L, exp);
 }
 
@@ -273,7 +284,7 @@ async function emitOptimizer(L: Lineage, exp: ExpState, champ: Champion) {
   const input = buildOptimizerInput({
     brief, lineage: L.name, championVersion: champ.working,
     championStatus: champ.release && champ.release !== champ.working ? `working champion (release champion is ${champ.release})` : "working champion",
-    championPrompt: system, protectedSpans: L.spans, results, ledger: await readLedger(L), banned: bans,
+    championPrompt: system, protectedSpans: L.spans, results, ledger: (await readLedger(L)).slice(-(cfg.optimizer.historyIterations ?? 10)), banned: bans,
     budget: { ceiling: cfg.prompt.maxWords, maxGrowthFraction: cfg.prompt.maxGrowthPerChallenger, wordsNow: countWords(system), ablationIteration: ablation },
     capabilityReference: capRef, parentResetNotice: exp.reason?.startsWith("rolled back") ? "The base prompt changed after a failed validation; a fresh Set A baseline was supplied." : undefined,
     nextVersion: nextVersionName(await listVersions(L)),
@@ -308,12 +319,12 @@ async function emitRubric(L: Lineage, exp: ExpState) {
       await appendText(`${expDir(L, exp)}/missing.log`, `${jobId}: not scored, the generation is ${j.cacheKey ? "not a debate" : "missing"}\n`);
       continue;
     }
-    const gen = await readJson(`${ROOT}/cache/gen/${j.cacheKey}.json`);
+    const gen = await readJson(`${C(exp)}/gen/${j.cacheKey}.json`);
     const q = questions.find((x) => x.idx === j.q)!;
     const key = await rubricKey({ transcriptHash: gen.transcriptHash, rubricVersion: a.version, model: a.model, effort: a.effort, questionType: q.type, canBrowse: Boolean(L.lane.canBrowse) });
     const prev = exp.jobs[jobId];
     const base = { lineage: L.name, cacheKey: key, version: j.version, q: j.q, s: j.s, attempts: prev?.attempts ?? 0, misses: prev?.misses ?? 0 };
-    if (await exists(`${ROOT}/cache/rubric/${key}.json`)) { exp.jobs[jobId] = { kind: "rubric", outPath: "", done: true, ...base }; continue; }
+    if (await exists(`${C(exp)}/rubric/${key}.json`)) { exp.jobs[jobId] = { kind: "rubric", outPath: "", done: true, ...base }; continue; }
     // opaque file names: the evaluator must not learn the lineage, the version or the experiment from the path;
     // an existing input is kept, because a respawn carries the problems the runner appended to it
     const refill = exp.refills?.[`q${j.q}.s${j.s}`];
@@ -335,7 +346,7 @@ async function emitBlind(L: Lineage, exp: ExpState) {
       const jobId = `blind.q${q.idx}.s${s}`;
       if (exp.jobs[jobId]?.done) continue;
       const ck = await championGenKey(L, exp, q.idx, s), xk = exp.jobs[`gen.${exp.challenger}.q${q.idx}.s${s}`]?.cacheKey;
-      const champ = ck ? await readJson(`${ROOT}/cache/gen/${ck}.json`) : null, chal = xk ? await readJson(`${ROOT}/cache/gen/${xk}.json`) : null;
+      const champ = ck ? await readJson(`${C(exp)}/gen/${ck}.json`) : null, chal = xk ? await readJson(`${C(exp)}/gen/${xk}.json`) : null;
       if (!champ || !chal || champ.unusable || chal.unusable) {   // a side is missing or not a debate: a missing pair, never a tie
         exp.jobs[jobId] = { kind: "blind", lineage: L.name, outPath: "", done: true, q: q.idx, s, attempts: 0 };
         const side = !champ || champ.unusable ? "champion" : "challenger", rec = side === "champion" ? champ : chal;
@@ -348,7 +359,7 @@ async function emitBlind(L: Lineage, exp: ExpState) {
       const key = await blindKey({ aHash: A.transcriptHash, bHash: B.transcriptHash, judgeVersion: a.version, model: a.model, effort: a.effort });
       const prev = exp.jobs[jobId];
       const base = { lineage: L.name, cacheKey: key, q: q.idx, s, attempts: prev?.attempts ?? 0, misses: prev?.misses ?? 0 };
-      if (await exists(`${ROOT}/cache/blind/${key}.json`)) { exp.jobs[jobId] = { kind: "blind", outPath: "", done: true, ...base }; continue; }
+      if (await exists(`${C(exp)}/blind/${key}.json`)) { exp.jobs[jobId] = { kind: "blind", outPath: "", done: true, ...base }; continue; }
       const { promptPath, outPath } = prev?.promptPath ? { promptPath: prev.promptPath, outPath: prev.outPath } : await inboxPaths(L, exp, jobId);
       if (!prev?.promptPath || !(await exists(promptPath))) await writeText(promptPath, buildBlindInput(brief, q, A.debate, B.debate));
       exp.jobs[jobId] = { kind: "blind", outPath, promptPath, done: false, ...base, printed: prev?.printed || PRINT };
@@ -389,7 +400,8 @@ async function ingest(L: Lineage) {
     if (!(await exists(j.outPath))) {
       // printed, the batch returned, and no output: the agent did not write. Two such misses close the job
       // (a missing pair or card, an optimizer KEEP) instead of re-issuing it on every pass.
-      if (j.printed && j.kind !== "gemini") {
+      // --no-miss: the agents did not all return cleanly (a usage limit, an interruption); count nothing, respawn later
+      if (j.printed && j.kind !== "gemini" && !args["no-miss"]) {
         j.printed = false; j.misses = (j.misses ?? 0) + 1;
         if (j.misses >= 2) await closeMissing(L, exp, id, j, invalid, "the agent returned twice without writing its output");
         else invalid.push(`${id}: no output was written — respawn once`);
@@ -410,7 +422,7 @@ async function ingest(L: Lineage) {
         const unusable = !debate || typeof debate !== "object" || !Array.isArray(debate.minds) || !Array.isArray(debate.debate) || !debate.debate.length;
         if (!obj) v.problems.unshift("not JSON");
         else if (unusable && obj.error) v.problems.unshift(`no reply: ${String(obj.error)}`);
-        await writeJson(`${ROOT}/cache/gen/${j.cacheKey}.json`, { jobId: id, lineage: L.name, version: j.version, q: j.q, s: j.s, model: L.lane.model, settings: L.laneSettings(), debate, validity: v, metrics: m, unusable, latencyMs: obj?.latencyMs ?? null, tokens: obj?.tokens ?? null, raw: rawText.slice(0, 200_000), transcriptHash: await transcriptHash(debate ?? rawText), savedAt: now() });
+        await writeJson(`${C(exp)}/gen/${j.cacheKey}.json`, { jobId: id, lineage: L.name, version: j.version, q: j.q, s: j.s, model: L.lane.model, settings: L.laneSettings(), debate, validity: v, metrics: m, unusable, latencyMs: obj?.latencyMs ?? null, tokens: obj?.tokens ?? null, raw: rawText.slice(0, 200_000), transcriptHash: await transcriptHash(debate ?? rawText), savedAt: now() });
         j.done = true; j.unusable = unusable;
       } else if (j.kind === "optimizer") {
         await ingestOptimizer(L, exp, j, obj, invalid);
@@ -421,18 +433,20 @@ async function ingest(L: Lineage) {
         // cells are identified by id; the 35 long names are the runner's, so an evaluator that shortens one does not lose
         // the whole card (the schema requires each name verbatim)
         if (Array.isArray(raw.cells)) raw.cells = raw.cells.map((c) => (c && typeof c === "object" && CELL_NAME[c.id] ? { ...c, name: CELL_NAME[c.id] } : c));
+        await normalise(`${ROOT}/${cfg.agents.rubric.schema}`, raw);
         const problems = await schemaProblems(`${ROOT}/${cfg.agents.rubric.schema}`, raw);
         if (!problems.length) problems.push(...validateRaw(raw, RUBRIC_MAP).problems);
         if (problems.length) { await retire(L, exp, id, j, invalid, problems); continue; }
         const card = scoreCard(raw, RUBRIC_MAP);
-        await writeJson(`${ROOT}/cache/rubric/${j.cacheKey}.json`, { jobId: id, raw, card, rubricVersion: cfg.agents.rubric.version, savedAt: now() });
+        await writeJson(`${C(exp)}/rubric/${j.cacheKey}.json`, { jobId: id, raw, card, rubricVersion: cfg.agents.rubric.version, savedAt: now() });
         j.done = true;
       } else if (j.kind === "blind") {
         const v = obj as unknown as BlindVerdict;
+        await normalise(`${ROOT}/${cfg.agents.blind.schema}`, v);
         const problems = await schemaProblems(`${ROOT}/${cfg.agents.blind.schema}`, v);
         if ((v.winner === "tie") !== (v.margin === "none")) problems.push("winner tie if and only if margin none");
         if (problems.length) { await retire(L, exp, id, j, invalid, problems); continue; }
-        await writeJson(`${ROOT}/cache/blind/${j.cacheKey}.json`, { jobId: id, verdict: v, judgeVersion: cfg.agents.blind.version, savedAt: now() });
+        await writeJson(`${C(exp)}/blind/${j.cacheKey}.json`, { jobId: id, verdict: v, judgeVersion: cfg.agents.blind.version, savedAt: now() });
         j.done = true;
       }
     } catch (e) {
@@ -460,6 +474,9 @@ async function ingestOptimizer(L: Lineage, exp: ExpState, j: Job, obj: Record<st
   if (!problems.length) {
     problems.push(...validateProposal(out, system, exp.champion, L.spans, { ceiling: cfg.prompt.maxWords, maxGrowthFraction: cfg.prompt.maxGrowthPerChallenger, userHeading: USER_HEADING, lint: cfg.lint, topicWords: setA().map((q) => q.topicWords ?? []) }));
     if (exp.ablation && out.action === "propose" && out.kind !== "ABLATE") problems.push(`this is an ablation iteration: the only allowed kind is ABLATE, got ${out.kind}`);
+    // a banned target is listed in the input; a proposal aimed at it anyway is returned for repair, not tested
+    const bans = ((await readJson(`${L.dir}/bans.json`).catch(() => [])) as { target: string; until: number }[]).filter((b) => b.until > exp.iteration);
+    if (out.action === "propose") for (const t of out.hypothesis?.targets ?? []) { const b = bans.find((x) => x.target === t); if (b) problems.push(`target ${t} is banned until iteration ${b.until}; choose another cell or no_change`); }
   }
   exp.state = transition(exp.state, "optimizer_done");
   if (problems.length) {
@@ -491,12 +508,12 @@ async function retire(L: Lineage, exp: ExpState, id: string, j: Job, invalid: st
 async function closeMissing(L: Lineage, exp: ExpState, id: string, j: Job, invalid: string[], why: string) {
   j.done = true; j.cacheKey = undefined;
   await appendText(`${expDir(L, exp)}/missing.log`, `${id}: ${why}\n`);
-  invalid.push(`${id}: ${why} — closed as missing; do not spawn it again`);
+  invalid.push(`${id}: ${why} — closed as missing`);
   if (j.kind === "optimizer" && exp.state === "OPTIMIZING") { await recordNonProposal(L, exp, "KEEP", `optimizer produced no usable output: ${why}`); exp.state = "KEPT"; }
 }
 
 async function recordNonProposal(L: Lineage, exp: ExpState, outcome: "KEEP" | "ESCALATE", reason: string) {
-  const entry: LedgerEntry = { id: exp.id, lineage: L.name, version: "(none)", base: exp.champion, kind: "REPLACE", hypothesis: { statement: reason, targets: [], expectedDelta: 0, mechanism: "", refutedIf: "" }, diffSummary: "", outcome, wins: 0, pairs: 0, pValue: 1, rubricMeanDelta: 0, perCategoryDelta: {}, cardsAfter: "", at: now() };
+  const entry: LedgerEntry = { id: exp.id, lineage: L.name, version: "(none)", base: exp.champion, kind: "REPLACE", hypothesis: { statement: reason, targets: [], expectedDelta: 0, mechanism: "", refutedIf: "" }, diffSummary: "", outcome, wins: 0, pairs: 0, pValue: 1, rubricMeanDelta: 0, perCategoryDelta: {}, cardsAfter: "", reason: "no challenger was tested", at: now() };
   await appendText(`${L.dir}/ledger.jsonl`, JSON.stringify(entry) + "\n");
 }
 
@@ -512,19 +529,33 @@ async function afterRubric(L: Lineage, exp: ExpState) {
     const base: Baseline = { version: exp.champion, draw: exp.id, comparisons: 0, gen: {}, rubric: {}, missing: [], fingerprint: await fingerprint(L), completedAt: now() };
     for (const q of await questionsFor(exp)) for (let s = 1; s <= exp.samples; s++) {
       const slot = `q${q.idx}.s${s}`, g = exp.jobs[`gen.${exp.champion}.${slot}`], r = exp.jobs[`rubric.${exp.champion}.${slot}`];
-      const clean = g?.cacheKey && !g.unusable && r?.cacheKey && !contaminated((await readJson(`${ROOT}/cache/gen/${g.cacheKey}.json`)).debate);
+      const clean = g?.cacheKey && !g.unusable && r?.cacheKey && !contaminated((await readJson(`${C(exp)}/gen/${g.cacheKey}.json`)).debate);
       if (clean) { base.gen[slot] = g.cacheKey!; base.rubric[slot] = r.cacheKey!; } else base.missing!.push(slot);
     }
-    // each missing slot is redrawn once, alone, with a salted draw (a fresh sample, not the cached failure)
-    const refill = base.missing!.filter((slot) => !exp.refills?.[slot]);
+    // each missing slot is redrawn alone, with a salted draw (a fresh sample, not the cached failure), up to MAX_REFILLS times
+    const refill = base.missing!.filter((slot) => (exp.refills?.[slot] ?? 0) < MAX_REFILLS);
     if (refill.length) {
       exp.refills ??= {};
-      for (const slot of refill) { exp.refills[slot] = 1; delete exp.jobs[`gen.${exp.champion}.${slot}`]; delete exp.jobs[`rubric.${exp.champion}.${slot}`]; }
-      await appendText(`${expDir(L, exp)}/missing.log`, `baseline: redrawing ${refill.join(", ")} once\n`);
+      for (const slot of refill) { exp.refills[slot] = (exp.refills[slot] ?? 0) + 1; delete exp.jobs[`gen.${exp.champion}.${slot}`]; delete exp.jobs[`rubric.${exp.champion}.${slot}`]; }
+      await appendText(`${expDir(L, exp)}/missing.log`, `baseline: redrawing ${refill.map((s) => `${s} (redraw ${exp.refills![s]} of ${MAX_REFILLS})`).join(", ")}\n`);
       await saveExp(L, exp); return next(L);
     }
+    const slots = (await questionsFor(exp)).length * exp.samples;
+    if (base.missing!.length * 2 > slots) {
+      // more than half the slots failed every draw: something is wrong with the champion, the worker or the evaluator
+      exp.state = "NEEDS_HUMAN"; exp.reason = `baseline: ${base.missing!.length} of ${slots} slots failed ${MAX_REFILLS + 1} draws (${base.missing!.join(", ")}); see ${expDir(L, exp)}/missing.log`;
+      await saveExp(L, exp); console.log(`${L.name}: NEEDS_HUMAN ${exp.reason}`); return;
+    }
+    // the champion is held to nothing at baseline, but a person should know when its own output fails the limits a
+    // challenger must meet: such a gate rejects like-for-like challengers on form, whatever their quality
+    const gens = await Promise.all(Object.values(base.gen).map((k) => readJson(`${C(exp)}/gen/${k}.json`)));
+    base.championCritical = criticalCheck(gens.map((g) => g.validity), gens.map((g) => g.metrics), [], cfg.gate.critical);
     await writeJson(`${L.dir}/baseline.json`, base);
-    exp.state = transition(exp.state, "baseline_done"); await saveExp(L, exp); return next(L);
+    if (base.missing!.length) console.log(`${L.name}: WARNING baseline ${base.version} has ${base.missing!.length} missing slot(s) after ${MAX_REFILLS} redraws (${base.missing!.join(", ")}); panels are judged on the remaining pairs`);
+    if (base.championCritical.length) console.log(`${L.name}: WARNING the champion ${base.version}'s own baseline fails the critical limits a challenger must meet: ${base.championCritical.join(" | ")}`);
+    exp.state = transition(exp.state, "baseline_done");
+    if (exp.queued) return enterChallenger(L, exp, exp.queued.system, exp.queued.note, exp.queued.file);   // README step 5: the control queued before the baseline closed
+    await saveExp(L, exp); return next(L);
   }
   if (exp.state === "VALIDATING") { await emitBlind(L, exp); return; }
   exp.state = transition(exp.state, "evaluated"); await saveExp(L, exp); await emitBlind(L, exp);
@@ -543,7 +574,10 @@ async function runGate(L: Lineage, exp: ExpState) {
   const pairs = await collectPairs(L, exp);
   const { wins, n } = tally(pairs);
   const qt = questionTally(pairs);
-  const out = decide({ stage: exp.stage, wins, n, regression, critical }, cfg.gate);
+  // a baseline slot left out after its redraws has no champion sample to pair with: it is not an unjudged pair
+  const baseMissing = ((await readJson(`${L.dir}/baseline.json`)) as Baseline).missing?.length ?? 0;
+  const expected = (exp.stage === 1 ? cfg.gate.stage1.pairs : cfg.gate.stage1.pairs + cfg.gate.stage2.addPairs) - baseMissing;
+  const out = decide({ stage: exp.stage, wins, n, regression, critical, expected }, cfg.gate);
   const meta = await readJson(`${L.dir}/versions/${exp.challenger}.json`);
   if (out.decision === "RETEST") {
     exp.stage = 2; exp.stage1Samples = exp.samples; exp.samples += Math.ceil(cfg.gate.stage2.addPairs / setA().length);
@@ -564,7 +598,8 @@ async function runGate(L: Lineage, exp: ExpState) {
     id: exp.id, lineage: L.name, version: exp.challenger!, base: exp.champion, kind: meta.kind, hypothesis: meta.hypothesis,
     diffSummary: diffSummary({ diff: meta.diff } as Challenger), outcome: exp.stage === 2 ? `RETEST→${decision}` as LedgerEntry["outcome"] : decision,
     wins, pairs: n, pValue: out.pValue, rubricMeanDelta: regression.meanDelta, perCategoryDelta: perCategoryDelta(champQ, chalQ),
-    cardsAfter: summarizeTargets(chalCards, meta.hypothesis.targets) + ` | question wins ${qt.questionWins}/${setA().length}, losses ${qt.questionLosses}/${setA().length}`, at: now(),
+    cardsAfter: summarizeTargets(chalCards, meta.hypothesis.targets) + ` | question wins ${qt.questionWins}/${setA().length}, losses ${qt.questionLosses}/${setA().length}`,
+    reason: out.reason + (esc.banned.length ? `; escalated: ${esc.banned.map((b) => b.target).join(", ")}` : ""), at: now(),
   };
   await appendText(`${L.dir}/ledger.jsonl`, JSON.stringify(entry) + "\n");
   await writeJson(`${expDir(L, exp)}/pairs.json`, pairs);
@@ -613,24 +648,43 @@ async function openIteration(L: Lineage, champ: Champion, iteration: number, rea
 
 // ---------- manual challenger (champion selection, control experiments) ----------
 
+/** `evo4 challenge`: a hand-written challenger takes the next iteration's slot. Entered during BASELINE/REBASELINING it is
+ *  queued and tested as soon as the baseline closes (README step 5 can follow bootstrap at once, with no race against the
+ *  optimizer job); entered at OPTIMIZING it withdraws the optimizer job if that job has not produced an output. */
 async function challenge(L: Lineage) {
   const exp = await currentExp(L);
-  if (exp.state !== "OPTIMIZING") { console.error(`${L.name}: a manual challenger needs state OPTIMIZING (now ${exp.state})`); Deno.exit(2); }
+  const raw = String(args.file ?? "");
+  // a relative path is tried from the working directory, then from the package root (README writes prompts/…)
+  const file = (await exists(raw)) ? raw : (await exists(`${ROOT}/${raw}`)) ? `${ROOT}/${raw}` : null;
+  if (!file) { console.error(`${L.name}: --file ${raw} not found (tried it and ${ROOT}/${raw})`); Deno.exit(2); }
+  const text = await Deno.readTextFile(file);
+  const i = text.indexOf(USER_HEADING);
+  const system = (i >= 0 ? text.slice(0, i) : text).trim();
+  const note = String(args.note ?? `manual challenger from ${raw}`);
+  if (exp.state === "BASELINE" || exp.state === "REBASELINING") {
+    if (exp.queued) { console.error(`${L.name}: a manual challenger is already queued (${exp.queued.file})`); Deno.exit(2); }
+    exp.queued = { system, note, file: raw }; await saveExp(L, exp);
+    console.log(`${L.name}: queued ${raw} as the manual challenger; it is tested as soon as the ${exp.state === "BASELINE" ? "" : "re"}baseline of ${exp.champion} closes`);
+    return;
+  }
+  if (exp.state !== "OPTIMIZING") { console.error(`${L.name}: a manual challenger needs BASELINE, REBASELINING or OPTIMIZING (now ${exp.state})`); Deno.exit(2); }
   if (exp.jobs.optimizer && !exp.jobs.optimizer.done) {
     if (await exists(exp.jobs.optimizer.outPath)) { console.error(`${L.name}: an optimizer output is waiting to be ingested; ingest it or delete ${exp.jobs.optimizer.outPath} first`); Deno.exit(2); }
     delete exp.jobs.optimizer;   // the manual challenger takes this iteration's slot; the unspawned optimizer job is withdrawn
   }
-  const text = await Deno.readTextFile(String(args.file));
-  const i = text.indexOf(USER_HEADING);
-  const system = (i >= 0 ? text.slice(0, i) : text).trim();
+  await enterChallenger(L, exp, system, note, raw);
+}
+
+async function enterChallenger(L: Lineage, exp: ExpState, system: string, note: string, file: string) {
   const { system: champion } = await loadVersion(L, exp.champion);
   const vName = nextVersionName(await listVersions(L));
   const sp = (await import("./spans.ts")).checkSpans(system, L.spans);
-  if (!sp.ok) console.log(`${L.name}: warning — manual challenger breaks protected spans: missing ${sp.missing.join(",")} duplicated ${sp.duplicated.join(",")} (allowed for a control, recorded)`);
+  if (!sp.ok) console.log(`${L.name}: WARNING manual challenger breaks protected spans: missing ${sp.missing.join(",") || "none"}; duplicated ${sp.duplicated.join(",") || "none"} (allowed for a control, recorded)`);
   await writeText(`${L.dir}/versions/${vName}.md`, `${system}\n\n${USER_HEADING}\n\n{{question}}\n`);
-  await writeJson(`${L.dir}/versions/${vName}.json`, { version: vName, parent: exp.champion, kind: "REWRITE", manual: true, hypothesis: { statement: String(args.note ?? `manual challenger from ${args.file}`), targets: [], expectedDelta: 0, mechanism: "manual", refutedIf: "the gate rejects it" }, diff: [{ before: champion, after: system }], risks: [], blocked: [], changelog: String(args.note ?? "manual challenger"), wordCount: { before: countWords(champion), after: countWords(system) }, experiment: exp.id, status: "challenger", createdAt: now() });
-  exp.challenger = vName; exp.manual = true; exp.state = "GENERATING"; await saveExp(L, exp);
-  console.log(`${L.name}: entered ${vName} as a manual challenger of ${exp.champion}; run next`);
+  await writeJson(`${L.dir}/versions/${vName}.json`, { version: vName, parent: exp.champion, kind: "REWRITE", manual: true, origin: file, hypothesis: { statement: note, targets: [], expectedDelta: 0, mechanism: "manual", refutedIf: "the gate rejects it" }, diff: [{ before: `(the whole ${exp.champion} system prompt)`, after: `(the whole system prompt of ${file})` }], risks: [], blocked: [], changelog: note, wordCount: { before: countWords(champion), after: countWords(system) }, brokenSpans: sp.ok ? [] : [...sp.missing, ...sp.duplicated], experiment: exp.id, status: "challenger", createdAt: now() });
+  exp.challenger = vName; exp.manual = true; exp.queued = undefined; exp.state = "GENERATING"; await saveExp(L, exp);
+  console.log(`${L.name}: entered ${vName} (${file}) as a manual challenger of ${exp.champion}`);
+  return next(L);
 }
 
 // ---------- outer validation (Set B) ----------
@@ -638,6 +692,9 @@ async function challenge(L: Lineage) {
 /** `evo4 validate`: only at an iteration boundary, so no in-flight experiment is orphaned. */
 async function validateCmd(L: Lineage) {
   const exp = await currentExp(L);
+  // an exhausted Set B is refused before any state changes: a voluntary validation must not park the lineage
+  const setB = await readJson(`${ROOT}/${cfg.sets.B}`);
+  if ((setB.uses ?? 0) >= (cfg.validation.maxUsesBeforeRefresh ?? Infinity)) { console.error(`${L.name}: Set B has been used ${setB.uses} times (limit ${cfg.validation.maxUsesBeforeRefresh}); refresh runner-only/setB.json (new questions, uses 0) first`); Deno.exit(2); }
   const boundary = ["REJECTED", "KEPT", "ESCALATED", "RELEASED", "ROLLED_BACK", "EXPERIMENTAL", "STOPPED", "NEEDS_HUMAN"].includes(exp.state) || (exp.state === "OPTIMIZING" && !exp.jobs.optimizer?.printed);
   if (!boundary) { console.error(`${L.name}: validate only between iterations (now ${exp.state}${exp.jobs.optimizer?.printed ? " with an optimizer job out" : ""}); run it when the current experiment has been decided`); Deno.exit(2); }
   if (exp.jobs.optimizer && !exp.jobs.optimizer.done) { delete exp.jobs.optimizer; await saveExp(L, exp); }
@@ -663,8 +720,10 @@ async function openValidation(L: Lineage) {
   await ensureVersionFile(L, reference);
   const exp = newExp(L, "validation", "VALIDATING", reference, iteration);
   exp.challenger = champ.working; exp.samples = cfg.validation.samplesPerQuestion; exp.stage1Samples = exp.samples;
-  // Set B is shared and rotates after a PASS; the validation keeps the questions it opened with (stored behind the wall)
+  // Set B is shared and rotates after a PASS; the validation keeps the questions it opened with (stored behind the wall).
+  // The use is reserved now, not at the decision, so two lineages validating at once cannot exceed the refresh limit.
   exp.questions = await loadSetB();
+  setB.uses = (setB.uses ?? 0) + 1; await writeJson(`${ROOT}/${cfg.sets.B}`, setB); exp.setBUses = true;
   await saveExp(L, exp);
   console.log(`${L.name}: opened ${exp.id}: working ${champ.working} vs reference ${reference} on Set B`);
   return next(L);
@@ -687,9 +746,7 @@ async function runValidationGate(L: Lineage, exp: ExpState) {
     exp.stage = 2; exp.stage1Samples = exp.samples; exp.samples += cfg.validation.inconclusiveAddSamples; exp.reason = out.reason;
     await saveExp(L, exp); console.log(`${L.name}: INCONCLUSIVE: ${out.reason}`); return next(L);
   }
-  // Set B was exposed by this validation whatever it decided: count the use once (README 9.3, maxUsesBeforeRefresh)
-  if (!exp.setBUses) { const path = `${ROOT}/${cfg.sets.B}`, b = await readJson(path); b.uses = (b.uses ?? 0) + 1; await writeJson(path, b); exp.setBUses = true; await saveExpOnly(L, exp); }
-  if (out.decision === "PASS") { champ.release = exp.challenger!; await rotateSetB(exp.id); }
+  if (out.decision === "PASS") { champ.release = exp.challenger!; await rotateSetB(exp.id, (exp.questions ?? []).map((q) => q.id)); }
   if (out.decision === "FAIL") {
     champ.working = exp.champion;
     const vf = `${L.dir}/versions/${exp.challenger}.json`;
@@ -703,12 +760,15 @@ async function runValidationGate(L: Lineage, exp: ExpState) {
   console.log(`${L.name}: ${out.decision}: ${out.reason}`);
 }
 
-/** After a PASS, one Set B question rotates out for a pool question of the same category. Idempotent per validation. */
-async function rotateSetB(validationId: string) {
+/** After a PASS, one Set B question rotates out for a pool question of the same category. Idempotent per validation, and
+ *  skipped when Set B has changed since the validation opened (a refresh, or the other lineage's rotation): a question
+ *  this validation never exposed is not retired on its account. */
+async function rotateSetB(validationId: string, openedWith: string[]) {
   const path = `${ROOT}/${cfg.sets.B}`; const b = await readJson(path);
   const n = cfg.validation.rotateSetBOnPass ?? 0; if (!n) return;
   b.rotatedBy ??= [];
   if (b.rotatedBy.includes(validationId)) return;
+  if (b.questions.map((q: Question) => q.id).join("|") !== openedWith.join("|")) { console.log(`Set B changed since ${validationId} opened; no rotation on its account`); return; }
   b.rotatedBy.push(validationId);
   for (let i = 0; i < n && b.questions.length; i++) {
     const old = b.questions.shift(); b.retired.push(old);
@@ -771,6 +831,31 @@ async function capability() {
   await writeText(path, capabilityMarkdown(r) + crossMd);
   await writeJson(`${ROOT}/capability/latest.json`, { ...r, crossLane: cross?.draws === draws ? { pairs: cross.pairs.length, ...crossTally } : null });
   console.log(`capability report written to ${path}`);
+}
+
+/** Part of `ingest`: validate the cross-lane judge outputs of the current pair set, return an invalid one for one repair
+ *  (problems appended to its input; `capability --blind` prints it again), count the calls, and rewrite the report. */
+async function capabilityIngest() {
+  const pairsPath = `${ROOT}/capability/pairs.json`;
+  const cross = await readJson(pairsPath).catch(() => null) as { draws: string; pairs: { id: string; outPath: string; checked?: boolean; attempts?: number }[] } | null;
+  if (!cross) return;
+  let changed = false;
+  for (const p of cross.pairs) {
+    if (p.checked || !(await exists(p.outPath))) continue;
+    p.attempts = (p.attempts ?? 0) + 1; changed = true;
+    const n = Number(await Deno.readTextFile(`${ROOT}/capability/calls.count`).catch(() => "0")); await writeText(`${ROOT}/capability/calls.count`, String(n + 1));
+    const v = parseJsonLoose(await Deno.readTextFile(p.outPath));
+    const problems = v ? (await normalise(`${ROOT}/${cfg.agents.blind.schema}`, v), await schemaProblems(`${ROOT}/${cfg.agents.blind.schema}`, v)) : ["not JSON: return only the JSON object"];
+    if (v && (v.winner === "tie") !== (v.margin === "none")) problems.push("winner tie if and only if margin none");
+    if (!problems.length) { await writeJson(p.outPath, v); p.checked = true; continue; }
+    if (p.attempts >= 2) { p.checked = true; console.log(`capability: INVALID ${p.id}: ${problems.join("; ")} — closed as missing`); continue; }
+    await appendText(p.outPath.replace("/out/", "/jobs/").replace(/\.json$/, ".md"), `\n\n=== PREVIOUS ATTEMPT REJECTED BY THE RUNNER ===\n${problems.join("\n")}\nReturn the JSON object again, correcting these; do not change anything else.\n`);
+    await Deno.remove(p.outPath).catch(() => {});
+    console.log(`capability: INVALID ${p.id}: ${problems.join("; ")} — respawn once (evo4 capability --blind prints it)`);
+  }
+  if (!changed) return;
+  await writeJson(pairsPath, cross);
+  const blind = args.blind; args.blind = false; await capability(); args.blind = blind;
 }
 
 async function lineageCards(L: Lineage): Promise<LineageCards> {
@@ -837,6 +922,8 @@ async function loadSetB(): Promise<Question[]> {
   return b.questions.map((q: Question) => ({ ...q, text: q.text ?? loadQuestionText(q.id) }));
 }
 async function questionsFor(exp: ExpState): Promise<Question[]> { return exp.kind === "validation" ? (exp.questions ?? loadSetB()) : setA(); }
+/** The cache for an experiment's own transcripts, cards and verdicts: Set B material stays behind the wall in runner-only/. */
+function C(exp: ExpState): string { return exp.kind === "validation" ? `${ROOT}/runner-only/cache` : `${ROOT}/cache`; }
 function expDir(L: Lineage, exp: ExpState): string { return `${L.dir}/${exp.kind === "validation" ? "validations" : "experiments"}/${exp.id}`; }
 function allDone(exp: ExpState, kinds: Job["kind"][]): boolean { const js = Object.values(exp.jobs).filter((j) => kinds.includes(j.kind)); return js.length > 0 && js.every((j) => j.done); }
 function hasJobs(exp: ExpState, kinds: Job["kind"][]): boolean { return Object.values(exp.jobs).some((j) => kinds.includes(j.kind)); }
@@ -881,8 +968,9 @@ async function championCardsQ(L: Lineage, exp: ExpState): Promise<{ q: number; c
   const base = (await readJson(`${L.dir}/baseline.json`)) as Baseline;
   const keyed = new Map<string, number>();
   for (const [slot, k] of Object.entries(base.rubric)) keyed.set(k, Number(slot.match(/^q(\d+)\./)![1]));
-  for (const [id, j] of Object.entries(exp.jobs)) if (id.startsWith(`rubric.${exp.champion}.`) && j.cacheKey && !keyed.has(j.cacheKey)) keyed.set(j.cacheKey, j.q!);
-  return Promise.all([...keyed].map(async ([k, q]) => ({ q, card: (await readJson(`${ROOT}/cache/rubric/${k}.json`)).card as RubricCard })));
+  // only the retest samples come from the experiment; a baseline card the baseline left out (e.g. contaminated) stays out
+  for (const [id, j] of Object.entries(exp.jobs)) if (id.startsWith(`rubric.${exp.champion}.`) && j.cacheKey && j.s! > exp.stage1Samples && !keyed.has(j.cacheKey)) keyed.set(j.cacheKey, j.q!);
+  return Promise.all([...keyed].map(async ([k, q]) => ({ q, card: (await readJson(`${C(exp)}/rubric/${k}.json`)).card as RubricCard })));
 }
 async function championResults(base: Baseline, questions: Question[]): Promise<ChampionResult[]> {
   return Promise.all(questions.map(async (q) => {
@@ -899,13 +987,13 @@ async function championResults(base: Baseline, questions: Question[]): Promise<C
 }
 async function cardsForQ(exp: ExpState, version: string): Promise<{ q: number; card: RubricCard }[]> {
   const out: { q: number; card: RubricCard }[] = [];
-  for (const [id, j] of Object.entries(exp.jobs)) if (id.startsWith(`rubric.${version}.`) && j.cacheKey) out.push({ q: j.q!, card: (await readJson(`${ROOT}/cache/rubric/${j.cacheKey}.json`)).card });
+  for (const [id, j] of Object.entries(exp.jobs)) if (id.startsWith(`rubric.${version}.`) && j.cacheKey) out.push({ q: j.q!, card: (await readJson(`${C(exp)}/rubric/${j.cacheKey}.json`)).card });
   return out;
 }
 async function cardsFor(exp: ExpState, version: string): Promise<RubricCard[]> { return (await cardsForQ(exp, version)).map((x) => x.card); }
 async function gensFor(exp: ExpState, version: string) {
   const out: { validity: { ok: boolean; problems: string[] }; metrics: ReturnType<typeof formMetrics> }[] = [];
-  for (const [id, j] of Object.entries(exp.jobs)) if (id.startsWith(`gen.${version}.`) && j.cacheKey) out.push(await readJson(`${ROOT}/cache/gen/${j.cacheKey}.json`));
+  for (const [id, j] of Object.entries(exp.jobs)) if (id.startsWith(`gen.${version}.`) && j.cacheKey) out.push(await readJson(`${C(exp)}/gen/${j.cacheKey}.json`));
   return out;
 }
 async function collectPairs(L: Lineage, exp: ExpState): Promise<PairResult[]> {
@@ -914,7 +1002,7 @@ async function collectPairs(L: Lineage, exp: ExpState): Promise<PairResult[]> {
     const b = exp.jobs[`blind.q${q.idx}.s${s}`]; if (!b?.cacheKey) continue;   // a missing verdict is a missing pair, never a tie
     const ck = await championGenKey(L, exp, q.idx, s), xk = exp.jobs[`gen.${exp.challenger}.q${q.idx}.s${s}`]?.cacheKey; if (!ck || !xk) continue;
     const slot = await championSlot(exp.id, ck, xk);
-    const verdict = (await readJson(`${ROOT}/cache/blind/${b.cacheKey}.json`)).verdict as BlindVerdict;
+    const verdict = (await readJson(`${C(exp)}/blind/${b.cacheKey}.json`)).verdict as BlindVerdict;
     pairs.push({ q: q.idx, sample: s, championSample: ck, challengerSample: xk, championSlot: slot, verdict, challengerWon: challengerCredit(verdict, slot, cfg.gate.tieWeight) });
   }
   return pairs;
@@ -959,7 +1047,6 @@ async function metricsCmd() {
   const L = new Lineage(String(args.lane ?? Object.keys(cfg.lineages)[0]));
   console.log(JSON.stringify({ validity: validity(debate, L.metricOpts()), metrics: formMetrics(debate, L.metricOpts()) }, null, 2));
 }
-function parseJsonLoose(s: string): Record<string, unknown> | null { try { return JSON.parse(s); } catch { const m = s.match(/\{[\s\S]*\}/); if (!m) return null; try { return JSON.parse(m[0]); } catch { return null; } } }
 function parseArgs(a: string[]) { const out: Record<string, unknown> & { _: string[] } = { _: [] }; for (let i = 0; i < a.length; i++) { if (a[i].startsWith("--")) out[a[i].slice(2)] = a[i + 1] && !a[i + 1].startsWith("--") ? a[++i] : true; else out._.push(a[i]); } return out; }
 function avg(xs: number[]) { return xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : 0; }
 function now() { return new Date().toISOString(); }

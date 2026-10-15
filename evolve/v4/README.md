@@ -67,7 +67,7 @@ Keep: the schema-2 Gemini client, worker framing and question bank (wired throug
 2. Prune `sets/setA.json` `topicWords` once by eye. Fill `runner-only/setB.json` `pool` with any further held-out ids.
 3. Give the optimizer, evaluator and judge agents a filesystem scope limited to their `promptPath` and `outPath`; the runner-only folder and `<lineage>/validations/` must be unreachable. A wall is enforced by scope, not by wording.
 4. `evo4 bootstrap` (both lineages) → `evo4 next` → dispatcher batch (Sonnet 10 generations, Opus 20 cards) while `gemini-batch` runs in the background → `evo4 ingest`. Both baselines exist; `evo4 capability` writes the first capability report (the model gap under the new evaluator).
-5. Champion selection by the gate: `evo4 challenge --lineage sonnet --file prompts/castDebate.sonnet.v2.md --note "control: round-12 evolved prompt vs original"`, same for gemini, then `evo4 next` / `ingest` to the decision. Prediction from the logs: Sonnet REJECT, Gemini KEEP or REJECT. Whatever the gate says is the champion; nothing is assumed from version numbers.
+5. Champion selection by the gate: `evo4 challenge --lineage sonnet --file prompts/castDebate.sonnet.v2.md --note "control: round-12 evolved prompt vs original"`, same for gemini, then `evo4 next` / `ingest` to the decision. (As installed: enter both right after `evo4 bootstrap`; each is queued and tested as soon as its baseline closes, and a relative `--file` is resolved against `evolve/v4/`.) Prediction from the logs: Sonnet REJECT, Gemini KEEP or REJECT. Whatever the gate says is the champion; nothing is assumed from version numbers.
 
 ## 4. One inner iteration (both lineages at once; Gemini ≈ 15 min, Sonnet ≈ 20 min wall time)
 
@@ -81,7 +81,7 @@ Keep: the schema-2 Gemini client, worker framing and question bank (wired throug
 | 10 | DECIDING | `evo4 ingest` runs the gate | — | PROMOTE / RETEST / REJECT / KEEP; escalation check → ESCALATE |
 | 11 | PROMOTED → REBASELINING, else → OPTIMIZING | `evo4 next` | the ledger line is written first | next iteration |
 
-The dispatcher repeats `next → spawn → ingest` until both lineages print DONE or STOPPED. `NEEDS_HUMAN` appears only when the working pointer no longer matches the parent a challenger was tested against (compare-and-swap failed).
+The dispatcher repeats `next → spawn → ingest` until both lineages print STOPPED, NEEDS_HUMAN or ERROR. `NEEDS_HUMAN` appears when the working pointer no longer matches the parent a challenger was tested against (compare-and-swap failed), when a baseline lost more than half its slots after redraws, or when Set B has been used `maxUsesBeforeRefresh` times.
 
 ### Who sees what
 

@@ -20,8 +20,8 @@ const BANNED = /\b(?:must|clearly|always|obviously)\b/gi;
 const TEMPLATED = /^(?:The [A-Z][\w'’\- ]{2,40}?) (?:mentions|notes|says|claims|argues|suggests|states|insists|proposes|assumes|treats|frames|calls|points out|said|argued|suggested|claimed|attributes|disputes|dismisses)\b/;
 // rote fillings of the old slot system
 const SLOT = /\b(?:I (?:drop|dropped|now hold|let go of|withdraw)|dropping the claim|the narrower claim|re-?read(?:ing)? (?:the|that|chapter|my)|which (?:matters|do you value|do you prize) more|if you value (?:the )?\w+ (?:mechanism|more))\b/i;
-// double quotes, curly single quotes, or a straight single quote not inside a word (so don't / it's are ignored)
-const QUOTE = /["“”‘’]|(?<![A-Za-z])'|'(?![A-Za-z])/;
+// double quotes, or a single quote (straight or curly) not inside a word: don't / it’s / Prince’s are apostrophes
+const QUOTE = /["“”]|(?<![A-Za-z])['‘’]|['‘’](?![A-Za-z])/;
 // chapter / section / page / letter / numbered-passage / link markers in a basis
 const FAB_BASIS = /\b(?:chapter|chap\.|ch\.|section|sect\.|§|part\s+[ivx\d]+|book\s+[ivx\d]+|letters?\s+\d+|p\.\s?\d+|pp\.\s?\d+|\d+\.\d+)\b|https?:\/\/|\]\(/i;
 // disclaimers that name a marker only to say there is none ("section not verified, no link provided",

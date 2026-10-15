@@ -128,6 +128,9 @@ async function spawnJob(root: string, job: any, P: Policy) {
     const draw = job.outPath.split("/").pop();   // the opaque per-job name: every draw gets its own transcript
     const d = P.gen ? P.gen(job.lineage, ver, +q, +s) : undefined;
     const debate = d === undefined ? debateFor(job.lineage, ver, +q, +s, draw) : d;
+    // a real worker restates the situation: carry a canary from the question into the transcript, as a model would
+    const canary = prompt.match(/CANARY-\w+/);
+    if (canary && debate && typeof debate === "object" && "situation" in (debate as object)) (debate as { situation: string }).situation += ` ${canary[0]}`;
     await Deno.writeTextFile(job.outPath, debate === null ? "I could not produce the JSON." : JSON.stringify(debate === "garbage" ? { note: "not a debate" } : debate));
   } else if (job.kind === "rubric") {
     const m = prompt.match(/\[\[m:([^:]+):(v\d+):q(\d+):s(\d+):[^\]]+\]\]/);
@@ -362,7 +365,7 @@ await T("Gemini: a reply that never completed is recorded, not scored; a baselin
   const b = await readJson(`${root}/gemini/baseline.json`);
   eq([b.missing, Object.keys(b.gen).length, blocked], [[], 10, 2], "the failed slot was redrawn once and the baseline is complete");
   const first = await cur(root, "gemini");
-  ok((await Deno.readTextFile(`${root}/gemini/experiments/${first.id}/missing.log`)).includes("baseline: redrawing q3.s1 once"));
+  ok((await Deno.readTextFile(`${root}/gemini/experiments/${first.id}/missing.log`)).includes("baseline: redrawing q3.s1 (redraw 1 of 2)"));
   eq(first.refills, { "q3.s1": 1 });
   await drive(root, "gemini", { ...P, blind: challengerWinsAll }, async () => (await ledger(root, "gemini")).length === 1);
   const l = await ledger(root, "gemini");
@@ -442,7 +445,9 @@ await T("Set B canary: a token planted in every Set B text never reaches an opti
   const leaks: string[] = [];
   for (const p of [...(await walk(`${root}/sonnet/experiments`)), ...(await walk(`${root}/inbox`))]) if ((await Deno.readTextFile(p)).includes("CANARY-7f3a91")) leaks.push(p);
   for (const p of [`${root}/sonnet/ledger.jsonl`, `${root}/sonnet/validations.log`, `${root}/sonnet/baseline.json`]) if ((await Deno.readTextFile(p).catch(() => "")).includes("CANARY-7f3a91")) leaks.push(p);
-  eq(leaks, [], "no leak");
+  for (const p of await walk(`${root}/cache`)) if ((await Deno.readTextFile(p)).includes("CANARY-7f3a91")) leaks.push(p);
+  eq(leaks, [], "no leak, including the shared cache");
+  ok((await Promise.all((await walk(`${root}/runner-only/cache`)).map((p) => Deno.readTextFile(p)))).some((t) => t.includes("CANARY-7f3a91")), "Set B transcripts are cached under runner-only/cache");
 });
 
 await T("stop rules count the current session only: 6 non-promotions stop the lineage, a new session continues", async () => {
@@ -574,7 +579,7 @@ await T("an error in one lineage is reported as ERROR and does not stop the othe
   await must(root, "bootstrap");
   await Deno.remove(`${root}/gemini/champion.json`);
   const r = await evo(root, "next");
-  eq(r.code, 1);
+  eq(r.code, 0, "one lineage's ERROR is not the command's failure");
   ok(/gemini: ERROR/.test(r.out), r.out);
   eq(r.out.split("\n").filter((l) => l.startsWith("{") && l.includes('"lineage":"sonnet"')).length, 10, "sonnet's jobs are still printed");
 });
@@ -601,6 +606,136 @@ await T("Set B used maxUsesBeforeRefresh times: the next validation waits for a 
   await must(root, "bootstrap", "--lineage", "sonnet");
   await drive(root, "sonnet", { blind: challengerWinsAll, rating: (_l, v) => (v === "v1" ? 7 : 6) }, inState(root, "sonnet", "NEEDS_HUMAN"), 30);
   ok(/Set B has been used 3 times/.test((await cur(root, "sonnet")).reason));
+});
+
+// ---------- the second review's confirmed findings ----------
+
+await T("Gemini outputs written by a running batch never tell the dispatcher to ingest, so the other lineage's printed jobs are not counted as misses", async () => {
+  const root = await makeRoot();
+  await must(root, "bootstrap");
+  const first = (await must(root, "next")).split("\n").filter((l) => l.startsWith("{")).map((l) => JSON.parse(l));
+  const batch = first.find((j) => j.kind === "gemini-batch");
+  const gst = await cur(root, "gemini");
+  const gjobs = Object.values<any>(gst.jobs).filter((j) => j.kind === "gemini").slice(0, 3);
+  for (const j of gjobs) { await Deno.mkdir(j.outPath.slice(0, j.outPath.lastIndexOf("/")), { recursive: true }); await Deno.writeTextFile(j.outPath, JSON.stringify({ output: debateFor("gemini", j.version, j.q, j.s, "b"), latencyMs: 1 })); }
+  await Deno.writeTextFile(`${root}/gemini/experiments/${gst.id}/gemini.lock`, JSON.stringify({ pid: 1, heartbeat: Date.now() }));
+  ok(batch, "batch printed first");
+  const second = await must(root, "next");
+  ok(/gemini: WAIT gemini-batch running \(3 written, 7 to go\)/.test(second) && !/gemini: .*run ingest/.test(second), second);
+  for (const j of first.filter((x) => x.lineage === "sonnet")) await spawnJob(root, j, {});
+  await must(root, "ingest");
+  const third = await must(root, "next");
+  ok(!/run ingest/.test(third), `no ingest instruction while Sonnet rubric jobs are printed: ${third}`);
+  ok(third.split("\n").filter((l) => l.includes('"lineage":"sonnet"')).length === 10);
+});
+
+await T("a baseline slot that fails all its draws is left out after two redraws, with a WARNING; the gate then expects 9 pairs and can PROMOTE", async () => {
+  const root = await makeRoot();
+  await must(root, "bootstrap", "--lineage", "sonnet");
+  let draws = 0;
+  const P: Policy = { gen: (_l, v, q, s) => (v === "v0" && q === 3 && s === 1 ? (draws++, null) : undefined), blind: challengerWinsAll, rating: (_l, v) => (v === "v1" ? 7 : 6) };
+  const log = await drive(root, "sonnet", P, async () => (await ledger(root, "sonnet")).length === 1, 40);
+  eq(draws, 3, "first draw plus two redraws");
+  ok(log.some((l) => /WARNING baseline v0 has 1 missing slot/.test(l)), "the hole is announced");
+  const l = await ledger(root, "sonnet");
+  eq([l[0].outcome, l[0].wins, l[0].pairs], ["PROMOTE", 9, 9]);
+});
+
+await T("a baseline that loses more than half its slots asks for a person instead of optimizing on holes", async () => {
+  const root = await makeRoot();
+  await must(root, "bootstrap", "--lineage", "sonnet");
+  await drive(root, "sonnet", { gen: (_l, v, q) => (v === "v0" && q <= 3 ? null : undefined) }, inState(root, "sonnet", "NEEDS_HUMAN"), 40);
+  ok(/baseline: 6 of 10 slots failed 3 draws/.test((await cur(root, "sonnet")).reason));
+  ok(!(await exists(`${root}/sonnet/baseline.json`)), "no baseline with holes was written");
+});
+
+await T("README step 5 right after bootstrap: the control is queued, tested as soon as the baseline closes, and no optimizer job is ever printed for that slot", async () => {
+  const root = await makeRoot();
+  await must(root, "bootstrap", "--lineage", "sonnet");
+  const q = await must(root, "challenge", "--lineage", "sonnet", "--file", "prompts/castDebate.sonnet.v2.md", "--note", "control");
+  ok(/queued prompts\/castDebate.sonnet.v2.md/.test(q), q);
+  const log = await drive(root, "sonnet", { blind: challengerWinsAll, rating: (_l, v) => (v === "v1" ? 7 : 6) }, async () => (await ledger(root, "sonnet")).length === 1);
+  ok(!log.some((l) => l.includes('"kind":"optimizer"')), "no optimizer job before the control was decided");
+  const v1 = await readJson(`${root}/sonnet/versions/v1.json`);
+  eq([v1.manual, v1.origin, (await ledger(root, "sonnet"))[0].outcome], [true, "prompts/castDebate.sonnet.v2.md", "PROMOTE"]);
+});
+
+await T("a proposal aimed at a banned target is returned for repair, never tested", async () => {
+  const root = await makeRoot();
+  await Deno.mkdir(`${root}/sonnet`, { recursive: true });
+  await must(root, "bootstrap", "--lineage", "sonnet");
+  await Deno.writeTextFile(`${root}/sonnet/bans.json`, JSON.stringify([{ target: "C4.4", until: 99 }]));
+  await drive(root, "sonnet", { optimizer: (_l, c, _i, n) => propose(c, n, ["C4.4"]) }, async () => (await ledger(root, "sonnet")).length === 1);
+  const l = await ledger(root, "sonnet");
+  ok(l[0].outcome === "KEEP" && /target C4\.4 is banned until iteration 99/.test(l[0].hypothesis.statement), l[0].hypothesis.statement);
+});
+
+await T("a validation reserves its Set B use when it opens; a voluntary validate on an exhausted Set B is refused without touching state", async () => {
+  const root = await makeRoot((c) => { c.validation.everyPromotions = 1; });
+  await must(root, "bootstrap", "--lineage", "sonnet");
+  await drive(root, "sonnet", { blind: challengerWinsAll, rating: (_l, v) => (v === "v1" ? 7 : 6) }, inState(root, "sonnet", "VALIDATING"), 30);
+  eq((await readJson(`${root}/runner-only/setB.json`)).uses, 1, "reserved at open");
+  const root2 = await makeRoot();
+  const b = await readJson(`${root2}/runner-only/setB.json`); b.uses = 3; await Deno.writeTextFile(`${root2}/runner-only/setB.json`, JSON.stringify(b));
+  await must(root2, "bootstrap", "--lineage", "sonnet");
+  await drive(root2, "sonnet", {}, inState(root2, "sonnet", "OPTIMIZING"));
+  const before = await cur(root2, "sonnet");
+  const r = await evo(root2, "validate", "--lineage", "sonnet");
+  eq(r.code, 2); ok(/Set B has been used 3 times/.test(r.err), r.err);
+  eq((await cur(root2, "sonnet")).id, before.id, "state untouched");
+});
+
+await T("the optimizer input states the task first and shows why the last challenger was rejected (critical, not quality)", async () => {
+  const root = await makeRoot();
+  await must(root, "bootstrap", "--lineage", "sonnet");
+  const P: Policy = { gen: (lin, v, q, s) => { if (v !== "v1" || q !== 1 || s !== 1) return undefined; const d = debateFor(lin, v, q, s, "x"); d.debate.pop(); return d; }, blind: challengerWinsAll, rating: (_l, v) => (v === "v1" ? 7 : 6) };
+  await drive(root, "sonnet", P, async () => (await ledger(root, "sonnet")).length === 1);
+  await drive(root, "sonnet", P, atOptimizer(root, "sonnet"));
+  await must(root, "next", "--lineage", "sonnet");   // the first print rebuilds the input
+  const input = await Deno.readTextFile(`${root}/sonnet/experiments/${(await cur(root, "sonnet")).id}/jobs/optimizer.md`);
+  ok(input.indexOf("=== THIS TASK ===") < input.indexOf("=== CHAMPION PROMPT"), "task first");
+  ok(/gate reason: critical: 1 invalid transcript/.test(input), "the ledger line says why");
+  ok(input.length < 120_000, `input ${input.length} bytes`);
+});
+
+await T("harmless variations are accepted: extra fields, a 'None' limitation, a null question_type_note, a judge's confidence field", async () => {
+  const root = await makeRoot();
+  await must(root, "bootstrap", "--lineage", "sonnet");
+  await drive(root, "sonnet", {}, async () => Object.values<any>((await cur(root, "sonnet")).jobs).some((j) => j.kind === "rubric"));
+  const jobs = (await must(root, "next", "--lineage", "sonnet")).split("\n").filter((l) => l.startsWith("{")).map((l) => JSON.parse(l));
+  for (const j of jobs) {
+    const c: any = rawCard(9.2, {}, { question_type_note: null as unknown as string });
+    c.overall_comment = "fine"; c.cells[0].criterion = "C1"; c.cells.forEach((x: any) => (x.limitation = "None"));
+    await Deno.writeTextFile(j.outPath, "```json\n" + JSON.stringify(c) + "\n```\nTotals omitted {per the brief}.");
+  }
+  const ing = await must(root, "ingest", "--lineage", "sonnet");
+  ok(!/INVALID/.test(ing), ing);
+});
+
+await T("the champion's own baseline failing the critical limits is announced (WARNING) and recorded", async () => {
+  const root = await makeRoot();
+  await must(root, "bootstrap", "--lineage", "sonnet");
+  const P: Policy = { gen: (lin, v, q, s) => { if (v !== "v0") return undefined; const d = debateFor(lin, v, q, s, "w"); d.debate[1].basis = "[Basis: Daniel Kahneman, Thinking, Fast and Slow, Chapter 4](https://example.org)"; return d; } };
+  const log = await drive(root, "sonnet", P, atOptimizer(root, "sonnet"));
+  ok(log.some((l) => /WARNING the champion v0's own baseline fails the critical limits/.test(l)), "announced");
+  ok((await readJson(`${root}/sonnet/baseline.json`)).championCritical.length > 0, "recorded");
+});
+
+await T("cross-lane verdicts are validated at ingest: an invalid one is returned for repair, a valid one is tallied", async () => {
+  const root = await makeRoot();
+  await must(root, "bootstrap");
+  await drive(root, "all", {}, async () => (await atOptimizer(root, "sonnet")()) && (await atOptimizer(root, "gemini")()));
+  const jobs = (await must(root, "capability", "--blind")).split("\n").filter((l) => l.startsWith("{")).map((l) => JSON.parse(l));
+  for (const [i, j] of jobs.entries()) { await Deno.mkdir(j.outPath.slice(0, j.outPath.lastIndexOf("/")), { recursive: true }); await Deno.writeTextFile(j.outPath, i === 0 ? JSON.stringify({ winner: "C" }) : JSON.stringify(verdict("tie"))); }
+  const ing = await must(root, "ingest");
+  ok(/capability: INVALID capability\.blind\.q1\.s1: .*respawn once/.test(ing), ing);
+  const again = (await must(root, "capability", "--blind")).split("\n").filter((l) => l.startsWith("{")).map((l) => JSON.parse(l));
+  eq(again.map((j) => j.id), ["capability.blind.q1.s1"]);
+  await Deno.writeTextFile(again[0].outPath, JSON.stringify(verdict("tie")));
+  await must(root, "ingest");
+  const cap = await readJson(`${root}/capability/latest.json`);
+  eq([cap.crossLane.tie, cap.crossLane.pending, cap.crossLane.invalid], [10, 0, 0]);
+  eq(await Deno.readTextFile(`${root}/capability/calls.count`), "11");
 });
 
 const fails = report();

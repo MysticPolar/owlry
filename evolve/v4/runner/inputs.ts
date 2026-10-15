@@ -96,6 +96,12 @@ export function buildOptimizerInput(ctx: OptimizerContext): string {
   const allMetrics = ctx.results.flatMap((r) => r.samples.map((s) => s.metrics));
   const out: string[] = [ctx.brief.trim(), ""];
 
+  // the task and its hard limits come first: this input is long (ten transcripts with their cards), and a reader that
+  // stops early must still know what to write and under which constraints; the full sections follow
+  out.push("=== THIS TASK ===",
+    `Write challenger ${ctx.nextVersion}; parent_prompt_id is ${ctx.championVersion}. Read every section below to the end before answering: the champion prompt, the results, the ledger, the bans and the budget all bind the proposal.`,
+    `Budget: ceiling ${ctx.budget.ceiling} words, growth at most ${Math.round(ctx.budget.maxGrowthFraction * 100)}% (champion ${ctx.budget.wordsNow} words). Ablation iteration: ${ctx.budget.ablationIteration ? "yes, ABLATE only" : "no"}. Banned targets: ${ctx.banned.length ? ctx.banned.map((b) => b.target).join(", ") : "none"}.`, "");
+
   out.push(`=== LINEAGE ===\n${ctx.lineage}`, "");
   out.push(`=== CHAMPION PROMPT (version ${ctx.championVersion}, ${ctx.championStatus}; prompt_id ${ctx.championVersion}) ===`, ctx.championPrompt.trim(), "");
   if (ctx.parentResetNotice) out.push(`=== NOTICE ===\n${ctx.parentResetNotice}`, "");
@@ -113,7 +119,16 @@ export function buildOptimizerInput(ctx: OptimizerContext): string {
     out.push(`--- q${r.q.idx} ${r.q.category}, sample ${s.sample}, job ${s.jobId}: ${s.card.score.toFixed(2)} / 100${s.card.capReason ? ` (capped: ${s.card.capReason})` : ""} ---`);
     out.push(debateText(s.debate), "");
     out.push("Form metrics: " + JSON.stringify(s.metrics));
-    out.push("Card: " + JSON.stringify({ criteria: s.card.criteria.map((c) => ({ id: c.id, name: c.name, points: c.points, sub: c.sub.map((x) => ({ id: x.id, rating: x.rating, example: x.example, limitation: x.limitation, severity: x.severity })) })), strengths: s.card.strengths, weaknesses: s.card.weaknesses, symptoms: s.card.symptoms, mechanical: s.card.mechanical, findings: s.card.findings, rubricFitNotes: s.card.rubricFitNotes }), "");
+    // one line per cell (the cell names are in the brief and the target list below): same content, a fraction of the JSON
+    out.push("Card (cell rating severity | example | limitation):");
+    for (const c of s.card.criteria) for (const x of c.sub) out.push(`  ${x.id} ${x.rating.toFixed(2)} ${x.severity} | ${x.example} | ${x.limitation}`);
+    out.push(`  criteria points: ${s.card.criteria.map((c) => `${c.id} ${c.points.toFixed(2)}/${c.max}`).join(", ")}`);
+    out.push(`  strengths: ${s.card.strengths.join(" / ")}`, `  weaknesses: ${s.card.weaknesses.join(" / ")}`);
+    out.push(`  symptoms: ${s.card.symptoms.map((y) => `${y.cell_id} T${y.turns.join(",T")}: ${y.observed}${y.evidence ? ` — "${y.evidence}"` : ""}`).join(" / ") || "none"}`);
+    if (s.card.mechanical.length) out.push(`  mechanical: ${s.card.mechanical.map((m) => `${m.pattern} T${m.turns.join(",T")}`).join("; ")}`);
+    if (s.card.findings.length) out.push(`  findings: ${s.card.findings.map((f) => `${f.type}/${f.severity}/${f.status} @ ${f.location}: ${f.description}`).join(" / ")}`);
+    if (s.card.rubricFitNotes.length) out.push(`  rubric fit notes: ${s.card.rubricFitNotes.join(" / ")}`);
+    out.push("");
   }
 
   out.push("=== RUBRIC MEANS (all champion cards) ===");
@@ -140,6 +155,7 @@ export function buildOptimizerInput(ctx: OptimizerContext): string {
   if (!ctx.ledger.length) out.push("empty: this is the first challenger of the lineage");
   for (const e of ctx.ledger) {
     out.push(`${e.id} ${e.version} vs ${e.base} [${e.kind}] → ${e.outcome}; blind ${e.wins}/${e.pairs} (p=${e.pValue}); rubric ${e.rubricMeanDelta >= 0 ? "+" : ""}${e.rubricMeanDelta.toFixed(2)}; by category ${Object.entries(e.perCategoryDelta).map(([k, v]) => `${k} ${v >= 0 ? "+" : ""}${v.toFixed(1)}`).join(", ")}`);
+    if (e.reason) out.push(`  gate reason: ${e.reason}`);   // a critical REJECT says so here, so it is not read as a quality verdict
     out.push(`  hypothesis: ${e.hypothesis.statement}`);
     out.push(`  targets: ${e.hypothesis.targets.join("; ")}`);
     out.push(`  diff: ${e.diffSummary}`);

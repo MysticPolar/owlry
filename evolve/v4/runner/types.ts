@@ -157,6 +157,7 @@ export interface LedgerEntry {
   rubricMeanDelta: number;
   perCategoryDelta: Record<string, number>;
   cardsAfter: string;          // one line: what the cards said about the targets afterwards
+  reason?: string;             // the inner-loop gate's reason (e.g. "critical: …"); never anything from a Set B validation
   at: string;                  // ISO time
 }
 

@@ -1,6 +1,6 @@
 # v4.2 as installed in this repository
 
-The package in this folder is the v4.2 design (README.md, COMPARISON.md) wired into the repository and hardened by two independent multi-agent reviews. Nothing has been run against a model yet. This file says how to run it, what changed from the package as shipped, how it is tested, and what to decide before the first run.
+The package in this folder is the v4.2 design (README.md, COMPARISON.md), wired into the repository and hardened by two independent multi-agent reviews and a mocked rehearsal of the first run. Nothing has been run against a model. This file says how to run it, what changed from the package as shipped, how it is tested, and what to decide before the first run.
 
 ## Run it
 
@@ -15,63 +15,69 @@ deno run --config evolve/deno.json --env-file=.env.local -A evolve/v4/runner/evo
 | command | what it does |
 |---|---|
 | `evo4 bootstrap [--lineage L]` | open the baseline experiment for each lineage's v0 champion (refuses a second time without `--force`) |
+| `evo4 challenge --lineage L --file F --note "…"` | enter a hand-written challenger (the control). Right after bootstrap it is queued and tested as soon as the baseline closes; a relative `F` is resolved against `evolve/v4/` |
 | `evo4 next` | print outstanding jobs (JSON lines) or one status line per lineage; the only command that prints jobs |
-| `evo4 ingest` | validate and cache every output on disk, then advance; prints `INVALID …` lines and the state, never jobs |
-| `evo4 challenge --lineage L --file F --note "…"` | enter a hand-written challenger in place of this iteration's optimizer job (the control experiment) |
-| `evo4 capability [--blind]` | cross-lineage report from both baselines; `--blind` prints 10 cross-lane judge jobs, a later run tallies them |
+| `evo4 ingest [--no-miss]` | validate and cache every output on disk, then advance; also tallies cross-lane verdicts. `--no-miss` after agents failed to return cleanly |
+| `evo4 capability [--blind]` | cross-lineage report from both baselines; `--blind` prints 10 cross-lane judge jobs, which the next ingest tallies |
 | `evo4 validate --lineage L` | open a Set B validation now (only between iterations) |
 | `evo4 session [--lineage L]` | start a new session: the stop limits count from here; a STOPPED lineage resumes |
-| `evo4 status`, `evo4 ledger --lineage L`, `evo4 metrics --file F` | read-only |
+| `evo4 status`, `evo4 ledger --lineage L`, `evo4 metrics --file F` | read-only; `status` shows the baseline, the last decision and the session counts |
 | `evo4 gemini-batch --lineage L --exp ID` | printed by `next` as a background command; runs the Gemini generations one at a time on the free-tier gap |
 
-`EVO4_ROOT=<dir>` points the runner at another data root; the integration tests use it.
+`EVO4_ROOT=<dir>` points the runner at another data root; the end-to-end tests use it.
 
-## Wiring (README section 12, step 1)
+## Wiring
 
-`runner/legacy.ts` holds the three functions the package left as TODO, reusing the schema-2 pieces rather than importing `evolve/runner/evo.ts` (whose command switch runs on import):
+`runner/legacy.ts` holds the three functions the package left as TODO. They reuse the schema-2 pieces rather than importing `evolve/runner/evo.ts`, whose command switch runs on import:
 
-- `callGemini`: the shared client in `supabase/functions/_shared/gemini.ts`, the same forced JSON envelope schema as schema 2, same-model retries on 429 (61 s) and 5xx, no fallback model. evo4 passes the lane's model, temperature 0.5, thinking MEDIUM, 16384 tokens.
-- `frameWorkerPrompt`: the schema-2 worker framing. A dry run produced a Sonnet worker file byte-identical to round 12's `worker-prompt.q1.v1.sonnet.md`.
-- `loadQuestionText`: `evolve/questions/bank.json`.
+- `callGemini` uses the shared client in `supabase/functions/_shared/gemini.ts` with the same forced JSON envelope schema as schema 2, same-model retries on 429 (61 s) and 5xx, and no fallback model. evo4 passes `gemini-3.1-flash-lite`, temperature 0.5, thinking MEDIUM and 16384 tokens.
+- `frameWorkerPrompt` is the schema-2 worker framing. A dry run produced a Sonnet worker file byte-identical to round 12's.
+- `loadQuestionText` reads `evolve/questions/bank.json`.
 
 Schema 2 (`evolve/runner/evo.ts`, `evolve/roles/*`, `evolve/config.json`) stays in place only as the record of rounds 1 to 12.
 
-## What was fixed on install
+## What the reviews found and what was fixed
 
-The first review (four reviewers, each finding adversarially verified) confirmed 44 findings, many duplicated across dimensions; together with my own reading they come to the defects below. All are fixed and each has a test.
+Two reviews ran, each with several reviewers whose findings were checked by adversarial verifiers. The first confirmed 44 findings and the second 25, many duplicated across reviewers. The second review also rehearsed step 0 end to end on mock agents fed with the round-12 transcripts. Every finding is fixed and has a test, except the critical-check design question under "Decide before the first run".
 
-Blockers, where the loop could not have worked at all:
-- **Every optimizer proposal was rejected.** The contradiction check scanned the whole candidate, and the original prompt's own protected rules ("Do not … impersonate real thinkers", "Do not end with a question") matched its patterns. It now counts matches against the champion.
-- **Ordinary ratings were rejected.** The "two decimals" check used float equality, so 8.3 (830.0000000000001) failed; 6 of the 10 round-12 judge cards had such a rating. It is now tolerant.
-- **A baseline with one bad slot crashed or froze the lineage.** A missing card crashed every `next`; a missing transcript made every later comparison an incomplete KEEP. A failed slot is now redrawn once on its own (fresh salted draw, fresh file names); a slot that fails twice is listed as missing and skipped.
+Blockers, where the loop could not have worked:
+- **Every optimizer proposal was rejected.** The original prompt's own protected rules ("Do not … impersonate real thinkers", "Do not end with a question") matched the contradiction patterns. Contradictions are now counted against the champion.
+- **Ordinary ratings were rejected.** The "two decimals" check used float equality, so 8.3 failed. Six of the ten round-12 judge cards had such a rating.
+- **One bad baseline slot crashed or froze a lineage.** A failed slot is now redrawn alone, up to twice. A slot that still fails is left out with a WARNING, and the gate then expects one pair fewer. If more than half the slots fail, a person is asked.
+- **A curly apostrophe counted as a quotation mark.** "let’s" in a turn citing a post-1930 book counted as a quote, so two contractions rejected a challenger.
 
 Wrong decisions or lost data:
-- After the third promotion, the rebaseline was orphaned by the validation and the next iteration crashed. The next iteration now rebaselines whenever `baseline.json` belongs to an older version.
-- A validation's stage 2 could decide before its new samples were judged; `ingest` could re-run a decided validation, logging it twice and rotating Set B twice.
-- One lineage's PASS rotated the shared Set B under the other lineage's running validation. Each validation now keeps the questions it opened with.
-- Missing pairs counted as losses in the release gate, so an incomplete panel could FAIL and roll back. Missing pairs now make it INCONCLUSIVE.
-- A stop limit crossed by a promoting iteration overwrote PROMOTED before the pointer moved. Stops now apply only at the iteration boundary.
-- The champion's cards were counted twice when the rebaseline ran in the same experiment, and per-category deltas mapped cards to the wrong questions.
-- A config change (evaluator, judge, model, effort, temperature, envelope, rubric map, Set A) did not invalidate the baseline, because `baseline.json` names its cache entries directly. The baseline now carries a fingerprint, and a mismatch redraws it.
-- `evo4 challenge` left the already-printed optimizer job open, and its output then crashed every ingest.
-- The capability-bound rule used half the documented per-question gap.
+- The rebaseline after the third promotion was orphaned, and the next iteration crashed.
+- A validation's stage 2 could decide before its new samples were judged. A decided validation could be re-run, logged twice and rotate Set B twice.
+- Missing pairs counted as losses in the release gate.
+- One lineage's PASS rotated the shared Set B under the other's running validation.
+- Two lineages validating at once could exceed the Set B reuse limit.
+- A stop limit could overwrite a promotion before the pointer moved.
+- Champion cards were double-counted, and per-category deltas went to the wrong questions.
+- A config change did not invalidate the baseline. The baseline now carries a fingerprint.
+- `challenge` collided with the optimizer job.
+- The capability-bound rule used half the documented gap.
 
 Walls:
-- Agent file paths named the lineage, the version and the experiment (`…/sonnet/experiments/exp-004/jobs/rubric.v5.q2.s1.md`). Worker, evaluator and judge files now live under opaque hashed names in `inbox/`, or in `runner-only/inbox/` for Set B.
-- Each optimizer received both lane profiles, including the other worker's description. It now receives its own only.
+- Agent file paths named the lineage, the version and the experiment. Agent files now live under opaque hashed names in `inbox/`, or `runner-only/inbox/` for Set B.
+- Set B transcripts, cards and verdicts went into the shared `cache/`. They now go to `runner-only/cache/`.
+- Each optimizer read both lane profiles. It now reads only its own.
 
 Operations:
-- `next` printed the Gemini batch command again while a batch was running, so batches could pile up on the free-tier key. A lock file now makes `next` print `WAIT gemini-batch running`, and outputs are written atomically.
-- Outputs on disk but not yet ingested were printed as jobs again. `next` now prints `WAIT … run ingest`, and `ingest` never prints jobs.
-- A malformed or wrong-shaped agent output could crash ingest for both lineages, and a bad card could poison the cache. Outputs are now validated against the shipped JSON schemas (Ajv). Problems are appended to the job's input for one repair. A second failure closes the job as missing, or closes the iteration as KEEP for the optimizer.
-- An agent that never wrote its output was re-issued forever. Two misses now close the job.
-- Worker answers that are not JSON or not a debate are recorded as failures (README 11 #15) instead of being retried away. They are never scored.
-- Invalid outputs did not count toward the 600-call limit. Every output read now counts.
-- The stop limits counted the whole history, so a STOPPED lineage could never resume. They now count the current session, and `evo4 session` starts a new one.
-- `capability --blind` verdicts were never read. They are now tallied into the report.
-- Set B `uses` counted only PASSes and the refresh limit was never read. Every decided validation now counts, and at 3 uses the next validation waits for a person (`NEEDS_HUMAN`).
-- One lineage's error stopped the other. Each lineage now runs isolated and prints `<lineage>: ERROR …`.
-- Other changes: `bootstrap` refuses to reset a lineage without `--force`. `validate` refuses mid-experiment. The gate and promotion side effects are idempotent across a crash. A basis that only disclaims ("section not verified, no link provided") no longer counts as a fabricated chapter. An ablation iteration rejects a non-ABLATE proposal. The manual challenger no longer counts toward an escalation streak. Experiment ids can no longer collide. Rubric cell names are normalised from the rubric map, so a shortened name does not cost a card.
+- Gemini batches could pile up on the free-tier key. A lock now prevents it, and outputs are written atomically.
+- Background Gemini outputs used to send the dispatcher to ingest before it had spawned the other lineage's jobs, which closed them as missing. Gemini outputs no longer trigger "ingest now".
+- Agent outputs are now validated against the shipped schemas. Harmless variations are normalised: extra fields, "None", null notes, and JSON inside a fence or after prose. Problems name the property and the allowed values, and the agent gets one repair with the problems appended to its input.
+- Agents that never write are closed after two misses. `--no-miss` covers agents cut off by a usage limit.
+- Worker answers that are not a debate are recorded as failures instead of being retried away.
+- Every output now counts toward the call limit.
+- The stop limits now count per session, and `session` resumes a stopped lineage.
+- Cross-lane verdicts are validated and tallied at ingest.
+- One lineage's error no longer stops the other.
+- The optimizer input states the task, the budget and the bans first. Cards are compacted to one line per cell, and the history is capped at ten iterations. The agent is told to read the whole file.
+- Each ledger line carries the gate's reason, so the optimizer can tell a critical REJECT from a quality verdict.
+- Banned targets are now enforced.
+- `bootstrap` and `validate` refuse unsafe use.
+- The gate and promotion side effects are idempotent across a crash.
 
 ## Tests
 
@@ -81,25 +87,26 @@ deno run --config evolve/deno.json -A evolve/v4/tests/integration.ts
 
 | suite | count | runs |
 |---|---|---|
-| unit, `tests/run.ts` | 45 | Deno, and `tsx` under Node |
+| unit, `tests/run.ts` | 47 | Deno, and `tsx` under Node |
 | schemas, `tests/schemas.test.mjs` | 23 | Node with Ajv |
-| end to end, `tests/integration.ts` | 27 | Deno: the real CLI as subprocesses, mock agents, one fresh data root per test |
+| end to end, `tests/integration.ts` | 37 | Deno: the real CLI as subprocesses, mock agents, a fresh data root per test |
 | type checks | clean | `deno check` and `tsc -p evolve/v4/tsconfig.json` |
-
-The end-to-end tests cover bootstrap of both lineages through the Gemini batch, the control challenge to PROMOTE and rebaseline, RETEST to KEEP, ESCALATE with a ban, no_change and escalate actions, the repair path, incomplete panels, critical rejections, Gemini failures, validation PASS, FAIL with rollback, INCONCLUSIVE to PASS and incomplete to EXPERIMENTAL, the Set B canary, stop and resume, ablation, opaque paths, crash-safe stops, fingerprint redraws and lineage isolation.
 
 ## Decide before the first run
 
-1. **The critical checks will reject most challengers, including both control challengers.** Measured on the 88 past transcripts of rounds 1 to 12 with `deno run -A evolve/v4/tools/critical_rates.ts`:
+1. **The critical checks will reject both control challengers, and most like-for-like challengers, on form rather than quality.** Measured on the 88 transcripts of rounds 1 to 12 with `deno run -A evolve/v4/tools/critical_rates.ts`:
 
-   | lane | transcripts with a pd=false quotation mark | with a chapter, section or link in a basis | chance a 10-transcript challenger like these is rejected as critical |
+   | lane | transcripts with a quotation mark in a pd=false turn | with a chapter, section or link in a basis | chance a 10-transcript challenger like these is rejected as critical |
    |---|---|---|---|
-   | Sonnet | 5 of 26 | 5 of 26 | about 98% |
-   | Gemini (rounds 1–12 prompts) | 15 of 62 | 61 of 62 | about 100% |
+   | Sonnet | 5 of 26 | 5 of 26 | 98% |
+   | Gemini (rounds 1–12 prompts) | 11 of 62 | 61 of 62 | 100% |
 
-   Both round-12 v2 prompts still say `[Basis: Author, Book, section](verified URL)`. The Gemini v0 champion has the plumbing fix. So the Gemini control (v2 vs v0) will be decided by the basis format, not by the twelve rounds of content edits. The Sonnet v0 champion has the same format line, and that line is protected. Its transcripts put quotation marks in about one pd=false turn in two, so nearly any Sonnet challenger fails the "at most one such turn in ten transcripts" rule unless it adds the per-line quotation check. The optimizer brief does not mention these thresholds. Options: give the v2 control prompts the v0 basis plumbing so the control tests the content edits; give Sonnet v0 the Gemini plumbing and per-line check before its baseline; or make the critical check relative to the champion's own rate.
-2. **There is no human gate in v4.2.** The gate promotes in code. A dispatcher run continues until a stop limit. To review each decision, run the dispatcher for one decision at a time.
-3. **Cost of step 0** (bootstrap both lineages, then both control challenges, no retest):
+   The rehearsal on round-12 transcripts reached exactly that. The Sonnet control was rejected at blind 4/10 for 8 basis references and 14 quoted pd=false turns. The Gemini control was rejected at blind 7/10 for 92 basis references. Both round-12 v2 prompts still ask for `[Basis: Author, Book, section](verified URL)`. Gemini v0 has the plain-basis fix; Sonnet v0 does not, and its format line is protected. The checks apply to the challenger only, so a champion that fails them, as Sonnet v0 does, is never held to them. The runner now prints a WARNING when a champion's own baseline fails the limits. Three options:
+   - Give both v2 control prompts the v0 basis plumbing, so experiment 1 tests the twelve rounds of content edits.
+   - Give Sonnet v0 the Gemini plumbing and per-line quotation check before its baseline.
+   - Make the critical check relative to the champion's own rate.
+2. **There is no human gate in v4.2.** The gate promotes in code, and a dispatcher run continues until a stop limit. To review each decision, tell the dispatcher to stop after one decision; `status` shows `lastDecision`.
+3. **Cost of step 0.** This is bootstrap of both lineages plus both control challengers, with no retest:
 
    | calls | count |
    |---|---|
@@ -109,5 +116,5 @@ The end-to-end tests cover bootstrap of both lineages through the Gemini batch, 
    | Opus blind judges | 20 |
    | Optimizer (Fable) | 0 |
 
-   A retest adds up to 10 generations, 10 cards and 5 verdicts per lineage. A promotion adds a 10-sample rebaseline. `capability --blind` adds 10 judges. A leaner first step is the bootstrap alone: 10 Sonnet, 10 Gemini and 20 Opus calls, which yields both baselines and the first capability report.
-4. **Filesystem walls are by instruction.** A Claude Code subagent cannot be given a filesystem scope. The wall around `runner-only/` and `validations/` rests on the dispatcher's one-line prompt and the opaque paths, and the canary test checks the runner's side.
+   A retest adds up to 10 generations, 10 cards and 5 verdicts per lineage. A promotion adds a 10-sample rebaseline, and `capability --blind` adds 10 judges. A leaner first step is the bootstrap alone: 10 Sonnet, 10 Gemini and 20 Opus calls. It yields both baselines, the first capability report and the WARNING lines.
+4. **Filesystem walls are by instruction.** A Claude Code subagent cannot be given a filesystem scope. The wall rests on the dispatcher's prompt ("Open no other file"), on opaque paths, and on keeping Set B material under `runner-only/`. A permission deny rule on `evolve/v4/runner-only/**` and `evolve/v4/*/validations/**` in the worktree's Claude settings would enforce it; that is a settings change for you to make.

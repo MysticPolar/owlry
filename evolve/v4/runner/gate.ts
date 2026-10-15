@@ -104,6 +104,9 @@ export interface GateInput {
   n: number;
   regression: Regression;
   critical: string[];
+  /** pairs the panel can have: fewer than stage pairs when baseline slots are missing (a champion sample that does not
+   *  exist is not an unjudged pair). Defaults to the configured count. */
+  expected?: number;
 }
 
 export interface GateOutput { decision: Exclude<Decision, "ESCALATE">; reason: string; pValue: number }
@@ -118,7 +121,7 @@ export function decide(input: GateInput, cfg: GateConfig): GateOutput {
   const pValue = round4(binomUpperTail(input.n, input.wins));
   if (input.critical.length) return { decision: "REJECT", reason: `critical: ${input.critical.join(" | ")}`, pValue };
   const s = input.stage === 1 ? cfg.stage1 : cfg.stage2;
-  const expectedN = input.stage === 1 ? cfg.stage1.pairs : cfg.stage1.pairs + cfg.stage2.addPairs;
+  const expectedN = input.expected ?? (input.stage === 1 ? cfg.stage1.pairs : cfg.stage1.pairs + cfg.stage2.addPairs);
   // an incomplete panel never promotes and never counts as a loss: the champion is kept and the gap is recorded
   if (input.n < expectedN) return { decision: "KEEP", reason: `incomplete: only ${input.n} of ${expectedN} pairs judged`, pValue };
   if (input.wins >= s.promoteWins) {
