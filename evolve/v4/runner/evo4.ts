@@ -52,7 +52,9 @@ import { callGemini, frameWorkerPrompt, GeminiBlocked, loadQuestionText } from "
 
 // ---------- config, args, state types ----------
 
-const ROOT = (Deno.env.get("EVO4_ROOT") ?? "evolve/v4").replace(/\/+$/, "");
+// absolute, so every path the runner prints (an agent's promptPath and outPath) works whatever the agent's working directory
+const ROOT_ARG = (Deno.env.get("EVO4_ROOT") ?? "evolve/v4").replace(/\/+$/, "");
+const ROOT = ROOT_ARG.startsWith("/") ? ROOT_ARG : `${Deno.cwd()}/${ROOT_ARG}`;
 const USER_HEADING = "## User’s situation";
 const cfg = JSON.parse(await Deno.readTextFile(`${ROOT}/config.v4.2.json`));
 const RUBRIC_MAP: RubricMap = JSON.parse(await Deno.readTextFile(`${ROOT}/${cfg.evaluation.rubricMap}`));
@@ -94,7 +96,21 @@ class Lineage {
   get def() { return cfg.lineages[this.name]; }
   get lane() { return cfg.lanes[this.def.lane]; }
   get dir() { return `${ROOT}/${this.name}`; }
-  get spans(): { id: string; text: string }[] { return SPANS[this.name]?.protected_spans ?? []; }
+  /** The protected spans a challenger of `championSystem` must keep: every catalogued span the champion contains. The
+   *  catalogue is this lineage's spans plus the other lineages' (a foreign id that collides gets `@<lineage>`). For the v0
+   *  champions this is exactly their own list; after a person promotes a control that changed a protected passage (e.g.
+   *  the plain citation format replacing Sonnet's linked one), the new passage is protected instead of the old one, and
+   *  the optimizer is never asked to keep text its champion no longer has. */
+  spansFor(championSystem: string): { id: string; text: string }[] {
+    const own = (SPANS[this.name]?.protected_spans ?? []) as { id: string; text: string }[];
+    const seen = new Set(own.map((s) => s.text)), ids = new Set(own.map((s) => s.id));
+    const catalogue = [...own];
+    for (const [lin, v] of Object.entries(SPANS as Record<string, { protected_spans: { id: string; text: string }[] }>)) {
+      if (lin === this.name) continue;
+      for (const s of v.protected_spans ?? []) if (!seen.has(s.text)) { seen.add(s.text); catalogue.push({ id: ids.has(s.id) ? `${s.id}@${lin}` : s.id, text: s.text }); }
+    }
+    return catalogue.filter((s) => championSystem.includes(s.text));
+  }
   metricOpts(): MetricOptions { return { canBrowse: Boolean(this.lane.canBrowse), wordsMin: cfg.wordsPerTurn.min, wordsMax: cfg.wordsPerTurn.max, turnsMin: cfg.turns.min, turnsMax: cfg.turns.max, pdCutoff: cfg.pdCutoff }; }
   laneSettings(): Record<string, unknown> { return this.lane.kind === "api" ? { temperature: this.lane.temperature, thinkingLevel: this.lane.thinkingLevel, maxOutputTokens: this.lane.maxOutputTokens } : { agentType: this.lane.agentType, effort: this.lane.effort }; }
 }
@@ -284,7 +300,7 @@ async function emitOptimizer(L: Lineage, exp: ExpState, champ: Champion) {
   const input = buildOptimizerInput({
     brief, lineage: L.name, championVersion: champ.working,
     championStatus: champ.release && champ.release !== champ.working ? `working champion (release champion is ${champ.release})` : "working champion",
-    championPrompt: system, protectedSpans: L.spans, results, ledger: (await readLedger(L)).slice(-(cfg.optimizer.historyIterations ?? 10)), banned: bans,
+    championPrompt: system, protectedSpans: L.spansFor(system), results, ledger: (await readLedger(L)).slice(-(cfg.optimizer.historyIterations ?? 10)), banned: bans,
     budget: { ceiling: cfg.prompt.maxWords, maxGrowthFraction: cfg.prompt.maxGrowthPerChallenger, wordsNow: countWords(system), ablationIteration: ablation },
     capabilityReference: capRef, parentResetNotice: exp.reason?.startsWith("rolled back") ? "The base prompt changed after a failed validation; a fresh Set A baseline was supplied." : undefined,
     nextVersion: nextVersionName(await listVersions(L)),
@@ -472,7 +488,7 @@ async function ingestOptimizer(L: Lineage, exp: ExpState, j: Job, obj: Record<st
   const { system } = await loadVersion(L, exp.champion);
   const problems: string[] = failure ? [failure] : !obj ? ["not JSON: return only the JSON object"] : await schemaProblems(`${ROOT}/${cfg.agents.optimizer.schema}`, out);
   if (!problems.length) {
-    problems.push(...validateProposal(out, system, exp.champion, L.spans, { ceiling: cfg.prompt.maxWords, maxGrowthFraction: cfg.prompt.maxGrowthPerChallenger, userHeading: USER_HEADING, lint: cfg.lint, topicWords: setA().map((q) => q.topicWords ?? []) }));
+    problems.push(...validateProposal(out, system, exp.champion, L.spansFor(system), { ceiling: cfg.prompt.maxWords, maxGrowthFraction: cfg.prompt.maxGrowthPerChallenger, userHeading: USER_HEADING, lint: cfg.lint, topicWords: setA().map((q) => q.topicWords ?? []) }));
     if (exp.ablation && out.action === "propose" && out.kind !== "ABLATE") problems.push(`this is an ablation iteration: the only allowed kind is ABLATE, got ${out.kind}`);
     // a banned target is listed in the input; a proposal aimed at it anyway is returned for repair, not tested
     const bans = ((await readJson(`${L.dir}/bans.json`).catch(() => [])) as { target: string; until: number }[]).filter((b) => b.until > exp.iteration);
@@ -678,7 +694,7 @@ async function challenge(L: Lineage) {
 async function enterChallenger(L: Lineage, exp: ExpState, system: string, note: string, file: string) {
   const { system: champion } = await loadVersion(L, exp.champion);
   const vName = nextVersionName(await listVersions(L));
-  const sp = (await import("./spans.ts")).checkSpans(system, L.spans);
+  const sp = (await import("./spans.ts")).checkSpans(system, L.spansFor(champion));
   if (!sp.ok) console.log(`${L.name}: WARNING manual challenger breaks protected spans: missing ${sp.missing.join(",") || "none"}; duplicated ${sp.duplicated.join(",") || "none"} (allowed for a control, recorded)`);
   await writeText(`${L.dir}/versions/${vName}.md`, `${system}\n\n${USER_HEADING}\n\n{{question}}\n`);
   await writeJson(`${L.dir}/versions/${vName}.json`, { version: vName, parent: exp.champion, kind: "REWRITE", manual: true, origin: file, hypothesis: { statement: note, targets: [], expectedDelta: 0, mechanism: "manual", refutedIf: "the gate rejects it" }, diff: [{ before: `(the whole ${exp.champion} system prompt)`, after: `(the whole system prompt of ${file})` }], risks: [], blocked: [], changelog: note, wordCount: { before: countWords(champion), after: countWords(system) }, brokenSpans: sp.ok ? [] : [...sp.missing, ...sp.duplicated], experiment: exp.id, status: "challenger", createdAt: now() });

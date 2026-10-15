@@ -3,6 +3,7 @@ declare namespace Deno {
   const args: string[];
   const pid: number;
   const env: { get(k: string): string | undefined };
+  function cwd(): string;
   function readTextFile(p: string): Promise<string>;
   function readTextFileSync(p: string): string;
   function writeTextFile(p: string, s: string, o?: { append?: boolean }): Promise<void>;

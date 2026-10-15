@@ -37,10 +37,10 @@
   },
 
   "lineages": {
-    "gemini": { "lane": "gemini", "subject": "castDebate.gemini", "champion": "v0", "initialReleaseReference": "v0", "candidates": ["v2"], "optimizerProfile": "small-model" },
-    "sonnet": { "lane": "sonnet", "subject": "castDebate.sonnet", "champion": "v0", "initialReleaseReference": "v0", "candidates": ["v2"], "optimizerProfile": "strong-model" }
+    "gemini": { "lane": "gemini", "subject": "castDebate.gemini", "champion": "v0", "initialReleaseReference": "v0", "candidates": ["v2-plain"], "optimizerProfile": "small-model" },
+    "sonnet": { "lane": "sonnet", "subject": "castDebate.sonnet", "champion": "v0", "initialReleaseReference": "v0", "candidates": ["v2-plain"], "optimizerProfile": "strong-model" }
   },
-  "lineagesNote": "champion v0 = the original prompt (Sonnet: unchanged, the round-12 control at 76.57; Gemini: + basis plumbing). candidates = the evolved round-12 v2 prompts, entered with `evo4 challenge` as the first (manual) challenger so the starting champion is chosen by the gate, not by seniority.",
+  "lineagesNote": "champion v0 = the original prompt (Sonnet: unchanged, the round-12 control at 76.57; Gemini: + basis plumbing). candidates = the evolved round-12 v2 prompts, entered with `evo4 challenge` as the first (manual) challenger so the starting champion is chosen by the gate, not by seniority. 2026-10-15, Option 1: the controls are v2-plain (tools/make_plain_controls.ts), each v2 with the v0 citation plumbing, so a control measures the content edits of rounds 1-12 rather than the citation format the critical checks reject.",
 
   "agents": {
     "optimizer": { "agentType": "general-purpose", "model": "fable", "effort": "xhigh", "role": "roles/optimizer.md", "version": "optimizer-4.2.0", "schema": "schemas/optimizer.output.schema.json", "maxOutputTokens": 12000 },

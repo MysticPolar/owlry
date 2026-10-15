@@ -738,5 +738,26 @@ await T("cross-lane verdicts are validated at ingest: an invalid one is returned
   eq(await Deno.readTextFile(`${root}/capability/calls.count`), "11");
 });
 
+// ---------- Option 1: plain-citation controls ----------
+
+await T("a promoted plain-citation Sonnet control protects its plain citation rules instead of the linked format it replaced, and the next proposal is tested", async () => {
+  const root = await makeRoot();
+  await must(root, "bootstrap", "--lineage", "sonnet");
+  const q = await must(root, "challenge", "--lineage", "sonnet", "--file", "prompts/castDebate.sonnet.v2-plain.md", "--note", "control, plain citation");
+  ok(/queued/.test(q), q);
+  const win: Policy = { blind: challengerWinsAll, rating: (_l, v) => (v === "v1" ? 7 : 6) };
+  const log = await drive(root, "sonnet", win, async () => (await ledger(root, "sonnet")).length === 1);
+  ok(log.some((l) => /WARNING manual challenger breaks protected spans: missing format_line/.test(l)), "the deliberate change is announced");
+  eq((await ledger(root, "sonnet"))[0].outcome, "PROMOTE");
+  await drive(root, "sonnet", win, atOptimizer(root, "sonnet"));
+  await must(root, "next", "--lineage", "sonnet");
+  const input = await Deno.readTextFile(`${root}/sonnet/experiments/${(await cur(root, "sonnet")).id}/jobs/optimizer.md`);
+  const spansBlock = input.split("=== PROTECTED SPANS")[1].split("=== SET A")[0];
+  ok(spansBlock.includes("[basis_plumbing]") && spansBlock.includes("[format_line@gemini]") && spansBlock.includes("[per_turn_quote_check]"), "plain citation rules protected");
+  ok(!spansBlock.includes("(verified URL)"), "the linked format is no longer demanded");
+  await drive(root, "sonnet", { blind: challengerLosesAll }, async () => (await ledger(root, "sonnet")).length === 2);
+  eq((await ledger(root, "sonnet"))[1].outcome, "REJECT", "the optimizer's proposal passed validation and was judged");
+});
+
 const fails = report();
 if (fails) Deno.exit(1);
