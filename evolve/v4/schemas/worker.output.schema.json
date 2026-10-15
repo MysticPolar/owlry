@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Owlry worker output derived from archived envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "situation": {
+      "type": "string",
+      "minLength": 1
+    },
+    "minds": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "concern": {
+            "type": "string",
+            "minLength": 1
+          },
+          "author": {
+            "type": "string",
+            "minLength": 1
+          },
+          "book": {
+            "type": "string",
+            "minLength": 1
+          },
+          "year": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "title",
+          "concern",
+          "author",
+          "book",
+          "year"
+        ]
+      },
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "debate": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "speaker": {
+            "type": "string",
+            "minLength": 1
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1
+          },
+          "author": {
+            "type": "string",
+            "minLength": 1
+          },
+          "book": {
+            "type": "string",
+            "minLength": 1
+          },
+          "pd": {
+            "type": "boolean"
+          },
+          "basis": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "speaker",
+          "text",
+          "author",
+          "book",
+          "pd",
+          "basis"
+        ]
+      },
+      "minItems": 9,
+      "maxItems": 12
+    },
+    "clearer": {
+      "type": "string",
+      "minLength": 1
+    },
+    "dependsOn": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "situation",
+    "minds",
+    "debate",
+    "clearer",
+    "dependsOn"
+  ]
+}

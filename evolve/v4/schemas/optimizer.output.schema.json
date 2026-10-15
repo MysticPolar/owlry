@@ -1,0 +1,278 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Owlry Optimizer 4.2 output",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "optimizer-4.2.0"
+    },
+    "action": {
+      "type": "string",
+      "enum": [
+        "propose",
+        "no_change",
+        "escalate"
+      ]
+    },
+    "parent_prompt_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "hypothesis": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "problem": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cause_type": {
+          "type": "string",
+          "enum": [
+            "prompt",
+            "model",
+            "source",
+            "architecture",
+            "evaluation",
+            "uncertain"
+          ]
+        },
+        "mechanism": {
+          "type": "string",
+          "minLength": 1
+        },
+        "proposed_change": {
+          "type": "string",
+          "minLength": 1
+        },
+        "expected_observations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        },
+        "falsification_condition": {
+          "type": "string",
+          "minLength": 1
+        },
+        "regression_risk": {
+          "type": "string",
+          "minLength": 1
+        },
+        "targets": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^C[1-7]\\.[1-5]$"
+          },
+          "minItems": 0,
+          "maxItems": 4
+        },
+        "expected_delta": {
+          "type": "number",
+          "minimum": -100,
+          "maximum": 100
+        }
+      },
+      "required": [
+        "problem",
+        "cause_type",
+        "mechanism",
+        "proposed_change",
+        "expected_observations",
+        "falsification_condition",
+        "regression_risk",
+        "targets",
+        "expected_delta"
+      ]
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "question_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "job_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "location": {
+            "type": "string",
+            "minLength": 1
+          },
+          "observation": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "question_id",
+          "job_id",
+          "location",
+          "observation"
+        ]
+      },
+      "minItems": 0
+    },
+    "candidate_system_prompt": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "edits": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation": {
+            "type": "string",
+            "enum": [
+              "add",
+              "replace",
+              "delete",
+              "restructure"
+            ]
+          },
+          "before": {
+            "type": "string",
+            "minLength": 1
+          },
+          "after": {
+            "type": "string",
+            "minLength": 0
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "operation",
+          "before",
+          "after",
+          "reason"
+        ]
+      },
+      "minItems": 0
+    },
+    "blocked": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 0
+    },
+    "next_system_action": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "change_summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "kind": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "DELETE",
+        "ABLATE",
+        "REPLACE",
+        "REWRITE",
+        "ADD",
+        null
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "action",
+    "parent_prompt_id",
+    "hypothesis",
+    "evidence",
+    "candidate_system_prompt",
+    "edits",
+    "blocked",
+    "next_system_action",
+    "change_summary",
+    "kind"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "action": {
+            "const": "propose"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "candidate_system_prompt": {
+            "type": "string",
+            "minLength": 1
+          },
+          "edits": {
+            "minItems": 1
+          },
+          "evidence": {
+            "minItems": 1
+          },
+          "kind": {
+            "type": "string"
+          },
+          "hypothesis": {
+            "properties": {
+              "targets": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "candidate_system_prompt": {
+            "type": "null"
+          },
+          "edits": {
+            "maxItems": 0
+          },
+          "kind": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "action": {
+            "const": "escalate"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "next_system_action": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  ]
+}

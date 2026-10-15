@@ -1,0 +1,126 @@
+{
+  "schema": "evo-config-4.2.0",
+  "note": "Owlry evo-prompt v4.2: three AI roles + a deterministic runner, two worker lineages evolved in parallel with separate prompts, champions, optimizer calls and gates, and the same Set A, Set B, evaluator and judge. Gate numbers come from the measured per-sample sd of 3.11 (rounds 3-11) and the simulation in tools/gate_stats2.py.",
+
+  "sets": { "A": "sets/setA.json", "B": "runner-only/setB.json" },
+  "samplesPerQuestion": 2,
+  "envelopeVersion": "1",
+  "parallelLineages": true,
+
+  "turns": { "min": 9, "max": 12 },
+  "wordsPerTurn": { "min": 25, "max": 65, "counter": "whitespace-v1-english-benchmarks" },
+  "pdCutoff": 1931,
+
+  "lanes": {
+    "gemini": {
+      "kind": "api",
+      "model": "gemini-3.1-flash-lite",
+      "effectiveModelId": null,
+      "thinkingLevel": "MEDIUM",
+      "temperature": 0.5,
+      "temperatureNote": "was 0.9; lower variance raises the power of every comparison; changing it starts a new baseline",
+      "maxOutputTokens": 16384,
+      "retries429": 3,
+      "maxInFlight": 1,
+      "minGapMs": 13000,
+      "canBrowse": false
+    },
+    "sonnet": {
+      "kind": "subagent",
+      "agentType": "general-purpose",
+      "agentTypeNote": "was Explore (a read-only search persona); the worker writes, so the general agent",
+      "model": "sonnet",
+      "effectiveModelId": null,
+      "effort": "medium",
+      "canBrowse": false
+    }
+  },
+
+  "lineages": {
+    "gemini": { "lane": "gemini", "subject": "castDebate.gemini", "champion": "v0", "initialReleaseReference": "v0", "candidates": ["v2"], "optimizerProfile": "small-model" },
+    "sonnet": { "lane": "sonnet", "subject": "castDebate.sonnet", "champion": "v0", "initialReleaseReference": "v0", "candidates": ["v2"], "optimizerProfile": "strong-model" }
+  },
+  "lineagesNote": "champion v0 = the original prompt (Sonnet: unchanged, the round-12 control at 76.57; Gemini: + basis plumbing). candidates = the evolved round-12 v2 prompts, entered with `evo4 challenge` as the first (manual) challenger so the starting champion is chosen by the gate, not by seniority.",
+
+  "agents": {
+    "optimizer": { "agentType": "general-purpose", "model": "fable", "effort": "xhigh", "role": "roles/optimizer.md", "version": "optimizer-4.2.0", "schema": "schemas/optimizer.output.schema.json", "maxOutputTokens": 12000 },
+    "rubric":    { "agentType": "general-purpose", "model": "opus", "effort": "high", "role": "roles/rubric-evaluator.md", "version": "rubric-evaluator-4.2.0", "schema": "schemas/rubric.output.schema.json", "maxOutputTokens": 10000 },
+    "blind":     { "agentType": "general-purpose", "model": "opus", "effort": "high", "role": "roles/blind-judge.md", "version": "blind-4.2.0", "schema": "schemas/blind.output.schema.json", "maxOutputTokens": 3000 }
+  },
+  "agentsNote": "one rubric evaluator version and one judge version for both lineages; a change to either brief changes the version string, which changes every cache key, which starts a new baseline for both lineages",
+
+  "evaluation": {
+    "rubricMap": "rubric-map.json",
+    "rubricVersion": "owlry-matrix-v2-bands",
+    "groundingCap": 89.99,
+    "capOnlyOnEstablishedFindings": true,
+    "sourceEvidence": "none",
+    "sourceEvidenceNote": "no evidence adapter: the evaluator reports suspected misattribution as a symptom and rates C2.3 as it sees fit; only observed failures (pd=false quotation marks, chapter/section/link in a basis from a non-browsing worker, arithmetic contradicted in the transcript) and supported_by_evidence findings can block a promotion"
+  },
+
+  "gate": {
+    "stage1": { "pairs": 10, "promoteWins": 8, "rejectWins": 3 },
+    "stage2": { "addPairs": 5, "promoteWins": 11, "rejectWins": 5 },
+    "tieWeight": 0.5,
+    "promoteMinMeanDelta": 0.5,
+    "regression": { "maxMeanDrop": 0.5, "maxCriterionDropFraction": 0.05 },
+    "critical": { "maxInvalidTranscripts": 0, "maxFabricatedBasisTurns": 0, "maxPdFalseQuoteTurns": 1, "maxSafetyFlags": 0 },
+    "escalate": { "sameTargetFailures": 3, "banIterations": 5 },
+    "numbers": { "falsePromote": 0.035, "detectPlus2": 0.47, "detectPlus3": 0.77, "meanCallsPerIteration": 47, "source": "tools/gate_stats2.py, MERGED row" }
+  },
+
+  "promotion": {
+    "redrawBaseline": true,
+    "refreshBaselineAfterComparisons": 5,
+    "note": "redraw: the promoted challenger is re-generated and re-scored with fresh samples (winner's curse, +1.2 points under null if reused). refresh: a champion that survives five comparisons against the same cached bundle is redrawn so challengers stop fitting those ten transcripts."
+  },
+
+  "validation": {
+    "everyPromotions": 3,
+    "samplesPerQuestion": 2,
+    "pass": { "minWins": 7, "ofPairs": 10, "minMeanDelta": 0 },
+    "fail": { "maxWins": 3, "orMeanDeltaBelow": -1.0 },
+    "inconclusiveAddSamples": 1,
+    "inconclusivePass": { "minWins": 10, "ofPairs": 15 },
+    "rotateSetBOnPass": 1,
+    "maxUsesBeforeRefresh": 3,
+    "comparator": "release champion, or initialReleaseReference before the first release"
+  },
+
+  "capability": {
+    "gapRating": 2.0,
+    "crossLaneBlindPairs": 10,
+    "note": "report only, never a gate input. A cell where one lineage trails the other by >= gapRating on every Set A question is capability-bound: its optimizer treats cause_type model as the leading hypothesis there."
+  },
+
+  "stop": {
+    "maxIterationsPerSession": 30,
+    "maxCallsPerSession": 600,
+    "consecutiveNonPromotions": 6,
+    "consecutiveEscalations": 2,
+    "note": "6, not 4: at 47% power for a true +2, four consecutive misses of a working optimizer happen 8% of the time"
+  },
+
+  "optimizer": {
+    "ablationEveryN": 3,
+    "ablationWhileWordsAbove": 1000,
+    "capabilityReference": true,
+    "historyIterations": 10,
+    "minHypothesisSize": "one paragraph, slot cluster, section or casting rule; sentence-level sharpening is below the gate's detection threshold"
+  },
+
+  "prompt": {
+    "maxWords": 1900,
+    "maxGrowthPerChallenger": 0.1,
+    "protectedSpans": "seeds/protected-spans.json",
+    "protectedNote": "spans are byte-exact substrings checked by runner/spans.ts; the list is the product contract, not the whole prompt, and on the Gemini lane it includes the basis plumbing fix"
+  },
+
+  "lint": {
+    "minWordLength": 4,
+    "allow": ["user", "users", "situation", "question", "questions", "debate", "mind", "minds", "turn", "turns", "book", "books", "author", "authors", "option", "options", "decision", "choice", "fact", "facts", "person", "people", "thing", "things", "want", "wants", "feel", "feels", "know", "knows", "start", "started", "like", "make", "makes", "making", "still", "sure", "even", "some", "most", "when", "what", "that", "this", "with", "from", "into", "than", "them", "they", "their", "there", "which", "would", "should", "could", "about", "between", "every", "after", "before", "where", "whether", "because", "really", "something", "nothing", "anything"]
+  },
+
+  "reliability": { "malformedAgentOutputRetries": 1, "agentCallTimeoutSeconds": 300, "workerCallTimeoutSeconds": 300, "recordCompletedWorkerFailures": true, "freshContextPerCall": true },
+  "latency": "report-only"
+}

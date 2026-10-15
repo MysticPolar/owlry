@@ -1,0 +1,93 @@
+{
+  "name": "B",
+  "version": "B-1",
+  "uses": 0,
+  "runnerOnly": true,
+  "purpose": "independent validation set; no optimizer input builder reads this file, and its texts never appear under <lineage>/experiments/",
+  "note": "Five drafted questions (from the v4.1 package, not from the question bank, so none of them was ever judged in rounds 1-12). After each PASS one question rotates out to `retired` and the runner draws the next id of the same category from `pool`; pool entries without `text` are loaded from the question bank by id. Refresh the whole set after `validation.maxUsesBeforeRefresh` uses.",
+  "questions": [
+    {
+      "idx": 1,
+      "id": "B-health-01",
+      "category": "Health",
+      "type": "decision",
+      "intent": "habit_decision",
+      "text": "I work rotating shifts and keep abandoning exercise plans because my schedule changes every week. What would a realistic approach look like?",
+      "conversation_history": []
+    },
+    {
+      "idx": 2,
+      "id": "B-wealth-01",
+      "category": "Wealth",
+      "type": "decision",
+      "intent": "decision",
+      "text": "I have six months of living expenses saved and want to try freelancing. My employer allows part-time work, but the lower salary would leave little room to save. How should I compare going part-time with leaving completely?",
+      "conversation_history": []
+    },
+    {
+      "idx": 3,
+      "id": "B-love-01",
+      "category": "Love",
+      "type": "decision",
+      "intent": "relationship_decision",
+      "text": "My partner wants us to move closer to their family. I would lose the friends and community I have built here. We both have jobs we can do remotely. How do we discuss this without treating one person’s needs as more important?",
+      "conversation_history": []
+    },
+    {
+      "idx": 4,
+      "id": "B-purpose-01",
+      "category": "Purpose",
+      "type": "decision",
+      "intent": "self_reflection",
+      "text": "I achieved a career goal I worked toward for years, but it feels less satisfying than I expected. How can I work out whether I need a new direction or simply time to adjust?",
+      "conversation_history": []
+    },
+    {
+      "idx": 5,
+      "id": "B-wonder-01",
+      "category": "Wonder",
+      "type": "exploratory",
+      "intent": "interpretation",
+      "text": "When a novel gives two characters incompatible accounts of the same event, how can I distinguish an unreliable narrator from an intentionally unresolved truth?",
+      "conversation_history": []
+    }
+  ],
+  "pool": {
+    "Health": [
+      {
+        "id": "health-03",
+        "category": "Health",
+        "type": "decision"
+      }
+    ],
+    "Wealth": [
+      {
+        "id": "wealth-08",
+        "category": "Wealth",
+        "type": "decision"
+      }
+    ],
+    "Love": [
+      {
+        "id": "love-08",
+        "category": "Love",
+        "type": "decision"
+      }
+    ],
+    "Purpose": [
+      {
+        "id": "purpose-08",
+        "category": "Purpose",
+        "type": "decision"
+      }
+    ],
+    "Wonder": [
+      {
+        "id": "wonder-07",
+        "category": "Wonder",
+        "type": "exploratory"
+      }
+    ]
+  },
+  "retired": []
+}

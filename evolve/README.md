@@ -1,4 +1,8 @@
-# The self-evolving prompt loop (schema 2)
+# The self-evolving prompt loop
+
+> **Active harness: v4.2, in [`v4/`](v4/README.md).** It replaces everything below (schema 2: master, editors, `judge.v2.md`, `runner/evo.ts`, `config.json`). Start with [`v4/README.md`](v4/README.md) for the design and [`v4/IMPLEMENTATION.md`](v4/IMPLEMENTATION.md) for how it is wired here, what was fixed on install, and how to run it. Schema 2 stays in place only as the record of rounds 1 to 12 (`runs/`), which v4.2 treats as `methodology=legacy`; v4.2 reuses its Gemini client, worker framing and question bank through `v4/runner/legacy.ts`.
+
+## Schema 2 (superseded, kept for the round 1–12 record)
 
 Two prompts evolve side by side, one per model: the `gemini` lineage for the free-tier Gemini model (`gemini-3.1-flash-lite`) and the `sonnet` lineage for Claude Sonnet 5.5. Each round draws five fresh questions, one per category, runs each lineage's previous and current prompt version on all five, judges every pair blind, and lets each lineage's editor write the next version from the five-question evidence.
 

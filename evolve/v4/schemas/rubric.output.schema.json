@@ -1,0 +1,6132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Owlry Rubric Evaluator 4.2 output",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "rubric-evaluator-4.2.0"
+    },
+    "rubric_version": {
+      "const": "owlry-matrix-v2-bands"
+    },
+    "evaluation_status": {
+      "type": "string",
+      "enum": [
+        "complete",
+        "provisional_truncated"
+      ]
+    },
+    "cells": {
+      "type": "array",
+      "minItems": 35,
+      "maxItems": 35,
+      "prefixItems": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "const": "C1.1"
+            },
+            "name": {
+              "const": "Continuity and responsiveness"
+            },
+            "rating": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "two decimals at most; the runner computes points"
+            },
+            "example": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation_severity": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minor",
+                "material"
+              ]
+            },
+            "excellent_anchor_met": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "rating",
+            "example",
+            "limitation",
+            "limitation_severity",
+            "excellent_anchor_met"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "material"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 6.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 9.49
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "limitation": {
+                    "const": "none"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "rating": {
+                    "minimum": 9
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "const": "C1.2"
+            },
+            "name": {
+              "const": "Development of ideas"
+            },
+            "rating": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "two decimals at most; the runner computes points"
+            },
+            "example": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation_severity": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minor",
+                "material"
+              ]
+            },
+            "excellent_anchor_met": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "rating",
+            "example",
+            "limitation",
+            "limitation_severity",
+            "excellent_anchor_met"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "material"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 6.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 9.49
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "limitation": {
+                    "const": "none"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "rating": {
+                    "minimum": 9
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "const": "C1.3"
+            },
+            "name": {
+              "const": "Exploration of central tensions"
+            },
+            "rating": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "two decimals at most; the runner computes points"
+            },
+            "example": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation_severity": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minor",
+                "material"
+              ]
+            },
+            "excellent_anchor_met": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "rating",
+            "example",
+            "limitation",
+            "limitation_severity",
+            "excellent_anchor_met"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "material"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 6.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 9.49
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "limitation": {
+                    "const": "none"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "rating": {
+                    "minimum": 9
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "const": "C1.4"
+            },
+            "name": {
+              "const": "Integration of perspectives"
+            },
+            "rating": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "two decimals at most; the runner computes points"
+            },
+            "example": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation_severity": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minor",
+                "material"
+              ]
+            },
+            "excellent_anchor_met": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "rating",
+            "example",
+            "limitation",
+            "limitation_severity",
+            "excellent_anchor_met"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "material"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 6.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 9.49
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "limitation": {
+                    "const": "none"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "rating": {
+                    "minimum": 9
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "const": "C1.5"
+            },
+            "name": {
+              "const": "Progress toward understanding"
+            },
+            "rating": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "two decimals at most; the runner computes points"
+            },
+            "example": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation_severity": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minor",
+                "material"
+              ]
+            },
+            "excellent_anchor_met": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "rating",
+            "example",
+            "limitation",
+            "limitation_severity",
+            "excellent_anchor_met"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "material"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 6.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 9.49
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "limitation": {
+                    "const": "none"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "rating": {
+                    "minimum": 9
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "const": "C2.1"
+            },
+            "name": {
+              "const": "Faithful engagement"
+            },
+            "rating": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "two decimals at most; the runner computes points"
+            },
+            "example": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation_severity": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minor",
+                "material"
+              ]
+            },
+            "excellent_anchor_met": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "rating",
+            "example",
+            "limitation",
+            "limitation_severity",
+            "excellent_anchor_met"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "material"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 6.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 9.49
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "limitation": {
+                    "const": "none"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "rating": {
+                    "minimum": 9
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "const": "C2.2"
+            },
+            "name": {
+              "const": "Substance of challenges"
+            },
+            "rating": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "two decimals at most; the runner computes points"
+            },
+            "example": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation_severity": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minor",
+                "material"
+              ]
+            },
+            "excellent_anchor_met": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "rating",
+            "example",
+            "limitation",
+            "limitation_severity",
+            "excellent_anchor_met"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "material"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 6.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 9.49
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "limitation": {
+                    "const": "none"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "rating": {
+                    "minimum": 9
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "const": "C2.3"
+            },
+            "name": {
+              "const": "Accuracy and support"
+            },
+            "rating": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "two decimals at most; the runner computes points"
+            },
+            "example": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation_severity": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minor",
+                "material"
+              ]
+            },
+            "excellent_anchor_met": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "rating",
+            "example",
+            "limitation",
+            "limitation_severity",
+            "excellent_anchor_met"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "material"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 6.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 9.49
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "limitation": {
+                    "const": "none"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "rating": {
+                    "minimum": 9
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "const": "C2.4"
+            },
+            "name": {
+              "const": "Calibration and transparency"
+            },
+            "rating": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "two decimals at most; the runner computes points"
+            },
+            "example": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation_severity": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minor",
+                "material"
+              ]
+            },
+            "excellent_anchor_met": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "rating",
+            "example",
+            "limitation",
+            "limitation_severity",
+            "excellent_anchor_met"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "material"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 6.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 9.49
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "limitation": {
+                    "const": "none"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "rating": {
+                    "minimum": 9
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "const": "C2.5"
+            },
+            "name": {
+              "const": "Intellectual honesty and revision"
+            },
+            "rating": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "two decimals at most; the runner computes points"
+            },
+            "example": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation_severity": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minor",
+                "material"
+              ]
+            },
+            "excellent_anchor_met": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "rating",
+            "example",
+            "limitation",
+            "limitation_severity",
+            "excellent_anchor_met"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "material"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 6.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 9.49
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "limitation": {
+                    "const": "none"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "rating": {
+                    "minimum": 9
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "const": "C3.1"
+            },
+            "name": {
+              "const": "Identification of the actual concern, including ambiguity about what the user is really asking"
+            },
+            "rating": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "two decimals at most; the runner computes points"
+            },
+            "example": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation_severity": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minor",
+                "material"
+              ]
+            },
+            "excellent_anchor_met": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "rating",
+            "example",
+            "limitation",
+            "limitation_severity",
+            "excellent_anchor_met"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "material"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 6.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 9.49
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "limitation": {
+                    "const": "none"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "rating": {
+                    "minimum": 9
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "const": "C3.2"
+            },
+            "name": {
+              "const": "Meaningful use of personal context"
+            },
+            "rating": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "two decimals at most; the runner computes points"
+            },
+            "example": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation_severity": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minor",
+                "material"
+              ]
+            },
+            "excellent_anchor_met": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "rating",
+            "example",
+            "limitation",
+            "limitation_severity",
+            "excellent_anchor_met"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "material"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 6.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 9.49
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "limitation": {
+                    "const": "none"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "rating": {
+                    "minimum": 9
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "const": "C3.3"
+            },
+            "name": {
+              "const": "Fit with goals and values"
+            },
+            "rating": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "two decimals at most; the runner computes points"
+            },
+            "example": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation_severity": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minor",
+                "material"
+              ]
+            },
+            "excellent_anchor_met": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "rating",
+            "example",
+            "limitation",
+            "limitation_severity",
+            "excellent_anchor_met"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "material"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 6.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 9.49
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "limitation": {
+                    "const": "none"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "rating": {
+                    "minimum": 9
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "const": "C3.4"
+            },
+            "name": {
+              "const": "Attention to constraints and stakes"
+            },
+            "rating": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "two decimals at most; the runner computes points"
+            },
+            "example": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation_severity": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minor",
+                "material"
+              ]
+            },
+            "excellent_anchor_met": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "rating",
+            "example",
+            "limitation",
+            "limitation_severity",
+            "excellent_anchor_met"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "material"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 6.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 9.49
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "limitation": {
+                    "const": "none"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "rating": {
+                    "minimum": 9
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "const": "C3.5"
+            },
+            "name": {
+              "const": "Responsiveness to information"
+            },
+            "rating": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "two decimals at most; the runner computes points"
+            },
+            "example": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation_severity": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minor",
+                "material"
+              ]
+            },
+            "excellent_anchor_met": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "rating",
+            "example",
+            "limitation",
+            "limitation_severity",
+            "excellent_anchor_met"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "material"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 6.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 9.49
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "limitation": {
+                    "const": "none"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "rating": {
+                    "minimum": 9
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "const": "C4.1"
+            },
+            "name": {
+              "const": "Clarification of desires and motivations"
+            },
+            "rating": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "two decimals at most; the runner computes points"
+            },
+            "example": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation_severity": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minor",
+                "material"
+              ]
+            },
+            "excellent_anchor_met": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "rating",
+            "example",
+            "limitation",
+            "limitation_severity",
+            "excellent_anchor_met"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "material"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 6.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 9.49
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "limitation": {
+                    "const": "none"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "rating": {
+                    "minimum": 9
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "const": "C4.2"
+            },
+            "name": {
+              "const": "Examination of assumptions"
+            },
+            "rating": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "two decimals at most; the runner computes points"
+            },
+            "example": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation_severity": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minor",
+                "material"
+              ]
+            },
+            "excellent_anchor_met": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "rating",
+            "example",
+            "limitation",
+            "limitation_severity",
+            "excellent_anchor_met"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "material"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 6.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 9.49
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "limitation": {
+                    "const": "none"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "rating": {
+                    "minimum": 9
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "const": "C4.3"
+            },
+            "name": {
+              "const": "Clarification of values and priorities"
+            },
+            "rating": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "two decimals at most; the runner computes points"
+            },
+            "example": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation_severity": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minor",
+                "material"
+              ]
+            },
+            "excellent_anchor_met": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "rating",
+            "example",
+            "limitation",
+            "limitation_severity",
+            "excellent_anchor_met"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "material"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 6.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 9.49
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "limitation": {
+                    "const": "none"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "rating": {
+                    "minimum": 9
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "const": "C4.4"
+            },
+            "name": {
+              "const": "Recognition of fears and outside expectations"
+            },
+            "rating": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "two decimals at most; the runner computes points"
+            },
+            "example": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation_severity": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minor",
+                "material"
+              ]
+            },
+            "excellent_anchor_met": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "rating",
+            "example",
+            "limitation",
+            "limitation_severity",
+            "excellent_anchor_met"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "material"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 6.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 9.49
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "limitation": {
+                    "const": "none"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "rating": {
+                    "minimum": 9
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "const": "C4.5"
+            },
+            "name": {
+              "const": "Agency and reflective ownership"
+            },
+            "rating": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "two decimals at most; the runner computes points"
+            },
+            "example": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation_severity": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minor",
+                "material"
+              ]
+            },
+            "excellent_anchor_met": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "rating",
+            "example",
+            "limitation",
+            "limitation_severity",
+            "excellent_anchor_met"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "material"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 6.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 9.49
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "limitation": {
+                    "const": "none"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "rating": {
+                    "minimum": 9
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "const": "C5.1"
+            },
+            "name": {
+              "const": "Definition of the decision and options, including waiting, learning more, or a limited step"
+            },
+            "rating": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "two decimals at most; the runner computes points"
+            },
+            "example": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation_severity": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minor",
+                "material"
+              ]
+            },
+            "excellent_anchor_met": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "rating",
+            "example",
+            "limitation",
+            "limitation_severity",
+            "excellent_anchor_met"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "material"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 6.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 9.49
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "limitation": {
+                    "const": "none"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "rating": {
+                    "minimum": 9
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "const": "C5.2"
+            },
+            "name": {
+              "const": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless"
+            },
+            "rating": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "two decimals at most; the runner computes points"
+            },
+            "example": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation_severity": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minor",
+                "material"
+              ]
+            },
+            "excellent_anchor_met": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "rating",
+            "example",
+            "limitation",
+            "limitation_severity",
+            "excellent_anchor_met"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "material"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 6.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 9.49
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "limitation": {
+                    "const": "none"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "rating": {
+                    "minimum": 9
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "const": "C5.3"
+            },
+            "name": {
+              "const": "Identification of decisive conditions"
+            },
+            "rating": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "two decimals at most; the runner computes points"
+            },
+            "example": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation_severity": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minor",
+                "material"
+              ]
+            },
+            "excellent_anchor_met": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "rating",
+            "example",
+            "limitation",
+            "limitation_severity",
+            "excellent_anchor_met"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "material"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 6.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 9.49
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "limitation": {
+                    "const": "none"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "rating": {
+                    "minimum": 9
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "const": "C5.4"
+            },
+            "name": {
+              "const": "Treatment of uncertainty"
+            },
+            "rating": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "two decimals at most; the runner computes points"
+            },
+            "example": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation_severity": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minor",
+                "material"
+              ]
+            },
+            "excellent_anchor_met": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "rating",
+            "example",
+            "limitation",
+            "limitation_severity",
+            "excellent_anchor_met"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "material"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 6.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 9.49
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "limitation": {
+                    "const": "none"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "rating": {
+                    "minimum": 9
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "const": "C5.5"
+            },
+            "name": {
+              "const": "Proportionate next steps that follow from the analysis and fit the constraints"
+            },
+            "rating": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "two decimals at most; the runner computes points"
+            },
+            "example": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation_severity": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minor",
+                "material"
+              ]
+            },
+            "excellent_anchor_met": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "rating",
+            "example",
+            "limitation",
+            "limitation_severity",
+            "excellent_anchor_met"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "material"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 6.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 9.49
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "limitation": {
+                    "const": "none"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "rating": {
+                    "minimum": 9
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "const": "C6.1"
+            },
+            "name": {
+              "const": "Accessible language"
+            },
+            "rating": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "two decimals at most; the runner computes points"
+            },
+            "example": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation_severity": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minor",
+                "material"
+              ]
+            },
+            "excellent_anchor_met": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "rating",
+            "example",
+            "limitation",
+            "limitation_severity",
+            "excellent_anchor_met"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "material"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 6.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 9.49
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "limitation": {
+                    "const": "none"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "rating": {
+                    "minimum": 9
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "const": "C6.2"
+            },
+            "name": {
+              "const": "Traceable arguments and references"
+            },
+            "rating": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "two decimals at most; the runner computes points"
+            },
+            "example": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation_severity": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minor",
+                "material"
+              ]
+            },
+            "excellent_anchor_met": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "rating",
+            "example",
+            "limitation",
+            "limitation_severity",
+            "excellent_anchor_met"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "material"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 6.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 9.49
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "limitation": {
+                    "const": "none"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "rating": {
+                    "minimum": 9
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "const": "C6.3"
+            },
+            "name": {
+              "const": "Manageable pacing and turn length"
+            },
+            "rating": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "two decimals at most; the runner computes points"
+            },
+            "example": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation_severity": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minor",
+                "material"
+              ]
+            },
+            "excellent_anchor_met": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "rating",
+            "example",
+            "limitation",
+            "limitation_severity",
+            "excellent_anchor_met"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "material"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 6.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 9.49
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "limitation": {
+                    "const": "none"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "rating": {
+                    "minimum": 9
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "const": "C6.4"
+            },
+            "name": {
+              "const": "Distinguishable positions and voices, with explicit changes of position"
+            },
+            "rating": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "two decimals at most; the runner computes points"
+            },
+            "example": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation_severity": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minor",
+                "material"
+              ]
+            },
+            "excellent_anchor_met": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "rating",
+            "example",
+            "limitation",
+            "limitation_severity",
+            "excellent_anchor_met"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "material"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 6.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 9.49
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "limitation": {
+                    "const": "none"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "rating": {
+                    "minimum": 9
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "const": "C6.5"
+            },
+            "name": {
+              "const": "Economy and sustained attention"
+            },
+            "rating": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "two decimals at most; the runner computes points"
+            },
+            "example": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation_severity": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minor",
+                "material"
+              ]
+            },
+            "excellent_anchor_met": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "rating",
+            "example",
+            "limitation",
+            "limitation_severity",
+            "excellent_anchor_met"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "material"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 6.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 9.49
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "limitation": {
+                    "const": "none"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "rating": {
+                    "minimum": 9
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "const": "C7.1"
+            },
+            "name": {
+              "const": "Meaningful stakes and tension arising from the issue itself"
+            },
+            "rating": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "two decimals at most; the runner computes points"
+            },
+            "example": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation_severity": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minor",
+                "material"
+              ]
+            },
+            "excellent_anchor_met": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "rating",
+            "example",
+            "limitation",
+            "limitation_severity",
+            "excellent_anchor_met"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "material"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 6.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 9.49
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "limitation": {
+                    "const": "none"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "rating": {
+                    "minimum": 9
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "const": "C7.2"
+            },
+            "name": {
+              "const": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal"
+            },
+            "rating": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "two decimals at most; the runner computes points"
+            },
+            "example": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation_severity": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minor",
+                "material"
+              ]
+            },
+            "excellent_anchor_met": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "rating",
+            "example",
+            "limitation",
+            "limitation_severity",
+            "excellent_anchor_met"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "material"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 6.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 9.49
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "limitation": {
+                    "const": "none"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "rating": {
+                    "minimum": 9
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "const": "C7.3"
+            },
+            "name": {
+              "const": "Personality and expressive voice without caricature"
+            },
+            "rating": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "two decimals at most; the runner computes points"
+            },
+            "example": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation_severity": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minor",
+                "material"
+              ]
+            },
+            "excellent_anchor_met": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "rating",
+            "example",
+            "limitation",
+            "limitation_severity",
+            "excellent_anchor_met"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "material"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 6.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 9.49
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "limitation": {
+                    "const": "none"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "rating": {
+                    "minimum": 9
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "const": "C7.4"
+            },
+            "name": {
+              "const": "Memorable delivery"
+            },
+            "rating": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "two decimals at most; the runner computes points"
+            },
+            "example": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation_severity": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minor",
+                "material"
+              ]
+            },
+            "excellent_anchor_met": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "rating",
+            "example",
+            "limitation",
+            "limitation_severity",
+            "excellent_anchor_met"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "material"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 6.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 9.49
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "limitation": {
+                    "const": "none"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "rating": {
+                    "minimum": 9
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "const": "C7.5"
+            },
+            "name": {
+              "const": "Anticipation and emotional movement, with varied rhythm rather than constant intensity"
+            },
+            "rating": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "two decimals at most; the runner computes points"
+            },
+            "example": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitation_severity": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minor",
+                "material"
+              ]
+            },
+            "excellent_anchor_met": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "rating",
+            "example",
+            "limitation",
+            "limitation_severity",
+            "excellent_anchor_met"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "material"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 6.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "minor"
+                  },
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 9.49
+                  },
+                  "limitation": {
+                    "not": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "limitation": {
+                    "const": "none"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "limitation_severity": {
+                    "const": "none"
+                  },
+                  "excellent_anchor_met": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "rating": {
+                    "maximum": 8.99
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "rating": {
+                    "minimum": 9
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "excellent_anchor_met": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "items": false
+    },
+    "strengths": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "weaknesses": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "source_error",
+              "unsupported_claim",
+              "safety",
+              "format",
+              "unverified_grounding",
+              "rubric_mismatch"
+            ]
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "minor",
+              "material",
+              "critical"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "observed",
+              "suspected",
+              "unverified",
+              "supported_by_evidence"
+            ]
+          },
+          "location": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 0
+          }
+        },
+        "required": [
+          "type",
+          "severity",
+          "status",
+          "location",
+          "description",
+          "evidence_ids"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "supported_by_evidence"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "evidence_ids": {
+                  "minItems": 1
+                }
+              }
+            }
+          }
+        ]
+      },
+      "minItems": 0
+    },
+    "cap_reasons": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "reason": {
+            "type": "string",
+            "enum": [
+              "fabricated_quotation",
+              "pd_false_quotation_marks",
+              "nonexistent_book",
+              "materially_misleading_claim"
+            ]
+          },
+          "finding_index": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "reason",
+          "finding_index"
+        ]
+      },
+      "minItems": 0
+    },
+    "rubric_fit_notes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 0
+    },
+    "symptoms": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "cell_id": {
+            "type": "string",
+            "pattern": "^C[1-7]\\.[1-5]$"
+          },
+          "turns": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "minItems": 0
+          },
+          "observed": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "evidence": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 120
+          }
+        },
+        "required": [
+          "cell_id",
+          "turns",
+          "observed",
+          "evidence"
+        ]
+      }
+    },
+    "mechanical": {
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "pattern": {
+            "type": "string",
+            "enum": [
+              "uncaused_reversal",
+              "restatement_opener",
+              "hedge_saturation",
+              "inert_question",
+              "ungrounded_number",
+              "misfit_slot",
+              "uniform_voice"
+            ]
+          },
+          "turns": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "pattern",
+          "turns"
+        ]
+      }
+    },
+    "question_type_note": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "rubric_version",
+    "evaluation_status",
+    "cells",
+    "strengths",
+    "weaknesses",
+    "findings",
+    "cap_reasons",
+    "rubric_fit_notes",
+    "symptoms",
+    "mechanical",
+    "question_type_note"
+  ]
+}

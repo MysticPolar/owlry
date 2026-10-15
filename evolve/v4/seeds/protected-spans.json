@@ -1,0 +1,128 @@
+{
+  "gemini": {
+    "source_file": "prompts/castDebate.gemini.v0.md",
+    "system_sha256": "9ea7ff7636dfbf243276ebd26b77f38a8650de85ebd8d2c8d6caea10f6a35a23",
+    "system_word_count": 1353,
+    "user_template": "{{question}}",
+    "protected_spans": [
+      {
+        "id": "language",
+        "text": "Use the user’s language.",
+        "sha256": "5c947b9846dd0fa5bdea83b3a416e25cb3fd3ff96384a295279277fb52037f79"
+      },
+      {
+        "id": "fictional_cast",
+        "text": "Choose three perspectives suited to this situation. Use descriptive role titles only, such as “The Experimenter” or “The Relationship Critic.” Do not give them personal names or impersonate real thinkers.",
+        "sha256": "a33770e6872d9c8f1a6b2ce7c404b803b6d940c521ff0ca1c377e74f5b2fed76"
+      },
+      {
+        "id": "book_basis",
+        "text": "Ground each mind primarily in one book by one identifiable thinker.",
+        "sha256": "1c1df8d4e36cbf95754f754cb30af8f5c27410a379817bae5b032dbd3021e4d0"
+      },
+      {
+        "id": "quotation_rule",
+        "text": "1. Book published before 1931: you may quote its exact words. Use a direct quotation only when the exact wording strengthens the position, sharpens a disagreement, or reveals a tension that paraphrasing would lose. Keep quotations brief and verify their wording. For a translated or revised text, also verify that the edition supplying the quoted wording was published before 1931.\n2. Book published in 1931 or later: do not quote. Express the idea naturally in your own words, without quotation marks around the paraphrase, and name the author and book in the accompanying fields and reference.",
+        "sha256": "eb8e4375c96ad45f6848ea6b050ecaad543d7a7e4bfd697fea71e1d84ce9c613"
+      },
+      {
+        "id": "pd_field",
+        "text": "Set `pd` to the JSON boolean `true` if the cited book was published before 1931, otherwise `false`. Use `pd` strictly as this publication-date flag.",
+        "sha256": "bbd6f3165bc0403004071373e5fd85c146d49923b1decd977f125060a4a91fe5"
+      },
+      {
+        "id": "no_demographic_inference",
+        "text": "Do not infer personality, preferences, or motives from demographic labels.",
+        "sha256": "83e32389692a6a68d48a9503d8d926ad5af6eb72e93658403ca0933bfb3de0f5"
+      },
+      {
+        "id": "dignity",
+        "text": "Attack arguments freely; respect the dignity of the user and other people.",
+        "sha256": "b000f431514cee1ffcbf0d6a9e0b8b615e2bec59a87c9e7e8d1a4d7725476936"
+      },
+      {
+        "id": "turn_range",
+        "text": "Write 9–12 speaking turns, usually 25–65 words each, excluding references.",
+        "sha256": "10b025d6393a50821fc501ebe64d845dae51717e45cf3e742324f9493efc140d"
+      },
+      {
+        "id": "ending",
+        "text": "Keep the synthesis shorter than the debate. Do not end with a question or request for user input.",
+        "sha256": "26b3eaef4fe9ee0cfd4377408bb97b8c87bc5560ba0a7929d24d61b6faa1052b"
+      },
+      {
+        "id": "basis_plumbing",
+        "text": "Every speaking turn must include a concise reference to its supporting book in the final `basis` field, in exactly this plain-text form:\nBasis: Author, Book",
+        "sha256": "310cc1e0ef4f7eba63b5716eb84868cb9303730565addd8c7ae8ee3ac0aa0ca2"
+      },
+      {
+        "id": "format_line",
+        "text": "{\"speaker\":\"The [Role Title]\",\"text\":\"Natural dialogue responding to the discussion.\",\"author\":\"Author\",\"book\":\"Book\",\"pd\":false,\"basis\":\"Basis: Author, Book\"}",
+        "sha256": "1d866b36180b6dde2f9197e8e0342100ffdd50643dafd866f2635f135caaacd0"
+      },
+      {
+        "id": "per_turn_quote_check",
+        "text": "Check each line before writing the next: when `pd` is false, `text` contains no quotation marks of any kind.",
+        "sha256": "5451fc8351ba8ee2eb94703c548c8599fd1dd3a5a11c0dc1ca7775b8dd832bea"
+      }
+    ]
+  },
+  "sonnet": {
+    "source_file": "prompts/castDebate.sonnet.v0.md",
+    "system_sha256": "fa92c753310616b2283cfce4be17b1447708eecf102bd0fb011b683298d6fece",
+    "system_word_count": 1352,
+    "user_template": "{{question}}",
+    "protected_spans": [
+      {
+        "id": "language",
+        "text": "Use the user’s language.",
+        "sha256": "5c947b9846dd0fa5bdea83b3a416e25cb3fd3ff96384a295279277fb52037f79"
+      },
+      {
+        "id": "fictional_cast",
+        "text": "Choose three perspectives suited to this situation. Use descriptive role titles only, such as “The Experimenter” or “The Relationship Critic.” Do not give them personal names or impersonate real thinkers.",
+        "sha256": "a33770e6872d9c8f1a6b2ce7c404b803b6d940c521ff0ca1c377e74f5b2fed76"
+      },
+      {
+        "id": "book_basis",
+        "text": "Ground each mind primarily in one book by one identifiable thinker.",
+        "sha256": "1c1df8d4e36cbf95754f754cb30af8f5c27410a379817bae5b032dbd3021e4d0"
+      },
+      {
+        "id": "quotation_rule",
+        "text": "1. Book published before 1931: you may quote its exact words. Use a direct quotation only when the exact wording strengthens the position, sharpens a disagreement, or reveals a tension that paraphrasing would lose. Keep quotations brief and verify their wording. For a translated or revised text, also verify that the edition supplying the quoted wording was published before 1931.\n2. Book published in 1931 or later: do not quote. Express the idea naturally in your own words, without quotation marks around the paraphrase, and name the author and book in the accompanying fields and reference.",
+        "sha256": "eb8e4375c96ad45f6848ea6b050ecaad543d7a7e4bfd697fea71e1d84ce9c613"
+      },
+      {
+        "id": "pd_field",
+        "text": "Set `pd` to the JSON boolean `true` if the cited book was published before 1931, otherwise `false`. Use `pd` strictly as this publication-date flag.",
+        "sha256": "bbd6f3165bc0403004071373e5fd85c146d49923b1decd977f125060a4a91fe5"
+      },
+      {
+        "id": "no_demographic_inference",
+        "text": "Do not infer personality, preferences, or motives from demographic labels.",
+        "sha256": "83e32389692a6a68d48a9503d8d926ad5af6eb72e93658403ca0933bfb3de0f5"
+      },
+      {
+        "id": "dignity",
+        "text": "Attack arguments freely; respect the dignity of the user and other people.",
+        "sha256": "b000f431514cee1ffcbf0d6a9e0b8b615e2bec59a87c9e7e8d1a4d7725476936"
+      },
+      {
+        "id": "turn_range",
+        "text": "Write 9–12 speaking turns, usually 25–65 words each, excluding references.",
+        "sha256": "10b025d6393a50821fc501ebe64d845dae51717e45cf3e742324f9493efc140d"
+      },
+      {
+        "id": "ending",
+        "text": "Keep the synthesis shorter than the debate. Do not end with a question or request for user input.",
+        "sha256": "26b3eaef4fe9ee0cfd4377408bb97b8c87bc5560ba0a7929d24d61b6faa1052b"
+      },
+      {
+        "id": "format_line",
+        "text": "{\"speaker\":\"The [Role Title]\",\"text\":\"Natural dialogue responding to the discussion.\",\"author\":\"Author\",\"book\":\"Book\",\"pd\":false,\"basis\":\"[Basis: Author, Book, verified section if available](verified URL)\"}",
+        "sha256": "afa8b416a81ef53b63e9a1fca412d24d74d5afd2c027aa132035a41aa74264f7"
+      }
+    ]
+  }
+}
