@@ -25,11 +25,16 @@ async function copyDir(src: string, dst: string) {
   }
 }
 
-async function makeRoot(patch?: (cfg: Record<string, any>) => void): Promise<string> {
+/** A fresh data root. The mechanics tests pin both champions to v0 (Sonnet's live champion is v1 since Option 2), so a
+ *  lineage's first challenger is v1 everywhere; `live` keeps the package config as it is. */
+async function makeRoot(patch?: (cfg: Record<string, any>) => void, live = false): Promise<string> {
   const root = await Deno.makeTempDir({ prefix: "evo4-it-" });
   for (const d of ["sets", "runner-only", "roles", "prompts", "schemas", "seeds"]) await copyDir(`${PKG}/${d}`, `${root}/${d}`);
   for (const f of ["config.v4.2.json", "rubric-map.json"]) await Deno.copyFile(`${PKG}/${f}`, `${root}/${f}`);
-  if (patch) { const c = JSON.parse(await Deno.readTextFile(`${root}/config.v4.2.json`)); patch(c); await Deno.writeTextFile(`${root}/config.v4.2.json`, JSON.stringify(c, null, 2)); }
+  const c = JSON.parse(await Deno.readTextFile(`${root}/config.v4.2.json`));
+  if (!live) for (const l of Object.values<any>(c.lineages)) { l.champion = "v0"; l.initialReleaseReference = "v0"; }
+  if (patch) patch(c);
+  await Deno.writeTextFile(`${root}/config.v4.2.json`, JSON.stringify(c, null, 2));
   return root;
 }
 
@@ -760,6 +765,25 @@ await T("a promoted plain-citation Sonnet control protects its plain citation ru
   ok(!spansBlock.includes("(verified URL)"), "the linked format is no longer demanded");
   await drive(root, "sonnet", { blind: challengerLosesAll }, async () => (await ledger(root, "sonnet")).length === 2);
   eq((await ledger(root, "sonnet"))[1].outcome, "REJECT", "the optimizer's proposal passed validation and was judged");
+});
+
+await T("Option 2: a forced re-bootstrap onto Sonnet's plain-citation original keeps the record, sets the old baseline aside, and the queued control enters as v2 against v1", async () => {
+  const root = await makeRoot(undefined, true);
+  // the first bootstrap as it happened: the linked original v0
+  await must(root, "bootstrap", "--lineage", "sonnet", "--champion", "v0");
+  await drive(root, "sonnet", {}, atOptimizer(root, "sonnet"));
+  const out = await must(root, "bootstrap", "--lineage", "sonnet", "--force", "--champion", "v1", "--note", "Option 2: plain citation format");
+  ok(/opened .* in BASELINE for v1/.test(out), out);
+  const champ = await readJson(`${root}/sonnet/champion.json`);
+  eq([champ.working, champ.initialReleaseReference], ["v1", "v1"], "the release reference follows the config");
+  eq((await readJson(`${root}/sonnet/versions/v0.json`)).status, "superseded");
+  ok(!(await exists(`${root}/sonnet/baseline.json`)) && (await walk(`${root}/sonnet`)).some((p) => /baseline\.v0\..*\.json$/.test(p)), "old baseline set aside, not reused");
+  await must(root, "challenge", "--lineage", "sonnet", "--file", "prompts/castDebate.sonnet.v2-plain.md", "--note", "control");
+  const log = await drive(root, "sonnet", { blind: challengerWinsAll, rating: (_l, v) => (v === "v2" ? 7 : 6) }, async () => (await ledger(root, "sonnet")).length === 1);
+  ok(!log.some((l) => /WARNING manual challenger breaks protected spans/.test(l)), "v2-plain keeps every rule its plain champion protects");
+  ok(!log.some((l) => /WARNING the champion v1's own baseline fails/.test(l)), "the plain original passes the form checks (mock debates)");
+  const l = await ledger(root, "sonnet");
+  eq([l[0].version, l[0].base, l[0].outcome], ["v2", "v1", "PROMOTE"]);
 });
 
 const fails = report();

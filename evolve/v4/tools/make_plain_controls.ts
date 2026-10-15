@@ -60,6 +60,16 @@ function apply(name: string, text: string, pairs: [string, string][]): string {
 }
 
 const report: string[] = [];
+
+// Option 2 (2026-10-15): Sonnet's original gets the same plumbing, as a new version v1 (v0 stays the linked original on
+// record). Gemini v0 is by construction Sonnet v0 plus the plumbing, so the result must equal Gemini v0 byte for byte.
+{
+  const sonnetV1 = apply("sonnet v0", sonnetV0.join("\n"), merged);
+  if (sonnetV1 !== geminiV0.join("\n")) throw new Error("Sonnet v0 + plumbing differs from Gemini v0; the plumbing is not what the v0 files say");
+  await Deno.writeTextFile(`${P}/prompts/castDebate.sonnet.v1.md`, sonnetV1);
+  const r = checkSpans(sys(sonnetV1), spans.gemini.protected_spans);
+  report.push(`sonnet v1 (Option 2): v0 ${countWords(sys(sonnetV0.join("\n")))} words -> ${countWords(sys(sonnetV1))} words; identical to gemini v0; plain-citation spans missing [${r.missing.join(", ")}]`);
+}
 for (const [lin, pairs] of [["sonnet", merged], ["gemini", geminiPairs]] as [string, [string, string][]][]) {
   const v2 = await read(`castDebate.${lin}.v2.md`);
   const plain = apply(lin, v2, pairs);

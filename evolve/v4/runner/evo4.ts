@@ -153,11 +153,22 @@ switch (args._[0]) {
 
 async function bootstrap(L: Lineage) {
   // a second bootstrap would reset promotions and the release pointer; it needs --force
-  if ((await exists(`${L.dir}/champion.json`)) && !args.force) { console.log(`${L.name}: already bootstrapped (champion.json exists); pass --force to start the lineage over`); return; }
+  const previous = await readJson(`${L.dir}/champion.json`).catch(() => null) as Champion | null;
+  if (previous && !args.force) { console.log(`${L.name}: already bootstrapped (champion.json exists); pass --force to start the lineage over`); return; }
   const champion = (args.champion as string) ?? L.def.champion;
+  if (!/^v\d+$/.test(champion)) { console.log(`${L.name}: ERROR a champion version is v<number>, got ${champion}`); return; }
   const file = `${L.dir}/versions/${champion}.md`;
   if (!(await exists(file))) await writeText(file, await Deno.readTextFile(`${ROOT}/prompts/${L.def.subject}.${champion}.md`));
-  if (!(await exists(`${L.dir}/versions/${champion}.json`))) await writeJson(`${L.dir}/versions/${champion}.json`, { version: champion, parent: null, kind: "BASELINE", status: "working champion", origin: `prompts/${L.def.subject}.${champion}.md`, createdAt: now() });
+  if (!(await exists(`${L.dir}/versions/${champion}.json`))) await writeJson(`${L.dir}/versions/${champion}.json`, { version: champion, parent: previous?.working ?? null, kind: "BASELINE", status: "working champion", origin: `prompts/${L.def.subject}.${champion}.md`, note: args.note ?? null, createdAt: now() });
+  if (previous) {
+    // a forced re-bootstrap keeps the record: the old baseline is set aside under its version's name (it must not stand in
+    // for the new champion's), and an old champion that is replaced is marked superseded
+    const stamp = now().replace(/[:.]/g, "-");
+    if (await exists(`${L.dir}/baseline.json`)) await Deno.rename(`${L.dir}/baseline.json`, `${L.dir}/baseline.${previous.working}.${stamp}.json`);
+    const vf = `${L.dir}/versions/${previous.working}.json`;
+    if (previous.working !== champion && (await exists(vf))) await writeJson(vf, { ...(await readJson(vf)), status: "superseded", supersededBy: champion, supersededAt: now(), supersededBecause: args.note ?? "re-bootstrapped with --force" });
+    await appendText(`${L.dir}/bootstraps.log`, `${now()} re-bootstrap: champion ${previous.working} -> ${champion}${args.note ? `: ${args.note}` : ""}\n`);
+  }
   await writeJson(`${L.dir}/champion.json`, { working: champion, release: null, initialReleaseReference: L.def.initialReleaseReference ?? champion, promotions: 0, promotionsSinceValidation: 0 } as Champion);
   await writeJson(`${L.dir}/session.json`, { startedAt: now(), ledgerStart: (await readLedger(L)).length, callsStart: await callsCount(L) } as Session);
   const exp = newExp(L, "iteration", "BASELINE", champion, 0);
