@@ -1,0 +1,932 @@
+{
+  "jobId": "rubric.v2.q3.s1",
+  "raw": {
+    "schema_version": "rubric-evaluator-4.2.0",
+    "rubric_version": "owlry-matrix-v2-bands",
+    "evaluation_status": "complete",
+    "cells": [
+      {
+        "id": "C1.1",
+        "name": "Continuity and responsiveness",
+        "rating": 8.5,
+        "example": "T3 answers T1 and T2 together; T5, T6, T8 open by building on the prior turn.",
+        "limitation": "T2 shifts to epistemics without answering T1's claim that goodwill must run both ways.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.2",
+        "name": "Development of ideas",
+        "rating": 9,
+        "example": "T5 introduces the silent-test trap, used in T6 and T10; T6's three motives reused in T7 and D.",
+        "limitation": "T10 adds little beyond T9's point that her later behaviour is the real evidence.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C1.3",
+        "name": "Exploration of central tensions",
+        "rating": 7.8,
+        "example": "T8 sets equality against ease; T2 to T4 set pattern-as-evidence against inference from thin data.",
+        "limitation": "Nobody examines whether reciprocity can take forms other than initiating plans.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.4",
+        "name": "Integration of perspectives",
+        "rating": 8,
+        "example": "T4 Auditor narrows to 'a question, not a conclusion'; T10 Skeptic limits waiting to never minding.",
+        "limitation": "T6 warns the Auditor that tallying turns talk into audit; the Auditor never replies.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.5",
+        "name": "Progress toward understanding",
+        "rating": 8.5,
+        "example": "E names the decisive unknown, why she doesn't initiate, and a small way to learn it.",
+        "limitation": "D lists testing through silence as a live alternative after T5 and T6 rejected it.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.1",
+        "name": "Faithful engagement",
+        "rating": 8.2,
+        "example": "T4 grants the Skeptic's point before narrowing; T6 agrees on the silent test before challenging.",
+        "limitation": "After T4 nobody engages the Auditor's strongest point that a long pattern is itself information.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.2",
+        "name": "Substance of challenges",
+        "rating": 8.7,
+        "example": "T2 names the assumption that silence reveals her view; T4 answers by narrowing, not restating.",
+        "limitation": "T5 asserts the cost of texting is small without testing it against the user's fatigue.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C2.3",
+        "name": "Accuracy and support",
+        "rating": 7.3,
+        "example": "T3's observation versus evaluation and T8's friendship of pleasure fit Rosenberg and Aristotle.",
+        "limitation": "T7 says she calls the evenings lovely; the user, not the friend, said that.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.4",
+        "name": "Calibration and transparency",
+        "rating": 8.2,
+        "example": "T7 labels its motive guess 'Still, that's a bet'; T4 separates question from conclusion.",
+        "limitation": "T5 states 'the cost of texting is small' as fact; it is an assumption about the user.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.5",
+        "name": "Intellectual honesty and revision",
+        "rating": 8.2,
+        "example": "T4 'Silence isn't a verdict, granted. I'll narrow my claim' revises without shifting goalposts.",
+        "limitation": "T6's audit objection to the Auditor goes unanswered; T10's concession names no cause.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.1",
+        "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+        "rating": 8.5,
+        "example": "Section A reframes: less whether to speak, more what you want the friendship to be.",
+        "limitation": "Whether this pattern recurs across the user's friendships, or only this one, is never raised.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.2",
+        "name": "Meaningful use of personal context",
+        "rating": 7.4,
+        "example": "T5 uses the lovely evenings to keep doing nothing a real option.",
+        "limitation": "T5 treats going quiet as untried, though the user's 'if I stop texting' suggests it happened.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.3",
+        "name": "Fit with goals and values",
+        "rating": 8.3,
+        "example": "T8 leaves equality versus ease 'yours to rank', keeping the user's priority distinct from the Auditor's.",
+        "limitation": "The Auditor's ideal of mutual goodwill frames T1 before the user's own wishes are asked.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.4",
+        "name": "Attention to constraints and stakes",
+        "rating": 7.2,
+        "example": "T8 states the stake: a friendship of pleasure, real but lighter, versus a deeper one.",
+        "limitation": "T2 onward calls the friend 'she'; the user never gave a gender.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.5",
+        "name": "Responsiveness to information",
+        "rating": 7.6,
+        "example": "E branches on whether it bothers you and on her response to the request.",
+        "limitation": "T7's shy and swamped branches get no move; duration of any quiet spell never asked.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.1",
+        "name": "Clarification of desires and motivations",
+        "rating": 8.8,
+        "example": "T6 offers hurt, tiredness or fairness as alternatives; D turns them into an answerable question.",
+        "limitation": "T7 dismisses the tiredness motive on the misread that she called the evenings lovely.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C4.2",
+        "name": "Examination of assumptions",
+        "rating": 8,
+        "example": "T3 separates the checkable pattern from the guess 'she doesn't care'.",
+        "limitation": "The assumption that initiating plans is the measure of shared effort stays unexamined after T1.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.3",
+        "name": "Clarification of values and priorities",
+        "rating": 8.4,
+        "example": "T8 and D name the conflict: easy warmth or even effort.",
+        "limitation": "What each value would cost the user to give up is stated, not worked through.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.4",
+        "name": "Recognition of fears and outside expectations",
+        "rating": 7.8,
+        "example": "T6 names fear of being merely tolerated and a belief friendships ought to be even.",
+        "limitation": "Fear of hearing an unwelcome answer when asking is touched in T4 only as hiding.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.5",
+        "name": "Agency and reflective ownership",
+        "rating": 8.7,
+        "example": "D's self-reflection question and T8's 'yours to rank' leave the distinctions for the user to refine.",
+        "limitation": "D's closing question narrows to two wishes, dropping the tiredness option it just listed.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.1",
+        "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+        "rating": 8.4,
+        "example": "D defines asking with curiosity, testing through silence, or accepting the rhythm; T9 a limited step.",
+        "limitation": "Different ways of speaking up, naming feelings versus only requesting a plan, are not distinguished.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.2",
+        "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+        "rating": 7.5,
+        "example": "T6 prices the silent test as punishment; T8 prices accepting as a lighter friendship.",
+        "limitation": "T9 and E present the small request with no cost or risk named.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.3",
+        "name": "Identification of decisive conditions",
+        "rating": 8.2,
+        "example": "T9 and E: whether she picks the next plan after the request is observable.",
+        "limitation": "E's 'nothing changes over a while' sets no observable point and favours no option.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.4",
+        "name": "Treatment of uncertainty",
+        "rating": 8.5,
+        "example": "E names why she doesn't initiate as the decisive unknown; T10 says one response won't settle it.",
+        "limitation": "Whether the friend initiates with other people, a key discriminator, is never raised.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.5",
+        "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+        "rating": 8.6,
+        "example": "T9 gives a small script: notice you reach out first, ask her to pick the next plan.",
+        "limitation": "T9's script drops the feeling step T3 recommended, without saying why.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.1",
+        "name": "Accessible language",
+        "rating": 8.7,
+        "example": "T3's 'what happened is checkable... what it means is a guess' is plain and precise.",
+        "limitation": "T8's 'friendship of pleasure' is a term of art glossed only as 'real but lighter'.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.2",
+        "name": "Traceable arguments and references",
+        "rating": 8,
+        "example": "T6 'Agreed on the silent test' and 'warn the Auditor' point clearly to T5 and T1.",
+        "limitation": "T10's 'I'll concede that much' has no clear referent turn.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.3",
+        "name": "Manageable pacing and turn length",
+        "rating": 8.9,
+        "example": "Ten turns, all within range per deterministic checks; each turn carries one move.",
+        "limitation": "none",
+        "limitation_severity": "none",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.4",
+        "name": "Distinguishable positions and voices, with explicit changes of position",
+        "rating": 8.3,
+        "example": "Auditor blunt and verdict-first (T1), Skeptic evidential (T2), Plain Speaker procedural (T3).",
+        "limitation": "T7's Skeptic, warning against confident stories, bets on a motive, blurring its position.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.5",
+        "name": "Economy and sustained attention",
+        "rating": 8.4,
+        "example": "Turns rarely recap; D and E summarise rather than repeat lines.",
+        "limitation": "T10's 'give her time to act' repeats T9's 'what she does after'.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.1",
+        "name": "Meaningful stakes and tension arising from the issue itself",
+        "rating": 7.6,
+        "example": "T1's 'a pleasant acquaintance who is happy to be carried' makes the stake sting.",
+        "limitation": "What losing or deepening this friendship would mean to the user stays abstract.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.2",
+        "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+        "rating": 7.9,
+        "example": "T4 narrows after T2's argument: 'Silence isn't a verdict, granted.'",
+        "limitation": "Reversals are mild narrowings; T10's concession names no turn that caused it.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C7.3",
+        "name": "Personality and expressive voice without caricature",
+        "rating": 7.6,
+        "example": "T4's 'a very comfortable place to hide forever' gives the Auditor bite.",
+        "limitation": "Voices are restrained and humourless; the Plain Speaker reads as procedure more than person.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.4",
+        "name": "Memorable delivery",
+        "rating": 7.9,
+        "example": "T6's 'a punishment dressed as an experiment' is sharp and apt.",
+        "limitation": "No concrete image or example of the friendship; delivery relies on aphorism.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.5",
+        "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+        "rating": 7.5,
+        "example": "Moves from T1's verdict through doubt (T2) to branches (T8) and concession (T10).",
+        "limitation": "Even intensity throughout; no turn lands as a peak or emotional turn.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      }
+    ],
+    "strengths": [
+      "T6 offers hurt, tiredness and fairness as alternative motives, each needing a different conversation, and D turns them into a question.",
+      "T4 Auditor narrows his claim in response to T2 and T3, a caused revision rather than a template.",
+      "E maps observable conditions to options and T9 gives a proportionate, concrete small request."
+    ],
+    "weaknesses": [
+      "T7 Skeptic credits the friend with the user's word 'lovely' and uses it to dismiss the tiredness motive.",
+      "T5 treats going quiet as untried though the user implies it happened; duration never asked.",
+      "The Skeptic and others call the friend 'she' without basis; T6's audit warning to the Auditor goes unanswered."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C2.3",
+        "turns": [
+          7
+        ],
+        "observed": "Attributes the user's own 'lovely' to the friend, then reasons from it.",
+        "evidence": "I doubt it's workload; she calls the evenings lovely."
+      },
+      {
+        "cell_id": "C3.2",
+        "turns": [
+          5
+        ],
+        "observed": "Treats going quiet as hypothetical; never asks if the user already tried it.",
+        "evidence": "Then watch the other trap: going quiet to see what happens."
+      },
+      {
+        "cell_id": "C3.4",
+        "turns": [
+          2,
+          5,
+          7,
+          9
+        ],
+        "observed": "Gives the friend a gender the user never stated.",
+        "evidence": "You can't see what her silence means from inside her head."
+      },
+      {
+        "cell_id": "C5.2",
+        "turns": [
+          9
+        ],
+        "observed": "Presents the small request with no cost or risk named.",
+        "evidence": "It's a request, not a charge."
+      },
+      {
+        "cell_id": "C1.4",
+        "turns": [
+          6,
+          8
+        ],
+        "observed": "Auditor never answers the warning that tallying turns talk into audit.",
+        "evidence": "I'd also warn the Auditor that tallying effort turns a talk"
+      }
+    ],
+    "mechanical": [],
+    "findings": [
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "observed",
+        "location": "Turn 7",
+        "description": "States the friend calls the evenings lovely; the user's situation says the user finds them lovely.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "observed",
+        "location": "Turns 2, 5, 7, 9, 10",
+        "description": "Refers to the friend as 'she'; the user gave no gender.",
+        "evidence_ids": []
+      },
+      {
+        "type": "source_error",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "Turn 3",
+        "description": "Rosenberg's model has four components including needs; T3 lists observation, feeling and request only.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "unverified",
+        "location": "Turns 1-10",
+        "description": "Attributions to Aristotle, Kahneman and Rosenberg are paraphrases consistent with the works but not checked against sources.",
+        "evidence_ids": []
+      }
+    ],
+    "cap_reasons": [],
+    "rubric_fit_notes": [
+      "Ambiguity whether the user already stopped texting is a reading judgment; I treated the debate's hypothetical framing as a minor miss, not a material one."
+    ],
+    "question_type_note": "Read as a decision: whether and how to raise the imbalance, with every cell read as written."
+  },
+  "card": {
+    "criteria": [
+      {
+        "id": "C1",
+        "name": "Quality of discussion",
+        "max": 20,
+        "points": 16.72,
+        "sub": [
+          {
+            "id": "C1.1",
+            "name": "Continuity and responsiveness",
+            "rating": 8.5,
+            "points": 3.4,
+            "example": "T3 answers T1 and T2 together; T5, T6, T8 open by building on the prior turn.",
+            "limitation": "T2 shifts to epistemics without answering T1's claim that goodwill must run both ways.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.2",
+            "name": "Development of ideas",
+            "rating": 9,
+            "points": 3.6,
+            "example": "T5 introduces the silent-test trap, used in T6 and T10; T6's three motives reused in T7 and D.",
+            "limitation": "T10 adds little beyond T9's point that her later behaviour is the real evidence.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C1.3",
+            "name": "Exploration of central tensions",
+            "rating": 7.8,
+            "points": 3.12,
+            "example": "T8 sets equality against ease; T2 to T4 set pattern-as-evidence against inference from thin data.",
+            "limitation": "Nobody examines whether reciprocity can take forms other than initiating plans.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.4",
+            "name": "Integration of perspectives",
+            "rating": 8,
+            "points": 3.2,
+            "example": "T4 Auditor narrows to 'a question, not a conclusion'; T10 Skeptic limits waiting to never minding.",
+            "limitation": "T6 warns the Auditor that tallying turns talk into audit; the Auditor never replies.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.5",
+            "name": "Progress toward understanding",
+            "rating": 8.5,
+            "points": 3.4,
+            "example": "E names the decisive unknown, why she doesn't initiate, and a small way to learn it.",
+            "limitation": "D lists testing through silence as a live alternative after T5 and T6 rejected it.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C2",
+        "name": "Quality of disagreement, trust and grounding",
+        "max": 20,
+        "points": 16.24,
+        "sub": [
+          {
+            "id": "C2.1",
+            "name": "Faithful engagement",
+            "rating": 8.2,
+            "points": 3.28,
+            "example": "T4 grants the Skeptic's point before narrowing; T6 agrees on the silent test before challenging.",
+            "limitation": "After T4 nobody engages the Auditor's strongest point that a long pattern is itself information.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.2",
+            "name": "Substance of challenges",
+            "rating": 8.7,
+            "points": 3.48,
+            "example": "T2 names the assumption that silence reveals her view; T4 answers by narrowing, not restating.",
+            "limitation": "T5 asserts the cost of texting is small without testing it against the user's fatigue.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C2.3",
+            "name": "Accuracy and support",
+            "rating": 7.3,
+            "points": 2.92,
+            "example": "T3's observation versus evaluation and T8's friendship of pleasure fit Rosenberg and Aristotle.",
+            "limitation": "T7 says she calls the evenings lovely; the user, not the friend, said that.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.4",
+            "name": "Calibration and transparency",
+            "rating": 8.2,
+            "points": 3.28,
+            "example": "T7 labels its motive guess 'Still, that's a bet'; T4 separates question from conclusion.",
+            "limitation": "T5 states 'the cost of texting is small' as fact; it is an assumption about the user.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.5",
+            "name": "Intellectual honesty and revision",
+            "rating": 8.2,
+            "points": 3.28,
+            "example": "T4 'Silence isn't a verdict, granted. I'll narrow my claim' revises without shifting goalposts.",
+            "limitation": "T6's audit objection to the Auditor goes unanswered; T10's concession names no cause.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C3",
+        "name": "Personal relevance",
+        "max": 10,
+        "points": 7.8,
+        "sub": [
+          {
+            "id": "C3.1",
+            "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+            "rating": 8.5,
+            "points": 1.7,
+            "example": "Section A reframes: less whether to speak, more what you want the friendship to be.",
+            "limitation": "Whether this pattern recurs across the user's friendships, or only this one, is never raised.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.2",
+            "name": "Meaningful use of personal context",
+            "rating": 7.4,
+            "points": 1.48,
+            "example": "T5 uses the lovely evenings to keep doing nothing a real option.",
+            "limitation": "T5 treats going quiet as untried, though the user's 'if I stop texting' suggests it happened.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.3",
+            "name": "Fit with goals and values",
+            "rating": 8.3,
+            "points": 1.66,
+            "example": "T8 leaves equality versus ease 'yours to rank', keeping the user's priority distinct from the Auditor's.",
+            "limitation": "The Auditor's ideal of mutual goodwill frames T1 before the user's own wishes are asked.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.4",
+            "name": "Attention to constraints and stakes",
+            "rating": 7.2,
+            "points": 1.44,
+            "example": "T8 states the stake: a friendship of pleasure, real but lighter, versus a deeper one.",
+            "limitation": "T2 onward calls the friend 'she'; the user never gave a gender.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.5",
+            "name": "Responsiveness to information",
+            "rating": 7.6,
+            "points": 1.52,
+            "example": "E branches on whether it bothers you and on her response to the request.",
+            "limitation": "T7's shy and swamped branches get no move; duration of any quiet spell never asked.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C4",
+        "name": "Constructive self-discovery",
+        "max": 20,
+        "points": 16.68,
+        "sub": [
+          {
+            "id": "C4.1",
+            "name": "Clarification of desires and motivations",
+            "rating": 8.8,
+            "points": 3.52,
+            "example": "T6 offers hurt, tiredness or fairness as alternatives; D turns them into an answerable question.",
+            "limitation": "T7 dismisses the tiredness motive on the misread that she called the evenings lovely.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C4.2",
+            "name": "Examination of assumptions",
+            "rating": 8,
+            "points": 3.2,
+            "example": "T3 separates the checkable pattern from the guess 'she doesn't care'.",
+            "limitation": "The assumption that initiating plans is the measure of shared effort stays unexamined after T1.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.3",
+            "name": "Clarification of values and priorities",
+            "rating": 8.4,
+            "points": 3.36,
+            "example": "T8 and D name the conflict: easy warmth or even effort.",
+            "limitation": "What each value would cost the user to give up is stated, not worked through.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.4",
+            "name": "Recognition of fears and outside expectations",
+            "rating": 7.8,
+            "points": 3.12,
+            "example": "T6 names fear of being merely tolerated and a belief friendships ought to be even.",
+            "limitation": "Fear of hearing an unwelcome answer when asking is touched in T4 only as hiding.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.5",
+            "name": "Agency and reflective ownership",
+            "rating": 8.7,
+            "points": 3.48,
+            "example": "D's self-reflection question and T8's 'yours to rank' leave the distinctions for the user to refine.",
+            "limitation": "D's closing question narrows to two wishes, dropping the tiredness option it just listed.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C5",
+        "name": "Decision usefulness",
+        "max": 10,
+        "points": 8.24,
+        "sub": [
+          {
+            "id": "C5.1",
+            "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+            "rating": 8.4,
+            "points": 1.68,
+            "example": "D defines asking with curiosity, testing through silence, or accepting the rhythm; T9 a limited step.",
+            "limitation": "Different ways of speaking up, naming feelings versus only requesting a plan, are not distinguished.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.2",
+            "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+            "rating": 7.5,
+            "points": 1.5,
+            "example": "T6 prices the silent test as punishment; T8 prices accepting as a lighter friendship.",
+            "limitation": "T9 and E present the small request with no cost or risk named.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.3",
+            "name": "Identification of decisive conditions",
+            "rating": 8.2,
+            "points": 1.64,
+            "example": "T9 and E: whether she picks the next plan after the request is observable.",
+            "limitation": "E's 'nothing changes over a while' sets no observable point and favours no option.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.4",
+            "name": "Treatment of uncertainty",
+            "rating": 8.5,
+            "points": 1.7,
+            "example": "E names why she doesn't initiate as the decisive unknown; T10 says one response won't settle it.",
+            "limitation": "Whether the friend initiates with other people, a key discriminator, is never raised.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.5",
+            "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+            "rating": 8.6,
+            "points": 1.72,
+            "example": "T9 gives a small script: notice you reach out first, ask her to pick the next plan.",
+            "limitation": "T9's script drops the feeling step T3 recommended, without saying why.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C6",
+        "name": "Clarity and engagement",
+        "max": 10,
+        "points": 8.46,
+        "sub": [
+          {
+            "id": "C6.1",
+            "name": "Accessible language",
+            "rating": 8.7,
+            "points": 1.74,
+            "example": "T3's 'what happened is checkable... what it means is a guess' is plain and precise.",
+            "limitation": "T8's 'friendship of pleasure' is a term of art glossed only as 'real but lighter'.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.2",
+            "name": "Traceable arguments and references",
+            "rating": 8,
+            "points": 1.6,
+            "example": "T6 'Agreed on the silent test' and 'warn the Auditor' point clearly to T5 and T1.",
+            "limitation": "T10's 'I'll concede that much' has no clear referent turn.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.3",
+            "name": "Manageable pacing and turn length",
+            "rating": 8.9,
+            "points": 1.78,
+            "example": "Ten turns, all within range per deterministic checks; each turn carries one move.",
+            "limitation": "none",
+            "severity": "none",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.4",
+            "name": "Distinguishable positions and voices, with explicit changes of position",
+            "rating": 8.3,
+            "points": 1.66,
+            "example": "Auditor blunt and verdict-first (T1), Skeptic evidential (T2), Plain Speaker procedural (T3).",
+            "limitation": "T7's Skeptic, warning against confident stories, bets on a motive, blurring its position.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.5",
+            "name": "Economy and sustained attention",
+            "rating": 8.4,
+            "points": 1.68,
+            "example": "Turns rarely recap; D and E summarise rather than repeat lines.",
+            "limitation": "T10's 'give her time to act' repeats T9's 'what she does after'.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C7",
+        "name": "Drama and entertainment",
+        "max": 10,
+        "points": 7.7,
+        "sub": [
+          {
+            "id": "C7.1",
+            "name": "Meaningful stakes and tension arising from the issue itself",
+            "rating": 7.6,
+            "points": 1.52,
+            "example": "T1's 'a pleasant acquaintance who is happy to be carried' makes the stake sting.",
+            "limitation": "What losing or deepening this friendship would mean to the user stays abstract.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.2",
+            "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+            "rating": 7.9,
+            "points": 1.58,
+            "example": "T4 narrows after T2's argument: 'Silence isn't a verdict, granted.'",
+            "limitation": "Reversals are mild narrowings; T10's concession names no turn that caused it.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C7.3",
+            "name": "Personality and expressive voice without caricature",
+            "rating": 7.6,
+            "points": 1.52,
+            "example": "T4's 'a very comfortable place to hide forever' gives the Auditor bite.",
+            "limitation": "Voices are restrained and humourless; the Plain Speaker reads as procedure more than person.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.4",
+            "name": "Memorable delivery",
+            "rating": 7.9,
+            "points": 1.58,
+            "example": "T6's 'a punishment dressed as an experiment' is sharp and apt.",
+            "limitation": "No concrete image or example of the friendship; delivery relies on aphorism.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.5",
+            "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+            "rating": 7.5,
+            "points": 1.5,
+            "example": "Moves from T1's verdict through doubt (T2) to branches (T8) and concession (T10).",
+            "limitation": "Even intensity throughout; no turn lands as a peak or emotional turn.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      }
+    ],
+    "uncapped": 81.84,
+    "score": 81.84,
+    "capReason": null,
+    "provisional": false,
+    "strengths": [
+      "T6 offers hurt, tiredness and fairness as alternative motives, each needing a different conversation, and D turns them into a question.",
+      "T4 Auditor narrows his claim in response to T2 and T3, a caused revision rather than a template.",
+      "E maps observable conditions to options and T9 gives a proportionate, concrete small request."
+    ],
+    "weaknesses": [
+      "T7 Skeptic credits the friend with the user's word 'lovely' and uses it to dismiss the tiredness motive.",
+      "T5 treats going quiet as untried though the user implies it happened; duration never asked.",
+      "The Skeptic and others call the friend 'she' without basis; T6's audit warning to the Auditor goes unanswered."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C2.3",
+        "turns": [
+          7
+        ],
+        "observed": "Attributes the user's own 'lovely' to the friend, then reasons from it.",
+        "evidence": "I doubt it's workload; she calls the evenings lovely."
+      },
+      {
+        "cell_id": "C3.2",
+        "turns": [
+          5
+        ],
+        "observed": "Treats going quiet as hypothetical; never asks if the user already tried it.",
+        "evidence": "Then watch the other trap: going quiet to see what happens."
+      },
+      {
+        "cell_id": "C3.4",
+        "turns": [
+          2,
+          5,
+          7,
+          9
+        ],
+        "observed": "Gives the friend a gender the user never stated.",
+        "evidence": "You can't see what her silence means from inside her head."
+      },
+      {
+        "cell_id": "C5.2",
+        "turns": [
+          9
+        ],
+        "observed": "Presents the small request with no cost or risk named.",
+        "evidence": "It's a request, not a charge."
+      },
+      {
+        "cell_id": "C1.4",
+        "turns": [
+          6,
+          8
+        ],
+        "observed": "Auditor never answers the warning that tallying turns talk into audit.",
+        "evidence": "I'd also warn the Auditor that tallying effort turns a talk"
+      }
+    ],
+    "mechanical": [],
+    "findings": [
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "observed",
+        "location": "Turn 7",
+        "description": "States the friend calls the evenings lovely; the user's situation says the user finds them lovely.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "observed",
+        "location": "Turns 2, 5, 7, 9, 10",
+        "description": "Refers to the friend as 'she'; the user gave no gender.",
+        "evidence_ids": []
+      },
+      {
+        "type": "source_error",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "Turn 3",
+        "description": "Rosenberg's model has four components including needs; T3 lists observation, feeling and request only.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "unverified",
+        "location": "Turns 1-10",
+        "description": "Attributions to Aristotle, Kahneman and Rosenberg are paraphrases consistent with the works but not checked against sources.",
+        "evidence_ids": []
+      }
+    ],
+    "rubricFitNotes": [
+      "Ambiguity whether the user already stopped texting is a reading judgment; I treated the debate's hypothetical framing as a minor miss, not a material one."
+    ],
+    "questionTypeNote": "Read as a decision: whether and how to raise the imbalance, with every cell read as written."
+  },
+  "rubricVersion": "rubric-evaluator-4.2.0",
+  "savedAt": "2026-10-15T10:16:56.066Z"
+}

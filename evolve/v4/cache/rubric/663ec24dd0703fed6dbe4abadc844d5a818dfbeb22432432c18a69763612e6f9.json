@@ -1,0 +1,940 @@
+{
+  "jobId": "rubric.v1.q4.s3",
+  "raw": {
+    "schema_version": "rubric-evaluator-4.2.0",
+    "rubric_version": "owlry-matrix-v2-bands",
+    "evaluation_status": "complete",
+    "cells": [
+      {
+        "id": "C1.1",
+        "name": "Continuity and responsiveness",
+        "rating": 8.7,
+        "example": "T5 attacks T4's no-audience test directly; T9 builds on T8's belonging point.",
+        "limitation": "Cartographer never answers T5's critique of its test before T11 reuses it.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.2",
+        "name": "Development of ideas",
+        "rating": 9.1,
+        "example": "T8 introduces belonging, absent from every opening; T9 and T11 use it.",
+        "limitation": "T3's clock point is not developed after T4 sets it aside.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C1.3",
+        "name": "Exploration of central tensions",
+        "rating": 7.8,
+        "example": "Borrowed versus genuine wish (T1, T2, T10) and exploration versus commitment (T5-T7).",
+        "limitation": "Cost of waiting raised in T3 is deflected at T4 and never examined.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.4",
+        "name": "Integration of perspectives",
+        "rating": 8.4,
+        "example": "T7 narrows the trial claim after T6; T11 grants pressure and wish coexist.",
+        "limitation": "T9 to T11 is a run of quick acceptances; little friction remains.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.5",
+        "name": "Progress toward understanding",
+        "rating": 8.4,
+        "example": "T11 ends with two concrete tests: audience-independence and milestone versus what surrounds it.",
+        "limitation": "T11 admits the feeling is not separated; timing question left untouched.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.1",
+        "name": "Faithful engagement",
+        "rating": 7.7,
+        "example": "T2 accepts T1's point on custom while flagging 'borrowed' as a guess.",
+        "limitation": "T4 recasts T3's practical seasons as mere social timing, a weaker version.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.2",
+        "name": "Substance of challenges",
+        "rating": 8.9,
+        "example": "T6 names trials as avoidance of commitment; T7 answers by adding end date and question.",
+        "limitation": "T4's objection to T3 asserts rather than shows that deadlines are borrowed.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C2.3",
+        "name": "Accuracy and support",
+        "rating": 8.2,
+        "example": "T2's custom-as-poor-judge fits On Liberty; T4 fits Status Anxiety's peer comparison.",
+        "limitation": "T6 claims to go further than Burkeman, who already warns against endless option-keeping (suspected).",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.4",
+        "name": "Calibration and transparency",
+        "rating": 8.5,
+        "example": "Section A separates what is known (the feeling) from what is open; T1 says 'I suspect'.",
+        "limitation": "T9 states friendship investment is 'more honest cost' with unearned confidence.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.5",
+        "name": "Intellectual honesty and revision",
+        "rating": 7.8,
+        "example": "T7 'Agreed, so I narrow my claim' after T6; T11 'Granted' after T10.",
+        "limitation": "T11 and Section E keep the no-audience test without conceding T5's flaw in it.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.1",
+        "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+        "rating": 8.5,
+        "example": "Section A names the ambiguity: unmet wish, comparison pressure, or something else.",
+        "limitation": "Whether the user seeks permission to opt out or relief from the feeling is not asked.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.2",
+        "name": "Meaningful use of personal context",
+        "rating": 8,
+        "example": "T8 turns 'friends buying homes or marrying' into a possible loss of belonging.",
+        "limitation": "Nothing about how close these friends are shapes the T9 advice.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.3",
+        "name": "Fit with goals and values",
+        "rating": 8.3,
+        "example": "T4 and Section E centre what the user would want with no audience.",
+        "limitation": "Speakers' own values (freedom, depth) lead; user's priorities stay largely inferred.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.4",
+        "name": "Attention to constraints and stakes",
+        "rating": 7.3,
+        "example": "T3 notes waiting has costs and declining is itself a choice.",
+        "limitation": "T3's 'rough seasons' stays generic; money and practical constraints of a home never appear.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.5",
+        "name": "Responsiveness to information",
+        "rating": 7.4,
+        "example": "Section E branches on whether the wish survives without audience, with implications.",
+        "limitation": "Age and partner status, on which T3's clock depends, are never asked or branched.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.1",
+        "name": "Clarification of desires and motivations",
+        "rating": 9.2,
+        "example": "Section D offers comparison, real wish, belonging as alternatives with answerable questions.",
+        "limitation": "T1 leans toward 'borrowed' before T2 checks it.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C4.2",
+        "name": "Examination of assumptions",
+        "rating": 8.8,
+        "example": "T1 questions 'behind whom'; T5 exposes the assumption that introspection settles wanting.",
+        "limitation": "T3's assumption that a timeline applies to this user goes unexamined.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.3",
+        "name": "Clarification of values and priorities",
+        "rating": 8.1,
+        "example": "T6-T7 set freedom to try against depth through commitment.",
+        "limitation": "Values like security or independence that milestones serve are not surfaced.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.4",
+        "name": "Recognition of fears and outside expectations",
+        "rating": 8.7,
+        "example": "T10 notes people may want a home or family and fear admitting it.",
+        "limitation": "Fear of missing a window, implicit in T3, is not linked to the feeling.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.5",
+        "name": "Agency and reflective ownership",
+        "rating": 8.6,
+        "example": "Section D ends with two questions the user can answer or reject.",
+        "limitation": "T11 presents the two tests as agreed, leaving T5's objection to them aside.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.1",
+        "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+        "rating": 8.5,
+        "example": "Section E lists pursue, let pass, invest in friendships, or a bounded trial.",
+        "limitation": "Reducing exposure to comparison itself is not offered as an option.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.2",
+        "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+        "rating": 7.4,
+        "example": "T3 costs declining; T6 costs sampling; T9 costs friendship in hours.",
+        "limitation": "Costs of pursuing a home or marriage are never stated.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.3",
+        "name": "Identification of decisive conditions",
+        "rating": 7.4,
+        "example": "Section E: wish surviving without an audience favours pursuing; fading favours letting pass.",
+        "limitation": "Conditions are imagined introspection, which T5 itself calls insufficient; nothing observable or countable.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.4",
+        "name": "Treatment of uncertainty",
+        "rating": 8.1,
+        "example": "Section A names the decisive unknown; Section D records unresolved disagreements.",
+        "limitation": "Timing uncertainty from T3 is not weighed against the desire question.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.5",
+        "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+        "rating": 7.9,
+        "example": "T7 and Section E: a bounded trial with end date and a clear question.",
+        "limitation": "The trial stays generic; no example tied to the user's situation.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.1",
+        "name": "Accessible language",
+        "rating": 8.8,
+        "example": "T1 'Behind whom, by whose measure?' is plain and precise.",
+        "limitation": "T3 'rough seasons' is vague about what timing is meant.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.2",
+        "name": "Traceable arguments and references",
+        "rating": 9,
+        "example": "T5 'That test' maps to T4; T9 'That changes the target' maps to T8.",
+        "limitation": "T6 Burkeman mind refers to Burkeman in third person; T4 shifts to 'the user'.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C6.3",
+        "name": "Manageable pacing and turn length",
+        "rating": 8.9,
+        "example": "11 turns, all within 25 to 65 words per deterministic checks.",
+        "limitation": "none",
+        "limitation_severity": "none",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.4",
+        "name": "Distinguishable positions and voices, with explicit changes of position",
+        "rating": 7.3,
+        "example": "T7 marks its change explicitly: 'I narrow my claim'.",
+        "limitation": "All three minds share one clipped register and near-identical turn lengths (T1-T11).",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.5",
+        "name": "Economy and sustained attention",
+        "rating": 8.3,
+        "example": "Section E converts T11's tests into branches rather than repeating them.",
+        "limitation": "Section D re-recaps T11's two tests a third time.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.1",
+        "name": "Meaningful stakes and tension arising from the issue itself",
+        "rating": 7.4,
+        "example": "T3 'Not choosing is still choosing' gives the issue real weight.",
+        "limitation": "Stakes stay abstract; no concrete cost of misreading the feeling is shown.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.2",
+        "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+        "rating": 9,
+        "example": "T7 narrows its claim citing T6's point that trials avoid commitment.",
+        "limitation": "T9's turn on T8 is smooth acceptance rather than surprise.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C7.3",
+        "name": "Personality and expressive voice without caricature",
+        "rating": 7,
+        "example": "T6 and T7 have edge: 'drifting with good branding'.",
+        "limitation": "Shared clipped register across T1-T11 flattens the three personalities.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.4",
+        "name": "Memorable delivery",
+        "rating": 8,
+        "example": "T1 'Your friends are not racing you, yet you feel timed.'",
+        "limitation": "Few images or analogies beyond T1 and T7.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.5",
+        "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+        "rating": 7,
+        "example": "T8 shift to belonging changes the emotional register of the debate.",
+        "limitation": "Uniform turn length and rhythm across T1-T11; little variation in intensity.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      }
+    ],
+    "strengths": [
+      "T8 introduces belonging, absent from all openings, and T9 and T11 build on it.",
+      "T6 to T7 is a caused revision: trials gain an end date and a question.",
+      "Section D offers three plausible motives as alternatives with answerable questions, none asserted."
+    ],
+    "weaknesses": [
+      "All three minds share one clipped register and near-identical turn lengths across T1-T11.",
+      "T11 and Section E reuse the no-audience test without answering T5's objection to it.",
+      "T3's clock point is deflected at T4; age, partner status and housing costs never surface."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C6.4",
+        "turns": [
+          1,
+          3,
+          5,
+          8,
+          9,
+          11
+        ],
+        "observed": "Minds differ in stance but share one terse register and similar turn lengths.",
+        "evidence": "Sampling feels free, yet depth requires giving things up."
+      },
+      {
+        "cell_id": "C2.5",
+        "turns": [
+          5,
+          11
+        ],
+        "observed": "T11 keeps the no-audience test that T5 called flawed, without answering T5.",
+        "evidence": "whether the wish survives without an audience"
+      },
+      {
+        "cell_id": "C3.5",
+        "turns": [
+          3,
+          4
+        ],
+        "observed": "Clock argument raised without asking age or partner status; dropped after T4.",
+        "evidence": "Houses and marriages have rough seasons, and waiting is not free."
+      },
+      {
+        "cell_id": "C5.2",
+        "turns": [
+          9
+        ],
+        "observed": "Costs of pursuing a home or marriage are never stated.",
+        "evidence": "smaller, more honest cost than chasing a milestone you do not want"
+      },
+      {
+        "cell_id": "C5.3",
+        "turns": [
+          11
+        ],
+        "observed": "Decisive condition is imagined introspection, not something the user can observe or count.",
+        "evidence": "If the wish for a home or marriage survives when you imagine"
+      }
+    ],
+    "mechanical": [
+      {
+        "pattern": "uniform_voice",
+        "turns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "T6",
+        "description": "T6 claims to go further than Burkeman on sampling avoiding commitment; Four Thousand Weeks already argues against keeping options open.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "unverified",
+        "location": "T1-T11 basis fields",
+        "description": "Attributions to de Botton, Mill and Burkeman are paraphrase-level and plausible; no source evidence attached.",
+        "evidence_ids": []
+      }
+    ],
+    "cap_reasons": [],
+    "rubric_fit_notes": [
+      "The situation is a self-reflection prompt labelled decision; no explicit choice is posed, so C5 was read against the implied choice of pursuing, letting pass, or investigating the milestones."
+    ],
+    "question_type_note": "Read as a decision, the implied options (pursue, let pass, invest in belonging, trial) were scored in C5 while C4 carried the self-reflection weight."
+  },
+  "card": {
+    "criteria": [
+      {
+        "id": "C1",
+        "name": "Quality of discussion",
+        "max": 20,
+        "points": 16.96,
+        "sub": [
+          {
+            "id": "C1.1",
+            "name": "Continuity and responsiveness",
+            "rating": 8.7,
+            "points": 3.48,
+            "example": "T5 attacks T4's no-audience test directly; T9 builds on T8's belonging point.",
+            "limitation": "Cartographer never answers T5's critique of its test before T11 reuses it.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.2",
+            "name": "Development of ideas",
+            "rating": 9.1,
+            "points": 3.64,
+            "example": "T8 introduces belonging, absent from every opening; T9 and T11 use it.",
+            "limitation": "T3's clock point is not developed after T4 sets it aside.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C1.3",
+            "name": "Exploration of central tensions",
+            "rating": 7.8,
+            "points": 3.12,
+            "example": "Borrowed versus genuine wish (T1, T2, T10) and exploration versus commitment (T5-T7).",
+            "limitation": "Cost of waiting raised in T3 is deflected at T4 and never examined.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.4",
+            "name": "Integration of perspectives",
+            "rating": 8.4,
+            "points": 3.36,
+            "example": "T7 narrows the trial claim after T6; T11 grants pressure and wish coexist.",
+            "limitation": "T9 to T11 is a run of quick acceptances; little friction remains.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.5",
+            "name": "Progress toward understanding",
+            "rating": 8.4,
+            "points": 3.36,
+            "example": "T11 ends with two concrete tests: audience-independence and milestone versus what surrounds it.",
+            "limitation": "T11 admits the feeling is not separated; timing question left untouched.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C2",
+        "name": "Quality of disagreement, trust and grounding",
+        "max": 20,
+        "points": 16.44,
+        "sub": [
+          {
+            "id": "C2.1",
+            "name": "Faithful engagement",
+            "rating": 7.7,
+            "points": 3.08,
+            "example": "T2 accepts T1's point on custom while flagging 'borrowed' as a guess.",
+            "limitation": "T4 recasts T3's practical seasons as mere social timing, a weaker version.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.2",
+            "name": "Substance of challenges",
+            "rating": 8.9,
+            "points": 3.56,
+            "example": "T6 names trials as avoidance of commitment; T7 answers by adding end date and question.",
+            "limitation": "T4's objection to T3 asserts rather than shows that deadlines are borrowed.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C2.3",
+            "name": "Accuracy and support",
+            "rating": 8.2,
+            "points": 3.28,
+            "example": "T2's custom-as-poor-judge fits On Liberty; T4 fits Status Anxiety's peer comparison.",
+            "limitation": "T6 claims to go further than Burkeman, who already warns against endless option-keeping (suspected).",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.4",
+            "name": "Calibration and transparency",
+            "rating": 8.5,
+            "points": 3.4,
+            "example": "Section A separates what is known (the feeling) from what is open; T1 says 'I suspect'.",
+            "limitation": "T9 states friendship investment is 'more honest cost' with unearned confidence.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.5",
+            "name": "Intellectual honesty and revision",
+            "rating": 7.8,
+            "points": 3.12,
+            "example": "T7 'Agreed, so I narrow my claim' after T6; T11 'Granted' after T10.",
+            "limitation": "T11 and Section E keep the no-audience test without conceding T5's flaw in it.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C3",
+        "name": "Personal relevance",
+        "max": 10,
+        "points": 7.9,
+        "sub": [
+          {
+            "id": "C3.1",
+            "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+            "rating": 8.5,
+            "points": 1.7,
+            "example": "Section A names the ambiguity: unmet wish, comparison pressure, or something else.",
+            "limitation": "Whether the user seeks permission to opt out or relief from the feeling is not asked.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.2",
+            "name": "Meaningful use of personal context",
+            "rating": 8,
+            "points": 1.6,
+            "example": "T8 turns 'friends buying homes or marrying' into a possible loss of belonging.",
+            "limitation": "Nothing about how close these friends are shapes the T9 advice.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.3",
+            "name": "Fit with goals and values",
+            "rating": 8.3,
+            "points": 1.66,
+            "example": "T4 and Section E centre what the user would want with no audience.",
+            "limitation": "Speakers' own values (freedom, depth) lead; user's priorities stay largely inferred.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.4",
+            "name": "Attention to constraints and stakes",
+            "rating": 7.3,
+            "points": 1.46,
+            "example": "T3 notes waiting has costs and declining is itself a choice.",
+            "limitation": "T3's 'rough seasons' stays generic; money and practical constraints of a home never appear.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.5",
+            "name": "Responsiveness to information",
+            "rating": 7.4,
+            "points": 1.48,
+            "example": "Section E branches on whether the wish survives without audience, with implications.",
+            "limitation": "Age and partner status, on which T3's clock depends, are never asked or branched.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C4",
+        "name": "Constructive self-discovery",
+        "max": 20,
+        "points": 17.36,
+        "sub": [
+          {
+            "id": "C4.1",
+            "name": "Clarification of desires and motivations",
+            "rating": 9.2,
+            "points": 3.68,
+            "example": "Section D offers comparison, real wish, belonging as alternatives with answerable questions.",
+            "limitation": "T1 leans toward 'borrowed' before T2 checks it.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C4.2",
+            "name": "Examination of assumptions",
+            "rating": 8.8,
+            "points": 3.52,
+            "example": "T1 questions 'behind whom'; T5 exposes the assumption that introspection settles wanting.",
+            "limitation": "T3's assumption that a timeline applies to this user goes unexamined.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.3",
+            "name": "Clarification of values and priorities",
+            "rating": 8.1,
+            "points": 3.24,
+            "example": "T6-T7 set freedom to try against depth through commitment.",
+            "limitation": "Values like security or independence that milestones serve are not surfaced.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.4",
+            "name": "Recognition of fears and outside expectations",
+            "rating": 8.7,
+            "points": 3.48,
+            "example": "T10 notes people may want a home or family and fear admitting it.",
+            "limitation": "Fear of missing a window, implicit in T3, is not linked to the feeling.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.5",
+            "name": "Agency and reflective ownership",
+            "rating": 8.6,
+            "points": 3.44,
+            "example": "Section D ends with two questions the user can answer or reject.",
+            "limitation": "T11 presents the two tests as agreed, leaving T5's objection to them aside.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C5",
+        "name": "Decision usefulness",
+        "max": 10,
+        "points": 7.86,
+        "sub": [
+          {
+            "id": "C5.1",
+            "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+            "rating": 8.5,
+            "points": 1.7,
+            "example": "Section E lists pursue, let pass, invest in friendships, or a bounded trial.",
+            "limitation": "Reducing exposure to comparison itself is not offered as an option.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.2",
+            "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+            "rating": 7.4,
+            "points": 1.48,
+            "example": "T3 costs declining; T6 costs sampling; T9 costs friendship in hours.",
+            "limitation": "Costs of pursuing a home or marriage are never stated.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.3",
+            "name": "Identification of decisive conditions",
+            "rating": 7.4,
+            "points": 1.48,
+            "example": "Section E: wish surviving without an audience favours pursuing; fading favours letting pass.",
+            "limitation": "Conditions are imagined introspection, which T5 itself calls insufficient; nothing observable or countable.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.4",
+            "name": "Treatment of uncertainty",
+            "rating": 8.1,
+            "points": 1.62,
+            "example": "Section A names the decisive unknown; Section D records unresolved disagreements.",
+            "limitation": "Timing uncertainty from T3 is not weighed against the desire question.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.5",
+            "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+            "rating": 7.9,
+            "points": 1.58,
+            "example": "T7 and Section E: a bounded trial with end date and a clear question.",
+            "limitation": "The trial stays generic; no example tied to the user's situation.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C6",
+        "name": "Clarity and engagement",
+        "max": 10,
+        "points": 8.46,
+        "sub": [
+          {
+            "id": "C6.1",
+            "name": "Accessible language",
+            "rating": 8.8,
+            "points": 1.76,
+            "example": "T1 'Behind whom, by whose measure?' is plain and precise.",
+            "limitation": "T3 'rough seasons' is vague about what timing is meant.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.2",
+            "name": "Traceable arguments and references",
+            "rating": 9,
+            "points": 1.8,
+            "example": "T5 'That test' maps to T4; T9 'That changes the target' maps to T8.",
+            "limitation": "T6 Burkeman mind refers to Burkeman in third person; T4 shifts to 'the user'.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C6.3",
+            "name": "Manageable pacing and turn length",
+            "rating": 8.9,
+            "points": 1.78,
+            "example": "11 turns, all within 25 to 65 words per deterministic checks.",
+            "limitation": "none",
+            "severity": "none",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.4",
+            "name": "Distinguishable positions and voices, with explicit changes of position",
+            "rating": 7.3,
+            "points": 1.46,
+            "example": "T7 marks its change explicitly: 'I narrow my claim'.",
+            "limitation": "All three minds share one clipped register and near-identical turn lengths (T1-T11).",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.5",
+            "name": "Economy and sustained attention",
+            "rating": 8.3,
+            "points": 1.66,
+            "example": "Section E converts T11's tests into branches rather than repeating them.",
+            "limitation": "Section D re-recaps T11's two tests a third time.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C7",
+        "name": "Drama and entertainment",
+        "max": 10,
+        "points": 7.68,
+        "sub": [
+          {
+            "id": "C7.1",
+            "name": "Meaningful stakes and tension arising from the issue itself",
+            "rating": 7.4,
+            "points": 1.48,
+            "example": "T3 'Not choosing is still choosing' gives the issue real weight.",
+            "limitation": "Stakes stay abstract; no concrete cost of misreading the feeling is shown.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.2",
+            "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+            "rating": 9,
+            "points": 1.8,
+            "example": "T7 narrows its claim citing T6's point that trials avoid commitment.",
+            "limitation": "T9's turn on T8 is smooth acceptance rather than surprise.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C7.3",
+            "name": "Personality and expressive voice without caricature",
+            "rating": 7,
+            "points": 1.4,
+            "example": "T6 and T7 have edge: 'drifting with good branding'.",
+            "limitation": "Shared clipped register across T1-T11 flattens the three personalities.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.4",
+            "name": "Memorable delivery",
+            "rating": 8,
+            "points": 1.6,
+            "example": "T1 'Your friends are not racing you, yet you feel timed.'",
+            "limitation": "Few images or analogies beyond T1 and T7.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.5",
+            "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+            "rating": 7,
+            "points": 1.4,
+            "example": "T8 shift to belonging changes the emotional register of the debate.",
+            "limitation": "Uniform turn length and rhythm across T1-T11; little variation in intensity.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      }
+    ],
+    "uncapped": 82.66,
+    "score": 82.66,
+    "capReason": null,
+    "provisional": false,
+    "strengths": [
+      "T8 introduces belonging, absent from all openings, and T9 and T11 build on it.",
+      "T6 to T7 is a caused revision: trials gain an end date and a question.",
+      "Section D offers three plausible motives as alternatives with answerable questions, none asserted."
+    ],
+    "weaknesses": [
+      "All three minds share one clipped register and near-identical turn lengths across T1-T11.",
+      "T11 and Section E reuse the no-audience test without answering T5's objection to it.",
+      "T3's clock point is deflected at T4; age, partner status and housing costs never surface."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C6.4",
+        "turns": [
+          1,
+          3,
+          5,
+          8,
+          9,
+          11
+        ],
+        "observed": "Minds differ in stance but share one terse register and similar turn lengths.",
+        "evidence": "Sampling feels free, yet depth requires giving things up."
+      },
+      {
+        "cell_id": "C2.5",
+        "turns": [
+          5,
+          11
+        ],
+        "observed": "T11 keeps the no-audience test that T5 called flawed, without answering T5.",
+        "evidence": "whether the wish survives without an audience"
+      },
+      {
+        "cell_id": "C3.5",
+        "turns": [
+          3,
+          4
+        ],
+        "observed": "Clock argument raised without asking age or partner status; dropped after T4.",
+        "evidence": "Houses and marriages have rough seasons, and waiting is not free."
+      },
+      {
+        "cell_id": "C5.2",
+        "turns": [
+          9
+        ],
+        "observed": "Costs of pursuing a home or marriage are never stated.",
+        "evidence": "smaller, more honest cost than chasing a milestone you do not want"
+      },
+      {
+        "cell_id": "C5.3",
+        "turns": [
+          11
+        ],
+        "observed": "Decisive condition is imagined introspection, not something the user can observe or count.",
+        "evidence": "If the wish for a home or marriage survives when you imagine"
+      }
+    ],
+    "mechanical": [
+      {
+        "pattern": "uniform_voice",
+        "turns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "T6",
+        "description": "T6 claims to go further than Burkeman on sampling avoiding commitment; Four Thousand Weeks already argues against keeping options open.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "unverified",
+        "location": "T1-T11 basis fields",
+        "description": "Attributions to de Botton, Mill and Burkeman are paraphrase-level and plausible; no source evidence attached.",
+        "evidence_ids": []
+      }
+    ],
+    "rubricFitNotes": [
+      "The situation is a self-reflection prompt labelled decision; no explicit choice is posed, so C5 was read against the implied choice of pursuing, letting pass, or investigating the milestones."
+    ],
+    "questionTypeNote": "Read as a decision, the implied options (pursue, let pass, invest in belonging, trial) were scored in C5 while C4 carried the self-reflection weight."
+  },
+  "rubricVersion": "rubric-evaluator-4.2.0",
+  "savedAt": "2026-10-15T10:24:54.052Z"
+}

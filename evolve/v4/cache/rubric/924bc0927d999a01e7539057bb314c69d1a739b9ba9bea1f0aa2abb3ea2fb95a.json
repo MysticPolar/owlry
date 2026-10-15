@@ -1,0 +1,898 @@
+{
+  "jobId": "rubric.v2.q2.s1",
+  "raw": {
+    "schema_version": "rubric-evaluator-4.2.0",
+    "rubric_version": "owlry-matrix-v2-bands",
+    "evaluation_status": "complete",
+    "cells": [
+      {
+        "id": "C1.1",
+        "name": "Continuity and responsiveness",
+        "rating": 8.6,
+        "example": "T4 answers T2's critique; T6 takes up T5's train case; T9 answers T8's motive list.",
+        "limitation": "T8 never answers T6's warning about the train before pivoting to motives.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.2",
+        "name": "Development of ideas",
+        "rating": 9.1,
+        "example": "T4 introduces the two-thirds break-even weight; T5, T11 and section D build on it.",
+        "limitation": "T10's trial week largely restates T4's point that the weight needs testing.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C1.3",
+        "name": "Exploration of central tensions",
+        "rating": 7.6,
+        "example": "T3, T6 and T11 examine money against time and the shape of evenings.",
+        "limitation": "Nobody raises current commute, commute expenses, after-tax pay, or household effects.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.4",
+        "name": "Integration of perspectives",
+        "rating": 8.6,
+        "example": "T7 Economist names the conflict instead of settling it; T11 leaves the pricing dispute open.",
+        "limitation": "T6's train objection is not integrated by the Skeptic, who proposed the train case.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.5",
+        "name": "Progress toward understanding",
+        "rating": 8.7,
+        "example": "Section D reduces the decision to commute-hour weight and number of travel days.",
+        "limitation": "Whether hours should be priced at all ends restated rather than sharpened (T11).",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.1",
+        "name": "Faithful engagement",
+        "rating": 8.6,
+        "example": "T6 states the train-reading case fairly before arguing it hides the cost to evenings.",
+        "limitation": "T3 dismisses both rivals as haggling over the exchange rate, flattening T2's point.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.2",
+        "name": "Substance of challenges",
+        "rating": 9,
+        "example": "T2 names the assumption that a commute hour equals a work hour; T4 answers with a break-even.",
+        "limitation": "T6's challenge to the train case gets no answer from its target, the Skeptic.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C2.3",
+        "name": "Accuracy and support",
+        "rating": 8.4,
+        "example": "T1 checks: 1.25x40/55 = 0.909, about a 9% hourly cut; T4: 40+15w=50 gives w=2/3.",
+        "limitation": "Section A says the job adds 90 minutes, assuming the current commute is zero.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.4",
+        "name": "Calibration and transparency",
+        "rating": 8.8,
+        "example": "T10: that is my hunch, not his claim; T7: I would go further than Smith.",
+        "limitation": "T9 voices a suspicion of security as motive with nothing in the user's words behind it.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.5",
+        "name": "Intellectual honesty and revision",
+        "rating": 8.7,
+        "example": "T4: Fair hit on my assumptions, then narrows the claim into a testable threshold.",
+        "limitation": "The Skeptic never concedes or rebuts T6's charge that the train case is self-persuasion.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.1",
+        "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+        "rating": 8.6,
+        "example": "Section A notes the question may be wider than yes or no: remote days, counteroffer.",
+        "limitation": "The counteroffer possibility from section A is never developed in the debate.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.2",
+        "name": "Meaningful use of personal context",
+        "rating": 8.3,
+        "example": "T1 and T4 turn the 25% and 90 minutes into an hourly rate and break-even.",
+        "limitation": "Arithmetic treats all fifteen hours as added; current commute never considered.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.3",
+        "name": "Fit with goals and values",
+        "rating": 8.3,
+        "example": "T7 and T11 leave the ranking of money against time explicitly to the user.",
+        "limitation": "The Time Accountant's preference for evenings sometimes reads as the default value (T6).",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.4",
+        "name": "Attention to constraints and stakes",
+        "rating": 7.2,
+        "example": "T7 ties the raise's weight to debt or a savings gap; T6 to mornings and evenings.",
+        "limitation": "Section A invents an added 90 minutes; fares, fuel and household obligations go unmentioned.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.5",
+        "name": "Responsiveness to information",
+        "rating": 8.2,
+        "example": "Section E branches on travel days, driving, money pressure and the new role, each with implications.",
+        "limitation": "Current commute length and commute expenses never become a question or branch.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.1",
+        "name": "Clarification of desires and motivations",
+        "rating": 9,
+        "example": "T8 offers security, escape, or outside pressure as alternatives; section D asks which it is.",
+        "limitation": "T9 leans toward security without a basis in the user's statement, though flagged as a guess.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C4.2",
+        "name": "Examination of assumptions",
+        "rating": 8.6,
+        "example": "T2 exposes the commute-equals-work-hour assumption; T6 exposes the reading-time rationalisation.",
+        "limitation": "The assumption that the raise is the main gain goes unexamined until T9.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.3",
+        "name": "Clarification of values and priorities",
+        "rating": 8.5,
+        "example": "T3: every yes here is a no to something; which loss you can live with.",
+        "limitation": "Values beyond money and free time, such as health or family, are not surfaced.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.4",
+        "name": "Recognition of fears and outside expectations",
+        "rating": 7.4,
+        "example": "T8 names pressure from others who call it a no-brainer; T9 the perfect-version trap.",
+        "limitation": "Fear and social pressure get one clause each in T8 and are not developed.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.5",
+        "name": "Agency and reflective ownership",
+        "rating": 8.7,
+        "example": "T11: That disagreement is real and belongs to you; section D poses an open question.",
+        "limitation": "Section D's single question lists options without saying what each answer would change.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.1",
+        "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+        "rating": 8.6,
+        "example": "Accept, decline, counter, negotiate remote days and a trial week all appear (T8-T10, E).",
+        "limitation": "Countering with the current employer is named in A and E but never weighed.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.2",
+        "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+        "rating": 6.8,
+        "example": "T1 converts the raise into a 9% hourly cut; T6 adds the cost to day shape.",
+        "limitation": "Monetary commute costs and after-tax value of the raise are never counted against 25%.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.3",
+        "name": "Identification of decisive conditions",
+        "rating": 9,
+        "example": "Section E: some travel days favours accepting; five days driving favours declining or countering.",
+        "limitation": "T11's drained versus barely notice leaves the middle outcome of the trial week unsorted.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C5.4",
+        "name": "Treatment of uncertainty",
+        "rating": 8.4,
+        "example": "Section A names decisive unknowns; T5 prices two-day and five-day cases separately.",
+        "limitation": "No unknown is marked minor, so consequential and incidental unknowns are not separated.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.5",
+        "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+        "rating": 8.7,
+        "example": "T10 trial week of the real route at rush hour, rating each day; E adds a finances check.",
+        "limitation": "Whether a trial week fits before the offer deadline is not considered (T10).",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.1",
+        "name": "Accessible language",
+        "rating": 8.7,
+        "example": "T1 and T5 explain the arithmetic and cases in plain everyday terms.",
+        "limitation": "T4's commute hour two thirds as bad as a work hour is an abstract unit.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.2",
+        "name": "Traceable arguments and references",
+        "rating": 8.4,
+        "example": "T2 Your sum points to T1; T6 Careful with the train points to T5.",
+        "limitation": "T10 Good and T8 Use that have unclear referents among preceding claims.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.3",
+        "name": "Manageable pacing and turn length",
+        "rating": 8.9,
+        "example": "Eleven turns, all within range per DETERMINISTIC CHECKS, each carrying one move.",
+        "limitation": "none",
+        "limitation_severity": "none",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.4",
+        "name": "Distinguishable positions and voices, with explicit changes of position",
+        "rating": 8.2,
+        "example": "Price, forecasting error and finite time stay distinct lenses; T4 states its change of position.",
+        "limitation": "All three share a calm, measured register; sentence rhythm is similar across minds.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.5",
+        "name": "Economy and sustained attention",
+        "rating": 8.6,
+        "example": "Debate turns rarely recap; section D condenses rather than repeats.",
+        "limitation": "Sections D and E partly restate the same day-count and remote-day conditions.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.1",
+        "name": "Meaningful stakes and tension arising from the issue itself",
+        "rating": 7.8,
+        "example": "T6: mornings and evenings are the only free time most people have.",
+        "limitation": "Stakes stay abstract; no concrete picture of what the lost evenings contain.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.2",
+        "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+        "rating": 8.5,
+        "example": "T4 Economist revises after T2: Fair hit on my assumptions, making the claim testable.",
+        "limitation": "The reversals are modest narrowings; nothing in the debate is genuinely surprising.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C7.3",
+        "name": "Personality and expressive voice without caricature",
+        "rating": 7.6,
+        "example": "T11 Economist: a price exists; T3 Accountant: which loss you can live with.",
+        "limitation": "Voices are restrained and similar in register; little individual temperament shows.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.4",
+        "name": "Memorable delivery",
+        "rating": 7.8,
+        "example": "T3: Money converts into almost anything except time.",
+        "limitation": "No humour or vivid example; few lines beyond T3 and T6 stick.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.5",
+        "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+        "rating": 7.3,
+        "example": "T9 raises the unasked question of the new job itself, opening a fresh line.",
+        "limitation": "Even tone throughout; no rise or release across turns.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      }
+    ],
+    "strengths": [
+      "T1 and T4 turn the user's two numbers into correct, checkable arithmetic and a break-even weight.",
+      "Section E gives observable branches (travel days, driving, money pressure, role) with the option each favours.",
+      "T8 offers alternative motives as possibilities and section D returns them as a question."
+    ],
+    "weaknesses": [
+      "Commute expenses and after-tax value of the raise never enter the tradeoff (T1, section E).",
+      "Section A assumes the 90 minutes is all added; current commute is never asked about.",
+      "T6's challenge to the train case goes unanswered by the Forecasting Skeptic in T8."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C5.2",
+        "turns": [
+          1,
+          11
+        ],
+        "observed": "Raise weighed only against hours; fares, fuel and taxes never counted.",
+        "evidence": "you tie up fifty-five hours for twenty-five percent more money"
+      },
+      {
+        "cell_id": "C3.4",
+        "turns": [
+          1
+        ],
+        "observed": "Situation and T1 treat the whole commute as new; current commute never asked.",
+        "evidence": "it adds 90 minutes of commuting each way"
+      },
+      {
+        "cell_id": "C1.1",
+        "turns": [
+          6,
+          8
+        ],
+        "observed": "Skeptic ignores T6's objection to the train case and pivots.",
+        "evidence": "Use that against the raise"
+      },
+      {
+        "cell_id": "C4.4",
+        "turns": [
+          8
+        ],
+        "observed": "Outside pressure named in one clause and dropped.",
+        "evidence": "feel pressure from others who call it a no-brainer"
+      },
+      {
+        "cell_id": "C7.5",
+        "turns": [
+          1,
+          11
+        ],
+        "observed": "Measured tone and similar turn rhythm throughout; no emotional movement.",
+        "evidence": "That disagreement is real and belongs to you"
+      }
+    ],
+    "mechanical": [],
+    "findings": [
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "observed",
+        "location": "Section A; T1",
+        "description": "Treats the 90-minute commute as entirely added, assuming no current commute; the user did not say this.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "unverified",
+        "location": "T1-T11 basis fields",
+        "description": "Attributions to Smith, Kahneman and Burkeman are plausible paraphrases; no evidence attached to confirm.",
+        "evidence_ids": []
+      }
+    ],
+    "cap_reasons": [],
+    "rubric_fit_notes": [
+      "Arithmetic in T1 and T4 checked: 1.25x40/55=0.909; 40+15w=50 gives w=2/3. Both correct under the stated assumptions."
+    ],
+    "question_type_note": "Decision type: every cell read as written, with criterion 5 weighed on accept, decline, counter and trial options."
+  },
+  "card": {
+    "criteria": [
+      {
+        "id": "C1",
+        "name": "Quality of discussion",
+        "max": 20,
+        "points": 17.04,
+        "sub": [
+          {
+            "id": "C1.1",
+            "name": "Continuity and responsiveness",
+            "rating": 8.6,
+            "points": 3.44,
+            "example": "T4 answers T2's critique; T6 takes up T5's train case; T9 answers T8's motive list.",
+            "limitation": "T8 never answers T6's warning about the train before pivoting to motives.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.2",
+            "name": "Development of ideas",
+            "rating": 9.1,
+            "points": 3.64,
+            "example": "T4 introduces the two-thirds break-even weight; T5, T11 and section D build on it.",
+            "limitation": "T10's trial week largely restates T4's point that the weight needs testing.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C1.3",
+            "name": "Exploration of central tensions",
+            "rating": 7.6,
+            "points": 3.04,
+            "example": "T3, T6 and T11 examine money against time and the shape of evenings.",
+            "limitation": "Nobody raises current commute, commute expenses, after-tax pay, or household effects.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.4",
+            "name": "Integration of perspectives",
+            "rating": 8.6,
+            "points": 3.44,
+            "example": "T7 Economist names the conflict instead of settling it; T11 leaves the pricing dispute open.",
+            "limitation": "T6's train objection is not integrated by the Skeptic, who proposed the train case.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.5",
+            "name": "Progress toward understanding",
+            "rating": 8.7,
+            "points": 3.48,
+            "example": "Section D reduces the decision to commute-hour weight and number of travel days.",
+            "limitation": "Whether hours should be priced at all ends restated rather than sharpened (T11).",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C2",
+        "name": "Quality of disagreement, trust and grounding",
+        "max": 20,
+        "points": 17.4,
+        "sub": [
+          {
+            "id": "C2.1",
+            "name": "Faithful engagement",
+            "rating": 8.6,
+            "points": 3.44,
+            "example": "T6 states the train-reading case fairly before arguing it hides the cost to evenings.",
+            "limitation": "T3 dismisses both rivals as haggling over the exchange rate, flattening T2's point.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.2",
+            "name": "Substance of challenges",
+            "rating": 9,
+            "points": 3.6,
+            "example": "T2 names the assumption that a commute hour equals a work hour; T4 answers with a break-even.",
+            "limitation": "T6's challenge to the train case gets no answer from its target, the Skeptic.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C2.3",
+            "name": "Accuracy and support",
+            "rating": 8.4,
+            "points": 3.36,
+            "example": "T1 checks: 1.25x40/55 = 0.909, about a 9% hourly cut; T4: 40+15w=50 gives w=2/3.",
+            "limitation": "Section A says the job adds 90 minutes, assuming the current commute is zero.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.4",
+            "name": "Calibration and transparency",
+            "rating": 8.8,
+            "points": 3.52,
+            "example": "T10: that is my hunch, not his claim; T7: I would go further than Smith.",
+            "limitation": "T9 voices a suspicion of security as motive with nothing in the user's words behind it.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.5",
+            "name": "Intellectual honesty and revision",
+            "rating": 8.7,
+            "points": 3.48,
+            "example": "T4: Fair hit on my assumptions, then narrows the claim into a testable threshold.",
+            "limitation": "The Skeptic never concedes or rebuts T6's charge that the train case is self-persuasion.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C3",
+        "name": "Personal relevance",
+        "max": 10,
+        "points": 8.12,
+        "sub": [
+          {
+            "id": "C3.1",
+            "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+            "rating": 8.6,
+            "points": 1.72,
+            "example": "Section A notes the question may be wider than yes or no: remote days, counteroffer.",
+            "limitation": "The counteroffer possibility from section A is never developed in the debate.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.2",
+            "name": "Meaningful use of personal context",
+            "rating": 8.3,
+            "points": 1.66,
+            "example": "T1 and T4 turn the 25% and 90 minutes into an hourly rate and break-even.",
+            "limitation": "Arithmetic treats all fifteen hours as added; current commute never considered.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.3",
+            "name": "Fit with goals and values",
+            "rating": 8.3,
+            "points": 1.66,
+            "example": "T7 and T11 leave the ranking of money against time explicitly to the user.",
+            "limitation": "The Time Accountant's preference for evenings sometimes reads as the default value (T6).",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.4",
+            "name": "Attention to constraints and stakes",
+            "rating": 7.2,
+            "points": 1.44,
+            "example": "T7 ties the raise's weight to debt or a savings gap; T6 to mornings and evenings.",
+            "limitation": "Section A invents an added 90 minutes; fares, fuel and household obligations go unmentioned.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.5",
+            "name": "Responsiveness to information",
+            "rating": 8.2,
+            "points": 1.64,
+            "example": "Section E branches on travel days, driving, money pressure and the new role, each with implications.",
+            "limitation": "Current commute length and commute expenses never become a question or branch.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C4",
+        "name": "Constructive self-discovery",
+        "max": 20,
+        "points": 16.88,
+        "sub": [
+          {
+            "id": "C4.1",
+            "name": "Clarification of desires and motivations",
+            "rating": 9,
+            "points": 3.6,
+            "example": "T8 offers security, escape, or outside pressure as alternatives; section D asks which it is.",
+            "limitation": "T9 leans toward security without a basis in the user's statement, though flagged as a guess.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C4.2",
+            "name": "Examination of assumptions",
+            "rating": 8.6,
+            "points": 3.44,
+            "example": "T2 exposes the commute-equals-work-hour assumption; T6 exposes the reading-time rationalisation.",
+            "limitation": "The assumption that the raise is the main gain goes unexamined until T9.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.3",
+            "name": "Clarification of values and priorities",
+            "rating": 8.5,
+            "points": 3.4,
+            "example": "T3: every yes here is a no to something; which loss you can live with.",
+            "limitation": "Values beyond money and free time, such as health or family, are not surfaced.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.4",
+            "name": "Recognition of fears and outside expectations",
+            "rating": 7.4,
+            "points": 2.96,
+            "example": "T8 names pressure from others who call it a no-brainer; T9 the perfect-version trap.",
+            "limitation": "Fear and social pressure get one clause each in T8 and are not developed.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.5",
+            "name": "Agency and reflective ownership",
+            "rating": 8.7,
+            "points": 3.48,
+            "example": "T11: That disagreement is real and belongs to you; section D poses an open question.",
+            "limitation": "Section D's single question lists options without saying what each answer would change.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C5",
+        "name": "Decision usefulness",
+        "max": 10,
+        "points": 8.3,
+        "sub": [
+          {
+            "id": "C5.1",
+            "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+            "rating": 8.6,
+            "points": 1.72,
+            "example": "Accept, decline, counter, negotiate remote days and a trial week all appear (T8-T10, E).",
+            "limitation": "Countering with the current employer is named in A and E but never weighed.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.2",
+            "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+            "rating": 6.8,
+            "points": 1.36,
+            "example": "T1 converts the raise into a 9% hourly cut; T6 adds the cost to day shape.",
+            "limitation": "Monetary commute costs and after-tax value of the raise are never counted against 25%.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.3",
+            "name": "Identification of decisive conditions",
+            "rating": 9,
+            "points": 1.8,
+            "example": "Section E: some travel days favours accepting; five days driving favours declining or countering.",
+            "limitation": "T11's drained versus barely notice leaves the middle outcome of the trial week unsorted.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C5.4",
+            "name": "Treatment of uncertainty",
+            "rating": 8.4,
+            "points": 1.68,
+            "example": "Section A names decisive unknowns; T5 prices two-day and five-day cases separately.",
+            "limitation": "No unknown is marked minor, so consequential and incidental unknowns are not separated.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.5",
+            "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+            "rating": 8.7,
+            "points": 1.74,
+            "example": "T10 trial week of the real route at rush hour, rating each day; E adds a finances check.",
+            "limitation": "Whether a trial week fits before the offer deadline is not considered (T10).",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C6",
+        "name": "Clarity and engagement",
+        "max": 10,
+        "points": 8.56,
+        "sub": [
+          {
+            "id": "C6.1",
+            "name": "Accessible language",
+            "rating": 8.7,
+            "points": 1.74,
+            "example": "T1 and T5 explain the arithmetic and cases in plain everyday terms.",
+            "limitation": "T4's commute hour two thirds as bad as a work hour is an abstract unit.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.2",
+            "name": "Traceable arguments and references",
+            "rating": 8.4,
+            "points": 1.68,
+            "example": "T2 Your sum points to T1; T6 Careful with the train points to T5.",
+            "limitation": "T10 Good and T8 Use that have unclear referents among preceding claims.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.3",
+            "name": "Manageable pacing and turn length",
+            "rating": 8.9,
+            "points": 1.78,
+            "example": "Eleven turns, all within range per DETERMINISTIC CHECKS, each carrying one move.",
+            "limitation": "none",
+            "severity": "none",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.4",
+            "name": "Distinguishable positions and voices, with explicit changes of position",
+            "rating": 8.2,
+            "points": 1.64,
+            "example": "Price, forecasting error and finite time stay distinct lenses; T4 states its change of position.",
+            "limitation": "All three share a calm, measured register; sentence rhythm is similar across minds.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.5",
+            "name": "Economy and sustained attention",
+            "rating": 8.6,
+            "points": 1.72,
+            "example": "Debate turns rarely recap; section D condenses rather than repeats.",
+            "limitation": "Sections D and E partly restate the same day-count and remote-day conditions.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C7",
+        "name": "Drama and entertainment",
+        "max": 10,
+        "points": 7.8,
+        "sub": [
+          {
+            "id": "C7.1",
+            "name": "Meaningful stakes and tension arising from the issue itself",
+            "rating": 7.8,
+            "points": 1.56,
+            "example": "T6: mornings and evenings are the only free time most people have.",
+            "limitation": "Stakes stay abstract; no concrete picture of what the lost evenings contain.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.2",
+            "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+            "rating": 8.5,
+            "points": 1.7,
+            "example": "T4 Economist revises after T2: Fair hit on my assumptions, making the claim testable.",
+            "limitation": "The reversals are modest narrowings; nothing in the debate is genuinely surprising.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C7.3",
+            "name": "Personality and expressive voice without caricature",
+            "rating": 7.6,
+            "points": 1.52,
+            "example": "T11 Economist: a price exists; T3 Accountant: which loss you can live with.",
+            "limitation": "Voices are restrained and similar in register; little individual temperament shows.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.4",
+            "name": "Memorable delivery",
+            "rating": 7.8,
+            "points": 1.56,
+            "example": "T3: Money converts into almost anything except time.",
+            "limitation": "No humour or vivid example; few lines beyond T3 and T6 stick.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.5",
+            "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+            "rating": 7.3,
+            "points": 1.46,
+            "example": "T9 raises the unasked question of the new job itself, opening a fresh line.",
+            "limitation": "Even tone throughout; no rise or release across turns.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      }
+    ],
+    "uncapped": 84.1,
+    "score": 84.1,
+    "capReason": null,
+    "provisional": false,
+    "strengths": [
+      "T1 and T4 turn the user's two numbers into correct, checkable arithmetic and a break-even weight.",
+      "Section E gives observable branches (travel days, driving, money pressure, role) with the option each favours.",
+      "T8 offers alternative motives as possibilities and section D returns them as a question."
+    ],
+    "weaknesses": [
+      "Commute expenses and after-tax value of the raise never enter the tradeoff (T1, section E).",
+      "Section A assumes the 90 minutes is all added; current commute is never asked about.",
+      "T6's challenge to the train case goes unanswered by the Forecasting Skeptic in T8."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C5.2",
+        "turns": [
+          1,
+          11
+        ],
+        "observed": "Raise weighed only against hours; fares, fuel and taxes never counted.",
+        "evidence": "you tie up fifty-five hours for twenty-five percent more money"
+      },
+      {
+        "cell_id": "C3.4",
+        "turns": [
+          1
+        ],
+        "observed": "Situation and T1 treat the whole commute as new; current commute never asked.",
+        "evidence": "it adds 90 minutes of commuting each way"
+      },
+      {
+        "cell_id": "C1.1",
+        "turns": [
+          6,
+          8
+        ],
+        "observed": "Skeptic ignores T6's objection to the train case and pivots.",
+        "evidence": "Use that against the raise"
+      },
+      {
+        "cell_id": "C4.4",
+        "turns": [
+          8
+        ],
+        "observed": "Outside pressure named in one clause and dropped.",
+        "evidence": "feel pressure from others who call it a no-brainer"
+      },
+      {
+        "cell_id": "C7.5",
+        "turns": [
+          1,
+          11
+        ],
+        "observed": "Measured tone and similar turn rhythm throughout; no emotional movement.",
+        "evidence": "That disagreement is real and belongs to you"
+      }
+    ],
+    "mechanical": [],
+    "findings": [
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "observed",
+        "location": "Section A; T1",
+        "description": "Treats the 90-minute commute as entirely added, assuming no current commute; the user did not say this.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "unverified",
+        "location": "T1-T11 basis fields",
+        "description": "Attributions to Smith, Kahneman and Burkeman are plausible paraphrases; no evidence attached to confirm.",
+        "evidence_ids": []
+      }
+    ],
+    "rubricFitNotes": [
+      "Arithmetic in T1 and T4 checked: 1.25x40/55=0.909; 40+15w=50 gives w=2/3. Both correct under the stated assumptions."
+    ],
+    "questionTypeNote": "Decision type: every cell read as written, with criterion 5 weighed on accept, decline, counter and trial options."
+  },
+  "rubricVersion": "rubric-evaluator-4.2.0",
+  "savedAt": "2026-10-15T10:16:56.064Z"
+}

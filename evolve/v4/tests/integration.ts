@@ -767,6 +767,22 @@ await T("a promoted plain-citation Sonnet control protects its plain citation ru
   eq((await ledger(root, "sonnet"))[1].outcome, "REJECT", "the optimizer's proposal passed validation and was judged");
 });
 
+await T("a judge's best_of written as {location, observation}, as 10 of 10 live judges did, is accepted", async () => {
+  const root = await makeRoot();
+  await must(root, "bootstrap", "--lineage", "sonnet");
+  await drive(root, "sonnet", { rating: (_l, v) => (v === "v1" ? 7 : 6) }, inState(root, "sonnet", "COMPARING"));
+  const jobs = (await must(root, "next", "--lineage", "sonnet")).split("\n").filter((l) => l.startsWith("{")).map((l) => JSON.parse(l));
+  eq(jobs.length, 10);
+  for (const j of jobs) {
+    const v: any = verdict("tie");
+    v.best_of_a = { location: "A.debate[1].text", observation: "names the trade-off" };
+    v.best_of_b = { location: "B.dependsOn", observation: "a branch the user can check" };
+    await Deno.writeTextFile(j.outPath, JSON.stringify(v));
+  }
+  const ing = await must(root, "ingest", "--lineage", "sonnet");
+  ok(!/INVALID/.test(ing), ing);
+});
+
 await T("Option 2: a forced re-bootstrap onto Sonnet's plain-citation original keeps the record, sets the old baseline aside, and the queued control enters as v2 against v1", async () => {
   const root = await makeRoot(undefined, true);
   // the first bootstrap as it happened: the linked original v0

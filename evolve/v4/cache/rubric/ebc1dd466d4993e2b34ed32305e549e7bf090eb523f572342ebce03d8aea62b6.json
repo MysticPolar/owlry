@@ -1,0 +1,868 @@
+{
+  "jobId": "rubric.v1.q5.s2",
+  "raw": {
+    "schema_version": "rubric-evaluator-4.2.0",
+    "rubric_version": "owlry-matrix-v2-bands",
+    "evaluation_status": "complete",
+    "cells": [
+      {
+        "id": "C1.1",
+        "name": "Continuity and responsiveness",
+        "rating": 8.6,
+        "example": "T5 answers T2's wind challenge directly: same westerlies, different history over sea versus continent.",
+        "limitation": "T8 Navigator turns to sailors' practical lesson rather than answering T7's bundle claim.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.2",
+        "name": "Development of ideas",
+        "rating": 9,
+        "example": "T6 introduces seasonal heat storage versus northward streaming; T7, T9 and section D build on it.",
+        "limitation": "T8 adds no new distinction, repeating that warm and cold water can be measured.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C1.3",
+        "name": "Exploration of central tensions",
+        "rating": 8,
+        "example": "T2 to T6 examine ocean transport against wind direction, heat storage and the Rockies.",
+        "limitation": "Nobody raises the mild Pacific coast of North America, which tests the Gulf Stream claim.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.4",
+        "name": "Integration of perspectives",
+        "rating": 8.5,
+        "example": "T7 merges positions into a bundle while T9 and T10 keep the ocean share disputed.",
+        "limitation": "T7's matched concessions arrive tidily symmetrical, one surrender traded for another.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.5",
+        "name": "Progress toward understanding",
+        "rating": 8.6,
+        "example": "Section D replaces the single cause with a pattern and sharpens the open question to ocean share.",
+        "limitation": "The ending names the disputed share but no way the user could estimate its size.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.1",
+        "name": "Faithful engagement",
+        "rating": 8.3,
+        "example": "T4 grants past collapses show the ocean can matter greatly before contesting today's cause.",
+        "limitation": "T8 Navigator retreats to measurement instead of engaging the strongest version of T6.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.2",
+        "name": "Substance of challenges",
+        "rating": 9,
+        "example": "T9 names the assumption that measuring a warm current proves causation; T10 answers with stakes.",
+        "limitation": "T10 answers by shifting to stakes rather than offering any estimate of the ocean share.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C2.3",
+        "name": "Accuracy and support",
+        "rating": 8.3,
+        "example": "T2 atmospheric dominance at mid-latitudes and T6 Rockies effect match mainstream climate science.",
+        "limitation": "Book attributions for T4 and T6 claims are unverified; T6 Rockies point may not be Pierrehumbert's.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.4",
+        "name": "Calibration and transparency",
+        "rating": 9,
+        "example": "T4 flags going further than its source; T9 frames the quarter share as a hypothetical.",
+        "limitation": "T10 calls T9's hypothetical quarter an estimate, hardening a supposition into a position.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C2.5",
+        "name": "Intellectual honesty and revision",
+        "rating": 8.4,
+        "example": "T6 concedes ocean storage matters; T7 gives up the pure Gulf Stream story; T10 drops the headline.",
+        "limitation": "Navigator never revises T1's claim that the sea explains the gap; T8 sidesteps.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.1",
+        "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+        "rating": 8.2,
+        "example": "Situation section names the question and the decisive uncertainty: how much each factor contributes.",
+        "limitation": "Section E frames the explanation as a choice among the user's wants, slightly recasting it.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.2",
+        "name": "Meaningful use of personal context",
+        "rating": 7,
+        "example": "Situation names Britain, Norway, Labrador and Hudson Bay, anchoring the user's comparison concretely.",
+        "limitation": "The user gave no personal context; little in the reasoning is tailored beyond the question.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.3",
+        "name": "Fit with goals and values",
+        "rating": 8,
+        "example": "Section E gives a simple defensible answer matching the user's request for an explanation.",
+        "limitation": "Future-change stakes in E come from the speakers, not from anything the user asked.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.4",
+        "name": "Attention to constraints and stakes",
+        "rating": 7,
+        "example": "T10 links the ocean share to how serious an Atlantic circulation slowdown would be.",
+        "limitation": "Section D assumes the user first heard a single-cause version, which the question never says.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.5",
+        "name": "Responsiveness to information",
+        "rating": 7.5,
+        "example": "Section E branches on simple answer versus future-change interest, stating what each implies.",
+        "limitation": "No question about the depth of explanation the user wants; the branch stands in for it.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.1",
+        "name": "Clarification of desires and motivations",
+        "rating": 7.4,
+        "example": "Section E offers two possible aims, a simple answer or understanding future change, neither asserted.",
+        "limitation": "The alternatives sit only in E as conditionals, without a direct question to answer.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.2",
+        "name": "Examination of assumptions",
+        "rating": 8.5,
+        "example": "T2, T7 and T9 expose the single-cause Gulf Stream assumption behind the usual answer.",
+        "limitation": "The assumption that latitude alone should predict temperature is never surfaced.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.3",
+        "name": "Clarification of values and priorities",
+        "rating": 7,
+        "example": "Section E contrasts wanting a defensible simple account with caring about future circulation change.",
+        "limitation": "What the user wants from understanding appears only in E, undeveloped in the debate.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.4",
+        "name": "Recognition of fears and outside expectations",
+        "rating": 6,
+        "example": "T9 and section D note the pull of the popular headline crediting the current alone.",
+        "limitation": "Outside expectations get one sentence in D; little else attends to this dimension.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.5",
+        "name": "Agency and reflective ownership",
+        "rating": 7.8,
+        "example": "Section D offers a self-reflection as possible; E conditionals let the user pick the frame.",
+        "limitation": "The D reflection is phrased about the user rather than as a question back to them.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.1",
+        "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+        "rating": 8.5,
+        "example": "T1 to T6 define the competing explanations: current transport, wind direction, heat storage, mountains.",
+        "limitation": "Sea ice and Arctic outflow into Hudson Bay, raised in Situation, are never developed as explanations.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.2",
+        "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+        "rating": 7.8,
+        "example": "T4 and T9 show what paleoclimate and current measurements can and cannot prove.",
+        "limitation": "No turn states what evidence the atmosphere-first account would need to carry.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.3",
+        "name": "Identification of decisive conditions",
+        "rating": 7,
+        "example": "Section E proposes comparing model runs with and without ocean heat transport.",
+        "limitation": "No observable natural comparison offered, such as mild west coasts without a Gulf Stream.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.4",
+        "name": "Treatment of uncertainty",
+        "rating": 8.5,
+        "example": "Situation, T10 and D isolate the ocean share as the consequential unknown.",
+        "limitation": "Minor unknowns are not explicitly set aside as less consequential.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.5",
+        "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+        "rating": 7,
+        "example": "Section E suggests checking whether ocean-heat-transport model studies agree.",
+        "limitation": "The step names no specific study or reading, leaving a lay user to search unaided.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.1",
+        "name": "Accessible language",
+        "rating": 8.7,
+        "example": "T5's same wind, different history explains maritime versus continental air in plain words.",
+        "limitation": "Section E's ocean heat transport and T2's poleward heat go unexplained for a lay reader.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.2",
+        "name": "Traceable arguments and references",
+        "rating": 8.2,
+        "example": "T6 that is a point for me clearly points to T5's westerlies argument.",
+        "limitation": "T10 your estimate points to T9's hypothetical quarter, which was not an estimate.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.3",
+        "name": "Manageable pacing and turn length",
+        "rating": 8.8,
+        "example": "Ten turns, all within range, each carrying one move.",
+        "limitation": "T8 detour slows the move from bundle to the causation objection.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.4",
+        "name": "Distinguishable positions and voices, with explicit changes of position",
+        "rating": 7.8,
+        "example": "Navigator practical and observational, Skeptic terse in T2, Advocate stakes-minded in T10.",
+        "limitation": "Turns share similar length and a measured register across all three minds.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.5",
+        "name": "Economy and sustained attention",
+        "rating": 8.3,
+        "example": "Section D compresses the debate into one pattern without repeating turn wording.",
+        "limitation": "T8 restates T1's warm-versus-cold water point without advancing it.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.1",
+        "name": "Meaningful stakes and tension arising from the issue itself",
+        "rating": 7.8,
+        "example": "T10 ties the open dispute to how worrying an Atlantic circulation slowdown would be.",
+        "limitation": "Stakes arrive only in T10; earlier turns carry intellectual tension alone.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.2",
+        "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+        "rating": 9,
+        "example": "T7 Advocate drops the pure Gulf Stream story, citing T6's concession on wind.",
+        "limitation": "T7's trade of concessions is neat and symmetrical, softening the surprise.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C7.3",
+        "name": "Personality and expressive voice without caricature",
+        "rating": 7.6,
+        "example": "T2 opens Too tidy; T8 Navigator speaks for sailors and farmers.",
+        "limitation": "Voices lean on stance more than distinct diction; the Advocate's voice is least marked.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.4",
+        "name": "Memorable delivery",
+        "rating": 8.5,
+        "example": "T5 same wind, different history; T7 one strand, not the whole rope.",
+        "limitation": "No concrete vivid example, such as a city temperature contrast, anchors the imagery.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.5",
+        "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+        "rating": 7.4,
+        "example": "Tension builds T2 to T6, settles in T7, then reopens with T9's push-back.",
+        "limitation": "A constant measured tone keeps rhythm flat across T1 to T10.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      }
+    ],
+    "strengths": [
+      "T6 introduces seasonal heat storage, a distinction absent from the openings that T7, T9 and D build on.",
+      "T4 and T9 objections name the hidden assumption and what fails; T5 and T10 answer them.",
+      "T4 flags going beyond its source and T9 frames the quarter share as hypothetical, keeping calibration clear."
+    ],
+    "weaknesses": [
+      "Section E's decisive check is a generic model-study search; no natural comparison like mild west coasts is offered.",
+      "The Old Navigator in T8 sidesteps T6 and T7 and never revises T1's single-cause claim.",
+      "T10 treats T9's hypothetical as an estimate, and D assumes the user first heard a single-cause version."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C5.3",
+        "turns": [],
+        "observed": "Section E offers only a generic model search, no observable comparison the user could check.",
+        "evidence": "look for climate model studies that compare the same region"
+      },
+      {
+        "cell_id": "C2.5",
+        "turns": [
+          8
+        ],
+        "observed": "Navigator sidesteps to practical lesson instead of revising T1's single-cause claim.",
+        "evidence": "Sailors and farmers do not care about the ranking of causes."
+      },
+      {
+        "cell_id": "C6.2",
+        "turns": [
+          10
+        ],
+        "observed": "Refers to T9's hypothetical quarter as the Skeptic's estimate.",
+        "evidence": "If it is larger than your estimate, it is a serious one."
+      },
+      {
+        "cell_id": "C3.4",
+        "turns": [],
+        "observed": "Section D assumes the user first heard a single-cause explanation.",
+        "evidence": "whether the single-cause version you first heard felt satisfying"
+      }
+    ],
+    "mechanical": [],
+    "findings": [
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "unverified",
+        "location": "T3, T4, T6 basis fields",
+        "description": "Attributions of paleoclimate and Rockies claims to Alley and Pierrehumbert books cannot be checked; claims themselves match mainstream science.",
+        "evidence_ids": []
+      },
+      {
+        "type": "rubric_mismatch",
+        "severity": "minor",
+        "status": "observed",
+        "location": "C4.4",
+        "description": "Fears and outside expectations have little purchase on a physical-geography explanation question.",
+        "evidence_ids": []
+      }
+    ],
+    "cap_reasons": [],
+    "rubric_fit_notes": [
+      "Criteria 3 and 4 fit a no-context physical-science question loosely; ratings reflect the opportunity offered rather than invented motives. C4.4 in particular has little natural material here."
+    ],
+    "question_type_note": "Read as exploratory: C5 judged on defining competing explanations, evidence costs and a decisive check, with no deduction for absent life decisions."
+  },
+  "card": {
+    "criteria": [
+      {
+        "id": "C1",
+        "name": "Quality of discussion",
+        "max": 20,
+        "points": 17.08,
+        "sub": [
+          {
+            "id": "C1.1",
+            "name": "Continuity and responsiveness",
+            "rating": 8.6,
+            "points": 3.44,
+            "example": "T5 answers T2's wind challenge directly: same westerlies, different history over sea versus continent.",
+            "limitation": "T8 Navigator turns to sailors' practical lesson rather than answering T7's bundle claim.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.2",
+            "name": "Development of ideas",
+            "rating": 9,
+            "points": 3.6,
+            "example": "T6 introduces seasonal heat storage versus northward streaming; T7, T9 and section D build on it.",
+            "limitation": "T8 adds no new distinction, repeating that warm and cold water can be measured.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C1.3",
+            "name": "Exploration of central tensions",
+            "rating": 8,
+            "points": 3.2,
+            "example": "T2 to T6 examine ocean transport against wind direction, heat storage and the Rockies.",
+            "limitation": "Nobody raises the mild Pacific coast of North America, which tests the Gulf Stream claim.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.4",
+            "name": "Integration of perspectives",
+            "rating": 8.5,
+            "points": 3.4,
+            "example": "T7 merges positions into a bundle while T9 and T10 keep the ocean share disputed.",
+            "limitation": "T7's matched concessions arrive tidily symmetrical, one surrender traded for another.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.5",
+            "name": "Progress toward understanding",
+            "rating": 8.6,
+            "points": 3.44,
+            "example": "Section D replaces the single cause with a pattern and sharpens the open question to ocean share.",
+            "limitation": "The ending names the disputed share but no way the user could estimate its size.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C2",
+        "name": "Quality of disagreement, trust and grounding",
+        "max": 20,
+        "points": 17.2,
+        "sub": [
+          {
+            "id": "C2.1",
+            "name": "Faithful engagement",
+            "rating": 8.3,
+            "points": 3.32,
+            "example": "T4 grants past collapses show the ocean can matter greatly before contesting today's cause.",
+            "limitation": "T8 Navigator retreats to measurement instead of engaging the strongest version of T6.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.2",
+            "name": "Substance of challenges",
+            "rating": 9,
+            "points": 3.6,
+            "example": "T9 names the assumption that measuring a warm current proves causation; T10 answers with stakes.",
+            "limitation": "T10 answers by shifting to stakes rather than offering any estimate of the ocean share.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C2.3",
+            "name": "Accuracy and support",
+            "rating": 8.3,
+            "points": 3.32,
+            "example": "T2 atmospheric dominance at mid-latitudes and T6 Rockies effect match mainstream climate science.",
+            "limitation": "Book attributions for T4 and T6 claims are unverified; T6 Rockies point may not be Pierrehumbert's.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.4",
+            "name": "Calibration and transparency",
+            "rating": 9,
+            "points": 3.6,
+            "example": "T4 flags going further than its source; T9 frames the quarter share as a hypothetical.",
+            "limitation": "T10 calls T9's hypothetical quarter an estimate, hardening a supposition into a position.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C2.5",
+            "name": "Intellectual honesty and revision",
+            "rating": 8.4,
+            "points": 3.36,
+            "example": "T6 concedes ocean storage matters; T7 gives up the pure Gulf Stream story; T10 drops the headline.",
+            "limitation": "Navigator never revises T1's claim that the sea explains the gap; T8 sidesteps.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C3",
+        "name": "Personal relevance",
+        "max": 10,
+        "points": 7.54,
+        "sub": [
+          {
+            "id": "C3.1",
+            "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+            "rating": 8.2,
+            "points": 1.64,
+            "example": "Situation section names the question and the decisive uncertainty: how much each factor contributes.",
+            "limitation": "Section E frames the explanation as a choice among the user's wants, slightly recasting it.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.2",
+            "name": "Meaningful use of personal context",
+            "rating": 7,
+            "points": 1.4,
+            "example": "Situation names Britain, Norway, Labrador and Hudson Bay, anchoring the user's comparison concretely.",
+            "limitation": "The user gave no personal context; little in the reasoning is tailored beyond the question.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.3",
+            "name": "Fit with goals and values",
+            "rating": 8,
+            "points": 1.6,
+            "example": "Section E gives a simple defensible answer matching the user's request for an explanation.",
+            "limitation": "Future-change stakes in E come from the speakers, not from anything the user asked.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.4",
+            "name": "Attention to constraints and stakes",
+            "rating": 7,
+            "points": 1.4,
+            "example": "T10 links the ocean share to how serious an Atlantic circulation slowdown would be.",
+            "limitation": "Section D assumes the user first heard a single-cause version, which the question never says.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.5",
+            "name": "Responsiveness to information",
+            "rating": 7.5,
+            "points": 1.5,
+            "example": "Section E branches on simple answer versus future-change interest, stating what each implies.",
+            "limitation": "No question about the depth of explanation the user wants; the branch stands in for it.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C4",
+        "name": "Constructive self-discovery",
+        "max": 20,
+        "points": 14.68,
+        "sub": [
+          {
+            "id": "C4.1",
+            "name": "Clarification of desires and motivations",
+            "rating": 7.4,
+            "points": 2.96,
+            "example": "Section E offers two possible aims, a simple answer or understanding future change, neither asserted.",
+            "limitation": "The alternatives sit only in E as conditionals, without a direct question to answer.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.2",
+            "name": "Examination of assumptions",
+            "rating": 8.5,
+            "points": 3.4,
+            "example": "T2, T7 and T9 expose the single-cause Gulf Stream assumption behind the usual answer.",
+            "limitation": "The assumption that latitude alone should predict temperature is never surfaced.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.3",
+            "name": "Clarification of values and priorities",
+            "rating": 7,
+            "points": 2.8,
+            "example": "Section E contrasts wanting a defensible simple account with caring about future circulation change.",
+            "limitation": "What the user wants from understanding appears only in E, undeveloped in the debate.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.4",
+            "name": "Recognition of fears and outside expectations",
+            "rating": 6,
+            "points": 2.4,
+            "example": "T9 and section D note the pull of the popular headline crediting the current alone.",
+            "limitation": "Outside expectations get one sentence in D; little else attends to this dimension.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.5",
+            "name": "Agency and reflective ownership",
+            "rating": 7.8,
+            "points": 3.12,
+            "example": "Section D offers a self-reflection as possible; E conditionals let the user pick the frame.",
+            "limitation": "The D reflection is phrased about the user rather than as a question back to them.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C5",
+        "name": "Decision usefulness",
+        "max": 10,
+        "points": 7.76,
+        "sub": [
+          {
+            "id": "C5.1",
+            "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+            "rating": 8.5,
+            "points": 1.7,
+            "example": "T1 to T6 define the competing explanations: current transport, wind direction, heat storage, mountains.",
+            "limitation": "Sea ice and Arctic outflow into Hudson Bay, raised in Situation, are never developed as explanations.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.2",
+            "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+            "rating": 7.8,
+            "points": 1.56,
+            "example": "T4 and T9 show what paleoclimate and current measurements can and cannot prove.",
+            "limitation": "No turn states what evidence the atmosphere-first account would need to carry.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.3",
+            "name": "Identification of decisive conditions",
+            "rating": 7,
+            "points": 1.4,
+            "example": "Section E proposes comparing model runs with and without ocean heat transport.",
+            "limitation": "No observable natural comparison offered, such as mild west coasts without a Gulf Stream.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.4",
+            "name": "Treatment of uncertainty",
+            "rating": 8.5,
+            "points": 1.7,
+            "example": "Situation, T10 and D isolate the ocean share as the consequential unknown.",
+            "limitation": "Minor unknowns are not explicitly set aside as less consequential.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.5",
+            "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+            "rating": 7,
+            "points": 1.4,
+            "example": "Section E suggests checking whether ocean-heat-transport model studies agree.",
+            "limitation": "The step names no specific study or reading, leaving a lay user to search unaided.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C6",
+        "name": "Clarity and engagement",
+        "max": 10,
+        "points": 8.36,
+        "sub": [
+          {
+            "id": "C6.1",
+            "name": "Accessible language",
+            "rating": 8.7,
+            "points": 1.74,
+            "example": "T5's same wind, different history explains maritime versus continental air in plain words.",
+            "limitation": "Section E's ocean heat transport and T2's poleward heat go unexplained for a lay reader.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.2",
+            "name": "Traceable arguments and references",
+            "rating": 8.2,
+            "points": 1.64,
+            "example": "T6 that is a point for me clearly points to T5's westerlies argument.",
+            "limitation": "T10 your estimate points to T9's hypothetical quarter, which was not an estimate.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.3",
+            "name": "Manageable pacing and turn length",
+            "rating": 8.8,
+            "points": 1.76,
+            "example": "Ten turns, all within range, each carrying one move.",
+            "limitation": "T8 detour slows the move from bundle to the causation objection.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.4",
+            "name": "Distinguishable positions and voices, with explicit changes of position",
+            "rating": 7.8,
+            "points": 1.56,
+            "example": "Navigator practical and observational, Skeptic terse in T2, Advocate stakes-minded in T10.",
+            "limitation": "Turns share similar length and a measured register across all three minds.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.5",
+            "name": "Economy and sustained attention",
+            "rating": 8.3,
+            "points": 1.66,
+            "example": "Section D compresses the debate into one pattern without repeating turn wording.",
+            "limitation": "T8 restates T1's warm-versus-cold water point without advancing it.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C7",
+        "name": "Drama and entertainment",
+        "max": 10,
+        "points": 8.06,
+        "sub": [
+          {
+            "id": "C7.1",
+            "name": "Meaningful stakes and tension arising from the issue itself",
+            "rating": 7.8,
+            "points": 1.56,
+            "example": "T10 ties the open dispute to how worrying an Atlantic circulation slowdown would be.",
+            "limitation": "Stakes arrive only in T10; earlier turns carry intellectual tension alone.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.2",
+            "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+            "rating": 9,
+            "points": 1.8,
+            "example": "T7 Advocate drops the pure Gulf Stream story, citing T6's concession on wind.",
+            "limitation": "T7's trade of concessions is neat and symmetrical, softening the surprise.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C7.3",
+            "name": "Personality and expressive voice without caricature",
+            "rating": 7.6,
+            "points": 1.52,
+            "example": "T2 opens Too tidy; T8 Navigator speaks for sailors and farmers.",
+            "limitation": "Voices lean on stance more than distinct diction; the Advocate's voice is least marked.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.4",
+            "name": "Memorable delivery",
+            "rating": 8.5,
+            "points": 1.7,
+            "example": "T5 same wind, different history; T7 one strand, not the whole rope.",
+            "limitation": "No concrete vivid example, such as a city temperature contrast, anchors the imagery.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.5",
+            "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+            "rating": 7.4,
+            "points": 1.48,
+            "example": "Tension builds T2 to T6, settles in T7, then reopens with T9's push-back.",
+            "limitation": "A constant measured tone keeps rhythm flat across T1 to T10.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      }
+    ],
+    "uncapped": 80.68,
+    "score": 80.68,
+    "capReason": null,
+    "provisional": false,
+    "strengths": [
+      "T6 introduces seasonal heat storage, a distinction absent from the openings that T7, T9 and D build on.",
+      "T4 and T9 objections name the hidden assumption and what fails; T5 and T10 answer them.",
+      "T4 flags going beyond its source and T9 frames the quarter share as hypothetical, keeping calibration clear."
+    ],
+    "weaknesses": [
+      "Section E's decisive check is a generic model-study search; no natural comparison like mild west coasts is offered.",
+      "The Old Navigator in T8 sidesteps T6 and T7 and never revises T1's single-cause claim.",
+      "T10 treats T9's hypothetical as an estimate, and D assumes the user first heard a single-cause version."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C5.3",
+        "turns": [],
+        "observed": "Section E offers only a generic model search, no observable comparison the user could check.",
+        "evidence": "look for climate model studies that compare the same region"
+      },
+      {
+        "cell_id": "C2.5",
+        "turns": [
+          8
+        ],
+        "observed": "Navigator sidesteps to practical lesson instead of revising T1's single-cause claim.",
+        "evidence": "Sailors and farmers do not care about the ranking of causes."
+      },
+      {
+        "cell_id": "C6.2",
+        "turns": [
+          10
+        ],
+        "observed": "Refers to T9's hypothetical quarter as the Skeptic's estimate.",
+        "evidence": "If it is larger than your estimate, it is a serious one."
+      },
+      {
+        "cell_id": "C3.4",
+        "turns": [],
+        "observed": "Section D assumes the user first heard a single-cause explanation.",
+        "evidence": "whether the single-cause version you first heard felt satisfying"
+      }
+    ],
+    "mechanical": [],
+    "findings": [
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "unverified",
+        "location": "T3, T4, T6 basis fields",
+        "description": "Attributions of paleoclimate and Rockies claims to Alley and Pierrehumbert books cannot be checked; claims themselves match mainstream science.",
+        "evidence_ids": []
+      },
+      {
+        "type": "rubric_mismatch",
+        "severity": "minor",
+        "status": "observed",
+        "location": "C4.4",
+        "description": "Fears and outside expectations have little purchase on a physical-geography explanation question.",
+        "evidence_ids": []
+      }
+    ],
+    "rubricFitNotes": [
+      "Criteria 3 and 4 fit a no-context physical-science question loosely; ratings reflect the opportunity offered rather than invented motives. C4.4 in particular has little natural material here."
+    ],
+    "questionTypeNote": "Read as exploratory: C5 judged on defining competing explanations, evidence costs and a decisive check, with no deduction for absent life decisions."
+  },
+  "rubricVersion": "rubric-evaluator-4.2.0",
+  "savedAt": "2026-10-15T10:09:30.504Z"
+}

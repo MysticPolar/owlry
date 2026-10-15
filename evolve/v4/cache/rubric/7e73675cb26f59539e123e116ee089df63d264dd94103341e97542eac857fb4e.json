@@ -1,0 +1,900 @@
+{
+  "jobId": "rubric.v2.q1.s3",
+  "raw": {
+    "schema_version": "rubric-evaluator-4.2.0",
+    "rubric_version": "owlry-matrix-v2-bands",
+    "evaluation_status": "complete",
+    "cells": [
+      {
+        "id": "C1.1",
+        "name": "Continuity and responsiveness",
+        "rating": 8.2,
+        "example": "T5 answers T4's patience with its cost; T6 replies 'Fair, so I narrow it'.",
+        "limitation": "T10 absorbs T9 without engaging it; Checklist Keeper rarely answers a direct objection.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.2",
+        "name": "Development of ideas",
+        "rating": 9,
+        "example": "T5 adds non-product causes absent from openings; T6 turns bare-skin period into that test.",
+        "limitation": "T8 motive speculation adds little that later turns build on beyond T9.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C1.3",
+        "name": "Exploration of central tensions",
+        "rating": 7.4,
+        "example": "Patience versus cost (T4-T5) and order bias versus efficiency (T11-T12) examined.",
+        "limitation": "T5 raises stacked exfoliants, but one-at-a-time protocol never addresses combination-only reactions.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.4",
+        "name": "Integration of perspectives",
+        "rating": 8.2,
+        "example": "T12 concedes blind-ish order yet keeps suspect-first; disagreement left standing.",
+        "limitation": "Checklist Keeper's T7 triage and T10 protocol are never challenged or reshaped.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.5",
+        "name": "Progress toward understanding",
+        "rating": 8.3,
+        "example": "Section D ends with a clear protocol and a sharpened open question on test order.",
+        "limitation": "Section D lists how long to wait as disputed, but no turn argued it.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.1",
+        "name": "Faithful engagement",
+        "rating": 7.9,
+        "example": "T12 restates T11's bias case accurately before keeping its own efficiency point.",
+        "limitation": "T9 sets aside T8's motive point briskly rather than at its strongest.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.2",
+        "name": "Substance of challenges",
+        "rating": 9,
+        "example": "T5 names the assumption 'the cause is in the three'; T6 answers with a test.",
+        "limitation": "Nobody tests T10's jaw patch as representative of the stinging area.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C2.3",
+        "name": "Accuracy and support",
+        "rating": 8,
+        "example": "T7 and Section E list hives, swelling, breathing trouble as reasons for professional care.",
+        "limitation": "T3 'Irritated skin makes for poor memory' is an unsupported, garbled claim (observed).",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.4",
+        "name": "Calibration and transparency",
+        "rating": 8.6,
+        "example": "Section A separates reported timing and sting from the unknown culprit; T1 calls guesses hypotheses.",
+        "limitation": "T7 says tingling 'points to irritation' without noting some actives sting expectedly.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.5",
+        "name": "Intellectual honesty and revision",
+        "rating": 8.6,
+        "example": "T6 'Fair, so I narrow it'; T12 'I concede part of that'.",
+        "limitation": "Bias Spotter never concedes anything, including T9's point that motive does not change step one.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.1",
+        "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+        "rating": 8,
+        "example": "Section A frames the concern as cause-finding plus whether the sting is dangerous.",
+        "limitation": "T8's 'why the question' motive detour fits a troubleshooting request loosely.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.2",
+        "name": "Meaningful use of personal context",
+        "rating": 7.4,
+        "example": "Three products started together drives T4's point that a log cannot separate them.",
+        "limitation": "The one-week timing is never used to argue anything about reaction type.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.3",
+        "name": "Fit with goals and values",
+        "rating": 8.2,
+        "example": "T9: calm skin versus keeping the routine 'is theirs to settle'.",
+        "limitation": "The user's goal of keeping some products is assumed, not checked (T5, T9).",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.4",
+        "name": "Attention to constraints and stakes",
+        "rating": 8.2,
+        "example": "T5 names weeks without paid products on raw skin; T7 flags safety stakes.",
+        "limitation": "T2 and T5 lean on price as a factor the user never mentioned.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.5",
+        "name": "Responsiveness to information",
+        "rating": 8.2,
+        "example": "T7 and Section E branch on sting appearance and on persistence on bare skin.",
+        "limitation": "No turn asks what the three products are or contain, e.g. acids or retinoids.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.1",
+        "name": "Clarification of desires and motivations",
+        "rating": 8.5,
+        "example": "T8 offers wasted money, routine attachment, trusted recommendation as alternatives, none asserted.",
+        "limitation": "T8's motives are not posed as a question; Section D asks a different one.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.2",
+        "name": "Examination of assumptions",
+        "rating": 8.7,
+        "example": "T2 vivid-suspect bias, T5 'you assumed the cause is in the three', T11 confirmation.",
+        "limitation": "The assumption that stinging always means something is wrong is never examined.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.3",
+        "name": "Clarification of values and priorities",
+        "rating": 7.8,
+        "example": "T9 names calm skin soon versus keeping the full routine; Section D repeats it.",
+        "limitation": "The value conflict appears in one turn and is not developed further.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.4",
+        "name": "Recognition of fears and outside expectations",
+        "rating": 7.8,
+        "example": "T8 names fear of waste and a trusted recommender without pathologising.",
+        "limitation": "Worry about lasting skin damage is not acknowledged beyond T7's triage list.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.5",
+        "name": "Agency and reflective ownership",
+        "rating": 8.5,
+        "example": "T9 leaves the ranking to the user; Section D leaves test order open for them.",
+        "limitation": "Section D's reflection question is offered once without options to refine.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.1",
+        "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+        "rating": 8.2,
+        "example": "Options span pause, reintroduce, check other causes, seek care (T1, T5, T7, Section E).",
+        "limitation": "A limited step, pausing only the likeliest suspect, is never weighed against stopping all three.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.2",
+        "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+        "rating": 8.2,
+        "example": "T5 prices the clean test in weeks and raw skin; T12 weighs efficiency against bias.",
+        "limitation": "The cost of going straight to a pharmacist is never weighed.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.3",
+        "name": "Identification of decisive conditions",
+        "rating": 9,
+        "example": "T6: sting fades on bare skin favors products; stays favors other causes.",
+        "limitation": "The order dispute in T11-T12 gets no observable condition that would settle it.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C5.4",
+        "name": "Treatment of uncertainty",
+        "rating": 8.4,
+        "example": "Section A names sting appearance and other changes as the decisive unknowns.",
+        "limitation": "Gap length between reintroductions left vague in T4 and T10 without saying whether it matters.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.5",
+        "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+        "rating": 8.7,
+        "example": "T10: gentle basics, one product, small patch, log, repeat; Section E escalation path.",
+        "limitation": "'Several days' in T4 and T10 is left undefined for a reader to act on.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.1",
+        "name": "Accessible language",
+        "rating": 8.9,
+        "example": "Plain wording throughout: 'Simple steps get done; elaborate ones get dropped' (T10).",
+        "limitation": "T3 'Irritated skin makes for poor memory' reads ambiguously.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.2",
+        "name": "Traceable arguments and references",
+        "rating": 8.5,
+        "example": "T5 'That patience' clearly points to T4; T12 'that' clearly points to T11.",
+        "limitation": "T6 'my hypothesis' is unclear: T1's guilty-product guess or T5's in-the-three assumption.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.3",
+        "name": "Manageable pacing and turn length",
+        "rating": 9.2,
+        "example": "Twelve turns, all within the word range; short sections around them.",
+        "limitation": "none",
+        "limitation_severity": "none",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C6.4",
+        "name": "Distinguishable positions and voices, with explicit changes of position",
+        "rating": 8.4,
+        "example": "Experimenter tests, Bias Spotter guards order, Checklist Keeper triages; T6 and T12 mark shifts.",
+        "limitation": "Bias Spotter and Checklist Keeper overlap in T2-T3, both distrusting the guess.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.5",
+        "name": "Economy and sustained attention",
+        "rating": 8.6,
+        "example": "Section D recap is short and adds the open dispute.",
+        "limitation": "Section E repeats T7's symptom list almost word for word.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.1",
+        "name": "Meaningful stakes and tension arising from the issue itself",
+        "rating": 7.4,
+        "example": "T7 raises the stakes: allergic signs mean dropping the experiment entirely.",
+        "limitation": "Tension stays low-key; the safety stake gets one turn, then fades.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.2",
+        "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+        "rating": 8,
+        "example": "T12 names what moved it, 'a blind-ish order protects against wishful reading'.",
+        "limitation": "Both shifts (T6, T12) are partial narrowings, not surprising turns.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C7.3",
+        "name": "Personality and expressive voice without caricature",
+        "rating": 7.6,
+        "example": "T2 'Careful, you already have a suspect forming' gives the Bias Spotter edge.",
+        "limitation": "Checklist Keeper's voice stays procedural and flat in T3, T7 and T10.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.4",
+        "name": "Memorable delivery",
+        "rating": 7.4,
+        "example": "T2 'Minds crave a single villain'; T4 'or the result is mush'.",
+        "limitation": "No analogy or vivid example anchors the protocol in T6-T10.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.5",
+        "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+        "rating": 7.2,
+        "example": "T7 'the missing fact that reorders everything' builds forward momentum.",
+        "limitation": "Emotional register stays even; the user's discomfort is barely felt after T5.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      }
+    ],
+    "strengths": [
+      "T5 names the hidden assumption that the cause is among the three; T6 turns it into a bare-skin test.",
+      "T7 and Section E branch on what the sting looks like, with a clear path to professional care.",
+      "T11-T12 argue test order on its merits, with a named concession and an honestly unresolved dispute."
+    ],
+    "weaknesses": [
+      "No mind asks what the three products contain, which would change the prime suspect (C3.5).",
+      "T5's stacked exfoliants point is dropped; the one-at-a-time plan never handles combination reactions (C1.3).",
+      "T8's motive detour by the Bias Spotter fits a troubleshooting question loosely and is not posed as a question."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C3.5",
+        "turns": [
+          5,
+          7,
+          10
+        ],
+        "observed": "No turn asks which products or actives were started, though this ranks suspects.",
+        "evidence": "Stacked exfoliants, a new detergent, cold weather could each produce"
+      },
+      {
+        "cell_id": "C1.3",
+        "turns": [
+          5,
+          10
+        ],
+        "observed": "Product interaction raised in T5, never reconciled with single-product reintroduction in T10.",
+        "evidence": "add one product, try it on a small patch like the jaw"
+      },
+      {
+        "cell_id": "C3.1",
+        "turns": [
+          8
+        ],
+        "observed": "Motive speculation inserted into a practical troubleshooting question.",
+        "evidence": "Another unknown is why the question is how to figure it out."
+      },
+      {
+        "cell_id": "C2.3",
+        "turns": [
+          3
+        ],
+        "observed": "Unsupported causal claim about irritated skin and memory.",
+        "evidence": "Irritated skin makes for poor memory."
+      },
+      {
+        "cell_id": "C5.4",
+        "turns": [
+          4,
+          10
+        ],
+        "observed": "Gap length called disputed in Section D but never argued or bounded.",
+        "evidence": "with a gap of several days, or the result is mush"
+      }
+    ],
+    "mechanical": [],
+    "findings": [
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "observed",
+        "location": "T3",
+        "description": "The claim that irritated skin makes for poor memory is unsupported and reads as a garbled rationale for logging.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "unverified",
+        "location": "T1-T12 basis fields",
+        "description": "Attributions to Popper, Kahneman and Gawande are general and consistent with those works but cannot be verified here; no quotations are used.",
+        "evidence_ids": []
+      }
+    ],
+    "cap_reasons": [],
+    "rubric_fit_notes": [
+      "For a practical skincare troubleshooting question, criterion 4 (self-discovery) fits loosely; the debate's motive and values turns (T8, T9) are partly there to serve it. Medical accuracy was judged from general knowledge only."
+    ],
+    "question_type_note": "Read as a decision (troubleshooting) question, so every cell was read as written, with criterion 5 weighted on diagnostic conditions and escalation thresholds."
+  },
+  "card": {
+    "criteria": [
+      {
+        "id": "C1",
+        "name": "Quality of discussion",
+        "max": 20,
+        "points": 16.44,
+        "sub": [
+          {
+            "id": "C1.1",
+            "name": "Continuity and responsiveness",
+            "rating": 8.2,
+            "points": 3.28,
+            "example": "T5 answers T4's patience with its cost; T6 replies 'Fair, so I narrow it'.",
+            "limitation": "T10 absorbs T9 without engaging it; Checklist Keeper rarely answers a direct objection.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.2",
+            "name": "Development of ideas",
+            "rating": 9,
+            "points": 3.6,
+            "example": "T5 adds non-product causes absent from openings; T6 turns bare-skin period into that test.",
+            "limitation": "T8 motive speculation adds little that later turns build on beyond T9.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C1.3",
+            "name": "Exploration of central tensions",
+            "rating": 7.4,
+            "points": 2.96,
+            "example": "Patience versus cost (T4-T5) and order bias versus efficiency (T11-T12) examined.",
+            "limitation": "T5 raises stacked exfoliants, but one-at-a-time protocol never addresses combination-only reactions.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.4",
+            "name": "Integration of perspectives",
+            "rating": 8.2,
+            "points": 3.28,
+            "example": "T12 concedes blind-ish order yet keeps suspect-first; disagreement left standing.",
+            "limitation": "Checklist Keeper's T7 triage and T10 protocol are never challenged or reshaped.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.5",
+            "name": "Progress toward understanding",
+            "rating": 8.3,
+            "points": 3.32,
+            "example": "Section D ends with a clear protocol and a sharpened open question on test order.",
+            "limitation": "Section D lists how long to wait as disputed, but no turn argued it.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C2",
+        "name": "Quality of disagreement, trust and grounding",
+        "max": 20,
+        "points": 16.84,
+        "sub": [
+          {
+            "id": "C2.1",
+            "name": "Faithful engagement",
+            "rating": 7.9,
+            "points": 3.16,
+            "example": "T12 restates T11's bias case accurately before keeping its own efficiency point.",
+            "limitation": "T9 sets aside T8's motive point briskly rather than at its strongest.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.2",
+            "name": "Substance of challenges",
+            "rating": 9,
+            "points": 3.6,
+            "example": "T5 names the assumption 'the cause is in the three'; T6 answers with a test.",
+            "limitation": "Nobody tests T10's jaw patch as representative of the stinging area.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C2.3",
+            "name": "Accuracy and support",
+            "rating": 8,
+            "points": 3.2,
+            "example": "T7 and Section E list hives, swelling, breathing trouble as reasons for professional care.",
+            "limitation": "T3 'Irritated skin makes for poor memory' is an unsupported, garbled claim (observed).",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.4",
+            "name": "Calibration and transparency",
+            "rating": 8.6,
+            "points": 3.44,
+            "example": "Section A separates reported timing and sting from the unknown culprit; T1 calls guesses hypotheses.",
+            "limitation": "T7 says tingling 'points to irritation' without noting some actives sting expectedly.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.5",
+            "name": "Intellectual honesty and revision",
+            "rating": 8.6,
+            "points": 3.44,
+            "example": "T6 'Fair, so I narrow it'; T12 'I concede part of that'.",
+            "limitation": "Bias Spotter never concedes anything, including T9's point that motive does not change step one.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C3",
+        "name": "Personal relevance",
+        "max": 10,
+        "points": 8,
+        "sub": [
+          {
+            "id": "C3.1",
+            "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+            "rating": 8,
+            "points": 1.6,
+            "example": "Section A frames the concern as cause-finding plus whether the sting is dangerous.",
+            "limitation": "T8's 'why the question' motive detour fits a troubleshooting request loosely.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.2",
+            "name": "Meaningful use of personal context",
+            "rating": 7.4,
+            "points": 1.48,
+            "example": "Three products started together drives T4's point that a log cannot separate them.",
+            "limitation": "The one-week timing is never used to argue anything about reaction type.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.3",
+            "name": "Fit with goals and values",
+            "rating": 8.2,
+            "points": 1.64,
+            "example": "T9: calm skin versus keeping the routine 'is theirs to settle'.",
+            "limitation": "The user's goal of keeping some products is assumed, not checked (T5, T9).",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.4",
+            "name": "Attention to constraints and stakes",
+            "rating": 8.2,
+            "points": 1.64,
+            "example": "T5 names weeks without paid products on raw skin; T7 flags safety stakes.",
+            "limitation": "T2 and T5 lean on price as a factor the user never mentioned.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.5",
+            "name": "Responsiveness to information",
+            "rating": 8.2,
+            "points": 1.64,
+            "example": "T7 and Section E branch on sting appearance and on persistence on bare skin.",
+            "limitation": "No turn asks what the three products are or contain, e.g. acids or retinoids.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C4",
+        "name": "Constructive self-discovery",
+        "max": 20,
+        "points": 16.52,
+        "sub": [
+          {
+            "id": "C4.1",
+            "name": "Clarification of desires and motivations",
+            "rating": 8.5,
+            "points": 3.4,
+            "example": "T8 offers wasted money, routine attachment, trusted recommendation as alternatives, none asserted.",
+            "limitation": "T8's motives are not posed as a question; Section D asks a different one.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.2",
+            "name": "Examination of assumptions",
+            "rating": 8.7,
+            "points": 3.48,
+            "example": "T2 vivid-suspect bias, T5 'you assumed the cause is in the three', T11 confirmation.",
+            "limitation": "The assumption that stinging always means something is wrong is never examined.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.3",
+            "name": "Clarification of values and priorities",
+            "rating": 7.8,
+            "points": 3.12,
+            "example": "T9 names calm skin soon versus keeping the full routine; Section D repeats it.",
+            "limitation": "The value conflict appears in one turn and is not developed further.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.4",
+            "name": "Recognition of fears and outside expectations",
+            "rating": 7.8,
+            "points": 3.12,
+            "example": "T8 names fear of waste and a trusted recommender without pathologising.",
+            "limitation": "Worry about lasting skin damage is not acknowledged beyond T7's triage list.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.5",
+            "name": "Agency and reflective ownership",
+            "rating": 8.5,
+            "points": 3.4,
+            "example": "T9 leaves the ranking to the user; Section D leaves test order open for them.",
+            "limitation": "Section D's reflection question is offered once without options to refine.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C5",
+        "name": "Decision usefulness",
+        "max": 10,
+        "points": 8.5,
+        "sub": [
+          {
+            "id": "C5.1",
+            "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+            "rating": 8.2,
+            "points": 1.64,
+            "example": "Options span pause, reintroduce, check other causes, seek care (T1, T5, T7, Section E).",
+            "limitation": "A limited step, pausing only the likeliest suspect, is never weighed against stopping all three.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.2",
+            "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+            "rating": 8.2,
+            "points": 1.64,
+            "example": "T5 prices the clean test in weeks and raw skin; T12 weighs efficiency against bias.",
+            "limitation": "The cost of going straight to a pharmacist is never weighed.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.3",
+            "name": "Identification of decisive conditions",
+            "rating": 9,
+            "points": 1.8,
+            "example": "T6: sting fades on bare skin favors products; stays favors other causes.",
+            "limitation": "The order dispute in T11-T12 gets no observable condition that would settle it.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C5.4",
+            "name": "Treatment of uncertainty",
+            "rating": 8.4,
+            "points": 1.68,
+            "example": "Section A names sting appearance and other changes as the decisive unknowns.",
+            "limitation": "Gap length between reintroductions left vague in T4 and T10 without saying whether it matters.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.5",
+            "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+            "rating": 8.7,
+            "points": 1.74,
+            "example": "T10: gentle basics, one product, small patch, log, repeat; Section E escalation path.",
+            "limitation": "'Several days' in T4 and T10 is left undefined for a reader to act on.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C6",
+        "name": "Clarity and engagement",
+        "max": 10,
+        "points": 8.72,
+        "sub": [
+          {
+            "id": "C6.1",
+            "name": "Accessible language",
+            "rating": 8.9,
+            "points": 1.78,
+            "example": "Plain wording throughout: 'Simple steps get done; elaborate ones get dropped' (T10).",
+            "limitation": "T3 'Irritated skin makes for poor memory' reads ambiguously.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.2",
+            "name": "Traceable arguments and references",
+            "rating": 8.5,
+            "points": 1.7,
+            "example": "T5 'That patience' clearly points to T4; T12 'that' clearly points to T11.",
+            "limitation": "T6 'my hypothesis' is unclear: T1's guilty-product guess or T5's in-the-three assumption.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.3",
+            "name": "Manageable pacing and turn length",
+            "rating": 9.2,
+            "points": 1.84,
+            "example": "Twelve turns, all within the word range; short sections around them.",
+            "limitation": "none",
+            "severity": "none",
+            "anchorMet": true
+          },
+          {
+            "id": "C6.4",
+            "name": "Distinguishable positions and voices, with explicit changes of position",
+            "rating": 8.4,
+            "points": 1.68,
+            "example": "Experimenter tests, Bias Spotter guards order, Checklist Keeper triages; T6 and T12 mark shifts.",
+            "limitation": "Bias Spotter and Checklist Keeper overlap in T2-T3, both distrusting the guess.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.5",
+            "name": "Economy and sustained attention",
+            "rating": 8.6,
+            "points": 1.72,
+            "example": "Section D recap is short and adds the open dispute.",
+            "limitation": "Section E repeats T7's symptom list almost word for word.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C7",
+        "name": "Drama and entertainment",
+        "max": 10,
+        "points": 7.52,
+        "sub": [
+          {
+            "id": "C7.1",
+            "name": "Meaningful stakes and tension arising from the issue itself",
+            "rating": 7.4,
+            "points": 1.48,
+            "example": "T7 raises the stakes: allergic signs mean dropping the experiment entirely.",
+            "limitation": "Tension stays low-key; the safety stake gets one turn, then fades.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.2",
+            "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+            "rating": 8,
+            "points": 1.6,
+            "example": "T12 names what moved it, 'a blind-ish order protects against wishful reading'.",
+            "limitation": "Both shifts (T6, T12) are partial narrowings, not surprising turns.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C7.3",
+            "name": "Personality and expressive voice without caricature",
+            "rating": 7.6,
+            "points": 1.52,
+            "example": "T2 'Careful, you already have a suspect forming' gives the Bias Spotter edge.",
+            "limitation": "Checklist Keeper's voice stays procedural and flat in T3, T7 and T10.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.4",
+            "name": "Memorable delivery",
+            "rating": 7.4,
+            "points": 1.48,
+            "example": "T2 'Minds crave a single villain'; T4 'or the result is mush'.",
+            "limitation": "No analogy or vivid example anchors the protocol in T6-T10.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.5",
+            "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+            "rating": 7.2,
+            "points": 1.44,
+            "example": "T7 'the missing fact that reorders everything' builds forward momentum.",
+            "limitation": "Emotional register stays even; the user's discomfort is barely felt after T5.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      }
+    ],
+    "uncapped": 82.54,
+    "score": 82.54,
+    "capReason": null,
+    "provisional": false,
+    "strengths": [
+      "T5 names the hidden assumption that the cause is among the three; T6 turns it into a bare-skin test.",
+      "T7 and Section E branch on what the sting looks like, with a clear path to professional care.",
+      "T11-T12 argue test order on its merits, with a named concession and an honestly unresolved dispute."
+    ],
+    "weaknesses": [
+      "No mind asks what the three products contain, which would change the prime suspect (C3.5).",
+      "T5's stacked exfoliants point is dropped; the one-at-a-time plan never handles combination reactions (C1.3).",
+      "T8's motive detour by the Bias Spotter fits a troubleshooting question loosely and is not posed as a question."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C3.5",
+        "turns": [
+          5,
+          7,
+          10
+        ],
+        "observed": "No turn asks which products or actives were started, though this ranks suspects.",
+        "evidence": "Stacked exfoliants, a new detergent, cold weather could each produce"
+      },
+      {
+        "cell_id": "C1.3",
+        "turns": [
+          5,
+          10
+        ],
+        "observed": "Product interaction raised in T5, never reconciled with single-product reintroduction in T10.",
+        "evidence": "add one product, try it on a small patch like the jaw"
+      },
+      {
+        "cell_id": "C3.1",
+        "turns": [
+          8
+        ],
+        "observed": "Motive speculation inserted into a practical troubleshooting question.",
+        "evidence": "Another unknown is why the question is how to figure it out."
+      },
+      {
+        "cell_id": "C2.3",
+        "turns": [
+          3
+        ],
+        "observed": "Unsupported causal claim about irritated skin and memory.",
+        "evidence": "Irritated skin makes for poor memory."
+      },
+      {
+        "cell_id": "C5.4",
+        "turns": [
+          4,
+          10
+        ],
+        "observed": "Gap length called disputed in Section D but never argued or bounded.",
+        "evidence": "with a gap of several days, or the result is mush"
+      }
+    ],
+    "mechanical": [],
+    "findings": [
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "observed",
+        "location": "T3",
+        "description": "The claim that irritated skin makes for poor memory is unsupported and reads as a garbled rationale for logging.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "unverified",
+        "location": "T1-T12 basis fields",
+        "description": "Attributions to Popper, Kahneman and Gawande are general and consistent with those works but cannot be verified here; no quotations are used.",
+        "evidence_ids": []
+      }
+    ],
+    "rubricFitNotes": [
+      "For a practical skincare troubleshooting question, criterion 4 (self-discovery) fits loosely; the debate's motive and values turns (T8, T9) are partly there to serve it. Medical accuracy was judged from general knowledge only."
+    ],
+    "questionTypeNote": "Read as a decision (troubleshooting) question, so every cell was read as written, with criterion 5 weighted on diagnostic conditions and escalation thresholds."
+  },
+  "rubricVersion": "rubric-evaluator-4.2.0",
+  "savedAt": "2026-10-15T10:24:54.054Z"
+}

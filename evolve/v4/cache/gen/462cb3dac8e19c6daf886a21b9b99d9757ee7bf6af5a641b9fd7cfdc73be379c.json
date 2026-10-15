@@ -1,0 +1,143 @@
+{
+  "jobId": "gen.v0.q4.s3",
+  "lineage": "gemini",
+  "version": "v0",
+  "q": 4,
+  "s": 3,
+  "model": "gemini-3.1-flash-lite",
+  "settings": {
+    "temperature": 0.5,
+    "thinkingLevel": "MEDIUM",
+    "maxOutputTokens": 16384
+  },
+  "debate": {
+    "situation": "You feel a mounting pressure to mirror the life milestones of your peers, specifically regarding home ownership and marriage. The central tension lies in whether your feeling of being behind is a genuine signal that you are neglecting your own needs, or if it is merely a byproduct of social comparison that ignores your actual values.",
+    "minds": [
+      {
+        "title": "The Existentialist",
+        "concern": "Authenticity and the avoidance of bad faith",
+        "author": "Jean-Paul Sartre",
+        "book": "Being and Nothingness",
+        "year": 1943
+      },
+      {
+        "title": "The Risk Analyst",
+        "concern": "Avoiding fragile social mimicry",
+        "author": "Nassim Nicholas Taleb",
+        "book": "The Black Swan",
+        "year": 2007
+      },
+      {
+        "title": "The Stoic",
+        "concern": "Internal locus of control",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "year": 180
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Existentialist",
+        "text": "You are currently suffering because you are viewing your life through the lens of others. By measuring yourself against their milestones, you are acting in bad faith, treating your own existence as an object to be compared rather than a project you must define for yourself.",
+        "author": "Jean-Paul Sartre",
+        "book": "Being and Nothingness",
+        "pd": false,
+        "basis": "Basis: Jean-Paul Sartre, Being and Nothingness"
+      },
+      {
+        "speaker": "The Risk Analyst",
+        "text": "I would add that this is also a massive error in judgment. Following the herd into marriage or home ownership just because your peers are doing it is a recipe for fragility. You are copying a life strategy without understanding the risks or the specific requirements of your own situation.",
+        "author": "Nassim Nicholas Taleb",
+        "book": "The Black Swan",
+        "pd": false,
+        "basis": "Basis: Nassim Nicholas Taleb, The Black Swan"
+      },
+      {
+        "speaker": "The Stoic",
+        "text": "Everything we hear is an opinion, not a fact. Everything we see is a perspective, not the truth. Why do you grant your friends the power to define your success? If you align your internal values with your actions, their milestones will lose their ability to disturb your peace.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "Basis: Marcus Aurelius, Meditations"
+      },
+      {
+        "speaker": "The Existentialist",
+        "text": "The Stoic is right about perspective, but wrong to suggest that indifference is the goal. You must actively choose your path. If you decide not to marry, that is a choice you must own fully, not just a reaction to the pressure of others.",
+        "author": "Jean-Paul Sartre",
+        "book": "Being and Nothingness",
+        "pd": false,
+        "basis": "Basis: Jean-Paul Sartre, Being and Nothingness"
+      },
+      {
+        "speaker": "The Risk Analyst",
+        "text": "True, but let us be practical. You need to look at the payoff of these milestones. If you are only considering them to avoid the feeling of being behind, you are playing a game designed by people who may have different risk tolerances and resources than you do.",
+        "author": "Nassim Nicholas Taleb",
+        "book": "The Black Swan",
+        "pd": false,
+        "basis": "Basis: Nassim Nicholas Taleb, The Black Swan"
+      },
+      {
+        "speaker": "The Stoic",
+        "text": "The happiness of your life depends upon the quality of your thoughts. If you think you are behind, you are behind. If you think you are simply on a different path, you are not. The external milestone is indifferent; your judgment is the only thing that matters.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "Basis: Marcus Aurelius, Meditations"
+      },
+      {
+        "speaker": "The Existentialist",
+        "text": "That is too passive. You cannot just change your thoughts to escape the anxiety of freedom. You are defined by your actions. If you feel behind, it is because you have not yet committed to a project that makes those milestones seem irrelevant.",
+        "author": "Jean-Paul Sartre",
+        "book": "Being and Nothingness",
+        "pd": false,
+        "basis": "Basis: Jean-Paul Sartre, Being and Nothingness"
+      },
+      {
+        "speaker": "The Risk Analyst",
+        "text": "I agree that action is required, but it should be robust action. Do not commit to a house or a marriage to signal status. Commit to things that make you anti-fragile, meaning things that actually improve your life regardless of what your friends are doing.",
+        "author": "Nassim Nicholas Taleb",
+        "book": "The Black Swan",
+        "pd": false,
+        "basis": "Basis: Nassim Nicholas Taleb, The Black Swan"
+      },
+      {
+        "speaker": "The Stoic",
+        "text": "Exactly. Whether you marry or buy a home is a matter of indifference. The only thing that is truly good or bad is the state of your own character. Focus on that, and the feeling of being behind will vanish.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "Basis: Marcus Aurelius, Meditations"
+      }
+    ],
+    "clearer": "The debate clarifies that your feeling of being behind is less about the milestones themselves and more about your relationship to social expectations. The main insight is that you are currently using your friends' lives as a benchmark for your own, which is a form of passive living. It remains disputed whether you should simply ignore these milestones (Stoicism) or actively build a life that renders them irrelevant (Existentialism).",
+    "dependsOn": "If you prioritize social belonging and stability, then the pressure you feel is a signal that you should investigate these milestones to see if they actually offer the security you crave. If you prioritize individual autonomy and self-definition, then the feeling of being behind is a signal to stop looking at your peers and start articulating your own unique goals. If you remain unsure, try to identify one specific aspect of your life that you control entirely and invest your energy there to see if the need to compare yourself to others diminishes."
+  },
+  "validity": {
+    "ok": true,
+    "problems": []
+  },
+  "metrics": {
+    "turns": 9,
+    "words": 412,
+    "meanWordsPerTurn": 45.78,
+    "shortTurns": 0,
+    "longTurns": 0,
+    "hedges": 6,
+    "hedgeDensity": 1.46,
+    "bannedCertainty": 3,
+    "templatedOpeners": 0,
+    "slotMarkers": 0,
+    "questionsToUser": 1,
+    "theUser": 0,
+    "pdFalseQuoteTurns": 0,
+    "fabricatedBasisTurns": 0,
+    "distinctSpeakers": 3,
+    "distinctBooks": 3
+  },
+  "unusable": false,
+  "latencyMs": 9080,
+  "tokens": null,
+  "raw": "{\n  \"output\": {\n    \"situation\": \"You feel a mounting pressure to mirror the life milestones of your peers, specifically regarding home ownership and marriage. The central tension lies in whether your feeling of being behind is a genuine signal that you are neglecting your own needs, or if it is merely a byproduct of social comparison that ignores your actual values.\",\n    \"minds\": [\n      {\n        \"title\": \"The Existentialist\",\n        \"concern\": \"Authenticity and the avoidance of bad faith\",\n        \"author\": \"Jean-Paul Sartre\",\n        \"book\": \"Being and Nothingness\",\n        \"year\": 1943\n      },\n      {\n        \"title\": \"The Risk Analyst\",\n        \"concern\": \"Avoiding fragile social mimicry\",\n        \"author\": \"Nassim Nicholas Taleb\",\n        \"book\": \"The Black Swan\",\n        \"year\": 2007\n      },\n      {\n        \"title\": \"The Stoic\",\n        \"concern\": \"Internal locus of control\",\n        \"author\": \"Marcus Aurelius\",\n        \"book\": \"Meditations\",\n        \"year\": 180\n      }\n    ],\n    \"debate\": [\n      {\n        \"speaker\": \"The Existentialist\",\n        \"text\": \"You are currently suffering because you are viewing your life through the lens of others. By measuring yourself against their milestones, you are acting in bad faith, treating your own existence as an object to be compared rather than a project you must define for yourself.\",\n        \"author\": \"Jean-Paul Sartre\",\n        \"book\": \"Being and Nothingness\",\n        \"pd\": false,\n        \"basis\": \"Basis: Jean-Paul Sartre, Being and Nothingness\"\n      },\n      {\n        \"speaker\": \"The Risk Analyst\",\n        \"text\": \"I would add that this is also a massive error in judgment. Following the herd into marriage or home ownership just because your peers are doing it is a recipe for fragility. You are copying a life strategy without understanding the risks or the specific requirements of your own situation.\",\n        \"author\": \"Nassim Nicholas Taleb\",\n        \"book\": \"The Black Swan\",\n        \"pd\": false,\n        \"basis\": \"Basis: Nassim Nicholas Taleb, The Black Swan\"\n      },\n      {\n        \"speaker\": \"The Stoic\",\n        \"text\": \"Everything we hear is an opinion, not a fact. Everything we see is a perspective, not the truth. Why do you grant your friends the power to define your success? If you align your internal values with your actions, their milestones will lose their ability to disturb your peace.\",\n        \"author\": \"Marcus Aurelius\",\n        \"book\": \"Meditations\",\n        \"pd\": true,\n        \"basis\": \"Basis: Marcus Aurelius, Meditations\"\n      },\n      {\n        \"speaker\": \"The Existentialist\",\n        \"text\": \"The Stoic is right about perspective, but wrong to suggest that indifference is the goal. You must actively choose your path. If you decide not to marry, that is a choice you must own fully, not just a reaction to the pressure of others.\",\n        \"author\": \"Jean-Paul Sartre\",\n        \"book\": \"Being and Nothingness\",\n        \"pd\": false,\n        \"basis\": \"Basis: Jean-Paul Sartre, Being and Nothingness\"\n      },\n      {\n        \"speaker\": \"The Risk Analyst\",\n        \"text\": \"True, but let us be practical. You need to look at the payoff of these milestones. If you are only considering them to avoid the feeling of being behind, you are playing a game designed by people who may have different risk tolerances and resources than you do.\",\n        \"author\": \"Nassim Nicholas Taleb\",\n        \"book\": \"The Black Swan\",\n        \"pd\": false,\n        \"basis\": \"Basis: Nassim Nicholas Taleb, The Black Swan\"\n      },\n      {\n        \"speaker\": \"The Stoic\",\n        \"text\": \"The happiness of your life depends upon the quality of your thoughts. If you think you are behind, you are behind. If you think you are simply on a different path, you are not. The external milestone is indifferent; your judgment is the only thing that matters.\",\n        \"author\": \"Marcus Aurelius\",\n        \"book\": \"Meditations\",\n        \"pd\": true,\n        \"basis\": \"Basis: Marcus Aurelius, Meditations\"\n      },\n      {\n        \"speaker\": \"The Existentialist\",\n        \"text\": \"That is too passive. You cannot just change your thoughts to escape the anxiety of freedom. You are defined by your actions. If you feel behind, it is because you have not yet committed to a project that makes those milestones seem irrelevant.\",\n        \"author\": \"Jean-Paul Sartre\",\n        \"book\": \"Being and Nothingness\",\n        \"pd\": false,\n        \"basis\": \"Basis: Jean-Paul Sartre, Being and Nothingness\"\n      },\n      {\n        \"speaker\": \"The Risk Analyst\",\n        \"text\": \"I agree that action is required, but it should be robust action. Do not commit to a house or a marriage to signal status. Commit to things that make you anti-fragile, meaning things that actually improve your life regardless of what your friends are doing.\",\n        \"author\": \"Nassim Nicholas Taleb\",\n        \"book\": \"The Black Swan\",\n        \"pd\": false,\n        \"basis\": \"Basis: Nassim Nicholas Taleb, The Black Swan\"\n      },\n      {\n        \"speaker\": \"The Stoic\",\n        \"text\": \"Exactly. Whether you marry or buy a home is a matter of indifference. The only thing that is truly good or bad is the state of your own character. Focus on that, and the feeling of being behind will vanish.\",\n        \"author\": \"Marcus Aurelius\",\n        \"book\": \"Meditations\",\n        \"pd\": true,\n        \"basis\": \"Basis: Marcus Aurelius, Meditations\"\n      }\n    ],\n    \"clearer\": \"The debate clarifies that your feeling of being behind is less about the milestones themselves and more about your relationship to social expectations. The main insight is that you are currently using your friends' lives as a benchmark for your own, which is a form of passive living. It remains disputed whether you should simply ignore these milestones (Stoicism) or actively build a life that renders them irrelevant (Existentialism).\",\n    \"dependsOn\": \"If you prioritize social belonging and stability, then the pressure you feel is a signal that you should investigate these milestones to see if they actually offer the security you crave. If you prioritize individual autonomy and self-definition, then the feeling of being behind is a signal to stop looking at your peers and start articulating your own unique goals. If you remain unsure, try to identify one specific aspect of your life that you control entirely and invest your energy there to see if the need to compare yourself to others diminishes.\"\n  },\n  \"latencyMs\": 9080,\n  \"tokens\": null\n}",
+  "transcriptHash": "a4251502eb141cdbd5b7b404f53711e65f421d648be33453ecb075bc04b4b194",
+  "savedAt": "2026-10-15T10:21:15.789Z"
+}

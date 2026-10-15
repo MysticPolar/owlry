@@ -28,6 +28,15 @@ export async function normalise(schemaPath: string, data: unknown): Promise<void
   // the rubric brief describes rubric_fit_notes as "observations" without saying "list": a single string is one note
   // (first live run, 2026-10-15: 9 of 10 evaluators wrote a string)
   for (const k of ["rubric_fit_notes"]) if (typeof o[k] === "string") o[k] = (o[k] as string).trim() && !/^\s*none\.?\s*$/i.test(o[k] as string) ? [(o[k] as string).trim()] : [];
+  // the blind brief asks for "one observation each, with a location": judges write {location, observation}; the schema
+  // wants one string (first live run: 10 of 10 verdicts)
+  for (const k of ["best_of_a", "best_of_b"]) {
+    const v = o[k];
+    if (v && typeof v === "object" && !Array.isArray(v)) {
+      const r = v as Record<string, unknown>, loc = typeof r.location === "string" ? r.location : "", obs = typeof r.observation === "string" ? r.observation : JSON.stringify(r);
+      o[k] = loc ? `${loc}: ${obs}` : obs;
+    } else if (Array.isArray(v)) o[k] = v.map((x) => (typeof x === "string" ? x : JSON.stringify(x))).join(" / ");
+  }
   for (const k of ["findings", "cap_reasons", "rubric_fit_notes", "mechanical", "concerns"]) if (k in o && o[k] == null) o[k] = [];
   if (Array.isArray(o.concerns)) for (const c of o.concerns as Record<string, unknown>[]) if (c && typeof c === "object" && c.evidence_ids == null) c.evidence_ids = [];
   if (Array.isArray(o.findings)) for (const f of o.findings as Record<string, unknown>[]) if (f && typeof f === "object" && f.evidence_ids == null) f.evidence_ids = [];

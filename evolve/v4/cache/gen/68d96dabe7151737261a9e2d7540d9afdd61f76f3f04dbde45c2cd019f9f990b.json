@@ -1,0 +1,150 @@
+{
+  "jobId": "gen.v1.q2.s3",
+  "lineage": "sonnet",
+  "version": "v1",
+  "q": 2,
+  "s": 3,
+  "model": "sonnet",
+  "settings": {
+    "agentType": "general-purpose",
+    "effort": "medium"
+  },
+  "debate": {
+    "situation": "You have a job offer paying 25% more, but it adds a 90-minute commute each way, about three hours of travel a day. What you've reported is those two facts. Unknown so far: your current pay and commute, how you'd travel (driving, train you can work on, remote days), whether the extra money changes anything concrete, and what else differs between the jobs. The question underneath may be less 'is it worth it?' and more 'what would I trade this time for?'. This conversation is a fictional debate to help you think it through.",
+    "minds": [
+      {
+        "title": "The Life-Cost Accountant",
+        "concern": "Time is the real currency; price every raise in hours of your life, not just dollars.",
+        "author": "Henry David Thoreau",
+        "book": "Walden",
+        "year": 1854
+      },
+      {
+        "title": "The Forecasting Skeptic",
+        "concern": "We mispredict how we'll feel: big gains fade, daily irritations don't, and we judge by what's vivid rather than by what we'll live through.",
+        "author": "Daniel Kahneman",
+        "book": "Thinking, Fast and Slow",
+        "year": 2011
+      },
+      {
+        "title": "The Exit Planner",
+        "concern": "Treat this as a bet under uncertainty: set tests and quit conditions in advance so you can reverse course cheaply.",
+        "author": "Annie Duke",
+        "book": "Quit: The Power of Knowing When to Walk Away",
+        "year": 2022
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Life-Cost Accountant",
+        "text": "Start with arithmetic. Three hours a day, five days a week, is fifteen hours weekly. That's a second part-time job you do without pay. A 25% raise has to be weighed against those hours, and I suspect most people never run that calculation honestly.",
+        "author": "Henry David Thoreau",
+        "book": "Walden",
+        "pd": true,
+        "basis": "Basis: Henry David Thoreau, Walden"
+      },
+      {
+        "speaker": "The Forecasting Skeptic",
+        "text": "Good start, but the raise is the vivid part, so it will win by default. People picture the salary bump and forget how a daily slog feels. I'd add that the commute is something we adapt to far less than we expect. Does your calculation count the misery, not just the minutes?",
+        "author": "Daniel Kahneman",
+        "book": "Thinking, Fast and Slow",
+        "pd": false,
+        "basis": "Basis: Daniel Kahneman, Thinking, Fast and Slow"
+      },
+      {
+        "speaker": "The Life-Cost Accountant",
+        "text": "Fair, so let me sharpen it. Thoreau wrote: 'The cost of a thing is the amount of what I will call life which is required to be exchanged for it, immediately or in the long run.' Fifteen hours a week of life is the price tag. What does the extra money buy that's worth that?",
+        "author": "Henry David Thoreau",
+        "book": "Walden",
+        "pd": true,
+        "basis": "Basis: Henry David Thoreau, Walden"
+      },
+      {
+        "speaker": "The Exit Planner",
+        "text": "You're both treating this as one irreversible verdict. It isn't. Nobody knows today how the commute will feel in month four. I'd rather decide what evidence would change our minds, and when, than argue forever about a future none of us can see.",
+        "author": "Annie Duke",
+        "book": "Quit: The Power of Knowing When to Walk Away",
+        "pd": false,
+        "basis": "Basis: Annie Duke, Quit: The Power of Knowing When to Walk Away"
+      },
+      {
+        "speaker": "The Forecasting Skeptic",
+        "text": "I'll partly concede that, but trial periods have a trap. Once you've moved your life around the job, quitting feels like admitting a mistake. And the commute can hide inside a good first month, when everything is new and exciting. Early happiness is weak evidence.",
+        "author": "Daniel Kahneman",
+        "book": "Thinking, Fast and Slow",
+        "pd": false,
+        "basis": "Basis: Daniel Kahneman, Thinking, Fast and Slow"
+      },
+      {
+        "speaker": "The Exit Planner",
+        "text": "Which is exactly why you write the exit rules before you start. If sleep, exercise, or evenings with family slip below a level you set today, you revisit the decision. The tripwire is decided by calm you, not by tired you in month six. I'd go further than my source here: pick the tripwires with someone who'll hold you to them.",
+        "author": "Annie Duke",
+        "book": "Quit: The Power of Knowing When to Walk Away",
+        "pd": false,
+        "basis": "Basis: Annie Duke, Quit: The Power of Knowing When to Walk Away"
+      },
+      {
+        "speaker": "The Life-Cost Accountant",
+        "text": "My worry is the opposite. A trial can become the very drift I'm warning about, a slow slide into hours you never chose to give. And what if the commute is on a train where you read or work? Then the three hours aren't all lost, and I'd have to price them differently.",
+        "author": "Henry David Thoreau",
+        "book": "Walden",
+        "pd": true,
+        "basis": "Basis: Henry David Thoreau, Walden"
+      },
+      {
+        "speaker": "The Forecasting Skeptic",
+        "text": "That's the first thing that could flip my caution. Passive driving in traffic and a seat with a book are different experiences, and the same minutes can feel nothing alike. Also, what is the 25% for? Debt relief or a house deposit is a concrete payoff. Vaguely having more money is easy to overrate.",
+        "author": "Daniel Kahneman",
+        "book": "Thinking, Fast and Slow",
+        "pd": false,
+        "basis": "Basis: Daniel Kahneman, Thinking, Fast and Slow"
+      },
+      {
+        "speaker": "The Exit Planner",
+        "text": "Then turn those into questions we can answer before signing. Can you negotiate remote days? Can you test the route at rush hour for a week? Is the role itself a step forward in skills? Staying put is a real option too, but it deserves the same scrutiny, not automatic safety.",
+        "author": "Annie Duke",
+        "book": "Quit: The Power of Knowing When to Walk Away",
+        "pd": false,
+        "basis": "Basis: Annie Duke, Quit: The Power of Knowing When to Walk Away"
+      },
+      {
+        "speaker": "The Life-Cost Accountant",
+        "text": "I'll accept that, with one thing left unsettled. If the best case needs a hybrid arrangement or a usable train ride, then the offer as written may not be worth the hours. The real choice might be this job on its current terms versus this job renegotiated, and those could have very different prices.",
+        "author": "Henry David Thoreau",
+        "book": "Walden",
+        "pd": true,
+        "basis": "Basis: Henry David Thoreau, Walden"
+      }
+    ],
+    "clearer": "The main insight is that the decision may not be 'raise versus commute' but 'what exactly does the extra money buy, and what exactly do the hours cost?'. The minds agreed that the raise is vivid while the commute's daily cost is easy to underestimate, and that a commute you can use (reading, working, resting) is a very different cost from one you merely endure. They disagreed about whether a trial period protects you or just makes it harder to leave. A possible self-reflection: what would you do with the extra income, and what would you do with those fifteen weekly hours if you kept them?",
+    "dependsOn": "If the commute is usable (a train where you can read or work) or the job allows some remote days, the offer becomes more reasonable, because the true time cost falls well below three hours a day. If the extra money has a specific purpose, such as clearing debt or building a deposit, the trade is easier to justify than for general comfort. If the commute would be driving in traffic, with no flexibility, and the raise has no particular goal, a different option becomes more reasonable: staying, or negotiating the terms. If how it will feel is the unknown, a proportionate way to learn is to trial the actual route at rush hour for a few days, ask about remote days before accepting, and write down in advance the sleep, exercise, and family-time levels at which you'd reconsider."
+  },
+  "validity": {
+    "ok": true,
+    "problems": []
+  },
+  "metrics": {
+    "turns": 10,
+    "words": 512,
+    "meanWordsPerTurn": 51.2,
+    "shortTurns": 0,
+    "longTurns": 0,
+    "hedges": 4,
+    "hedgeDensity": 0.78,
+    "bannedCertainty": 0,
+    "templatedOpeners": 0,
+    "slotMarkers": 0,
+    "questionsToUser": 2,
+    "theUser": 0,
+    "pdFalseQuoteTurns": 0,
+    "fabricatedBasisTurns": 0,
+    "distinctSpeakers": 3,
+    "distinctBooks": 3
+  },
+  "unusable": false,
+  "latencyMs": null,
+  "tokens": null,
+  "raw": "{\"situation\":\"You have a job offer paying 25% more, but it adds a 90-minute commute each way, about three hours of travel a day. What you've reported is those two facts. Unknown so far: your current pay and commute, how you'd travel (driving, train you can work on, remote days), whether the extra money changes anything concrete, and what else differs between the jobs. The question underneath may be less 'is it worth it?' and more 'what would I trade this time for?'. This conversation is a fictional debate to help you think it through.\",\"minds\":[{\"title\":\"The Life-Cost Accountant\",\"concern\":\"Time is the real currency; price every raise in hours of your life, not just dollars.\",\"author\":\"Henry David Thoreau\",\"book\":\"Walden\",\"year\":1854},{\"title\":\"The Forecasting Skeptic\",\"concern\":\"We mispredict how we'll feel: big gains fade, daily irritations don't, and we judge by what's vivid rather than by what we'll live through.\",\"author\":\"Daniel Kahneman\",\"book\":\"Thinking, Fast and Slow\",\"year\":2011},{\"title\":\"The Exit Planner\",\"concern\":\"Treat this as a bet under uncertainty: set tests and quit conditions in advance so you can reverse course cheaply.\",\"author\":\"Annie Duke\",\"book\":\"Quit: The Power of Knowing When to Walk Away\",\"year\":2022}],\"debate\":[{\"speaker\":\"The Life-Cost Accountant\",\"text\":\"Start with arithmetic. Three hours a day, five days a week, is fifteen hours weekly. That's a second part-time job you do without pay. A 25% raise has to be weighed against those hours, and I suspect most people never run that calculation honestly.\",\"author\":\"Henry David Thoreau\",\"book\":\"Walden\",\"pd\":true,\"basis\":\"Basis: Henry David Thoreau, Walden\"},{\"speaker\":\"The Forecasting Skeptic\",\"text\":\"Good start, but the raise is the vivid part, so it will win by default. People picture the salary bump and forget how a daily slog feels. I'd add that the commute is something we adapt to far less than we expect. Does your calculation count the misery, not just the minutes?\",\"author\":\"Daniel Kahneman\",\"book\":\"Thinking, Fast and Slow\",\"pd\":false,\"basis\":\"Basis: Daniel Kahneman, Thinking, Fast and Slow\"},{\"speaker\":\"The Life-Cost Accountant\",\"text\":\"Fair, so let me sharpen it. Thoreau wrote: 'The cost of a thing is the amount of what I will call life which is required to be exchanged for it, immediately or in the long run.' Fifteen hours a week of life is the price tag. What does the extra money buy that's worth that?\",\"author\":\"Henry David Thoreau\",\"book\":\"Walden\",\"pd\":true,\"basis\":\"Basis: Henry David Thoreau, Walden\"},{\"speaker\":\"The Exit Planner\",\"text\":\"You're both treating this as one irreversible verdict. It isn't. Nobody knows today how the commute will feel in month four. I'd rather decide what evidence would change our minds, and when, than argue forever about a future none of us can see.\",\"author\":\"Annie Duke\",\"book\":\"Quit: The Power of Knowing When to Walk Away\",\"pd\":false,\"basis\":\"Basis: Annie Duke, Quit: The Power of Knowing When to Walk Away\"},{\"speaker\":\"The Forecasting Skeptic\",\"text\":\"I'll partly concede that, but trial periods have a trap. Once you've moved your life around the job, quitting feels like admitting a mistake. And the commute can hide inside a good first month, when everything is new and exciting. Early happiness is weak evidence.\",\"author\":\"Daniel Kahneman\",\"book\":\"Thinking, Fast and Slow\",\"pd\":false,\"basis\":\"Basis: Daniel Kahneman, Thinking, Fast and Slow\"},{\"speaker\":\"The Exit Planner\",\"text\":\"Which is exactly why you write the exit rules before you start. If sleep, exercise, or evenings with family slip below a level you set today, you revisit the decision. The tripwire is decided by calm you, not by tired you in month six. I'd go further than my source here: pick the tripwires with someone who'll hold you to them.\",\"author\":\"Annie Duke\",\"book\":\"Quit: The Power of Knowing When to Walk Away\",\"pd\":false,\"basis\":\"Basis: Annie Duke, Quit: The Power of Knowing When to Walk Away\"},{\"speaker\":\"The Life-Cost Accountant\",\"text\":\"My worry is the opposite. A trial can become the very drift I'm warning about, a slow slide into hours you never chose to give. And what if the commute is on a train where you read or work? Then the three hours aren't all lost, and I'd have to price them differently.\",\"author\":\"Henry David Thoreau\",\"book\":\"Walden\",\"pd\":true,\"basis\":\"Basis: Henry David Thoreau, Walden\"},{\"speaker\":\"The Forecasting Skeptic\",\"text\":\"That's the first thing that could flip my caution. Passive driving in traffic and a seat with a book are different experiences, and the same minutes can feel nothing alike. Also, what is the 25% for? Debt relief or a house deposit is a concrete payoff. Vaguely having more money is easy to overrate.\",\"author\":\"Daniel Kahneman\",\"book\":\"Thinking, Fast and Slow\",\"pd\":false,\"basis\":\"Basis: Daniel Kahneman, Thinking, Fast and Slow\"},{\"speaker\":\"The Exit Planner\",\"text\":\"Then turn those into questions we can answer before signing. Can you negotiate remote days? Can you test the route at rush hour for a week? Is the role itself a step forward in skills? Staying put is a real option too, but it deserves the same scrutiny, not automatic safety.\",\"author\":\"Annie Duke\",\"book\":\"Quit: The Power of Knowing When to Walk Away\",\"pd\":false,\"basis\":\"Basis: Annie Duke, Quit: The Power of Knowing When to Walk Away\"},{\"speaker\":\"The Life-Cost Accountant\",\"text\":\"I'll accept that, with one thing left unsettled. If the best case needs a hybrid arrangement or a usable train ride, then the offer as written may not be worth the hours. The real choice might be this job on its current terms versus this job renegotiated, and those could have very different prices.\",\"author\":\"Henry David Thoreau\",\"book\":\"Walden\",\"pd\":true,\"basis\":\"Basis: Henry David Thoreau, Walden\"}],\"clearer\":\"The main insight is that the decision may not be 'raise versus commute' but 'what exactly does the extra money buy, and what exactly do the hours cost?'. The minds agreed that the raise is vivid while the commute's daily cost is easy to underestimate, and that a commute you can use (reading, working, resting) is a very different cost from one you merely endure. They disagreed about whether a trial period protects you or just makes it harder to leave. A possible self-reflection: what would you do with the extra income, and what would you do with those fifteen weekly hours if you kept them?\",\"dependsOn\":\"If the commute is usable (a train where you can read or work) or the job allows some remote days, the offer becomes more reasonable, because the true time cost falls well below three hours a day. If the extra money has a specific purpose, such as clearing debt or building a deposit, the trade is easier to justify than for general comfort. If the commute would be driving in traffic, with no flexibility, and the raise has no particular goal, a different option becomes more reasonable: staying, or negotiating the terms. If how it will feel is the unknown, a proportionate way to learn is to trial the actual route at rush hour for a few days, ask about remote days before accepting, and write down in advance the sleep, exercise, and family-time levels at which you'd reconsider.\"}\n",
+  "transcriptHash": "c55e0b8c0f18904a1495fcf83a8abdc96761c898e453a006f28ec4e7e6177241",
+  "savedAt": "2026-10-15T10:21:15.799Z"
+}

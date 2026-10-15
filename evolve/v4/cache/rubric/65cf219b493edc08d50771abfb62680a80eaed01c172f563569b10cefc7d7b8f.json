@@ -1,0 +1,1060 @@
+{
+  "jobId": "rubric.v1.q2.s1",
+  "raw": {
+    "schema_version": "rubric-evaluator-4.2.0",
+    "rubric_version": "owlry-matrix-v2-bands",
+    "evaluation_status": "complete",
+    "cells": [
+      {
+        "id": "C1.1",
+        "name": "Continuity and responsiveness",
+        "rating": 5.2,
+        "example": "T3 answers T2's reflection claim; T5 answers T4's buy-back-time idea.",
+        "limitation": "T8 ignores T5-T7 and repeats T2; T9 opens a trial unconnected to T8.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.2",
+        "name": "Development of ideas",
+        "rating": 4.5,
+        "example": "T4 adds buying time-saving services; T6 adds risk that fatigue jeopardizes the raise.",
+        "limitation": "Neither T4 nor T6's distinction is used by any later turn or Section E.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.3",
+        "name": "Exploration of central tensions",
+        "rating": 4.8,
+        "example": "T1-T5 examine whether money can offset three daily hours of travel.",
+        "limitation": "Career growth, commute mode (drive vs train) and hybrid options never raised in any turn.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.4",
+        "name": "Integration of perspectives",
+        "rating": 4.2,
+        "example": "T7 Bentham folds Deep Work's quality-of-time point into his calculus.",
+        "limitation": "T4's services argument is dropped, not integrated; T5 Stoic contradicts T2 and T8 unremarked.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.5",
+        "name": "Progress toward understanding",
+        "rating": 3.8,
+        "example": "Section E adds an effective-hourly-rate check beyond the opening framing.",
+        "limitation": "T11 ends on money versus peace of mind, the same binary T1 opened with.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.1",
+        "name": "Faithful engagement",
+        "rating": 4.5,
+        "example": "T5 represents T4's claim fairly as money fixing the drain of time.",
+        "limitation": "T2 attributes to T1 that travel pain is fixed, which T1 never claimed.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.2",
+        "name": "Substance of challenges",
+        "rating": 4.5,
+        "example": "T3 challenges T2: commuting depletes energy, so reflection framing overlooks a real cost.",
+        "limitation": "Targets rarely answer: T3's fatigue claim and T5's objection to T4 go unrebutted.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.3",
+        "name": "Accuracy and support",
+        "rating": 5.2,
+        "example": "T1 and Section E: 3 hours daily x 5 days = 15 hours weekly, arithmetic correct.",
+        "limitation": "T3 Deep Work stance on commutes suspected off-source; 15 hours assumes unstated five-day week.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.4",
+        "name": "Calibration and transparency",
+        "rating": 4,
+        "example": "T9 frames the commute's effect on energy as something to test, not assume.",
+        "limitation": "T3 calls cognitive drain a reality without support while every other claim is hedged.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.5",
+        "name": "Intellectual honesty and revision",
+        "rating": 4,
+        "example": "T7 Bentham explicitly drops his simple salary-versus-hours framing.",
+        "limitation": "T7 concession names no specific argument; T4 point abandoned; Stoic T5 reversal unacknowledged.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.1",
+        "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+        "rating": 6.2,
+        "example": "Section A frames the concern as financial gain versus loss of personal time.",
+        "limitation": "Never asks whether the user wants a method or a verdict, or what drives the offer.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.2",
+        "name": "Meaningful use of personal context",
+        "rating": 5.5,
+        "example": "Section E uses the 25% raise and 15 weekly hours for an effective-rate check.",
+        "limitation": "No turn uses the user's current commute as the baseline for comparison.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.3",
+        "name": "Fit with goals and values",
+        "rating": 4.5,
+        "example": "T11 asks the user which matters more, money or peace of mind.",
+        "limitation": "T6 and T8 impose speakers' own goals (output, character) rather than the user's.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.4",
+        "name": "Attention to constraints and stakes",
+        "rating": 3.5,
+        "example": "T10 notes the trial costs time if the job is ultimately declined.",
+        "limitation": "T10 invents a constraint to maintain current lifestyle; T1 assumes five commuting days.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.5",
+        "name": "Responsiveness to information",
+        "rating": 2.5,
+        "example": "T11 asks the user's priority between money and peace of mind.",
+        "limitation": "Current commute, transport mode, remote days, dependents never asked or branched anywhere.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.1",
+        "name": "Clarification of desires and motivations",
+        "rating": 4.5,
+        "example": "Section E offers financial growth for future freedom versus immediate mental clarity.",
+        "limitation": "Motives stay generic; T11's binary question is the only answerable prompt.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.2",
+        "name": "Examination of assumptions",
+        "rating": 5,
+        "example": "T2 questions the assumption that commute time is pure loss.",
+        "limitation": "Assumption that more money means better life never examined; T2's challenge dropped after T3.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.3",
+        "name": "Clarification of values and priorities",
+        "rating": 5,
+        "example": "T11 names financial security and tranquility as possibly incompatible goals.",
+        "limitation": "Values reduced to a binary; family, career meaning, health never weighed.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.4",
+        "name": "Recognition of fears and outside expectations",
+        "rating": 2,
+        "example": "T6 hints at fear of underperforming and losing the raise.",
+        "limitation": "No turn explores fear, obligation or social pressure behind the offer.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.5",
+        "name": "Agency and reflective ownership",
+        "rating": 5,
+        "example": "T2 offers a reframe the user can accept or reject; Section E gives a calculation.",
+        "limitation": "T8 tells the user to treat hardship as character test; few refinable distinctions.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.1",
+        "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+        "rating": 4,
+        "example": "T9 adds a limited step: a trial before committing.",
+        "limitation": "Negotiating hybrid days, relocating, or a counteroffer never named as options.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.2",
+        "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+        "rating": 5.5,
+        "example": "T4-T6 weigh money against time, energy and job performance.",
+        "limitation": "Costs of declining (forgone raise, career growth) never stated.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.3",
+        "name": "Identification of decisive conditions",
+        "rating": 5,
+        "example": "Section E: compare effective hourly earnings including 15 weekly commute hours.",
+        "limitation": "No threshold computed; current commute baseline absent; T9's 10 days ungrounded.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.4",
+        "name": "Treatment of uncertainty",
+        "rating": 3,
+        "example": "Section D says quality-of-life impact remains disputed.",
+        "limitation": "Consequential unknowns (commute mode, remote days) never separated from minor ones.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.5",
+        "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+        "rating": 4.5,
+        "example": "Section E's hourly-rate calculation is cheap and follows from the analysis.",
+        "limitation": "T9 trial adds 30 hours of simulated commuting atop the current job; disproportionate.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.1",
+        "name": "Accessible language",
+        "rating": 7.5,
+        "example": "T6 states plainly that exhaustion could jeopardize the raise.",
+        "limitation": "T4 net utility and T3 cognitive battery left as jargon without unpacking.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.2",
+        "name": "Traceable arguments and references",
+        "rating": 6.5,
+        "example": "T3-T6 name the speaker and claim they answer.",
+        "limitation": "T9 'To test this' is ambiguous: T8's character test or T6's fatigue claim.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.3",
+        "name": "Manageable pacing and turn length",
+        "rating": 7.5,
+        "example": "Eleven turns all within word range per deterministic checks.",
+        "limitation": "Turn lengths nearly uniform, so no turn breathes or lands quickly.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.4",
+        "name": "Distinguishable positions and voices, with explicit changes of position",
+        "rating": 4,
+        "example": "T6 Deep Work separates professional output from T5's inner peace.",
+        "limitation": "All three minds share one hedging register; Stoic T5 sounds like an anti-Stoic.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.5",
+        "name": "Economy and sustained attention",
+        "rating": 4.5,
+        "example": "T10 adds the trial's cost rather than recapping.",
+        "limitation": "T2-T6 open by restating the prior claim; T8 repeats T2's reframe.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.1",
+        "name": "Meaningful stakes and tension arising from the issue itself",
+        "rating": 5,
+        "example": "T5: three miserable hours daily that income cannot restore.",
+        "limitation": "Stakes stay generic; no concrete scene of the user's day or life.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.2",
+        "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+        "rating": 3,
+        "example": "T7 Bentham drops his simple-calculation claim.",
+        "limitation": "T7 reversal names no specific prior argument as cause; reads as template.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.3",
+        "name": "Personality and expressive voice without caricature",
+        "rating": 3,
+        "example": "T1 Bentham opens with his sovereign-masters line.",
+        "limitation": "Hedges in nearly every sentence flatten all three minds after T1.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.4",
+        "name": "Memorable delivery",
+        "rating": 4.5,
+        "example": "T2 'the obstacle itself becomes the way'; T3 'cognitive battery'.",
+        "limitation": "Memorable lines are borrowed; no fresh analogy or sharp retort anywhere.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.5",
+        "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+        "rating": 3,
+        "example": "T6 raises a turn: the commute could cost the very raise.",
+        "limitation": "Uniform rhythm throughout; T11 ends on a flat binary with no build.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      }
+    ],
+    "strengths": [
+      "Section E offers a concrete, user-runnable check: effective hourly rate including 15 weekly commute hours.",
+      "T4 (buying time-saving services) and T6 (fatigue jeopardizing the raise) add genuine considerations.",
+      "T2 Stoic surfaces the assumption that commute time is pure loss."
+    ],
+    "weaknesses": [
+      "No turn asks the current commute, transport mode or remote options; T11 ends on a binary instead.",
+      "All three minds hedge in nearly every sentence (T1-T11), flattening voice and commitment.",
+      "T7 Bentham reversal has no named cause; T4 dropped; Stoic T5 contradicts T2 and T8."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C3.5",
+        "turns": [
+          11
+        ],
+        "observed": "Never asks current commute, commute mode, remote days; only a binary priority question.",
+        "evidence": "Which matters more to you: the money or the peace of mind?"
+      },
+      {
+        "cell_id": "C6.4",
+        "turns": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          8,
+          11
+        ],
+        "observed": "Every mind hedges with might/perhaps; no claim committed, voices indistinguishable.",
+        "evidence": "no amount of extra income might restore your inner peace"
+      },
+      {
+        "cell_id": "C7.2",
+        "turns": [
+          7
+        ],
+        "observed": "Reversal names no specific earlier argument as cause, and abandons T4 unanswered.",
+        "evidence": "I drop my earlier claim that the math is a simple calculation"
+      },
+      {
+        "cell_id": "C3.4",
+        "turns": [
+          10
+        ],
+        "observed": "Invents a lifestyle constraint the user never stated.",
+        "evidence": "respects your constraint of needing to maintain your current lifestyle"
+      },
+      {
+        "cell_id": "C5.5",
+        "turns": [
+          9
+        ],
+        "observed": "Proposes ungrounded 10-day trial adding three daily hours atop the current job.",
+        "evidence": "simulate the commute during your current off-hours"
+      }
+    ],
+    "mechanical": [
+      {
+        "pattern": "hedge_saturation",
+        "turns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          10,
+          11
+        ]
+      },
+      {
+        "pattern": "restatement_opener",
+        "turns": [
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      {
+        "pattern": "uniform_voice",
+        "turns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11
+        ]
+      },
+      {
+        "pattern": "uncaused_reversal",
+        "turns": [
+          7
+        ]
+      },
+      {
+        "pattern": "ungrounded_number",
+        "turns": [
+          9
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "observed",
+        "location": "T10",
+        "description": "T10 cites the user's 'constraint of needing to maintain your current lifestyle'; the situation states no such constraint.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "observed",
+        "location": "T1, Section E",
+        "description": "15 weekly hours assumes five in-office days (3h x 5 = 15); the user gave no days per week. Arithmetic correct under that assumption. Unstated: with a 40h week and current weekly commute c, effective hourly rate breaks even when 1.25(40+c)=55, i.e. c=4h/week; the debate never computes this.",
+        "evidence_ids": []
+      },
+      {
+        "type": "source_error",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "T3, T6",
+        "description": "Deep Work promotes 'productive meditation' during walks and drives; presenting Newport's view as commute-equals-drain may misrepresent the source.",
+        "evidence_ids": []
+      },
+      {
+        "type": "source_error",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "Section B, mind 2",
+        "description": "Meditations dated 161 (Marcus's accession year); the work is usually dated c. 170-180 CE.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "unverified",
+        "location": "T1",
+        "description": "T1 reproduces Bentham's opening sentence without marks; pd=true, so permitted, but attribution is implicit only.",
+        "evidence_ids": []
+      }
+    ],
+    "cap_reasons": [],
+    "rubric_fit_notes": [
+      "Matrix fits this decision question well. Uncertainty: the Newport commute stance and the Meditations date rest on memory only, rated as suspected in C2.3 without cap."
+    ],
+    "question_type_note": "Decision type: every cell read as written, with the absence of options such as hybrid negotiation counted against C5.1."
+  },
+  "card": {
+    "criteria": [
+      {
+        "id": "C1",
+        "name": "Quality of discussion",
+        "max": 20,
+        "points": 9,
+        "sub": [
+          {
+            "id": "C1.1",
+            "name": "Continuity and responsiveness",
+            "rating": 5.2,
+            "points": 2.08,
+            "example": "T3 answers T2's reflection claim; T5 answers T4's buy-back-time idea.",
+            "limitation": "T8 ignores T5-T7 and repeats T2; T9 opens a trial unconnected to T8.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.2",
+            "name": "Development of ideas",
+            "rating": 4.5,
+            "points": 1.8,
+            "example": "T4 adds buying time-saving services; T6 adds risk that fatigue jeopardizes the raise.",
+            "limitation": "Neither T4 nor T6's distinction is used by any later turn or Section E.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.3",
+            "name": "Exploration of central tensions",
+            "rating": 4.8,
+            "points": 1.92,
+            "example": "T1-T5 examine whether money can offset three daily hours of travel.",
+            "limitation": "Career growth, commute mode (drive vs train) and hybrid options never raised in any turn.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.4",
+            "name": "Integration of perspectives",
+            "rating": 4.2,
+            "points": 1.68,
+            "example": "T7 Bentham folds Deep Work's quality-of-time point into his calculus.",
+            "limitation": "T4's services argument is dropped, not integrated; T5 Stoic contradicts T2 and T8 unremarked.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.5",
+            "name": "Progress toward understanding",
+            "rating": 3.8,
+            "points": 1.52,
+            "example": "Section E adds an effective-hourly-rate check beyond the opening framing.",
+            "limitation": "T11 ends on money versus peace of mind, the same binary T1 opened with.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C2",
+        "name": "Quality of disagreement, trust and grounding",
+        "max": 20,
+        "points": 8.88,
+        "sub": [
+          {
+            "id": "C2.1",
+            "name": "Faithful engagement",
+            "rating": 4.5,
+            "points": 1.8,
+            "example": "T5 represents T4's claim fairly as money fixing the drain of time.",
+            "limitation": "T2 attributes to T1 that travel pain is fixed, which T1 never claimed.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.2",
+            "name": "Substance of challenges",
+            "rating": 4.5,
+            "points": 1.8,
+            "example": "T3 challenges T2: commuting depletes energy, so reflection framing overlooks a real cost.",
+            "limitation": "Targets rarely answer: T3's fatigue claim and T5's objection to T4 go unrebutted.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.3",
+            "name": "Accuracy and support",
+            "rating": 5.2,
+            "points": 2.08,
+            "example": "T1 and Section E: 3 hours daily x 5 days = 15 hours weekly, arithmetic correct.",
+            "limitation": "T3 Deep Work stance on commutes suspected off-source; 15 hours assumes unstated five-day week.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.4",
+            "name": "Calibration and transparency",
+            "rating": 4,
+            "points": 1.6,
+            "example": "T9 frames the commute's effect on energy as something to test, not assume.",
+            "limitation": "T3 calls cognitive drain a reality without support while every other claim is hedged.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.5",
+            "name": "Intellectual honesty and revision",
+            "rating": 4,
+            "points": 1.6,
+            "example": "T7 Bentham explicitly drops his simple salary-versus-hours framing.",
+            "limitation": "T7 concession names no specific argument; T4 point abandoned; Stoic T5 reversal unacknowledged.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C3",
+        "name": "Personal relevance",
+        "max": 10,
+        "points": 4.44,
+        "sub": [
+          {
+            "id": "C3.1",
+            "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+            "rating": 6.2,
+            "points": 1.24,
+            "example": "Section A frames the concern as financial gain versus loss of personal time.",
+            "limitation": "Never asks whether the user wants a method or a verdict, or what drives the offer.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.2",
+            "name": "Meaningful use of personal context",
+            "rating": 5.5,
+            "points": 1.1,
+            "example": "Section E uses the 25% raise and 15 weekly hours for an effective-rate check.",
+            "limitation": "No turn uses the user's current commute as the baseline for comparison.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.3",
+            "name": "Fit with goals and values",
+            "rating": 4.5,
+            "points": 0.9,
+            "example": "T11 asks the user which matters more, money or peace of mind.",
+            "limitation": "T6 and T8 impose speakers' own goals (output, character) rather than the user's.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.4",
+            "name": "Attention to constraints and stakes",
+            "rating": 3.5,
+            "points": 0.7,
+            "example": "T10 notes the trial costs time if the job is ultimately declined.",
+            "limitation": "T10 invents a constraint to maintain current lifestyle; T1 assumes five commuting days.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.5",
+            "name": "Responsiveness to information",
+            "rating": 2.5,
+            "points": 0.5,
+            "example": "T11 asks the user's priority between money and peace of mind.",
+            "limitation": "Current commute, transport mode, remote days, dependents never asked or branched anywhere.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C4",
+        "name": "Constructive self-discovery",
+        "max": 20,
+        "points": 8.6,
+        "sub": [
+          {
+            "id": "C4.1",
+            "name": "Clarification of desires and motivations",
+            "rating": 4.5,
+            "points": 1.8,
+            "example": "Section E offers financial growth for future freedom versus immediate mental clarity.",
+            "limitation": "Motives stay generic; T11's binary question is the only answerable prompt.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.2",
+            "name": "Examination of assumptions",
+            "rating": 5,
+            "points": 2,
+            "example": "T2 questions the assumption that commute time is pure loss.",
+            "limitation": "Assumption that more money means better life never examined; T2's challenge dropped after T3.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.3",
+            "name": "Clarification of values and priorities",
+            "rating": 5,
+            "points": 2,
+            "example": "T11 names financial security and tranquility as possibly incompatible goals.",
+            "limitation": "Values reduced to a binary; family, career meaning, health never weighed.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.4",
+            "name": "Recognition of fears and outside expectations",
+            "rating": 2,
+            "points": 0.8,
+            "example": "T6 hints at fear of underperforming and losing the raise.",
+            "limitation": "No turn explores fear, obligation or social pressure behind the offer.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.5",
+            "name": "Agency and reflective ownership",
+            "rating": 5,
+            "points": 2,
+            "example": "T2 offers a reframe the user can accept or reject; Section E gives a calculation.",
+            "limitation": "T8 tells the user to treat hardship as character test; few refinable distinctions.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C5",
+        "name": "Decision usefulness",
+        "max": 10,
+        "points": 4.4,
+        "sub": [
+          {
+            "id": "C5.1",
+            "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+            "rating": 4,
+            "points": 0.8,
+            "example": "T9 adds a limited step: a trial before committing.",
+            "limitation": "Negotiating hybrid days, relocating, or a counteroffer never named as options.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.2",
+            "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+            "rating": 5.5,
+            "points": 1.1,
+            "example": "T4-T6 weigh money against time, energy and job performance.",
+            "limitation": "Costs of declining (forgone raise, career growth) never stated.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.3",
+            "name": "Identification of decisive conditions",
+            "rating": 5,
+            "points": 1,
+            "example": "Section E: compare effective hourly earnings including 15 weekly commute hours.",
+            "limitation": "No threshold computed; current commute baseline absent; T9's 10 days ungrounded.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.4",
+            "name": "Treatment of uncertainty",
+            "rating": 3,
+            "points": 0.6,
+            "example": "Section D says quality-of-life impact remains disputed.",
+            "limitation": "Consequential unknowns (commute mode, remote days) never separated from minor ones.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.5",
+            "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+            "rating": 4.5,
+            "points": 0.9,
+            "example": "Section E's hourly-rate calculation is cheap and follows from the analysis.",
+            "limitation": "T9 trial adds 30 hours of simulated commuting atop the current job; disproportionate.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C6",
+        "name": "Clarity and engagement",
+        "max": 10,
+        "points": 6,
+        "sub": [
+          {
+            "id": "C6.1",
+            "name": "Accessible language",
+            "rating": 7.5,
+            "points": 1.5,
+            "example": "T6 states plainly that exhaustion could jeopardize the raise.",
+            "limitation": "T4 net utility and T3 cognitive battery left as jargon without unpacking.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.2",
+            "name": "Traceable arguments and references",
+            "rating": 6.5,
+            "points": 1.3,
+            "example": "T3-T6 name the speaker and claim they answer.",
+            "limitation": "T9 'To test this' is ambiguous: T8's character test or T6's fatigue claim.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.3",
+            "name": "Manageable pacing and turn length",
+            "rating": 7.5,
+            "points": 1.5,
+            "example": "Eleven turns all within word range per deterministic checks.",
+            "limitation": "Turn lengths nearly uniform, so no turn breathes or lands quickly.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.4",
+            "name": "Distinguishable positions and voices, with explicit changes of position",
+            "rating": 4,
+            "points": 0.8,
+            "example": "T6 Deep Work separates professional output from T5's inner peace.",
+            "limitation": "All three minds share one hedging register; Stoic T5 sounds like an anti-Stoic.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.5",
+            "name": "Economy and sustained attention",
+            "rating": 4.5,
+            "points": 0.9,
+            "example": "T10 adds the trial's cost rather than recapping.",
+            "limitation": "T2-T6 open by restating the prior claim; T8 repeats T2's reframe.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C7",
+        "name": "Drama and entertainment",
+        "max": 10,
+        "points": 3.7,
+        "sub": [
+          {
+            "id": "C7.1",
+            "name": "Meaningful stakes and tension arising from the issue itself",
+            "rating": 5,
+            "points": 1,
+            "example": "T5: three miserable hours daily that income cannot restore.",
+            "limitation": "Stakes stay generic; no concrete scene of the user's day or life.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.2",
+            "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+            "rating": 3,
+            "points": 0.6,
+            "example": "T7 Bentham drops his simple-calculation claim.",
+            "limitation": "T7 reversal names no specific prior argument as cause; reads as template.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.3",
+            "name": "Personality and expressive voice without caricature",
+            "rating": 3,
+            "points": 0.6,
+            "example": "T1 Bentham opens with his sovereign-masters line.",
+            "limitation": "Hedges in nearly every sentence flatten all three minds after T1.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.4",
+            "name": "Memorable delivery",
+            "rating": 4.5,
+            "points": 0.9,
+            "example": "T2 'the obstacle itself becomes the way'; T3 'cognitive battery'.",
+            "limitation": "Memorable lines are borrowed; no fresh analogy or sharp retort anywhere.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.5",
+            "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+            "rating": 3,
+            "points": 0.6,
+            "example": "T6 raises a turn: the commute could cost the very raise.",
+            "limitation": "Uniform rhythm throughout; T11 ends on a flat binary with no build.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      }
+    ],
+    "uncapped": 45.02,
+    "score": 45.02,
+    "capReason": null,
+    "provisional": false,
+    "strengths": [
+      "Section E offers a concrete, user-runnable check: effective hourly rate including 15 weekly commute hours.",
+      "T4 (buying time-saving services) and T6 (fatigue jeopardizing the raise) add genuine considerations.",
+      "T2 Stoic surfaces the assumption that commute time is pure loss."
+    ],
+    "weaknesses": [
+      "No turn asks the current commute, transport mode or remote options; T11 ends on a binary instead.",
+      "All three minds hedge in nearly every sentence (T1-T11), flattening voice and commitment.",
+      "T7 Bentham reversal has no named cause; T4 dropped; Stoic T5 contradicts T2 and T8."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C3.5",
+        "turns": [
+          11
+        ],
+        "observed": "Never asks current commute, commute mode, remote days; only a binary priority question.",
+        "evidence": "Which matters more to you: the money or the peace of mind?"
+      },
+      {
+        "cell_id": "C6.4",
+        "turns": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          8,
+          11
+        ],
+        "observed": "Every mind hedges with might/perhaps; no claim committed, voices indistinguishable.",
+        "evidence": "no amount of extra income might restore your inner peace"
+      },
+      {
+        "cell_id": "C7.2",
+        "turns": [
+          7
+        ],
+        "observed": "Reversal names no specific earlier argument as cause, and abandons T4 unanswered.",
+        "evidence": "I drop my earlier claim that the math is a simple calculation"
+      },
+      {
+        "cell_id": "C3.4",
+        "turns": [
+          10
+        ],
+        "observed": "Invents a lifestyle constraint the user never stated.",
+        "evidence": "respects your constraint of needing to maintain your current lifestyle"
+      },
+      {
+        "cell_id": "C5.5",
+        "turns": [
+          9
+        ],
+        "observed": "Proposes ungrounded 10-day trial adding three daily hours atop the current job.",
+        "evidence": "simulate the commute during your current off-hours"
+      }
+    ],
+    "mechanical": [
+      {
+        "pattern": "hedge_saturation",
+        "turns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          10,
+          11
+        ]
+      },
+      {
+        "pattern": "restatement_opener",
+        "turns": [
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      {
+        "pattern": "uniform_voice",
+        "turns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11
+        ]
+      },
+      {
+        "pattern": "uncaused_reversal",
+        "turns": [
+          7
+        ]
+      },
+      {
+        "pattern": "ungrounded_number",
+        "turns": [
+          9
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "observed",
+        "location": "T10",
+        "description": "T10 cites the user's 'constraint of needing to maintain your current lifestyle'; the situation states no such constraint.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "observed",
+        "location": "T1, Section E",
+        "description": "15 weekly hours assumes five in-office days (3h x 5 = 15); the user gave no days per week. Arithmetic correct under that assumption. Unstated: with a 40h week and current weekly commute c, effective hourly rate breaks even when 1.25(40+c)=55, i.e. c=4h/week; the debate never computes this.",
+        "evidence_ids": []
+      },
+      {
+        "type": "source_error",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "T3, T6",
+        "description": "Deep Work promotes 'productive meditation' during walks and drives; presenting Newport's view as commute-equals-drain may misrepresent the source.",
+        "evidence_ids": []
+      },
+      {
+        "type": "source_error",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "Section B, mind 2",
+        "description": "Meditations dated 161 (Marcus's accession year); the work is usually dated c. 170-180 CE.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "unverified",
+        "location": "T1",
+        "description": "T1 reproduces Bentham's opening sentence without marks; pd=true, so permitted, but attribution is implicit only.",
+        "evidence_ids": []
+      }
+    ],
+    "rubricFitNotes": [
+      "Matrix fits this decision question well. Uncertainty: the Newport commute stance and the Meditations date rest on memory only, rated as suspected in C2.3 without cap."
+    ],
+    "questionTypeNote": "Decision type: every cell read as written, with the absence of options such as hybrid negotiation counted against C5.1."
+  },
+  "rubricVersion": "rubric-evaluator-4.2.0",
+  "savedAt": "2026-10-15T10:13:06.756Z"
+}

@@ -1,0 +1,1031 @@
+[
+  {
+    "q": 1,
+    "sample": 1,
+    "championSample": "63640248b0bed5f19185edc3ff6be20691e7abacfeb700f7dbdc03a2c136b4b3",
+    "challengerSample": "de57f4bc0e5d5305d6a6deddf71687dcb37bbbd06353f71256e26652f3f7a68f",
+    "championSlot": "A",
+    "verdict": {
+      "schema_version": "blind-4.2.0",
+      "winner": "B",
+      "margin": "small_but_meaningful",
+      "reason": "Both debates answer each other and earn concessions: each turns the Skeptic's 'other causes' objection into a reading of the pause as the first experiment, and each makes reintroduction wait for calm skin. B goes further. It names the one observation that changes the plan: a brief sting on application versus a lingering reaction with redness or a rash. It also says plainly that a home trial cannot tell irritation from allergy, which points the user to clinician patch testing. A's best addition is that the products might only cause trouble in combination, which B never mentions, but that does not outweigh B's sharper decision branch.",
+      "comparisons": [
+        {
+          "aspect": "Reasoning and interaction",
+          "a_location": "A.debate[7].text",
+          "a_observation": "The Subtractor objects that forearm patch tests are weaker than they look and that reintroducing too early restarts the clock. The Experimenter concedes the pace in A.debate[8] but keeps reintroduction.",
+          "b_location": "B.debate[9].text",
+          "b_observation": "After the Skeptic's brief-versus-lingering fork (B.debate[8]), the Experimenter narrows his own method: he keeps it for the brief-sting branch, drops it for the persistent branch, and admits a home trial cannot separate irritation from allergy.",
+          "advantage": "B",
+          "why_it_matters": "In B, a mind admits where its own method stops working. That tells the user when to stop testing at home, not just how slowly to test."
+        },
+        {
+          "aspect": "Usefulness for this decision",
+          "a_location": "A.dependsOn",
+          "a_observation": "A branches on whether the sting fades during the bare routine, whether other things changed, and red-flag symptoms. It adds the option of dropping a non-essential product for good.",
+          "b_location": "B.dependsOn",
+          "b_observation": "B branches on whether the sting is brief and fades or lingers with redness or a rash. The lingering branch goes to clinician patch testing, and B adds the 'fades during pause' test and urgent-care signs.",
+          "advantage": "B",
+          "why_it_matters": "The user can check the duration and character of the sting today, and in B that answer decides between a cautious home trial and a professional assessment."
+        },
+        {
+          "aspect": "Relevance",
+          "a_location": "A.debate[4].text",
+          "a_observation": "A raises an interaction effect: the products might each be fine alone but harsh together, such as layered exfoliating acids, so single-product tests could clear every one of them.",
+          "b_location": "B.situation",
+          "b_observation": "B lists what the user did not say (which products, sting on application or lingering, other changes) and treats them as open questions rather than inventing them.",
+          "advantage": "tie",
+          "why_it_matters": "A adds a real causal possibility that B misses, and B handles the unknowns more carefully, so on relevance neither advantage decides."
+        }
+      ],
+      "best_of_a": "A.debate[4].text: A is the only one to raise the combination hypothesis (each product fine alone, harsh together) and to propose testing pairs if single products come back clean. That is a distinct, testable explanation for starting three products at once.",
+      "best_of_b": "B.debate[8].text: B names the fact that would reorder everything: a brief sting that fades versus a lasting one with redness or a rash. It maps that to 'too strong or used too often' versus 'irritation or allergy', with urgent-care signs including trouble breathing.",
+      "concerns": [
+        {
+          "side": "A",
+          "type": "format",
+          "severity": "minor",
+          "status": "observed",
+          "location": "A.debate[4].text",
+          "description": "The Subtractor, whose stated stance is removing harms first, makes the Experimenter-style point about combination testing, which blurs the three distinct stakes.",
+          "evidence_ids": []
+        },
+        {
+          "side": "B",
+          "type": "safety",
+          "severity": "minor",
+          "status": "observed",
+          "location": "B.debate[6].text",
+          "description": "The Skeptic speculates about the user's motives (fear of allergy, sunk cost, a friend's advice). B.debate[7] labels this a guess from one sentence, but it edges toward reading the user's mind.",
+          "evidence_ids": []
+        }
+      ]
+    },
+    "challengerWon": 1
+  },
+  {
+    "q": 1,
+    "sample": 2,
+    "championSample": "bd7dd71e6f3268de5ec909db83c897f8c1150fa4d6d6e4c2c55d656c65c621b6",
+    "challengerSample": "c7023e8ddbe3bd96c42820be3c70dcb07f981eccf87a1bf4c0f11da5cade5769",
+    "championSlot": "B",
+    "verdict": {
+      "schema_version": "blind-4.2.0",
+      "winner": "A",
+      "margin": "small_but_meaningful",
+      "reason": "Both debates interact well and reach the same core structure: calm the skin first, then test one change at a time, with a clear medical stop line. A edges ahead because it settles the combination question inside the debate (singles, then pairs) and branches on the most diagnostic fact for 'how do I figure out what's causing it': whether the sting comes on contact with anything, from one product, or hours later. B contributes a real tradeoff (skip testing some products) and a strong debiasing step, but leaves the combination point as a late, unresolved objection, and its map does not separate immediate irritation from a delayed reaction. A's motive-reading turns are weaker than the rest of A, but they do not outweigh its diagnostic advantage.",
+      "comparisons": [
+        {
+          "aspect": "Relevance and usefulness: diagnostic branching for 'what's causing it'",
+          "a_location": "A.debate[6].text",
+          "a_observation": "Turns how the skin stings into explicit branches: stinging even with plain water points to barrier stress (rest first), one product stinging on contact makes it the lead suspect, and redness or rash hours later signals a different reaction that needs a professional. The same branches carry into A.dependsOn.",
+          "b_location": "B.dependsOn",
+          "b_observation": "Branches on severity, on whether the sting persists after stopping, and on layering, but never separates an immediate contact sting from a delayed reaction. The user is not prompted to observe the one detail that most narrows the cause.",
+          "advantage": "A",
+          "why_it_matters": "The user asked how to find the cause. A gives them something cheap to watch for that changes the next step, while B mainly gives a procedure."
+        },
+        {
+          "aspect": "Reasoning and interaction: claims narrowing under objection",
+          "a_location": "A.debate[3].text, A.debate[4].text, A.debate[5].text",
+          "a_observation": "The Experimenter concedes that stopping only implicates the group. The Harm Minimizer corrects the reintroduction timing and raises the combination. The Experimenter then accepts calm-first, adds a finish line (the plain moisturizer goes on without sting for several days), and makes the combination testable by reintroducing singly and then in pairs. Each objection changes the plan.",
+          "b_location": "B.debate[4].text, B.debate[5].text, B.debate[9].text",
+          "b_observation": "The Subtractor's cost objection (keep only the most-valued product) draws a partial concession and a patch-test compromise, which is genuine narrowing. The combination-on-a-weakened-barrier objection arrives only in the final turn and nobody answers it, so the ending leaves it open rather than knowing more.",
+          "advantage": "A",
+          "why_it_matters": "In A the plan improves under pressure into a usable protocol. In B the strongest remaining objection is never worked through."
+        },
+        {
+          "aspect": "Naturalness and calibration of reflection",
+          "a_location": "A.debate[8].text, A.debate[9].text",
+          "a_observation": "Two turns guess at why the user is asking (rescue, fear, pressure) and infer worry from the phrasing. The guess is hedged ('I could be wrong'), but it is speculative and only loosely tied to the diagnostic question.",
+          "b_location": "B.debate[6].text, B.clearer",
+          "b_observation": "The reflection stays practical: write down beforehand what counts as a reaction so expectation does not edit memory, and ask which product the user would most hate to lose, which links directly to how much testing is worth it.",
+          "advantage": "B",
+          "why_it_matters": "B's reflective content serves the decision without reading the user's motives. This is B's main edge, but it is smaller than A's diagnostic advantage."
+        }
+      ],
+      "best_of_a": "A.debate[6].text: Turns 'how it stings' (on contact with anything, from one product only, or delayed redness or rash) into three distinct next steps. This is the most useful diagnostic lever in either debate.",
+      "best_of_b": "B.debate[6].text: Write down before a patch test what will count as a reaction, and log the weather and other new things, so expectation and memory do not decide the verdict. A cheap, concrete guard against confirmation bias.",
+      "concerns": [
+        {
+          "side": "A",
+          "type": "safety",
+          "severity": "minor",
+          "status": "observed",
+          "location": "A.debate[9].text",
+          "description": "Infers from one sentence that the user is driven more by worry than by wanting to keep the products. The guess is hedged, but it reads the user's psychology on thin evidence.",
+          "evidence_ids": []
+        },
+        {
+          "side": "B",
+          "type": "uncertainty",
+          "severity": "minor",
+          "status": "observed",
+          "location": "B.debate[9].text",
+          "description": "The combination or barrier-stacking explanation is raised in the last turn and left unanswered, so the protocol may return confusing results without guidance on what to do then. B.dependsOn only partly covers this with its layering branch.",
+          "evidence_ids": []
+        }
+      ]
+    },
+    "challengerWon": 1
+  },
+  {
+    "q": 1,
+    "sample": 3,
+    "championSample": "de86c30d9ebb49810d68b8b34646de8610cf05f3f8b46d1a95fa6f7c2dc1e779",
+    "challengerSample": "590a08015e0c77456a53bad54ba1c34ff22ddf67c90b39451ccd9d0b7e00c6ea",
+    "championSlot": "B",
+    "verdict": {
+      "schema_version": "blind-4.2.0",
+      "winner": "B",
+      "margin": "small_but_meaningful",
+      "reason": "Both debates converge on pause, log, and reintroduce one at a time with a severity ceiling, but B's objections do more work: the patch-test trap leads to a pair-testing stage, and the caution-versus-nocebo pushback produces a narrower, observable severity rule. A has a well-earned standing disagreement about test order, but spends a turn speculating about the user's motive, which nothing downstream uses. B's conditional map also adds an interaction branch that A never reaches.",
+      "comparisons": [
+        {
+          "aspect": "Reasoning and interaction",
+          "a_location": "A.debate[7].text",
+          "a_observation": "The Bias Spotter speculates about why the user is asking (money, attachment, a trusted recommendation); the Experimenter dismisses it in the next turn and it changes nothing in the plan.",
+          "b_location": "B.debate[5].text",
+          "b_observation": "The Bias Watcher objects that a forearm patch is not facial skin and that reactions can be delayed or appear only when products are layered; Mill answers by adding a pair-testing stage (B.debate[6].text), so the method changes because of the objection.",
+          "advantage": "B",
+          "why_it_matters": "With three products started together, an interaction between them is a real possibility. B's plan can detect it, while A's one-at-a-time protocol could clear every product and leave the user without an answer."
+        },
+        {
+          "aspect": "Reasoning and interaction (earned narrowing)",
+          "a_location": "A.debate[11].text",
+          "a_observation": "The Experimenter partly concedes on blind ordering but keeps that the prime suspect should go first, which leaves a clear, useful disagreement about order.",
+          "b_location": "B.debate[9].text",
+          "b_observation": "After the Bias Watcher pushes back that some tingling is expected (B.debate[8].text), the Subtractor narrows his removal rule to stinging that persists or comes with redness, tightness or peeling, and names the cause of the change.",
+          "advantage": "B",
+          "why_it_matters": "Whether the sting is a normal tingle or a reason to stop is the user's first fork. B's narrowed rule gives signs the user can observe, while A's order dispute is useful but matters less."
+        },
+        {
+          "aspect": "Usefulness for the decision",
+          "a_location": "A.dependsOn",
+          "a_observation": "Covers the mild versus red-flag branches and the case where the sting persists on bare skin. It includes trouble breathing.",
+          "b_location": "B.dependsOn",
+          "b_observation": "Covers the same branches and adds a combination-only branch with pair testing, non-skincare causes including shaving and existing skin conditions, and a clinician who can run patch testing.",
+          "advantage": "B",
+          "why_it_matters": "B's extra branch is the one most specific to starting three products at once, so it gives the user one more condition they can check."
+        }
+      ],
+      "best_of_a": "A.debate[10].text: The suggestion to start with the least-suspected product, or let someone else pick the order, is a concrete guard against confirmation bias. It produces a standing disagreement that is clearly stated.",
+      "best_of_b": "B.debate[6].text: The pair-testing stage for interacting products, such as acids with a retinoid, is explicitly marked as the mind's own extension rather than something Mill wrote.",
+      "concerns": [
+        {
+          "side": "B",
+          "type": "grounding",
+          "severity": "minor",
+          "status": "suspected",
+          "location": "B.debate[8].text",
+          "description": "The point that expecting harm can amplify a sensation is closer to the nocebo literature than to Thinking, Fast and Slow. It is not flagged as the mind's own extension.",
+          "evidence_ids": []
+        },
+        {
+          "side": "A",
+          "type": "uncertainty",
+          "severity": "minor",
+          "status": "observed",
+          "location": "A.debate[7].text",
+          "description": "Speculates about the user's motive for asking, which the input does not support. The next turn sets it aside.",
+          "evidence_ids": []
+        }
+      ]
+    },
+    "challengerWon": 0
+  },
+  {
+    "q": 2,
+    "sample": 1,
+    "championSample": "b33ead9f7dc3d65bbb1269d69f4d9a750b65dc49c8f5f03c8201cf55a0b390a6",
+    "challengerSample": "ffcaf7806331e9431784d370ab8eb467e42fdd6299c10b4a129701e2e1127572",
+    "championSlot": "B",
+    "verdict": {
+      "schema_version": "blind-4.2.0",
+      "winner": "tie",
+      "margin": "none",
+      "reason": "Both debates answer one another and narrow their claims under objection. A turns the vague trade into a testable break-even: a commute hour weighed at about two thirds of a work hour. B adds reversibility, a comparison with the current job and the net-of-tax and commuting-cost gain, which A leaves out. Each is better on a different dimension, and neither advantage would clearly leave this user better off.",
+      "comparisons": [
+        {
+          "aspect": "reasoning and interaction",
+          "a_location": "A.debate[1].text, A.debate[3].text, A.debate[5].text",
+          "a_observation": "The Skeptic attacks the equal-hours assumption, and the Economist answers by recasting it as an explicit break-even weight (two thirds) that can be checked. The Time Accountant then challenges the train-as-reading-time escape.",
+          "b_location": "B.debate[2].text, B.debate[3].text, B.debate[6].text, B.debate[7].text",
+          "b_observation": "The Bet Placer's point that misprediction cuts both ways makes the Hedonic Accountant narrow the adaptation claim to stop-and-go travel. The Auditor's objection to the word 'bet' is absorbed as reversibility, which becomes a decision variable.",
+          "advantage": "tie",
+          "why_it_matters": "In both debates the ending knows more than the opening, through real narrowing rather than restatement, so the user gets refined reasoning either way."
+        },
+        {
+          "aspect": "relevance and usefulness",
+          "a_location": "A.dependsOn, A.clearer",
+          "a_observation": "Gives an arithmetic tool (about a 9% per-hour cut over five days, break-even weight 2/3) and splits the cases by days in the office and mode of travel. It does not consider taxes, commuting costs, or how reversible the move is.",
+          "b_location": "B.situation, B.debate[7].text, B.debate[8].text, B.dependsOn",
+          "b_observation": "Names the after-tax gain net of commuting costs as an unknown, makes reversibility a condition, and warns that the vividly imagined new job is being compared with a barely imagined current one. Its arithmetic stays qualitative ('I suspect the 25% shrinks fast').",
+          "advantage": "tie",
+          "why_it_matters": "A's precise threshold and B's broader set of observable conditions are each useful to a decision. Neither omission is decisive."
+        },
+        {
+          "aspect": "trust and naturalness",
+          "a_location": "A.debate[6].text, A.debate[9].text",
+          "a_observation": "Book-versus-mind extensions are flagged, and the non-adaptation claim is labelled a hunch. The flagging phrase 'I would go further than X' repeats in a template-like way.",
+          "b_location": "B.debate[9].text, B.debate[10].text",
+          "b_observation": "The Auditor flags its own extension as 'mine and not Thoreau'. The closing turn names the minds by their authors' names ('Kahneman worries...'), which blurs the mind with the book.",
+          "advantage": "tie",
+          "why_it_matters": "Both debates are similarly calibrated and each has a minor stylistic flaw, so trust does not separate them."
+        }
+      ],
+      "best_of_a": "A.debate[3].text: Turns an objection into a testable break-even, about two thirds of a work hour, that the user can check against their own experience of commuting.",
+      "best_of_b": "B.debate[8].text: Warns that the new job is imagined vividly and the current one barely at all, and asks the user to list the current job's drawbacks just as concretely, which corrects a real bias in the comparison.",
+      "concerns": [
+        {
+          "side": "A",
+          "type": "grounding",
+          "severity": "minor",
+          "status": "observed",
+          "location": "A.debate[0].text",
+          "description": "The break-even arithmetic assumes five office days and a 40-hour week, and ignores taxes and commuting costs, so the 9% figure holds only under those assumptions. The debate does state the assumptions.",
+          "evidence_ids": []
+        },
+        {
+          "side": "B",
+          "type": "grounding",
+          "severity": "minor",
+          "status": "suspected",
+          "location": "B.debate[3].text",
+          "description": "The narrowing to 'unpredictable, stop-and-go travel' is presented as the effect Kahneman relies on. It may come from commuting research rather than from Thinking, Fast and Slow.",
+          "evidence_ids": []
+        }
+      ]
+    },
+    "challengerWon": 0.5
+  },
+  {
+    "q": 2,
+    "sample": 2,
+    "championSample": "fd78e90c1e2f97f531a398c53c9914a37df46300d21aa90b1c4a94c82b016dd1",
+    "challengerSample": "d536d9838a80f73b9a66faa6dd2ad677b2238ef164a664b17e6983632b32da06",
+    "championSlot": "B",
+    "verdict": {
+      "schema_version": "blind-4.2.0",
+      "winner": "B",
+      "margin": "small_but_meaningful",
+      "reason": "Both debates are strong and interactive, and A has the sharper reframe: ask what the raise is for, including escaping the current job. B, though, has a longer chain of objection and amendment that ends somewhere new (the checkpoint moves from three to six months with daily notes, accepted for a stated reason), and it gives the user more checks they can actually run: real after-tax gain, surrogate commuters, and whether leaving is possible. B's practical edge is small but would matter to someone deciding.",
+      "comparisons": [
+        {
+          "aspect": "Reasoning and interaction",
+          "a_location": "A.debate[6].text",
+          "a_observation": "The Accountant objects that pre-committed exit rules miss slow leakage of hours. The Skeptic answers by arguing against himself, but the exchange stops at 'picture month eight', and the closing turn (A.debate[10].text) partly restates the disagreement in a muddled form.",
+          "b_location": "B.debate[9].text",
+          "b_observation": "The Auditor's sunk-cost objection to pre-set criteria (B.debate[3].text) is answered by 'a trial is only a trial if leaving is possible' (B.debate[8].text). It then produces a concrete amendment, a six-month checkpoint with daily mood notes, which the Exit Planner explicitly accepts and extends to relationships (B.debate[10].text).",
+          "advantage": "B",
+          "why_it_matters": "The user gets a trial design that has already survived its strongest objection, not just a warning that trials can mislead."
+        },
+        {
+          "aspect": "Relevance",
+          "a_location": "A.debate[4].text",
+          "a_observation": "It asks whether the raise is a proxy for money pressure, status or escape, and notes there may be cheaper exits. It also names office days as the fact that would most change the answer (A.debate[2].text) and narrows the hours claim from it (A.debate[3].text).",
+          "b_location": "B.debate[4].text",
+          "b_observation": "It asks '25% of what, after tax and travel costs?' and separates traffic from a train seat. Office days come up only as something to negotiate (B.debate[5].text). Turn 4's 'moved, signed a lease' adds a relocation the user never mentioned.",
+          "advantage": "A",
+          "why_it_matters": "A's motive branch could change the user's whole frame. B's net-gain point applies more directly to the stated tradeoff."
+        },
+        {
+          "aspect": "Usefulness for this purpose",
+          "a_location": "A.dependsOn",
+          "a_observation": "Clear branches on office days, travel mode, the money's purpose and an escape motive, plus asking the employer and trying the route once at rush hour.",
+          "b_location": "B.dependsOn",
+          "b_observation": "Branches on travel mode, net gain and negotiability, plus two rush-hour rides, talking to current commuters, written stopping criteria and a six-month review with daily notes.",
+          "advantage": "B",
+          "why_it_matters": "B's conditions and evidence-gathering steps are more concrete and cheaper to act on, which is what a decision question calls for."
+        }
+      ],
+      "best_of_a": "A.debate[4].text: Reframing the raise as a possible proxy, where escape from the current job makes the commute an expensive way to leave, is the most decision-changing idea in either debate.",
+      "best_of_b": "B.debate[10].text: The Exit Planner accepts the six-month, daily-notes amendment for a stated reason and then names the unknown no framework fills: who in the user's life absorbs the cost.",
+      "concerns": [
+        {
+          "side": "A",
+          "type": "grounding",
+          "severity": "minor",
+          "status": "suspected",
+          "location": "A.debate[0].text",
+          "description": "The Thoreau line is quoted with slightly altered wording (the original reads roughly 'what I will call life'). It is presented as a direct quote.",
+          "evidence_ids": []
+        },
+        {
+          "side": "B",
+          "type": "grounding",
+          "severity": "minor",
+          "status": "observed",
+          "location": "B.debate[3].text",
+          "description": "'Once you've moved, signed a lease' assumes a relocation the user never mentioned and that a long commute implies they are not making.",
+          "evidence_ids": []
+        }
+      ]
+    },
+    "challengerWon": 0
+  },
+  {
+    "q": 2,
+    "sample": 3,
+    "championSample": "68d96dabe7151737261a9e2d7540d9afdd61f76f3f04dbde45c2cd019f9f990b",
+    "challengerSample": "148968697682359315201283d7fe078d611b628441135f77d75f2944151bd62d",
+    "championSlot": "A",
+    "verdict": {
+      "schema_version": "blind-4.2.0",
+      "winner": "B",
+      "margin": "small_but_meaningful",
+      "reason": "Both debates converge on the same key branch (usable train time and hybrid days versus fixed driving) and on pre-written exit conditions, but B gets there through more objections that actually narrow claims: the bias claim is cut down and countered with net pay, the career-door claim is challenged as a guess, and the review date is attacked and repaired. B also adds a decision dimension A lacks (whether the role advances the user, and net pay after commuting costs), while A's distinctive strength is the closing reframe that the real choice may be the offer as written versus a renegotiated one.",
+      "comparisons": [
+        {
+          "aspect": "Reasoning and interaction",
+          "a_location": "A.debate[2].text",
+          "a_observation": "Turn 3 answers the Skeptic's question about counting misery by restating the time-price frame with a Thoreau quote rather than engaging the misery-versus-minutes distinction; real narrowing only comes later in Turns 5-8 and Turn 10.",
+          "b_location": "B.debate[2].text",
+          "b_observation": "Turn 3 explicitly narrows its claim after Turn 2's objection ('The raise is real. My claim is only that the commute's cost recurs') and turns the uncertainty back on the raise (25% after tax and travel); Turns 5, 9 and 10 repeat this pattern of objection, concession and improved plan.",
+          "advantage": "B",
+          "why_it_matters": "The user asked how to decide; B shows more claims being tested and refined, so its conclusions (net pay, exit criteria written before accepting) carry the reasoning that produced them."
+        },
+        {
+          "aspect": "Usefulness for this decision",
+          "a_location": "A.dependsOn",
+          "a_observation": "Conditions cover usable commute, remote days, purpose of the money, and a rush-hour trial plus pre-set sleep/exercise/family thresholds; Turn 10 adds renegotiation as a distinct option.",
+          "b_location": "B.dependsOn",
+          "b_observation": "Conditions cover usable time and hybrid days, five-day driving needing a much bigger gain, whether the role advances the user, sleep/health/caring duties, net pay after commuting costs, and talking to someone in the role.",
+          "advantage": "B",
+          "why_it_matters": "B gives the user more observable conditions that could flip the choice, including the career-trajectory and net-pay factors that A never raises."
+        },
+        {
+          "aspect": "Relevance and naturalness",
+          "a_location": "A.debate[7].text",
+          "a_observation": "The Skeptic's 'what is the 25% for?' ties the raise to a concrete use (debt, deposit), a useful branch grounded in the user's unknowns; voices are distinct and turn lengths vary.",
+          "b_location": "B.debate[10].text",
+          "b_observation": "Turns 11-12 speculate on the user's motives (money pressure, fear, flattery) and Turn 12 states 'Flattery... usually hides a hunger to grow' with some psychological certainty, though Turn 11 leaves the ranking to the user.",
+          "advantage": "tie",
+          "why_it_matters": "Each has a relevant branch the other lacks; B's motive speculation is slightly presumptuous but offset by its explicit deference, so this does not decide."
+        }
+      ],
+      "best_of_a": "A.debate[9].text: The Life-Cost Accountant ends by reframing the choice as the offer on current terms versus the offer renegotiated, giving the user a concrete third option.",
+      "best_of_b": "B.debate[7].text: The Bettor lays out both branches explicitly (usable time and flexible days: take the bet; fixed five-day driving: needs a much bigger payoff than 25%) and pairs them with a review date.",
+      "concerns": [
+        {
+          "side": "A",
+          "type": "grounding",
+          "severity": "minor",
+          "status": "suspected",
+          "location": "A.debate[1].text",
+          "description": "The claim that people adapt to commutes far less than expected is attributed to the Kahneman mind; it is consistent with related wellbeing research but is not clearly a central claim of Thinking, Fast and Slow and is not marked as an extension.",
+          "evidence_ids": []
+        },
+        {
+          "side": "B",
+          "type": "safety",
+          "severity": "minor",
+          "status": "observed",
+          "location": "B.debate[11].text",
+          "description": "The Trajectory Critic generalizes about the user's psychology ('Flattery rarely stays alone for long; it usually hides a hunger to grow') with more certainty than the input supports.",
+          "evidence_ids": []
+        }
+      ]
+    },
+    "challengerWon": 1
+  },
+  {
+    "q": 3,
+    "sample": 1,
+    "championSample": "c8b0be929f8effc5124ab21be75f24dc7fa05d578eafd81212d86d3c6a45fd85",
+    "challengerSample": "dfe13dc53049d519363859d1a9215384fd304dee1a7e7a56adba0ca0f10372a0",
+    "championSlot": "A",
+    "verdict": {
+      "schema_version": "blind-4.2.0",
+      "winner": "A",
+      "margin": "small_but_meaningful",
+      "reason": "Both debates genuinely interact: claims narrow under objection and each ends knowing more than it began, so the first criterion is close. A edges ahead on relevance and trust: it stays inside what the user said and keeps a fair, two-sided treatment of the pause option. B invents a gendered friend and, at one point, uses the user's own words as if they were the friend's evidence, even though it offers the richer branch analysis.",
+      "comparisons": [
+        {
+          "aspect": "Relevance and fidelity to the user's facts",
+          "a_location": "A.debate[2].text",
+          "a_observation": "Grounds the argument in the user's own words ('You said the meetings are lovely') and treats the friend's reasons as unknown throughout, without assigning attributes the user did not give.",
+          "b_location": "B.debate[7].text",
+          "b_observation": "Argues 'I doubt it's workload; she calls the evenings lovely', but it was the user who called the evenings lovely, and the friend's gender ('she', from B.debate[2].text onward) is invented.",
+          "advantage": "A",
+          "why_it_matters": "The user gave only the pattern and their own enjoyment, so a debate that misreads whose words are whose builds a bet on evidence that does not exist, and that weakens trust in its reading of the motive."
+        },
+        {
+          "aspect": "Reasoning and interaction",
+          "a_location": "A.debate[4].text, A.debate[7].text, A.debate[9].text, A.debate[10].text",
+          "a_observation": "The Voice Advocate narrows from 'say something, and soon' to a light, curious remark because of the Interpreter's objection. The Realist's pause experiment is then challenged on its ambiguity, and the debate ends with a precisely stated disagreement over timing: speak then observe, or observe then speak.",
+          "b_location": "B.debate[4].text, B.debate[8].text, B.debate[10].text",
+          "b_observation": "The Auditor explicitly narrows to 'the pattern earns a question, not a conclusion', the branches are argued through Aristotle's friendship of pleasure, and the Skeptic concedes that waiting wins only if the user never minds, adding that one response will not settle it.",
+          "advantage": "tie",
+          "why_it_matters": "Both give the user an argument that moves rather than turns that merely alternate, so this criterion does not separate them."
+        },
+        {
+          "aspect": "Usefulness for the decision",
+          "a_location": "A.dependsOn",
+          "a_observation": "Gives observable conditions (keeping score versus not being bothered) and two proportionate ways to learn more (a pause or a casual remark), with the friend's response over time as the signal.",
+          "b_location": "B.dependsOn",
+          "b_observation": "Gives similar conditions, plus a next step if nothing changes after asking. The motive split in B.debate[6].text (feeling tolerated, tired, or wanting fairness) helps the user see which conversation they actually need.",
+          "advantage": "B",
+          "why_it_matters": "B's follow-through branch and motive distinctions are slightly more actionable, but not enough to outweigh its misreading of the user's facts."
+        }
+      ],
+      "best_of_a": "A.debate[8].text: Proposes a concrete low-cost experiment (pausing for a few weeks) and openly marks it as the mind's own extension beyond Montaigne. A.debate[9].text then tests the experiment honestly instead of dismissing it.",
+      "best_of_b": "B.debate[8].text: Turns the unknown into argued branches: an unaware friend means one remark fixes it, while a friend who shrugs means a lighter friendship of pleasure. It leaves the user to rank equality against ease.",
+      "concerns": [
+        {
+          "side": "B",
+          "type": "grounding",
+          "severity": "minor",
+          "status": "observed",
+          "location": "B.debate[7].text",
+          "description": "Attributes the user's own description ('lovely') to the friend and uses it as evidence about the friend's motives.",
+          "evidence_ids": []
+        },
+        {
+          "side": "B",
+          "type": "grounding",
+          "severity": "minor",
+          "status": "observed",
+          "location": "B.debate[2].text",
+          "description": "Assigns the friend a gender ('she') that the user never stated.",
+          "evidence_ids": []
+        },
+        {
+          "side": "A",
+          "type": "grounding",
+          "severity": "minor",
+          "status": "suspected",
+          "location": "A.debate[7].text",
+          "description": "The point that voice works best when it carries information the other person lacks is presented as Hirschman's view applied to friendship. It is a plausible extension of his work, but it is not flagged as an extension the way turn 8 flags its own.",
+          "evidence_ids": []
+        }
+      ]
+    },
+    "challengerWon": 0
+  },
+  {
+    "q": 3,
+    "sample": 2,
+    "championSample": "56309efdb97ce768850cb808a3155885399bbf5c34a12f43c323cac00dcca523",
+    "challengerSample": "4c286180b47169a88f2c38fc95b09cfaba868cb37cb6856e2936aec10017f93e",
+    "championSlot": "B",
+    "verdict": {
+      "schema_version": "blind-4.2.0",
+      "winner": "tie",
+      "margin": "none",
+      "reason": "Both debates answer each other closely: an early push to speak up meets a caution, the 'go silent as a test' idea is rejected for a stated reason, and both end on one light, kind ask while keeping a real disagreement about whether the imbalance is a problem at all. A gives the user a more useful observable signal about the friend, but it assumes the friend's gender and slips into third person when it guesses at the user's motive. B keeps the unknowns open more cleanly and narrows its wording because of an objection, but it offers less to observe about the friend. Neither advantage would decide anything for this user.",
+      "comparisons": [
+        {
+          "aspect": "Reasoning and interaction",
+          "a_location": "A.debate[5].text",
+          "a_observation": "The Maintenance Realist rebuts the silence test with a concrete cost: months of lost contact and nothing learned if the friend is busy. It then names the fact that would reorder the choice, whether she reaches out in other ways. Later, A.debate[9].text separates a hint from a request, and A.debate[10].text accepts one clear ask while keeping its disagreement.",
+          "b_location": "B.debate[6].text",
+          "b_observation": "After the Boundary Coach calls a silent test a trap (B.debate[4].text), the Statistician concedes and narrows its position to specific wording: 'you usually make the plans' plus a question about the friend's side, instead of 'you never reach out'. B.debate[8].text and B.debate[9].text then build the distinction between minding the effort and minding not knowing you are wanted.",
+          "advantage": "tie",
+          "why_it_matters": "In both, positions narrow because of objections and the ending knows more than the opening. Neither exchange is clearly stronger for deciding whether and how to speak up."
+        },
+        {
+          "aspect": "Relevance and trust",
+          "a_location": "A.debate[7].text",
+          "a_observation": "A refers to the user as 'she' ('she can overrule it', 'she is pulled two ways') and calls the friend 'she' throughout. The user gave neither gender. It also offers a hedged guess at the user's motive ('I would bet on the fear').",
+          "b_location": "B.situation",
+          "b_observation": "B lists the friend's possible reasons (busy, shy, assumes you like leading, less invested) as unknowns, uses 'they' for the friend, and in B.debate[9].text declines to guess which motive applies to the user.",
+          "advantage": "B",
+          "why_it_matters": "These are small invented details and a psychological guess. They do not change the advice, but B stays closer to what the user actually said."
+        },
+        {
+          "aspect": "Usefulness for the decision",
+          "a_location": "A.dependsOn",
+          "a_observation": "A ties each branch to something the user can observe about the friend (warm replies, sharing news, saying she misses you) and to how the friend responds after one clear ask. A.clearer adds the user's possible motives: fairness, fear or tiredness.",
+          "b_location": "B.dependsOn",
+          "b_observation": "B branches mainly on what bothers the user, the effort or the doubt, and offers a single easygoing conversation. It gives fewer concrete signals about the friend beyond 'whether they will' share the load.",
+          "advantage": "A",
+          "why_it_matters": "The decisive unknown, which both debates name, is why the friend does not initiate. A gives more observable ways to settle it."
+        }
+      ],
+      "best_of_a": "A.debate[5].text: It turns the vague question about the friend's motive into an observable check (does she reach out, reply eagerly or share news in other ways?) and ties a lighter or more direct way of speaking to the answer.",
+      "best_of_b": "B.debate[8].text: The Friendship Philosopher points out that the user may mind not knowing whether they are wanted rather than the imbalance itself, and B.debate[9].text maps each to a different conversation. This reframes the dilemma in a way the user can test against their own feelings.",
+      "concerns": [
+        {
+          "side": "A",
+          "type": "grounding",
+          "severity": "minor",
+          "status": "observed",
+          "location": "A.debate[7].text",
+          "description": "A assumes the friend is female and, in this turn, refers to the user in the third person as 'she'. The user's message gives neither gender.",
+          "evidence_ids": []
+        },
+        {
+          "side": "A",
+          "type": "safety",
+          "severity": "minor",
+          "status": "observed",
+          "location": "A.debate[7].text",
+          "description": "A mind guesses at the user's motive ('I would bet on the fear'). It is hedged and handed back to the user, but it drifts toward psychological speculation.",
+          "evidence_ids": []
+        }
+      ]
+    },
+    "challengerWon": 0.5
+  },
+  {
+    "q": 3,
+    "sample": 3,
+    "championSample": "425c9cd982bb2bfe709c34c77d35b3f91687aa8f8052d1e18a61e0a7df34968d",
+    "challengerSample": "e62d8cc02a36664c78b8e1b025d173a5b584344791dbf3b13caec24d15efd578",
+    "championSlot": "B",
+    "verdict": {
+      "schema_version": "blind-4.2.0",
+      "winner": "B",
+      "margin": "small_but_meaningful",
+      "reason": "Both debates are well built and reach similar conclusions: speak gently, avoid a secret test, and work out what you actually want. B's exchanges are more tightly earned: the silent-test proposal is actually made and then objected to, the user's own phrase 'nothing happens' is questioned against the evidence, and the request itself is challenged (a dutiful text versus real interest). A's strongest objection targets a position the Realist never stated. A has the richer conditional map, but that does not outweigh B's edge in reasoning.",
+      "comparisons": [
+        {
+          "aspect": "Reasoning and interaction",
+          "a_location": "A.debate[6].text",
+          "a_observation": "The Candid Friend objects to 'the obvious alternative of the Realist, going quiet', but the Realist never proposed going quiet; the Realist then concedes and narrows a position that was assigned to them. The rest of A answers turn to turn (A.debate[4].text narrows to 'it may be a habit').",
+          "b_location": "B.debate[2].text",
+          "b_observation": "The Realist actually proposes a month of silence, the Plain Speaker gives a specific objection (B.debate[3].text: she may just be waiting for a cue), the Auditor concedes (B.debate[4].text), and the Plain Speaker later revises their own wording (B.debate[6].text). Each change of position names its cause.",
+          "advantage": "B",
+          "why_it_matters": "The user is tempted to stop texting and see what happens. B raises that option honestly and then takes it apart, so the user sees why it is weak. A dismisses a version nobody argued for."
+        },
+        {
+          "aspect": "Relevance",
+          "a_location": "A.debate[3].text",
+          "a_observation": "Uses the user's 'always the one' as a sign that the pattern already weighs on them, then separates tiredness from fear of mattering less.",
+          "b_location": "B.debate[4].text",
+          "b_observation": "Takes the user's 'nothing happens' and narrows it to one channel, texts, then asks whether the friend sends links, photos or replies that open a thread. This is a fact the user can check and did not give.",
+          "advantage": "B",
+          "why_it_matters": "B's point shows the user that their own evidence may be incomplete before they raise it, which bears directly on whether to say something and how. A's reading of the user's wording is insightful, but it leans more toward interpreting their feelings."
+        },
+        {
+          "aspect": "Usefulness for the decision",
+          "a_location": "A.dependsOn",
+          "a_observation": "Four conditions, each tied to something the user can observe: burden versus feeling unimportant, a suspected busy period, and following through over a few weeks instead of judging one reaction. A.debate[5].text also ties the request to the underlying need.",
+          "b_location": "B.dependsOn",
+          "b_observation": "Three conditions. It includes doing nothing as a legitimate option and a concrete step: look for other signs of interest and ask what she would like plans to look like. B.debate[7].text adds the choice between equal effort and knowing where you stand.",
+          "advantage": "A",
+          "why_it_matters": "A gives the user a more detailed map that matches requests to needs. This is A's main advantage, but it is not enough to outweigh B's stronger interaction."
+        }
+      ],
+      "best_of_a": "A.debate[5].text: The request differs by branch: share the planning if it is tiredness, or ask for a sign she looks forward to seeing you if it is about feeling valued. This gives the user one conversation with a request they can choose.",
+      "best_of_b": "B.debate[7].text: Asking her to initiate more may produce 'a dutiful text she resents'. This forces the user to choose between wanting equal effort and wanting to know where they stand.",
+      "concerns": [
+        {
+          "side": "A",
+          "type": "grounding",
+          "severity": "minor",
+          "status": "suspected",
+          "location": "A.debate[1].text",
+          "description": "The Needs Translator calls 'one small, specific request' its own addition. Making a specific request is a core component of Rosenberg's NVC model, so labelling it an extension misstates where the book ends and the mind begins.",
+          "evidence_ids": []
+        },
+        {
+          "side": "A",
+          "type": "format",
+          "severity": "minor",
+          "status": "observed",
+          "location": "A.debate[2].text",
+          "description": "'the research of Dunbar on friendship' starts a sentence in lowercase and reads like a templated phrase.",
+          "evidence_ids": []
+        },
+        {
+          "side": "B",
+          "type": "grounding",
+          "severity": "minor",
+          "status": "unverified",
+          "location": "B.debate[6].text",
+          "description": "Says Rosenberg 'would call' a hidden verdict 'a disguised judgment'. Mixing evaluation with observation is Rosenberg's idea, but the exact label is not verified.",
+          "evidence_ids": []
+        }
+      ]
+    },
+    "challengerWon": 0
+  },
+  {
+    "q": 4,
+    "sample": 1,
+    "championSample": "4d041ae574da0c86d116afcabacdde93872e544ecc486db54406049a3c1432b6",
+    "challengerSample": "9f28836dbc7f7cef6d9c88a62eee41e448213a87a8fb6c9b315e4eea554fe485",
+    "championSlot": "B",
+    "verdict": {
+      "schema_version": "blind-4.2.0",
+      "winner": "tie",
+      "margin": "none",
+      "reason": "Both debates make the same core move: the feeling of being behind is separate from what the user wants, and it may really be about losing shared time with friends. Each narrows claims under objection and ends knowing more than it began. B adds an earned concession about real deadlines, and A keeps its own extension apart from the source and asks the key diagnostic question more directly. Neither advantage would change what this user takes away.",
+      "comparisons": [
+        {
+          "aspect": "Reasoning and interaction",
+          "a_location": "A.debate[3].text",
+          "a_observation": "The Anthropologist accepts the Skeptic's point that asking people beats introspection, but narrows it because friends are biased witnesses: ask many, ask in private, ask the quiet ones. In A.debate[9].text he states plainly how his position has shifted.",
+          "b_location": "B.debate[9].text",
+          "b_observation": "The Forecaster's warning that waiting is not neutral makes the Detective concede that real deadlines exist and narrow his claim: the feeling says little, but the calendar facts can be checked. B.debate[7].text partly misstates the Detective's trial objection as a call to withdraw from friends.",
+          "advantage": "tie",
+          "why_it_matters": "Both show claims getting narrower because of an objection. B's deadline concession is useful to the user, and A's turns answer each other with less strawmanning, so neither clearly reasons better."
+        },
+        {
+          "aspect": "Trust",
+          "a_location": "A.debate[6].text",
+          "a_observation": "The Anthropologist says outright that his exclusion reading goes further than Veblen and is his own extension, not Veblen's claim. Veblen's 'invidious comparison' is used accurately.",
+          "b_location": "B.debate[0].text",
+          "b_observation": "Girard's mimetic desire is put as 'wanting spreads like a yawn' with no marker that this applies the idea to a modern life choice. The Mill 'experiments of living' quote is accurate.",
+          "advantage": "A",
+          "why_it_matters": "The user can tell where the book stops and the mind's own guess begins, so the exclusion hypothesis is not mistaken for an established finding."
+        },
+        {
+          "aspect": "Usefulness for this decision",
+          "a_location": "A.dependsOn",
+          "a_observation": "Branches on friendship drift, a longing for settled life, and money or deadline pressure, each with an observable test, plus a fallback of private conversations and a few weeks of watching which reactions persist.",
+          "b_location": "B.dependsOn",
+          "b_observation": "Branches on the actual life against the status of having it, losing time with friends, and whether the pull is strongest while comparing. It names real time limits such as having children as the decisive fact to check early.",
+          "advantage": "tie",
+          "why_it_matters": "Both give conditions the user can observe. B's deadline branch is more concrete, and A's diagnostic question about envy, drifting or money (A.debate[5].text) is easier to act on, so they come out even."
+        }
+      ],
+      "best_of_a": "A.debate[5].text: The Skeptic warns that short trials share the forecasting bias and then asks the one question that sorts the branches: is the feeling envy of their lives, fear of drifting from them, or worry about money?",
+      "best_of_b": "B.debate[4].text: The Forecaster separates the milestone from the good it promises (a home for security, a wedding for being chosen) and widens the sample to people on every path, which gives the user other routes to those goods.",
+      "concerns": [
+        {
+          "side": "B",
+          "type": "grounding",
+          "severity": "minor",
+          "status": "observed",
+          "location": "B.debate[7].text",
+          "description": "The Experimenter answers 'withdrawing from friends', but the Detective in B.debate[6].text proposed noticing private envy, not withdrawing. This is a mild strawman.",
+          "evidence_ids": []
+        },
+        {
+          "side": "B",
+          "type": "grounding",
+          "severity": "minor",
+          "status": "suspected",
+          "location": "B.debate[0].text",
+          "description": "Girard's mimetic theory comes from literary analysis of novels. Applying it directly to the user's life wants is the mind's own extension and is not marked as one.",
+          "evidence_ids": []
+        }
+      ]
+    },
+    "challengerWon": 0.5
+  },
+  {
+    "q": 4,
+    "sample": 2,
+    "championSample": "7e76f70d33efe459d574ed9f1ebfbb3361dd71b390dbf587e5290063f30959be",
+    "challengerSample": "0a720f8af5ce698d966d594a3c8ab0aed7c37563683a08e2805f96571fc54f17",
+    "championSlot": "A",
+    "verdict": {
+      "schema_version": "blind-4.2.0",
+      "winner": "B",
+      "margin": "small_but_meaningful",
+      "reason": "Both debates interact genuinely, with concessions that have causes and claims that narrow under objection, so reasoning alone is close. B is more useful for this user because it splits the feeling of being behind into separate causes the user did not state (a borrowed scoreboard, friendships that are changing, a real deadline such as children or money) and ties each one to a different response. B's tests are also refined so they do not just follow the crowd. A's experiments stay generic and in places impractical, and its conditional map mostly turns on one imagined test.",
+      "comparisons": [
+        {
+          "aspect": "relevance",
+          "a_location": "A.dependsOn",
+          "a_observation": "A's branches mostly hinge on the 'imagine no one knowing' test and on whether specific pieces appeal. Unstated facts such as a biological or financial deadline, or friendships drifting, are never raised.",
+          "b_location": "B.debate[5].text",
+          "b_observation": "B's Field Tester lists envy of status, loneliness as friends' weekends fill up, and a real clock (children, a financial window) as separate readings that each need a different response. B.dependsOn then turns these into observable branches.",
+          "advantage": "B",
+          "why_it_matters": "The user said only that they feel behind and are unsure. B treats the missing facts as branches the user can check instead of assuming them, and the friendship and deadline readings lead to real, different actions."
+        },
+        {
+          "aspect": "reasoning and interaction",
+          "a_location": "A.debate[7].text",
+          "a_observation": "The Realist concedes, with a stated cause, that calm advice can dress up avoidance (in reply to Girard's point at A.debate[6]). Girard then offers the invisibility test as his own extension, and the ending leaves one disagreement named.",
+          "b_location": "B.debate[9].text",
+          "b_observation": "Mill accepts the charge of avoidance from B.debate[8] but narrows the Field Tester's experiments, saying not to date or tour houses just to feel normal. This leads to 'test pieces, not packages' at B.debate[10]. Girard adds the unresolved conflict between freedom and closeness at B.debate[11].",
+          "advantage": "tie",
+          "why_it_matters": "Both earn their reversals and end knowing more than they began. B's refinement of the tests fixes a weakness that A leaves standing: A.debate[3] and A.debate[9] suggest dating or living in a friend's married life as data-gathering."
+        },
+        {
+          "aspect": "usefulness for the decision",
+          "a_location": "A.debate[9].text",
+          "a_observation": "A's experiments (staying a week in a friend's married life, renting near a friend's new place) are vivid but hard to carry out, and they come close to the crowd-driven testing that B warns against.",
+          "b_location": "B.dependsOn",
+          "b_observation": "B pairs each condition with an action: test early if there is a deadline, repair the friendship or limit comparison if the feeling is tied to particular friends, wait if the pressure is purely social. It adds a few weeks of noticing when the feeling spikes.",
+          "advantage": "B",
+          "why_it_matters": "A user who is unsure gets observable conditions and proportionate next steps from B, not mainly a thought experiment."
+        }
+      ],
+      "best_of_a": "A.debate[8].text: The invisibility test (would the home, the wedding or neither still appeal if nobody ever learned the choice?) is a concrete, memorable diagnostic, and it is honestly flagged as the speaker's extension, not the book's claim.",
+      "best_of_b": "B.debate[10].text: 'Test pieces, not packages' (asking married friends what they would keep and drop, trying living arrangements, a project chosen as if nobody saw) is a cheap, reversible plan that the objections before it have refined.",
+      "concerns": [
+        {
+          "side": "B",
+          "type": "format",
+          "severity": "minor",
+          "status": "observed",
+          "location": "B.debate[3].text",
+          "description": "Speakers sometimes talk about the user in the third person ('this person', 'their head' in B.debate[2] and B.debate[9]) instead of addressing them, which reads as slightly distancing.",
+          "evidence_ids": []
+        },
+        {
+          "side": "B",
+          "type": "grounding",
+          "severity": "minor",
+          "status": "suspected",
+          "location": "B.debate[3].text",
+          "description": "'Experiments of living' matches Mill's phrase. The 'only one faculty: imitation' line is a close paraphrase of Mill's 'ape-like one of imitation' rather than an exact quote, and the turn does not mark it as a paraphrase.",
+          "evidence_ids": []
+        },
+        {
+          "side": "B",
+          "type": "uncertainty",
+          "severity": "minor",
+          "status": "observed",
+          "location": "B.debate[7].text",
+          "description": "Girard asserts that envy is likelier than loneliness without evidence. B.debate[8] does challenge this as guesswork, which partly offsets it.",
+          "evidence_ids": []
+        }
+      ]
+    },
+    "challengerWon": 1
+  },
+  {
+    "q": 4,
+    "sample": 3,
+    "championSample": "df0cb39322ff6b392817bf8ce6c68f04564be7e8d003048d6d56622842224267",
+    "challengerSample": "b5844942c4f008508a54d9abef3e76af2e27a750bceb12a7d85710fc63939b4b",
+    "championSlot": "A",
+    "verdict": {
+      "schema_version": "blind-4.2.0",
+      "winner": "B",
+      "margin": "small_but_meaningful",
+      "reason": "Both debates interact genuinely and converge on a similar no-audience test, but B turns its central objection into a three-way diagnostic (the thing, the friend, the audience) midway and then works each branch into concrete, observable next steps, so its ending knows noticeably more than its opening. A reaches the belonging insight and a sound narrowing on bounded trials, but its turns are more uniform in register and its conclusion stays more abstract. B's opening slightly overstates the user's uncertainty as not wanting, which keeps the margin small.",
+      "comparisons": [
+        {
+          "aspect": "Reasoning and interaction",
+          "a_location": "A.debate[7].text",
+          "a_observation": "The Status Cartographer introduces belonging as the possible real loss and the Finitude Realist retargets in turn 9; Mill's objection in turn 5 (introspection cannot settle it) leads to a narrowed claim in turn 7 about trials with an end date.",
+          "b_location": "B.debate[5].text",
+          "b_observation": "Girard names the fact that would reorder everything (the thing, losing the friend, being seen off schedule), Burkeman takes each branch in turn 7, and turns 10-11 force a real concession that borrowed desire is not false desire, narrowing Girard's claim to a separating test.",
+          "advantage": "B",
+          "why_it_matters": "The user does not know where the feeling comes from; B builds an explicit sorting question from the objections and uses it to structure the rest of the debate, while A's insights arrive more serially and are only reassembled in the closing turn."
+        },
+        {
+          "aspect": "Usefulness for this purpose",
+          "a_location": "A.dependsOn",
+          "a_observation": "Conditions are sound (wish survives without audience, appeal fades, closeness missing) but the actions are general: a time-limited first step, investing time in friendships, a bounded trial.",
+          "b_location": "B.debate[7].text",
+          "b_observation": "Branches map to concrete, cheap actions the user can take (open house, ask a married friend, host a dinner, call the friend) and dependsOn adds a one-month observation with a revisit date so waiting is a choice, not drift.",
+          "advantage": "B",
+          "why_it_matters": "For a decision question, B gives the user observable signals and low-cost steps tied to each explanation, which is what lets them act while still unsure."
+        },
+        {
+          "aspect": "Naturalness",
+          "a_location": "A.debate[1].text",
+          "a_observation": "Turns are similar in length and register; several open with a brief agreement-then-pivot ('Careful.', 'Fair, but', 'Agreed, so', 'Granted.'), giving a slightly templated cadence.",
+          "b_location": "B.debate[2].text",
+          "b_observation": "Voices differ more sharply ('That's flattering, and flattery isn't evidence'; Thoreau's practical 'skip the tests and call them'), and position changes name their cause ('Fair hit. I'll narrow it.').",
+          "advantage": "B",
+          "why_it_matters": "Three distinct stakes make the disagreements feel earned, which helps the user trust that the competing explanations were actually tested against each other."
+        }
+      ],
+      "best_of_a": "A.debate[7].text: The suggestion that the ache may concern belonging rather than houses or weddings, so someone could reject the milestones and still miss the company around them, reframes the problem in a way directly useful to this user.",
+      "best_of_b": "B.debate[5].text: Asking what stings when picturing a friend's milestone (the thing, the friend, or being seen off schedule) gives the user a simple self-test whose three answers lead in three different directions.",
+      "concerns": [
+        {
+          "side": "B",
+          "type": "grounding",
+          "severity": "minor",
+          "status": "observed",
+          "location": "B.debate[0].text",
+          "description": "Opens with 'you don't want the house or the wedding' and 'Wanting nothing', overstating the user's stated uncertainty ('not sure I even want those things'); later turns treat the want as open, partly correcting this.",
+          "evidence_ids": []
+        },
+        {
+          "side": "B",
+          "type": "format",
+          "severity": "minor",
+          "status": "observed",
+          "location": "B.debate[8].text",
+          "description": "Minds address each other by author name ('Burkeman', 'Girard') rather than by their mind names, blurring the line between the fictional mind and the cited author.",
+          "evidence_ids": []
+        },
+        {
+          "side": "A",
+          "type": "grounding",
+          "severity": "minor",
+          "status": "observed",
+          "location": "A.debate[2].text",
+          "description": "Claims houses and marriages 'have rough seasons' and that waiting is not free without tying this to the user's age or circumstances, which the user did not give.",
+          "evidence_ids": []
+        }
+      ]
+    },
+    "challengerWon": 1
+  },
+  {
+    "q": 5,
+    "sample": 1,
+    "championSample": "73f1fd06b4bf0553bc5e58e0ec6ebd2e4906095854761da509c90301f6112eca",
+    "challengerSample": "b694c8991dd78146c4bc0c2f73b328cd3f0c115b7571f26124ac2e4332b6d452",
+    "championSlot": "A",
+    "verdict": {
+      "schema_version": "blind-4.2.0",
+      "winner": "A",
+      "margin": "small_but_meaningful",
+      "reason": "Both debates use the Pacific-coast counterexample to break the plain Gulf Stream answer and end with a bundle of causes whose weights are disputed. A gets further on the mechanism. Its minds narrow their claims in response to specific objections, it raises the east-west Atlantic water difference that heat storage alone cannot explain, and it adds a third candidate (mountain-steered wind patterns), labelled as the speaker's own extension. Its closing map ties each explanation to evidence that would separate it from the others. B is clear and well tested, but one of its three minds argues method rather than mechanism, and its closing map drifts toward advice on what answer to give.",
+      "comparisons": [
+        {
+          "aspect": "Reasoning and interaction",
+          "a_location": "A.debate[6].text",
+          "a_observation": "The Conveyor Theorist objects that heat storage explains any mild coast but not why Europe is milder than ocean-facing Newfoundland. The Atmosphere Physicist partly concedes and adds the mountain/wind-pattern suspect. Then both other minds explicitly narrow their claims (A.debate[8].text, A.debate[9].text).",
+          "b_location": "B.debate[4].text",
+          "b_observation": "The warehouse/delivery-truck exchange is responsive, and the advocate concedes wind and storage in B.debate[7].text. But the Counterexample Hunter's later turns (B.debate[6].text, B.debate[9].text) mostly restate the method rather than move the physics forward.",
+          "advantage": "A",
+          "why_it_matters": "The user asked why. A's ending knows more mechanisms and how they interact than its opening does. B's ending mostly confirms that there are several causes."
+        },
+        {
+          "aspect": "Usefulness for exploration",
+          "a_location": "A.dependsOn",
+          "a_observation": "It names three competing explanations, each with a separating prediction, including model experiments that switch one factor off and coastal-versus-inland comparisons on both oceans.",
+          "b_location": "B.dependsOn",
+          "b_observation": "It opens with what answer to give if you want a quick, defensible one, then defers the question of weights to 'check recent climate science'. It does offer a useful coastal-versus-inland comparison by wind direction.",
+          "advantage": "A",
+          "why_it_matters": "For an exploratory question, naming what evidence would separate the explanations is more useful than advice on which headline answer to repeat."
+        },
+        {
+          "aspect": "Trust and calibration",
+          "a_location": "A.debate[7].text",
+          "a_observation": "It marks the mountain-steering idea explicitly as 'my own extension, not a claim from my source', and keeps the conveyor's share as 'genuinely disputed'.",
+          "b_location": "B.debate[5].text",
+          "b_observation": "It marks going 'further than Lamb' explicitly and declines to pretend the sizes are settled (B.debate[8].text).",
+          "advantage": "tie",
+          "why_it_matters": "Both keep a book's idea distinct from a mind's extension and keep the relative weights open, so neither misleads the user about certainty."
+        }
+      ],
+      "best_of_a": "A.debate[6].text: The Newfoundland-versus-Norway point shows that ocean heat storage cannot by itself explain the Atlantic asymmetry, which forces the debate to separate storage from delivery.",
+      "best_of_b": "B.debate[7].text: It names the cold current down eastern Canada as an ocean effect that adds to the cold continental air. This makes the contrast two-sided rather than only about Europe's warmth.",
+      "concerns": [
+        {
+          "side": "B",
+          "type": "grounding",
+          "severity": "minor",
+          "status": "observed",
+          "location": "B.debate[6].text",
+          "description": "The proposed test of a coast 'with the Gulf Stream moved away' cannot be observed directly. Only models could run it, and the debate does not say so.",
+          "evidence_ids": []
+        },
+        {
+          "side": "A",
+          "type": "format",
+          "severity": "minor",
+          "status": "observed",
+          "location": "A.debate[8].text",
+          "description": "'a draw of warm water on a map' looks like a wording slip for 'drawing'.",
+          "evidence_ids": []
+        }
+      ]
+    },
+    "challengerWon": 0
+  },
+  {
+    "q": 5,
+    "sample": 2,
+    "championSample": "f851d36f876f6df5c2c15b305b687d120990c6d289a8f9b1899c31f560335169",
+    "challengerSample": "50244528c9d61cf31a94fd6077e230f4ef52e07b9beabcbe33349bcf5e3bb49e",
+    "championSlot": "B",
+    "verdict": {
+      "schema_version": "blind-4.2.0",
+      "winner": "B",
+      "margin": "small_but_meaningful",
+      "reason": "Both debates argue responsively and both end with the layered, multi-cause answer rather than the one-word Gulf Stream answer. B keeps closer to the physical mechanism and adds the pieces that do most of the explanatory work: atmospheric heat transport, how the Rockies shape the wind pattern, and the ocean storing heat by season. It also names the evidence that would settle the dispute over shares. A has the sharpest single move, the Vancouver counterexample, and a useful 'which Canada' branch. But A drifts into the user's possible personal motives, which this explanatory question does not need, and it never names a test that would settle the ocean-versus-air shares.",
+      "comparisons": [
+        {
+          "aspect": "Usefulness for exploration: competing explanations and what separates them",
+          "a_location": "A.dependsOn",
+          "a_observation": "Branches on which Canada is meant (Pacific coast, Labrador/Atlantic side, interior). For fragility it suggests reading what researchers say about past shifts and current monitoring, which does not separate the competing explanations of today's gap.",
+          "b_location": "B.dependsOn",
+          "b_observation": "Names the distinguishing evidence: climate model studies that compare the same region with and without ocean heat transport, and whether they agree. This bears directly on the ocean-versus-atmosphere share the debate leaves open.",
+          "advantage": "B",
+          "why_it_matters": "The user asked why. The open question in both debates is how much the ocean and the air each contribute, and only B tells the user what kind of evidence would resolve that."
+        },
+        {
+          "aspect": "Relevance: staying on the mechanism",
+          "a_location": "A.debate[7].text",
+          "a_observation": "The Ice-Core Reader stops to guess whether the user is curious, moving, traveling or worried about climate. The reflection in A.clearer then asks whether the user wanted 'a single villain or hero', which moves the explanatory question toward the user's psychology.",
+          "b_location": "B.debate[5].text",
+          "b_observation": "Adds the seasonal heat-storage mechanism and the Rockies bending the wind so that cold air spills over eastern North America. B.debate[4].text frames the asymmetry as 'same wind, different history'.",
+          "advantage": "B",
+          "why_it_matters": "For an exploratory question, a turn spent on the user's motives is a turn not spent on the mechanism. B's added mechanisms cover more of the real answer."
+        },
+        {
+          "aspect": "Reasoning and interaction",
+          "a_location": "A.debate[1].text",
+          "a_observation": "The Vancouver counterexample (mild with no Gulf Stream) forces an explicit narrowing in A.debate[2].text. A.debate[5].text then uses the ice record against the Skeptic, and the Skeptic answers with the sea-ice mechanism in A.debate[6].text, which is a real exchange.",
+          "b_location": "B.debate[3].text",
+          "b_observation": "Separates 'past collapses show the ocean can matter' from 'it is the main cause today'. B.debate[8].text rebuts the 'you can measure the warm water' point by distinguishing measurement from causation.",
+          "advantage": "tie",
+          "why_it_matters": "Both debates make claims narrower under objection, and both endings know more than their openings, so interaction does not decide between them."
+        }
+      ],
+      "best_of_a": "A.debate[1].text: The Vancouver counterexample is a natural experiment that separates the explanations: it shows the sea-and-westerlies mechanism working without the Gulf Stream, and it forces the Ocean Plumber to narrow his claim.",
+      "best_of_b": "B.dependsOn: Names the decisive evidence for the open dispute: model comparisons run with and without ocean heat transport.",
+      "concerns": [
+        {
+          "side": "A",
+          "type": "uncertainty",
+          "severity": "minor",
+          "status": "observed",
+          "location": "A.debate[7].text",
+          "description": "Speculates about the user's personal motives (moving, traveling, climate worry) on an exploratory question, and adds a psychological reflection in A.clearer that the question does not call for.",
+          "evidence_ids": []
+        },
+        {
+          "side": "B",
+          "type": "grounding",
+          "severity": "minor",
+          "status": "observed",
+          "location": "B.debate[8].text",
+          "description": "'A quarter of the effect is ocean' is offered as a hypothetical, not a finding, but a reader could take it as an estimate.",
+          "evidence_ids": []
+        },
+        {
+          "side": "A",
+          "type": "grounding",
+          "severity": "minor",
+          "status": "suspected",
+          "location": "A.situation",
+          "description": "Leaves out the atmospheric heat transport and mountain-driven wind pattern explanations, which are mainstream in current climate science, so the ocean-versus-air framing is somewhat incomplete.",
+          "evidence_ids": []
+        }
+      ]
+    },
+    "challengerWon": 0
+  },
+  {
+    "q": 5,
+    "sample": 3,
+    "championSample": "6cc9e121acedc237222ef7ba5ca4a553fef18e25e0608d9cd63e9f9bff4c6840",
+    "challengerSample": "60e6c8687aba19ca17a0282dfbf2940b68c7d8ef43a54f6a59b6c274ca236bb2",
+    "championSlot": "B",
+    "verdict": {
+      "schema_version": "blind-4.2.0",
+      "winner": "B",
+      "margin": "clear",
+      "reason": "Both debates move from the Gulf Stream slogan to an ocean-plus-wind partnership, but B keeps building the mechanism further (stored seasonal heat versus resupply, the west-coast/east-coast asymmetry, the Rockies bending the westerlies), and each objection narrows a claim. A reaches the battery/delivery-truck point by Turn 4, then spends its last turns guessing why the user is asking. B's closing map gives observable tests that would separate the explanations, which is what this exploratory question needs.",
+      "comparisons": [
+        {
+          "aspect": "Reasoning and interaction",
+          "a_location": "A.debate[8].text",
+          "a_observation": "After the good concession in Turn 4 and the narrowed conveyor claim in Turn 7, the Wind Mechanic stops arguing the mechanism. He speculates about the asker's motives (school story, weighing a move) and ranks them, and Turn 10 only disputes that ranking.",
+          "b_location": "B.debate[5].text",
+          "b_observation": "The Conveyor Skeptic concedes stored summer heat and narrows his claim, but points out that the reservoir drains by midwinter without resupply. Turns 7-8 then add the continental-geometry and Rockies wave argument, and Turns 10-11 settle on an explicit division of credit with the proportion still open.",
+          "advantage": "B",
+          "why_it_matters": "The user wants to know why the gap exists. B's ending knows more than its opening on several separate mechanisms, while A's second half drifts away from the mechanism."
+        },
+        {
+          "aspect": "Usefulness for exploration (what would settle it)",
+          "a_location": "A.dependsOn",
+          "a_observation": "It separates coastal from inland comparisons and suggests reading published estimates of ocean versus atmospheric heat transport. That is reasonable, but it points to a reading rather than a test.",
+          "b_location": "B.dependsOn",
+          "b_observation": "It gives three tests, each tied to one explanation: whether the same west-warm/east-cold pattern shows up on other continents, whether past circulation slowdowns cooled Europe specifically, and whether the contrast is much larger in winter than in summer at matched coastal and inland stations.",
+          "advantage": "B",
+          "why_it_matters": "For an exploratory question, naming the evidence that separates competing explanations is the most useful output, and B's tests can actually be checked."
+        },
+        {
+          "aspect": "Relevance to an explanatory question",
+          "a_location": "A.debate[9].text",
+          "a_observation": "It turns the question toward the asker's purpose and the pattern's durability, a personal framing the user never raised.",
+          "b_location": "B.clearer",
+          "b_observation": "It stays on the mechanism and the disputed proportions. Its self-reflection line is light and about the explanation itself.",
+          "advantage": "B",
+          "why_it_matters": "The brief warns against forcing a personal dilemma onto an explanatory question. A does this, at a small cost."
+        }
+      ],
+      "best_of_a": "A.debate[7].text: It names the user's unstated fact, which places are being compared, and shows how coastal Labrador versus inland Ontario changes whose explanation carries the most weight.",
+      "best_of_b": "B.debate[7].text: The Rockies stationary-wave argument adds a separate atmospheric mechanism that explains why cold air floods eastern North America. It turns the debate from ocean versus wind into a three-part account.",
+      "concerns": [
+        {
+          "side": "B",
+          "type": "grounding",
+          "severity": "minor",
+          "status": "suspected",
+          "location": "B.dependsOn",
+          "description": "The Pacific coast of Canada and Alaska is offered as a case with no large current involved, but the North Pacific and Alaska Currents do run there, so the test is less clean than stated.",
+          "evidence_ids": []
+        },
+        {
+          "side": "B",
+          "type": "grounding",
+          "severity": "minor",
+          "status": "observed",
+          "location": "B.debate[7].text",
+          "description": "'No ocean current is needed to explain it' overstates the case. Turn 11 later softens it to a joint product, but the line is stated with more certainty than the evidence supports.",
+          "evidence_ids": []
+        },
+        {
+          "side": "A",
+          "type": "grounding",
+          "severity": "minor",
+          "status": "suspected",
+          "location": "A.minds[1]",
+          "description": "The view that the atmosphere moves most of the heat and the popular story overrates the current is attributed to Stommel's Gulf Stream book, which is mainly about the current's dynamics. The attribution may blur the book's idea with the mind's own extension.",
+          "evidence_ids": []
+        }
+      ]
+    },
+    "challengerWon": 0
+  }
+]

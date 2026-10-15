@@ -1,0 +1,26 @@
+{
+  "id": "exp-001-mv9ec3i3ec30",
+  "kind": "iteration",
+  "lineage": "gemini",
+  "state": "OPTIMIZING",
+  "iteration": 1,
+  "champion": "v0",
+  "stage": 1,
+  "stage1Samples": 2,
+  "samples": 2,
+  "jobs": {
+    "optimizer": {
+      "kind": "optimizer",
+      "lineage": "gemini",
+      "promptPath": "/Users/polar/owlry/.claude/worktrees/EVOPrompts/evolve/v4/gemini/experiments/exp-001-mv9ec3i3ec30/jobs/optimizer.md",
+      "outPath": "/Users/polar/owlry/.claude/worktrees/EVOPrompts/evolve/v4/gemini/experiments/exp-001-mv9ec3i3ec30/out/optimizer.json",
+      "done": false,
+      "attempts": 0,
+      "misses": 0,
+      "printed": false
+    }
+  },
+  "createdAt": "2026-10-15T10:28:57.147Z",
+  "updatedAt": "2026-10-15T10:28:57.168Z",
+  "ablation": false
+}

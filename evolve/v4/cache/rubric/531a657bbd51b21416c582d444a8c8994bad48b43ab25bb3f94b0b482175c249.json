@@ -1,0 +1,916 @@
+{
+  "jobId": "rubric.v2.q3.s2",
+  "raw": {
+    "schema_version": "rubric-evaluator-4.2.0",
+    "rubric_version": "owlry-matrix-v2-bands",
+    "evaluation_status": "complete",
+    "cells": [
+      {
+        "id": "C1.1",
+        "name": "Continuity and responsiveness",
+        "rating": 8.2,
+        "example": "T6 answers T5's silence proposal directly: blunt test with a muddy result.",
+        "limitation": "T7 pivots to the user's motive without taking up T6's warmth question.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.2",
+        "name": "Development of ideas",
+        "rating": 8.9,
+        "example": "T6 adds other-ways-of-reaching-out test, absent from openings; T9 and section E use it.",
+        "limitation": "T3 mostly brokers T1 and T2 ('both half right') without adding a distinction.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C1.3",
+        "name": "Exploration of central tensions",
+        "rating": 8,
+        "example": "T2, T4, T5 examine whether naming the imbalance turns friendship into a ledger.",
+        "limitation": "How the friend might hear an ask, her side of the pattern, stays unexplored.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.4",
+        "name": "Integration of perspectives",
+        "rating": 8.1,
+        "example": "T10 qualifies T9's light step: a hint is not a request; T11 accepts one ask.",
+        "limitation": "T11's acceptance arrives without stating what resolved T5's poor-gift objection.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.5",
+        "name": "Progress toward understanding",
+        "rating": 8.4,
+        "example": "Section D reframes the choice as heavy complaint versus light specific ask.",
+        "limitation": "Whether lovely meetings are enough stays open by T11 without being sharpened further.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.1",
+        "name": "Faithful engagement",
+        "rating": 7.9,
+        "example": "T4 concedes T2's ledger point accurately before distinguishing feeling from bill.",
+        "limitation": "T5's strongest point, that a requested plan feels unwanted, is never restated or engaged.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.2",
+        "name": "Substance of challenges",
+        "rating": 8.6,
+        "example": "T6 names silence's assumption and what breaks: if busy, months lost, nothing learned.",
+        "limitation": "T2's claim that lovely meetings are the evidence that matters is only lightly tested in T3.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C2.3",
+        "name": "Accuracy and support",
+        "rating": 8.2,
+        "example": "T3's contact-decay claim fits Dunbar's Friends; titles and dates are plausible.",
+        "limitation": "Montaigne's ledger and 'visited friend' lines in T2, T11 are loose interpretive attributions, unverified.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.4",
+        "name": "Calibration and transparency",
+        "rating": 8.3,
+        "example": "T9 flags 'I am extending Dunbar here'; T8 labels its motive bet a guess.",
+        "limitation": "T4 asserts 'you are already counting, or you would not be asking' as certainty.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.5",
+        "name": "Intellectual honesty and revision",
+        "rating": 7.6,
+        "example": "T4 concedes the audit is a bad idea while keeping the request.",
+        "limitation": "T11 accepts the ask without answering its own T5 objection; T5 left unanswered.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.1",
+        "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+        "rating": 8.7,
+        "example": "Section A names why the friend does not initiate as the decisive uncertainty.",
+        "limitation": "none",
+        "limitation_severity": "none",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.2",
+        "name": "Meaningful use of personal context",
+        "rating": 7.9,
+        "example": "T5 and T6 turn 'if I stop texting, nothing happens' into the silence-test dispute.",
+        "limitation": "The same two details recur; little else in the situation shapes later turns.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.3",
+        "name": "Fit with goals and values",
+        "rating": 7.9,
+        "example": "T8 declines to rank friendship against fairness: 'hers to say'.",
+        "limitation": "T1 opens 'Yes, say something, and soon' before the user's priorities are known.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.4",
+        "name": "Attention to constraints and stakes",
+        "rating": 7.2,
+        "example": "T6 weighs the stake of losing months of contact to a silence test.",
+        "limitation": "From T2 the friend is 'she', a gender the user never stated.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.5",
+        "name": "Responsiveness to information",
+        "rating": 8.8,
+        "example": "T6: does she reach out otherwise? If yes speak lightly, if no more directly.",
+        "limitation": "Whether the user has raised this before, or for how long, is never asked.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C4.1",
+        "name": "Clarification of desires and motivations",
+        "rating": 8.8,
+        "example": "T7 offers fairness, fear of mattering less, tiredness, each leading to a different ask.",
+        "limitation": "T8 tilts the alternatives by betting on fear, though labelled a guess.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C4.2",
+        "name": "Examination of assumptions",
+        "rating": 8.1,
+        "example": "T11 questions whether initiating equals caring: some friends are the ones visited.",
+        "limitation": "The assumption that non-initiation signals lower priority is named in A, little examined after.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.3",
+        "name": "Clarification of values and priorities",
+        "rating": 7.8,
+        "example": "T8 names the conflict: wanting this friend versus wanting it to be fair.",
+        "limitation": "The friendship-versus-fairness conflict appears once in T8 and is not developed.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.4",
+        "name": "Recognition of fears and outside expectations",
+        "rating": 7.3,
+        "example": "T7 names fear of mattering less and tiredness without pathologising.",
+        "limitation": "Fear of seeming needy or of the ask landing badly is never examined.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.5",
+        "name": "Agency and reflective ownership",
+        "rating": 8.5,
+        "example": "Section D asks what the user would want true after speaking: balance, reassurance, less work.",
+        "limitation": "T1's directive opening sits uneasily with the later hand-back of choice.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.1",
+        "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+        "rating": 8.8,
+        "example": "Section E lays out light ask, direct talk, continuing as is; T5 adds waiting.",
+        "limitation": "none",
+        "limitation_severity": "none",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.2",
+        "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+        "rating": 7.8,
+        "example": "T6 costs silence in lost contact; T2 costs a heavy talk as a ledger.",
+        "limitation": "T9 calls the light ask low-cost without weighing T5's poor-gift risk.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.3",
+        "name": "Identification of decisive conditions",
+        "rating": 8.9,
+        "example": "T6 observable test: replies eagerly, shares news, says she misses you, each with an option.",
+        "limitation": "T10's 'if nothing changes' gives no observable point for deciding nothing changed.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C5.4",
+        "name": "Treatment of uncertainty",
+        "rating": 8.4,
+        "example": "Section A and E single out why she does not initiate as the decisive unknown.",
+        "limitation": "Minor unknowns are not explicitly set apart from the decisive one.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.5",
+        "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+        "rating": 8.4,
+        "example": "T9-T10: one warm ask handing over the next choice, escalating only if unchanged.",
+        "limitation": "T9's 'something warm and light' leaves the actual ask vague beyond picking the day.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.1",
+        "name": "Accessible language",
+        "rating": 8.8,
+        "example": "T4: 'Naming a feeling is not sending a bill.' Plain and precise throughout.",
+        "limitation": "none",
+        "limitation_severity": "none",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.2",
+        "name": "Traceable arguments and references",
+        "rating": 6.5,
+        "example": "T6 explicitly picks up T5's 'going silent' proposal by name.",
+        "limitation": "T8 uses 'she' for the user while 'she' elsewhere means the friend.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.3",
+        "name": "Manageable pacing and turn length",
+        "rating": 8.8,
+        "example": "Eleven turns, all within range; lengths vary from short T10 to fuller T6.",
+        "limitation": "none",
+        "limitation_severity": "none",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.4",
+        "name": "Distinguishable positions and voices, with explicit changes of position",
+        "rating": 7.5,
+        "example": "Positions stay distinct: T5 wait, T6 test warmth, T10 clear ask.",
+        "limitation": "All three share one modern plain register; Montaigne in T2, T5 sounds contemporary.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.5",
+        "name": "Economy and sustained attention",
+        "rating": 8.2,
+        "example": "Turns rarely recap; T6 and T9 each move straight to new content.",
+        "limitation": "Sections D and E partly repeat the light-ask conclusion.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.1",
+        "name": "Meaningful stakes and tension arising from the issue itself",
+        "rating": 7.5,
+        "example": "T2's warning that a ledger poisons friendship gives the ask real risk.",
+        "limitation": "Stakes stay mild; the friendship fading is stated in T3 but never felt.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.2",
+        "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+        "rating": 7.2,
+        "example": "T4 concedes the audit, traceable to T2's ledger argument.",
+        "limitation": "T11's acceptance of the ask names no earlier argument as its cause.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.3",
+        "name": "Personality and expressive voice without caricature",
+        "rating": 7,
+        "example": "The Anti-Bookkeeper's 'ledgers are poison' gives T2 some bite.",
+        "limitation": "Minds lack idiom of their own; T3, T6, T9 read as neutral advice.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.4",
+        "name": "Memorable delivery",
+        "rating": 7.9,
+        "example": "T6: 'a blunt test with a muddy result'; T4: feeling versus bill.",
+        "limitation": "No vivid example or scene; images stay at the level of phrases.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.5",
+        "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+        "rating": 7.3,
+        "example": "T11 ends on live dissent: lovely hours may be payment enough.",
+        "limitation": "Even temperature throughout; T7-T8 shift inward without an emotional turn.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      }
+    ],
+    "strengths": [
+      "T6 turns the unknown into an observable test (other warmth signals) with an option for each answer.",
+      "T7 offers three motives as alternatives, each tied to a different ask, none asserted.",
+      "T4 and T10 sharpen request versus verdict versus hint, carried into section E's proportionate next step."
+    ],
+    "weaknesses": [
+      "T8 uses 'she' for the user while every other 'she' is the friend, blurring the turn.",
+      "The friend is gendered 'she' from T2 onward though the user never said so.",
+      "The Anti-Bookkeeper accepts the ask in T11 without answering his own T5 poor-gift objection."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C6.2",
+        "turns": [
+          8
+        ],
+        "observed": "Pronoun 'she' switches from the friend to the user without signal.",
+        "evidence": "she wants this friend and she wants it to be fair"
+      },
+      {
+        "cell_id": "C2.5",
+        "turns": [
+          5,
+          11
+        ],
+        "observed": "T5's objection that a requested plan feels unwanted is never answered before T11 concedes.",
+        "evidence": "you will wonder whether she wanted to"
+      },
+      {
+        "cell_id": "C7.2",
+        "turns": [
+          11
+        ],
+        "observed": "Reversal to accepting the ask names no earlier argument as cause.",
+        "evidence": "I accept one clear, kind ask."
+      },
+      {
+        "cell_id": "C3.4",
+        "turns": [
+          2,
+          5,
+          6
+        ],
+        "observed": "Friend's gender invented; the user's message gives none.",
+        "evidence": "Perhaps she is simply no good at initiating"
+      },
+      {
+        "cell_id": "C4.4",
+        "turns": [
+          1,
+          4,
+          10
+        ],
+        "observed": "Fear of seeming needy or of the ask landing badly is not explored.",
+        "evidence": "Yes, say something, and soon."
+      }
+    ],
+    "mechanical": [
+      {
+        "pattern": "uncaused_reversal",
+        "turns": [
+          11
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "observed",
+        "location": "T2 onward",
+        "description": "The friend is referred to as 'she' though the user gave no gender.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "unverified",
+        "location": "T2, T5, T11",
+        "description": "Ledger and 'friends who are visited' positions attributed to Montaigne's Essays are interpretive and cannot be checked here.",
+        "evidence_ids": []
+      }
+    ],
+    "cap_reasons": [],
+    "rubric_fit_notes": [
+      "The situation is very brief, so C3.2 has little personal context to use; ratings there reflect use of the few details given."
+    ],
+    "question_type_note": "Read as a decision question; every cell applied as written."
+  },
+  "card": {
+    "criteria": [
+      {
+        "id": "C1",
+        "name": "Quality of discussion",
+        "max": 20,
+        "points": 16.64,
+        "sub": [
+          {
+            "id": "C1.1",
+            "name": "Continuity and responsiveness",
+            "rating": 8.2,
+            "points": 3.28,
+            "example": "T6 answers T5's silence proposal directly: blunt test with a muddy result.",
+            "limitation": "T7 pivots to the user's motive without taking up T6's warmth question.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.2",
+            "name": "Development of ideas",
+            "rating": 8.9,
+            "points": 3.56,
+            "example": "T6 adds other-ways-of-reaching-out test, absent from openings; T9 and section E use it.",
+            "limitation": "T3 mostly brokers T1 and T2 ('both half right') without adding a distinction.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C1.3",
+            "name": "Exploration of central tensions",
+            "rating": 8,
+            "points": 3.2,
+            "example": "T2, T4, T5 examine whether naming the imbalance turns friendship into a ledger.",
+            "limitation": "How the friend might hear an ask, her side of the pattern, stays unexplored.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.4",
+            "name": "Integration of perspectives",
+            "rating": 8.1,
+            "points": 3.24,
+            "example": "T10 qualifies T9's light step: a hint is not a request; T11 accepts one ask.",
+            "limitation": "T11's acceptance arrives without stating what resolved T5's poor-gift objection.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.5",
+            "name": "Progress toward understanding",
+            "rating": 8.4,
+            "points": 3.36,
+            "example": "Section D reframes the choice as heavy complaint versus light specific ask.",
+            "limitation": "Whether lovely meetings are enough stays open by T11 without being sharpened further.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C2",
+        "name": "Quality of disagreement, trust and grounding",
+        "max": 20,
+        "points": 16.24,
+        "sub": [
+          {
+            "id": "C2.1",
+            "name": "Faithful engagement",
+            "rating": 7.9,
+            "points": 3.16,
+            "example": "T4 concedes T2's ledger point accurately before distinguishing feeling from bill.",
+            "limitation": "T5's strongest point, that a requested plan feels unwanted, is never restated or engaged.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.2",
+            "name": "Substance of challenges",
+            "rating": 8.6,
+            "points": 3.44,
+            "example": "T6 names silence's assumption and what breaks: if busy, months lost, nothing learned.",
+            "limitation": "T2's claim that lovely meetings are the evidence that matters is only lightly tested in T3.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C2.3",
+            "name": "Accuracy and support",
+            "rating": 8.2,
+            "points": 3.28,
+            "example": "T3's contact-decay claim fits Dunbar's Friends; titles and dates are plausible.",
+            "limitation": "Montaigne's ledger and 'visited friend' lines in T2, T11 are loose interpretive attributions, unverified.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.4",
+            "name": "Calibration and transparency",
+            "rating": 8.3,
+            "points": 3.32,
+            "example": "T9 flags 'I am extending Dunbar here'; T8 labels its motive bet a guess.",
+            "limitation": "T4 asserts 'you are already counting, or you would not be asking' as certainty.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.5",
+            "name": "Intellectual honesty and revision",
+            "rating": 7.6,
+            "points": 3.04,
+            "example": "T4 concedes the audit is a bad idea while keeping the request.",
+            "limitation": "T11 accepts the ask without answering its own T5 objection; T5 left unanswered.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C3",
+        "name": "Personal relevance",
+        "max": 10,
+        "points": 8.1,
+        "sub": [
+          {
+            "id": "C3.1",
+            "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+            "rating": 8.7,
+            "points": 1.74,
+            "example": "Section A names why the friend does not initiate as the decisive uncertainty.",
+            "limitation": "none",
+            "severity": "none",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.2",
+            "name": "Meaningful use of personal context",
+            "rating": 7.9,
+            "points": 1.58,
+            "example": "T5 and T6 turn 'if I stop texting, nothing happens' into the silence-test dispute.",
+            "limitation": "The same two details recur; little else in the situation shapes later turns.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.3",
+            "name": "Fit with goals and values",
+            "rating": 7.9,
+            "points": 1.58,
+            "example": "T8 declines to rank friendship against fairness: 'hers to say'.",
+            "limitation": "T1 opens 'Yes, say something, and soon' before the user's priorities are known.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.4",
+            "name": "Attention to constraints and stakes",
+            "rating": 7.2,
+            "points": 1.44,
+            "example": "T6 weighs the stake of losing months of contact to a silence test.",
+            "limitation": "From T2 the friend is 'she', a gender the user never stated.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.5",
+            "name": "Responsiveness to information",
+            "rating": 8.8,
+            "points": 1.76,
+            "example": "T6: does she reach out otherwise? If yes speak lightly, if no more directly.",
+            "limitation": "Whether the user has raised this before, or for how long, is never asked.",
+            "severity": "minor",
+            "anchorMet": true
+          }
+        ]
+      },
+      {
+        "id": "C4",
+        "name": "Constructive self-discovery",
+        "max": 20,
+        "points": 16.2,
+        "sub": [
+          {
+            "id": "C4.1",
+            "name": "Clarification of desires and motivations",
+            "rating": 8.8,
+            "points": 3.52,
+            "example": "T7 offers fairness, fear of mattering less, tiredness, each leading to a different ask.",
+            "limitation": "T8 tilts the alternatives by betting on fear, though labelled a guess.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C4.2",
+            "name": "Examination of assumptions",
+            "rating": 8.1,
+            "points": 3.24,
+            "example": "T11 questions whether initiating equals caring: some friends are the ones visited.",
+            "limitation": "The assumption that non-initiation signals lower priority is named in A, little examined after.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.3",
+            "name": "Clarification of values and priorities",
+            "rating": 7.8,
+            "points": 3.12,
+            "example": "T8 names the conflict: wanting this friend versus wanting it to be fair.",
+            "limitation": "The friendship-versus-fairness conflict appears once in T8 and is not developed.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.4",
+            "name": "Recognition of fears and outside expectations",
+            "rating": 7.3,
+            "points": 2.92,
+            "example": "T7 names fear of mattering less and tiredness without pathologising.",
+            "limitation": "Fear of seeming needy or of the ask landing badly is never examined.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.5",
+            "name": "Agency and reflective ownership",
+            "rating": 8.5,
+            "points": 3.4,
+            "example": "Section D asks what the user would want true after speaking: balance, reassurance, less work.",
+            "limitation": "T1's directive opening sits uneasily with the later hand-back of choice.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C5",
+        "name": "Decision usefulness",
+        "max": 10,
+        "points": 8.46,
+        "sub": [
+          {
+            "id": "C5.1",
+            "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+            "rating": 8.8,
+            "points": 1.76,
+            "example": "Section E lays out light ask, direct talk, continuing as is; T5 adds waiting.",
+            "limitation": "none",
+            "severity": "none",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.2",
+            "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+            "rating": 7.8,
+            "points": 1.56,
+            "example": "T6 costs silence in lost contact; T2 costs a heavy talk as a ledger.",
+            "limitation": "T9 calls the light ask low-cost without weighing T5's poor-gift risk.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.3",
+            "name": "Identification of decisive conditions",
+            "rating": 8.9,
+            "points": 1.78,
+            "example": "T6 observable test: replies eagerly, shares news, says she misses you, each with an option.",
+            "limitation": "T10's 'if nothing changes' gives no observable point for deciding nothing changed.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C5.4",
+            "name": "Treatment of uncertainty",
+            "rating": 8.4,
+            "points": 1.68,
+            "example": "Section A and E single out why she does not initiate as the decisive unknown.",
+            "limitation": "Minor unknowns are not explicitly set apart from the decisive one.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.5",
+            "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+            "rating": 8.4,
+            "points": 1.68,
+            "example": "T9-T10: one warm ask handing over the next choice, escalating only if unchanged.",
+            "limitation": "T9's 'something warm and light' leaves the actual ask vague beyond picking the day.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C6",
+        "name": "Clarity and engagement",
+        "max": 10,
+        "points": 7.96,
+        "sub": [
+          {
+            "id": "C6.1",
+            "name": "Accessible language",
+            "rating": 8.8,
+            "points": 1.76,
+            "example": "T4: 'Naming a feeling is not sending a bill.' Plain and precise throughout.",
+            "limitation": "none",
+            "severity": "none",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.2",
+            "name": "Traceable arguments and references",
+            "rating": 6.5,
+            "points": 1.3,
+            "example": "T6 explicitly picks up T5's 'going silent' proposal by name.",
+            "limitation": "T8 uses 'she' for the user while 'she' elsewhere means the friend.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.3",
+            "name": "Manageable pacing and turn length",
+            "rating": 8.8,
+            "points": 1.76,
+            "example": "Eleven turns, all within range; lengths vary from short T10 to fuller T6.",
+            "limitation": "none",
+            "severity": "none",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.4",
+            "name": "Distinguishable positions and voices, with explicit changes of position",
+            "rating": 7.5,
+            "points": 1.5,
+            "example": "Positions stay distinct: T5 wait, T6 test warmth, T10 clear ask.",
+            "limitation": "All three share one modern plain register; Montaigne in T2, T5 sounds contemporary.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.5",
+            "name": "Economy and sustained attention",
+            "rating": 8.2,
+            "points": 1.64,
+            "example": "Turns rarely recap; T6 and T9 each move straight to new content.",
+            "limitation": "Sections D and E partly repeat the light-ask conclusion.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C7",
+        "name": "Drama and entertainment",
+        "max": 10,
+        "points": 7.38,
+        "sub": [
+          {
+            "id": "C7.1",
+            "name": "Meaningful stakes and tension arising from the issue itself",
+            "rating": 7.5,
+            "points": 1.5,
+            "example": "T2's warning that a ledger poisons friendship gives the ask real risk.",
+            "limitation": "Stakes stay mild; the friendship fading is stated in T3 but never felt.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.2",
+            "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+            "rating": 7.2,
+            "points": 1.44,
+            "example": "T4 concedes the audit, traceable to T2's ledger argument.",
+            "limitation": "T11's acceptance of the ask names no earlier argument as its cause.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.3",
+            "name": "Personality and expressive voice without caricature",
+            "rating": 7,
+            "points": 1.4,
+            "example": "The Anti-Bookkeeper's 'ledgers are poison' gives T2 some bite.",
+            "limitation": "Minds lack idiom of their own; T3, T6, T9 read as neutral advice.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.4",
+            "name": "Memorable delivery",
+            "rating": 7.9,
+            "points": 1.58,
+            "example": "T6: 'a blunt test with a muddy result'; T4: feeling versus bill.",
+            "limitation": "No vivid example or scene; images stay at the level of phrases.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.5",
+            "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+            "rating": 7.3,
+            "points": 1.46,
+            "example": "T11 ends on live dissent: lovely hours may be payment enough.",
+            "limitation": "Even temperature throughout; T7-T8 shift inward without an emotional turn.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      }
+    ],
+    "uncapped": 80.98,
+    "score": 80.98,
+    "capReason": null,
+    "provisional": false,
+    "strengths": [
+      "T6 turns the unknown into an observable test (other warmth signals) with an option for each answer.",
+      "T7 offers three motives as alternatives, each tied to a different ask, none asserted.",
+      "T4 and T10 sharpen request versus verdict versus hint, carried into section E's proportionate next step."
+    ],
+    "weaknesses": [
+      "T8 uses 'she' for the user while every other 'she' is the friend, blurring the turn.",
+      "The friend is gendered 'she' from T2 onward though the user never said so.",
+      "The Anti-Bookkeeper accepts the ask in T11 without answering his own T5 poor-gift objection."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C6.2",
+        "turns": [
+          8
+        ],
+        "observed": "Pronoun 'she' switches from the friend to the user without signal.",
+        "evidence": "she wants this friend and she wants it to be fair"
+      },
+      {
+        "cell_id": "C2.5",
+        "turns": [
+          5,
+          11
+        ],
+        "observed": "T5's objection that a requested plan feels unwanted is never answered before T11 concedes.",
+        "evidence": "you will wonder whether she wanted to"
+      },
+      {
+        "cell_id": "C7.2",
+        "turns": [
+          11
+        ],
+        "observed": "Reversal to accepting the ask names no earlier argument as cause.",
+        "evidence": "I accept one clear, kind ask."
+      },
+      {
+        "cell_id": "C3.4",
+        "turns": [
+          2,
+          5,
+          6
+        ],
+        "observed": "Friend's gender invented; the user's message gives none.",
+        "evidence": "Perhaps she is simply no good at initiating"
+      },
+      {
+        "cell_id": "C4.4",
+        "turns": [
+          1,
+          4,
+          10
+        ],
+        "observed": "Fear of seeming needy or of the ask landing badly is not explored.",
+        "evidence": "Yes, say something, and soon."
+      }
+    ],
+    "mechanical": [
+      {
+        "pattern": "uncaused_reversal",
+        "turns": [
+          11
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "observed",
+        "location": "T2 onward",
+        "description": "The friend is referred to as 'she' though the user gave no gender.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "unverified",
+        "location": "T2, T5, T11",
+        "description": "Ledger and 'friends who are visited' positions attributed to Montaigne's Essays are interpretive and cannot be checked here.",
+        "evidence_ids": []
+      }
+    ],
+    "rubricFitNotes": [
+      "The situation is very brief, so C3.2 has little personal context to use; ratings there reflect use of the few details given."
+    ],
+    "questionTypeNote": "Read as a decision question; every cell applied as written."
+  },
+  "rubricVersion": "rubric-evaluator-4.2.0",
+  "savedAt": "2026-10-15T10:16:56.067Z"
+}

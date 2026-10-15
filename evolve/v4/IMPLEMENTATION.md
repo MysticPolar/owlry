@@ -103,6 +103,28 @@ Observations for the next decisions:
 - **Gemini's spread is about twice what the gate assumes.** Its pooled per-sample spread over these 5 pairs is about 7 points; the gate's numbers assume 3.11. Sonnet's is about 3. Five pairs is a small sample.
 - **24 of the 35 cells are capability-bound** under the rule: Sonnet leads by at least 2 rating points on every question. The Gemini optimizer is told to treat those as model-limited, so it may target only the other 11 or escalate early.
 
+## Control run: Options 1 and 2, 2026-10-15
+
+Option 2 made Sonnet's champion and release reference `v1`. That is the original prompt with the plain citation format, byte-identical to Gemini v0, so both lineages now start from the same prompt. Sonnet v0, the linked original, stays on record with its bootstrap baseline. Each lineage then ran its Option 1 control: the round-12 v2 with the same citation format. Per-question detail: `deno run -A evolve/v4/tools/decisions_summary.ts`.
+
+| | Sonnet: v2-plain vs v1 | Gemini: v2-plain vs v0 |
+|---|---|---|
+| decision | RETEST then KEEP | RETEST then KEEP |
+| blind pairs won by the control | 6.5 of 15 | 9.5 of 15 |
+| needed to promote, or to reject | 11 / 5 | 11 / 5 |
+| rubric mean, champion vs control, 15 cards each | 79.85 vs 81.98 | 43.28 vs 47.69 |
+| control's form failures, 15 transcripts | none | none |
+
+Both champions stay. The controls passed every form check, so the plain citation format did what it was for. Gemini's twelve rounds of edits lean positive: the control won 4 of 5 categories on the rubric and every Wonder pair. But 9.5 of 15 is not the 11 the gate requires. Sonnet's round-12 edits gained 2 rubric points but lost on blind preference, including all three Wonder pairs.
+
+Baselines now: Sonnet v1 79.88, Gemini v0 43.92, on the same prompt. The capability gap of 35.96 points is therefore the model alone, and 26 of 35 cells are capability-bound. Sonnet v1's own baseline still has 2 quoted pd=false turns and 1 transcript with a wrong pd flag (WARNING); Gemini v0's has 1 quoted turn.
+
+Found on this run and fixed:
+- The blind brief asks for "one observation each, with a location", so all ten Gemini judges wrote `best_of_a`/`best_of_b` as an object. They now become a single text line. The ten kept verdicts were re-read; no new calls.
+- One Sonnet judge omitted the per-comparison `advantage`. It was respawned once with the problem appended, as the protocol says, because the runner cannot supply a judgment.
+
+Calls for this run: 30 Sonnet workers (10 baseline, 10 control, 10 retest), 20 Gemini (10 control, 10 retest), 81 Opus (50 evaluations, 31 blind judges including one respawn). Both retests stayed within the 25 extra calls per lineage that were approved.
+
 ## Tests
 
 ```bash

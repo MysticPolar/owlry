@@ -1,0 +1,47 @@
+{
+  "version": "v1",
+  "parent": "v0",
+  "kind": "REWRITE",
+  "manual": true,
+  "origin": "prompts/castDebate.gemini.v2-plain.md",
+  "hypothesis": {
+    "statement": "control (Option 1): round-12 v2 (v11 lineage) with the plain citation format vs the plain original",
+    "targets": [],
+    "expectedDelta": 0,
+    "mechanism": "manual",
+    "refutedIf": "the gate rejects it"
+  },
+  "diff": [
+    {
+      "before": "(the whole v0 system prompt)",
+      "after": "(the whole system prompt of prompts/castDebate.gemini.v2-plain.md)"
+    }
+  ],
+  "risks": [],
+  "blocked": [],
+  "changelog": "control (Option 1): round-12 v2 (v11 lineage) with the plain citation format vs the plain original",
+  "wordCount": {
+    "before": 1353,
+    "after": 1926
+  },
+  "brokenSpans": [],
+  "experiment": "exp-000-mv9bm8xof576",
+  "status": "keep",
+  "createdAt": "2026-10-15T10:04:53.722Z",
+  "decidedAt": "2026-10-15T10:28:57.144Z",
+  "wins": 9.5,
+  "pairs": 15,
+  "rubricMeanDelta": 4.41,
+  "questionTally": {
+    "questionWins": 2,
+    "questionLosses": 0,
+    "questionTies": 3,
+    "perQuestion": {
+      "1": 0.5,
+      "2": 0.5,
+      "3": 0.6666666666666666,
+      "4": 0.5,
+      "5": 1
+    }
+  }
+}

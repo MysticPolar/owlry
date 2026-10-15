@@ -1,0 +1,159 @@
+{
+  "jobId": "gen.v1.q2.s1",
+  "lineage": "gemini",
+  "version": "v1",
+  "q": 2,
+  "s": 1,
+  "model": "gemini-3.1-flash-lite",
+  "settings": {
+    "temperature": 0.5,
+    "thinkingLevel": "MEDIUM",
+    "maxOutputTokens": 16384
+  },
+  "debate": {
+    "situation": "You have received a job offer with a 25% salary increase, but it requires a 90-minute commute each way, totaling three hours of daily travel. You are struggling to weigh the financial benefits against the significant loss of personal time and the potential impact on your daily well-being.",
+    "minds": [
+      {
+        "title": "The Hedonic Calculator",
+        "concern": "Maximizing utility through the balance of pleasure and pain.",
+        "author": "Jeremy Bentham",
+        "book": "An Introduction to the Principles of Morals and Legislation",
+        "year": 1789
+      },
+      {
+        "title": "The Stoic Observer",
+        "concern": "Maintaining internal tranquility regardless of external circumstances.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "year": 161
+      },
+      {
+        "title": "The Deep Work Advocate",
+        "concern": "Protecting cognitive capacity for high-value output.",
+        "author": "Cal Newport",
+        "book": "Deep Work",
+        "year": 2016
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Hedonic Calculator",
+        "text": "Nature has placed mankind under the governance of two sovereign masters, pain and pleasure. You might consider if the 25% increase in salary generates enough pleasure to outweigh the pain of 15 hours spent in transit every week.",
+        "author": "Jeremy Bentham",
+        "book": "An Introduction to the Principles of Morals and Legislation",
+        "pd": true,
+        "basis": "Basis: Jeremy Bentham, An Introduction to the Principles of Morals and Legislation"
+      },
+      {
+        "speaker": "The Stoic Observer",
+        "text": "The Hedonic Calculator suggests that the pain of travel is fixed, but perhaps you might find that the obstacle itself becomes the way. If you view the commute as a space for reflection, it might not be a loss of time at all.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "Basis: Marcus Aurelius, Meditations"
+      },
+      {
+        "speaker": "The Deep Work Advocate",
+        "text": "The Stoic Observer claims the commute could be a space for reflection, but that overlooks the reality that commuting drains your cognitive battery. You might find that such a long trip leaves you with little energy for the intense focus required for high-quality work.",
+        "author": "Cal Newport",
+        "book": "Deep Work",
+        "pd": false,
+        "basis": "Basis: Cal Newport, Deep Work"
+      },
+      {
+        "speaker": "The Hedonic Calculator",
+        "text": "The Deep Work Advocate argues that the commute drains your capacity, but if that 25% raise allows you to purchase services that save you time elsewhere, the net utility might still be positive for you.",
+        "author": "Jeremy Bentham",
+        "book": "An Introduction to the Principles of Morals and Legislation",
+        "pd": true,
+        "basis": "Basis: Jeremy Bentham, An Introduction to the Principles of Morals and Legislation"
+      },
+      {
+        "speaker": "The Stoic Observer",
+        "text": "The Hedonic Calculator suggests that money might fix the drain of time, but if you are miserable for three hours every day, no amount of extra income might restore your inner peace.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "Basis: Marcus Aurelius, Meditations"
+      },
+      {
+        "speaker": "The Deep Work Advocate",
+        "text": "The Stoic Observer worries about inner peace, but I am concerned with your professional output. If your brain is exhausted from the travel, you might struggle to perform, which could jeopardize the very raise you are seeking.",
+        "author": "Cal Newport",
+        "book": "Deep Work",
+        "pd": false,
+        "basis": "Basis: Cal Newport, Deep Work"
+      },
+      {
+        "speaker": "The Hedonic Calculator",
+        "text": "I drop my earlier claim that the math is a simple calculation of salary versus hours. I now agree with The Deep Work Advocate that the quality of your time matters; perhaps the commute is a cost that money cannot fully offset.",
+        "author": "Jeremy Bentham",
+        "book": "An Introduction to the Principles of Morals and Legislation",
+        "pd": true,
+        "basis": "Basis: Jeremy Bentham, An Introduction to the Principles of Morals and Legislation"
+      },
+      {
+        "speaker": "The Stoic Observer",
+        "text": "Even if the commute is difficult, you might choose to see it as a test of your character. If you accept the situation, the external circumstances might lose their power to dictate your happiness.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "Basis: Marcus Aurelius, Meditations"
+      },
+      {
+        "speaker": "The Deep Work Advocate",
+        "text": "To test this, you could try a 10-day trial period where you simulate the commute during your current off-hours to see how it affects your energy levels and focus before committing.",
+        "author": "Cal Newport",
+        "book": "Deep Work",
+        "pd": false,
+        "basis": "Basis: Cal Newport, Deep Work"
+      },
+      {
+        "speaker": "The Hedonic Calculator",
+        "text": "This trial period respects your constraint of needing to maintain your current lifestyle, but the cost of this experiment might be two weeks of your time if you ultimately decide the job is not worth the effort.",
+        "author": "Jeremy Bentham",
+        "book": "An Introduction to the Principles of Morals and Legislation",
+        "pd": true,
+        "basis": "Basis: Jeremy Bentham, An Introduction to the Principles of Morals and Legislation"
+      },
+      {
+        "speaker": "The Stoic Observer",
+        "text": "You might want both the financial security of the raise and the tranquility of a short commute, but these two goals might be incompatible. Which matters more to you: the money or the peace of mind?",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "Basis: Marcus Aurelius, Meditations"
+      }
+    ],
+    "clearer": "The debate highlights a tension between the objective financial gain and the subjective cost of time and cognitive fatigue. While the financial benefit is clear, the impact on your daily quality of life remains disputed, as it depends on whether you view the commute as an unavoidable burden or a manageable part of your routine.",
+    "dependsOn": "If you prioritize financial growth to facilitate future freedom, the offer might be reasonable, provided you can mitigate the commute's impact. If you prioritize immediate mental clarity and daily autonomy, the offer might be detrimental. To decide, you should calculate your true hourly rate including the 15 hours of weekly travel to see if the 25% raise actually reflects an increase in your effective earnings."
+  },
+  "validity": {
+    "ok": true,
+    "problems": []
+  },
+  "metrics": {
+    "turns": 11,
+    "words": 409,
+    "meanWordsPerTurn": 37.18,
+    "shortTurns": 0,
+    "longTurns": 0,
+    "hedges": 23,
+    "hedgeDensity": 5.62,
+    "bannedCertainty": 0,
+    "templatedOpeners": 4,
+    "slotMarkers": 2,
+    "questionsToUser": 1,
+    "theUser": 0,
+    "pdFalseQuoteTurns": 0,
+    "fabricatedBasisTurns": 0,
+    "distinctSpeakers": 3,
+    "distinctBooks": 3
+  },
+  "unusable": false,
+  "latencyMs": 9002,
+  "tokens": null,
+  "raw": "{\n  \"output\": {\n    \"situation\": \"You have received a job offer with a 25% salary increase, but it requires a 90-minute commute each way, totaling three hours of daily travel. You are struggling to weigh the financial benefits against the significant loss of personal time and the potential impact on your daily well-being.\",\n    \"minds\": [\n      {\n        \"title\": \"The Hedonic Calculator\",\n        \"concern\": \"Maximizing utility through the balance of pleasure and pain.\",\n        \"author\": \"Jeremy Bentham\",\n        \"book\": \"An Introduction to the Principles of Morals and Legislation\",\n        \"year\": 1789\n      },\n      {\n        \"title\": \"The Stoic Observer\",\n        \"concern\": \"Maintaining internal tranquility regardless of external circumstances.\",\n        \"author\": \"Marcus Aurelius\",\n        \"book\": \"Meditations\",\n        \"year\": 161\n      },\n      {\n        \"title\": \"The Deep Work Advocate\",\n        \"concern\": \"Protecting cognitive capacity for high-value output.\",\n        \"author\": \"Cal Newport\",\n        \"book\": \"Deep Work\",\n        \"year\": 2016\n      }\n    ],\n    \"debate\": [\n      {\n        \"speaker\": \"The Hedonic Calculator\",\n        \"text\": \"Nature has placed mankind under the governance of two sovereign masters, pain and pleasure. You might consider if the 25% increase in salary generates enough pleasure to outweigh the pain of 15 hours spent in transit every week.\",\n        \"author\": \"Jeremy Bentham\",\n        \"book\": \"An Introduction to the Principles of Morals and Legislation\",\n        \"pd\": true,\n        \"basis\": \"Basis: Jeremy Bentham, An Introduction to the Principles of Morals and Legislation\"\n      },\n      {\n        \"speaker\": \"The Stoic Observer\",\n        \"text\": \"The Hedonic Calculator suggests that the pain of travel is fixed, but perhaps you might find that the obstacle itself becomes the way. If you view the commute as a space for reflection, it might not be a loss of time at all.\",\n        \"author\": \"Marcus Aurelius\",\n        \"book\": \"Meditations\",\n        \"pd\": true,\n        \"basis\": \"Basis: Marcus Aurelius, Meditations\"\n      },\n      {\n        \"speaker\": \"The Deep Work Advocate\",\n        \"text\": \"The Stoic Observer claims the commute could be a space for reflection, but that overlooks the reality that commuting drains your cognitive battery. You might find that such a long trip leaves you with little energy for the intense focus required for high-quality work.\",\n        \"author\": \"Cal Newport\",\n        \"book\": \"Deep Work\",\n        \"pd\": false,\n        \"basis\": \"Basis: Cal Newport, Deep Work\"\n      },\n      {\n        \"speaker\": \"The Hedonic Calculator\",\n        \"text\": \"The Deep Work Advocate argues that the commute drains your capacity, but if that 25% raise allows you to purchase services that save you time elsewhere, the net utility might still be positive for you.\",\n        \"author\": \"Jeremy Bentham\",\n        \"book\": \"An Introduction to the Principles of Morals and Legislation\",\n        \"pd\": true,\n        \"basis\": \"Basis: Jeremy Bentham, An Introduction to the Principles of Morals and Legislation\"\n      },\n      {\n        \"speaker\": \"The Stoic Observer\",\n        \"text\": \"The Hedonic Calculator suggests that money might fix the drain of time, but if you are miserable for three hours every day, no amount of extra income might restore your inner peace.\",\n        \"author\": \"Marcus Aurelius\",\n        \"book\": \"Meditations\",\n        \"pd\": true,\n        \"basis\": \"Basis: Marcus Aurelius, Meditations\"\n      },\n      {\n        \"speaker\": \"The Deep Work Advocate\",\n        \"text\": \"The Stoic Observer worries about inner peace, but I am concerned with your professional output. If your brain is exhausted from the travel, you might struggle to perform, which could jeopardize the very raise you are seeking.\",\n        \"author\": \"Cal Newport\",\n        \"book\": \"Deep Work\",\n        \"pd\": false,\n        \"basis\": \"Basis: Cal Newport, Deep Work\"\n      },\n      {\n        \"speaker\": \"The Hedonic Calculator\",\n        \"text\": \"I drop my earlier claim that the math is a simple calculation of salary versus hours. I now agree with The Deep Work Advocate that the quality of your time matters; perhaps the commute is a cost that money cannot fully offset.\",\n        \"author\": \"Jeremy Bentham\",\n        \"book\": \"An Introduction to the Principles of Morals and Legislation\",\n        \"pd\": true,\n        \"basis\": \"Basis: Jeremy Bentham, An Introduction to the Principles of Morals and Legislation\"\n      },\n      {\n        \"speaker\": \"The Stoic Observer\",\n        \"text\": \"Even if the commute is difficult, you might choose to see it as a test of your character. If you accept the situation, the external circumstances might lose their power to dictate your happiness.\",\n        \"author\": \"Marcus Aurelius\",\n        \"book\": \"Meditations\",\n        \"pd\": true,\n        \"basis\": \"Basis: Marcus Aurelius, Meditations\"\n      },\n      {\n        \"speaker\": \"The Deep Work Advocate\",\n        \"text\": \"To test this, you could try a 10-day trial period where you simulate the commute during your current off-hours to see how it affects your energy levels and focus before committing.\",\n        \"author\": \"Cal Newport\",\n        \"book\": \"Deep Work\",\n        \"pd\": false,\n        \"basis\": \"Basis: Cal Newport, Deep Work\"\n      },\n      {\n        \"speaker\": \"The Hedonic Calculator\",\n        \"text\": \"This trial period respects your constraint of needing to maintain your current lifestyle, but the cost of this experiment might be two weeks of your time if you ultimately decide the job is not worth the effort.\",\n        \"author\": \"Jeremy Bentham\",\n        \"book\": \"An Introduction to the Principles of Morals and Legislation\",\n        \"pd\": true,\n        \"basis\": \"Basis: Jeremy Bentham, An Introduction to the Principles of Morals and Legislation\"\n      },\n      {\n        \"speaker\": \"The Stoic Observer\",\n        \"text\": \"You might want both the financial security of the raise and the tranquility of a short commute, but these two goals might be incompatible. Which matters more to you: the money or the peace of mind?\",\n        \"author\": \"Marcus Aurelius\",\n        \"book\": \"Meditations\",\n        \"pd\": true,\n        \"basis\": \"Basis: Marcus Aurelius, Meditations\"\n      }\n    ],\n    \"clearer\": \"The debate highlights a tension between the objective financial gain and the subjective cost of time and cognitive fatigue. While the financial benefit is clear, the impact on your daily quality of life remains disputed, as it depends on whether you view the commute as an unavoidable burden or a manageable part of your routine.\",\n    \"dependsOn\": \"If you prioritize financial growth to facilitate future freedom, the offer might be reasonable, provided you can mitigate the commute's impact. If you prioritize immediate mental clarity and daily autonomy, the offer might be detrimental. To decide, you should calculate your true hourly rate including the 15 hours of weekly travel to see if the 25% raise actually reflects an increase in your effective earnings.\"\n  },\n  \"latencyMs\": 9002,\n  \"tokens\": null\n}",
+  "transcriptHash": "6dcd8897008148db3b0f29696414c12705d2c308755c7c600636c925c1757d03",
+  "savedAt": "2026-10-15T10:06:29.125Z"
+}

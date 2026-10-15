@@ -1,0 +1,980 @@
+{
+  "jobId": "rubric.v1.q3.s3",
+  "raw": {
+    "schema_version": "rubric-evaluator-4.2.0",
+    "rubric_version": "owlry-matrix-v2-bands",
+    "evaluation_status": "complete",
+    "cells": [
+      {
+        "id": "C1.1",
+        "name": "Continuity and responsiveness",
+        "rating": 8.4,
+        "example": "T3 answers T2's question; T4 attacks T3's test; T5 concedes T4 before narrowing.",
+        "limitation": "T6 sidesteps T4's objection to the test instead of answering it.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.2",
+        "name": "Development of ideas",
+        "rating": 9,
+        "example": "T8 introduces equal effort versus knowing where you stand; T9 builds its branches on it.",
+        "limitation": "T10 and T11 mostly settle prior points rather than adding new distinctions.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C1.3",
+        "name": "Exploration of central tensions",
+        "rating": 7.7,
+        "example": "T4 and T8 examine honesty versus a secret test versus a coerced dutiful text.",
+        "limitation": "What makes speaking feel risky to the user is never examined in any turn.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.4",
+        "name": "Integration of perspectives",
+        "rating": 8,
+        "example": "T7 reshapes Plain Speaker's advice using T6's temperament point; T11 accepts T10 conditionally.",
+        "limitation": "Realist's month test from T3 is dropped without Realist ever defending or conceding it.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.5",
+        "name": "Progress toward understanding",
+        "rating": 8.4,
+        "example": "Section D reframes the question as what the conversation should find out.",
+        "limitation": "Section D leaves the test dispute open though no turn after T5 develops it.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.1",
+        "name": "Faithful engagement",
+        "rating": 7.9,
+        "example": "T4 states the test's appeal fairly before showing what it cannot reveal.",
+        "limitation": "T4 frames the test as merely clever, missing its value for the user's own feelings.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.2",
+        "name": "Substance of challenges",
+        "rating": 9,
+        "example": "T8: asking for initiation risks a dutiful text; T9 answers by splitting the goals.",
+        "limitation": "T4's claim that a passing friend may be confused is a weak objection.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C2.3",
+        "name": "Accuracy and support",
+        "rating": 7.8,
+        "example": "T2's point about ignoring missing evidence fits Kahneman faithfully.",
+        "limitation": "T4 and T7 render NVC without its needs component; suspected inexact.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.4",
+        "name": "Calibration and transparency",
+        "rating": 8.2,
+        "example": "T6 labels its temperament claim a guess and not Dunbar's finding.",
+        "limitation": "T2 asserts the user's mind is writing a she-does-not-care story.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.5",
+        "name": "Intellectual honesty and revision",
+        "rating": 8.5,
+        "example": "T5 concedes the test is slippery; T7 and T10 revise with stated causes.",
+        "limitation": "Realist never concedes or answers T4's objection to the month test.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.1",
+        "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+        "rating": 8.6,
+        "example": "Section A separates the known pattern from the unknown why and the user's sting.",
+        "limitation": "What 'say something' would aim to achieve surfaces only at T8.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.2",
+        "name": "Meaningful use of personal context",
+        "rating": 8.2,
+        "example": "T5 narrows the user's 'nothing happens' to one channel, texts.",
+        "limitation": "T1 opens with generic resentment advice not tied to the user's details.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.3",
+        "name": "Fit with goals and values",
+        "rating": 8,
+        "example": "T9 weighs carrying the load against the lovely meetups the user values.",
+        "limitation": "T1 pushes Plain Speaker's honesty value before learning the user's priorities.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.4",
+        "name": "Attention to constraints and stakes",
+        "rating": 7.1,
+        "example": "T8 names the stake of a resented, performed text.",
+        "limitation": "Friend's gender invented from T1; coffee setting invented in T10.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.5",
+        "name": "Responsiveness to information",
+        "rating": 7.7,
+        "example": "T5 asks whether she sends links, photos or replies; Section E branches on sting.",
+        "limitation": "No turn asks how long past silences lasted, though the user implies trying it.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.1",
+        "name": "Clarification of desires and motivations",
+        "rating": 9,
+        "example": "T8 offers equal effort or knowing where you stand, as a question.",
+        "limitation": "T2 presumes the user already believes she does not care.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C4.2",
+        "name": "Examination of assumptions",
+        "rating": 8.6,
+        "example": "T2 and T11 surface the assumption that silence means she does not care.",
+        "limitation": "The assumption that raising it could harm the friendship is never surfaced.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.3",
+        "name": "Clarification of values and priorities",
+        "rating": 8.4,
+        "example": "T9 frames uneven effort as a possible fair price for something lovely.",
+        "limitation": "The conflict between fairness and enjoyment is named once in T9, then only in Section D.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.4",
+        "name": "Recognition of fears and outside expectations",
+        "rating": 7,
+        "example": "T1 and Section E name unspoken resentment and private scorekeeping.",
+        "limitation": "Fear of seeming needy or hearing a hurtful answer goes unexplored across T1-T11.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.5",
+        "name": "Agency and reflective ownership",
+        "rating": 8.5,
+        "example": "Section D asks which story the user assumes and what evidence supports it.",
+        "limitation": "T1 and T11 issue directives the user is not invited to weigh.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.1",
+        "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+        "rating": 8.6,
+        "example": "Options span talk, casual remark, quiet test, doing nothing, initiating less.",
+        "limitation": "Initiating less appears only in Section E and is never debated.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.2",
+        "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+        "rating": 8,
+        "example": "T8 weighs a resented dutiful text against staying where you are.",
+        "limitation": "T10's casual remark gets no cost, such as being brushed off unnoticed.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.3",
+        "name": "Identification of decisive conditions",
+        "rating": 7.4,
+        "example": "Section E: noticing yourself keeping score favours a light in-person remark.",
+        "limitation": "T5's other-channel check never says which option each finding favours; T3's month is ungrounded.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.4",
+        "name": "Treatment of uncertainty",
+        "rating": 8.4,
+        "example": "Section E names why she rarely initiates as the decisive unknown.",
+        "limitation": "Minor unknowns are not explicitly set apart from the decisive one.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.5",
+        "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+        "rating": 8.5,
+        "example": "T11 and Section E: ask in person what she would like plans to be.",
+        "limitation": "T10's ask to pick the next plan risks T8's performed effort, unreconciled.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.1",
+        "name": "Accessible language",
+        "rating": 9.1,
+        "example": "T4: 'Honest beats clever.' Plain, concrete wording throughout.",
+        "limitation": "none",
+        "limitation_severity": "none",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C6.2",
+        "name": "Traceable arguments and references",
+        "rating": 7.7,
+        "example": "T7's 'Which is exactly why' clearly points to T6's point about causes.",
+        "limitation": "T5 calls the user's phrase 'nothing happens' Plain Speaker's own sentence.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.3",
+        "name": "Manageable pacing and turn length",
+        "rating": 8.4,
+        "example": "Eleven turns, all within range, each making one point.",
+        "limitation": "Turn lengths cluster tightly around 45-52 words, giving an even, unvaried cadence.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.4",
+        "name": "Distinguishable positions and voices, with explicit changes of position",
+        "rating": 7.7,
+        "example": "Explicit shifts: T7 'I will revise', T10 'I concede', T11 'I can accept'.",
+        "limitation": "All three minds share one calm, measured register across T1-T11.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.5",
+        "name": "Economy and sustained attention",
+        "rating": 8.6,
+        "example": "T11 returns to T2's 'does not care' purposefully as the closing caution.",
+        "limitation": "Sections D and E partly restate each other's conditions.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.1",
+        "name": "Meaningful stakes and tension arising from the issue itself",
+        "rating": 7.4,
+        "example": "T4: 'a test your friend does not know she is taking.'",
+        "limitation": "Tension stays mild; what could be lost by speaking is never made vivid.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.2",
+        "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+        "rating": 8.2,
+        "example": "T5 concedes, naming T4's point that secret tests are slippery.",
+        "limitation": "Reversals are small concessions; no position changes in a surprising way.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C7.3",
+        "name": "Personality and expressive voice without caricature",
+        "rating": 7.2,
+        "example": "T9: carrying the load 'can be a fair price for something lovely.'",
+        "limitation": "Personalities show mainly through stance, little through diction or temperament.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.4",
+        "name": "Memorable delivery",
+        "rating": 7.4,
+        "example": "T8: 'a performance rather than interest.'",
+        "limitation": "No analogy or vivid example; memorable lines are few.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.5",
+        "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+        "rating": 7,
+        "example": "T8's question to the user turns the debate toward its pivot.",
+        "limitation": "Uniform turn length and tone keep intensity flat from T1 to T11.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      }
+    ],
+    "strengths": [
+      "T8 splits the goal into equal effort versus knowing where you stand, and T9 builds conditional branches on it.",
+      "T4 to T5: Plain Speaker's objection to the secret month test draws an explicit, reasoned concession from Story Auditor.",
+      "T6 Maintenance Realist labels its temperament claim as its own guess, keeping attribution to Dunbar honest."
+    ],
+    "weaknesses": [
+      "No mind across T1-T11 examines what makes speaking up feel risky to the user, such as seeming needy.",
+      "Invented context: the friend becomes 'she' from T1, T3 proposes an ungrounded month, T10 adds coffee.",
+      "T5 Story Auditor attributes the user's 'nothing happens' to Plain Speaker, and the three voices share one register."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C4.4",
+        "turns": [
+          1,
+          8,
+          11
+        ],
+        "observed": "Hesitation to speak up is never explored as fear of neediness or rejection.",
+        "evidence": "Say something, and soon."
+      },
+      {
+        "cell_id": "C3.4",
+        "turns": [
+          1,
+          3,
+          10
+        ],
+        "observed": "Friend's gender, a month-long test and a coffee setting are invented.",
+        "evidence": "stop texting for a month and let the pattern become information"
+      },
+      {
+        "cell_id": "C5.3",
+        "turns": [
+          5
+        ],
+        "observed": "Other-channel check lacks which option each finding would favour.",
+        "evidence": "Does she ever send a link, a photo, a reply"
+      },
+      {
+        "cell_id": "C6.2",
+        "turns": [
+          5
+        ],
+        "observed": "Attributes the user's own phrase to Plain Speaker.",
+        "evidence": "look at your own sentence, Plain Speaker: nothing happens"
+      },
+      {
+        "cell_id": "C2.3",
+        "turns": [
+          4,
+          7
+        ],
+        "observed": "NVC steps given without the needs component; suspected inexact rendering.",
+        "evidence": "Open with an observation, then a feeling, then a request"
+      }
+    ],
+    "mechanical": [
+      {
+        "pattern": "ungrounded_number",
+        "turns": [
+          3
+        ]
+      },
+      {
+        "pattern": "uniform_voice",
+        "turns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "T4, T7",
+        "description": "Rosenberg's model is usually observation, feeling, need, request; the turns omit needs, and 'disguised judgment' may not be his term.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "observed",
+        "location": "T1-T11",
+        "description": "The friend's gender is never given by the user; the debate assumes 'she' throughout.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "observed",
+        "location": "T5",
+        "description": "The phrase 'nothing happens' comes from the user's message, not from Plain Speaker's turns.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "observed",
+        "location": "T3",
+        "description": "A one-month silence period is proposed with no basis in the user's facts.",
+        "evidence_ids": []
+      }
+    ],
+    "cap_reasons": [],
+    "rubric_fit_notes": [
+      "The situation is very short, so personal-context cells reward careful use of few details; uniform_voice is a judgment call since positions are distinct but register is shared."
+    ],
+    "question_type_note": "Read as a decision question; cells were read as written, with Section E serving as the conditional map."
+  },
+  "card": {
+    "criteria": [
+      {
+        "id": "C1",
+        "name": "Quality of discussion",
+        "max": 20,
+        "points": 16.6,
+        "sub": [
+          {
+            "id": "C1.1",
+            "name": "Continuity and responsiveness",
+            "rating": 8.4,
+            "points": 3.36,
+            "example": "T3 answers T2's question; T4 attacks T3's test; T5 concedes T4 before narrowing.",
+            "limitation": "T6 sidesteps T4's objection to the test instead of answering it.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.2",
+            "name": "Development of ideas",
+            "rating": 9,
+            "points": 3.6,
+            "example": "T8 introduces equal effort versus knowing where you stand; T9 builds its branches on it.",
+            "limitation": "T10 and T11 mostly settle prior points rather than adding new distinctions.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C1.3",
+            "name": "Exploration of central tensions",
+            "rating": 7.7,
+            "points": 3.08,
+            "example": "T4 and T8 examine honesty versus a secret test versus a coerced dutiful text.",
+            "limitation": "What makes speaking feel risky to the user is never examined in any turn.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.4",
+            "name": "Integration of perspectives",
+            "rating": 8,
+            "points": 3.2,
+            "example": "T7 reshapes Plain Speaker's advice using T6's temperament point; T11 accepts T10 conditionally.",
+            "limitation": "Realist's month test from T3 is dropped without Realist ever defending or conceding it.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.5",
+            "name": "Progress toward understanding",
+            "rating": 8.4,
+            "points": 3.36,
+            "example": "Section D reframes the question as what the conversation should find out.",
+            "limitation": "Section D leaves the test dispute open though no turn after T5 develops it.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C2",
+        "name": "Quality of disagreement, trust and grounding",
+        "max": 20,
+        "points": 16.56,
+        "sub": [
+          {
+            "id": "C2.1",
+            "name": "Faithful engagement",
+            "rating": 7.9,
+            "points": 3.16,
+            "example": "T4 states the test's appeal fairly before showing what it cannot reveal.",
+            "limitation": "T4 frames the test as merely clever, missing its value for the user's own feelings.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.2",
+            "name": "Substance of challenges",
+            "rating": 9,
+            "points": 3.6,
+            "example": "T8: asking for initiation risks a dutiful text; T9 answers by splitting the goals.",
+            "limitation": "T4's claim that a passing friend may be confused is a weak objection.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C2.3",
+            "name": "Accuracy and support",
+            "rating": 7.8,
+            "points": 3.12,
+            "example": "T2's point about ignoring missing evidence fits Kahneman faithfully.",
+            "limitation": "T4 and T7 render NVC without its needs component; suspected inexact.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.4",
+            "name": "Calibration and transparency",
+            "rating": 8.2,
+            "points": 3.28,
+            "example": "T6 labels its temperament claim a guess and not Dunbar's finding.",
+            "limitation": "T2 asserts the user's mind is writing a she-does-not-care story.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.5",
+            "name": "Intellectual honesty and revision",
+            "rating": 8.5,
+            "points": 3.4,
+            "example": "T5 concedes the test is slippery; T7 and T10 revise with stated causes.",
+            "limitation": "Realist never concedes or answers T4's objection to the month test.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C3",
+        "name": "Personal relevance",
+        "max": 10,
+        "points": 7.92,
+        "sub": [
+          {
+            "id": "C3.1",
+            "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+            "rating": 8.6,
+            "points": 1.72,
+            "example": "Section A separates the known pattern from the unknown why and the user's sting.",
+            "limitation": "What 'say something' would aim to achieve surfaces only at T8.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.2",
+            "name": "Meaningful use of personal context",
+            "rating": 8.2,
+            "points": 1.64,
+            "example": "T5 narrows the user's 'nothing happens' to one channel, texts.",
+            "limitation": "T1 opens with generic resentment advice not tied to the user's details.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.3",
+            "name": "Fit with goals and values",
+            "rating": 8,
+            "points": 1.6,
+            "example": "T9 weighs carrying the load against the lovely meetups the user values.",
+            "limitation": "T1 pushes Plain Speaker's honesty value before learning the user's priorities.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.4",
+            "name": "Attention to constraints and stakes",
+            "rating": 7.1,
+            "points": 1.42,
+            "example": "T8 names the stake of a resented, performed text.",
+            "limitation": "Friend's gender invented from T1; coffee setting invented in T10.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.5",
+            "name": "Responsiveness to information",
+            "rating": 7.7,
+            "points": 1.54,
+            "example": "T5 asks whether she sends links, photos or replies; Section E branches on sting.",
+            "limitation": "No turn asks how long past silences lasted, though the user implies trying it.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C4",
+        "name": "Constructive self-discovery",
+        "max": 20,
+        "points": 16.6,
+        "sub": [
+          {
+            "id": "C4.1",
+            "name": "Clarification of desires and motivations",
+            "rating": 9,
+            "points": 3.6,
+            "example": "T8 offers equal effort or knowing where you stand, as a question.",
+            "limitation": "T2 presumes the user already believes she does not care.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C4.2",
+            "name": "Examination of assumptions",
+            "rating": 8.6,
+            "points": 3.44,
+            "example": "T2 and T11 surface the assumption that silence means she does not care.",
+            "limitation": "The assumption that raising it could harm the friendship is never surfaced.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.3",
+            "name": "Clarification of values and priorities",
+            "rating": 8.4,
+            "points": 3.36,
+            "example": "T9 frames uneven effort as a possible fair price for something lovely.",
+            "limitation": "The conflict between fairness and enjoyment is named once in T9, then only in Section D.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.4",
+            "name": "Recognition of fears and outside expectations",
+            "rating": 7,
+            "points": 2.8,
+            "example": "T1 and Section E name unspoken resentment and private scorekeeping.",
+            "limitation": "Fear of seeming needy or hearing a hurtful answer goes unexplored across T1-T11.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.5",
+            "name": "Agency and reflective ownership",
+            "rating": 8.5,
+            "points": 3.4,
+            "example": "Section D asks which story the user assumes and what evidence supports it.",
+            "limitation": "T1 and T11 issue directives the user is not invited to weigh.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C5",
+        "name": "Decision usefulness",
+        "max": 10,
+        "points": 8.18,
+        "sub": [
+          {
+            "id": "C5.1",
+            "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+            "rating": 8.6,
+            "points": 1.72,
+            "example": "Options span talk, casual remark, quiet test, doing nothing, initiating less.",
+            "limitation": "Initiating less appears only in Section E and is never debated.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.2",
+            "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+            "rating": 8,
+            "points": 1.6,
+            "example": "T8 weighs a resented dutiful text against staying where you are.",
+            "limitation": "T10's casual remark gets no cost, such as being brushed off unnoticed.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.3",
+            "name": "Identification of decisive conditions",
+            "rating": 7.4,
+            "points": 1.48,
+            "example": "Section E: noticing yourself keeping score favours a light in-person remark.",
+            "limitation": "T5's other-channel check never says which option each finding favours; T3's month is ungrounded.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.4",
+            "name": "Treatment of uncertainty",
+            "rating": 8.4,
+            "points": 1.68,
+            "example": "Section E names why she rarely initiates as the decisive unknown.",
+            "limitation": "Minor unknowns are not explicitly set apart from the decisive one.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.5",
+            "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+            "rating": 8.5,
+            "points": 1.7,
+            "example": "T11 and Section E: ask in person what she would like plans to be.",
+            "limitation": "T10's ask to pick the next plan risks T8's performed effort, unreconciled.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C6",
+        "name": "Clarity and engagement",
+        "max": 10,
+        "points": 8.3,
+        "sub": [
+          {
+            "id": "C6.1",
+            "name": "Accessible language",
+            "rating": 9.1,
+            "points": 1.82,
+            "example": "T4: 'Honest beats clever.' Plain, concrete wording throughout.",
+            "limitation": "none",
+            "severity": "none",
+            "anchorMet": true
+          },
+          {
+            "id": "C6.2",
+            "name": "Traceable arguments and references",
+            "rating": 7.7,
+            "points": 1.54,
+            "example": "T7's 'Which is exactly why' clearly points to T6's point about causes.",
+            "limitation": "T5 calls the user's phrase 'nothing happens' Plain Speaker's own sentence.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.3",
+            "name": "Manageable pacing and turn length",
+            "rating": 8.4,
+            "points": 1.68,
+            "example": "Eleven turns, all within range, each making one point.",
+            "limitation": "Turn lengths cluster tightly around 45-52 words, giving an even, unvaried cadence.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.4",
+            "name": "Distinguishable positions and voices, with explicit changes of position",
+            "rating": 7.7,
+            "points": 1.54,
+            "example": "Explicit shifts: T7 'I will revise', T10 'I concede', T11 'I can accept'.",
+            "limitation": "All three minds share one calm, measured register across T1-T11.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.5",
+            "name": "Economy and sustained attention",
+            "rating": 8.6,
+            "points": 1.72,
+            "example": "T11 returns to T2's 'does not care' purposefully as the closing caution.",
+            "limitation": "Sections D and E partly restate each other's conditions.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C7",
+        "name": "Drama and entertainment",
+        "max": 10,
+        "points": 7.44,
+        "sub": [
+          {
+            "id": "C7.1",
+            "name": "Meaningful stakes and tension arising from the issue itself",
+            "rating": 7.4,
+            "points": 1.48,
+            "example": "T4: 'a test your friend does not know she is taking.'",
+            "limitation": "Tension stays mild; what could be lost by speaking is never made vivid.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.2",
+            "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+            "rating": 8.2,
+            "points": 1.64,
+            "example": "T5 concedes, naming T4's point that secret tests are slippery.",
+            "limitation": "Reversals are small concessions; no position changes in a surprising way.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C7.3",
+            "name": "Personality and expressive voice without caricature",
+            "rating": 7.2,
+            "points": 1.44,
+            "example": "T9: carrying the load 'can be a fair price for something lovely.'",
+            "limitation": "Personalities show mainly through stance, little through diction or temperament.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.4",
+            "name": "Memorable delivery",
+            "rating": 7.4,
+            "points": 1.48,
+            "example": "T8: 'a performance rather than interest.'",
+            "limitation": "No analogy or vivid example; memorable lines are few.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.5",
+            "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+            "rating": 7,
+            "points": 1.4,
+            "example": "T8's question to the user turns the debate toward its pivot.",
+            "limitation": "Uniform turn length and tone keep intensity flat from T1 to T11.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      }
+    ],
+    "uncapped": 81.6,
+    "score": 81.6,
+    "capReason": null,
+    "provisional": false,
+    "strengths": [
+      "T8 splits the goal into equal effort versus knowing where you stand, and T9 builds conditional branches on it.",
+      "T4 to T5: Plain Speaker's objection to the secret month test draws an explicit, reasoned concession from Story Auditor.",
+      "T6 Maintenance Realist labels its temperament claim as its own guess, keeping attribution to Dunbar honest."
+    ],
+    "weaknesses": [
+      "No mind across T1-T11 examines what makes speaking up feel risky to the user, such as seeming needy.",
+      "Invented context: the friend becomes 'she' from T1, T3 proposes an ungrounded month, T10 adds coffee.",
+      "T5 Story Auditor attributes the user's 'nothing happens' to Plain Speaker, and the three voices share one register."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C4.4",
+        "turns": [
+          1,
+          8,
+          11
+        ],
+        "observed": "Hesitation to speak up is never explored as fear of neediness or rejection.",
+        "evidence": "Say something, and soon."
+      },
+      {
+        "cell_id": "C3.4",
+        "turns": [
+          1,
+          3,
+          10
+        ],
+        "observed": "Friend's gender, a month-long test and a coffee setting are invented.",
+        "evidence": "stop texting for a month and let the pattern become information"
+      },
+      {
+        "cell_id": "C5.3",
+        "turns": [
+          5
+        ],
+        "observed": "Other-channel check lacks which option each finding would favour.",
+        "evidence": "Does she ever send a link, a photo, a reply"
+      },
+      {
+        "cell_id": "C6.2",
+        "turns": [
+          5
+        ],
+        "observed": "Attributes the user's own phrase to Plain Speaker.",
+        "evidence": "look at your own sentence, Plain Speaker: nothing happens"
+      },
+      {
+        "cell_id": "C2.3",
+        "turns": [
+          4,
+          7
+        ],
+        "observed": "NVC steps given without the needs component; suspected inexact rendering.",
+        "evidence": "Open with an observation, then a feeling, then a request"
+      }
+    ],
+    "mechanical": [
+      {
+        "pattern": "ungrounded_number",
+        "turns": [
+          3
+        ]
+      },
+      {
+        "pattern": "uniform_voice",
+        "turns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "T4, T7",
+        "description": "Rosenberg's model is usually observation, feeling, need, request; the turns omit needs, and 'disguised judgment' may not be his term.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "observed",
+        "location": "T1-T11",
+        "description": "The friend's gender is never given by the user; the debate assumes 'she' throughout.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "observed",
+        "location": "T5",
+        "description": "The phrase 'nothing happens' comes from the user's message, not from Plain Speaker's turns.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "observed",
+        "location": "T3",
+        "description": "A one-month silence period is proposed with no basis in the user's facts.",
+        "evidence_ids": []
+      }
+    ],
+    "rubricFitNotes": [
+      "The situation is very short, so personal-context cells reward careful use of few details; uniform_voice is a judgment call since positions are distinct but register is shared."
+    ],
+    "questionTypeNote": "Read as a decision question; cells were read as written, with Section E serving as the conditional map."
+  },
+  "rubricVersion": "rubric-evaluator-4.2.0",
+  "savedAt": "2026-10-15T10:24:54.050Z"
+}

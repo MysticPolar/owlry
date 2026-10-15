@@ -1,0 +1,73 @@
+{
+  "schema_version": "rubric-evaluator-4.2.0",
+  "rubric_version": "owlry-matrix-v2-bands",
+  "evaluation_status": "complete",
+  "cells": [
+    {"id": "C1.1", "name": "Continuity and responsiveness", "rating": 5.5, "example": "T4, T5 and T8 each answer the immediately preceding mind by name.", "limitation": "T9 and T11 ignore prior turns; T12 never answers T10 or T11.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C1.2", "name": "Development of ideas", "rating": 6.0, "example": "T11 adds the current-commute baseline; T10 adds the goal-funded condition.", "limitation": "No later turn uses T11's baseline; T12 reverts to the T1 framing.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C1.3", "name": "Exploration of central tensions", "rating": 5.5, "example": "T4-T5 weigh money buying future time against time lost now.", "limitation": "Commute costs eroding the 25%, commute mode, remote options never raised.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C1.4", "name": "Integration of perspectives", "rating": 5.0, "example": "T10 Essentialist narrows her view toward a goal-funded condition.", "limitation": "T6 Stoic reframe never absorbed; T12 declares division instead of combining T10 and T11.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C1.5", "name": "Progress toward understanding", "rating": 6.0, "example": "Section E turns T11 into a conditional on current commute length.", "limitation": "T12 ends on a generic future-versus-present preference, no sharper than T1.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C2.1", "name": "Faithful engagement", "rating": 5.8, "example": "T4 accurately restates T2's distraction claim before answering it.", "limitation": "T10 credits the Stoic with a vital-focus claim no Stoic turn made; T8 dismisses T7 as simple.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C2.2", "name": "Substance of challenges", "rating": 5.0, "example": "T5 counters T4: commute time is gone forever, future may not arrive.", "limitation": "Targets rarely answer; T6 reframe and T5 objection go unrebutted.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C2.3", "name": "Accuracy and support", "rating": 6.8, "example": "T1 paraphrases Bentham's opening sentence on pain and pleasure accurately.", "limitation": "T3 time-ownership line sounds like Seneca's first letter, not Meditations (suspected).", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C2.4", "name": "Calibration and transparency", "rating": 4.5, "example": "T11 marks the current commute as unknown and branches on it.", "limitation": "Hedges in most turns, yet T8 states family constraint as fact; E says will likely outweigh.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C2.5", "name": "Intellectual honesty and revision", "rating": 4.8, "example": "T10 explicitly drops the earlier money-is-distraction claim.", "limitation": "T10 names no argument that caused the change; T5 and T6 objections never conceded or answered.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C3.1", "name": "Identification of the actual concern", "rating": 7.0, "example": "Section A frames money versus daily time; T7 offers a deciding method.", "limitation": "Whether the user needs the raise or wants it is never asked.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C3.2", "name": "Meaningful use of personal context", "rating": 5.5, "example": "T1 and T7 convert 90 minutes each way into 180 minutes, 3 hours daily.", "limitation": "T7 never combines the 25% and 3 hours into an effective rate.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C3.3", "name": "Fit with goals and values", "rating": 5.8, "example": "T9 asks the user which matters more, security or daily calm.", "limitation": "T3 and T5 project the speakers' values onto the user as given.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C3.4", "name": "Attention to constraints and stakes", "rating": 3.5, "example": "T11 treats current commute length as the constraint that sizes the change.", "limitation": "T8 invents a family-time constraint and children the user never mentioned.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C3.5", "name": "Responsiveness to information", "rating": 6.0, "example": "T11 asks current commute minutes and states what 30 versus 60 implies.", "limitation": "Family, commute mode, remote flexibility, financial need assumed or ignored, not asked.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C4.1", "name": "Clarification of desires and motivations", "rating": 7.0, "example": "T9 offers security and calm as alternative wants with an answerable question.", "limitation": "Reasons for wanting the raise, need versus status or growth, never distinguished.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C4.2", "name": "Examination of assumptions", "rating": 6.0, "example": "T6 questions the assumption that commute time is pure struggle.", "limitation": "T6's challenge is never tested by others; the gross-pay assumption is never surfaced.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C4.3", "name": "Clarification of values and priorities", "rating": 7.0, "example": "T9 names the conflict between financial security and daily peace.", "limitation": "T12 recycles the same binary without ranking or new content.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C4.4", "name": "Recognition of fears and outside expectations", "rating": 4.5, "example": "T5 names the fear of trading the present for a future never arriving.", "limitation": "Career expectations, financial pressure, obligation to family never explored as such.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C4.5", "name": "Agency and reflective ownership", "rating": 6.8, "example": "T9 and T11 leave the user questions to answer themselves.", "limitation": "T12 hands back only a binary, no distinction to refine.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C5.1", "name": "Definition of the decision and options", "rating": 4.5, "example": "Section E frames accept versus decline by commute length.", "limitation": "No negotiating remote days, trial period, relocation, or counteroffer considered.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C5.2", "name": "Explanation of tradeoffs", "rating": 5.0, "example": "T4-T5 trade future capital against non-renewable commute time.", "limitation": "Commute fares or fuel eating the 25%, and the cost of declining, never weighed.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C5.3", "name": "Identification of decisive conditions", "rating": 6.0, "example": "T11 and E: current commute 30 minutes versus an hour shifts the verdict.", "limitation": "T7 and E leave meaningful or significantly higher undefined; no threshold computed.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C5.4", "name": "Treatment of uncertainty", "rating": 5.0, "example": "T11 singles out current commute as the consequential unknown.", "limitation": "Other unknowns, flexibility and commute mode, never separated as major or minor.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C5.5", "name": "Proportionate next steps", "rating": 5.5, "example": "E: compute an effective hourly rate including transit time.", "limitation": "No low-cost test such as a trial commute or asking about hybrid days.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C6.1", "name": "Accessible language", "rating": 7.5, "example": "T7 states the hourly-rate test in plain, concrete terms.", "limitation": "T8 garbles children evening routines; occasional abstraction in T12.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C6.2", "name": "Traceable arguments and references", "rating": 7.0, "example": "T4, T5, T8 name the mind whose claim they answer.", "limitation": "T10's appeal to the Stoic matches no Stoic turn.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C6.3", "name": "Manageable pacing and turn length", "rating": 8.0, "example": "Twelve turns, all within 25 to 65 words.", "limitation": "T12 closes abruptly with a recap rather than a final move.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C6.4", "name": "Distinguishable positions and voices", "rating": 5.0, "example": "Positions differ: calculation, essentialism, Stoic indifference.", "limitation": "All three share a you-might register and near-identical turn lengths.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C6.5", "name": "Economy and sustained attention", "rating": 6.0, "example": "Most turns add one point before yielding.", "limitation": "T4, T5, T8 open by recapping the previous claim; D and E overlap.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C7.1", "name": "Meaningful stakes and tension", "rating": 6.0, "example": "T1 sets 180 minutes of daily pain against the 25% gain.", "limitation": "Stakes stay abstract; T8's vivid stake is invented.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C7.2", "name": "Surprise and reversals", "rating": 3.5, "example": "T10 Essentialist reverses her T2 distraction claim.", "limitation": "T10 names no argument causing the reversal; credits an unspoken Stoic claim.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C7.3", "name": "Personality and expressive voice", "rating": 4.5, "example": "T1 Bentham opens with his sovereign-masters line; T7 let us be precise.", "limitation": "Essentialist and Stoic speak in the same hedged advisory register.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C7.4", "name": "Memorable delivery", "rating": 5.0, "example": "T5: trading your current life for a future that never arrives.", "limitation": "No analogy or concrete image of the commute day anywhere.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C7.5", "name": "Anticipation and emotional movement", "rating": 4.5, "example": "T10 concession briefly shifts the debate's direction.", "limitation": "Uniform rhythm throughout; T12 we remain divided ends flat.", "limitation_severity": "material", "excellent_anchor_met": false}
+  ],
+  "strengths": [
+    "T11 Stoic asks the current commute length and states what a 30-minute versus hour baseline implies.",
+    "T7 Utilitarian proposes an effective hourly rate including travel, a usable method for the how-to-decide question.",
+    "T10 Essentialist explicitly drops her T2 claim and narrows to a goal-funded condition."
+  ],
+  "weaknesses": [
+    "T8 Essentialist invents a family-time constraint and children the user never mentioned and argues from them.",
+    "T10 reversal names no causing argument and attributes to the Stoic a claim no Stoic turn made.",
+    "All three minds hedge with you might in most turns; options never go beyond accept or decline."
+  ],
+  "symptoms": [
+    {"cell_id": "C3.4", "turns": [8], "observed": "Invents family time and children's routines as the user's constraint.", "evidence": "this ignores your constraint of family time"},
+    {"cell_id": "C7.2", "turns": [10], "observed": "Reversal cites no earlier argument; credits Stoic with an unspoken claim.", "evidence": "I drop my earlier claim that money is merely a distraction"},
+    {"cell_id": "C5.3", "turns": [7], "observed": "Hourly-rate test proposed but never computed; no threshold for significantly higher.", "evidence": "If the new rate is not significantly higher, the math fails"},
+    {"cell_id": "C5.1", "turns": [12], "observed": "Only accept or decline; no hybrid, trial, relocation or negotiation option.", "evidence": "whether you value the potential for future freedom over"},
+    {"cell_id": "C6.4", "turns": [3, 5, 6, 9], "observed": "All minds share one hedged advisory register.", "evidence": "You might find that the commute itself is indifferent"}
+  ],
+  "mechanical": [
+    {"pattern": "uncaused_reversal", "turns": [10]},
+    {"pattern": "restatement_opener", "turns": [4, 5, 8]},
+    {"pattern": "hedge_saturation", "turns": [1, 3, 4, 5, 6, 8, 9]},
+    {"pattern": "uniform_voice", "turns": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]}
+  ],
+  "findings": [
+    {"type": "unsupported_claim", "severity": "material", "status": "observed", "location": "T8", "description": "States the user has a family-time constraint and children; the situation mentions neither.", "evidence_ids": []},
+    {"type": "source_error", "severity": "minor", "status": "suspected", "location": "T3", "description": "Time as the only thing we own resembles Seneca, Letters 1, more than Marcus Aurelius's Meditations.", "evidence_ids": []},
+    {"type": "unverified_grounding", "severity": "minor", "status": "unverified", "location": "T2, T5, T8, T10", "description": "Essentialist paraphrases of McKeown cannot be checked without source evidence; none quoted.", "evidence_ids": []}
+  ],
+  "cap_reasons": [],
+  "rubric_fit_notes": "The user gave only two numbers; reproducible check: assuming an 8-hour day and no current commute, hourly pay including travel falls (1.25/11 = 0.114 vs 1/8 = 0.125), but the 8-hour day is not the user's fact, so I credit only the debate's failure to attempt any computation. T3 attribution is suspected from memory, not established.",
+  "question_type_note": "Read as a decision question: options, tradeoffs and decisive conditions about accepting the offer were scored as written."
+}

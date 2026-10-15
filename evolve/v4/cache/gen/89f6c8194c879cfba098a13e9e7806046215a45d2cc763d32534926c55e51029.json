@@ -1,0 +1,151 @@
+{
+  "jobId": "gen.v1.q3.s3",
+  "lineage": "gemini",
+  "version": "v1",
+  "q": 3,
+  "s": 3,
+  "model": "gemini-3.1-flash-lite",
+  "settings": {
+    "temperature": 0.5,
+    "thinkingLevel": "MEDIUM",
+    "maxOutputTokens": 16384
+  },
+  "debate": {
+    "situation": "The user consistently initiates plans with a friend who is pleasant during interactions but never reaches out first. The central tension is whether to address this imbalance or accept the friendship as it currently functions, with the unknown factor being whether the friend is indifferent or simply passive.",
+    "minds": [
+      {
+        "title": "The Attachment Theorist",
+        "concern": "Emotional security and clear communication of needs.",
+        "author": "Amir Levine and Rachel Heller",
+        "book": "Attached",
+        "year": 2010
+      },
+      {
+        "title": "The Stoic Realist",
+        "concern": "Focusing on personal agency and internal peace.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "year": 161
+      },
+      {
+        "title": "The Reciprocity Theorist",
+        "concern": "The social obligation and balance of exchange.",
+        "author": "Marcel Mauss",
+        "book": "The Gift",
+        "year": 1925
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Attachment Theorist",
+        "text": "You might feel anxious because your needs for connection are not being met consistently. It is important to express your desire for more balance, as clear communication is the only way to determine if your friend can meet your expectations.",
+        "author": "Amir Levine and Rachel Heller",
+        "book": "Attached",
+        "pd": false,
+        "basis": "Basis: Amir Levine and Rachel Heller, Attached"
+      },
+      {
+        "speaker": "The Stoic Realist",
+        "text": "You should consider that you cannot force another person to act differently. If you are troubled by their silence, you might be placing your peace in their hands rather than your own, which is a mistake.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "Basis: Marcus Aurelius, Meditations"
+      },
+      {
+        "speaker": "The Reciprocity Theorist",
+        "text": "Friendship is a cycle of giving and receiving. If you are always the one providing the gift of time and planning, the social bond remains incomplete, as a gift requires a counter-gift to sustain the relationship.",
+        "author": "Marcel Mauss",
+        "book": "The Gift",
+        "pd": true,
+        "basis": "Basis: Marcel Mauss, The Gift"
+      },
+      {
+        "speaker": "The Attachment Theorist",
+        "text": "The Stoic Realist suggests you should focus on your own peace, but waiting in silence might only feed your insecurity. If you do not speak up, you might continue to feel like you are the only one investing in the friendship.",
+        "author": "Amir Levine and Rachel Heller",
+        "book": "Attached",
+        "pd": false,
+        "basis": "Basis: Amir Levine and Rachel Heller, Attached"
+      },
+      {
+        "speaker": "The Stoic Realist",
+        "text": "The Attachment Theorist claims you must speak up to avoid anxiety, but keeping score of who texts first is a path to resentment. If you act only to receive a specific response, you are not truly giving, but trading.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "Basis: Marcus Aurelius, Meditations"
+      },
+      {
+        "speaker": "The Reciprocity Theorist",
+        "text": "The Stoic Realist argues against keeping score, but friendship is defined by the exchange. If the exchange is entirely one-sided, the social structure of the friendship might be decaying, as a gift that is never returned eventually stops being a gift.",
+        "author": "Marcel Mauss",
+        "book": "The Gift",
+        "pd": true,
+        "basis": "Basis: Marcel Mauss, The Gift"
+      },
+      {
+        "speaker": "The Attachment Theorist",
+        "text": "I suggest you take a specific step: wait two weeks without initiating contact. If you hear nothing, you will have a clearer sense of the friend's level of investment without needing to have a difficult conversation immediately.",
+        "author": "Amir Levine and Rachel Heller",
+        "book": "Attached",
+        "pd": false,
+        "basis": "Basis: Amir Levine and Rachel Heller, Attached"
+      },
+      {
+        "speaker": "The Stoic Realist",
+        "text": "Waiting two weeks might test the friend, but it also creates a period of artificial distance. The cost of this test is the potential loss of the lovely time you usually enjoy together if you decide to withdraw your presence entirely.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "Basis: Marcus Aurelius, Meditations"
+      },
+      {
+        "speaker": "The Reciprocity Theorist",
+        "text": "I drop my claim that friendship is defined by the exchange, as the Stoic Realist rightly notes that keeping score creates resentment. A friendship might exist as a purely one-sided gift, provided you are willing to accept the cost of that imbalance.",
+        "author": "Marcel Mauss",
+        "book": "The Gift",
+        "pd": true,
+        "basis": "Basis: Marcel Mauss, The Gift"
+      },
+      {
+        "speaker": "The Attachment Theorist",
+        "text": "We remain divided on whether this imbalance is a flaw to be corrected or a reality to be accepted. The decision rests on whether you value the current quality of your meetings more than the need for a balanced social dynamic.",
+        "author": "Amir Levine and Rachel Heller",
+        "book": "Attached",
+        "pd": false,
+        "basis": "Basis: Amir Levine and Rachel Heller, Attached"
+      }
+    ],
+    "clearer": "The main insight is that the user's frustration stems from a conflict between the value of the interaction and the desire for mutual effort. It remains disputed whether the friendship's value justifies the one-sided effort, and a self-reflection on whether the user is seeking validation or simply companionship could be useful.",
+    "dependsOn": "If the user values the friendship primarily for the quality of time spent together, accepting the current dynamic becomes more reasonable, because the cost of losing the connection outweighs the frustration of planning. If the user values the friendship primarily for mutual support and equality, addressing the imbalance becomes more reasonable, because the current state prevents the friendship from evolving. If the friend's actual level of interest remains unknown, a period of non-initiation serves as a proportionate way to observe their behavior."
+  },
+  "validity": {
+    "ok": true,
+    "problems": []
+  },
+  "metrics": {
+    "turns": 10,
+    "words": 394,
+    "meanWordsPerTurn": 39.4,
+    "shortTurns": 0,
+    "longTurns": 0,
+    "hedges": 15,
+    "hedgeDensity": 3.81,
+    "bannedCertainty": 2,
+    "templatedOpeners": 3,
+    "slotMarkers": 1,
+    "questionsToUser": 0,
+    "theUser": 0,
+    "pdFalseQuoteTurns": 0,
+    "fabricatedBasisTurns": 0,
+    "distinctSpeakers": 3,
+    "distinctBooks": 3
+  },
+  "unusable": false,
+  "latencyMs": 10023,
+  "tokens": null,
+  "raw": "{\n  \"output\": {\n    \"situation\": \"The user consistently initiates plans with a friend who is pleasant during interactions but never reaches out first. The central tension is whether to address this imbalance or accept the friendship as it currently functions, with the unknown factor being whether the friend is indifferent or simply passive.\",\n    \"minds\": [\n      {\n        \"title\": \"The Attachment Theorist\",\n        \"concern\": \"Emotional security and clear communication of needs.\",\n        \"author\": \"Amir Levine and Rachel Heller\",\n        \"book\": \"Attached\",\n        \"year\": 2010\n      },\n      {\n        \"title\": \"The Stoic Realist\",\n        \"concern\": \"Focusing on personal agency and internal peace.\",\n        \"author\": \"Marcus Aurelius\",\n        \"book\": \"Meditations\",\n        \"year\": 161\n      },\n      {\n        \"title\": \"The Reciprocity Theorist\",\n        \"concern\": \"The social obligation and balance of exchange.\",\n        \"author\": \"Marcel Mauss\",\n        \"book\": \"The Gift\",\n        \"year\": 1925\n      }\n    ],\n    \"debate\": [\n      {\n        \"speaker\": \"The Attachment Theorist\",\n        \"text\": \"You might feel anxious because your needs for connection are not being met consistently. It is important to express your desire for more balance, as clear communication is the only way to determine if your friend can meet your expectations.\",\n        \"author\": \"Amir Levine and Rachel Heller\",\n        \"book\": \"Attached\",\n        \"pd\": false,\n        \"basis\": \"Basis: Amir Levine and Rachel Heller, Attached\"\n      },\n      {\n        \"speaker\": \"The Stoic Realist\",\n        \"text\": \"You should consider that you cannot force another person to act differently. If you are troubled by their silence, you might be placing your peace in their hands rather than your own, which is a mistake.\",\n        \"author\": \"Marcus Aurelius\",\n        \"book\": \"Meditations\",\n        \"pd\": true,\n        \"basis\": \"Basis: Marcus Aurelius, Meditations\"\n      },\n      {\n        \"speaker\": \"The Reciprocity Theorist\",\n        \"text\": \"Friendship is a cycle of giving and receiving. If you are always the one providing the gift of time and planning, the social bond remains incomplete, as a gift requires a counter-gift to sustain the relationship.\",\n        \"author\": \"Marcel Mauss\",\n        \"book\": \"The Gift\",\n        \"pd\": true,\n        \"basis\": \"Basis: Marcel Mauss, The Gift\"\n      },\n      {\n        \"speaker\": \"The Attachment Theorist\",\n        \"text\": \"The Stoic Realist suggests you should focus on your own peace, but waiting in silence might only feed your insecurity. If you do not speak up, you might continue to feel like you are the only one investing in the friendship.\",\n        \"author\": \"Amir Levine and Rachel Heller\",\n        \"book\": \"Attached\",\n        \"pd\": false,\n        \"basis\": \"Basis: Amir Levine and Rachel Heller, Attached\"\n      },\n      {\n        \"speaker\": \"The Stoic Realist\",\n        \"text\": \"The Attachment Theorist claims you must speak up to avoid anxiety, but keeping score of who texts first is a path to resentment. If you act only to receive a specific response, you are not truly giving, but trading.\",\n        \"author\": \"Marcus Aurelius\",\n        \"book\": \"Meditations\",\n        \"pd\": true,\n        \"basis\": \"Basis: Marcus Aurelius, Meditations\"\n      },\n      {\n        \"speaker\": \"The Reciprocity Theorist\",\n        \"text\": \"The Stoic Realist argues against keeping score, but friendship is defined by the exchange. If the exchange is entirely one-sided, the social structure of the friendship might be decaying, as a gift that is never returned eventually stops being a gift.\",\n        \"author\": \"Marcel Mauss\",\n        \"book\": \"The Gift\",\n        \"pd\": true,\n        \"basis\": \"Basis: Marcel Mauss, The Gift\"\n      },\n      {\n        \"speaker\": \"The Attachment Theorist\",\n        \"text\": \"I suggest you take a specific step: wait two weeks without initiating contact. If you hear nothing, you will have a clearer sense of the friend's level of investment without needing to have a difficult conversation immediately.\",\n        \"author\": \"Amir Levine and Rachel Heller\",\n        \"book\": \"Attached\",\n        \"pd\": false,\n        \"basis\": \"Basis: Amir Levine and Rachel Heller, Attached\"\n      },\n      {\n        \"speaker\": \"The Stoic Realist\",\n        \"text\": \"Waiting two weeks might test the friend, but it also creates a period of artificial distance. The cost of this test is the potential loss of the lovely time you usually enjoy together if you decide to withdraw your presence entirely.\",\n        \"author\": \"Marcus Aurelius\",\n        \"book\": \"Meditations\",\n        \"pd\": true,\n        \"basis\": \"Basis: Marcus Aurelius, Meditations\"\n      },\n      {\n        \"speaker\": \"The Reciprocity Theorist\",\n        \"text\": \"I drop my claim that friendship is defined by the exchange, as the Stoic Realist rightly notes that keeping score creates resentment. A friendship might exist as a purely one-sided gift, provided you are willing to accept the cost of that imbalance.\",\n        \"author\": \"Marcel Mauss\",\n        \"book\": \"The Gift\",\n        \"pd\": true,\n        \"basis\": \"Basis: Marcel Mauss, The Gift\"\n      },\n      {\n        \"speaker\": \"The Attachment Theorist\",\n        \"text\": \"We remain divided on whether this imbalance is a flaw to be corrected or a reality to be accepted. The decision rests on whether you value the current quality of your meetings more than the need for a balanced social dynamic.\",\n        \"author\": \"Amir Levine and Rachel Heller\",\n        \"book\": \"Attached\",\n        \"pd\": false,\n        \"basis\": \"Basis: Amir Levine and Rachel Heller, Attached\"\n      }\n    ],\n    \"clearer\": \"The main insight is that the user's frustration stems from a conflict between the value of the interaction and the desire for mutual effort. It remains disputed whether the friendship's value justifies the one-sided effort, and a self-reflection on whether the user is seeking validation or simply companionship could be useful.\",\n    \"dependsOn\": \"If the user values the friendship primarily for the quality of time spent together, accepting the current dynamic becomes more reasonable, because the cost of losing the connection outweighs the frustration of planning. If the user values the friendship primarily for mutual support and equality, addressing the imbalance becomes more reasonable, because the current state prevents the friendship from evolving. If the friend's actual level of interest remains unknown, a period of non-initiation serves as a proportionate way to observe their behavior.\"\n  },\n  \"latencyMs\": 10023,\n  \"tokens\": null\n}",
+  "transcriptHash": "ab80d9d3b349b2107a88b9cbf6a8307c0da65f1346389edf314fa1e820c8d9f3",
+  "savedAt": "2026-10-15T10:21:15.792Z"
+}

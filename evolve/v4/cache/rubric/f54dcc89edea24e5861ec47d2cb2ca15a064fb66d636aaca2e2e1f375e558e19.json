@@ -1,0 +1,908 @@
+{
+  "jobId": "rubric.v2.q4.s2",
+  "raw": {
+    "schema_version": "rubric-evaluator-4.2.0",
+    "rubric_version": "owlry-matrix-v2-bands",
+    "evaluation_status": "complete",
+    "cells": [
+      {
+        "id": "C1.1",
+        "name": "Continuity and responsiveness",
+        "rating": 8.6,
+        "example": "T5 'Then list the rivals' builds directly on T4's claim that lag needs a rival.",
+        "limitation": "T11 opens a new conflict without answering T10's revised test list.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.2",
+        "name": "Development of ideas",
+        "rating": 9,
+        "example": "T5 splits the feeling into envy, loneliness, clock; T6, T7 and section E use it.",
+        "limitation": "T10's test list is partly generic, adding little beyond T2's experiments.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C1.3",
+        "name": "Exploration of central tensions",
+        "rating": 7.6,
+        "example": "T8 and T9 examine whether declining tests is independence or avoidance.",
+        "limitation": "Freedom versus closeness to friends surfaces only in T11 and is never examined.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.4",
+        "name": "Integration of perspectives",
+        "rating": 8.4,
+        "example": "T9 narrows the Field Tester's experiments; T10 revises to 'pieces, not packages'.",
+        "limitation": "Imitation Detective's envy ranking is never reshaped by T8's guesswork objection.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.5",
+        "name": "Progress toward understanding",
+        "rating": 8.4,
+        "example": "Section D separates feeling behind from wanting the milestones, with three readings.",
+        "limitation": "Which reading is likeliest stays open with no sharper test than noticing spikes.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.1",
+        "name": "Faithful engagement",
+        "rating": 7.6,
+        "example": "T4 restates its claim precisely: lag needs a rival, not that you want milestones.",
+        "limitation": "T8 casts Mill's view as never testing anything, stronger than T6 actually said.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.2",
+        "name": "Substance of challenges",
+        "rating": 8.8,
+        "example": "T8 names independence as the assumption, calls untested oddness avoidance; T9 answers by narrowing.",
+        "limitation": "T7's challenge to loneliness rests on 'people often', an untested generalisation.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C2.3",
+        "name": "Accuracy and support",
+        "rating": 8,
+        "example": "T3's 'experiments of living' matches Mill's On Liberty phrase; imitation paraphrase fits.",
+        "limitation": "T7's claim about how people mislabel ranking pain is unsupported; other attributions unverified.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.4",
+        "name": "Calibration and transparency",
+        "rating": 8.2,
+        "example": "Section A separates reported feeling from interpretation; T11 flags going beyond its source.",
+        "limitation": "T7 ranks envy over loneliness as a general fact without evidence.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.5",
+        "name": "Intellectual honesty and revision",
+        "rating": 8.2,
+        "example": "T4 'Fair hit on one point'; T9 'Accepted'; T10 'Agreed, with a revision'.",
+        "limitation": "Imitation Detective never answers T8's charge that ranking motives is guesswork.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.1",
+        "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+        "rating": 8.5,
+        "example": "Section A names the decisive unknown: milestones, friendships, or a real deadline.",
+        "limitation": "T3's possibility that the user wants a different life is not pursued afterwards.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.2",
+        "name": "Meaningful use of personal context",
+        "rating": 7.4,
+        "example": "T9 ties tests to touring houses and dating; T10 asks married friends what to keep.",
+        "limitation": "Sparse input; T10's year of living arrangements is not drawn from any stated circumstance.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.3",
+        "name": "Fit with goals and values",
+        "rating": 8,
+        "example": "T11 'Which matters more is not mine to rank' keeps speaker values separate.",
+        "limitation": "The user's own positive priorities are never elicited beyond T10's chosen project.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.4",
+        "name": "Attention to constraints and stakes",
+        "rating": 7.8,
+        "example": "T6: if a real deadline exists, drifting is a choice with a price.",
+        "limitation": "T10 calls a year of different living arrangements cheap, ignoring cost and reversibility.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.5",
+        "name": "Responsiveness to information",
+        "rating": 9,
+        "example": "Section E branches on deadline, friend-specific spikes, neither, unknown, each with its implication.",
+        "limitation": "Deadline branch does not separate wanting children from a financial window.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C4.1",
+        "name": "Clarification of desires and motivations",
+        "rating": 8.9,
+        "example": "T5 offers envy, loneliness, clock as alternatives; section D asks who the imagined audience is.",
+        "limitation": "T7 leans on 'people often' to rank envy above loneliness.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C4.2",
+        "name": "Examination of assumptions",
+        "rating": 8.6,
+        "example": "T3 'You both assume the doubt needs fixing'; T4 shows rebelling is also imitation.",
+        "limitation": "The assumption that friends' milestones left them better off is never examined.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.3",
+        "name": "Clarification of values and priorities",
+        "rating": 7.2,
+        "example": "T11 names that staying free and staying close to friends may pull apart.",
+        "limitation": "That value conflict arrives in the final turn and is never weighed.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.4",
+        "name": "Recognition of fears and outside expectations",
+        "rating": 8.2,
+        "example": "T5 and T7 name envy, loneliness, being ranked; T11 asks whose approval is imagined.",
+        "limitation": "Family or parental expectations, a common pressure source, are never raised.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.5",
+        "name": "Agency and reflective ownership",
+        "rating": 8.6,
+        "example": "T11 and section D leave the ranking and imagined-audience question to the user.",
+        "limitation": "T6 'let it ring unanswered' is Mill's verdict, not offered for the user to refine.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.1",
+        "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+        "rating": 7.9,
+        "example": "Section E lays out testing, repairing friendships, limiting comparison, and waiting.",
+        "limitation": "The decision itself is never stated; options appear only as branch outcomes.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.2",
+        "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+        "rating": 7.3,
+        "example": "T6: drifting has a price if a deadline exists; freedom is not costless.",
+        "limitation": "Section E says nothing is lost by waiting, despite T11's friendship tension.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.3",
+        "name": "Identification of decisive conditions",
+        "rating": 9,
+        "example": "Section E: feeling spiking around particular friends or events favours repair over tests.",
+        "limitation": "T10's 'a year' and section E's 'a few weeks' are not drawn from the user's facts.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C5.4",
+        "name": "Treatment of uncertainty",
+        "rating": 8.6,
+        "example": "T6 'the clock is the missing fact' singles out the consequential unknown.",
+        "limitation": "Section D does not rank remaining unknowns once the clock question is settled.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.5",
+        "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+        "rating": 7.8,
+        "example": "Section E: notice when the feeling spikes; ask friends what they would keep and drop.",
+        "limitation": "T10's year of different living arrangements is out of proportion to an unsure feeling.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.1",
+        "name": "Accessible language",
+        "rating": 8.6,
+        "example": "Plain images like 'scoreboard' and 'pieces, not packages' carry the theories without jargon.",
+        "limitation": "T2 'their head' and T3, T9 'this person' slip into third person about the user.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.2",
+        "name": "Traceable arguments and references",
+        "rating": 8.2,
+        "example": "T8 addresses Mill by name; T9 'Accepted' clearly answers T8.",
+        "limitation": "T4 'Fair hit on one point' does not say which T3 point.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.3",
+        "name": "Manageable pacing and turn length",
+        "rating": 8.6,
+        "example": "Eleven turns, all within 25 to 65 words, with varied length.",
+        "limitation": "T11 opens a new conflict too late to be developed.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.4",
+        "name": "Distinguishable positions and voices, with explicit changes of position",
+        "rating": 8.2,
+        "example": "Field Tester's bluntness in T8 contrasts with Mill's principled narrowing in T9.",
+        "limitation": "All three lean on 'I would'; Detective and Mill share a similar register.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.5",
+        "name": "Economy and sustained attention",
+        "rating": 8.5,
+        "example": "Turns rarely recap; T5 and T6 move straight to new content.",
+        "limitation": "Section E partly repeats section D's three readings.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.1",
+        "name": "Meaningful stakes and tension arising from the issue itself",
+        "rating": 7.6,
+        "example": "T6 and T11 put real costs on the table: a clock and drifting friendships.",
+        "limitation": "Stakes stay abstract; no concrete scene from the user's friendships appears.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.2",
+        "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+        "rating": 8.4,
+        "example": "T9 Mill accepts T8's hiding-place charge, narrowing tests: 'custom wearing a lab coat'.",
+        "limitation": "Shifts are narrowings, not reversals; no mind changes its core position.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C7.3",
+        "name": "Personality and expressive voice without caricature",
+        "rating": 8.2,
+        "example": "T8 'avoidance with good branding' gives the Field Tester a distinct blunt edge.",
+        "limitation": "Mill's voice is modern and plain, with little distinct character.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.4",
+        "name": "Memorable delivery",
+        "rating": 8.6,
+        "example": "'Custom wearing a lab coat' (T9) and 'avoidance with good branding' (T8) land sharply.",
+        "limitation": "Imitation Detective's later turns T7 and T11 are plainer than its T1 opener.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.5",
+        "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+        "rating": 7.8,
+        "example": "Tension builds to T8's challenge of Mill, then resolves into T9 and T10 revisions.",
+        "limitation": "T11 ends on a new conflict rather than an emotional landing.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      }
+    ],
+    "strengths": [
+      "Field Tester's T5 split into envy, loneliness and a real clock drives T6, T7 and section E.",
+      "T8 to T10: the hiding-place charge makes Mill narrow tests and the Field Tester revise to pieces.",
+      "Section E turns missing facts into observable branches, each naming the option it favours."
+    ],
+    "weaknesses": [
+      "Imitation Detective's T11 freedom-versus-closeness conflict arrives last and is never weighed.",
+      "Section E treats waiting as costless in the no-deadline branch despite drifting friendships.",
+      "Field Tester's T10 'a year of different living arrangements' is called cheap but is ungrounded and disproportionate."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C4.3",
+        "turns": [
+          11
+        ],
+        "observed": "Core value conflict named only in the final turn, never weighed by any mind.",
+        "evidence": "staying free and staying close to friends may pull apart"
+      },
+      {
+        "cell_id": "C5.5",
+        "turns": [
+          10
+        ],
+        "observed": "A year-long living change offered as a cheap, reversible test; number not from user facts.",
+        "evidence": "Try a year of different living arrangements."
+      },
+      {
+        "cell_id": "C2.3",
+        "turns": [
+          7
+        ],
+        "observed": "Envy ranked above loneliness via an unsupported generalisation about people.",
+        "evidence": "People often call it missing friends when the sharper pain is being ranked"
+      },
+      {
+        "cell_id": "C2.5",
+        "turns": [
+          8,
+          11
+        ],
+        "observed": "Imitation Detective never answers T8's guesswork charge; shifts to a new topic instead.",
+        "evidence": "Blunt version: ranking motives from here is guesswork."
+      },
+      {
+        "cell_id": "C6.2",
+        "turns": [
+          4
+        ],
+        "observed": "Concession does not specify which point of T3 it accepts.",
+        "evidence": "Fair hit on one point."
+      }
+    ],
+    "mechanical": [
+      {
+        "pattern": "ungrounded_number",
+        "turns": [
+          10
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "observed",
+        "location": "T7",
+        "description": "Generalisation that people mislabel the pain of being ranked as missing friends is asserted without support and used to rank motives.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "unverified",
+        "location": "T1-T11 basis fields",
+        "description": "Attributions to Girard, Ibarra and Mill cannot be checked here; T3's 'experiments of living' is consistent with recall of On Liberty.",
+        "evidence_ids": []
+      }
+    ],
+    "cap_reasons": [],
+    "rubric_fit_notes": [
+      "The user's input is two sentences, so C3.2 and C3.4 were judged against how well the sparse context was used. Section E's 'a few weeks' is a minor ungrounded number outside the turns."
+    ],
+    "question_type_note": "Read as a decision (self_reflection): the choice is how to respond to feeling behind, so waiting, learning more and limited tests count as options."
+  },
+  "card": {
+    "criteria": [
+      {
+        "id": "C1",
+        "name": "Quality of discussion",
+        "max": 20,
+        "points": 16.8,
+        "sub": [
+          {
+            "id": "C1.1",
+            "name": "Continuity and responsiveness",
+            "rating": 8.6,
+            "points": 3.44,
+            "example": "T5 'Then list the rivals' builds directly on T4's claim that lag needs a rival.",
+            "limitation": "T11 opens a new conflict without answering T10's revised test list.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.2",
+            "name": "Development of ideas",
+            "rating": 9,
+            "points": 3.6,
+            "example": "T5 splits the feeling into envy, loneliness, clock; T6, T7 and section E use it.",
+            "limitation": "T10's test list is partly generic, adding little beyond T2's experiments.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C1.3",
+            "name": "Exploration of central tensions",
+            "rating": 7.6,
+            "points": 3.04,
+            "example": "T8 and T9 examine whether declining tests is independence or avoidance.",
+            "limitation": "Freedom versus closeness to friends surfaces only in T11 and is never examined.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.4",
+            "name": "Integration of perspectives",
+            "rating": 8.4,
+            "points": 3.36,
+            "example": "T9 narrows the Field Tester's experiments; T10 revises to 'pieces, not packages'.",
+            "limitation": "Imitation Detective's envy ranking is never reshaped by T8's guesswork objection.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.5",
+            "name": "Progress toward understanding",
+            "rating": 8.4,
+            "points": 3.36,
+            "example": "Section D separates feeling behind from wanting the milestones, with three readings.",
+            "limitation": "Which reading is likeliest stays open with no sharper test than noticing spikes.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C2",
+        "name": "Quality of disagreement, trust and grounding",
+        "max": 20,
+        "points": 16.32,
+        "sub": [
+          {
+            "id": "C2.1",
+            "name": "Faithful engagement",
+            "rating": 7.6,
+            "points": 3.04,
+            "example": "T4 restates its claim precisely: lag needs a rival, not that you want milestones.",
+            "limitation": "T8 casts Mill's view as never testing anything, stronger than T6 actually said.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.2",
+            "name": "Substance of challenges",
+            "rating": 8.8,
+            "points": 3.52,
+            "example": "T8 names independence as the assumption, calls untested oddness avoidance; T9 answers by narrowing.",
+            "limitation": "T7's challenge to loneliness rests on 'people often', an untested generalisation.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C2.3",
+            "name": "Accuracy and support",
+            "rating": 8,
+            "points": 3.2,
+            "example": "T3's 'experiments of living' matches Mill's On Liberty phrase; imitation paraphrase fits.",
+            "limitation": "T7's claim about how people mislabel ranking pain is unsupported; other attributions unverified.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.4",
+            "name": "Calibration and transparency",
+            "rating": 8.2,
+            "points": 3.28,
+            "example": "Section A separates reported feeling from interpretation; T11 flags going beyond its source.",
+            "limitation": "T7 ranks envy over loneliness as a general fact without evidence.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.5",
+            "name": "Intellectual honesty and revision",
+            "rating": 8.2,
+            "points": 3.28,
+            "example": "T4 'Fair hit on one point'; T9 'Accepted'; T10 'Agreed, with a revision'.",
+            "limitation": "Imitation Detective never answers T8's charge that ranking motives is guesswork.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C3",
+        "name": "Personal relevance",
+        "max": 10,
+        "points": 8.14,
+        "sub": [
+          {
+            "id": "C3.1",
+            "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+            "rating": 8.5,
+            "points": 1.7,
+            "example": "Section A names the decisive unknown: milestones, friendships, or a real deadline.",
+            "limitation": "T3's possibility that the user wants a different life is not pursued afterwards.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.2",
+            "name": "Meaningful use of personal context",
+            "rating": 7.4,
+            "points": 1.48,
+            "example": "T9 ties tests to touring houses and dating; T10 asks married friends what to keep.",
+            "limitation": "Sparse input; T10's year of living arrangements is not drawn from any stated circumstance.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.3",
+            "name": "Fit with goals and values",
+            "rating": 8,
+            "points": 1.6,
+            "example": "T11 'Which matters more is not mine to rank' keeps speaker values separate.",
+            "limitation": "The user's own positive priorities are never elicited beyond T10's chosen project.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.4",
+            "name": "Attention to constraints and stakes",
+            "rating": 7.8,
+            "points": 1.56,
+            "example": "T6: if a real deadline exists, drifting is a choice with a price.",
+            "limitation": "T10 calls a year of different living arrangements cheap, ignoring cost and reversibility.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.5",
+            "name": "Responsiveness to information",
+            "rating": 9,
+            "points": 1.8,
+            "example": "Section E branches on deadline, friend-specific spikes, neither, unknown, each with its implication.",
+            "limitation": "Deadline branch does not separate wanting children from a financial window.",
+            "severity": "minor",
+            "anchorMet": true
+          }
+        ]
+      },
+      {
+        "id": "C4",
+        "name": "Constructive self-discovery",
+        "max": 20,
+        "points": 16.6,
+        "sub": [
+          {
+            "id": "C4.1",
+            "name": "Clarification of desires and motivations",
+            "rating": 8.9,
+            "points": 3.56,
+            "example": "T5 offers envy, loneliness, clock as alternatives; section D asks who the imagined audience is.",
+            "limitation": "T7 leans on 'people often' to rank envy above loneliness.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C4.2",
+            "name": "Examination of assumptions",
+            "rating": 8.6,
+            "points": 3.44,
+            "example": "T3 'You both assume the doubt needs fixing'; T4 shows rebelling is also imitation.",
+            "limitation": "The assumption that friends' milestones left them better off is never examined.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.3",
+            "name": "Clarification of values and priorities",
+            "rating": 7.2,
+            "points": 2.88,
+            "example": "T11 names that staying free and staying close to friends may pull apart.",
+            "limitation": "That value conflict arrives in the final turn and is never weighed.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.4",
+            "name": "Recognition of fears and outside expectations",
+            "rating": 8.2,
+            "points": 3.28,
+            "example": "T5 and T7 name envy, loneliness, being ranked; T11 asks whose approval is imagined.",
+            "limitation": "Family or parental expectations, a common pressure source, are never raised.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.5",
+            "name": "Agency and reflective ownership",
+            "rating": 8.6,
+            "points": 3.44,
+            "example": "T11 and section D leave the ranking and imagined-audience question to the user.",
+            "limitation": "T6 'let it ring unanswered' is Mill's verdict, not offered for the user to refine.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C5",
+        "name": "Decision usefulness",
+        "max": 10,
+        "points": 8.12,
+        "sub": [
+          {
+            "id": "C5.1",
+            "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+            "rating": 7.9,
+            "points": 1.58,
+            "example": "Section E lays out testing, repairing friendships, limiting comparison, and waiting.",
+            "limitation": "The decision itself is never stated; options appear only as branch outcomes.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.2",
+            "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+            "rating": 7.3,
+            "points": 1.46,
+            "example": "T6: drifting has a price if a deadline exists; freedom is not costless.",
+            "limitation": "Section E says nothing is lost by waiting, despite T11's friendship tension.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.3",
+            "name": "Identification of decisive conditions",
+            "rating": 9,
+            "points": 1.8,
+            "example": "Section E: feeling spiking around particular friends or events favours repair over tests.",
+            "limitation": "T10's 'a year' and section E's 'a few weeks' are not drawn from the user's facts.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C5.4",
+            "name": "Treatment of uncertainty",
+            "rating": 8.6,
+            "points": 1.72,
+            "example": "T6 'the clock is the missing fact' singles out the consequential unknown.",
+            "limitation": "Section D does not rank remaining unknowns once the clock question is settled.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.5",
+            "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+            "rating": 7.8,
+            "points": 1.56,
+            "example": "Section E: notice when the feeling spikes; ask friends what they would keep and drop.",
+            "limitation": "T10's year of different living arrangements is out of proportion to an unsure feeling.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C6",
+        "name": "Clarity and engagement",
+        "max": 10,
+        "points": 8.42,
+        "sub": [
+          {
+            "id": "C6.1",
+            "name": "Accessible language",
+            "rating": 8.6,
+            "points": 1.72,
+            "example": "Plain images like 'scoreboard' and 'pieces, not packages' carry the theories without jargon.",
+            "limitation": "T2 'their head' and T3, T9 'this person' slip into third person about the user.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.2",
+            "name": "Traceable arguments and references",
+            "rating": 8.2,
+            "points": 1.64,
+            "example": "T8 addresses Mill by name; T9 'Accepted' clearly answers T8.",
+            "limitation": "T4 'Fair hit on one point' does not say which T3 point.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.3",
+            "name": "Manageable pacing and turn length",
+            "rating": 8.6,
+            "points": 1.72,
+            "example": "Eleven turns, all within 25 to 65 words, with varied length.",
+            "limitation": "T11 opens a new conflict too late to be developed.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.4",
+            "name": "Distinguishable positions and voices, with explicit changes of position",
+            "rating": 8.2,
+            "points": 1.64,
+            "example": "Field Tester's bluntness in T8 contrasts with Mill's principled narrowing in T9.",
+            "limitation": "All three lean on 'I would'; Detective and Mill share a similar register.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.5",
+            "name": "Economy and sustained attention",
+            "rating": 8.5,
+            "points": 1.7,
+            "example": "Turns rarely recap; T5 and T6 move straight to new content.",
+            "limitation": "Section E partly repeats section D's three readings.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C7",
+        "name": "Drama and entertainment",
+        "max": 10,
+        "points": 8.12,
+        "sub": [
+          {
+            "id": "C7.1",
+            "name": "Meaningful stakes and tension arising from the issue itself",
+            "rating": 7.6,
+            "points": 1.52,
+            "example": "T6 and T11 put real costs on the table: a clock and drifting friendships.",
+            "limitation": "Stakes stay abstract; no concrete scene from the user's friendships appears.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.2",
+            "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+            "rating": 8.4,
+            "points": 1.68,
+            "example": "T9 Mill accepts T8's hiding-place charge, narrowing tests: 'custom wearing a lab coat'.",
+            "limitation": "Shifts are narrowings, not reversals; no mind changes its core position.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C7.3",
+            "name": "Personality and expressive voice without caricature",
+            "rating": 8.2,
+            "points": 1.64,
+            "example": "T8 'avoidance with good branding' gives the Field Tester a distinct blunt edge.",
+            "limitation": "Mill's voice is modern and plain, with little distinct character.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.4",
+            "name": "Memorable delivery",
+            "rating": 8.6,
+            "points": 1.72,
+            "example": "'Custom wearing a lab coat' (T9) and 'avoidance with good branding' (T8) land sharply.",
+            "limitation": "Imitation Detective's later turns T7 and T11 are plainer than its T1 opener.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.5",
+            "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+            "rating": 7.8,
+            "points": 1.56,
+            "example": "Tension builds to T8's challenge of Mill, then resolves into T9 and T10 revisions.",
+            "limitation": "T11 ends on a new conflict rather than an emotional landing.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      }
+    ],
+    "uncapped": 82.52,
+    "score": 82.52,
+    "capReason": null,
+    "provisional": false,
+    "strengths": [
+      "Field Tester's T5 split into envy, loneliness and a real clock drives T6, T7 and section E.",
+      "T8 to T10: the hiding-place charge makes Mill narrow tests and the Field Tester revise to pieces.",
+      "Section E turns missing facts into observable branches, each naming the option it favours."
+    ],
+    "weaknesses": [
+      "Imitation Detective's T11 freedom-versus-closeness conflict arrives last and is never weighed.",
+      "Section E treats waiting as costless in the no-deadline branch despite drifting friendships.",
+      "Field Tester's T10 'a year of different living arrangements' is called cheap but is ungrounded and disproportionate."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C4.3",
+        "turns": [
+          11
+        ],
+        "observed": "Core value conflict named only in the final turn, never weighed by any mind.",
+        "evidence": "staying free and staying close to friends may pull apart"
+      },
+      {
+        "cell_id": "C5.5",
+        "turns": [
+          10
+        ],
+        "observed": "A year-long living change offered as a cheap, reversible test; number not from user facts.",
+        "evidence": "Try a year of different living arrangements."
+      },
+      {
+        "cell_id": "C2.3",
+        "turns": [
+          7
+        ],
+        "observed": "Envy ranked above loneliness via an unsupported generalisation about people.",
+        "evidence": "People often call it missing friends when the sharper pain is being ranked"
+      },
+      {
+        "cell_id": "C2.5",
+        "turns": [
+          8,
+          11
+        ],
+        "observed": "Imitation Detective never answers T8's guesswork charge; shifts to a new topic instead.",
+        "evidence": "Blunt version: ranking motives from here is guesswork."
+      },
+      {
+        "cell_id": "C6.2",
+        "turns": [
+          4
+        ],
+        "observed": "Concession does not specify which point of T3 it accepts.",
+        "evidence": "Fair hit on one point."
+      }
+    ],
+    "mechanical": [
+      {
+        "pattern": "ungrounded_number",
+        "turns": [
+          10
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "observed",
+        "location": "T7",
+        "description": "Generalisation that people mislabel the pain of being ranked as missing friends is asserted without support and used to rank motives.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "unverified",
+        "location": "T1-T11 basis fields",
+        "description": "Attributions to Girard, Ibarra and Mill cannot be checked here; T3's 'experiments of living' is consistent with recall of On Liberty.",
+        "evidence_ids": []
+      }
+    ],
+    "rubricFitNotes": [
+      "The user's input is two sentences, so C3.2 and C3.4 were judged against how well the sparse context was used. Section E's 'a few weeks' is a minor ungrounded number outside the turns."
+    ],
+    "questionTypeNote": "Read as a decision (self_reflection): the choice is how to respond to feeling behind, so waiting, learning more and limited tests count as options."
+  },
+  "rubricVersion": "rubric-evaluator-4.2.0",
+  "savedAt": "2026-10-15T10:16:56.069Z"
+}

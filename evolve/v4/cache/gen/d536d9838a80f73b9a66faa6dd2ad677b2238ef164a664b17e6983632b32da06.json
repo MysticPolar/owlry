@@ -1,0 +1,158 @@
+{
+  "jobId": "gen.v2.q2.s2",
+  "lineage": "sonnet",
+  "version": "v2",
+  "q": 2,
+  "s": 2,
+  "model": "sonnet",
+  "settings": {
+    "agentType": "general-purpose",
+    "effort": "medium"
+  },
+  "debate": {
+    "situation": "You have an offer paying 25% more, but it adds a 90-minute commute each way, which is up to three hours a day. You haven't said how many days a week you would be in the office, whether the commute is a drive or a train you could read on, what your current pay and finances look like, or why the new job appeals beyond the money. Those unknowns decide most of the answer. The question may also be bigger than whether the raise justifies the commute: it may be what the raise is for.",
+    "minds": [
+      {
+        "title": "The Life-Cost Accountant",
+        "concern": "Every paycheck is paid for in hours of your life, so the real price of the offer is what you give up, not what you receive.",
+        "author": "Henry David Thoreau",
+        "book": "Walden",
+        "year": 1854
+      },
+      {
+        "title": "The Misprediction Skeptic",
+        "concern": "People predict badly how a salary and a daily grind will actually feel, so the first instinct deserves suspicion in both directions.",
+        "author": "Daniel Kahneman",
+        "book": "Thinking, Fast and Slow",
+        "year": 2011
+      },
+      {
+        "title": "The Bettor",
+        "concern": "This is a decision under uncertainty, so name the unknowns, test what can be tested, and decide in advance what would change your mind.",
+        "author": "Annie Duke",
+        "book": "Thinking in Bets",
+        "year": 2018
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Life-Cost Accountant",
+        "text": "Start with the price, not the raise. If it's five office days, that's fifteen hours a week, a second unpaid part-time job. Thoreau's test is blunt: \"the amount of what I call life which is required to be exchanged for it.\" Does 25% buy back that much life?",
+        "author": "Henry David Thoreau",
+        "book": "Walden",
+        "pd": true,
+        "basis": "Basis: Henry David Thoreau, Walden"
+      },
+      {
+        "speaker": "The Misprediction Skeptic",
+        "text": "You're both pricing something people price badly. A raise is vivid, a number you can brag about. A commute is a daily grind that people tend to underestimate before they start. I'd bet most people overrate the money and underrate Tuesday at 6 p.m. in traffic.",
+        "author": "Daniel Kahneman",
+        "book": "Thinking, Fast and Slow",
+        "pd": false,
+        "basis": "Basis: Daniel Kahneman, Thinking, Fast and Slow"
+      },
+      {
+        "speaker": "The Bettor",
+        "text": "You're both treating the commute as one fixed thing. The fact that would most reorder this is how many days in the office, and whether the hours are usable. Two days on a train with a book is a different bet than five days behind a wheel. Let's argue both branches.",
+        "author": "Annie Duke",
+        "book": "Thinking in Bets",
+        "pd": false,
+        "basis": "Basis: Annie Duke, Thinking in Bets"
+      },
+      {
+        "speaker": "The Life-Cost Accountant",
+        "text": "Fine, I'll narrow it. My fifteen hours assumed five days; at two days it's six, and a train hour with a book isn't a dead hour. But I keep the principle. Thoreau's famous point is that the walker can beat the man who works to earn the fare. Ask what the raise is buying.",
+        "author": "Henry David Thoreau",
+        "book": "Walden",
+        "pd": true,
+        "basis": "Basis: Henry David Thoreau, Walden"
+      },
+      {
+        "speaker": "The Misprediction Skeptic",
+        "text": "You've assumed the trade is life for money. Maybe the raise is a proxy. Maybe it's real money pressure, maybe it's status or growth, maybe it's escape from the current job. Each changes the answer: if it's escape, the commute is the price of leaving, and there may be cheaper exits. Which is likelier, I can't say.",
+        "author": "Daniel Kahneman",
+        "book": "Thinking, Fast and Slow",
+        "pd": false,
+        "basis": "Basis: Daniel Kahneman, Thinking, Fast and Slow"
+      },
+      {
+        "speaker": "The Bettor",
+        "text": "I wouldn't rank those motives either, and neither should you. But the escape version has a trap: you'd be comparing the commute against an imagined better life. I'd go further than Duke on this: write down now what would make you call the move a mistake, so you aren't judging it only by how it turns out.",
+        "author": "Annie Duke",
+        "book": "Thinking in Bets",
+        "pd": false,
+        "basis": "Basis: Annie Duke, Thinking in Bets"
+      },
+      {
+        "speaker": "The Life-Cost Accountant",
+        "text": "Deciding the exit in advance sounds tidy. But hours leak slowly. You won't notice the cost in week one; you'll notice it in month eight when the gym, the cooking and the friends are gone. A test run at rush hour only tells you what week one feels like.",
+        "author": "Henry David Thoreau",
+        "book": "Walden",
+        "pd": true,
+        "basis": "Basis: Henry David Thoreau, Walden"
+      },
+      {
+        "speaker": "The Misprediction Skeptic",
+        "text": "That helps my side, but I should argue against myself. Averages hide huge variation. Some people adapt to a predictable commute and use it well. My warning cuts both ways: the same bias that shrinks the commute in your mind can also inflate your fear of it. A trial helps only if you also picture month eight.",
+        "author": "Daniel Kahneman",
+        "book": "Thinking, Fast and Slow",
+        "pd": false,
+        "basis": "Basis: Daniel Kahneman, Thinking, Fast and Slow"
+      },
+      {
+        "speaker": "The Bettor",
+        "text": "Then the useful question isn't just whether to take it. You can negotiate hybrid days, ask when the role can be remote, or decline and stay put. Declining is a real option, not a failure. The conflict is money against hours against the role, and that ranking belongs to the person deciding.",
+        "author": "Annie Duke",
+        "book": "Thinking in Bets",
+        "pd": false,
+        "basis": "Basis: Annie Duke, Thinking in Bets"
+      },
+      {
+        "speaker": "The Life-Cost Accountant",
+        "text": "Agreed on declining. If the extra money would just disappear into a bigger lifestyle, you'd be paying hundreds of hours a year for a number. But if it clears debt or lets you move closer within a year or two, the commute could be a bridge, and I'd concede that.",
+        "author": "Henry David Thoreau",
+        "book": "Walden",
+        "pd": true,
+        "basis": "Basis: Henry David Thoreau, Walden"
+      },
+      {
+        "speaker": "The Misprediction Skeptic",
+        "text": "So what's left between us is this: I think people systematically underweight the daily cost, and you'd say they undervalue their time anyway. I'd still say: don't compare a salary to a feeling. Write out an ordinary Wednesday in month three, then compare the two lives, not the two numbers.",
+        "author": "Daniel Kahneman",
+        "book": "Thinking, Fast and Slow",
+        "pd": false,
+        "basis": "Basis: Daniel Kahneman, Thinking, Fast and Slow"
+      }
+    ],
+    "clearer": "The sharpest shift was from asking whether 25% is worth the commute to asking what the extra money is for, and how many commuting days there really are. What remains disputed is how much a trial run can reveal about month eight versus week one, and whether people overrate the money or undervalue their time. A possible self-reflection: if the raise vanished into everyday spending, what would you have actually bought with those hours?",
+    "dependsOn": "If the office days are few, or the commute is a train where the time is genuinely usable, the offer becomes more reasonable, because the true cost in hours shrinks a lot. If the days are five and the commute is a drive, the raise needs a concrete purpose, such as clearing debt or funding a move closer, because otherwise you are exchanging hundreds of hours a year for an unspent number. If the main appeal is escaping your current job, check cheaper exits first, because the commute is then a very expensive way to leave. If you don't yet know the days or the usability of the commute, ask the employer for the typical in-office schedule and whether hybrid is negotiable, and try the route at rush hour once before deciding. Whatever you pick, decide beforehand what would make you reverse it and when you'll check."
+  },
+  "validity": {
+    "ok": true,
+    "problems": []
+  },
+  "metrics": {
+    "turns": 11,
+    "words": 571,
+    "meanWordsPerTurn": 51.91,
+    "shortTurns": 0,
+    "longTurns": 0,
+    "hedges": 9,
+    "hedgeDensity": 1.58,
+    "bannedCertainty": 0,
+    "templatedOpeners": 0,
+    "slotMarkers": 0,
+    "questionsToUser": 0,
+    "theUser": 0,
+    "pdFalseQuoteTurns": 0,
+    "fabricatedBasisTurns": 0,
+    "distinctSpeakers": 3,
+    "distinctBooks": 3
+  },
+  "unusable": false,
+  "latencyMs": null,
+  "tokens": null,
+  "raw": "{\n\"situation\": \"You have an offer paying 25% more, but it adds a 90-minute commute each way, which is up to three hours a day. You haven't said how many days a week you would be in the office, whether the commute is a drive or a train you could read on, what your current pay and finances look like, or why the new job appeals beyond the money. Those unknowns decide most of the answer. The question may also be bigger than whether the raise justifies the commute: it may be what the raise is for.\",\n\"minds\": [\n{\"title\":\"The Life-Cost Accountant\",\"concern\":\"Every paycheck is paid for in hours of your life, so the real price of the offer is what you give up, not what you receive.\",\"author\":\"Henry David Thoreau\",\"book\":\"Walden\",\"year\":1854},\n{\"title\":\"The Misprediction Skeptic\",\"concern\":\"People predict badly how a salary and a daily grind will actually feel, so the first instinct deserves suspicion in both directions.\",\"author\":\"Daniel Kahneman\",\"book\":\"Thinking, Fast and Slow\",\"year\":2011},\n{\"title\":\"The Bettor\",\"concern\":\"This is a decision under uncertainty, so name the unknowns, test what can be tested, and decide in advance what would change your mind.\",\"author\":\"Annie Duke\",\"book\":\"Thinking in Bets\",\"year\":2018}\n],\n\"debate\": [\n{\"speaker\":\"The Life-Cost Accountant\",\"text\":\"Start with the price, not the raise. If it's five office days, that's fifteen hours a week, a second unpaid part-time job. Thoreau's test is blunt: \\\"the amount of what I call life which is required to be exchanged for it.\\\" Does 25% buy back that much life?\",\"author\":\"Henry David Thoreau\",\"book\":\"Walden\",\"pd\":true,\"basis\":\"Basis: Henry David Thoreau, Walden\"},\n{\"speaker\":\"The Misprediction Skeptic\",\"text\":\"You're both pricing something people price badly. A raise is vivid, a number you can brag about. A commute is a daily grind that people tend to underestimate before they start. I'd bet most people overrate the money and underrate Tuesday at 6 p.m. in traffic.\",\"author\":\"Daniel Kahneman\",\"book\":\"Thinking, Fast and Slow\",\"pd\":false,\"basis\":\"Basis: Daniel Kahneman, Thinking, Fast and Slow\"},\n{\"speaker\":\"The Bettor\",\"text\":\"You're both treating the commute as one fixed thing. The fact that would most reorder this is how many days in the office, and whether the hours are usable. Two days on a train with a book is a different bet than five days behind a wheel. Let's argue both branches.\",\"author\":\"Annie Duke\",\"book\":\"Thinking in Bets\",\"pd\":false,\"basis\":\"Basis: Annie Duke, Thinking in Bets\"},\n{\"speaker\":\"The Life-Cost Accountant\",\"text\":\"Fine, I'll narrow it. My fifteen hours assumed five days; at two days it's six, and a train hour with a book isn't a dead hour. But I keep the principle. Thoreau's famous point is that the walker can beat the man who works to earn the fare. Ask what the raise is buying.\",\"author\":\"Henry David Thoreau\",\"book\":\"Walden\",\"pd\":true,\"basis\":\"Basis: Henry David Thoreau, Walden\"},\n{\"speaker\":\"The Misprediction Skeptic\",\"text\":\"You've assumed the trade is life for money. Maybe the raise is a proxy. Maybe it's real money pressure, maybe it's status or growth, maybe it's escape from the current job. Each changes the answer: if it's escape, the commute is the price of leaving, and there may be cheaper exits. Which is likelier, I can't say.\",\"author\":\"Daniel Kahneman\",\"book\":\"Thinking, Fast and Slow\",\"pd\":false,\"basis\":\"Basis: Daniel Kahneman, Thinking, Fast and Slow\"},\n{\"speaker\":\"The Bettor\",\"text\":\"I wouldn't rank those motives either, and neither should you. But the escape version has a trap: you'd be comparing the commute against an imagined better life. I'd go further than Duke on this: write down now what would make you call the move a mistake, so you aren't judging it only by how it turns out.\",\"author\":\"Annie Duke\",\"book\":\"Thinking in Bets\",\"pd\":false,\"basis\":\"Basis: Annie Duke, Thinking in Bets\"},\n{\"speaker\":\"The Life-Cost Accountant\",\"text\":\"Deciding the exit in advance sounds tidy. But hours leak slowly. You won't notice the cost in week one; you'll notice it in month eight when the gym, the cooking and the friends are gone. A test run at rush hour only tells you what week one feels like.\",\"author\":\"Henry David Thoreau\",\"book\":\"Walden\",\"pd\":true,\"basis\":\"Basis: Henry David Thoreau, Walden\"},\n{\"speaker\":\"The Misprediction Skeptic\",\"text\":\"That helps my side, but I should argue against myself. Averages hide huge variation. Some people adapt to a predictable commute and use it well. My warning cuts both ways: the same bias that shrinks the commute in your mind can also inflate your fear of it. A trial helps only if you also picture month eight.\",\"author\":\"Daniel Kahneman\",\"book\":\"Thinking, Fast and Slow\",\"pd\":false,\"basis\":\"Basis: Daniel Kahneman, Thinking, Fast and Slow\"},\n{\"speaker\":\"The Bettor\",\"text\":\"Then the useful question isn't just whether to take it. You can negotiate hybrid days, ask when the role can be remote, or decline and stay put. Declining is a real option, not a failure. The conflict is money against hours against the role, and that ranking belongs to the person deciding.\",\"author\":\"Annie Duke\",\"book\":\"Thinking in Bets\",\"pd\":false,\"basis\":\"Basis: Annie Duke, Thinking in Bets\"},\n{\"speaker\":\"The Life-Cost Accountant\",\"text\":\"Agreed on declining. If the extra money would just disappear into a bigger lifestyle, you'd be paying hundreds of hours a year for a number. But if it clears debt or lets you move closer within a year or two, the commute could be a bridge, and I'd concede that.\",\"author\":\"Henry David Thoreau\",\"book\":\"Walden\",\"pd\":true,\"basis\":\"Basis: Henry David Thoreau, Walden\"},\n{\"speaker\":\"The Misprediction Skeptic\",\"text\":\"So what's left between us is this: I think people systematically underweight the daily cost, and you'd say they undervalue their time anyway. I'd still say: don't compare a salary to a feeling. Write out an ordinary Wednesday in month three, then compare the two lives, not the two numbers.\",\"author\":\"Daniel Kahneman\",\"book\":\"Thinking, Fast and Slow\",\"pd\":false,\"basis\":\"Basis: Daniel Kahneman, Thinking, Fast and Slow\"}\n],\n\"clearer\": \"The sharpest shift was from asking whether 25% is worth the commute to asking what the extra money is for, and how many commuting days there really are. What remains disputed is how much a trial run can reveal about month eight versus week one, and whether people overrate the money or undervalue their time. A possible self-reflection: if the raise vanished into everyday spending, what would you have actually bought with those hours?\",\n\"dependsOn\": \"If the office days are few, or the commute is a train where the time is genuinely usable, the offer becomes more reasonable, because the true cost in hours shrinks a lot. If the days are five and the commute is a drive, the raise needs a concrete purpose, such as clearing debt or funding a move closer, because otherwise you are exchanging hundreds of hours a year for an unspent number. If the main appeal is escaping your current job, check cheaper exits first, because the commute is then a very expensive way to leave. If you don't yet know the days or the usability of the commute, ask the employer for the typical in-office schedule and whether hybrid is negotiable, and try the route at rush hour once before deciding. Whatever you pick, decide beforehand what would make you reverse it and when you'll check.\"\n}\n",
+  "transcriptHash": "b636a49eb29b8c6d6292ae020ddbe7adc3d90066fcd498e07c63647d4d75ccdc",
+  "savedAt": "2026-10-15T10:13:06.785Z"
+}

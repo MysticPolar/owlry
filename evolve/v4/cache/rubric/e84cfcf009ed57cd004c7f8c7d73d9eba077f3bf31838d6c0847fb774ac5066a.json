@@ -1,0 +1,974 @@
+{
+  "jobId": "rubric.v1.q4.s3",
+  "raw": {
+    "schema_version": "rubric-evaluator-4.2.0",
+    "rubric_version": "owlry-matrix-v2-bands",
+    "evaluation_status": "complete",
+    "cells": [
+      {
+        "id": "C1.1",
+        "name": "Continuity and responsiveness",
+        "rating": 6.2,
+        "example": "T8 answers T7's freedom claim; T9 and T10 respond to T8's exclusion point.",
+        "limitation": "Pragmatist T3 and T6 ignore prior turns; T3's cash-value question is never taken up.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.2",
+        "name": "Development of ideas",
+        "rating": 5.8,
+        "example": "T8 adds structural cost of exclusion; T9 and T10 build on it; T11 adds shaped preferences.",
+        "limitation": "T5 and T7 mostly restate openings; T6's step is never developed or tested later.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.3",
+        "name": "Exploration of central tensions",
+        "rating": 5.5,
+        "example": "T8-T11 examine whether one can choose free of social norms.",
+        "limitation": "User's doubt about wanting marriage or homes, and drifting friendships, never debated; only in section D.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.4",
+        "name": "Integration of perspectives",
+        "rating": 6,
+        "example": "T9 concedes social cost is real and folds it into the Pragmatist's view.",
+        "limitation": "T5 accepts the avoidance hypothesis at once without examining it.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.5",
+        "name": "Progress toward understanding",
+        "rating": 5.5,
+        "example": "T12 sharpens the dispute into signal versus symptom of the social environment.",
+        "limitation": "T12 collapses the ending into a belonging-versus-autonomy binary the debate never tested.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.1",
+        "name": "Faithful engagement",
+        "rating": 5.5,
+        "example": "T11 states the habitus point fairly against T10's revised claim.",
+        "limitation": "T8 attacks simply choosing to be free, a stronger claim than T1 or T7 made.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.2",
+        "name": "Substance of challenges",
+        "rating": 6.3,
+        "example": "T8 names the free-choice assumption and that exclusion is structural, not mental.",
+        "limitation": "T6's values-list step is never tested against T11's point that preferences are socially shaped.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.3",
+        "name": "Accuracy and support",
+        "rating": 7.8,
+        "example": "T3 cash value and T1 self-authored meaning fit James and Sartre.",
+        "limitation": "T2 and T5 extend Distinction, a study of taste, to marriage and property without flagging it.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.4",
+        "name": "Calibration and transparency",
+        "rating": 5.5,
+        "example": "T4 offers avoidance as a possibility with might, not as fact.",
+        "limitation": "T1 states the cause of the user's feeling as fact on no evidence.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.5",
+        "name": "Intellectual honesty and revision",
+        "rating": 6,
+        "example": "T9 concedes the social cost is real while keeping its own claim.",
+        "limitation": "T10 drops a claim it never made and names no cause; T11 objection goes unanswered.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.1",
+        "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+        "rating": 6.5,
+        "example": "Section A frames whether the user wants milestones or fears exclusion.",
+        "limitation": "Debate never separates home-buying from marriage or the feeling from wanting them.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.2",
+        "name": "Meaningful use of personal context",
+        "rating": 4.5,
+        "example": "T2 ties the friends' milestones to the user's relative position.",
+        "limitation": "The friends appear only as abstract peers; no detail changes any turn's argument.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.3",
+        "name": "Fit with goals and values",
+        "rating": 5,
+        "example": "T6 asks for values unrelated to marriage or property, fitting the user's doubt.",
+        "limitation": "Section E's belonging branch steers toward milestones the user said they may not want.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.4",
+        "name": "Attention to constraints and stakes",
+        "rating": 5,
+        "example": "T8 names real social exclusion as a cost of rejecting norms.",
+        "limitation": "Stakes with the actual friends, money or timing never discussed.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.5",
+        "name": "Responsiveness to information",
+        "rating": 4,
+        "example": "Section E branches on whether the user prioritises belonging or autonomy.",
+        "limitation": "No turn asks about friendships changing, age or finances; no answer-dependent branches on them.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.1",
+        "name": "Clarification of desires and motivations",
+        "rating": 5.5,
+        "example": "T4 avoidance and section D fear of losing connection offer two motives.",
+        "limitation": "Motives never set side by side with a question; T1 asserts one as fact.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.2",
+        "name": "Examination of assumptions",
+        "rating": 7,
+        "example": "T1 exposes the borrowed life script; T11 questions whether preferences are one's own.",
+        "limitation": "The race metaphor in being behind is never directly questioned.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.3",
+        "name": "Clarification of values and priorities",
+        "rating": 6.5,
+        "example": "T12 and section E name belonging versus autonomy as the value conflict.",
+        "limitation": "Presented as a binary; belonging without these milestones never considered.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.4",
+        "name": "Recognition of fears and outside expectations",
+        "rating": 7.3,
+        "example": "T7 loneliness, T8 exclusion and T5 pressure named without pathologising.",
+        "limitation": "Fear of losing these specific friends surfaces only in section D, never debated.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.5",
+        "name": "Agency and reflective ownership",
+        "rating": 6,
+        "example": "Section D offers a reflection on fear of losing connection the user can test.",
+        "limitation": "T7 and T10 issue directives rather than distinctions the user can refine.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.1",
+        "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+        "rating": 4.5,
+        "example": "Section E sketches aligning with milestones versus defining one's own metrics.",
+        "limitation": "No turn defines the choice or options such as waiting or a limited step.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.2",
+        "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+        "rating": 4.5,
+        "example": "T8 names exclusion as the cost of rejecting norms.",
+        "limitation": "Costs of pursuing marriage or homes, and of the T6 step, never stated.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.3",
+        "name": "Identification of decisive conditions",
+        "rating": 3.5,
+        "example": "Section E conditions on which value the user prioritises.",
+        "limitation": "No observable condition; T6's 30 minutes and three items are not from user facts.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.4",
+        "name": "Treatment of uncertainty",
+        "rating": 5.5,
+        "example": "Section A names whether the user wants these milestones as the decisive unknown.",
+        "limitation": "Other unknowns never ranked; section E's way to learn is a vague hypothetical.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.5",
+        "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+        "rating": 5.8,
+        "example": "T6 values-listing exercise is small and fits the user's uncertainty.",
+        "limitation": "T6 step is never connected to the later debate or section E branches.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.1",
+        "name": "Accessible language",
+        "rating": 7.5,
+        "example": "T9 and T12 use plain wording about motivation and belonging.",
+        "limitation": "Social field (T2) and cash value (T3) left unexplained for a lay user.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.2",
+        "name": "Traceable arguments and references",
+        "rating": 6.8,
+        "example": "T7 That step clearly points to T6's proposal.",
+        "limitation": "T10 I drop the idea has no clear owner; it echoes T8, not its own claim.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.3",
+        "name": "Manageable pacing and turn length",
+        "rating": 8.3,
+        "example": "Twelve turns, all within range, each carrying one idea.",
+        "limitation": "none",
+        "limitation_severity": "none",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.4",
+        "name": "Distinguishable positions and voices, with explicit changes of position",
+        "rating": 6,
+        "example": "Positions differ: authorship (T1), status field (T2), practical consequence (T3).",
+        "limitation": "All three speak in one register at near-identical single-sentence lengths, T1-T12.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.5",
+        "name": "Economy and sustained attention",
+        "rating": 7,
+        "example": "Most turns add a point rather than recap.",
+        "limitation": "T10 repeats T7's anxiety-as-part-of-freedom; sections D and E restate T12.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.1",
+        "name": "Meaningful stakes and tension arising from the issue itself",
+        "rating": 5.5,
+        "example": "T8 makes exclusion a concrete cost against T7's freedom.",
+        "limitation": "Stakes stay abstract; no scene with the friends or the user's life.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.2",
+        "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+        "rating": 4,
+        "example": "T10 Existentialist announces a changed position.",
+        "limitation": "T10 reversal names no earlier argument as its cause and barely narrows the claim.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.3",
+        "name": "Personality and expressive voice without caricature",
+        "rating": 4.5,
+        "example": "T4 terrifying responsibility gives the Existentialist some heat.",
+        "limitation": "Minds sound alike throughout; little personal idiom beyond school vocabulary.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.4",
+        "name": "Memorable delivery",
+        "rating": 4.5,
+        "example": "T7 walking a path without a map is a fitting image.",
+        "limitation": "Few analogies or sharp responses; most turns are abstract statements.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.5",
+        "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+        "rating": 4,
+        "example": "T8 to T10 build some pressure toward a concession.",
+        "limitation": "Uniform rhythm and intensity across T1-T12; no build or release.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      }
+    ],
+    "strengths": [
+      "Section A frames the right uncertainty: wanting milestones versus fearing exclusion.",
+      "T8 to T11 give a real exchange on whether choice escapes social structure.",
+      "Section D offers a usable reflection: fear of losing connection with valued people."
+    ],
+    "weaknesses": [
+      "Decision usefulness is thin: no options, no observable conditions, T6 number ungrounded.",
+      "Personal context barely used; no questions about friendships, finances or the user's doubt.",
+      "Uniform voice and an uncaused T10 Existentialist reversal flatten drama."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C5.3",
+        "turns": [
+          6
+        ],
+        "observed": "Step carries a time and count not drawn from user facts; no observable condition.",
+        "evidence": "spend 30 minutes this week listing three things you value"
+      },
+      {
+        "cell_id": "C3.5",
+        "turns": [
+          12
+        ],
+        "observed": "No turn asks the user anything; missing facts never become answer-dependent branches.",
+        "evidence": "it depends on whether you value social belonging more than individual autonomy"
+      },
+      {
+        "cell_id": "C7.2",
+        "turns": [
+          10
+        ],
+        "observed": "Reversal names no cause and drops a claim the speaker never made.",
+        "evidence": "I drop the idea that you can just choose to be free"
+      },
+      {
+        "cell_id": "C2.4",
+        "turns": [
+          1
+        ],
+        "observed": "Cause of the user's feeling asserted as fact without evidence.",
+        "evidence": "You feel behind because you are treating your life as a project"
+      },
+      {
+        "cell_id": "C6.4",
+        "turns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "observed": "All minds share register and near-identical single-sentence turn length.",
+        "evidence": "I still disagree that you can simply choose your path"
+      }
+    ],
+    "mechanical": [
+      {
+        "pattern": "uncaused_reversal",
+        "turns": [
+          10
+        ]
+      },
+      {
+        "pattern": "ungrounded_number",
+        "turns": [
+          6
+        ]
+      },
+      {
+        "pattern": "uniform_voice",
+        "turns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "observed",
+        "location": "Turn 1",
+        "description": "States the cause of the user's feeling as fact with no supporting detail from the user.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "Turns 2, 5",
+        "description": "Distinction analyses cultural taste; applying it to marriage and homeownership is an unflagged extension.",
+        "evidence_ids": []
+      }
+    ],
+    "cap_reasons": [],
+    "rubric_fit_notes": [
+      "The situation gives few personal facts, so C3.2 and C3.4 had little to use; still, the debate asked nothing to fill the gap."
+    ],
+    "question_type_note": "Read as a decision of self-reflection type; C5 judged on whether the user gains a basis for weighing milestones versus own path."
+  },
+  "card": {
+    "criteria": [
+      {
+        "id": "C1",
+        "name": "Quality of discussion",
+        "max": 20,
+        "points": 11.6,
+        "sub": [
+          {
+            "id": "C1.1",
+            "name": "Continuity and responsiveness",
+            "rating": 6.2,
+            "points": 2.48,
+            "example": "T8 answers T7's freedom claim; T9 and T10 respond to T8's exclusion point.",
+            "limitation": "Pragmatist T3 and T6 ignore prior turns; T3's cash-value question is never taken up.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.2",
+            "name": "Development of ideas",
+            "rating": 5.8,
+            "points": 2.32,
+            "example": "T8 adds structural cost of exclusion; T9 and T10 build on it; T11 adds shaped preferences.",
+            "limitation": "T5 and T7 mostly restate openings; T6's step is never developed or tested later.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.3",
+            "name": "Exploration of central tensions",
+            "rating": 5.5,
+            "points": 2.2,
+            "example": "T8-T11 examine whether one can choose free of social norms.",
+            "limitation": "User's doubt about wanting marriage or homes, and drifting friendships, never debated; only in section D.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.4",
+            "name": "Integration of perspectives",
+            "rating": 6,
+            "points": 2.4,
+            "example": "T9 concedes social cost is real and folds it into the Pragmatist's view.",
+            "limitation": "T5 accepts the avoidance hypothesis at once without examining it.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.5",
+            "name": "Progress toward understanding",
+            "rating": 5.5,
+            "points": 2.2,
+            "example": "T12 sharpens the dispute into signal versus symptom of the social environment.",
+            "limitation": "T12 collapses the ending into a belonging-versus-autonomy binary the debate never tested.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C2",
+        "name": "Quality of disagreement, trust and grounding",
+        "max": 20,
+        "points": 12.44,
+        "sub": [
+          {
+            "id": "C2.1",
+            "name": "Faithful engagement",
+            "rating": 5.5,
+            "points": 2.2,
+            "example": "T11 states the habitus point fairly against T10's revised claim.",
+            "limitation": "T8 attacks simply choosing to be free, a stronger claim than T1 or T7 made.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.2",
+            "name": "Substance of challenges",
+            "rating": 6.3,
+            "points": 2.52,
+            "example": "T8 names the free-choice assumption and that exclusion is structural, not mental.",
+            "limitation": "T6's values-list step is never tested against T11's point that preferences are socially shaped.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.3",
+            "name": "Accuracy and support",
+            "rating": 7.8,
+            "points": 3.12,
+            "example": "T3 cash value and T1 self-authored meaning fit James and Sartre.",
+            "limitation": "T2 and T5 extend Distinction, a study of taste, to marriage and property without flagging it.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.4",
+            "name": "Calibration and transparency",
+            "rating": 5.5,
+            "points": 2.2,
+            "example": "T4 offers avoidance as a possibility with might, not as fact.",
+            "limitation": "T1 states the cause of the user's feeling as fact on no evidence.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.5",
+            "name": "Intellectual honesty and revision",
+            "rating": 6,
+            "points": 2.4,
+            "example": "T9 concedes the social cost is real while keeping its own claim.",
+            "limitation": "T10 drops a claim it never made and names no cause; T11 objection goes unanswered.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C3",
+        "name": "Personal relevance",
+        "max": 10,
+        "points": 5,
+        "sub": [
+          {
+            "id": "C3.1",
+            "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+            "rating": 6.5,
+            "points": 1.3,
+            "example": "Section A frames whether the user wants milestones or fears exclusion.",
+            "limitation": "Debate never separates home-buying from marriage or the feeling from wanting them.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.2",
+            "name": "Meaningful use of personal context",
+            "rating": 4.5,
+            "points": 0.9,
+            "example": "T2 ties the friends' milestones to the user's relative position.",
+            "limitation": "The friends appear only as abstract peers; no detail changes any turn's argument.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.3",
+            "name": "Fit with goals and values",
+            "rating": 5,
+            "points": 1,
+            "example": "T6 asks for values unrelated to marriage or property, fitting the user's doubt.",
+            "limitation": "Section E's belonging branch steers toward milestones the user said they may not want.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.4",
+            "name": "Attention to constraints and stakes",
+            "rating": 5,
+            "points": 1,
+            "example": "T8 names real social exclusion as a cost of rejecting norms.",
+            "limitation": "Stakes with the actual friends, money or timing never discussed.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.5",
+            "name": "Responsiveness to information",
+            "rating": 4,
+            "points": 0.8,
+            "example": "Section E branches on whether the user prioritises belonging or autonomy.",
+            "limitation": "No turn asks about friendships changing, age or finances; no answer-dependent branches on them.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C4",
+        "name": "Constructive self-discovery",
+        "max": 20,
+        "points": 12.92,
+        "sub": [
+          {
+            "id": "C4.1",
+            "name": "Clarification of desires and motivations",
+            "rating": 5.5,
+            "points": 2.2,
+            "example": "T4 avoidance and section D fear of losing connection offer two motives.",
+            "limitation": "Motives never set side by side with a question; T1 asserts one as fact.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.2",
+            "name": "Examination of assumptions",
+            "rating": 7,
+            "points": 2.8,
+            "example": "T1 exposes the borrowed life script; T11 questions whether preferences are one's own.",
+            "limitation": "The race metaphor in being behind is never directly questioned.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.3",
+            "name": "Clarification of values and priorities",
+            "rating": 6.5,
+            "points": 2.6,
+            "example": "T12 and section E name belonging versus autonomy as the value conflict.",
+            "limitation": "Presented as a binary; belonging without these milestones never considered.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.4",
+            "name": "Recognition of fears and outside expectations",
+            "rating": 7.3,
+            "points": 2.92,
+            "example": "T7 loneliness, T8 exclusion and T5 pressure named without pathologising.",
+            "limitation": "Fear of losing these specific friends surfaces only in section D, never debated.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.5",
+            "name": "Agency and reflective ownership",
+            "rating": 6,
+            "points": 2.4,
+            "example": "Section D offers a reflection on fear of losing connection the user can test.",
+            "limitation": "T7 and T10 issue directives rather than distinctions the user can refine.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C5",
+        "name": "Decision usefulness",
+        "max": 10,
+        "points": 4.76,
+        "sub": [
+          {
+            "id": "C5.1",
+            "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+            "rating": 4.5,
+            "points": 0.9,
+            "example": "Section E sketches aligning with milestones versus defining one's own metrics.",
+            "limitation": "No turn defines the choice or options such as waiting or a limited step.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.2",
+            "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+            "rating": 4.5,
+            "points": 0.9,
+            "example": "T8 names exclusion as the cost of rejecting norms.",
+            "limitation": "Costs of pursuing marriage or homes, and of the T6 step, never stated.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.3",
+            "name": "Identification of decisive conditions",
+            "rating": 3.5,
+            "points": 0.7,
+            "example": "Section E conditions on which value the user prioritises.",
+            "limitation": "No observable condition; T6's 30 minutes and three items are not from user facts.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.4",
+            "name": "Treatment of uncertainty",
+            "rating": 5.5,
+            "points": 1.1,
+            "example": "Section A names whether the user wants these milestones as the decisive unknown.",
+            "limitation": "Other unknowns never ranked; section E's way to learn is a vague hypothetical.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.5",
+            "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+            "rating": 5.8,
+            "points": 1.16,
+            "example": "T6 values-listing exercise is small and fits the user's uncertainty.",
+            "limitation": "T6 step is never connected to the later debate or section E branches.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C6",
+        "name": "Clarity and engagement",
+        "max": 10,
+        "points": 7.12,
+        "sub": [
+          {
+            "id": "C6.1",
+            "name": "Accessible language",
+            "rating": 7.5,
+            "points": 1.5,
+            "example": "T9 and T12 use plain wording about motivation and belonging.",
+            "limitation": "Social field (T2) and cash value (T3) left unexplained for a lay user.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.2",
+            "name": "Traceable arguments and references",
+            "rating": 6.8,
+            "points": 1.36,
+            "example": "T7 That step clearly points to T6's proposal.",
+            "limitation": "T10 I drop the idea has no clear owner; it echoes T8, not its own claim.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.3",
+            "name": "Manageable pacing and turn length",
+            "rating": 8.3,
+            "points": 1.66,
+            "example": "Twelve turns, all within range, each carrying one idea.",
+            "limitation": "none",
+            "severity": "none",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.4",
+            "name": "Distinguishable positions and voices, with explicit changes of position",
+            "rating": 6,
+            "points": 1.2,
+            "example": "Positions differ: authorship (T1), status field (T2), practical consequence (T3).",
+            "limitation": "All three speak in one register at near-identical single-sentence lengths, T1-T12.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.5",
+            "name": "Economy and sustained attention",
+            "rating": 7,
+            "points": 1.4,
+            "example": "Most turns add a point rather than recap.",
+            "limitation": "T10 repeats T7's anxiety-as-part-of-freedom; sections D and E restate T12.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C7",
+        "name": "Drama and entertainment",
+        "max": 10,
+        "points": 4.5,
+        "sub": [
+          {
+            "id": "C7.1",
+            "name": "Meaningful stakes and tension arising from the issue itself",
+            "rating": 5.5,
+            "points": 1.1,
+            "example": "T8 makes exclusion a concrete cost against T7's freedom.",
+            "limitation": "Stakes stay abstract; no scene with the friends or the user's life.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.2",
+            "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+            "rating": 4,
+            "points": 0.8,
+            "example": "T10 Existentialist announces a changed position.",
+            "limitation": "T10 reversal names no earlier argument as its cause and barely narrows the claim.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.3",
+            "name": "Personality and expressive voice without caricature",
+            "rating": 4.5,
+            "points": 0.9,
+            "example": "T4 terrifying responsibility gives the Existentialist some heat.",
+            "limitation": "Minds sound alike throughout; little personal idiom beyond school vocabulary.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.4",
+            "name": "Memorable delivery",
+            "rating": 4.5,
+            "points": 0.9,
+            "example": "T7 walking a path without a map is a fitting image.",
+            "limitation": "Few analogies or sharp responses; most turns are abstract statements.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.5",
+            "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+            "rating": 4,
+            "points": 0.8,
+            "example": "T8 to T10 build some pressure toward a concession.",
+            "limitation": "Uniform rhythm and intensity across T1-T12; no build or release.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      }
+    ],
+    "uncapped": 58.34,
+    "score": 58.34,
+    "capReason": null,
+    "provisional": false,
+    "strengths": [
+      "Section A frames the right uncertainty: wanting milestones versus fearing exclusion.",
+      "T8 to T11 give a real exchange on whether choice escapes social structure.",
+      "Section D offers a usable reflection: fear of losing connection with valued people."
+    ],
+    "weaknesses": [
+      "Decision usefulness is thin: no options, no observable conditions, T6 number ungrounded.",
+      "Personal context barely used; no questions about friendships, finances or the user's doubt.",
+      "Uniform voice and an uncaused T10 Existentialist reversal flatten drama."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C5.3",
+        "turns": [
+          6
+        ],
+        "observed": "Step carries a time and count not drawn from user facts; no observable condition.",
+        "evidence": "spend 30 minutes this week listing three things you value"
+      },
+      {
+        "cell_id": "C3.5",
+        "turns": [
+          12
+        ],
+        "observed": "No turn asks the user anything; missing facts never become answer-dependent branches.",
+        "evidence": "it depends on whether you value social belonging more than individual autonomy"
+      },
+      {
+        "cell_id": "C7.2",
+        "turns": [
+          10
+        ],
+        "observed": "Reversal names no cause and drops a claim the speaker never made.",
+        "evidence": "I drop the idea that you can just choose to be free"
+      },
+      {
+        "cell_id": "C2.4",
+        "turns": [
+          1
+        ],
+        "observed": "Cause of the user's feeling asserted as fact without evidence.",
+        "evidence": "You feel behind because you are treating your life as a project"
+      },
+      {
+        "cell_id": "C6.4",
+        "turns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "observed": "All minds share register and near-identical single-sentence turn length.",
+        "evidence": "I still disagree that you can simply choose your path"
+      }
+    ],
+    "mechanical": [
+      {
+        "pattern": "uncaused_reversal",
+        "turns": [
+          10
+        ]
+      },
+      {
+        "pattern": "ungrounded_number",
+        "turns": [
+          6
+        ]
+      },
+      {
+        "pattern": "uniform_voice",
+        "turns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "observed",
+        "location": "Turn 1",
+        "description": "States the cause of the user's feeling as fact with no supporting detail from the user.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "Turns 2, 5",
+        "description": "Distinction analyses cultural taste; applying it to marriage and homeownership is an unflagged extension.",
+        "evidence_ids": []
+      }
+    ],
+    "rubricFitNotes": [
+      "The situation gives few personal facts, so C3.2 and C3.4 had little to use; still, the debate asked nothing to fill the gap."
+    ],
+    "questionTypeNote": "Read as a decision of self-reflection type; C5 judged on whether the user gains a basis for weighing milestones versus own path."
+  },
+  "rubricVersion": "rubric-evaluator-4.2.0",
+  "savedAt": "2026-10-15T10:27:48.057Z"
+}

@@ -1,0 +1,167 @@
+{
+  "jobId": "gen.v1.q4.s1",
+  "lineage": "gemini",
+  "version": "v1",
+  "q": 4,
+  "s": 1,
+  "model": "gemini-3.1-flash-lite",
+  "settings": {
+    "temperature": 0.5,
+    "thinkingLevel": "MEDIUM",
+    "maxOutputTokens": 16384
+  },
+  "debate": {
+    "situation": "You are experiencing a sense of being behind in life because your peers are reaching traditional milestones like marriage and homeownership. You are uncertain if you actually desire these outcomes, yet the pressure to conform remains a source of discomfort and doubt.",
+    "minds": [
+      {
+        "title": "The Sociologist",
+        "concern": "The influence of social scripts and class expectations.",
+        "author": "Pierre Bourdieu",
+        "book": "Distinction",
+        "year": 1979
+      },
+      {
+        "title": "The Stoic",
+        "concern": "The distinction between internal values and external opinions.",
+        "author": "Epictetus",
+        "book": "Enchiridion",
+        "year": 135
+      },
+      {
+        "title": "The Existentialist",
+        "concern": "The burden of radical freedom and authentic choice.",
+        "author": "Jean-Paul Sartre",
+        "book": "Existentialism is a Humanism",
+        "year": 1946
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Sociologist",
+        "text": "You feel behind because you are measuring your life against a social script you did not write. These milestones are not universal truths but cultural markers that signal a specific kind of belonging in your environment.",
+        "author": "Pierre Bourdieu",
+        "book": "Distinction",
+        "pd": false,
+        "basis": "Basis: Pierre Bourdieu, Distinction"
+      },
+      {
+        "speaker": "The Stoic",
+        "text": "You might be suffering because you are trying to control the opinion of others rather than your own internal standard. As it is written, some things are up to us and some are not; your friends' choices are not yours to command.",
+        "author": "Epictetus",
+        "book": "Enchiridion",
+        "pd": true,
+        "basis": "Basis: Epictetus, Enchiridion"
+      },
+      {
+        "speaker": "The Existentialist",
+        "text": "You are avoiding the burden of your own freedom by looking at these milestones as if they were objective requirements. You might be using this feeling of being behind as a way to escape the anxiety of creating your own meaning.",
+        "author": "Jean-Paul Sartre",
+        "book": "Existentialism is a Humanism",
+        "pd": false,
+        "basis": "Basis: Jean-Paul Sartre, Existentialism is a Humanism"
+      },
+      {
+        "speaker": "The Sociologist",
+        "text": "The Stoic says you are trying to control the opinion of others, but ignoring the social cost of opting out is not a neutral act. Your desire for these things might be a reflection of the environment you inhabit.",
+        "author": "Pierre Bourdieu",
+        "book": "Distinction",
+        "pd": false,
+        "basis": "Basis: Pierre Bourdieu, Distinction"
+      },
+      {
+        "speaker": "The Stoic",
+        "text": "The Sociologist says ignoring the social cost is not a neutral act, but if you make your peace dependent on their approval, you have already surrendered your liberty. You must remember that it is not things that disturb you, but your judgment about them.",
+        "author": "Epictetus",
+        "book": "Enchiridion",
+        "pd": true,
+        "basis": "Basis: Epictetus, Enchiridion"
+      },
+      {
+        "speaker": "The Existentialist",
+        "text": "The Sociologist claims ignoring the social cost is not a neutral act, but maybe you are just using this social script to hide from the fact that you have to choose your own values. You are the sole author of your life.",
+        "author": "Jean-Paul Sartre",
+        "book": "Existentialism is a Humanism",
+        "pd": false,
+        "basis": "Basis: Jean-Paul Sartre, Existentialism is a Humanism"
+      },
+      {
+        "speaker": "The Sociologist",
+        "text": "I drop the claim that you are using this social script to hide, and instead accept the Existentialist point that the script is a choice. Still, it is a choice made within a field of power that makes some paths much harder than others.",
+        "author": "Pierre Bourdieu",
+        "book": "Distinction",
+        "pd": false,
+        "basis": "Basis: Pierre Bourdieu, Distinction"
+      },
+      {
+        "speaker": "The Stoic",
+        "text": "You might fear that if you do not follow the path your friends take, you will lose your place in their world, but perhaps you are already losing yourself by trying to keep up. Focus only on what is within your own power.",
+        "author": "Epictetus",
+        "book": "Enchiridion",
+        "pd": true,
+        "basis": "Basis: Epictetus, Enchiridion"
+      },
+      {
+        "speaker": "The Existentialist",
+        "text": "You might want both the comfort of belonging and the authenticity of your own path, but you cannot have both without cost; which one matters more to you right now?",
+        "author": "Jean-Paul Sartre",
+        "book": "Existentialism is a Humanism",
+        "pd": false,
+        "basis": "Basis: Jean-Paul Sartre, Existentialism is a Humanism"
+      },
+      {
+        "speaker": "The Sociologist",
+        "text": "The disagreement remains: is your feeling of being behind a structural reality of your social circle, or just a failure of your own internal focus?",
+        "author": "Pierre Bourdieu",
+        "book": "Distinction",
+        "pd": false,
+        "basis": "Basis: Pierre Bourdieu, Distinction"
+      },
+      {
+        "speaker": "The Stoic",
+        "text": "To decide this, you would need to know if you would feel this same pressure if you were living in a culture where these milestones were not the norm.",
+        "author": "Epictetus",
+        "book": "Enchiridion",
+        "pd": true,
+        "basis": "Basis: Epictetus, Enchiridion"
+      },
+      {
+        "speaker": "The Existentialist",
+        "text": "Try this: spend 15 minutes writing down what your life would look like if no one else were watching, and see if the feeling of being behind persists.",
+        "author": "Jean-Paul Sartre",
+        "book": "Existentialism is a Humanism",
+        "pd": false,
+        "basis": "Basis: Jean-Paul Sartre, Existentialism is a Humanism"
+      }
+    ],
+    "clearer": "The main insight is that your feeling of being behind is a conflict between external social pressures and your internal desire for autonomy. It remains disputed whether this pressure is an unavoidable structural reality or a manageable internal judgment. A useful self-reflection is to consider if your anxiety stems from a genuine desire for those milestones or from a fear of social exclusion.",
+    "dependsOn": "If you find that your anxiety vanishes when you imagine a life without social observation → the feeling is likely a response to external pressure, and you can focus on building a community that values your chosen path. If the feeling persists even in total isolation → you may actually desire those milestones, and your current avoidance is a defense mechanism. To learn which is true, try the 15-minute writing exercise proposed by the Existentialist."
+  },
+  "validity": {
+    "ok": true,
+    "problems": []
+  },
+  "metrics": {
+    "turns": 12,
+    "words": 443,
+    "meanWordsPerTurn": 36.92,
+    "shortTurns": 0,
+    "longTurns": 0,
+    "hedges": 14,
+    "hedgeDensity": 3.16,
+    "bannedCertainty": 1,
+    "templatedOpeners": 3,
+    "slotMarkers": 1,
+    "questionsToUser": 1,
+    "theUser": 0,
+    "pdFalseQuoteTurns": 0,
+    "fabricatedBasisTurns": 0,
+    "distinctSpeakers": 3,
+    "distinctBooks": 3
+  },
+  "unusable": false,
+  "latencyMs": 9902,
+  "tokens": null,
+  "raw": "{\n  \"output\": {\n    \"situation\": \"You are experiencing a sense of being behind in life because your peers are reaching traditional milestones like marriage and homeownership. You are uncertain if you actually desire these outcomes, yet the pressure to conform remains a source of discomfort and doubt.\",\n    \"minds\": [\n      {\n        \"title\": \"The Sociologist\",\n        \"concern\": \"The influence of social scripts and class expectations.\",\n        \"author\": \"Pierre Bourdieu\",\n        \"book\": \"Distinction\",\n        \"year\": 1979\n      },\n      {\n        \"title\": \"The Stoic\",\n        \"concern\": \"The distinction between internal values and external opinions.\",\n        \"author\": \"Epictetus\",\n        \"book\": \"Enchiridion\",\n        \"year\": 135\n      },\n      {\n        \"title\": \"The Existentialist\",\n        \"concern\": \"The burden of radical freedom and authentic choice.\",\n        \"author\": \"Jean-Paul Sartre\",\n        \"book\": \"Existentialism is a Humanism\",\n        \"year\": 1946\n      }\n    ],\n    \"debate\": [\n      {\n        \"speaker\": \"The Sociologist\",\n        \"text\": \"You feel behind because you are measuring your life against a social script you did not write. These milestones are not universal truths but cultural markers that signal a specific kind of belonging in your environment.\",\n        \"author\": \"Pierre Bourdieu\",\n        \"book\": \"Distinction\",\n        \"pd\": false,\n        \"basis\": \"Basis: Pierre Bourdieu, Distinction\"\n      },\n      {\n        \"speaker\": \"The Stoic\",\n        \"text\": \"You might be suffering because you are trying to control the opinion of others rather than your own internal standard. As it is written, some things are up to us and some are not; your friends' choices are not yours to command.\",\n        \"author\": \"Epictetus\",\n        \"book\": \"Enchiridion\",\n        \"pd\": true,\n        \"basis\": \"Basis: Epictetus, Enchiridion\"\n      },\n      {\n        \"speaker\": \"The Existentialist\",\n        \"text\": \"You are avoiding the burden of your own freedom by looking at these milestones as if they were objective requirements. You might be using this feeling of being behind as a way to escape the anxiety of creating your own meaning.\",\n        \"author\": \"Jean-Paul Sartre\",\n        \"book\": \"Existentialism is a Humanism\",\n        \"pd\": false,\n        \"basis\": \"Basis: Jean-Paul Sartre, Existentialism is a Humanism\"\n      },\n      {\n        \"speaker\": \"The Sociologist\",\n        \"text\": \"The Stoic says you are trying to control the opinion of others, but ignoring the social cost of opting out is not a neutral act. Your desire for these things might be a reflection of the environment you inhabit.\",\n        \"author\": \"Pierre Bourdieu\",\n        \"book\": \"Distinction\",\n        \"pd\": false,\n        \"basis\": \"Basis: Pierre Bourdieu, Distinction\"\n      },\n      {\n        \"speaker\": \"The Stoic\",\n        \"text\": \"The Sociologist says ignoring the social cost is not a neutral act, but if you make your peace dependent on their approval, you have already surrendered your liberty. You must remember that it is not things that disturb you, but your judgment about them.\",\n        \"author\": \"Epictetus\",\n        \"book\": \"Enchiridion\",\n        \"pd\": true,\n        \"basis\": \"Basis: Epictetus, Enchiridion\"\n      },\n      {\n        \"speaker\": \"The Existentialist\",\n        \"text\": \"The Sociologist claims ignoring the social cost is not a neutral act, but maybe you are just using this social script to hide from the fact that you have to choose your own values. You are the sole author of your life.\",\n        \"author\": \"Jean-Paul Sartre\",\n        \"book\": \"Existentialism is a Humanism\",\n        \"pd\": false,\n        \"basis\": \"Basis: Jean-Paul Sartre, Existentialism is a Humanism\"\n      },\n      {\n        \"speaker\": \"The Sociologist\",\n        \"text\": \"I drop the claim that you are using this social script to hide, and instead accept the Existentialist point that the script is a choice. Still, it is a choice made within a field of power that makes some paths much harder than others.\",\n        \"author\": \"Pierre Bourdieu\",\n        \"book\": \"Distinction\",\n        \"pd\": false,\n        \"basis\": \"Basis: Pierre Bourdieu, Distinction\"\n      },\n      {\n        \"speaker\": \"The Stoic\",\n        \"text\": \"You might fear that if you do not follow the path your friends take, you will lose your place in their world, but perhaps you are already losing yourself by trying to keep up. Focus only on what is within your own power.\",\n        \"author\": \"Epictetus\",\n        \"book\": \"Enchiridion\",\n        \"pd\": true,\n        \"basis\": \"Basis: Epictetus, Enchiridion\"\n      },\n      {\n        \"speaker\": \"The Existentialist\",\n        \"text\": \"You might want both the comfort of belonging and the authenticity of your own path, but you cannot have both without cost; which one matters more to you right now?\",\n        \"author\": \"Jean-Paul Sartre\",\n        \"book\": \"Existentialism is a Humanism\",\n        \"pd\": false,\n        \"basis\": \"Basis: Jean-Paul Sartre, Existentialism is a Humanism\"\n      },\n      {\n        \"speaker\": \"The Sociologist\",\n        \"text\": \"The disagreement remains: is your feeling of being behind a structural reality of your social circle, or just a failure of your own internal focus?\",\n        \"author\": \"Pierre Bourdieu\",\n        \"book\": \"Distinction\",\n        \"pd\": false,\n        \"basis\": \"Basis: Pierre Bourdieu, Distinction\"\n      },\n      {\n        \"speaker\": \"The Stoic\",\n        \"text\": \"To decide this, you would need to know if you would feel this same pressure if you were living in a culture where these milestones were not the norm.\",\n        \"author\": \"Epictetus\",\n        \"book\": \"Enchiridion\",\n        \"pd\": true,\n        \"basis\": \"Basis: Epictetus, Enchiridion\"\n      },\n      {\n        \"speaker\": \"The Existentialist\",\n        \"text\": \"Try this: spend 15 minutes writing down what your life would look like if no one else were watching, and see if the feeling of being behind persists.\",\n        \"author\": \"Jean-Paul Sartre\",\n        \"book\": \"Existentialism is a Humanism\",\n        \"pd\": false,\n        \"basis\": \"Basis: Jean-Paul Sartre, Existentialism is a Humanism\"\n      }\n    ],\n    \"clearer\": \"The main insight is that your feeling of being behind is a conflict between external social pressures and your internal desire for autonomy. It remains disputed whether this pressure is an unavoidable structural reality or a manageable internal judgment. A useful self-reflection is to consider if your anxiety stems from a genuine desire for those milestones or from a fear of social exclusion.\",\n    \"dependsOn\": \"If you find that your anxiety vanishes when you imagine a life without social observation → the feeling is likely a response to external pressure, and you can focus on building a community that values your chosen path. If the feeling persists even in total isolation → you may actually desire those milestones, and your current avoidance is a defense mechanism. To learn which is true, try the 15-minute writing exercise proposed by the Existentialist.\"\n  },\n  \"latencyMs\": 9902,\n  \"tokens\": null\n}",
+  "transcriptHash": "14e59514539c1312448f294f6f06a19dc18a5eba265fdf6212f384b042040689",
+  "savedAt": "2026-10-15T10:09:30.250Z"
+}

@@ -1,0 +1,167 @@
+{
+  "jobId": "gen.v1.q2.s3",
+  "lineage": "gemini",
+  "version": "v1",
+  "q": 2,
+  "s": 3,
+  "model": "gemini-3.1-flash-lite",
+  "settings": {
+    "temperature": 0.5,
+    "thinkingLevel": "MEDIUM",
+    "maxOutputTokens": 16384
+  },
+  "debate": {
+    "situation": "The user has received a job offer with a 25% salary increase but faces a significant increase in commute time to 90 minutes each way. The central tension is between the potential for long-term financial security and the immediate, daily loss of personal time and well-being.",
+    "minds": [
+      {
+        "title": "The Utilitarian",
+        "concern": "Maximizing net happiness through rational calculation",
+        "author": "Jeremy Bentham",
+        "book": "An Introduction to the Principles of Morals and Legislation",
+        "year": 1789
+      },
+      {
+        "title": "The Essentialist",
+        "concern": "Focusing on the vital few over the trivial many",
+        "author": "Greg McKeown",
+        "book": "Essentialism",
+        "year": 2014
+      },
+      {
+        "title": "The Stoic",
+        "concern": "Distinguishing between internal control and external events",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "year": 161
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Utilitarian",
+        "text": "Nature has placed mankind under the governance of two sovereign masters, pain and pleasure. You might feel that 25% more money brings pleasure, but you must calculate if the 180 minutes of daily pain outweighs that gain.",
+        "author": "Jeremy Bentham",
+        "book": "An Introduction to the Principles of Morals and Legislation",
+        "pd": true,
+        "basis": "Basis: Jeremy Bentham, An Introduction to the Principles of Morals and Legislation"
+      },
+      {
+        "speaker": "The Essentialist",
+        "text": "You have to consider if this money is truly vital to your purpose. If you pursue everything, you achieve nothing. Perhaps this salary jump is just a distraction from what matters most.",
+        "author": "Greg McKeown",
+        "book": "Essentialism",
+        "pd": false,
+        "basis": "Basis: Greg McKeown, Essentialism"
+      },
+      {
+        "speaker": "The Stoic",
+        "text": "Time is the only thing we truly own, yet we spend it as if it were infinite. You might find that your peace of mind is worth more than any increase in wealth, as wealth is an external thing.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "Basis: Marcus Aurelius, Meditations"
+      },
+      {
+        "speaker": "The Utilitarian",
+        "text": "The Essentialist claims that money is a distraction, but they overlook that money provides the resources to secure future pleasures. If you have more capital, you might gain the power to eventually buy back your time.",
+        "author": "Jeremy Bentham",
+        "book": "An Introduction to the Principles of Morals and Legislation",
+        "pd": true,
+        "basis": "Basis: Jeremy Bentham, An Introduction to the Principles of Morals and Legislation"
+      },
+      {
+        "speaker": "The Essentialist",
+        "text": "The Utilitarian argues that money buys future time, but they ignore the reality that time spent commuting is gone forever. You might be trading your current life for a future that never arrives.",
+        "author": "Greg McKeown",
+        "book": "Essentialism",
+        "pd": false,
+        "basis": "Basis: Greg McKeown, Essentialism"
+      },
+      {
+        "speaker": "The Stoic",
+        "text": "The Utilitarian and the Essentialist both obsess over external outcomes, whether money or time. You might find that the commute itself is indifferent if you learn to use that time for reflection rather than struggle.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "Basis: Marcus Aurelius, Meditations"
+      },
+      {
+        "speaker": "The Utilitarian",
+        "text": "Let us be precise. Calculate your current hourly rate and compare it to the new rate including the 3 hours of daily travel. If the new rate is not significantly higher, the math fails.",
+        "author": "Jeremy Bentham",
+        "book": "An Introduction to the Principles of Morals and Legislation",
+        "pd": true,
+        "basis": "Basis: Jeremy Bentham, An Introduction to the Principles of Morals and Legislation"
+      },
+      {
+        "speaker": "The Essentialist",
+        "text": "The Utilitarian suggests a simple calculation, but this ignores your constraint of family time. If you choose this, the cost might be missing out on your children evening routines, which no salary can replace.",
+        "author": "Greg McKeown",
+        "book": "Essentialism",
+        "pd": false,
+        "basis": "Basis: Greg McKeown, Essentialism"
+      },
+      {
+        "speaker": "The Stoic",
+        "text": "You may want both financial security and a calm life, but these goals might conflict here. Which matters more to you: the security of a larger bank account or the immediate peace of your daily rhythm?",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "Basis: Marcus Aurelius, Meditations"
+      },
+      {
+        "speaker": "The Essentialist",
+        "text": "I drop my earlier claim that money is merely a distraction. I agree with the Stoic that we must focus on what is vital, but I now argue that the trade-off is only worth it if the money directly funds a specific, non-negotiable goal.",
+        "author": "Greg McKeown",
+        "book": "Essentialism",
+        "pd": false,
+        "basis": "Basis: Greg McKeown, Essentialism"
+      },
+      {
+        "speaker": "The Stoic",
+        "text": "You have not mentioned your current commute. If your current travel is 30 minutes, the shift is massive. If it is already an hour, the change is minor. How many minutes is your current daily commute?",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "Basis: Marcus Aurelius, Meditations"
+      },
+      {
+        "speaker": "The Utilitarian",
+        "text": "We remain divided on whether the future utility of money outweighs the present pain of transit. The final decision rests on whether you value the potential for future freedom over the certainty of current daily comfort.",
+        "author": "Jeremy Bentham",
+        "book": "An Introduction to the Principles of Morals and Legislation",
+        "pd": true,
+        "basis": "Basis: Jeremy Bentham, An Introduction to the Principles of Morals and Legislation"
+      }
+    ],
+    "clearer": "The debate clarifies that the decision is not just about math, but about the trade-off between current life quality and future financial leverage. The main insight is that the commute is a non-renewable cost that must be measured against a specific, vital goal rather than abstract wealth.",
+    "dependsOn": "If your current commute is already long, the marginal impact of the new commute is lower, making the salary increase more attractive. If your current commute is short, the sudden loss of personal time will likely outweigh the financial gain. To decide, calculate your effective hourly rate including the total daily transit time to see if the net gain is truly meaningful."
+  },
+  "validity": {
+    "ok": true,
+    "problems": []
+  },
+  "metrics": {
+    "turns": 12,
+    "words": 432,
+    "meanWordsPerTurn": 36,
+    "shortTurns": 0,
+    "longTurns": 0,
+    "hedges": 19,
+    "hedgeDensity": 4.4,
+    "bannedCertainty": 2,
+    "templatedOpeners": 3,
+    "slotMarkers": 2,
+    "questionsToUser": 2,
+    "theUser": 0,
+    "pdFalseQuoteTurns": 0,
+    "fabricatedBasisTurns": 0,
+    "distinctSpeakers": 3,
+    "distinctBooks": 3
+  },
+  "unusable": false,
+  "latencyMs": 32306,
+  "tokens": null,
+  "raw": "{\n  \"output\": {\n    \"situation\": \"The user has received a job offer with a 25% salary increase but faces a significant increase in commute time to 90 minutes each way. The central tension is between the potential for long-term financial security and the immediate, daily loss of personal time and well-being.\",\n    \"minds\": [\n      {\n        \"title\": \"The Utilitarian\",\n        \"concern\": \"Maximizing net happiness through rational calculation\",\n        \"author\": \"Jeremy Bentham\",\n        \"book\": \"An Introduction to the Principles of Morals and Legislation\",\n        \"year\": 1789\n      },\n      {\n        \"title\": \"The Essentialist\",\n        \"concern\": \"Focusing on the vital few over the trivial many\",\n        \"author\": \"Greg McKeown\",\n        \"book\": \"Essentialism\",\n        \"year\": 2014\n      },\n      {\n        \"title\": \"The Stoic\",\n        \"concern\": \"Distinguishing between internal control and external events\",\n        \"author\": \"Marcus Aurelius\",\n        \"book\": \"Meditations\",\n        \"year\": 161\n      }\n    ],\n    \"debate\": [\n      {\n        \"speaker\": \"The Utilitarian\",\n        \"text\": \"Nature has placed mankind under the governance of two sovereign masters, pain and pleasure. You might feel that 25% more money brings pleasure, but you must calculate if the 180 minutes of daily pain outweighs that gain.\",\n        \"author\": \"Jeremy Bentham\",\n        \"book\": \"An Introduction to the Principles of Morals and Legislation\",\n        \"pd\": true,\n        \"basis\": \"Basis: Jeremy Bentham, An Introduction to the Principles of Morals and Legislation\"\n      },\n      {\n        \"speaker\": \"The Essentialist\",\n        \"text\": \"You have to consider if this money is truly vital to your purpose. If you pursue everything, you achieve nothing. Perhaps this salary jump is just a distraction from what matters most.\",\n        \"author\": \"Greg McKeown\",\n        \"book\": \"Essentialism\",\n        \"pd\": false,\n        \"basis\": \"Basis: Greg McKeown, Essentialism\"\n      },\n      {\n        \"speaker\": \"The Stoic\",\n        \"text\": \"Time is the only thing we truly own, yet we spend it as if it were infinite. You might find that your peace of mind is worth more than any increase in wealth, as wealth is an external thing.\",\n        \"author\": \"Marcus Aurelius\",\n        \"book\": \"Meditations\",\n        \"pd\": true,\n        \"basis\": \"Basis: Marcus Aurelius, Meditations\"\n      },\n      {\n        \"speaker\": \"The Utilitarian\",\n        \"text\": \"The Essentialist claims that money is a distraction, but they overlook that money provides the resources to secure future pleasures. If you have more capital, you might gain the power to eventually buy back your time.\",\n        \"author\": \"Jeremy Bentham\",\n        \"book\": \"An Introduction to the Principles of Morals and Legislation\",\n        \"pd\": true,\n        \"basis\": \"Basis: Jeremy Bentham, An Introduction to the Principles of Morals and Legislation\"\n      },\n      {\n        \"speaker\": \"The Essentialist\",\n        \"text\": \"The Utilitarian argues that money buys future time, but they ignore the reality that time spent commuting is gone forever. You might be trading your current life for a future that never arrives.\",\n        \"author\": \"Greg McKeown\",\n        \"book\": \"Essentialism\",\n        \"pd\": false,\n        \"basis\": \"Basis: Greg McKeown, Essentialism\"\n      },\n      {\n        \"speaker\": \"The Stoic\",\n        \"text\": \"The Utilitarian and the Essentialist both obsess over external outcomes, whether money or time. You might find that the commute itself is indifferent if you learn to use that time for reflection rather than struggle.\",\n        \"author\": \"Marcus Aurelius\",\n        \"book\": \"Meditations\",\n        \"pd\": true,\n        \"basis\": \"Basis: Marcus Aurelius, Meditations\"\n      },\n      {\n        \"speaker\": \"The Utilitarian\",\n        \"text\": \"Let us be precise. Calculate your current hourly rate and compare it to the new rate including the 3 hours of daily travel. If the new rate is not significantly higher, the math fails.\",\n        \"author\": \"Jeremy Bentham\",\n        \"book\": \"An Introduction to the Principles of Morals and Legislation\",\n        \"pd\": true,\n        \"basis\": \"Basis: Jeremy Bentham, An Introduction to the Principles of Morals and Legislation\"\n      },\n      {\n        \"speaker\": \"The Essentialist\",\n        \"text\": \"The Utilitarian suggests a simple calculation, but this ignores your constraint of family time. If you choose this, the cost might be missing out on your children evening routines, which no salary can replace.\",\n        \"author\": \"Greg McKeown\",\n        \"book\": \"Essentialism\",\n        \"pd\": false,\n        \"basis\": \"Basis: Greg McKeown, Essentialism\"\n      },\n      {\n        \"speaker\": \"The Stoic\",\n        \"text\": \"You may want both financial security and a calm life, but these goals might conflict here. Which matters more to you: the security of a larger bank account or the immediate peace of your daily rhythm?\",\n        \"author\": \"Marcus Aurelius\",\n        \"book\": \"Meditations\",\n        \"pd\": true,\n        \"basis\": \"Basis: Marcus Aurelius, Meditations\"\n      },\n      {\n        \"speaker\": \"The Essentialist\",\n        \"text\": \"I drop my earlier claim that money is merely a distraction. I agree with the Stoic that we must focus on what is vital, but I now argue that the trade-off is only worth it if the money directly funds a specific, non-negotiable goal.\",\n        \"author\": \"Greg McKeown\",\n        \"book\": \"Essentialism\",\n        \"pd\": false,\n        \"basis\": \"Basis: Greg McKeown, Essentialism\"\n      },\n      {\n        \"speaker\": \"The Stoic\",\n        \"text\": \"You have not mentioned your current commute. If your current travel is 30 minutes, the shift is massive. If it is already an hour, the change is minor. How many minutes is your current daily commute?\",\n        \"author\": \"Marcus Aurelius\",\n        \"book\": \"Meditations\",\n        \"pd\": true,\n        \"basis\": \"Basis: Marcus Aurelius, Meditations\"\n      },\n      {\n        \"speaker\": \"The Utilitarian\",\n        \"text\": \"We remain divided on whether the future utility of money outweighs the present pain of transit. The final decision rests on whether you value the potential for future freedom over the certainty of current daily comfort.\",\n        \"author\": \"Jeremy Bentham\",\n        \"book\": \"An Introduction to the Principles of Morals and Legislation\",\n        \"pd\": true,\n        \"basis\": \"Basis: Jeremy Bentham, An Introduction to the Principles of Morals and Legislation\"\n      }\n    ],\n    \"clearer\": \"The debate clarifies that the decision is not just about math, but about the trade-off between current life quality and future financial leverage. The main insight is that the commute is a non-renewable cost that must be measured against a specific, vital goal rather than abstract wealth.\",\n    \"dependsOn\": \"If your current commute is already long, the marginal impact of the new commute is lower, making the salary increase more attractive. If your current commute is short, the sudden loss of personal time will likely outweigh the financial gain. To decide, calculate your effective hourly rate including the total daily transit time to see if the net gain is truly meaningful.\"\n  },\n  \"latencyMs\": 32306,\n  \"tokens\": null\n}",
+  "transcriptHash": "c555205071c80f0115af79c64e13fa209ec911542e73910a3d1e0905772e848a",
+  "savedAt": "2026-10-15T10:21:15.791Z"
+}

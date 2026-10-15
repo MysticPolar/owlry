@@ -3,87 +3,87 @@
   "b": "sonnet",
   "champions": {
     "a": "v0",
-    "b": "v0"
+    "b": "v1"
   },
   "total": {
     "a": 43.92,
-    "b": 78.2,
-    "gap": 34.28
+    "b": 79.88,
+    "gap": 35.96
   },
   "byQuestion": [
     {
       "q": 1,
       "a": 43.15,
-      "b": 74.79,
-      "gap": 31.64
+      "b": 78.58,
+      "gap": 35.43
     },
     {
       "q": 2,
       "a": 45.56,
-      "b": 77.67,
-      "gap": 32.11
+      "b": 79.93,
+      "gap": 34.37
     },
     {
       "q": 3,
       "a": 47.16,
-      "b": 77.35,
-      "gap": 30.19
+      "b": 80.6,
+      "gap": 33.44
     },
     {
       "q": 4,
       "a": 49.95,
-      "b": 82.79,
-      "gap": 32.84
+      "b": 82.19,
+      "gap": 32.24
     },
     {
       "q": 5,
       "a": 33.76,
-      "b": 78.38,
-      "gap": 44.62
+      "b": 78.08,
+      "gap": 44.32
     }
   ],
   "byCriterion": [
     {
       "name": "Quality of discussion",
       "a": 9.02,
-      "b": 16.43,
-      "gap": 7.41
+      "b": 16.67,
+      "gap": 7.65
     },
     {
       "name": "Quality of disagreement, trust and grounding",
       "a": 8.71,
-      "b": 16.16,
-      "gap": 7.45
+      "b": 16.46,
+      "gap": 7.75
     },
     {
       "name": "Personal relevance",
       "a": 3.96,
-      "b": 7.54,
-      "gap": 3.59
+      "b": 7.65,
+      "gap": 3.69
     },
     {
       "name": "Constructive self-discovery",
       "a": 7.89,
-      "b": 14.3,
-      "gap": 6.41
+      "b": 14.97,
+      "gap": 7.08
     },
     {
       "name": "Decision usefulness",
       "a": 3.77,
-      "b": 7.92,
-      "gap": 4.15
+      "b": 8.09,
+      "gap": 4.32
     },
     {
       "name": "Clarity and engagement",
       "a": 6.51,
-      "b": 8.34,
-      "gap": 1.84
+      "b": 8.4,
+      "gap": 1.9
     },
     {
       "name": "Drama and entertainment",
       "a": 4.06,
-      "b": 7.5,
-      "gap": 3.44
+      "b": 7.62,
+      "gap": 3.56
     }
   ],
   "cells": [
@@ -92,8 +92,8 @@
       "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
       "criterion": "Drama and entertainment",
       "a": 2.45,
-      "b": 8.17,
-      "gap": 5.72,
+      "b": 8.39,
+      "gap": 5.94,
       "everyQuestion": true,
       "capabilityBound": true
     },
@@ -102,8 +102,8 @@
       "name": "Identification of decisive conditions",
       "criterion": "Decision usefulness",
       "a": 3.22,
-      "b": 8.2,
-      "gap": 4.98,
+      "b": 8.17,
+      "gap": 4.95,
       "everyQuestion": true,
       "capabilityBound": true
     },
@@ -112,8 +112,8 @@
       "name": "Treatment of uncertainty",
       "criterion": "Decision usefulness",
       "a": 3.22,
-      "b": 7.83,
-      "gap": 4.61,
+      "b": 8.03,
+      "gap": 4.81,
       "everyQuestion": true,
       "capabilityBound": true
     },
@@ -122,8 +122,8 @@
       "name": "Development of ideas",
       "criterion": "Quality of discussion",
       "a": 4.42,
-      "b": 8.99,
-      "gap": 4.57,
+      "b": 9,
+      "gap": 4.58,
       "everyQuestion": true,
       "capabilityBound": true
     },
@@ -132,8 +132,8 @@
       "name": "Intellectual honesty and revision",
       "criterion": "Quality of disagreement, trust and grounding",
       "a": 3.88,
-      "b": 8.18,
-      "gap": 4.3,
+      "b": 8.39,
+      "gap": 4.51,
       "everyQuestion": true,
       "capabilityBound": true
     },
@@ -142,8 +142,8 @@
       "name": "Calibration and transparency",
       "criterion": "Quality of disagreement, trust and grounding",
       "a": 3.92,
-      "b": 8.14,
-      "gap": 4.22,
+      "b": 8.23,
+      "gap": 4.31,
       "everyQuestion": true,
       "capabilityBound": true
     },
@@ -152,8 +152,8 @@
       "name": "Substance of challenges",
       "criterion": "Quality of disagreement, trust and grounding",
       "a": 4.45,
-      "b": 8.62,
-      "gap": 4.17,
+      "b": 8.67,
+      "gap": 4.22,
       "everyQuestion": true,
       "capabilityBound": true
     },
@@ -162,8 +162,8 @@
       "name": "Integration of perspectives",
       "criterion": "Quality of discussion",
       "a": 4.12,
-      "b": 8.24,
-      "gap": 4.12,
+      "b": 8.23,
+      "gap": 4.11,
       "everyQuestion": true,
       "capabilityBound": true
     },
@@ -172,18 +172,8 @@
       "name": "Responsiveness to information",
       "criterion": "Personal relevance",
       "a": 3.18,
-      "b": 7.28,
-      "gap": 4.1,
-      "everyQuestion": true,
-      "capabilityBound": true
-    },
-    {
-      "id": "C1.5",
-      "name": "Progress toward understanding",
-      "criterion": "Quality of discussion",
-      "a": 4.39,
-      "b": 8.29,
-      "gap": 3.9,
+      "b": 7.23,
+      "gap": 4.05,
       "everyQuestion": true,
       "capabilityBound": true
     },
@@ -192,8 +182,48 @@
       "name": "Agency and reflective ownership",
       "criterion": "Constructive self-discovery",
       "a": 4.05,
-      "b": 7.91,
-      "gap": 3.86,
+      "b": 8.1,
+      "gap": 4.05,
+      "everyQuestion": true,
+      "capabilityBound": true
+    },
+    {
+      "id": "C5.1",
+      "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+      "criterion": "Decision usefulness",
+      "a": 4.32,
+      "b": 8.37,
+      "gap": 4.05,
+      "everyQuestion": true,
+      "capabilityBound": true
+    },
+    {
+      "id": "C5.2",
+      "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+      "criterion": "Decision usefulness",
+      "a": 4,
+      "b": 7.94,
+      "gap": 3.94,
+      "everyQuestion": true,
+      "capabilityBound": true
+    },
+    {
+      "id": "C1.5",
+      "name": "Progress toward understanding",
+      "criterion": "Quality of discussion",
+      "a": 4.39,
+      "b": 8.3,
+      "gap": 3.91,
+      "everyQuestion": true,
+      "capabilityBound": true
+    },
+    {
+      "id": "C4.2",
+      "name": "Examination of assumptions",
+      "criterion": "Constructive self-discovery",
+      "a": 4.46,
+      "b": 8.34,
+      "gap": 3.88,
       "everyQuestion": true,
       "capabilityBound": true
     },
@@ -208,12 +238,12 @@
       "capabilityBound": true
     },
     {
-      "id": "C5.1",
-      "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
-      "criterion": "Decision usefulness",
-      "a": 4.32,
-      "b": 8.08,
-      "gap": 3.76,
+      "id": "C3.3",
+      "name": "Fit with goals and values",
+      "criterion": "Personal relevance",
+      "a": 4.08,
+      "b": 7.76,
+      "gap": 3.68,
       "everyQuestion": true,
       "capabilityBound": true
     },
@@ -228,52 +258,12 @@
       "capabilityBound": true
     },
     {
-      "id": "C4.2",
-      "name": "Examination of assumptions",
-      "criterion": "Constructive self-discovery",
-      "a": 4.46,
-      "b": 8.09,
-      "gap": 3.63,
-      "everyQuestion": true,
-      "capabilityBound": true
-    },
-    {
-      "id": "C2.1",
-      "name": "Faithful engagement",
-      "criterion": "Quality of disagreement, trust and grounding",
-      "a": 4.45,
-      "b": 8.06,
-      "gap": 3.61,
-      "everyQuestion": true,
-      "capabilityBound": true
-    },
-    {
       "id": "C3.2",
       "name": "Meaningful use of personal context",
       "criterion": "Personal relevance",
       "a": 3.83,
-      "b": 7.4,
-      "gap": 3.57,
-      "everyQuestion": true,
-      "capabilityBound": true
-    },
-    {
-      "id": "C5.2",
-      "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
-      "criterion": "Decision usefulness",
-      "a": 4,
-      "b": 7.55,
-      "gap": 3.55,
-      "everyQuestion": true,
-      "capabilityBound": true
-    },
-    {
-      "id": "C3.3",
-      "name": "Fit with goals and values",
-      "criterion": "Personal relevance",
-      "a": 4.08,
-      "b": 7.61,
-      "gap": 3.53,
+      "b": 7.43,
+      "gap": 3.6,
       "everyQuestion": true,
       "capabilityBound": true
     },
@@ -282,8 +272,18 @@
       "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
       "criterion": "Drama and entertainment",
       "a": 3.52,
-      "b": 6.86,
-      "gap": 3.34,
+      "b": 7.07,
+      "gap": 3.55,
+      "everyQuestion": true,
+      "capabilityBound": true
+    },
+    {
+      "id": "C2.1",
+      "name": "Faithful engagement",
+      "criterion": "Quality of disagreement, trust and grounding",
+      "a": 4.45,
+      "b": 7.99,
+      "gap": 3.54,
       "everyQuestion": true,
       "capabilityBound": true
     },
@@ -292,28 +292,18 @@
       "name": "Clarification of desires and motivations",
       "criterion": "Constructive self-discovery",
       "a": 3.55,
-      "b": 6.69,
-      "gap": 3.14,
-      "everyQuestion": false,
-      "capabilityBound": false
+      "b": 7.09,
+      "gap": 3.54,
+      "everyQuestion": true,
+      "capabilityBound": true
     },
     {
       "id": "C3.1",
       "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
       "criterion": "Personal relevance",
       "a": 4.91,
-      "b": 8.01,
-      "gap": 3.1,
-      "everyQuestion": true,
-      "capabilityBound": true
-    },
-    {
-      "id": "C7.4",
-      "name": "Memorable delivery",
-      "criterion": "Drama and entertainment",
-      "a": 5.08,
-      "b": 8.08,
-      "gap": 3,
+      "b": 8.41,
+      "gap": 3.5,
       "everyQuestion": true,
       "capabilityBound": true
     },
@@ -322,18 +312,8 @@
       "name": "Exploration of central tensions",
       "criterion": "Quality of discussion",
       "a": 4.18,
-      "b": 7.15,
-      "gap": 2.97,
-      "everyQuestion": true,
-      "capabilityBound": true
-    },
-    {
-      "id": "C1.1",
-      "name": "Continuity and responsiveness",
-      "criterion": "Quality of discussion",
-      "a": 5.44,
-      "b": 8.4,
-      "gap": 2.96,
+      "b": 7.58,
+      "gap": 3.4,
       "everyQuestion": true,
       "capabilityBound": true
     },
@@ -342,18 +322,48 @@
       "name": "Clarification of values and priorities",
       "criterion": "Constructive self-discovery",
       "a": 4.07,
-      "b": 6.8,
-      "gap": 2.73,
-      "everyQuestion": false,
-      "capabilityBound": false
+      "b": 7.24,
+      "gap": 3.17,
+      "everyQuestion": true,
+      "capabilityBound": true
+    },
+    {
+      "id": "C1.1",
+      "name": "Continuity and responsiveness",
+      "criterion": "Quality of discussion",
+      "a": 5.44,
+      "b": 8.57,
+      "gap": 3.13,
+      "everyQuestion": true,
+      "capabilityBound": true
     },
     {
       "id": "C4.4",
       "name": "Recognition of fears and outside expectations",
       "criterion": "Constructive self-discovery",
       "a": 3.59,
-      "b": 6.25,
-      "gap": 2.66,
+      "b": 6.66,
+      "gap": 3.07,
+      "everyQuestion": false,
+      "capabilityBound": false
+    },
+    {
+      "id": "C7.4",
+      "name": "Memorable delivery",
+      "criterion": "Drama and entertainment",
+      "a": 5.08,
+      "b": 7.89,
+      "gap": 2.81,
+      "everyQuestion": true,
+      "capabilityBound": true
+    },
+    {
+      "id": "C2.3",
+      "name": "Accuracy and support",
+      "criterion": "Quality of disagreement, trust and grounding",
+      "a": 5.08,
+      "b": 7.88,
+      "gap": 2.8,
       "everyQuestion": false,
       "capabilityBound": false
     },
@@ -362,8 +372,8 @@
       "name": "Personality and expressive voice without caricature",
       "criterion": "Drama and entertainment",
       "a": 4.58,
-      "b": 7.18,
-      "gap": 2.6,
+      "b": 7.35,
+      "gap": 2.77,
       "everyQuestion": false,
       "capabilityBound": false
     },
@@ -372,8 +382,8 @@
       "name": "Meaningful stakes and tension arising from the issue itself",
       "criterion": "Drama and entertainment",
       "a": 4.68,
-      "b": 7.22,
-      "gap": 2.54,
+      "b": 7.42,
+      "gap": 2.74,
       "everyQuestion": false,
       "capabilityBound": false
     },
@@ -382,28 +392,8 @@
       "name": "Economy and sustained attention",
       "criterion": "Clarity and engagement",
       "a": 5.79,
-      "b": 8.28,
-      "gap": 2.49,
-      "everyQuestion": false,
-      "capabilityBound": false
-    },
-    {
-      "id": "C2.3",
-      "name": "Accuracy and support",
-      "criterion": "Quality of disagreement, trust and grounding",
-      "a": 5.08,
-      "b": 7.41,
-      "gap": 2.33,
-      "everyQuestion": false,
-      "capabilityBound": false
-    },
-    {
-      "id": "C6.2",
-      "name": "Traceable arguments and references",
-      "criterion": "Clarity and engagement",
-      "a": 6.75,
-      "b": 8.52,
-      "gap": 1.77,
+      "b": 8.16,
+      "gap": 2.37,
       "everyQuestion": false,
       "capabilityBound": false
     },
@@ -412,8 +402,18 @@
       "name": "Distinguishable positions and voices, with explicit changes of position",
       "criterion": "Clarity and engagement",
       "a": 5.76,
-      "b": 7.51,
-      "gap": 1.75,
+      "b": 7.86,
+      "gap": 2.1,
+      "everyQuestion": false,
+      "capabilityBound": false
+    },
+    {
+      "id": "C6.2",
+      "name": "Traceable arguments and references",
+      "criterion": "Clarity and engagement",
+      "a": 6.75,
+      "b": 8.53,
+      "gap": 1.78,
       "everyQuestion": false,
       "capabilityBound": false
     },
@@ -422,8 +422,8 @@
       "name": "Accessible language",
       "criterion": "Clarity and engagement",
       "a": 7,
-      "b": 8.73,
-      "gap": 1.73,
+      "b": 8.74,
+      "gap": 1.74,
       "everyQuestion": false,
       "capabilityBound": false
     },
@@ -432,8 +432,8 @@
       "name": "Manageable pacing and turn length",
       "criterion": "Clarity and engagement",
       "a": 7.23,
-      "b": 8.67,
-      "gap": 1.44,
+      "b": 8.73,
+      "gap": 1.5,
       "everyQuestion": false,
       "capabilityBound": false
     }
@@ -448,21 +448,23 @@
     "C2.2",
     "C1.4",
     "C3.5",
-    "C1.5",
     "C4.5",
-    "C5.5",
     "C5.1",
-    "C3.4",
-    "C4.2",
-    "C2.1",
-    "C3.2",
     "C5.2",
+    "C1.5",
+    "C4.2",
+    "C5.5",
     "C3.3",
+    "C3.4",
+    "C3.2",
     "C7.5",
+    "C2.1",
+    "C4.1",
     "C3.1",
-    "C7.4",
     "C1.3",
-    "C1.1"
+    "C4.3",
+    "C1.1",
+    "C7.4"
   ],
   "crossLane": null
 }

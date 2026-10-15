@@ -1,0 +1,158 @@
+{
+  "jobId": "gen.v1.q4.s3",
+  "lineage": "sonnet",
+  "version": "v1",
+  "q": 4,
+  "s": 3,
+  "model": "sonnet",
+  "settings": {
+    "agentType": "general-purpose",
+    "effort": "medium"
+  },
+  "debate": {
+    "situation": "You report that many friends are buying homes or marrying, that you are unsure you want those things, and that you still feel behind. What you know is the feeling and the unsureness; what remains open is whether the feeling points to an unmet wish, to pressure from comparison, or to something else. The decisive unknown is what you would choose if no one else were watching.",
+    "minds": [
+      {
+        "title": "The Status Cartographer",
+        "concern": "Where the feeling of falling behind comes from: whose approval and which ranking it is measured against.",
+        "author": "Alain de Botton",
+        "book": "Status Anxiety",
+        "year": 2004
+      },
+      {
+        "title": "The Experimenter in Living",
+        "concern": "Freedom to try different ways of life and judge them by your own character rather than by custom.",
+        "author": "John Stuart Mill",
+        "book": "On Liberty",
+        "year": 1859
+      },
+      {
+        "title": "The Finitude Realist",
+        "concern": "Limited time: every path closes others, so the aim is to choose well rather than to keep up.",
+        "author": "Oliver Burkeman",
+        "book": "Four Thousand Weeks",
+        "year": 2021
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Status Cartographer",
+        "text": "Start with the word behind. Behind whom, by whose measure? Your friends are not racing you, yet you feel timed. I suspect the feeling is borrowed. It comes from watching peers collect approval, and it may say little about what you want.",
+        "author": "Alain de Botton",
+        "book": "Status Anxiety",
+        "pd": false,
+        "basis": "Basis: Alain de Botton, Status Anxiety"
+      },
+      {
+        "speaker": "The Experimenter in Living",
+        "text": "Careful. Calling the feeling borrowed is itself a guess. Maybe it is a real wish wearing an unfamiliar face. But I agree on one point: custom is a poor judge. Most people follow the usual path without ever asking if it fits them.",
+        "author": "John Stuart Mill",
+        "book": "On Liberty",
+        "pd": true,
+        "basis": "Basis: John Stuart Mill, On Liberty"
+      },
+      {
+        "speaker": "The Finitude Realist",
+        "text": "You are both treating this as a question of desire. I would add the clock. Houses and marriages have rough seasons, and waiting is not free. Declining them is a choice too, with its own costs. Not choosing is still choosing.",
+        "author": "Oliver Burkeman",
+        "book": "Four Thousand Weeks",
+        "pd": false,
+        "basis": "Basis: Oliver Burkeman, Four Thousand Weeks"
+      },
+      {
+        "speaker": "The Status Cartographer",
+        "text": "Fair, but notice how that clock arrives. Deadlines that feel natural are often just other people moving first. Before we count years, I would want to know which of those milestones the user would still want if nobody ever found out.",
+        "author": "Alain de Botton",
+        "book": "Status Anxiety",
+        "pd": false,
+        "basis": "Basis: Alain de Botton, Status Anxiety"
+      },
+      {
+        "speaker": "The Experimenter in Living",
+        "text": "That test has a flaw. Wanting is often learned by doing. Someone unsure about a home or a partner may only find out by trying a small version: renting longer, living with someone, visiting a town. Introspection alone cannot settle it.",
+        "author": "John Stuart Mill",
+        "book": "On Liberty",
+        "pd": true,
+        "basis": "Basis: John Stuart Mill, On Liberty"
+      },
+      {
+        "speaker": "The Finitude Realist",
+        "text": "I like small trials, but I would go further than Burkeman here: trials can become a way to avoid commitment forever. Sampling feels free, yet depth requires giving things up. At some point trying becomes a way of not choosing.",
+        "author": "Oliver Burkeman",
+        "book": "Four Thousand Weeks",
+        "pd": false,
+        "basis": "Basis: Oliver Burkeman, Four Thousand Weeks"
+      },
+      {
+        "speaker": "The Experimenter in Living",
+        "text": "Agreed, so I narrow my claim. An experiment needs an end date and a question. What would I learn, and by when? Otherwise it is drifting with good branding. Freedom to try is not freedom from ever deciding.",
+        "author": "John Stuart Mill",
+        "book": "On Liberty",
+        "pd": true,
+        "basis": "Basis: John Stuart Mill, On Liberty"
+      },
+      {
+        "speaker": "The Status Cartographer",
+        "text": "Here is what both of you may be missing. The ache may not concern houses or weddings at all. Those events also mean belonging: shared plans, being included. Someone could reject the milestones and still miss the company that forms around them.",
+        "author": "Alain de Botton",
+        "book": "Status Anxiety",
+        "pd": false,
+        "basis": "Basis: Alain de Botton, Status Anxiety"
+      },
+      {
+        "speaker": "The Finitude Realist",
+        "text": "That changes the target. If the loss is connection, then the answer is not a mortgage or a ring but a deliberate investment of hours in friendships and shared rituals. It is a smaller, more honest cost than chasing a milestone you do not want.",
+        "author": "Oliver Burkeman",
+        "book": "Four Thousand Weeks",
+        "pd": false,
+        "basis": "Basis: Oliver Burkeman, Four Thousand Weeks"
+      },
+      {
+        "speaker": "The Experimenter in Living",
+        "text": "I accept that, with one warning for the cartographer. Not every pull toward the usual path is mere status. Sometimes people want a home or a family and fear admitting it. Dismissing all of it as pressure would be its own conformity.",
+        "author": "John Stuart Mill",
+        "book": "On Liberty",
+        "pd": true,
+        "basis": "Basis: John Stuart Mill, On Liberty"
+      },
+      {
+        "speaker": "The Status Cartographer",
+        "text": "Granted. Pressure and genuine wish can coexist in the same feeling. We have not separated them, only agreed on how to tell them apart: whether the wish survives without an audience, and whether it points to the milestone or to what surrounds it.",
+        "author": "Alain de Botton",
+        "book": "Status Anxiety",
+        "pd": false,
+        "basis": "Basis: Alain de Botton, Status Anxiety"
+      }
+    ],
+    "clearer": "The main insight is that feeling behind may combine several different things: comparison with peers, a possible real wish for some milestones, and a possible wish for the belonging that milestones bring. The minds did not agree on how much of the feeling is borrowed, nor on whether trying small versions is wise exploration or a form of delay. A possible self-reflection: which of these milestones would still appeal if no one ever knew, and what, specifically, feels missing when you watch your friends.",
+    "dependsOn": "If the wish for a home or marriage survives when you imagine no audience, then pursuing it, perhaps with a time-limited first step, becomes more reasonable, because the wish is yours rather than borrowed. If the appeal fades once approval is removed, then letting the milestones pass becomes more reasonable, because the discomfort is likely comparison rather than desire. If what you miss is closeness and inclusion, then investing time in friendships and shared routines becomes more reasonable, because it addresses the loss directly. If you cannot yet tell which applies, a proportionate way to learn is a small, bounded trial with a set end date and a clear question about what you want to find out."
+  },
+  "validity": {
+    "ok": true,
+    "problems": []
+  },
+  "metrics": {
+    "turns": 11,
+    "words": 458,
+    "meanWordsPerTurn": 41.64,
+    "shortTurns": 0,
+    "longTurns": 0,
+    "hedges": 4,
+    "hedgeDensity": 0.87,
+    "bannedCertainty": 0,
+    "templatedOpeners": 0,
+    "slotMarkers": 0,
+    "questionsToUser": 1,
+    "theUser": 1,
+    "pdFalseQuoteTurns": 0,
+    "fabricatedBasisTurns": 0,
+    "distinctSpeakers": 3,
+    "distinctBooks": 3
+  },
+  "unusable": false,
+  "latencyMs": null,
+  "tokens": null,
+  "raw": "{\"situation\":\"You report that many friends are buying homes or marrying, that you are unsure you want those things, and that you still feel behind. What you know is the feeling and the unsureness; what remains open is whether the feeling points to an unmet wish, to pressure from comparison, or to something else. The decisive unknown is what you would choose if no one else were watching.\",\"minds\":[{\"title\":\"The Status Cartographer\",\"concern\":\"Where the feeling of falling behind comes from: whose approval and which ranking it is measured against.\",\"author\":\"Alain de Botton\",\"book\":\"Status Anxiety\",\"year\":2004},{\"title\":\"The Experimenter in Living\",\"concern\":\"Freedom to try different ways of life and judge them by your own character rather than by custom.\",\"author\":\"John Stuart Mill\",\"book\":\"On Liberty\",\"year\":1859},{\"title\":\"The Finitude Realist\",\"concern\":\"Limited time: every path closes others, so the aim is to choose well rather than to keep up.\",\"author\":\"Oliver Burkeman\",\"book\":\"Four Thousand Weeks\",\"year\":2021}],\"debate\":[{\"speaker\":\"The Status Cartographer\",\"text\":\"Start with the word behind. Behind whom, by whose measure? Your friends are not racing you, yet you feel timed. I suspect the feeling is borrowed. It comes from watching peers collect approval, and it may say little about what you want.\",\"author\":\"Alain de Botton\",\"book\":\"Status Anxiety\",\"pd\":false,\"basis\":\"Basis: Alain de Botton, Status Anxiety\"},{\"speaker\":\"The Experimenter in Living\",\"text\":\"Careful. Calling the feeling borrowed is itself a guess. Maybe it is a real wish wearing an unfamiliar face. But I agree on one point: custom is a poor judge. Most people follow the usual path without ever asking if it fits them.\",\"author\":\"John Stuart Mill\",\"book\":\"On Liberty\",\"pd\":true,\"basis\":\"Basis: John Stuart Mill, On Liberty\"},{\"speaker\":\"The Finitude Realist\",\"text\":\"You are both treating this as a question of desire. I would add the clock. Houses and marriages have rough seasons, and waiting is not free. Declining them is a choice too, with its own costs. Not choosing is still choosing.\",\"author\":\"Oliver Burkeman\",\"book\":\"Four Thousand Weeks\",\"pd\":false,\"basis\":\"Basis: Oliver Burkeman, Four Thousand Weeks\"},{\"speaker\":\"The Status Cartographer\",\"text\":\"Fair, but notice how that clock arrives. Deadlines that feel natural are often just other people moving first. Before we count years, I would want to know which of those milestones the user would still want if nobody ever found out.\",\"author\":\"Alain de Botton\",\"book\":\"Status Anxiety\",\"pd\":false,\"basis\":\"Basis: Alain de Botton, Status Anxiety\"},{\"speaker\":\"The Experimenter in Living\",\"text\":\"That test has a flaw. Wanting is often learned by doing. Someone unsure about a home or a partner may only find out by trying a small version: renting longer, living with someone, visiting a town. Introspection alone cannot settle it.\",\"author\":\"John Stuart Mill\",\"book\":\"On Liberty\",\"pd\":true,\"basis\":\"Basis: John Stuart Mill, On Liberty\"},{\"speaker\":\"The Finitude Realist\",\"text\":\"I like small trials, but I would go further than Burkeman here: trials can become a way to avoid commitment forever. Sampling feels free, yet depth requires giving things up. At some point trying becomes a way of not choosing.\",\"author\":\"Oliver Burkeman\",\"book\":\"Four Thousand Weeks\",\"pd\":false,\"basis\":\"Basis: Oliver Burkeman, Four Thousand Weeks\"},{\"speaker\":\"The Experimenter in Living\",\"text\":\"Agreed, so I narrow my claim. An experiment needs an end date and a question. What would I learn, and by when? Otherwise it is drifting with good branding. Freedom to try is not freedom from ever deciding.\",\"author\":\"John Stuart Mill\",\"book\":\"On Liberty\",\"pd\":true,\"basis\":\"Basis: John Stuart Mill, On Liberty\"},{\"speaker\":\"The Status Cartographer\",\"text\":\"Here is what both of you may be missing. The ache may not concern houses or weddings at all. Those events also mean belonging: shared plans, being included. Someone could reject the milestones and still miss the company that forms around them.\",\"author\":\"Alain de Botton\",\"book\":\"Status Anxiety\",\"pd\":false,\"basis\":\"Basis: Alain de Botton, Status Anxiety\"},{\"speaker\":\"The Finitude Realist\",\"text\":\"That changes the target. If the loss is connection, then the answer is not a mortgage or a ring but a deliberate investment of hours in friendships and shared rituals. It is a smaller, more honest cost than chasing a milestone you do not want.\",\"author\":\"Oliver Burkeman\",\"book\":\"Four Thousand Weeks\",\"pd\":false,\"basis\":\"Basis: Oliver Burkeman, Four Thousand Weeks\"},{\"speaker\":\"The Experimenter in Living\",\"text\":\"I accept that, with one warning for the cartographer. Not every pull toward the usual path is mere status. Sometimes people want a home or a family and fear admitting it. Dismissing all of it as pressure would be its own conformity.\",\"author\":\"John Stuart Mill\",\"book\":\"On Liberty\",\"pd\":true,\"basis\":\"Basis: John Stuart Mill, On Liberty\"},{\"speaker\":\"The Status Cartographer\",\"text\":\"Granted. Pressure and genuine wish can coexist in the same feeling. We have not separated them, only agreed on how to tell them apart: whether the wish survives without an audience, and whether it points to the milestone or to what surrounds it.\",\"author\":\"Alain de Botton\",\"book\":\"Status Anxiety\",\"pd\":false,\"basis\":\"Basis: Alain de Botton, Status Anxiety\"}],\"clearer\":\"The main insight is that feeling behind may combine several different things: comparison with peers, a possible real wish for some milestones, and a possible wish for the belonging that milestones bring. The minds did not agree on how much of the feeling is borrowed, nor on whether trying small versions is wise exploration or a form of delay. A possible self-reflection: which of these milestones would still appeal if no one ever knew, and what, specifically, feels missing when you watch your friends.\",\"dependsOn\":\"If the wish for a home or marriage survives when you imagine no audience, then pursuing it, perhaps with a time-limited first step, becomes more reasonable, because the wish is yours rather than borrowed. If the appeal fades once approval is removed, then letting the milestones pass becomes more reasonable, because the discomfort is likely comparison rather than desire. If what you miss is closeness and inclusion, then investing time in friendships and shared routines becomes more reasonable, because it addresses the loss directly. If you cannot yet tell which applies, a proportionate way to learn is a small, bounded trial with a set end date and a clear question about what you want to find out.\"}\n",
+  "transcriptHash": "a2f15fd672d5db31e62425b10288c896ec522ec64decf24cdce590b95959df01",
+  "savedAt": "2026-10-15T10:21:15.801Z"
+}

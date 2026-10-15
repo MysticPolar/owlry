@@ -1,0 +1,166 @@
+{
+  "jobId": "gen.v2.q2.s3",
+  "lineage": "sonnet",
+  "version": "v2",
+  "q": 2,
+  "s": 3,
+  "model": "sonnet",
+  "settings": {
+    "agentType": "general-purpose",
+    "effort": "medium"
+  },
+  "debate": {
+    "situation": "You have an offer paying 25% more, but it adds 90 minutes each way, so about three hours a day. You haven't said what the current commute is, how many days you'd actually be in the office, whether you could work or read on the way, or whether the job itself is better. Those gaps matter more than the percentage. Your priorities may also pull against each other: money and security on one side, time, health and the rest of your life on the other. Only you can rank them.",
+    "minds": [
+      {
+        "title": "The Bias Auditor",
+        "concern": "Whether the money-versus-time comparison is being judged by a mind that systematically misjudges both",
+        "author": "Daniel Kahneman",
+        "book": "Thinking, Fast and Slow",
+        "year": 2011
+      },
+      {
+        "title": "The Bettor",
+        "concern": "Treating the offer as a bet under uncertainty, with an exit plan and a cap on the downside",
+        "author": "Annie Duke",
+        "book": "Thinking in Bets",
+        "year": 2018
+      },
+      {
+        "title": "The Trajectory Critic",
+        "concern": "Whether the job changes who you are becoming, so that the pay is the least interesting part",
+        "author": "Herminia Ibarra",
+        "book": "Working Identity",
+        "year": 2003
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Bias Auditor",
+        "text": "I'll start bluntly: this is a trap built for human brains. A raise is vivid and arrives monthly. The commute is dull, so we undercount it. I'd bet people overrate the pay and underrate three hours a day in a car or train.",
+        "author": "Daniel Kahneman",
+        "book": "Thinking, Fast and Slow",
+        "pd": false,
+        "basis": "Basis: Daniel Kahneman, Thinking, Fast and Slow"
+      },
+      {
+        "speaker": "The Bettor",
+        "text": "Fine, but you're doing the same thing in reverse. You assume the commute is the dull, certain cost and the raise is the shiny illusion. Neither is certain. Is the job stable? Is the commute fixed? I want to price both sides as guesses.",
+        "author": "Annie Duke",
+        "book": "Thinking in Bets",
+        "pd": false,
+        "basis": "Basis: Annie Duke, Thinking in Bets"
+      },
+      {
+        "speaker": "The Bias Auditor",
+        "text": "Fair hit, I'll narrow it. The raise is real. My claim is only that the commute's cost recurs every day, and people say they get used to it when they mostly don't. Your uncertainty applies to the raise too, though: 25% of what, after tax and travel costs?",
+        "author": "Daniel Kahneman",
+        "book": "Thinking, Fast and Slow",
+        "pd": false,
+        "basis": "Basis: Daniel Kahneman, Thinking, Fast and Slow"
+      },
+      {
+        "speaker": "The Trajectory Critic",
+        "text": "You're both arguing about a trade of money for hours, and I think that's the wrong ledger. What does this job do to your next five years? If it opens a door the current one doesn't, the commute is a toll. If it's the same job with a longer drive, it's a pay cut disguised as a raise.",
+        "author": "Herminia Ibarra",
+        "book": "Working Identity",
+        "pd": false,
+        "basis": "Basis: Herminia Ibarra, Working Identity"
+      },
+      {
+        "speaker": "The Bettor",
+        "text": "Careful, though. Your door is also a guess. People tell flattering stories about where a job will lead. Make it testable: could you try the commute before committing, by doing a trial run of the route at rush hour or asking how often the team is in person?",
+        "author": "Annie Duke",
+        "book": "Thinking in Bets",
+        "pd": false,
+        "basis": "Basis: Annie Duke, Thinking in Bets"
+      },
+      {
+        "speaker": "The Trajectory Critic",
+        "text": "Agreed on testing, and I'll give you my own extension, not anything from my source: don't only test the route, test the work. Talk to someone who does the role now. A trial run of the drive tells you about the drive, not about the person you'd become there.",
+        "author": "Herminia Ibarra",
+        "book": "Working Identity",
+        "pd": false,
+        "basis": "Basis: Herminia Ibarra, Working Identity"
+      },
+      {
+        "speaker": "The Bias Auditor",
+        "text": "One fact reorders everything: can those three hours be used? A train where you read or work is a different object from a car where you grind your teeth. If the time is usable and hybrid days are real, my worry shrinks a lot. If it's five days of driving, it grows.",
+        "author": "Daniel Kahneman",
+        "book": "Thinking, Fast and Slow",
+        "pd": false,
+        "basis": "Basis: Daniel Kahneman, Thinking, Fast and Slow"
+      },
+      {
+        "speaker": "The Bettor",
+        "text": "Then argue both branches. Usable time and flexible days: take the bet, because the downside is small and reversible. Fixed, five days, driving: the downside is every single day, so it needs a much bigger payoff than 25%. Either way, set a review date now.",
+        "author": "Annie Duke",
+        "book": "Thinking in Bets",
+        "pd": false,
+        "basis": "Basis: Annie Duke, Thinking in Bets"
+      },
+      {
+        "speaker": "The Trajectory Critic",
+        "text": "Your review date has a weakness. After six months you'll have a new routine, new colleagues and a raise you've already spent. Quitting then won't feel like a neutral experiment. Decide in advance what would count as failure, or you'll talk yourself into staying.",
+        "author": "Herminia Ibarra",
+        "book": "Working Identity",
+        "pd": false,
+        "basis": "Basis: Herminia Ibarra, Working Identity"
+      },
+      {
+        "speaker": "The Bettor",
+        "text": "Conceded, and it improves the plan: write the exit conditions down before you accept, such as sleep, time with people you love, or the work not being what was described. Pre-commitment is cheaper than willpower later.",
+        "author": "Annie Duke",
+        "book": "Thinking in Bets",
+        "pd": false,
+        "basis": "Basis: Annie Duke, Thinking in Bets"
+      },
+      {
+        "speaker": "The Bias Auditor",
+        "text": "I'll add what might be driving the urge to say yes. It could be money pressure, or fear this kind of offer won't come again, or the flattery of being wanted. Each changes the answer: pressure favors yes, fear alone is a weak reason, and flattery is no reason at all. Which is likeliest is not my call.",
+        "author": "Daniel Kahneman",
+        "book": "Thinking, Fast and Slow",
+        "pd": false,
+        "basis": "Basis: Daniel Kahneman, Thinking, Fast and Slow"
+      },
+      {
+        "speaker": "The Trajectory Critic",
+        "text": "I'd dispute the order. Flattery rarely stays alone for long; it usually hides a hunger to grow. If so, the honest question is whether this is the only road to growth, or whether a nearer job would deliver the same without eating three hours a day.",
+        "author": "Herminia Ibarra",
+        "book": "Working Identity",
+        "pd": false,
+        "basis": "Basis: Herminia Ibarra, Working Identity"
+      }
+    ],
+    "clearer": "The main insight is that the percentage is the least informative number in the offer. What matters is what the three daily hours can be used for, how many days you'd really commute, and whether the role moves you somewhere you want to go. The minds still disagree about how much to trust your forecast of adapting to the commute, and about whether a trial period helps or just lets you rationalize staying. A possible self-reflection: when you imagine saying yes, is the strongest pull money, fear of missing out, or wanting the work itself? You may find your answer is a mix, and your priorities may conflict. Deciding how to rank time against income is yours to do.",
+    "dependsOn": "If the commute is partly usable (train, or reading and calls) and hybrid days are real, the offer becomes more reasonable, because the recurring cost shrinks and the downside is reversible. If it is five fixed days of driving with no flexibility, you would need a much bigger gain than 25%, because the cost lands on every day of the week. If the role clearly advances what you want to do, accept a larger commute cost; if it is the same job farther away, treat the raise as mostly an illusion. If your sleep, health or caring duties depend on your current time, they may outweigh the money regardless. Unknowns worth learning cheaply: the true office days, your net pay after commuting costs, a rush-hour trial of the route, and a conversation with someone in the role. If you accept, write your exit conditions and a review date before you start."
+  },
+  "validity": {
+    "ok": true,
+    "problems": []
+  },
+  "metrics": {
+    "turns": 12,
+    "words": 571,
+    "meanWordsPerTurn": 47.58,
+    "shortTurns": 0,
+    "longTurns": 0,
+    "hedges": 6,
+    "hedgeDensity": 1.05,
+    "bannedCertainty": 0,
+    "templatedOpeners": 0,
+    "slotMarkers": 0,
+    "questionsToUser": 4,
+    "theUser": 0,
+    "pdFalseQuoteTurns": 0,
+    "fabricatedBasisTurns": 0,
+    "distinctSpeakers": 3,
+    "distinctBooks": 3
+  },
+  "unusable": false,
+  "latencyMs": null,
+  "tokens": null,
+  "raw": "{\"situation\":\"You have an offer paying 25% more, but it adds 90 minutes each way, so about three hours a day. You haven't said what the current commute is, how many days you'd actually be in the office, whether you could work or read on the way, or whether the job itself is better. Those gaps matter more than the percentage. Your priorities may also pull against each other: money and security on one side, time, health and the rest of your life on the other. Only you can rank them.\",\"minds\":[{\"title\":\"The Bias Auditor\",\"concern\":\"Whether the money-versus-time comparison is being judged by a mind that systematically misjudges both\",\"author\":\"Daniel Kahneman\",\"book\":\"Thinking, Fast and Slow\",\"year\":2011},{\"title\":\"The Bettor\",\"concern\":\"Treating the offer as a bet under uncertainty, with an exit plan and a cap on the downside\",\"author\":\"Annie Duke\",\"book\":\"Thinking in Bets\",\"year\":2018},{\"title\":\"The Trajectory Critic\",\"concern\":\"Whether the job changes who you are becoming, so that the pay is the least interesting part\",\"author\":\"Herminia Ibarra\",\"book\":\"Working Identity\",\"year\":2003}],\"debate\":[{\"speaker\":\"The Bias Auditor\",\"text\":\"I'll start bluntly: this is a trap built for human brains. A raise is vivid and arrives monthly. The commute is dull, so we undercount it. I'd bet people overrate the pay and underrate three hours a day in a car or train.\",\"author\":\"Daniel Kahneman\",\"book\":\"Thinking, Fast and Slow\",\"pd\":false,\"basis\":\"Basis: Daniel Kahneman, Thinking, Fast and Slow\"},{\"speaker\":\"The Bettor\",\"text\":\"Fine, but you're doing the same thing in reverse. You assume the commute is the dull, certain cost and the raise is the shiny illusion. Neither is certain. Is the job stable? Is the commute fixed? I want to price both sides as guesses.\",\"author\":\"Annie Duke\",\"book\":\"Thinking in Bets\",\"pd\":false,\"basis\":\"Basis: Annie Duke, Thinking in Bets\"},{\"speaker\":\"The Bias Auditor\",\"text\":\"Fair hit, I'll narrow it. The raise is real. My claim is only that the commute's cost recurs every day, and people say they get used to it when they mostly don't. Your uncertainty applies to the raise too, though: 25% of what, after tax and travel costs?\",\"author\":\"Daniel Kahneman\",\"book\":\"Thinking, Fast and Slow\",\"pd\":false,\"basis\":\"Basis: Daniel Kahneman, Thinking, Fast and Slow\"},{\"speaker\":\"The Trajectory Critic\",\"text\":\"You're both arguing about a trade of money for hours, and I think that's the wrong ledger. What does this job do to your next five years? If it opens a door the current one doesn't, the commute is a toll. If it's the same job with a longer drive, it's a pay cut disguised as a raise.\",\"author\":\"Herminia Ibarra\",\"book\":\"Working Identity\",\"pd\":false,\"basis\":\"Basis: Herminia Ibarra, Working Identity\"},{\"speaker\":\"The Bettor\",\"text\":\"Careful, though. Your door is also a guess. People tell flattering stories about where a job will lead. Make it testable: could you try the commute before committing, by doing a trial run of the route at rush hour or asking how often the team is in person?\",\"author\":\"Annie Duke\",\"book\":\"Thinking in Bets\",\"pd\":false,\"basis\":\"Basis: Annie Duke, Thinking in Bets\"},{\"speaker\":\"The Trajectory Critic\",\"text\":\"Agreed on testing, and I'll give you my own extension, not anything from my source: don't only test the route, test the work. Talk to someone who does the role now. A trial run of the drive tells you about the drive, not about the person you'd become there.\",\"author\":\"Herminia Ibarra\",\"book\":\"Working Identity\",\"pd\":false,\"basis\":\"Basis: Herminia Ibarra, Working Identity\"},{\"speaker\":\"The Bias Auditor\",\"text\":\"One fact reorders everything: can those three hours be used? A train where you read or work is a different object from a car where you grind your teeth. If the time is usable and hybrid days are real, my worry shrinks a lot. If it's five days of driving, it grows.\",\"author\":\"Daniel Kahneman\",\"book\":\"Thinking, Fast and Slow\",\"pd\":false,\"basis\":\"Basis: Daniel Kahneman, Thinking, Fast and Slow\"},{\"speaker\":\"The Bettor\",\"text\":\"Then argue both branches. Usable time and flexible days: take the bet, because the downside is small and reversible. Fixed, five days, driving: the downside is every single day, so it needs a much bigger payoff than 25%. Either way, set a review date now.\",\"author\":\"Annie Duke\",\"book\":\"Thinking in Bets\",\"pd\":false,\"basis\":\"Basis: Annie Duke, Thinking in Bets\"},{\"speaker\":\"The Trajectory Critic\",\"text\":\"Your review date has a weakness. After six months you'll have a new routine, new colleagues and a raise you've already spent. Quitting then won't feel like a neutral experiment. Decide in advance what would count as failure, or you'll talk yourself into staying.\",\"author\":\"Herminia Ibarra\",\"book\":\"Working Identity\",\"pd\":false,\"basis\":\"Basis: Herminia Ibarra, Working Identity\"},{\"speaker\":\"The Bettor\",\"text\":\"Conceded, and it improves the plan: write the exit conditions down before you accept, such as sleep, time with people you love, or the work not being what was described. Pre-commitment is cheaper than willpower later.\",\"author\":\"Annie Duke\",\"book\":\"Thinking in Bets\",\"pd\":false,\"basis\":\"Basis: Annie Duke, Thinking in Bets\"},{\"speaker\":\"The Bias Auditor\",\"text\":\"I'll add what might be driving the urge to say yes. It could be money pressure, or fear this kind of offer won't come again, or the flattery of being wanted. Each changes the answer: pressure favors yes, fear alone is a weak reason, and flattery is no reason at all. Which is likeliest is not my call.\",\"author\":\"Daniel Kahneman\",\"book\":\"Thinking, Fast and Slow\",\"pd\":false,\"basis\":\"Basis: Daniel Kahneman, Thinking, Fast and Slow\"},{\"speaker\":\"The Trajectory Critic\",\"text\":\"I'd dispute the order. Flattery rarely stays alone for long; it usually hides a hunger to grow. If so, the honest question is whether this is the only road to growth, or whether a nearer job would deliver the same without eating three hours a day.\",\"author\":\"Herminia Ibarra\",\"book\":\"Working Identity\",\"pd\":false,\"basis\":\"Basis: Herminia Ibarra, Working Identity\"}],\"clearer\":\"The main insight is that the percentage is the least informative number in the offer. What matters is what the three daily hours can be used for, how many days you'd really commute, and whether the role moves you somewhere you want to go. The minds still disagree about how much to trust your forecast of adapting to the commute, and about whether a trial period helps or just lets you rationalize staying. A possible self-reflection: when you imagine saying yes, is the strongest pull money, fear of missing out, or wanting the work itself? You may find your answer is a mix, and your priorities may conflict. Deciding how to rank time against income is yours to do.\",\"dependsOn\":\"If the commute is partly usable (train, or reading and calls) and hybrid days are real, the offer becomes more reasonable, because the recurring cost shrinks and the downside is reversible. If it is five fixed days of driving with no flexibility, you would need a much bigger gain than 25%, because the cost lands on every day of the week. If the role clearly advances what you want to do, accept a larger commute cost; if it is the same job farther away, treat the raise as mostly an illusion. If your sleep, health or caring duties depend on your current time, they may outweigh the money regardless. Unknowns worth learning cheaply: the true office days, your net pay after commuting costs, a rush-hour trial of the route, and a conversation with someone in the role. If you accept, write your exit conditions and a review date before you start.\"}\n",
+  "transcriptHash": "bca633fba6b0493bf14030da88f45b38eaa9c591ab62d52fce94c0621b4419c2",
+  "savedAt": "2026-10-15T10:21:15.803Z"
+}

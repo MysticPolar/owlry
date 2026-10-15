@@ -1,0 +1,1034 @@
+{
+  "jobId": "rubric.v1.q5.s3",
+  "raw": {
+    "schema_version": "rubric-evaluator-4.2.0",
+    "rubric_version": "owlry-matrix-v2-bands",
+    "evaluation_status": "complete",
+    "cells": [
+      {
+        "id": "C1.1",
+        "name": "Continuity and responsiveness",
+        "rating": 4.5,
+        "example": "T4 answers T2 directly: winds need an ocean heat reservoir to carry.",
+        "limitation": "Geographer turns T3, T6, T9 float free; T3 terrain point never taken up.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.2",
+        "name": "Development of ideas",
+        "rating": 3.5,
+        "example": "T4 and T8 sketch a storage versus delivery split.",
+        "limitation": "Storage/delivery split never developed; T5-T9 mostly repeat opening positions.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.3",
+        "name": "Exploration of central tensions",
+        "rating": 4,
+        "example": "Ocean versus atmosphere framed as the core tension from T1-T2.",
+        "limitation": "Maritime versus continental air, west versus east coasts, Rockies trough never examined.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.4",
+        "name": "Integration of perspectives",
+        "rating": 3.5,
+        "example": "T6 proposes the interaction of ocean and air as the answer.",
+        "limitation": "T6 interaction claim asserted, not worked out; positions do not reshape each other.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.5",
+        "name": "Progress toward understanding",
+        "rating": 3.5,
+        "example": "Section D names storage versus transport as the axis of disagreement.",
+        "limitation": "T9 ends divided with no sharper question than the opening.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.1",
+        "name": "Faithful engagement",
+        "rating": 4.5,
+        "example": "T2 states the Oceanographer's claim accurately before objecting.",
+        "limitation": "T5 attacks a coastal-localization point the Oceanographer never denied.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.2",
+        "name": "Substance of challenges",
+        "rating": 3.5,
+        "example": "T4 names the assumption that winds alone supply heat.",
+        "limitation": "No objection says what breaks if false; T5 is a non sequitur to T4.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.3",
+        "name": "Accuracy and support",
+        "rating": 4.5,
+        "example": "T2 correctly credits westerlies with carrying ocean heat onto land.",
+        "limitation": "T1 conflates Gulf Stream with conveyor belt; T4 overstates; T3 terrain claim vague; six short turns.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.4",
+        "name": "Calibration and transparency",
+        "rating": 3.5,
+        "example": "T7 narrows to most significant reservoir rather than sole factor.",
+        "limitation": "T4, T5 state contested claims as fact; Geographer T3, T6 hedge everything.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.5",
+        "name": "Intellectual honesty and revision",
+        "rating": 4,
+        "example": "T7: I concede that the current is not the sole factor.",
+        "limitation": "T7 concession names no cause; Meteorologist never concedes T4's reservoir point.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.1",
+        "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+        "rating": 4.5,
+        "example": "Section A frames the question as ocean versus atmosphere correctly.",
+        "limitation": "Section E recasts the explanation as a matter of the user's interests.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.2",
+        "name": "Meaningful use of personal context",
+        "rating": 3,
+        "example": "T9 notes the answer may depend on the coastal region examined.",
+        "limitation": "Never asks which parts of Canada; mild coastal British Columbia ignored.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.3",
+        "name": "Fit with goals and values",
+        "rating": 3.5,
+        "example": "Section D summarises the competing explanations the user asked about.",
+        "limitation": "User wanted a why; T9 and Section E leave no explanation standing.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.4",
+        "name": "Attention to constraints and stakes",
+        "rating": 4,
+        "example": "No invented context; Section A stays within the user's question.",
+        "limitation": "Scope of comparison (which places, which season) never considered.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.5",
+        "name": "Responsiveness to information",
+        "rating": 2.5,
+        "example": "Section E suggests comparing coastal and inland temperature anomalies.",
+        "limitation": "Which Canadian regions are meant is never asked or branched.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.1",
+        "name": "Clarification of desires and motivations",
+        "rating": 3,
+        "example": "Section E contrasts interest in energy budgets with daily weather.",
+        "limitation": "What the user wants from understanding is never offered as a question.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.2",
+        "name": "Examination of assumptions",
+        "rating": 4,
+        "example": "T2 challenges the popular Gulf-Stream-alone assumption.",
+        "limitation": "The common Gulf Stream belief is never named as the user's likely assumption.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.3",
+        "name": "Clarification of values and priorities",
+        "rating": 3,
+        "example": "Section D separates energy storage from energy transport.",
+        "limitation": "No examination of what would count as a satisfying explanation.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.4",
+        "name": "Recognition of fears and outside expectations",
+        "rating": 3,
+        "example": "No pathologising anywhere in T1-T9.",
+        "limitation": "Received textbook explanation as outside expectation never surfaced.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.5",
+        "name": "Agency and reflective ownership",
+        "rating": 4,
+        "example": "T6 invites the user to look at maps themselves.",
+        "limitation": "T6 offers no distinction the user could accept or reject.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.1",
+        "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+        "rating": 5,
+        "example": "Minds section defines ocean, atmosphere and terrain explanations.",
+        "limitation": "Terrain explanation in T3 has no stated mechanism.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.2",
+        "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+        "rating": 3,
+        "example": "T8 notes ocean storage needs atmospheric delivery.",
+        "limitation": "What each explanation costs in evidence is never stated.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.3",
+        "name": "Identification of decisive conditions",
+        "rating": 3,
+        "example": "Section E: compare coastal versus inland anomalies at the same latitude.",
+        "limitation": "Section E never says which outcome favours which explanation; ends on user interest.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.4",
+        "name": "Treatment of uncertainty",
+        "rating": 3,
+        "example": "T9 says the answer may vary by coastal region.",
+        "limitation": "Consequential unknowns never separated from minor ones.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.5",
+        "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+        "rating": 4.5,
+        "example": "Section E coastal-inland comparison is a feasible single step.",
+        "limitation": "Step is vague: which regions, which data, what result means what.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.1",
+        "name": "Accessible language",
+        "rating": 7,
+        "example": "T2 plain wording: prevailing westerly winds transport that heat.",
+        "limitation": "T6 the interaction between the two stays abstract.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.2",
+        "name": "Traceable arguments and references",
+        "rating": 6.8,
+        "example": "T8 names the Oceanographer and quotes the claim it answers.",
+        "limitation": "T6 the two is ambiguous; T3 mountains claim untraceable later.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.3",
+        "name": "Manageable pacing and turn length",
+        "rating": 4,
+        "example": "Nine turns, each readable at a glance.",
+        "limitation": "Six turns under 25 words per deterministic checks.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.4",
+        "name": "Distinguishable positions and voices, with explicit changes of position",
+        "rating": 4.5,
+        "example": "Three disciplines distinct: ocean, atmosphere, terrain.",
+        "limitation": "T4, T5, T8 share one template; Geographer distinct only by hedging.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.5",
+        "name": "Economy and sustained attention",
+        "rating": 4.5,
+        "example": "Turns are brief and do not pad.",
+        "limitation": "T8 restates T7 before answering; T9 and Section D recap the split.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.1",
+        "name": "Meaningful stakes and tension arising from the issue itself",
+        "rating": 3,
+        "example": "T4 sharpens the clash: winds would have no reservoir.",
+        "limitation": "Tension stays abstract; no vivid contrast like Vancouver versus Labrador.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.2",
+        "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+        "rating": 2.5,
+        "example": "T7 Oceanographer concedes the current is not the sole factor.",
+        "limitation": "T7 concession names no earlier argument as cause.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.3",
+        "name": "Personality and expressive voice without caricature",
+        "rating": 2.5,
+        "example": "Geographer's tentative register in T3 differs slightly.",
+        "limitation": "All three minds speak in flat textbook register.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.4",
+        "name": "Memorable delivery",
+        "rating": 3,
+        "example": "T9: whether the sea or the sky is the primary engine.",
+        "limitation": "T1 conveyor belt is a stock image; no vivid example elsewhere.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.5",
+        "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+        "rating": 2.5,
+        "example": "T7 concession briefly shifts the exchange.",
+        "limitation": "Uniform short turns, constant low intensity, no build.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      }
+    ],
+    "strengths": [
+      "T2 and T4 frame the core ocean-versus-atmosphere clash directly and responsively.",
+      "T4 and T8 hint at a useful storage versus delivery distinction.",
+      "Section E proposes an observable coastal-inland comparison the user could look up."
+    ],
+    "weaknesses": [
+      "Section E ends on the user's interests rather than which evidence decides between explanations.",
+      "Geographer T3, T6, T9 hedge every claim and add no mechanism.",
+      "Six turns under 25 words leave every argument thin; nobody develops T4's reservoir point."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C5.3",
+        "turns": [],
+        "observed": "Section E ties each explanation to user interest, not to an observable outcome.",
+        "evidence": "If you are interested in the global energy budget"
+      },
+      {
+        "cell_id": "C3.5",
+        "turns": [],
+        "observed": "Never asks which Canadian places; mild west coast unaddressed.",
+        "evidence": "warmer in winter than parts of Canada"
+      },
+      {
+        "cell_id": "C2.4",
+        "turns": [
+          3,
+          6
+        ],
+        "observed": "Geographer hedges every sentence and commits to no mechanism.",
+        "evidence": "perhaps you might find that the mountains in Canada"
+      },
+      {
+        "cell_id": "C1.2",
+        "turns": [
+          4,
+          8
+        ],
+        "observed": "Storage versus delivery split raised but never developed or tested.",
+        "evidence": "atmospheric circulation dictates where that heat actually lands"
+      },
+      {
+        "cell_id": "C6.3",
+        "turns": [
+          1,
+          2,
+          4,
+          5,
+          7,
+          8
+        ],
+        "observed": "Six turns fall under 25 words, leaving arguments unexplained.",
+        "evidence": "I concede that the current is not the sole factor"
+      }
+    ],
+    "mechanical": [
+      {
+        "pattern": "hedge_saturation",
+        "turns": [
+          3,
+          6,
+          9
+        ]
+      },
+      {
+        "pattern": "uncaused_reversal",
+        "turns": [
+          7
+        ]
+      },
+      {
+        "pattern": "restatement_opener",
+        "turns": [
+          2,
+          8
+        ]
+      },
+      {
+        "pattern": "misfit_slot",
+        "turns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      },
+      {
+        "pattern": "uniform_voice",
+        "turns": [
+          4,
+          5,
+          8
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "type": "format",
+        "severity": "material",
+        "status": "observed",
+        "location": "debate",
+        "description": "Six turns under 25 words per deterministic checks.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "Turn 4",
+        "description": "Claim winds would have no heat reservoir without the current overstates; ocean mixed-layer seasonal storage exists regardless.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "Turn 1",
+        "description": "Calls Gulf Stream a conveyor belt, a term usually for the overturning circulation; also Section E links ocean to global budget, a loose pairing.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "unverified",
+        "location": "Minds section",
+        "description": "Attributions to Stommel, Lutgens and Tarbuck, and Reclus plausible but positions not checkable here.",
+        "evidence_ids": []
+      },
+      {
+        "type": "rubric_mismatch",
+        "severity": "minor",
+        "status": "observed",
+        "location": "Section E",
+        "description": "Exploratory question ended on which mechanism suits the user's interests.",
+        "evidence_ids": []
+      }
+    ],
+    "cap_reasons": [],
+    "rubric_fit_notes": [
+      "Criterion 4 cells on fears and values have little natural purchase for a physical-geography question; rated low for absence of reflective opportunity, with some uncertainty about how harshly that should weigh. misfit_slot is listed for Section E, which has no turn number."
+    ],
+    "question_type_note": "Read as exploratory: criterion 5 judged on evidence that would decide between ocean, atmosphere and terrain explanations, and Section E's interest-based framing cost C3.1 and C5.3."
+  },
+  "card": {
+    "criteria": [
+      {
+        "id": "C1",
+        "name": "Quality of discussion",
+        "max": 20,
+        "points": 7.6,
+        "sub": [
+          {
+            "id": "C1.1",
+            "name": "Continuity and responsiveness",
+            "rating": 4.5,
+            "points": 1.8,
+            "example": "T4 answers T2 directly: winds need an ocean heat reservoir to carry.",
+            "limitation": "Geographer turns T3, T6, T9 float free; T3 terrain point never taken up.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.2",
+            "name": "Development of ideas",
+            "rating": 3.5,
+            "points": 1.4,
+            "example": "T4 and T8 sketch a storage versus delivery split.",
+            "limitation": "Storage/delivery split never developed; T5-T9 mostly repeat opening positions.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.3",
+            "name": "Exploration of central tensions",
+            "rating": 4,
+            "points": 1.6,
+            "example": "Ocean versus atmosphere framed as the core tension from T1-T2.",
+            "limitation": "Maritime versus continental air, west versus east coasts, Rockies trough never examined.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.4",
+            "name": "Integration of perspectives",
+            "rating": 3.5,
+            "points": 1.4,
+            "example": "T6 proposes the interaction of ocean and air as the answer.",
+            "limitation": "T6 interaction claim asserted, not worked out; positions do not reshape each other.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.5",
+            "name": "Progress toward understanding",
+            "rating": 3.5,
+            "points": 1.4,
+            "example": "Section D names storage versus transport as the axis of disagreement.",
+            "limitation": "T9 ends divided with no sharper question than the opening.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C2",
+        "name": "Quality of disagreement, trust and grounding",
+        "max": 20,
+        "points": 8,
+        "sub": [
+          {
+            "id": "C2.1",
+            "name": "Faithful engagement",
+            "rating": 4.5,
+            "points": 1.8,
+            "example": "T2 states the Oceanographer's claim accurately before objecting.",
+            "limitation": "T5 attacks a coastal-localization point the Oceanographer never denied.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.2",
+            "name": "Substance of challenges",
+            "rating": 3.5,
+            "points": 1.4,
+            "example": "T4 names the assumption that winds alone supply heat.",
+            "limitation": "No objection says what breaks if false; T5 is a non sequitur to T4.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.3",
+            "name": "Accuracy and support",
+            "rating": 4.5,
+            "points": 1.8,
+            "example": "T2 correctly credits westerlies with carrying ocean heat onto land.",
+            "limitation": "T1 conflates Gulf Stream with conveyor belt; T4 overstates; T3 terrain claim vague; six short turns.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.4",
+            "name": "Calibration and transparency",
+            "rating": 3.5,
+            "points": 1.4,
+            "example": "T7 narrows to most significant reservoir rather than sole factor.",
+            "limitation": "T4, T5 state contested claims as fact; Geographer T3, T6 hedge everything.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.5",
+            "name": "Intellectual honesty and revision",
+            "rating": 4,
+            "points": 1.6,
+            "example": "T7: I concede that the current is not the sole factor.",
+            "limitation": "T7 concession names no cause; Meteorologist never concedes T4's reservoir point.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C3",
+        "name": "Personal relevance",
+        "max": 10,
+        "points": 3.5,
+        "sub": [
+          {
+            "id": "C3.1",
+            "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+            "rating": 4.5,
+            "points": 0.9,
+            "example": "Section A frames the question as ocean versus atmosphere correctly.",
+            "limitation": "Section E recasts the explanation as a matter of the user's interests.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.2",
+            "name": "Meaningful use of personal context",
+            "rating": 3,
+            "points": 0.6,
+            "example": "T9 notes the answer may depend on the coastal region examined.",
+            "limitation": "Never asks which parts of Canada; mild coastal British Columbia ignored.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.3",
+            "name": "Fit with goals and values",
+            "rating": 3.5,
+            "points": 0.7,
+            "example": "Section D summarises the competing explanations the user asked about.",
+            "limitation": "User wanted a why; T9 and Section E leave no explanation standing.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.4",
+            "name": "Attention to constraints and stakes",
+            "rating": 4,
+            "points": 0.8,
+            "example": "No invented context; Section A stays within the user's question.",
+            "limitation": "Scope of comparison (which places, which season) never considered.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.5",
+            "name": "Responsiveness to information",
+            "rating": 2.5,
+            "points": 0.5,
+            "example": "Section E suggests comparing coastal and inland temperature anomalies.",
+            "limitation": "Which Canadian regions are meant is never asked or branched.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C4",
+        "name": "Constructive self-discovery",
+        "max": 20,
+        "points": 6.8,
+        "sub": [
+          {
+            "id": "C4.1",
+            "name": "Clarification of desires and motivations",
+            "rating": 3,
+            "points": 1.2,
+            "example": "Section E contrasts interest in energy budgets with daily weather.",
+            "limitation": "What the user wants from understanding is never offered as a question.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.2",
+            "name": "Examination of assumptions",
+            "rating": 4,
+            "points": 1.6,
+            "example": "T2 challenges the popular Gulf-Stream-alone assumption.",
+            "limitation": "The common Gulf Stream belief is never named as the user's likely assumption.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.3",
+            "name": "Clarification of values and priorities",
+            "rating": 3,
+            "points": 1.2,
+            "example": "Section D separates energy storage from energy transport.",
+            "limitation": "No examination of what would count as a satisfying explanation.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.4",
+            "name": "Recognition of fears and outside expectations",
+            "rating": 3,
+            "points": 1.2,
+            "example": "No pathologising anywhere in T1-T9.",
+            "limitation": "Received textbook explanation as outside expectation never surfaced.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.5",
+            "name": "Agency and reflective ownership",
+            "rating": 4,
+            "points": 1.6,
+            "example": "T6 invites the user to look at maps themselves.",
+            "limitation": "T6 offers no distinction the user could accept or reject.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C5",
+        "name": "Decision usefulness",
+        "max": 10,
+        "points": 3.7,
+        "sub": [
+          {
+            "id": "C5.1",
+            "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+            "rating": 5,
+            "points": 1,
+            "example": "Minds section defines ocean, atmosphere and terrain explanations.",
+            "limitation": "Terrain explanation in T3 has no stated mechanism.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.2",
+            "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+            "rating": 3,
+            "points": 0.6,
+            "example": "T8 notes ocean storage needs atmospheric delivery.",
+            "limitation": "What each explanation costs in evidence is never stated.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.3",
+            "name": "Identification of decisive conditions",
+            "rating": 3,
+            "points": 0.6,
+            "example": "Section E: compare coastal versus inland anomalies at the same latitude.",
+            "limitation": "Section E never says which outcome favours which explanation; ends on user interest.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.4",
+            "name": "Treatment of uncertainty",
+            "rating": 3,
+            "points": 0.6,
+            "example": "T9 says the answer may vary by coastal region.",
+            "limitation": "Consequential unknowns never separated from minor ones.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.5",
+            "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+            "rating": 4.5,
+            "points": 0.9,
+            "example": "Section E coastal-inland comparison is a feasible single step.",
+            "limitation": "Step is vague: which regions, which data, what result means what.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C6",
+        "name": "Clarity and engagement",
+        "max": 10,
+        "points": 5.36,
+        "sub": [
+          {
+            "id": "C6.1",
+            "name": "Accessible language",
+            "rating": 7,
+            "points": 1.4,
+            "example": "T2 plain wording: prevailing westerly winds transport that heat.",
+            "limitation": "T6 the interaction between the two stays abstract.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.2",
+            "name": "Traceable arguments and references",
+            "rating": 6.8,
+            "points": 1.36,
+            "example": "T8 names the Oceanographer and quotes the claim it answers.",
+            "limitation": "T6 the two is ambiguous; T3 mountains claim untraceable later.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.3",
+            "name": "Manageable pacing and turn length",
+            "rating": 4,
+            "points": 0.8,
+            "example": "Nine turns, each readable at a glance.",
+            "limitation": "Six turns under 25 words per deterministic checks.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.4",
+            "name": "Distinguishable positions and voices, with explicit changes of position",
+            "rating": 4.5,
+            "points": 0.9,
+            "example": "Three disciplines distinct: ocean, atmosphere, terrain.",
+            "limitation": "T4, T5, T8 share one template; Geographer distinct only by hedging.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.5",
+            "name": "Economy and sustained attention",
+            "rating": 4.5,
+            "points": 0.9,
+            "example": "Turns are brief and do not pad.",
+            "limitation": "T8 restates T7 before answering; T9 and Section D recap the split.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C7",
+        "name": "Drama and entertainment",
+        "max": 10,
+        "points": 2.7,
+        "sub": [
+          {
+            "id": "C7.1",
+            "name": "Meaningful stakes and tension arising from the issue itself",
+            "rating": 3,
+            "points": 0.6,
+            "example": "T4 sharpens the clash: winds would have no reservoir.",
+            "limitation": "Tension stays abstract; no vivid contrast like Vancouver versus Labrador.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.2",
+            "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+            "rating": 2.5,
+            "points": 0.5,
+            "example": "T7 Oceanographer concedes the current is not the sole factor.",
+            "limitation": "T7 concession names no earlier argument as cause.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.3",
+            "name": "Personality and expressive voice without caricature",
+            "rating": 2.5,
+            "points": 0.5,
+            "example": "Geographer's tentative register in T3 differs slightly.",
+            "limitation": "All three minds speak in flat textbook register.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.4",
+            "name": "Memorable delivery",
+            "rating": 3,
+            "points": 0.6,
+            "example": "T9: whether the sea or the sky is the primary engine.",
+            "limitation": "T1 conveyor belt is a stock image; no vivid example elsewhere.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.5",
+            "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+            "rating": 2.5,
+            "points": 0.5,
+            "example": "T7 concession briefly shifts the exchange.",
+            "limitation": "Uniform short turns, constant low intensity, no build.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      }
+    ],
+    "uncapped": 37.66,
+    "score": 37.66,
+    "capReason": null,
+    "provisional": false,
+    "strengths": [
+      "T2 and T4 frame the core ocean-versus-atmosphere clash directly and responsively.",
+      "T4 and T8 hint at a useful storage versus delivery distinction.",
+      "Section E proposes an observable coastal-inland comparison the user could look up."
+    ],
+    "weaknesses": [
+      "Section E ends on the user's interests rather than which evidence decides between explanations.",
+      "Geographer T3, T6, T9 hedge every claim and add no mechanism.",
+      "Six turns under 25 words leave every argument thin; nobody develops T4's reservoir point."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C5.3",
+        "turns": [],
+        "observed": "Section E ties each explanation to user interest, not to an observable outcome.",
+        "evidence": "If you are interested in the global energy budget"
+      },
+      {
+        "cell_id": "C3.5",
+        "turns": [],
+        "observed": "Never asks which Canadian places; mild west coast unaddressed.",
+        "evidence": "warmer in winter than parts of Canada"
+      },
+      {
+        "cell_id": "C2.4",
+        "turns": [
+          3,
+          6
+        ],
+        "observed": "Geographer hedges every sentence and commits to no mechanism.",
+        "evidence": "perhaps you might find that the mountains in Canada"
+      },
+      {
+        "cell_id": "C1.2",
+        "turns": [
+          4,
+          8
+        ],
+        "observed": "Storage versus delivery split raised but never developed or tested.",
+        "evidence": "atmospheric circulation dictates where that heat actually lands"
+      },
+      {
+        "cell_id": "C6.3",
+        "turns": [
+          1,
+          2,
+          4,
+          5,
+          7,
+          8
+        ],
+        "observed": "Six turns fall under 25 words, leaving arguments unexplained.",
+        "evidence": "I concede that the current is not the sole factor"
+      }
+    ],
+    "mechanical": [
+      {
+        "pattern": "hedge_saturation",
+        "turns": [
+          3,
+          6,
+          9
+        ]
+      },
+      {
+        "pattern": "uncaused_reversal",
+        "turns": [
+          7
+        ]
+      },
+      {
+        "pattern": "restatement_opener",
+        "turns": [
+          2,
+          8
+        ]
+      },
+      {
+        "pattern": "misfit_slot",
+        "turns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      },
+      {
+        "pattern": "uniform_voice",
+        "turns": [
+          4,
+          5,
+          8
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "type": "format",
+        "severity": "material",
+        "status": "observed",
+        "location": "debate",
+        "description": "Six turns under 25 words per deterministic checks.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "Turn 4",
+        "description": "Claim winds would have no heat reservoir without the current overstates; ocean mixed-layer seasonal storage exists regardless.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "Turn 1",
+        "description": "Calls Gulf Stream a conveyor belt, a term usually for the overturning circulation; also Section E links ocean to global budget, a loose pairing.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "unverified",
+        "location": "Minds section",
+        "description": "Attributions to Stommel, Lutgens and Tarbuck, and Reclus plausible but positions not checkable here.",
+        "evidence_ids": []
+      },
+      {
+        "type": "rubric_mismatch",
+        "severity": "minor",
+        "status": "observed",
+        "location": "Section E",
+        "description": "Exploratory question ended on which mechanism suits the user's interests.",
+        "evidence_ids": []
+      }
+    ],
+    "rubricFitNotes": [
+      "Criterion 4 cells on fears and values have little natural purchase for a physical-geography question; rated low for absence of reflective opportunity, with some uncertainty about how harshly that should weigh. misfit_slot is listed for Section E, which has no turn number."
+    ],
+    "questionTypeNote": "Read as exploratory: criterion 5 judged on evidence that would decide between ocean, atmosphere and terrain explanations, and Section E's interest-based framing cost C3.1 and C5.3."
+  },
+  "rubricVersion": "rubric-evaluator-4.2.0",
+  "savedAt": "2026-10-15T10:27:48.059Z"
+}
