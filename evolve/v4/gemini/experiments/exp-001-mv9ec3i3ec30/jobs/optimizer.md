@@ -1246,3 +1246,7 @@ none
 ceiling 1900 words; growth allowance 10% per challenger (deletions unlimited); champion 1353 words; ablation iteration: no
 
 Write challenger v2. parent_prompt_id is v0.
+
+=== PREVIOUS ATTEMPT REJECTED BY THE RUNNER ===
+schema: /hypothesis/targets must NOT have more than 4 items (limit: 4)
+Return the JSON object again, correcting these; do not change anything else.

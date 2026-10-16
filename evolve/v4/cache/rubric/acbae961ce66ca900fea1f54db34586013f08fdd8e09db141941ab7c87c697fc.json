@@ -1,0 +1,960 @@
+{
+  "jobId": "rubric.v3.q5.s2",
+  "raw": {
+    "schema_version": "rubric-evaluator-4.2.0",
+    "rubric_version": "owlry-matrix-v2-bands",
+    "evaluation_status": "complete",
+    "cells": [
+      {
+        "id": "C1.1",
+        "name": "Continuity and responsiveness",
+        "rating": 8.2,
+        "example": "T3 opens 'Fair, the wind is the delivery truck,' answering T2 directly.",
+        "limitation": "T7 pivots abruptly from sizing the current's role to a reading of the user.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.2",
+        "name": "Development of ideas",
+        "rating": 8.6,
+        "example": "T3 adds the cargo/delivery distinction; T4, T6 and T11 build on it.",
+        "limitation": "T7 to T10 develop user readings while the physical mechanisms stop advancing.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C1.3",
+        "name": "Exploration of central tensions",
+        "rating": 6.2,
+        "example": "T2 to T6 examine current versus wind versus ocean heat storage.",
+        "limitation": "Continental shape, named in Section A, and Rockies-driven wind patterns are never examined by any mind.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.4",
+        "name": "Integration of perspectives",
+        "rating": 7.8,
+        "example": "T9 recasts the current as one arrow; T11 accepts a smaller but nonzero role.",
+        "limitation": "T10's fragility question runs parallel to, not folded into, the warm-winter explanation.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.5",
+        "name": "Progress toward understanding",
+        "rating": 7.5,
+        "example": "Section D sharpens the open question to each cause's share of the warmth.",
+        "limitation": "The ending gives no rough relative size, even qualitative, for any contributor.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.1",
+        "name": "Faithful engagement",
+        "rating": 7.8,
+        "example": "T3 gives the current's strongest version: winds need warm cargo to deliver.",
+        "limitation": "T6 attributes to T5 a claim that the current is the main cause, which T5 never made.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.2",
+        "name": "Substance of challenges",
+        "rating": 8.7,
+        "example": "T6 names the assumption and its consequence: if winds dominate, a weaker current cools Europe less.",
+        "limitation": "T4's ocean-storage claim goes unchallenged, though the sea stores heat on both Atlantic coasts.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C2.3",
+        "name": "Accuracy and support",
+        "rating": 7.2,
+        "example": "T4 correctly notes eastern Canada's winter air arrives after crossing the continent.",
+        "limitation": "T3 and T11 say western Atlantic where the warm water relevant to Europe is eastern (suspected).",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.4",
+        "name": "Calibration and transparency",
+        "rating": 8.3,
+        "example": "T7: 'I cannot size it from memory, and I will not pretend the book does.'",
+        "limitation": "T1 states 'The answer is the Gulf Stream' with unqualified certainty.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.5",
+        "name": "Intellectual honesty and revision",
+        "rating": 8.5,
+        "example": "T7 narrows its claim after T6; T11 concedes a smaller role for the current.",
+        "limitation": "T11's closing point about the current's necessity gets no reply from the Energy Accountant.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.1",
+        "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+        "rating": 6.3,
+        "example": "Section A frames the concern precisely: which overlapping cause does the most work.",
+        "limitation": "T7, T8 and Section E shift to user motives and preferred answer form (misfit_slot).",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.2",
+        "name": "Meaningful use of personal context",
+        "rating": 5.8,
+        "example": "T4 ties the contrast to eastern Canada's air crossing a landmass first.",
+        "limitation": "The user's phrase 'parts of Canada' never prompts the mild Pacific coast comparison.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.3",
+        "name": "Fit with goals and values",
+        "rating": 7,
+        "example": "Section D answers the asked why with the shared-bill partnership of causes.",
+        "limitation": "T10 substitutes the Fragility Watcher's future-risk question for the user's explanatory one.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.4",
+        "name": "Attention to constraints and stakes",
+        "rating": 7,
+        "example": "No turn invents places or circumstances beyond the regions the user named.",
+        "limitation": "T8 attributes a felt unfairness that the question never expresses.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.5",
+        "name": "Responsiveness to information",
+        "rating": 5.5,
+        "example": "Section E branches on whether the user wants a quick answer or future risk.",
+        "limitation": "Which Canadian places the user means, east or west coast, is never asked or branched.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.1",
+        "name": "Clarification of desires and motivations",
+        "rating": 8.6,
+        "example": "T7 and T8 offer rival readings, one cause versus a heat map; Section D asks which.",
+        "limitation": "T8's unfairness reading is thin, and neither reading changes the physical explanation.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C4.2",
+        "name": "Examination of assumptions",
+        "rating": 8,
+        "example": "T2 surfaces the assumption that warm water alone warms Europe.",
+        "limitation": "The assumption that equal latitude should mean equal winter is never unpacked.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.3",
+        "name": "Clarification of values and priorities",
+        "rating": 7,
+        "example": "Section D sets a single clean cause against a fuller map of heat paths.",
+        "limitation": "The conflict concerns answer form only; little on what understanding would serve the user.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.4",
+        "name": "Recognition of fears and outside expectations",
+        "rating": 6.8,
+        "example": "T2 names the Gulf Stream as the popular answer, an inherited textbook expectation.",
+        "limitation": "Why the popular story persists, and its pull on the user, is only touched in T7.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.5",
+        "name": "Agency and reflective ownership",
+        "rating": 8.2,
+        "example": "T9 and Section D leave the reading to the user: only the user can say.",
+        "limitation": "The offered choice in T9, one cause or a map, is a narrow binary.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.1",
+        "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+        "rating": 7.2,
+        "example": "Section A lists four rival explanations: currents, winds, heat storage, continental shape.",
+        "limitation": "Continental shape is named in Section A but never developed as a rival in the debate.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.2",
+        "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+        "rating": 7,
+        "example": "T6 states what a dominant wind-and-storage account implies for a weaker current.",
+        "limitation": "No explanation states which observation would embarrass it, apart from Section E.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.3",
+        "name": "Identification of decisive conditions",
+        "rating": 5.8,
+        "example": "Section E proposes model comparisons varying ocean heat transport or winds independently.",
+        "limitation": "No observable check such as mild coastal British Columbia; Section E's first branches hinge on preference.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.4",
+        "name": "Treatment of uncertainty",
+        "rating": 7.6,
+        "example": "Section D isolates the decisive unknown: each part's share of the warmth.",
+        "limitation": "Fragility, peripheral to the why, gets weight equal to the central unknown in Section E.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.5",
+        "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+        "rating": 7.3,
+        "example": "Section E: look for published model comparisons holding the rest fixed.",
+        "limitation": "Section E offers no simpler step, like comparing temperature records on Canada's two coasts.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.1",
+        "name": "Accessible language",
+        "rating": 8.8,
+        "example": "T3's delivery truck and T9's shared bill make heat transport plain.",
+        "limitation": "Section E's phrase ocean heat transport arrives unexplained.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.2",
+        "name": "Traceable arguments and references",
+        "rating": 8,
+        "example": "T5 'Both of you' and T9 'Those readings' point unambiguously to prior turns.",
+        "limitation": "T4's 'that is my own extension' has an unclear referent.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.3",
+        "name": "Manageable pacing and turn length",
+        "rating": 7.6,
+        "example": "Eleven turns, mostly 45 to 62 words, in a steady exchange.",
+        "limitation": "T4 runs about 75 words, over the 65-word range.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.4",
+        "name": "Distinguishable positions and voices, with explicit changes of position",
+        "rating": 7.8,
+        "example": "Positions stay distinct; T7 and T11 mark explicit shifts of position.",
+        "limitation": "All three minds share one measured, polite register across turns.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.5",
+        "name": "Economy and sustained attention",
+        "rating": 8.2,
+        "example": "Sections D and E summarise without repeating turn wording.",
+        "limitation": "Section E's first branch restates Section D's partnership summary.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.1",
+        "name": "Meaningful stakes and tension arising from the issue itself",
+        "rating": 7.2,
+        "example": "T5 raises the stake that mild winters may be one stable mode.",
+        "limitation": "The fragility stake is asserted in T5, never sized or made concrete.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.2",
+        "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+        "rating": 8.4,
+        "example": "T7 narrows after T6's point that the size of fragility is disputed.",
+        "limitation": "T11's concession is gradual, its cause left implicit in T9's framing.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C7.3",
+        "name": "Personality and expressive voice without caricature",
+        "rating": 7.4,
+        "example": "T6's curt 'Careful.' and T5's 'I distrust that' give the minds edges.",
+        "limitation": "Ocean Mapper and Energy Accountant sound alike outside their metaphors.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.4",
+        "name": "Memorable delivery",
+        "rating": 8.2,
+        "example": "T3: the wind is the delivery truck, but a truck needs cargo.",
+        "limitation": "The vivid Vancouver-versus-Labrador contrast is never used in any turn.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.5",
+        "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+        "rating": 7.2,
+        "example": "T5's entry after four turns shifts the debate's direction.",
+        "limitation": "T7 to T9 slow into reflections about the user, flattening momentum.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      }
+    ],
+    "strengths": [
+      "T2 to T6 test the popular Gulf Stream story through the cargo/delivery distinction, reused in T11.",
+      "T6's objection makes the Fragility Watcher narrow its claim in T7, candidly admitting it cannot size it.",
+      "Section D separates the settled partnership of causes from the disputed share each contributes."
+    ],
+    "weaknesses": [
+      "No mind examines continental shape, the Rockies, or Canada's mild Pacific coast as a decisive comparison.",
+      "T7 to T10 shift from the physics to user motives and a future-risk question the user did not ask.",
+      "T4 exceeds the word range and its 'my own extension' remark has an unclear referent."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C5.3",
+        "turns": [
+          4
+        ],
+        "observed": "Only eastern Canada is discussed; the mild Pacific coast is never used as a decisive comparison.",
+        "evidence": "crosses a big landmass first, as it does for eastern Canada"
+      },
+      {
+        "cell_id": "C1.3",
+        "turns": [
+          9
+        ],
+        "observed": "Continental shape and mountain-steered winds, named in Section A, never enter the debate.",
+        "evidence": "ocean storage, winds, and a warm current each pay part"
+      },
+      {
+        "cell_id": "C3.1",
+        "turns": [
+          7,
+          8
+        ],
+        "observed": "Turns pivot from the physical explanation to speculative readings of the user's motive.",
+        "evidence": "Perhaps they want one clean cause to hold onto"
+      },
+      {
+        "cell_id": "C2.3",
+        "turns": [
+          3,
+          11
+        ],
+        "observed": "Calls the warm water relevant to Europe western Atlantic, though Labrador water is western.",
+        "evidence": "explains why the western Atlantic is not a cold pool"
+      },
+      {
+        "cell_id": "C6.3",
+        "turns": [
+          4
+        ],
+        "observed": "One turn runs about 75 words, over the range, ending in an unclear aside.",
+        "evidence": "I would also say that is my own extension"
+      }
+    ],
+    "mechanical": [
+      {
+        "pattern": "misfit_slot",
+        "turns": [
+          7,
+          8
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "type": "format",
+        "severity": "minor",
+        "status": "observed",
+        "location": "T4",
+        "description": "One turn is over the 65-word range (about 75 words), matching the deterministic check.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "T3, T11",
+        "description": "Refers to the western Atlantic as the warm source for Europe; the relevant warm water is the northeastern Atlantic, while Labrador water is western.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "T2",
+        "description": "Says winter air over the whole North Atlantic is far colder than the sea; the contrast is large mainly near the western boundary.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "unverified",
+        "location": "B. MINDS, all turns",
+        "description": "Stommel, Alley and Pierrehumbert books exist; no quotations are used, and positions attributed to them could not be checked against sources.",
+        "evidence_ids": []
+      },
+      {
+        "type": "rubric_mismatch",
+        "severity": "minor",
+        "status": "observed",
+        "location": "T7, T8, Section D",
+        "description": "Motive readings for a physics explanation question earn C4.1 while costing C3.1 as a misfit slot.",
+        "evidence_ids": []
+      }
+    ],
+    "cap_reasons": [],
+    "rubric_fit_notes": [
+      "For a physical-science explanation question, criterion 4 cells reward reflections on the user's motives that the question barely invites; the T7 and T8 readings were credited in C4.1 and also counted against C3.1 as distinct effects. The western Atlantic wording in T3 and T11 may be loose phrasing rather than an error, so it is reported as suspected only."
+    ],
+    "question_type_note": "Read as exploratory: criterion 5 was scored on how well rival explanations were defined and what observation would decide between them, and Section E's preference-based branches cost C3.1 and C5.3."
+  },
+  "card": {
+    "criteria": [
+      {
+        "id": "C1",
+        "name": "Quality of discussion",
+        "max": 20,
+        "points": 15.32,
+        "sub": [
+          {
+            "id": "C1.1",
+            "name": "Continuity and responsiveness",
+            "rating": 8.2,
+            "points": 3.28,
+            "example": "T3 opens 'Fair, the wind is the delivery truck,' answering T2 directly.",
+            "limitation": "T7 pivots abruptly from sizing the current's role to a reading of the user.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.2",
+            "name": "Development of ideas",
+            "rating": 8.6,
+            "points": 3.44,
+            "example": "T3 adds the cargo/delivery distinction; T4, T6 and T11 build on it.",
+            "limitation": "T7 to T10 develop user readings while the physical mechanisms stop advancing.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C1.3",
+            "name": "Exploration of central tensions",
+            "rating": 6.2,
+            "points": 2.48,
+            "example": "T2 to T6 examine current versus wind versus ocean heat storage.",
+            "limitation": "Continental shape, named in Section A, and Rockies-driven wind patterns are never examined by any mind.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.4",
+            "name": "Integration of perspectives",
+            "rating": 7.8,
+            "points": 3.12,
+            "example": "T9 recasts the current as one arrow; T11 accepts a smaller but nonzero role.",
+            "limitation": "T10's fragility question runs parallel to, not folded into, the warm-winter explanation.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.5",
+            "name": "Progress toward understanding",
+            "rating": 7.5,
+            "points": 3,
+            "example": "Section D sharpens the open question to each cause's share of the warmth.",
+            "limitation": "The ending gives no rough relative size, even qualitative, for any contributor.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C2",
+        "name": "Quality of disagreement, trust and grounding",
+        "max": 20,
+        "points": 16.2,
+        "sub": [
+          {
+            "id": "C2.1",
+            "name": "Faithful engagement",
+            "rating": 7.8,
+            "points": 3.12,
+            "example": "T3 gives the current's strongest version: winds need warm cargo to deliver.",
+            "limitation": "T6 attributes to T5 a claim that the current is the main cause, which T5 never made.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.2",
+            "name": "Substance of challenges",
+            "rating": 8.7,
+            "points": 3.48,
+            "example": "T6 names the assumption and its consequence: if winds dominate, a weaker current cools Europe less.",
+            "limitation": "T4's ocean-storage claim goes unchallenged, though the sea stores heat on both Atlantic coasts.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C2.3",
+            "name": "Accuracy and support",
+            "rating": 7.2,
+            "points": 2.88,
+            "example": "T4 correctly notes eastern Canada's winter air arrives after crossing the continent.",
+            "limitation": "T3 and T11 say western Atlantic where the warm water relevant to Europe is eastern (suspected).",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.4",
+            "name": "Calibration and transparency",
+            "rating": 8.3,
+            "points": 3.32,
+            "example": "T7: 'I cannot size it from memory, and I will not pretend the book does.'",
+            "limitation": "T1 states 'The answer is the Gulf Stream' with unqualified certainty.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.5",
+            "name": "Intellectual honesty and revision",
+            "rating": 8.5,
+            "points": 3.4,
+            "example": "T7 narrows its claim after T6; T11 concedes a smaller role for the current.",
+            "limitation": "T11's closing point about the current's necessity gets no reply from the Energy Accountant.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C3",
+        "name": "Personal relevance",
+        "max": 10,
+        "points": 6.32,
+        "sub": [
+          {
+            "id": "C3.1",
+            "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+            "rating": 6.3,
+            "points": 1.26,
+            "example": "Section A frames the concern precisely: which overlapping cause does the most work.",
+            "limitation": "T7, T8 and Section E shift to user motives and preferred answer form (misfit_slot).",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.2",
+            "name": "Meaningful use of personal context",
+            "rating": 5.8,
+            "points": 1.16,
+            "example": "T4 ties the contrast to eastern Canada's air crossing a landmass first.",
+            "limitation": "The user's phrase 'parts of Canada' never prompts the mild Pacific coast comparison.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.3",
+            "name": "Fit with goals and values",
+            "rating": 7,
+            "points": 1.4,
+            "example": "Section D answers the asked why with the shared-bill partnership of causes.",
+            "limitation": "T10 substitutes the Fragility Watcher's future-risk question for the user's explanatory one.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.4",
+            "name": "Attention to constraints and stakes",
+            "rating": 7,
+            "points": 1.4,
+            "example": "No turn invents places or circumstances beyond the regions the user named.",
+            "limitation": "T8 attributes a felt unfairness that the question never expresses.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.5",
+            "name": "Responsiveness to information",
+            "rating": 5.5,
+            "points": 1.1,
+            "example": "Section E branches on whether the user wants a quick answer or future risk.",
+            "limitation": "Which Canadian places the user means, east or west coast, is never asked or branched.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C4",
+        "name": "Constructive self-discovery",
+        "max": 20,
+        "points": 15.44,
+        "sub": [
+          {
+            "id": "C4.1",
+            "name": "Clarification of desires and motivations",
+            "rating": 8.6,
+            "points": 3.44,
+            "example": "T7 and T8 offer rival readings, one cause versus a heat map; Section D asks which.",
+            "limitation": "T8's unfairness reading is thin, and neither reading changes the physical explanation.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C4.2",
+            "name": "Examination of assumptions",
+            "rating": 8,
+            "points": 3.2,
+            "example": "T2 surfaces the assumption that warm water alone warms Europe.",
+            "limitation": "The assumption that equal latitude should mean equal winter is never unpacked.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.3",
+            "name": "Clarification of values and priorities",
+            "rating": 7,
+            "points": 2.8,
+            "example": "Section D sets a single clean cause against a fuller map of heat paths.",
+            "limitation": "The conflict concerns answer form only; little on what understanding would serve the user.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.4",
+            "name": "Recognition of fears and outside expectations",
+            "rating": 6.8,
+            "points": 2.72,
+            "example": "T2 names the Gulf Stream as the popular answer, an inherited textbook expectation.",
+            "limitation": "Why the popular story persists, and its pull on the user, is only touched in T7.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.5",
+            "name": "Agency and reflective ownership",
+            "rating": 8.2,
+            "points": 3.28,
+            "example": "T9 and Section D leave the reading to the user: only the user can say.",
+            "limitation": "The offered choice in T9, one cause or a map, is a narrow binary.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C5",
+        "name": "Decision usefulness",
+        "max": 10,
+        "points": 6.98,
+        "sub": [
+          {
+            "id": "C5.1",
+            "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+            "rating": 7.2,
+            "points": 1.44,
+            "example": "Section A lists four rival explanations: currents, winds, heat storage, continental shape.",
+            "limitation": "Continental shape is named in Section A but never developed as a rival in the debate.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.2",
+            "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+            "rating": 7,
+            "points": 1.4,
+            "example": "T6 states what a dominant wind-and-storage account implies for a weaker current.",
+            "limitation": "No explanation states which observation would embarrass it, apart from Section E.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.3",
+            "name": "Identification of decisive conditions",
+            "rating": 5.8,
+            "points": 1.16,
+            "example": "Section E proposes model comparisons varying ocean heat transport or winds independently.",
+            "limitation": "No observable check such as mild coastal British Columbia; Section E's first branches hinge on preference.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.4",
+            "name": "Treatment of uncertainty",
+            "rating": 7.6,
+            "points": 1.52,
+            "example": "Section D isolates the decisive unknown: each part's share of the warmth.",
+            "limitation": "Fragility, peripheral to the why, gets weight equal to the central unknown in Section E.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.5",
+            "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+            "rating": 7.3,
+            "points": 1.46,
+            "example": "Section E: look for published model comparisons holding the rest fixed.",
+            "limitation": "Section E offers no simpler step, like comparing temperature records on Canada's two coasts.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C6",
+        "name": "Clarity and engagement",
+        "max": 10,
+        "points": 8.08,
+        "sub": [
+          {
+            "id": "C6.1",
+            "name": "Accessible language",
+            "rating": 8.8,
+            "points": 1.76,
+            "example": "T3's delivery truck and T9's shared bill make heat transport plain.",
+            "limitation": "Section E's phrase ocean heat transport arrives unexplained.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.2",
+            "name": "Traceable arguments and references",
+            "rating": 8,
+            "points": 1.6,
+            "example": "T5 'Both of you' and T9 'Those readings' point unambiguously to prior turns.",
+            "limitation": "T4's 'that is my own extension' has an unclear referent.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.3",
+            "name": "Manageable pacing and turn length",
+            "rating": 7.6,
+            "points": 1.52,
+            "example": "Eleven turns, mostly 45 to 62 words, in a steady exchange.",
+            "limitation": "T4 runs about 75 words, over the 65-word range.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.4",
+            "name": "Distinguishable positions and voices, with explicit changes of position",
+            "rating": 7.8,
+            "points": 1.56,
+            "example": "Positions stay distinct; T7 and T11 mark explicit shifts of position.",
+            "limitation": "All three minds share one measured, polite register across turns.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.5",
+            "name": "Economy and sustained attention",
+            "rating": 8.2,
+            "points": 1.64,
+            "example": "Sections D and E summarise without repeating turn wording.",
+            "limitation": "Section E's first branch restates Section D's partnership summary.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C7",
+        "name": "Drama and entertainment",
+        "max": 10,
+        "points": 7.68,
+        "sub": [
+          {
+            "id": "C7.1",
+            "name": "Meaningful stakes and tension arising from the issue itself",
+            "rating": 7.2,
+            "points": 1.44,
+            "example": "T5 raises the stake that mild winters may be one stable mode.",
+            "limitation": "The fragility stake is asserted in T5, never sized or made concrete.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.2",
+            "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+            "rating": 8.4,
+            "points": 1.68,
+            "example": "T7 narrows after T6's point that the size of fragility is disputed.",
+            "limitation": "T11's concession is gradual, its cause left implicit in T9's framing.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C7.3",
+            "name": "Personality and expressive voice without caricature",
+            "rating": 7.4,
+            "points": 1.48,
+            "example": "T6's curt 'Careful.' and T5's 'I distrust that' give the minds edges.",
+            "limitation": "Ocean Mapper and Energy Accountant sound alike outside their metaphors.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.4",
+            "name": "Memorable delivery",
+            "rating": 8.2,
+            "points": 1.64,
+            "example": "T3: the wind is the delivery truck, but a truck needs cargo.",
+            "limitation": "The vivid Vancouver-versus-Labrador contrast is never used in any turn.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.5",
+            "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+            "rating": 7.2,
+            "points": 1.44,
+            "example": "T5's entry after four turns shifts the debate's direction.",
+            "limitation": "T7 to T9 slow into reflections about the user, flattening momentum.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      }
+    ],
+    "uncapped": 76.02,
+    "score": 76.02,
+    "capReason": null,
+    "provisional": false,
+    "strengths": [
+      "T2 to T6 test the popular Gulf Stream story through the cargo/delivery distinction, reused in T11.",
+      "T6's objection makes the Fragility Watcher narrow its claim in T7, candidly admitting it cannot size it.",
+      "Section D separates the settled partnership of causes from the disputed share each contributes."
+    ],
+    "weaknesses": [
+      "No mind examines continental shape, the Rockies, or Canada's mild Pacific coast as a decisive comparison.",
+      "T7 to T10 shift from the physics to user motives and a future-risk question the user did not ask.",
+      "T4 exceeds the word range and its 'my own extension' remark has an unclear referent."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C5.3",
+        "turns": [
+          4
+        ],
+        "observed": "Only eastern Canada is discussed; the mild Pacific coast is never used as a decisive comparison.",
+        "evidence": "crosses a big landmass first, as it does for eastern Canada"
+      },
+      {
+        "cell_id": "C1.3",
+        "turns": [
+          9
+        ],
+        "observed": "Continental shape and mountain-steered winds, named in Section A, never enter the debate.",
+        "evidence": "ocean storage, winds, and a warm current each pay part"
+      },
+      {
+        "cell_id": "C3.1",
+        "turns": [
+          7,
+          8
+        ],
+        "observed": "Turns pivot from the physical explanation to speculative readings of the user's motive.",
+        "evidence": "Perhaps they want one clean cause to hold onto"
+      },
+      {
+        "cell_id": "C2.3",
+        "turns": [
+          3,
+          11
+        ],
+        "observed": "Calls the warm water relevant to Europe western Atlantic, though Labrador water is western.",
+        "evidence": "explains why the western Atlantic is not a cold pool"
+      },
+      {
+        "cell_id": "C6.3",
+        "turns": [
+          4
+        ],
+        "observed": "One turn runs about 75 words, over the range, ending in an unclear aside.",
+        "evidence": "I would also say that is my own extension"
+      }
+    ],
+    "mechanical": [
+      {
+        "pattern": "misfit_slot",
+        "turns": [
+          7,
+          8
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "type": "format",
+        "severity": "minor",
+        "status": "observed",
+        "location": "T4",
+        "description": "One turn is over the 65-word range (about 75 words), matching the deterministic check.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "T3, T11",
+        "description": "Refers to the western Atlantic as the warm source for Europe; the relevant warm water is the northeastern Atlantic, while Labrador water is western.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "T2",
+        "description": "Says winter air over the whole North Atlantic is far colder than the sea; the contrast is large mainly near the western boundary.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "unverified",
+        "location": "B. MINDS, all turns",
+        "description": "Stommel, Alley and Pierrehumbert books exist; no quotations are used, and positions attributed to them could not be checked against sources.",
+        "evidence_ids": []
+      },
+      {
+        "type": "rubric_mismatch",
+        "severity": "minor",
+        "status": "observed",
+        "location": "T7, T8, Section D",
+        "description": "Motive readings for a physics explanation question earn C4.1 while costing C3.1 as a misfit slot.",
+        "evidence_ids": []
+      }
+    ],
+    "rubricFitNotes": [
+      "For a physical-science explanation question, criterion 4 cells reward reflections on the user's motives that the question barely invites; the T7 and T8 readings were credited in C4.1 and also counted against C3.1 as distinct effects. The western Atlantic wording in T3 and T11 may be loose phrasing rather than an error, so it is reported as suspected only."
+    ],
+    "questionTypeNote": "Read as exploratory: criterion 5 was scored on how well rival explanations were defined and what observation would decide between them, and Section E's preference-based branches cost C3.1 and C5.3."
+  },
+  "rubricVersion": "rubric-evaluator-4.2.0",
+  "savedAt": "2026-10-16T01:41:05.043Z"
+}

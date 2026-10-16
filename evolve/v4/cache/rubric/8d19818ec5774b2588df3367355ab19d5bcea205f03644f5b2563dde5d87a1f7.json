@@ -1,0 +1,984 @@
+{
+  "jobId": "rubric.v2.q5.s2",
+  "raw": {
+    "schema_version": "rubric-evaluator-4.2.0",
+    "rubric_version": "owlry-matrix-v2-bands",
+    "evaluation_status": "complete",
+    "cells": [
+      {
+        "id": "C1.1",
+        "name": "Continuity and responsiveness",
+        "rating": 5,
+        "example": "T4 takes up T3's buffer claim and adds atmospheric transport.",
+        "limitation": "T2 sidesteps T1's feedback point for a civilisation tangent; T4, T5, T8 open by agreeing.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.2",
+        "name": "Development of ideas",
+        "rating": 5,
+        "example": "T4's ocean-source versus atmosphere-delivery distinction is used in T6 and Section D.",
+        "limitation": "T7 and T9 add no new distinction; T9 dissolves into harmony.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.3",
+        "name": "Exploration of central tensions",
+        "rating": 3,
+        "example": "T4 contests ocean-only explanation by naming atmospheric circulation.",
+        "limitation": "Maritime west-coast versus continental east-coast air and the Rockies' effect never examined; T8 only gestures.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.4",
+        "name": "Integration of perspectives",
+        "rating": 3.5,
+        "example": "T6 combines ocean energy with atmospheric delivery.",
+        "limitation": "Forced agreement from T5 to T9; T8 'Precisely' and T9 harmony replace qualification.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.5",
+        "name": "Progress toward understanding",
+        "rating": 4,
+        "example": "Section D states ocean as source, atmosphere as delivery.",
+        "limitation": "T9 ends on 'complex, interdependent whole', less sharp than the opening question.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.1",
+        "name": "Faithful engagement",
+        "rating": 4,
+        "example": "T1 names the common single-cause Gulf Stream view before qualifying it.",
+        "limitation": "The Gulf Stream view is never given its strongest form before T6 abandons it.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.2",
+        "name": "Substance of challenges",
+        "rating": 3,
+        "example": "T4 says relying on ocean heat ignores atmospheric delivery onto land.",
+        "limitation": "T4's objection offers no evidence or observable; T5 agrees rather than answers.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.3",
+        "name": "Accuracy and support",
+        "rating": 5,
+        "example": "T5's prevailing westerlies carrying oceanic heat inland is broadly accurate.",
+        "limitation": "Section E's 'thermal inertia primary for global heat distribution' conflates storage with transport (suspected).",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.4",
+        "name": "Calibration and transparency",
+        "rating": 3.5,
+        "example": "Section D notes the weighting of variables remains disputed.",
+        "limitation": "T6 and T8 state contested weightings as settled fact without evidence.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.5",
+        "name": "Intellectual honesty and revision",
+        "rating": 4.5,
+        "example": "T6 explicitly revises the Observer's ocean emphasis.",
+        "limitation": "T6 concedes to bare assertion in T4-T5; nothing tested before conceding.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.1",
+        "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+        "rating": 4.5,
+        "example": "Section A frames ocean, atmosphere and geography as competing causes.",
+        "limitation": "T2 drifts to civilisation; Section E settles by reader interest, not evidence.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.2",
+        "name": "Meaningful use of personal context",
+        "rating": 4,
+        "example": "T8 contrasts the North Atlantic basin for the same latitude.",
+        "limitation": "The user's 'some places' and 'parts of Canada' are never pinned to coasts.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.3",
+        "name": "Fit with goals and values",
+        "rating": 5,
+        "example": "Section D gives a direct causal answer the user asked for.",
+        "limitation": "T2's geographic privilege of civilisation serves the speaker's frame, not the user's question.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.4",
+        "name": "Attention to constraints and stakes",
+        "rating": 6,
+        "example": "No user circumstances are invented beyond the question.",
+        "limitation": "T2 adds civilisational stakes the user never raised.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.5",
+        "name": "Responsiveness to information",
+        "rating": 2,
+        "example": "Section E branches on what one is interested in.",
+        "limitation": "No question or branch on which places are compared, west or east Canadian coast.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.1",
+        "name": "Clarification of desires and motivations",
+        "rating": 2,
+        "example": "Section E distinguishes global versus single-city interest.",
+        "limitation": "What the user wants from understanding this is never offered as alternatives.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.2",
+        "name": "Examination of assumptions",
+        "rating": 5.5,
+        "example": "T1 questions isolating the Gulf Stream; T3 says latitude alone does not decide.",
+        "limitation": "The assumption that the comparison is coast-to-coast like-for-like is never surfaced.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.3",
+        "name": "Clarification of values and priorities",
+        "rating": 3,
+        "example": "Section E separates global from local explanatory focus.",
+        "limitation": "What counts as a good explanation for the user is never weighed.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.4",
+        "name": "Recognition of fears and outside expectations",
+        "rating": 3.5,
+        "example": "T1 'We often isolate the Gulf Stream' notes the popular story.",
+        "limitation": "The received Gulf Stream explanation as outside expectation is named once, not examined.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.5",
+        "name": "Agency and reflective ownership",
+        "rating": 4.5,
+        "example": "Section E offers two framings the user could adopt.",
+        "limitation": "T9's harmony conclusion closes rather than leaves a distinction to test.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.1",
+        "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+        "rating": 5.5,
+        "example": "Section A names ocean currents, atmospheric circulation, regional geography as rivals.",
+        "limitation": "Geography appears only in T8, never defined as a mechanism.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.2",
+        "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+        "rating": 2.5,
+        "example": "T4 notes an ocean-only account misses delivery onto land.",
+        "limitation": "No explanation's evidential cost or what it fails to explain is stated.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.3",
+        "name": "Identification of decisive conditions",
+        "rating": 2,
+        "example": "Section E pairs global focus with ocean, local with wind.",
+        "limitation": "Settles by reader interest; no observable such as Vancouver versus Halifax decides.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.4",
+        "name": "Treatment of uncertainty",
+        "rating": 3.5,
+        "example": "Section D says weight per variable remains disputed.",
+        "limitation": "Consequential unknowns are not separated from minor ones.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.5",
+        "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+        "rating": 4,
+        "example": "Section E suggests comparing coastal and inland climate data.",
+        "limitation": "Step is generic; no specific pair of places or measure named.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.1",
+        "name": "Accessible language",
+        "rating": 7,
+        "example": "T5 plainly explains westerlies carrying oceanic heat inland.",
+        "limitation": "T1 'complex dance' and T9 'harmony' are vague abstractions.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.2",
+        "name": "Traceable arguments and references",
+        "rating": 6,
+        "example": "T6 names its revision of 'my earlier emphasis'.",
+        "limitation": "T2 'That is true' and T6 'You are correct' lack clear referents.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.3",
+        "name": "Manageable pacing and turn length",
+        "rating": 7.5,
+        "example": "Nine turns, all within word range per deterministic checks.",
+        "limitation": "Near-identical turn lengths give a flat rhythm across T1-T9.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.4",
+        "name": "Distinguishable positions and voices, with explicit changes of position",
+        "rating": 3,
+        "example": "T3 Observer 'Nature is a whole' has a faint period voice.",
+        "limitation": "Historical Geographer and Systems Analyst share one register and converge by T7-T8.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.5",
+        "name": "Economy and sustained attention",
+        "rating": 4.5,
+        "example": "T5 compresses the delivery mechanism into two sentences.",
+        "limitation": "T7 and T9 recap without content; T4, T5 open restating predecessors.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.1",
+        "name": "Meaningful stakes and tension arising from the issue itself",
+        "rating": 3,
+        "example": "T4 sets ocean against atmosphere as rival drivers.",
+        "limitation": "Tension dissolves by T5; nothing at stake in which cause wins.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.2",
+        "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+        "rating": 4.5,
+        "example": "T6 reverses the Observer's ocean emphasis, citing the wind argument.",
+        "limitation": "T6 yields to unsupported assertion in T4-T5; reversal feels scripted.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.3",
+        "name": "Personality and expressive voice without caricature",
+        "rating": 3,
+        "example": "T3 'Nature is a whole' gestures at Humboldt's voice.",
+        "limitation": "All three minds speak in one flat explanatory register.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.4",
+        "name": "Memorable delivery",
+        "rating": 3,
+        "example": "T1 'complex dance' between ocean and air.",
+        "limitation": "No vivid example such as a named European and Canadian city pair.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.5",
+        "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+        "rating": 3,
+        "example": "T6 concession is the one turn of movement.",
+        "limitation": "Steady agreement from T5 to T9 gives no rise or release.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      }
+    ],
+    "strengths": [
+      "T4 introduces the ocean-source versus atmosphere-delivery distinction, carried into T6 and Section D.",
+      "T1 and T3 question the single-cause Gulf Stream and latitude-only assumptions.",
+      "Form is clean: nine turns, all within word range, no quotation marks in pd=false turns."
+    ],
+    "weaknesses": [
+      "Section E settles explanations by reader interest; no observable comparison decides between them.",
+      "Forced agreement from T5 to T9; the Historical Geographer echoes rather than tests.",
+      "The maritime-west versus continental-east coast contrast is never raised; T8 only gestures at mountains."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C5.3",
+        "turns": [],
+        "observed": "Section E picks a cause by what one is interested in, not by evidence.",
+        "evidence": "If one is interested in the global heat distribution"
+      },
+      {
+        "cell_id": "C1.3",
+        "turns": [
+          7,
+          8
+        ],
+        "observed": "Mountain and coast geography asserted in passing, never explained or contested.",
+        "evidence": "the orientation of the mountains in Canada versus Europe"
+      },
+      {
+        "cell_id": "C1.4",
+        "turns": [
+          5,
+          6,
+          8
+        ],
+        "observed": "Speakers concede to bare assertion; no objection is answered with evidence.",
+        "evidence": "You are correct; the wind is the primary engine"
+      },
+      {
+        "cell_id": "C3.5",
+        "turns": [],
+        "observed": "No question or branch on which places are compared, which coast of Canada.",
+        "evidence": "where the geography forces different patterns"
+      },
+      {
+        "cell_id": "C6.4",
+        "turns": [
+          2,
+          5,
+          8
+        ],
+        "observed": "Historical Geographer adds an off-topic civilisation frame, then echoes others.",
+        "evidence": "a geographic privilege that allowed for the density of civilization"
+      }
+    ],
+    "mechanical": [
+      {
+        "pattern": "restatement_opener",
+        "turns": [
+          4,
+          5,
+          8
+        ]
+      },
+      {
+        "pattern": "uniform_voice",
+        "turns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      },
+      {
+        "pattern": "uncaused_reversal",
+        "turns": [
+          6
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "Section E",
+        "description": "Calls ocean thermal inertia the primary factor in global heat distribution, conflating heat storage with poleward transport, where the atmosphere carries much.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "T2",
+        "description": "Geographic privilege enabling civilisational density is a contestable determinist claim, unsupported and off the question.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "unverified",
+        "location": "T3, T6, T9",
+        "description": "Humboldt paraphrase introduced with 'As I have written' cannot be checked against Cosmos here; no quotation marks used.",
+        "evidence_ids": []
+      },
+      {
+        "type": "rubric_mismatch",
+        "severity": "minor",
+        "status": "observed",
+        "location": "Criteria 3 and 4",
+        "description": "A physical-science question with no personal context leaves little material for personal relevance and self-discovery cells.",
+        "evidence_ids": []
+      }
+    ],
+    "cap_reasons": [],
+    "rubric_fit_notes": [
+      "The question is a pure physical-science explanation with no personal details, so C3 and C4 were rated on missed opportunities such as asking which places are compared and examining the popular Gulf Stream story, not on absent life context. Accuracy judgments on Section E and T2 rest on general knowledge and are reported as suspected."
+    ],
+    "question_type_note": "Read as exploratory: C5 was scored as the basis for settling between ocean, atmosphere and geography explanations, and Section E's interest-based split cost C3.1 and C5.3."
+  },
+  "card": {
+    "criteria": [
+      {
+        "id": "C1",
+        "name": "Quality of discussion",
+        "max": 20,
+        "points": 8.2,
+        "sub": [
+          {
+            "id": "C1.1",
+            "name": "Continuity and responsiveness",
+            "rating": 5,
+            "points": 2,
+            "example": "T4 takes up T3's buffer claim and adds atmospheric transport.",
+            "limitation": "T2 sidesteps T1's feedback point for a civilisation tangent; T4, T5, T8 open by agreeing.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.2",
+            "name": "Development of ideas",
+            "rating": 5,
+            "points": 2,
+            "example": "T4's ocean-source versus atmosphere-delivery distinction is used in T6 and Section D.",
+            "limitation": "T7 and T9 add no new distinction; T9 dissolves into harmony.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.3",
+            "name": "Exploration of central tensions",
+            "rating": 3,
+            "points": 1.2,
+            "example": "T4 contests ocean-only explanation by naming atmospheric circulation.",
+            "limitation": "Maritime west-coast versus continental east-coast air and the Rockies' effect never examined; T8 only gestures.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.4",
+            "name": "Integration of perspectives",
+            "rating": 3.5,
+            "points": 1.4,
+            "example": "T6 combines ocean energy with atmospheric delivery.",
+            "limitation": "Forced agreement from T5 to T9; T8 'Precisely' and T9 harmony replace qualification.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.5",
+            "name": "Progress toward understanding",
+            "rating": 4,
+            "points": 1.6,
+            "example": "Section D states ocean as source, atmosphere as delivery.",
+            "limitation": "T9 ends on 'complex, interdependent whole', less sharp than the opening question.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C2",
+        "name": "Quality of disagreement, trust and grounding",
+        "max": 20,
+        "points": 8,
+        "sub": [
+          {
+            "id": "C2.1",
+            "name": "Faithful engagement",
+            "rating": 4,
+            "points": 1.6,
+            "example": "T1 names the common single-cause Gulf Stream view before qualifying it.",
+            "limitation": "The Gulf Stream view is never given its strongest form before T6 abandons it.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.2",
+            "name": "Substance of challenges",
+            "rating": 3,
+            "points": 1.2,
+            "example": "T4 says relying on ocean heat ignores atmospheric delivery onto land.",
+            "limitation": "T4's objection offers no evidence or observable; T5 agrees rather than answers.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.3",
+            "name": "Accuracy and support",
+            "rating": 5,
+            "points": 2,
+            "example": "T5's prevailing westerlies carrying oceanic heat inland is broadly accurate.",
+            "limitation": "Section E's 'thermal inertia primary for global heat distribution' conflates storage with transport (suspected).",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.4",
+            "name": "Calibration and transparency",
+            "rating": 3.5,
+            "points": 1.4,
+            "example": "Section D notes the weighting of variables remains disputed.",
+            "limitation": "T6 and T8 state contested weightings as settled fact without evidence.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.5",
+            "name": "Intellectual honesty and revision",
+            "rating": 4.5,
+            "points": 1.8,
+            "example": "T6 explicitly revises the Observer's ocean emphasis.",
+            "limitation": "T6 concedes to bare assertion in T4-T5; nothing tested before conceding.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C3",
+        "name": "Personal relevance",
+        "max": 10,
+        "points": 4.3,
+        "sub": [
+          {
+            "id": "C3.1",
+            "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+            "rating": 4.5,
+            "points": 0.9,
+            "example": "Section A frames ocean, atmosphere and geography as competing causes.",
+            "limitation": "T2 drifts to civilisation; Section E settles by reader interest, not evidence.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.2",
+            "name": "Meaningful use of personal context",
+            "rating": 4,
+            "points": 0.8,
+            "example": "T8 contrasts the North Atlantic basin for the same latitude.",
+            "limitation": "The user's 'some places' and 'parts of Canada' are never pinned to coasts.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.3",
+            "name": "Fit with goals and values",
+            "rating": 5,
+            "points": 1,
+            "example": "Section D gives a direct causal answer the user asked for.",
+            "limitation": "T2's geographic privilege of civilisation serves the speaker's frame, not the user's question.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.4",
+            "name": "Attention to constraints and stakes",
+            "rating": 6,
+            "points": 1.2,
+            "example": "No user circumstances are invented beyond the question.",
+            "limitation": "T2 adds civilisational stakes the user never raised.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.5",
+            "name": "Responsiveness to information",
+            "rating": 2,
+            "points": 0.4,
+            "example": "Section E branches on what one is interested in.",
+            "limitation": "No question or branch on which places are compared, west or east Canadian coast.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C4",
+        "name": "Constructive self-discovery",
+        "max": 20,
+        "points": 7.4,
+        "sub": [
+          {
+            "id": "C4.1",
+            "name": "Clarification of desires and motivations",
+            "rating": 2,
+            "points": 0.8,
+            "example": "Section E distinguishes global versus single-city interest.",
+            "limitation": "What the user wants from understanding this is never offered as alternatives.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.2",
+            "name": "Examination of assumptions",
+            "rating": 5.5,
+            "points": 2.2,
+            "example": "T1 questions isolating the Gulf Stream; T3 says latitude alone does not decide.",
+            "limitation": "The assumption that the comparison is coast-to-coast like-for-like is never surfaced.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.3",
+            "name": "Clarification of values and priorities",
+            "rating": 3,
+            "points": 1.2,
+            "example": "Section E separates global from local explanatory focus.",
+            "limitation": "What counts as a good explanation for the user is never weighed.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.4",
+            "name": "Recognition of fears and outside expectations",
+            "rating": 3.5,
+            "points": 1.4,
+            "example": "T1 'We often isolate the Gulf Stream' notes the popular story.",
+            "limitation": "The received Gulf Stream explanation as outside expectation is named once, not examined.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.5",
+            "name": "Agency and reflective ownership",
+            "rating": 4.5,
+            "points": 1.8,
+            "example": "Section E offers two framings the user could adopt.",
+            "limitation": "T9's harmony conclusion closes rather than leaves a distinction to test.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C5",
+        "name": "Decision usefulness",
+        "max": 10,
+        "points": 3.5,
+        "sub": [
+          {
+            "id": "C5.1",
+            "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+            "rating": 5.5,
+            "points": 1.1,
+            "example": "Section A names ocean currents, atmospheric circulation, regional geography as rivals.",
+            "limitation": "Geography appears only in T8, never defined as a mechanism.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.2",
+            "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+            "rating": 2.5,
+            "points": 0.5,
+            "example": "T4 notes an ocean-only account misses delivery onto land.",
+            "limitation": "No explanation's evidential cost or what it fails to explain is stated.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.3",
+            "name": "Identification of decisive conditions",
+            "rating": 2,
+            "points": 0.4,
+            "example": "Section E pairs global focus with ocean, local with wind.",
+            "limitation": "Settles by reader interest; no observable such as Vancouver versus Halifax decides.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.4",
+            "name": "Treatment of uncertainty",
+            "rating": 3.5,
+            "points": 0.7,
+            "example": "Section D says weight per variable remains disputed.",
+            "limitation": "Consequential unknowns are not separated from minor ones.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.5",
+            "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+            "rating": 4,
+            "points": 0.8,
+            "example": "Section E suggests comparing coastal and inland climate data.",
+            "limitation": "Step is generic; no specific pair of places or measure named.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C6",
+        "name": "Clarity and engagement",
+        "max": 10,
+        "points": 5.6,
+        "sub": [
+          {
+            "id": "C6.1",
+            "name": "Accessible language",
+            "rating": 7,
+            "points": 1.4,
+            "example": "T5 plainly explains westerlies carrying oceanic heat inland.",
+            "limitation": "T1 'complex dance' and T9 'harmony' are vague abstractions.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.2",
+            "name": "Traceable arguments and references",
+            "rating": 6,
+            "points": 1.2,
+            "example": "T6 names its revision of 'my earlier emphasis'.",
+            "limitation": "T2 'That is true' and T6 'You are correct' lack clear referents.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.3",
+            "name": "Manageable pacing and turn length",
+            "rating": 7.5,
+            "points": 1.5,
+            "example": "Nine turns, all within word range per deterministic checks.",
+            "limitation": "Near-identical turn lengths give a flat rhythm across T1-T9.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.4",
+            "name": "Distinguishable positions and voices, with explicit changes of position",
+            "rating": 3,
+            "points": 0.6,
+            "example": "T3 Observer 'Nature is a whole' has a faint period voice.",
+            "limitation": "Historical Geographer and Systems Analyst share one register and converge by T7-T8.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.5",
+            "name": "Economy and sustained attention",
+            "rating": 4.5,
+            "points": 0.9,
+            "example": "T5 compresses the delivery mechanism into two sentences.",
+            "limitation": "T7 and T9 recap without content; T4, T5 open restating predecessors.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C7",
+        "name": "Drama and entertainment",
+        "max": 10,
+        "points": 3.3,
+        "sub": [
+          {
+            "id": "C7.1",
+            "name": "Meaningful stakes and tension arising from the issue itself",
+            "rating": 3,
+            "points": 0.6,
+            "example": "T4 sets ocean against atmosphere as rival drivers.",
+            "limitation": "Tension dissolves by T5; nothing at stake in which cause wins.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.2",
+            "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+            "rating": 4.5,
+            "points": 0.9,
+            "example": "T6 reverses the Observer's ocean emphasis, citing the wind argument.",
+            "limitation": "T6 yields to unsupported assertion in T4-T5; reversal feels scripted.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.3",
+            "name": "Personality and expressive voice without caricature",
+            "rating": 3,
+            "points": 0.6,
+            "example": "T3 'Nature is a whole' gestures at Humboldt's voice.",
+            "limitation": "All three minds speak in one flat explanatory register.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.4",
+            "name": "Memorable delivery",
+            "rating": 3,
+            "points": 0.6,
+            "example": "T1 'complex dance' between ocean and air.",
+            "limitation": "No vivid example such as a named European and Canadian city pair.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.5",
+            "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+            "rating": 3,
+            "points": 0.6,
+            "example": "T6 concession is the one turn of movement.",
+            "limitation": "Steady agreement from T5 to T9 gives no rise or release.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      }
+    ],
+    "uncapped": 40.3,
+    "score": 40.3,
+    "capReason": null,
+    "provisional": false,
+    "strengths": [
+      "T4 introduces the ocean-source versus atmosphere-delivery distinction, carried into T6 and Section D.",
+      "T1 and T3 question the single-cause Gulf Stream and latitude-only assumptions.",
+      "Form is clean: nine turns, all within word range, no quotation marks in pd=false turns."
+    ],
+    "weaknesses": [
+      "Section E settles explanations by reader interest; no observable comparison decides between them.",
+      "Forced agreement from T5 to T9; the Historical Geographer echoes rather than tests.",
+      "The maritime-west versus continental-east coast contrast is never raised; T8 only gestures at mountains."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C5.3",
+        "turns": [],
+        "observed": "Section E picks a cause by what one is interested in, not by evidence.",
+        "evidence": "If one is interested in the global heat distribution"
+      },
+      {
+        "cell_id": "C1.3",
+        "turns": [
+          7,
+          8
+        ],
+        "observed": "Mountain and coast geography asserted in passing, never explained or contested.",
+        "evidence": "the orientation of the mountains in Canada versus Europe"
+      },
+      {
+        "cell_id": "C1.4",
+        "turns": [
+          5,
+          6,
+          8
+        ],
+        "observed": "Speakers concede to bare assertion; no objection is answered with evidence.",
+        "evidence": "You are correct; the wind is the primary engine"
+      },
+      {
+        "cell_id": "C3.5",
+        "turns": [],
+        "observed": "No question or branch on which places are compared, which coast of Canada.",
+        "evidence": "where the geography forces different patterns"
+      },
+      {
+        "cell_id": "C6.4",
+        "turns": [
+          2,
+          5,
+          8
+        ],
+        "observed": "Historical Geographer adds an off-topic civilisation frame, then echoes others.",
+        "evidence": "a geographic privilege that allowed for the density of civilization"
+      }
+    ],
+    "mechanical": [
+      {
+        "pattern": "restatement_opener",
+        "turns": [
+          4,
+          5,
+          8
+        ]
+      },
+      {
+        "pattern": "uniform_voice",
+        "turns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      },
+      {
+        "pattern": "uncaused_reversal",
+        "turns": [
+          6
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "Section E",
+        "description": "Calls ocean thermal inertia the primary factor in global heat distribution, conflating heat storage with poleward transport, where the atmosphere carries much.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "T2",
+        "description": "Geographic privilege enabling civilisational density is a contestable determinist claim, unsupported and off the question.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "unverified",
+        "location": "T3, T6, T9",
+        "description": "Humboldt paraphrase introduced with 'As I have written' cannot be checked against Cosmos here; no quotation marks used.",
+        "evidence_ids": []
+      },
+      {
+        "type": "rubric_mismatch",
+        "severity": "minor",
+        "status": "observed",
+        "location": "Criteria 3 and 4",
+        "description": "A physical-science question with no personal context leaves little material for personal relevance and self-discovery cells.",
+        "evidence_ids": []
+      }
+    ],
+    "rubricFitNotes": [
+      "The question is a pure physical-science explanation with no personal details, so C3 and C4 were rated on missed opportunities such as asking which places are compared and examining the popular Gulf Stream story, not on absent life context. Accuracy judgments on Section E and T2 rest on general knowledge and are reported as suspected."
+    ],
+    "questionTypeNote": "Read as exploratory: C5 was scored as the basis for settling between ocean, atmosphere and geography explanations, and Section E's interest-based split cost C3.1 and C5.3."
+  },
+  "rubricVersion": "rubric-evaluator-4.2.0",
+  "savedAt": "2026-10-16T01:43:43.794Z"
+}

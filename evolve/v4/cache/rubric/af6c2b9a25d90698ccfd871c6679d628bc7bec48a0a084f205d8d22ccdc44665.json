@@ -1,0 +1,938 @@
+{
+  "jobId": "rubric.v3.q5.s1",
+  "raw": {
+    "schema_version": "rubric-evaluator-4.2.0",
+    "rubric_version": "owlry-matrix-v2-bands",
+    "evaluation_status": "complete",
+    "cells": [
+      {
+        "id": "C1.1",
+        "name": "Continuity and responsiveness",
+        "rating": 7.8,
+        "example": "T3 answers T2 directly: the ocean is that upwind warmth, truck versus warehouse.",
+        "limitation": "T6 steps away from the mechanism thread rather than answering T5's narrowed claim.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.2",
+        "name": "Development of ideas",
+        "rating": 8.3,
+        "example": "T4 introduces the Rockies bending winter flow; T10 still leans on mountains shaping the contrast.",
+        "limitation": "T5's seasonal heat storage idea is raised once and never developed by a later turn.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C1.3",
+        "name": "Exploration of central tensions",
+        "rating": 7,
+        "example": "T1-T5 weigh current against westerlies and mountains, the core physical dispute.",
+        "limitation": "Local seasonal storage versus current heat transport, the crux of the dispute, goes unexamined after T5.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.4",
+        "name": "Integration of perspectives",
+        "rating": 7.7,
+        "example": "T9 and T10 each concede ground; section D frames a partnership while keeping the dispute open.",
+        "limitation": "T9 concedes on grounds of the user's possible fear, not the physics, so integration is partly rhetorical.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.5",
+        "name": "Progress toward understanding",
+        "rating": 7.6,
+        "example": "Section D: single-cause story weakened by Vancouver; the ocean's share stays the sharpened open question.",
+        "limitation": "The sharpened question is not tied to any evidence that would narrow the ocean's share.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.1",
+        "name": "Faithful engagement",
+        "rating": 7.8,
+        "example": "T3 gives the ocean view its strongest form: westerlies deliver heat the current supplied.",
+        "limitation": "T5 accepts the Vancouver case without raising the Pacific's own warm current for the ocean view.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.2",
+        "name": "Substance of challenges",
+        "rating": 8.3,
+        "example": "T4's Vancouver test names what breaks for a warm-current-only story; T5 narrows rather than restates.",
+        "limitation": "T7's objection that fear is smuggled in is never answered on its merits.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C2.3",
+        "name": "Accuracy and support",
+        "rating": 7.7,
+        "example": "T1 Labrador water off Atlantic Canada and T4 Rockies deflecting cold air are standard, accurate claims.",
+        "limitation": "T4 says Vancouver has no Gulf Stream but omits the North Pacific Current (suspected incompleteness).",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.4",
+        "name": "Calibration and transparency",
+        "rating": 8.2,
+        "example": "T4 flags going beyond its source: I'd push further than the textbook here.",
+        "limitation": "T3 asserts westerlies would deliver much colder air without the current, with no hedge.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.5",
+        "name": "Intellectual honesty and revision",
+        "rating": 7.8,
+        "example": "T5 concedes Vancouver and narrows the claim; T10 grants ocean heat is not irrelevant.",
+        "limitation": "T9's concession rests on the user's possible motive, not on any physical argument.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.1",
+        "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+        "rating": 6.2,
+        "example": "Section A states the physics puzzle accurately and names the Gulf Stream assumption.",
+        "limitation": "T6-T8 and section E recast the explanation question toward the user's motive and interest.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.2",
+        "name": "Meaningful use of personal context",
+        "rating": 6.8,
+        "example": "T2 and T4 use Montreal and Vancouver to test the user's Europe-Canada comparison.",
+        "limitation": "Which parts of Canada the user means is never pinned down, though Vancouver is itself Canadian.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.3",
+        "name": "Fit with goals and values",
+        "rating": 6.9,
+        "example": "Section E's first branch gives a defensible everyday explanation matching the user's stated question.",
+        "limitation": "T6-T8 import a stakes frame the user never stated, partly displacing the explanatory goal.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.4",
+        "name": "Attention to constraints and stakes",
+        "rating": 6.7,
+        "example": "T6 ties the explanation's stakes to past abrupt circulation shifts.",
+        "limitation": "T7 posits a headline-driven fear with no cue in the question, a lightly invented context.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.5",
+        "name": "Responsiveness to information",
+        "rating": 6.8,
+        "example": "T8 branches: curiosity calls for a ranking of causes, fear for the ocean's share.",
+        "limitation": "The region of Canada meant, a consequential missing fact, never becomes a question or branch.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.1",
+        "name": "Clarification of desires and motivations",
+        "rating": 8.5,
+        "example": "T7-T8 offer map puzzle or headline fear as alternatives; section D asks which fits.",
+        "limitation": "The fear alternative in T7 has no anchor in the user's wording.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C4.2",
+        "name": "Examination of assumptions",
+        "rating": 8,
+        "example": "Sections A and T4 make the popular Gulf Stream answer visible and test it with Vancouver.",
+        "limitation": "The latitude-predicts-climate assumption behind the question is used but never named for reflection.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.3",
+        "name": "Clarification of values and priorities",
+        "rating": 7,
+        "example": "T8 distinguishes a clean ranking of causes from understanding the ocean's role for future change.",
+        "limitation": "The competing aims are posited by the speakers rather than drawn from the user's question.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.4",
+        "name": "Recognition of fears and outside expectations",
+        "rating": 7.3,
+        "example": "T7 names headline-driven fear and a plain irritation that the map and thermometer disagree.",
+        "limitation": "T7 calls the possible fear a worry smuggled in, faintly dismissive of a fear it introduced.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.5",
+        "name": "Agency and reflective ownership",
+        "rating": 8.2,
+        "example": "T8 and section D: only the asker can say which reading fits.",
+        "limitation": "Section E's branches on interest repeat D's question rather than offering a new distinction to refine.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.1",
+        "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+        "rating": 7.7,
+        "example": "Section D defines rival explanations: current, westerlies over ocean, mountains and continental geometry.",
+        "limitation": "Seasonal ocean storage and current heat transport are not separated as distinct explanations.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.2",
+        "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+        "rating": 6.5,
+        "example": "Section E: the westerlies account also explains Vancouver, a stated evidential advantage.",
+        "limitation": "The ocean account's evidential cost or support for the Atlantic contrast is never stated.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.3",
+        "name": "Identification of decisive conditions",
+        "rating": 5.2,
+        "example": "T4 uses Vancouver as an observable that rules out a single-cause story.",
+        "limitation": "Section E branches on user interest; no observable fact would settle the ocean's disputed share.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.4",
+        "name": "Treatment of uncertainty",
+        "rating": 7.6,
+        "example": "Section D isolates the ocean's share as the disputed unknown; T9 separates abrupt-change timescales.",
+        "limitation": "T9's timescale caveat is left vague, so its bearing on the unknown stays unclear.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.5",
+        "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+        "rating": 5.6,
+        "example": "Section E suggests checking reviews comparing ocean heat transport with atmospheric effects.",
+        "limitation": "Section E's step is a generic search for reviews, not one specific comparison or reading.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.1",
+        "name": "Accessible language",
+        "rating": 8.5,
+        "example": "T1 and T2 explain upwind ocean versus frozen continent in plain words.",
+        "limitation": "T9's different timescale and conditions is left abstract.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.2",
+        "name": "Traceable arguments and references",
+        "rating": 7.5,
+        "example": "T5 names its target: Vancouver is a good counterexample to the lazy version.",
+        "limitation": "T7's your question is ambiguous between Historian and user; T9's point to both is unspecified.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.3",
+        "name": "Manageable pacing and turn length",
+        "rating": 8.6,
+        "example": "Ten turns, all within range, lengths varying from terse T1 to fuller T4.",
+        "limitation": "none",
+        "limitation_severity": "none",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.4",
+        "name": "Distinguishable positions and voices, with explicit changes of position",
+        "rating": 8.2,
+        "example": "Mapper blunt, Skeptic wry, Historian framing stakes; explicit shifts in T5, T9, T10.",
+        "limitation": "In T7-T8 Skeptic and Historian both turn to the user's motive, blurring their roles.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.5",
+        "name": "Economy and sustained attention",
+        "rating": 7.8,
+        "example": "Debate turns rarely repeat; each adds a test, concession or frame.",
+        "limitation": "Section E largely restates section D's partnership account and interest question.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.1",
+        "name": "Meaningful stakes and tension arising from the issue itself",
+        "rating": 7.7,
+        "example": "T6: if the ocean's share is large, Europe's mildness is a hostage to change.",
+        "limitation": "Part of the tension comes from an imported headline fear (T7) rather than the question itself.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.2",
+        "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+        "rating": 8.4,
+        "example": "T5 narrows the Mapper's claim and names T4's Vancouver case as the cause.",
+        "limitation": "T10's concession names no earlier turn; it restates T3's surface-heat point.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": true
+      },
+      {
+        "id": "C7.3",
+        "name": "Personality and expressive voice without caricature",
+        "rating": 7.8,
+        "example": "T1: Same latitude, opposite plumbing. T2: too tidy.",
+        "limitation": "The Historian's voice in T6 and T8 is plainer and less individual than the other two.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.4",
+        "name": "Memorable delivery",
+        "rating": 8.5,
+        "example": "T3's delivery truck and warehouse; T7's worry smuggled into a physics question.",
+        "limitation": "Little humour or vivid example after T7; the close is plain.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.5",
+        "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+        "rating": 7.5,
+        "example": "T6 shifts the register from puzzle to stakes, varying the rhythm.",
+        "limitation": "T9 and T10 end on symmetrical concessions, flattening the close.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      }
+    ],
+    "strengths": [
+      "T4's Vancouver test is a concrete, checkable counterexample that makes the Mapper narrow his claim in T5.",
+      "T7-T8 offer two motives as alternatives and leave the choice to the user without asserting either.",
+      "Vivid, distinct voices: the Mapper's opposite plumbing and truck-versus-warehouse lines carry the mechanism clearly."
+    ],
+    "weaknesses": [
+      "Section E branches on the user's interest; no observable fact is named that would settle the ocean's share.",
+      "T6-T8 spend three turns on why the user asks rather than on the mechanism, recasting the question.",
+      "The Mapper's T5 storage-versus-transport point, the crux of the dispute, is dropped by every later turn."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C5.3",
+        "turns": [],
+        "observed": "Section E restates the open question as the decisive unknown; no observable separates the causes.",
+        "evidence": "the decisive unknown is how large the ocean's contribution is"
+      },
+      {
+        "cell_id": "C3.1",
+        "turns": [
+          6,
+          7,
+          8
+        ],
+        "observed": "Three turns shift from the physical explanation to speculating why the user asked.",
+        "evidence": "Maybe what's behind your question is a fear you've seen in headlines"
+      },
+      {
+        "cell_id": "C5.5",
+        "turns": [],
+        "observed": "Section E's next step is a generic search, not one specific comparison or reading.",
+        "evidence": "look for recent climate-science reviews that compare ocean heat transport"
+      },
+      {
+        "cell_id": "C1.3",
+        "turns": [
+          5
+        ],
+        "observed": "Seasonal storage versus current transport is raised once and never weighed afterward.",
+        "evidence": "The sea stores summer heat and gives it back slowly"
+      },
+      {
+        "cell_id": "C2.1",
+        "turns": [
+          4,
+          5
+        ],
+        "observed": "Vancouver counterexample accepted without the Mapper raising the Pacific's own warm current.",
+        "evidence": "and is mild too, with no Gulf Stream"
+      }
+    ],
+    "mechanical": [
+      {
+        "pattern": "misfit_slot",
+        "turns": [
+          7,
+          8
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "unverified",
+        "location": "Section B and all basis fields",
+        "description": "Attributions to Stommel (1958), Wallace and Hobbs (1977) and Alley (2000) name real books and the positions sound consistent, but are unchecked here.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "T4",
+        "description": "Vancouver is said to be mild with no Gulf Stream; the Pacific's North Pacific and Alaska currents go unmentioned, so the counterexample looks cleaner than it is.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "observed",
+        "location": "T3",
+        "description": "Claims westerlies would deliver much colder air without the current, stated without qualification; T5 later narrows it.",
+        "evidence_ids": []
+      },
+      {
+        "type": "rubric_mismatch",
+        "severity": "minor",
+        "status": "observed",
+        "location": "T6-T8, sections D and E",
+        "description": "An exploratory physics question is partly recast as a question about the user's motive, and section E branches on what the user wants.",
+        "evidence_ids": []
+      }
+    ],
+    "cap_reasons": [],
+    "rubric_fit_notes": [
+      "The user supplied no personal context beyond the question, so C3 and C4 ratings rest mainly on how the debate handles the question's framing and implied motives and carry more uncertainty. The Vancouver accuracy concern comes from general knowledge and is reported as suspected."
+    ],
+    "question_type_note": "Read as exploratory: C5 judged on rival explanations and decisive observables, and the turn toward user motive counted against C3.1 and C5.3."
+  },
+  "card": {
+    "criteria": [
+      {
+        "id": "C1",
+        "name": "Quality of discussion",
+        "max": 20,
+        "points": 15.36,
+        "sub": [
+          {
+            "id": "C1.1",
+            "name": "Continuity and responsiveness",
+            "rating": 7.8,
+            "points": 3.12,
+            "example": "T3 answers T2 directly: the ocean is that upwind warmth, truck versus warehouse.",
+            "limitation": "T6 steps away from the mechanism thread rather than answering T5's narrowed claim.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.2",
+            "name": "Development of ideas",
+            "rating": 8.3,
+            "points": 3.32,
+            "example": "T4 introduces the Rockies bending winter flow; T10 still leans on mountains shaping the contrast.",
+            "limitation": "T5's seasonal heat storage idea is raised once and never developed by a later turn.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C1.3",
+            "name": "Exploration of central tensions",
+            "rating": 7,
+            "points": 2.8,
+            "example": "T1-T5 weigh current against westerlies and mountains, the core physical dispute.",
+            "limitation": "Local seasonal storage versus current heat transport, the crux of the dispute, goes unexamined after T5.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.4",
+            "name": "Integration of perspectives",
+            "rating": 7.7,
+            "points": 3.08,
+            "example": "T9 and T10 each concede ground; section D frames a partnership while keeping the dispute open.",
+            "limitation": "T9 concedes on grounds of the user's possible fear, not the physics, so integration is partly rhetorical.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.5",
+            "name": "Progress toward understanding",
+            "rating": 7.6,
+            "points": 3.04,
+            "example": "Section D: single-cause story weakened by Vancouver; the ocean's share stays the sharpened open question.",
+            "limitation": "The sharpened question is not tied to any evidence that would narrow the ocean's share.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C2",
+        "name": "Quality of disagreement, trust and grounding",
+        "max": 20,
+        "points": 15.92,
+        "sub": [
+          {
+            "id": "C2.1",
+            "name": "Faithful engagement",
+            "rating": 7.8,
+            "points": 3.12,
+            "example": "T3 gives the ocean view its strongest form: westerlies deliver heat the current supplied.",
+            "limitation": "T5 accepts the Vancouver case without raising the Pacific's own warm current for the ocean view.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.2",
+            "name": "Substance of challenges",
+            "rating": 8.3,
+            "points": 3.32,
+            "example": "T4's Vancouver test names what breaks for a warm-current-only story; T5 narrows rather than restates.",
+            "limitation": "T7's objection that fear is smuggled in is never answered on its merits.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C2.3",
+            "name": "Accuracy and support",
+            "rating": 7.7,
+            "points": 3.08,
+            "example": "T1 Labrador water off Atlantic Canada and T4 Rockies deflecting cold air are standard, accurate claims.",
+            "limitation": "T4 says Vancouver has no Gulf Stream but omits the North Pacific Current (suspected incompleteness).",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.4",
+            "name": "Calibration and transparency",
+            "rating": 8.2,
+            "points": 3.28,
+            "example": "T4 flags going beyond its source: I'd push further than the textbook here.",
+            "limitation": "T3 asserts westerlies would deliver much colder air without the current, with no hedge.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.5",
+            "name": "Intellectual honesty and revision",
+            "rating": 7.8,
+            "points": 3.12,
+            "example": "T5 concedes Vancouver and narrows the claim; T10 grants ocean heat is not irrelevant.",
+            "limitation": "T9's concession rests on the user's possible motive, not on any physical argument.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C3",
+        "name": "Personal relevance",
+        "max": 10,
+        "points": 6.68,
+        "sub": [
+          {
+            "id": "C3.1",
+            "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+            "rating": 6.2,
+            "points": 1.24,
+            "example": "Section A states the physics puzzle accurately and names the Gulf Stream assumption.",
+            "limitation": "T6-T8 and section E recast the explanation question toward the user's motive and interest.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.2",
+            "name": "Meaningful use of personal context",
+            "rating": 6.8,
+            "points": 1.36,
+            "example": "T2 and T4 use Montreal and Vancouver to test the user's Europe-Canada comparison.",
+            "limitation": "Which parts of Canada the user means is never pinned down, though Vancouver is itself Canadian.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.3",
+            "name": "Fit with goals and values",
+            "rating": 6.9,
+            "points": 1.38,
+            "example": "Section E's first branch gives a defensible everyday explanation matching the user's stated question.",
+            "limitation": "T6-T8 import a stakes frame the user never stated, partly displacing the explanatory goal.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.4",
+            "name": "Attention to constraints and stakes",
+            "rating": 6.7,
+            "points": 1.34,
+            "example": "T6 ties the explanation's stakes to past abrupt circulation shifts.",
+            "limitation": "T7 posits a headline-driven fear with no cue in the question, a lightly invented context.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.5",
+            "name": "Responsiveness to information",
+            "rating": 6.8,
+            "points": 1.36,
+            "example": "T8 branches: curiosity calls for a ranking of causes, fear for the ocean's share.",
+            "limitation": "The region of Canada meant, a consequential missing fact, never becomes a question or branch.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C4",
+        "name": "Constructive self-discovery",
+        "max": 20,
+        "points": 15.6,
+        "sub": [
+          {
+            "id": "C4.1",
+            "name": "Clarification of desires and motivations",
+            "rating": 8.5,
+            "points": 3.4,
+            "example": "T7-T8 offer map puzzle or headline fear as alternatives; section D asks which fits.",
+            "limitation": "The fear alternative in T7 has no anchor in the user's wording.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C4.2",
+            "name": "Examination of assumptions",
+            "rating": 8,
+            "points": 3.2,
+            "example": "Sections A and T4 make the popular Gulf Stream answer visible and test it with Vancouver.",
+            "limitation": "The latitude-predicts-climate assumption behind the question is used but never named for reflection.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.3",
+            "name": "Clarification of values and priorities",
+            "rating": 7,
+            "points": 2.8,
+            "example": "T8 distinguishes a clean ranking of causes from understanding the ocean's role for future change.",
+            "limitation": "The competing aims are posited by the speakers rather than drawn from the user's question.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.4",
+            "name": "Recognition of fears and outside expectations",
+            "rating": 7.3,
+            "points": 2.92,
+            "example": "T7 names headline-driven fear and a plain irritation that the map and thermometer disagree.",
+            "limitation": "T7 calls the possible fear a worry smuggled in, faintly dismissive of a fear it introduced.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.5",
+            "name": "Agency and reflective ownership",
+            "rating": 8.2,
+            "points": 3.28,
+            "example": "T8 and section D: only the asker can say which reading fits.",
+            "limitation": "Section E's branches on interest repeat D's question rather than offering a new distinction to refine.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C5",
+        "name": "Decision usefulness",
+        "max": 10,
+        "points": 6.52,
+        "sub": [
+          {
+            "id": "C5.1",
+            "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+            "rating": 7.7,
+            "points": 1.54,
+            "example": "Section D defines rival explanations: current, westerlies over ocean, mountains and continental geometry.",
+            "limitation": "Seasonal ocean storage and current heat transport are not separated as distinct explanations.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.2",
+            "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+            "rating": 6.5,
+            "points": 1.3,
+            "example": "Section E: the westerlies account also explains Vancouver, a stated evidential advantage.",
+            "limitation": "The ocean account's evidential cost or support for the Atlantic contrast is never stated.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.3",
+            "name": "Identification of decisive conditions",
+            "rating": 5.2,
+            "points": 1.04,
+            "example": "T4 uses Vancouver as an observable that rules out a single-cause story.",
+            "limitation": "Section E branches on user interest; no observable fact would settle the ocean's disputed share.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.4",
+            "name": "Treatment of uncertainty",
+            "rating": 7.6,
+            "points": 1.52,
+            "example": "Section D isolates the ocean's share as the disputed unknown; T9 separates abrupt-change timescales.",
+            "limitation": "T9's timescale caveat is left vague, so its bearing on the unknown stays unclear.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.5",
+            "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+            "rating": 5.6,
+            "points": 1.12,
+            "example": "Section E suggests checking reviews comparing ocean heat transport with atmospheric effects.",
+            "limitation": "Section E's step is a generic search for reviews, not one specific comparison or reading.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C6",
+        "name": "Clarity and engagement",
+        "max": 10,
+        "points": 8.12,
+        "sub": [
+          {
+            "id": "C6.1",
+            "name": "Accessible language",
+            "rating": 8.5,
+            "points": 1.7,
+            "example": "T1 and T2 explain upwind ocean versus frozen continent in plain words.",
+            "limitation": "T9's different timescale and conditions is left abstract.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.2",
+            "name": "Traceable arguments and references",
+            "rating": 7.5,
+            "points": 1.5,
+            "example": "T5 names its target: Vancouver is a good counterexample to the lazy version.",
+            "limitation": "T7's your question is ambiguous between Historian and user; T9's point to both is unspecified.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.3",
+            "name": "Manageable pacing and turn length",
+            "rating": 8.6,
+            "points": 1.72,
+            "example": "Ten turns, all within range, lengths varying from terse T1 to fuller T4.",
+            "limitation": "none",
+            "severity": "none",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.4",
+            "name": "Distinguishable positions and voices, with explicit changes of position",
+            "rating": 8.2,
+            "points": 1.64,
+            "example": "Mapper blunt, Skeptic wry, Historian framing stakes; explicit shifts in T5, T9, T10.",
+            "limitation": "In T7-T8 Skeptic and Historian both turn to the user's motive, blurring their roles.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.5",
+            "name": "Economy and sustained attention",
+            "rating": 7.8,
+            "points": 1.56,
+            "example": "Debate turns rarely repeat; each adds a test, concession or frame.",
+            "limitation": "Section E largely restates section D's partnership account and interest question.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C7",
+        "name": "Drama and entertainment",
+        "max": 10,
+        "points": 7.98,
+        "sub": [
+          {
+            "id": "C7.1",
+            "name": "Meaningful stakes and tension arising from the issue itself",
+            "rating": 7.7,
+            "points": 1.54,
+            "example": "T6: if the ocean's share is large, Europe's mildness is a hostage to change.",
+            "limitation": "Part of the tension comes from an imported headline fear (T7) rather than the question itself.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.2",
+            "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+            "rating": 8.4,
+            "points": 1.68,
+            "example": "T5 narrows the Mapper's claim and names T4's Vancouver case as the cause.",
+            "limitation": "T10's concession names no earlier turn; it restates T3's surface-heat point.",
+            "severity": "minor",
+            "anchorMet": true
+          },
+          {
+            "id": "C7.3",
+            "name": "Personality and expressive voice without caricature",
+            "rating": 7.8,
+            "points": 1.56,
+            "example": "T1: Same latitude, opposite plumbing. T2: too tidy.",
+            "limitation": "The Historian's voice in T6 and T8 is plainer and less individual than the other two.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.4",
+            "name": "Memorable delivery",
+            "rating": 8.5,
+            "points": 1.7,
+            "example": "T3's delivery truck and warehouse; T7's worry smuggled into a physics question.",
+            "limitation": "Little humour or vivid example after T7; the close is plain.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.5",
+            "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+            "rating": 7.5,
+            "points": 1.5,
+            "example": "T6 shifts the register from puzzle to stakes, varying the rhythm.",
+            "limitation": "T9 and T10 end on symmetrical concessions, flattening the close.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      }
+    ],
+    "uncapped": 76.18,
+    "score": 76.18,
+    "capReason": null,
+    "provisional": false,
+    "strengths": [
+      "T4's Vancouver test is a concrete, checkable counterexample that makes the Mapper narrow his claim in T5.",
+      "T7-T8 offer two motives as alternatives and leave the choice to the user without asserting either.",
+      "Vivid, distinct voices: the Mapper's opposite plumbing and truck-versus-warehouse lines carry the mechanism clearly."
+    ],
+    "weaknesses": [
+      "Section E branches on the user's interest; no observable fact is named that would settle the ocean's share.",
+      "T6-T8 spend three turns on why the user asks rather than on the mechanism, recasting the question.",
+      "The Mapper's T5 storage-versus-transport point, the crux of the dispute, is dropped by every later turn."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C5.3",
+        "turns": [],
+        "observed": "Section E restates the open question as the decisive unknown; no observable separates the causes.",
+        "evidence": "the decisive unknown is how large the ocean's contribution is"
+      },
+      {
+        "cell_id": "C3.1",
+        "turns": [
+          6,
+          7,
+          8
+        ],
+        "observed": "Three turns shift from the physical explanation to speculating why the user asked.",
+        "evidence": "Maybe what's behind your question is a fear you've seen in headlines"
+      },
+      {
+        "cell_id": "C5.5",
+        "turns": [],
+        "observed": "Section E's next step is a generic search, not one specific comparison or reading.",
+        "evidence": "look for recent climate-science reviews that compare ocean heat transport"
+      },
+      {
+        "cell_id": "C1.3",
+        "turns": [
+          5
+        ],
+        "observed": "Seasonal storage versus current transport is raised once and never weighed afterward.",
+        "evidence": "The sea stores summer heat and gives it back slowly"
+      },
+      {
+        "cell_id": "C2.1",
+        "turns": [
+          4,
+          5
+        ],
+        "observed": "Vancouver counterexample accepted without the Mapper raising the Pacific's own warm current.",
+        "evidence": "and is mild too, with no Gulf Stream"
+      }
+    ],
+    "mechanical": [
+      {
+        "pattern": "misfit_slot",
+        "turns": [
+          7,
+          8
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "unverified",
+        "location": "Section B and all basis fields",
+        "description": "Attributions to Stommel (1958), Wallace and Hobbs (1977) and Alley (2000) name real books and the positions sound consistent, but are unchecked here.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "T4",
+        "description": "Vancouver is said to be mild with no Gulf Stream; the Pacific's North Pacific and Alaska currents go unmentioned, so the counterexample looks cleaner than it is.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "observed",
+        "location": "T3",
+        "description": "Claims westerlies would deliver much colder air without the current, stated without qualification; T5 later narrows it.",
+        "evidence_ids": []
+      },
+      {
+        "type": "rubric_mismatch",
+        "severity": "minor",
+        "status": "observed",
+        "location": "T6-T8, sections D and E",
+        "description": "An exploratory physics question is partly recast as a question about the user's motive, and section E branches on what the user wants.",
+        "evidence_ids": []
+      }
+    ],
+    "rubricFitNotes": [
+      "The user supplied no personal context beyond the question, so C3 and C4 ratings rest mainly on how the debate handles the question's framing and implied motives and carry more uncertainty. The Vancouver accuracy concern comes from general knowledge and is reported as suspected."
+    ],
+    "questionTypeNote": "Read as exploratory: C5 judged on rival explanations and decisive observables, and the turn toward user motive counted against C3.1 and C5.3."
+  },
+  "rubricVersion": "rubric-evaluator-4.2.0",
+  "savedAt": "2026-10-16T01:41:05.042Z"
+}

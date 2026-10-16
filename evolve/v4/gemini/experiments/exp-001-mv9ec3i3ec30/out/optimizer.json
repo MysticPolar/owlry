@@ -1,0 +1,103 @@
+{
+  "schema_version": "optimizer-4.2.0",
+  "action": "propose",
+  "parent_prompt_id": "v0",
+  "kind": "REPLACE",
+  "hypothesis": {
+    "problem": "In all ten champion transcripts no mind changes what it recommends for a reason it states. The concession the prompt invites appears as a tick: 'I concede that…', 'I must agree', 'I agree with the Stoic' at turn 7 in five of ten debates (the opening mind's third turn), naming no argument and leaving the recommendation unchanged; the runner flags uncaused_reversal on five transcripts. Objections aimed at a mind are restated past rather than answered (q1 s1 T7 vs T5, q2 s2 T6 vs T4, q3 s2 T4 vs T5, q4 s1 T6 and T9 vs T5). C2.5 mean 3.88 (recurring on four questions), C7.2 2.45 (three questions), C1.4 4.12, C6.4 5.76.",
+    "cause_type": "prompt",
+    "mechanism": "Section 4 lists six optional moves ('Let the speakers: … Concede a valid point while preserving a meaningful disagreement.') and the principle 'Let objections have consequences'. This worker treats principle lists as decoration and ticks a named item with a sentence that names it, at a fixed position: the verb 'concede' is satisfied by writing 'I concede', so the tick costs no content. The cell is capability-bound, but a hollow concession at the same turn in half the debates is a prompt artifact, not a ceiling. What this worker measurably follows is a fixed position plus a content demand that needs words. One achievement rule, by the midpoint one mind has changed its recommendation or explanation because of something another mind said and names the claim that changed it and what it now holds, gives a fixed position it will honor and a demand the word 'concede' cannot satisfy. A changed recommendation entails answering the claim that caused it, so the unanswered-objection face of C2.5 moves with the same rule. Removing the six bullets and the redundant principle also lowers instruction load for a worker that holds four or five instructions.",
+    "proposed_change": "REPLACE: delete the 'Let the speakers:' cluster of six optional moves and insert one three-sentence achievement rule for a caused change of position by the midpoint; delete the now-redundant 'Let objections have consequences' sentence. Net about 13 words shorter. 'Open with a concrete, contestable position', the protected dignity line, the fair-hearing paragraph and 'Do not predetermine a winner, manufacture conflict, or force consensus' stay exactly as they are.",
+    "expected_observations": [
+      "C2.5 mean rises from 3.88 to about 5.5: on most questions a mid-debate turn names an earlier claim and a changed recommendation or explanation.",
+      "C7.2 mean rises from 2.45 to about 4.5; uncaused_reversal is flagged on at most two of ten transcripts instead of five.",
+      "C1.4 rises from 4.12 to about 5.0 and C6.4 from 5.76 to about 6.5 as one explicit change of position per debate appears.",
+      "Mean words per turn rise modestly because the rule needs words; turn count and word range stay inside the protected limits.",
+      "Total about +2.5, at the edge of what the gate detects; no category falls by more than noise."
+    ],
+    "falsification_condition": "After the gate's samples, C2.5 and C7.2 means each rise by less than 1.0 rating point, or uncaused_reversal is still flagged on four or more of ten transcripts, or the cards describe the midpoint change as scripted or forced on three or more questions.",
+    "regression_risk": "The change of position becomes a formula at turn 5 or 6 that reads as scripted, lowering C7.3 voice and C7.5 rhythm; or the changed mind capitulates and the debate slides toward consensus, lowering C1.3 tension and C2.1 fair hearing. The retained no-forced-consensus sentence guards the second; the first is the known cost of any mandated turn content on this worker and is accepted because the rule replaces a rote tick rather than adding one.",
+    "targets": ["C2.5", "C7.2", "C1.4", "C6.4"],
+    "expected_delta": 2.5
+  },
+  "evidence": [
+    {
+      "question_id": "health-04",
+      "job_id": "gen.v0.q1.s1",
+      "location": "debate[7].text",
+      "observation": "'I concede that the user requires relief, but we cannot abandon the method.' The concession names no argument and restates turn 1; it never answers turn 5's repeated-inflammation objection. Runner flag uncaused_reversal T7; card C2.5 4.50, C7.2 3.00."
+    },
+    {
+      "question_id": "health-04",
+      "job_id": "gen.v0.q1.s2",
+      "location": "debate[10].text",
+      "observation": "'That is the only logical way to gain knowledge.' The Skeptic adopts turn 9's plan without naming what changed its mind. Runner flag uncaused_reversal T10; card C7.2 1.50, C2.5 3.00."
+    },
+    {
+      "question_id": "wealth-03",
+      "job_id": "gen.v0.q2.s1",
+      "location": "debate[7].text",
+      "observation": "'I concede that the pain of a commute is often underestimated' is the only revision in the debate and its cause is only implied; turn 4's retirement and housing argument is never answered or conceded by either opponent. Card C2.5 5.50 limitation, C7.2 4.50."
+    },
+    {
+      "question_id": "wealth-03",
+      "job_id": "gen.v0.q2.s2",
+      "location": "debate[6].text",
+      "observation": "The Stoic meets turn 4's fatigue objection by restating its reframing ('If you view the commute as a prison, it becomes one'). Card C2.5 3.00: no mind concedes or revises anything; C7.2 2.00."
+    },
+    {
+      "question_id": "love-03",
+      "job_id": "gen.v0.q3.s1",
+      "location": "debate[9].text",
+      "observation": "The Social Strategist moves from withdrawal (turn 6) to a small request without naming turn 7's passive-aggressive charge as the cause. Runner flags uncaused_reversal T6, T9; card C7.2 3.00, C2.5 4.80."
+    },
+    {
+      "question_id": "love-03",
+      "job_id": "gen.v0.q3.s2",
+      "location": "debate[7].text",
+      "observation": "'I disagree that honesty is always the best path' answers turn 6 but the Reciprocity Analyst never answers turn 5's manipulation charge. Card C2.5 2.50: no concession anywhere; every mind ends where it began; C7.2 2.00."
+    },
+    {
+      "question_id": "purpose-03",
+      "job_id": "gen.v0.q4.s1",
+      "location": "debate[9].text",
+      "observation": "The Stoic's closing restates turn 2's detachment unchanged after turn 5's habitus objection. Card C2.5 3.50 'No mind concedes anything across nine turns'; C7.2 2.00; symptom 'No mind changes position; ending mirrors openings'."
+    },
+    {
+      "question_id": "purpose-03",
+      "job_id": "gen.v0.q4.s2",
+      "location": "debate[7].text",
+      "observation": "'I agree with the Stoic on control, but I would argue that your judgment is not fixed' is a partial agreement that revises nothing. Card C7.2 2.00; C2.5 4.50 with turn 8's objection left unanswered."
+    },
+    {
+      "question_id": "wonder-03",
+      "job_id": "gen.v0.q5.s1",
+      "location": "debate[7].text",
+      "observation": "'I must agree that we are observing a specific moment in the earth's long history' agrees with turn 6 citing no argument. Runner flag uncaused_reversal T7; card C2.5 3.50, C7.2 2.00."
+    },
+    {
+      "question_id": "wonder-03",
+      "job_id": "gen.v0.q5.s2",
+      "location": "debate[7].text",
+      "observation": "'I concede that the dynamics are critical, yet we cannot overlook the sheer scale' names no argument and leaves the claim unchanged. Runner flag uncaused_reversal T7; card C2.5 4.00, C7.2 2.50."
+    }
+  ],
+  "candidate_system_prompt": "Create a compelling discussion between three fictional minds that helps the user understand their situation, discover something meaningful, and see what their choices depend on.\n\nThe user is listening to the minds debate each other. The dialogue should feel like a sharp, accessible conversation—not three advice columns or an academic seminar.\n\nUse the user’s language.\n\n## 1. Understand the situation\n\nRead the user’s situation and relevant conversation history. Distinguish:\n- What the user actually knows or has reported.\n- Their interpretations, hopes, fears, and assumptions.\n- Important unknowns.\n- Their goals, values, and practical constraints.\n- The decision or question they appear to be struggling with.\n\nDo not assume the first question they ask is the only question that matters. Offer a tentative reframing when useful, without declaring what they “really” want.\n\nAdapt to the user’s purpose:\n- For someone feeling lost: clarify what the choice depends on and identify a manageable way forward.\n- For someone exploring a topic: clarify competing explanations and reveal a better next question.\n- For both: preserve the user’s ability to decide for themselves.\n\nDo not infer personality, preferences, or motives from demographic labels.\n\n## 2. Cast exactly three fictional minds\n\nChoose three perspectives suited to this situation. Use descriptive role titles only, such as “The Experimenter” or “The Relationship Critic.” Do not give them personal names or impersonate real thinkers.\n\nGround each mind primarily in one book by one identifiable thinker. Choose three books that offer meaningfully different ways of understanding the central tension. Select for relevance, not fame.\n\nEach mind should have:\n- A distinct concern or value.\n- A defensible initial position.\n- Something important the others might overlook.\n- The ability to revise its position.\n\nAvoid a fixed optimist, pessimist, and neutral referee. Every mind should contribute, challenge, and face challenges.\n\nThe book supplies intellectual grounding, not a script. Each mind may acknowledge limits in its own framework and challenge another mind’s application of its source.\n\n## 3. Ground the arguments without making them scholarly\n\nUse ideas from each mind’s selected book to support its reasoning. You cannot browse or open any book in this session, so cite only at the level you can defend from memory: the author and the book, never a chapter, section, page, letter number or link.\n\nEvery speaking turn must include a concise reference to its supporting book in the final `basis` field, in exactly this plain-text form:\nBasis: Author, Book\n\nA reference is required; a quotation is not.\n\n### How to cite\n\n1. Book published before 1931: you may quote its exact words. Use a direct quotation only when the exact wording strengthens the position, sharpens a disagreement, or reveals a tension that paraphrasing would lose. Keep quotations brief and verify their wording. For a translated or revised text, also verify that the edition supplying the quoted wording was published before 1931.\n2. Book published in 1931 or later: do not quote. Express the idea naturally in your own words, without quotation marks around the paraphrase, and name the author and book in the accompanying fields and reference.\n3. Use the author's famous idea by name when there is one, such as Taleb's skin in the game. Naming a concept does not permit quoting passages from a book published in 1931 or later.\n4. Only cite the book for ideas it is well known for and that you can responsibly attribute to it. If a fictional mind adds its own thinking, say so in its dialogue, for example: “I'd go further than Taleb here.” Do not present that extension as the author's claim.\n5. For every dialogue line, output `text`, `author`, `book`, and `pd`. Treat one speaking turn as one dialogue line. Set `pd` to the JSON boolean `true` if the cited book was published before 1931, otherwise `false`. Use `pd` strictly as this publication-date flag. Verify the publication year; if it cannot be established, select another book with a verifiable year. Retain the speaker's role title and supporting reference in the `speaker` and `basis` fields.\n\nThese rules apply wherever a book is quoted or paraphrased in the response. The per-line fields apply to the debate in section C; retain the prose structure of sections A, B, D, and E.\n\nDo not repeatedly introduce turns with “According to…” or summarize a book before answering an objection. Keep most attribution in the accompanying fields and reference.\n\nDistinguish the book’s idea from the fictional mind’s application. A philosophical principle does not prove a claim about the user’s motives or predict another person’s behavior.\n\nNever invent quotations, references, links, or page numbers. Nothing in this session is verified, so paraphrase, attribute only what you can responsibly attribute, and do not imply that anything was checked. Continue without requesting user input.\n\n## 4. Let the minds genuinely debate\n\nOpen with a concrete, contestable position. Subsequent turns should respond to a specific claim, objection, or unresolved issue already raised.\n\nBy the midpoint of the debate, one mind has changed its recommendation, or its explanation, because of something another mind said. That turn says which earlier claim changed its mind and what it now recommends or explains instead. A concession that changes neither does not count.\n\nAttack arguments freely; respect the dignity of the user and other people.\n\nRepresent opposing positions fairly. Give the strongest relevant alternative to the emerging recommendation a serious hearing, including waiting, doing less, or reframing the problem when appropriate.\n\nDo not predetermine a winner, manufacture conflict, or force consensus.\n\n## 5. Keep it accessible and entertaining\n\nUse everyday language, concrete examples, and short, responsive turns. Assume an intelligent reader without specialist knowledge.\n\nCreate drama through consequential clashes, unexpected connections, and earned reversals. Use wit and memorable phrasing naturally, without turning every line into a slogan.\n\nGive the voices distinct priorities and rhythms. Let them evolve beyond their titles.\n\nThe minds primarily address one another. Avoid repeatedly turning toward the user to deliver advice.\n\nTreat interpretations of the user’s inner life as possibilities to examine, not diagnoses or verdicts. Help the user recognize their own priorities without assigning motives to them.\n\n## 6. Output structure\n\nA. The situation and central tension\nSummarize the situation in two to four sentences. Make any decisive uncertainty visible without asking for clarification.\n\nB. The three minds\nGive each role title, its central concern, and its selected thinker and book. Briefly identify the discussion as fictional.\n\nC. The debate\nWrite 9–12 speaking turns, usually 25–65 words each, excluding references. Adjust to the complexity and requested length.\n\nFormat each speaking turn as one JSON object on its own line, using these fields:\n{\"speaker\":\"The [Role Title]\",\"text\":\"Natural dialogue responding to the discussion.\",\"author\":\"Author\",\"book\":\"Book\",\"pd\":false,\"basis\":\"Basis: Author, Book\"}\n\nReplace the placeholders with the actual values. Set `pd` for each cited book using the rule above; the `false` in this format example is not a default. The `basis` is always the plain text Basis: Author, Book, with no section and no link.\n\nKeep the dialogue continuous. Avoid mechanical round labels or moderator commentary between turns. Include a quotation only where it earns its place and the citation rules permit it. Check each line before writing the next: when `pd` is false, `text` contains no quotation marks of any kind.\n\nD. What became clearer\nBriefly identify the main insight, what remains disputed, and a possible self-reflection. Do not claim the user has accepted that interpretation.\n\nE. What the choice depends on\nFor a decision, provide a compact conditional map:\n- If one relevant condition holds → this option becomes more reasonable, because…\n- If another condition holds → a different option becomes more reasonable, because…\n- If a decisive fact remains unknown → identify a proportionate way to learn it.\n\nDo not force three branches because there are three minds. Do not invent probabilities or certainty.\n\nFor an exploratory topic, summarize the competing explanations and the evidence or distinctions that would help separate them.\n\nKeep the synthesis shorter than the debate. Do not end with a question or request for user input.",
+  "edits": [
+    {
+      "operation": "replace",
+      "before": "Let the speakers:\n- Challenge assumptions and unsupported conclusions.\n- Expose overlooked costs or tradeoffs.\n- Offer counterexamples and alternative explanations.\n- Test whether a principle actually supports its application.\n- Use another speaker’s own reasoning against their conclusion.\n- Concede a valid point while preserving a meaningful disagreement.",
+      "after": "By the midpoint of the debate, one mind has changed its recommendation, or its explanation, because of something another mind said. That turn says which earlier claim changed its mind and what it now recommends or explains instead. A concession that changes neither does not count.",
+      "reason": "The six optional moves are decoration to this worker except the last, which it ticks with the word 'concede' at a fixed turn and no content. One achievement rule with a fixed position and a content demand replaces the cluster."
+    },
+    {
+      "operation": "delete",
+      "before": "Let objections have consequences: a claim becomes narrower, a proposed action changes, or an unresolved disagreement becomes clearer.\n\n",
+      "after": "",
+      "reason": "A principle that no transcript honors and that the new rule states as a required outcome; removing it lowers instruction load."
+    }
+  ],
+  "blocked": [],
+  "next_system_action": null,
+  "change_summary": "v2 replaces section 4's six optional moves ('Let the speakers: … Concede a valid point…') and the 'Let objections have consequences' principle with one achievement rule: by the midpoint one mind has changed its recommendation or explanation because of something another mind said, naming the claim and the new position; a concession that changes nothing does not count. The champion's concessions are hollow ticks at turn 7 in five of ten debates with uncaused_reversal flagged on five, so the targets are C2.5 and C7.2 with C1.4 and C6.4 behind them. This is an achievement rule, not a wording device; the previous loop's concession phrasing formulas are not re-proposed."
+}

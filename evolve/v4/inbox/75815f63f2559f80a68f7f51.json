@@ -1,0 +1,72 @@
+{
+  "schema_version": "rubric-evaluator-4.2.0",
+  "rubric_version": "owlry-matrix-v2-bands",
+  "evaluation_status": "complete",
+  "cells": [
+    {"id": "C1.1", "name": "Continuity and responsiveness", "rating": 5.80, "example": "T5 answers T4's question directly: 'Because you want the friendship.'", "limitation": "T2 sidesteps T1's contract claim; T7-T9 only assent to the prior turn.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C1.2", "name": "Development of ideas", "rating": 4.00, "example": "T5 adds that withdrawing contact is a test, a new distinction.", "limitation": "T5's testing distinction and T6's safety point are never used by later turns.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C1.3", "name": "Exploration of central tensions", "rating": 4.50, "example": "T3 vs T1: silence as broken contract or as avoidant fear.", "limitation": "Whether the friend initiates with others, or the risk of raising it, never examined.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C1.4", "name": "Integration of perspectives", "rating": 3.00, "example": "T8 qualifies T7: negotiate, but not as a demand.", "limitation": "T7-T9 collapse into agreement: 'I agree', 'Yes', 'Exactly' with no residual dispute.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C1.5", "name": "Progress toward understanding", "rating": 5.00, "example": "Section D names the open question: disinterest versus avoidant style.", "limitation": "The debate converges on 'speak up' without sharpening how or what to ask.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C2.1", "name": "Faithful engagement", "rating": 4.50, "example": "T3 offers a charitable reading of the friend's silence.", "limitation": "T2 recasts the user's complaint as resentment rather than engaging T1's reciprocity claim.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C2.2", "name": "Substance of challenges", "rating": 4.00, "example": "T4 asks why maintain a structure demanding everything from one side.", "limitation": "T3's objection asserts avoidance without saying what breaks in T2 if true.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C2.3", "name": "Accuracy and support", "rating": 4.50, "example": "T3's avoidant-style point fits Attached's framing.", "limitation": "Sartre named 'Jean-Jacques'; Rousseau's political contract stretched onto friendship in T1, T4.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C2.4", "name": "Calibration and transparency", "rating": 3.50, "example": "Section D marks the friend's motive as disputed.", "limitation": "T2 asserts the user resents; T6 asserts they 'will eventually grow resentful'.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C2.5", "name": "Intellectual honesty and revision", "rating": 3.50, "example": "T8 qualifies the consensus rather than simply restating it.", "limitation": "T6 reversal names no argument as cause; T7 concedes T1's broken-contract claim silently.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C3.1", "name": "Identification of the actual concern", "rating": 6.50, "example": "Section A frames uncertainty about the friend's investment, not just logistics.", "limitation": "Whether 'say something' means ask, complain or adjust is never distinguished.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C3.2", "name": "Meaningful use of personal context", "rating": 4.50, "example": "T5 uses 'you want the friendship' to argue against withdrawing.", "limitation": "The detail that meetings are lovely never changes any argument.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C3.3", "name": "Fit with goals and values", "rating": 6.00, "example": "T8 centres the user's intention to keep the friendship alive.", "limitation": "T1/T4's legitimacy frame imposes the speaker's value over the user's stated fondness.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C3.4", "name": "Attention to constraints and stakes", "rating": 4.00, "example": "T9 notes the friend could feel attacked by the request.", "limitation": "T2 invents resentment the user never stated; risk of losing the friendship unweighed.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C3.5", "name": "Responsiveness to information", "rating": 3.50, "example": "Section E branches on the friend's positive or defensive reaction.", "limitation": "No question about duration, the friend's life, or whether they initiate elsewhere.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C4.1", "name": "Clarification of desires and motivations", "rating": 4.50, "example": "Section D offers validation-seeking versus wanting balance as alternatives.", "limitation": "T2 declares resentment as fact; D's alternatives lack a question the user answers.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C4.2", "name": "Examination of assumptions", "rating": 6.00, "example": "T3 questions the assumption that not initiating means not caring.", "limitation": "Assumption that raising it will be welcome is never examined.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C4.3", "name": "Clarification of values and priorities", "rating": 5.00, "example": "T4 vs T5: reciprocity against simply wanting the friendship.", "limitation": "The conflict is dropped at T6 before the user can weigh the two.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C4.4", "name": "Recognition of fears and outside expectations", "rating": 3.50, "example": "T3 names the friend's fear of vulnerability in initiating.", "limitation": "User's own fear of rejection unnamed; T5 labels testing as bad faith, moralising.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C4.5", "name": "Agency and reflective ownership", "rating": 4.50, "example": "T2 frames initiating as the user's own choice to own.", "limitation": "T6 'They must speak up' prescribes rather than offering a distinction to weigh.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C5.1", "name": "Definition of the decision and options", "rating": 4.50, "example": "T5 contrasts speaking with stopping contact as a test.", "limitation": "Accepting the asymmetry or waiting is never treated as an option.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C5.2", "name": "Explanation of tradeoffs", "rating": 4.00, "example": "T6 cost of silence is resentment; T9 cost of speaking is defensiveness.", "limitation": "Neither cost is weighed against the other; speaking is treated as near costless.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C5.3", "name": "Identification of decisive conditions", "rating": 4.50, "example": "Section E: positive reaction implies new norm; defensive implies mismatch.", "limitation": "Only post-conversation conditions; nothing observable now, like replies to invitations.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C5.4", "name": "Treatment of uncertainty", "rating": 5.00, "example": "Section D isolates disinterest versus avoidant style as the key unknown.", "limitation": "The debate never ranks this unknown against minor ones.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C5.5", "name": "Proportionate next steps", "rating": 6.50, "example": "T8-T9 give a low-stakes framing: state intent, ask if shared.", "limitation": "No smaller first step, such as noticing replies, before a full conversation.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C6.1", "name": "Accessible language", "rating": 6.50, "example": "T9 'Frame it as a need for connection' is plain.", "limitation": "T4 'association loses its legitimacy' and T5 'bad faith' left unexplained.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C6.2", "name": "Traceable arguments and references", "rating": 6.50, "example": "T3 'That ignores' clearly targets T2.", "limitation": "T6 switches to 'the user' in third person; 'it' in T6 ambiguous.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C6.3", "name": "Manageable pacing and turn length", "rating": 4.00, "example": "Nine turns, easy to read in one pass.", "limitation": "Six turns under 25 words per checks; T7, T9 are fragments.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C6.4", "name": "Distinguishable positions and voices", "rating": 5.00, "example": "Three distinct lenses: contract, choice, attachment in T1-T3.", "limitation": "One clipped register for all three minds; Sartre misnamed in the cast.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C6.5", "name": "Economy and sustained attention", "rating": 6.00, "example": "No recaps or repetition across turns.", "limitation": "T7 and T9 add assent only.", "limitation_severity": "minor", "excellent_anchor_met": false},
+    {"id": "C7.1", "name": "Meaningful stakes and tension", "rating": 4.00, "example": "T1 'fundamentally broken' raises the stakes of the friendship.", "limitation": "Tension dissolves by T6 with no stake left contested.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C7.2", "name": "Surprise and reversals", "rating": 2.50, "example": "T6 announces a change of mind.", "limitation": "T6 reversal names no prior argument as cause; the mind held no opposing view.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C7.3", "name": "Personality and expressive voice", "rating": 3.50, "example": "T5 'Own your desire' has some bite.", "limitation": "Flat, interchangeable delivery across all minds.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C7.4", "name": "Memorable delivery", "rating": 4.00, "example": "T5 calling withdrawal a test in bad faith is sharp.", "limitation": "No analogy or vivid example tied to the user's texting.", "limitation_severity": "material", "excellent_anchor_met": false},
+    {"id": "C7.5", "name": "Anticipation and emotional movement", "rating": 3.00, "example": "T1-T5 build a back-and-forth.", "limitation": "Uniform short rhythm; momentum collapses into agreement from T6.", "limitation_severity": "material", "excellent_anchor_met": false}
+  ],
+  "strengths": [
+    "T3 offers a charitable alternative reading of the friend's silence (avoidant style).",
+    "T5 sharply distinguishes withdrawing contact as a test from owning the desire.",
+    "T8-T9 and Section E give a proportionate, low-stakes next step with branches."
+  ],
+  "weaknesses": [
+    "T7-T9 collapse into forced agreement after an uncaused reversal at T6.",
+    "No question about the user's facts; T2 asserts resentment the user never stated.",
+    "Six turns under 25 words; the Existentialist is misnamed 'Jean-Jacques Sartre'."
+  ],
+  "symptoms": [
+    {"cell_id": "C1.4", "turns": [7, 8, 9], "observed": "All three minds converge with bare assent; no disagreement survives.", "evidence": "I agree. A transparent negotiation of expectations"},
+    {"cell_id": "C7.2", "turns": [6], "observed": "Reversal declared with no earlier argument named as its cause.", "evidence": "I have changed my mind."},
+    {"cell_id": "C3.5", "turns": [1, 2, 3, 4, 5, 6, 7, 8, 9], "observed": "No question on duration, friend's circumstances, or initiation with others.", "evidence": "Some people have avoidant styles"},
+    {"cell_id": "C2.4", "turns": [2, 6], "observed": "Resentment asserted as fact and as certain future outcome.", "evidence": "yet you resent the friend for not doing the same"},
+    {"cell_id": "C6.3", "turns": [2, 3, 4, 7, 8, 9], "observed": "Turns are under 25 words, too thin to carry reasons.", "evidence": "Exactly. Frame it as a need for connection"}
+  ],
+  "mechanical": [
+    {"pattern": "uncaused_reversal", "turns": [6]},
+    {"pattern": "uniform_voice", "turns": [1, 2, 3, 4, 5, 6, 7, 8, 9]}
+  ],
+  "findings": [
+    {"type": "format", "severity": "material", "status": "observed", "location": "debate", "description": "Six turns fall under the 25-word minimum per deterministic checks.", "evidence_ids": []},
+    {"type": "source_error", "severity": "minor", "status": "suspected", "location": "Section B and Turns 2, 5, 8", "description": "Author of Existentialism is a Humanism is Jean-Paul Sartre, not Jean-Jacques Sartre.", "evidence_ids": []},
+    {"type": "unsupported_claim", "severity": "minor", "status": "observed", "location": "Turn 6", "description": "Asserts the user will eventually grow resentful as certainty without support.", "evidence_ids": []},
+    {"type": "unverified_grounding", "severity": "minor", "status": "suspected", "location": "Turns 1, 4, 7", "description": "The Social Contract concerns political association; applying its legitimacy terms to friendship is a stretch.", "evidence_ids": []}
+  ],
+  "cap_reasons": [],
+  "rubric_fit_notes": "The Sartre misnaming is judged from memory and reported as suspected; no source evidence was available to establish it.",
+  "question_type_note": "Read as a decision about whether to raise the imbalance; options, tradeoffs and conditions were scored as written."
+}

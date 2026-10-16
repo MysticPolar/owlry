@@ -1,0 +1,143 @@
+{
+  "jobId": "gen.v2.q4.s2",
+  "lineage": "gemini",
+  "version": "v2",
+  "q": 4,
+  "s": 2,
+  "model": "gemini-3.1-flash-lite",
+  "settings": {
+    "temperature": 0.5,
+    "thinkingLevel": "MEDIUM",
+    "maxOutputTokens": 16384
+  },
+  "debate": {
+    "situation": "The user feels a sense of inadequacy compared to their peers who are hitting traditional milestones like marriage and homeownership. They are uncertain if they actually desire these outcomes or if they are simply responding to external pressure, leaving them stuck in a state of comparison.",
+    "minds": [
+      {
+        "title": "The Existentialist",
+        "concern": "Authenticity and personal responsibility",
+        "author": "Jean-Paul Sartre",
+        "book": "Existentialism is a Humanism",
+        "year": 1946
+      },
+      {
+        "title": "The Social Critic",
+        "concern": "Structural pressures and social status",
+        "author": "Pierre Bourdieu",
+        "book": "Distinction",
+        "year": 1979
+      },
+      {
+        "title": "The Stoic",
+        "concern": "Internal virtue and detachment",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "year": 161
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Existentialist",
+        "text": "You are currently defining your existence through the eyes of others. By measuring yourself against your friends, you are treating your life as an object to be evaluated rather than a project to be created. You have no blueprint; you must choose your own values.",
+        "author": "Jean-Paul Sartre",
+        "book": "Existentialism is a Humanism",
+        "pd": false,
+        "basis": "Basis: Jean-Paul Sartre, Existentialism is a Humanism"
+      },
+      {
+        "speaker": "The Social Critic",
+        "text": "It is not that simple, Sartre. The user is trapped in a social field where these milestones are the primary markers of success. This feeling of being behind is a direct result of the cultural capital their peers are accumulating. It is a structural pressure, not just a personal failure.",
+        "author": "Pierre Bourdieu",
+        "book": "Distinction",
+        "pd": false,
+        "basis": "Basis: Pierre Bourdieu, Distinction"
+      },
+      {
+        "speaker": "The Stoic",
+        "text": "Why concern yourself with the opinions or the possessions of others? If you do not desire the house or the marriage, then the race you feel behind in does not exist. Remember, it is not things that disturb us, but our judgment about them.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "Basis: Marcus Aurelius, Meditations"
+      },
+      {
+        "speaker": "The Existentialist",
+        "text": "Aurelius, indifference is a dangerous trap. If the user simply ignores these pressures, they risk falling into bad faith, convincing themselves they are free while actually just drifting. They must actively commit to a project that is their own, not just reject the projects of others.",
+        "author": "Jean-Paul Sartre",
+        "book": "Existentialism is a Humanism",
+        "pd": false,
+        "basis": "Basis: Jean-Paul Sartre, Existentialism is a Humanism"
+      },
+      {
+        "speaker": "The Social Critic",
+        "text": "I concede my earlier point. I initially viewed this as mere social conditioning, but Sartre is right. The user must stop measuring their life by the metrics of the bourgeois family unit. They need to actively construct a new field of action that values different forms of capital.",
+        "author": "Pierre Bourdieu",
+        "book": "Distinction",
+        "pd": false,
+        "basis": "Basis: Pierre Bourdieu, Distinction"
+      },
+      {
+        "speaker": "The Stoic",
+        "text": "Constructing a new field still keeps them tethered to the idea of status. If they seek to replace one set of external goals with another, they will always be chasing someone else's approval. True freedom is found in the internal life, regardless of what the world values.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "Basis: Marcus Aurelius, Meditations"
+      },
+      {
+        "speaker": "The Existentialist",
+        "text": "But the internal life is empty without action. You cannot just meditate your way into a life. To be human is to be engaged. The user must decide what they want to build, even if it looks like nothing to their friends.",
+        "author": "Jean-Paul Sartre",
+        "book": "Existentialism is a Humanism",
+        "pd": false,
+        "basis": "Basis: Jean-Paul Sartre, Existentialism is a Humanism"
+      },
+      {
+        "speaker": "The Social Critic",
+        "text": "Exactly. The goal is not to be different for the sake of it, but to recognize that the game of milestones is a social construct. Once you see the game for what it is, you can choose to stop playing it and design your own life.",
+        "author": "Pierre Bourdieu",
+        "book": "Distinction",
+        "pd": false,
+        "basis": "Basis: Pierre Bourdieu, Distinction"
+      },
+      {
+        "speaker": "The Stoic",
+        "text": "If they choose to stop playing, they will find peace. The only thing that matters is the quality of their own mind and their own actions. Everything else is indifferent.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "Basis: Marcus Aurelius, Meditations"
+      }
+    ],
+    "clearer": "The debate shifted from viewing the user's anxiety as a social trap to seeing it as a call to action. While the Stoic suggests detachment, the Existentialist and Social Critic argue that the user must actively define their own values to escape the influence of societal milestones. The tension remains between finding peace through detachment and finding meaning through active, authentic creation.",
+    "dependsOn": "If the user finds that their anxiety is primarily about social status → they should analyze the social structures they are participating in to see if the game is worth playing. If the user finds that their anxiety is about a lack of purpose → they should identify a personal project that is meaningful to them, regardless of social approval. If the user remains unsure if they want these things → they should experiment with small, low-stakes actions that reflect their own values to see if they feel more authentic."
+  },
+  "validity": {
+    "ok": true,
+    "problems": []
+  },
+  "metrics": {
+    "turns": 9,
+    "words": 398,
+    "meanWordsPerTurn": 44.22,
+    "shortTurns": 0,
+    "longTurns": 0,
+    "hedges": 5,
+    "hedgeDensity": 1.26,
+    "bannedCertainty": 5,
+    "templatedOpeners": 0,
+    "slotMarkers": 0,
+    "questionsToUser": 1,
+    "theUser": 4,
+    "pdFalseQuoteTurns": 0,
+    "fabricatedBasisTurns": 0,
+    "distinctSpeakers": 3,
+    "distinctBooks": 3
+  },
+  "unusable": false,
+  "latencyMs": 9096,
+  "tokens": null,
+  "raw": "{\n  \"output\": {\n    \"situation\": \"The user feels a sense of inadequacy compared to their peers who are hitting traditional milestones like marriage and homeownership. They are uncertain if they actually desire these outcomes or if they are simply responding to external pressure, leaving them stuck in a state of comparison.\",\n    \"minds\": [\n      {\n        \"title\": \"The Existentialist\",\n        \"concern\": \"Authenticity and personal responsibility\",\n        \"author\": \"Jean-Paul Sartre\",\n        \"book\": \"Existentialism is a Humanism\",\n        \"year\": 1946\n      },\n      {\n        \"title\": \"The Social Critic\",\n        \"concern\": \"Structural pressures and social status\",\n        \"author\": \"Pierre Bourdieu\",\n        \"book\": \"Distinction\",\n        \"year\": 1979\n      },\n      {\n        \"title\": \"The Stoic\",\n        \"concern\": \"Internal virtue and detachment\",\n        \"author\": \"Marcus Aurelius\",\n        \"book\": \"Meditations\",\n        \"year\": 161\n      }\n    ],\n    \"debate\": [\n      {\n        \"speaker\": \"The Existentialist\",\n        \"text\": \"You are currently defining your existence through the eyes of others. By measuring yourself against your friends, you are treating your life as an object to be evaluated rather than a project to be created. You have no blueprint; you must choose your own values.\",\n        \"author\": \"Jean-Paul Sartre\",\n        \"book\": \"Existentialism is a Humanism\",\n        \"pd\": false,\n        \"basis\": \"Basis: Jean-Paul Sartre, Existentialism is a Humanism\"\n      },\n      {\n        \"speaker\": \"The Social Critic\",\n        \"text\": \"It is not that simple, Sartre. The user is trapped in a social field where these milestones are the primary markers of success. This feeling of being behind is a direct result of the cultural capital their peers are accumulating. It is a structural pressure, not just a personal failure.\",\n        \"author\": \"Pierre Bourdieu\",\n        \"book\": \"Distinction\",\n        \"pd\": false,\n        \"basis\": \"Basis: Pierre Bourdieu, Distinction\"\n      },\n      {\n        \"speaker\": \"The Stoic\",\n        \"text\": \"Why concern yourself with the opinions or the possessions of others? If you do not desire the house or the marriage, then the race you feel behind in does not exist. Remember, it is not things that disturb us, but our judgment about them.\",\n        \"author\": \"Marcus Aurelius\",\n        \"book\": \"Meditations\",\n        \"pd\": true,\n        \"basis\": \"Basis: Marcus Aurelius, Meditations\"\n      },\n      {\n        \"speaker\": \"The Existentialist\",\n        \"text\": \"Aurelius, indifference is a dangerous trap. If the user simply ignores these pressures, they risk falling into bad faith, convincing themselves they are free while actually just drifting. They must actively commit to a project that is their own, not just reject the projects of others.\",\n        \"author\": \"Jean-Paul Sartre\",\n        \"book\": \"Existentialism is a Humanism\",\n        \"pd\": false,\n        \"basis\": \"Basis: Jean-Paul Sartre, Existentialism is a Humanism\"\n      },\n      {\n        \"speaker\": \"The Social Critic\",\n        \"text\": \"I concede my earlier point. I initially viewed this as mere social conditioning, but Sartre is right. The user must stop measuring their life by the metrics of the bourgeois family unit. They need to actively construct a new field of action that values different forms of capital.\",\n        \"author\": \"Pierre Bourdieu\",\n        \"book\": \"Distinction\",\n        \"pd\": false,\n        \"basis\": \"Basis: Pierre Bourdieu, Distinction\"\n      },\n      {\n        \"speaker\": \"The Stoic\",\n        \"text\": \"Constructing a new field still keeps them tethered to the idea of status. If they seek to replace one set of external goals with another, they will always be chasing someone else's approval. True freedom is found in the internal life, regardless of what the world values.\",\n        \"author\": \"Marcus Aurelius\",\n        \"book\": \"Meditations\",\n        \"pd\": true,\n        \"basis\": \"Basis: Marcus Aurelius, Meditations\"\n      },\n      {\n        \"speaker\": \"The Existentialist\",\n        \"text\": \"But the internal life is empty without action. You cannot just meditate your way into a life. To be human is to be engaged. The user must decide what they want to build, even if it looks like nothing to their friends.\",\n        \"author\": \"Jean-Paul Sartre\",\n        \"book\": \"Existentialism is a Humanism\",\n        \"pd\": false,\n        \"basis\": \"Basis: Jean-Paul Sartre, Existentialism is a Humanism\"\n      },\n      {\n        \"speaker\": \"The Social Critic\",\n        \"text\": \"Exactly. The goal is not to be different for the sake of it, but to recognize that the game of milestones is a social construct. Once you see the game for what it is, you can choose to stop playing it and design your own life.\",\n        \"author\": \"Pierre Bourdieu\",\n        \"book\": \"Distinction\",\n        \"pd\": false,\n        \"basis\": \"Basis: Pierre Bourdieu, Distinction\"\n      },\n      {\n        \"speaker\": \"The Stoic\",\n        \"text\": \"If they choose to stop playing, they will find peace. The only thing that matters is the quality of their own mind and their own actions. Everything else is indifferent.\",\n        \"author\": \"Marcus Aurelius\",\n        \"book\": \"Meditations\",\n        \"pd\": true,\n        \"basis\": \"Basis: Marcus Aurelius, Meditations\"\n      }\n    ],\n    \"clearer\": \"The debate shifted from viewing the user's anxiety as a social trap to seeing it as a call to action. While the Stoic suggests detachment, the Existentialist and Social Critic argue that the user must actively define their own values to escape the influence of societal milestones. The tension remains between finding peace through detachment and finding meaning through active, authentic creation.\",\n    \"dependsOn\": \"If the user finds that their anxiety is primarily about social status → they should analyze the social structures they are participating in to see if the game is worth playing. If the user finds that their anxiety is about a lack of purpose → they should identify a personal project that is meaningful to them, regardless of social approval. If the user remains unsure if they want these things → they should experiment with small, low-stakes actions that reflect their own values to see if they feel more authentic.\"\n  },\n  \"latencyMs\": 9096,\n  \"tokens\": null\n}",
+  "transcriptHash": "70c4e599f0d45d82a999b1f22b44aa90d52662cc3197a4327d41b333f1e8e78c",
+  "savedAt": "2026-10-16T01:41:04.779Z"
+}

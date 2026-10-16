@@ -1,0 +1,158 @@
+{
+  "jobId": "gen.v3.q2.s2",
+  "lineage": "sonnet",
+  "version": "v3",
+  "q": 2,
+  "s": 2,
+  "model": "sonnet",
+  "settings": {
+    "agentType": "general-purpose",
+    "effort": "medium"
+  },
+  "debate": {
+    "situation": "You have an offer paying 25 percent more, with a 90 minute commute each way, and you are asking how to weigh money against time. What is reported is just those two facts. Unknown and decisive: how many days are on site, how the commute would feel (train or car), what the raise is worth after tax, and what the raise means to you beyond income.",
+    "minds": [
+      {
+        "title": "The Life-Cost Accountant",
+        "concern": "Every gain has a price in hours of life, so count the hours honestly.",
+        "author": "Henry David Thoreau",
+        "book": "Walden",
+        "year": 1854
+      },
+      {
+        "title": "The Experience Auditor",
+        "concern": "How days actually feel often differs from what we expect or remember, so judge by lived experience.",
+        "author": "Daniel Kahneman",
+        "book": "Thinking, Fast and Slow",
+        "year": 2011
+      },
+      {
+        "title": "The Bet Placer",
+        "concern": "Choose under uncertainty by learning cheaply, keeping exits open, and committing to rules before emotions arrive.",
+        "author": "Annie Duke",
+        "book": "Thinking in Bets",
+        "year": 2018
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Life-Cost Accountant",
+        "text": "Start with the arithmetic nobody does. Three hours a day is fifteen a week, roughly six weeks of waking life every year, if it is five days on site. Thoreau priced everything as \"the amount of what I will call life\" exchanged for it. The raise is the sticker. The commute is the bill.",
+        "author": "Henry David Thoreau",
+        "book": "Walden",
+        "pd": true,
+        "basis": "Basis: Henry David Thoreau, Walden"
+      },
+      {
+        "speaker": "The Experience Auditor",
+        "text": "Hours are not all equal, though. People rate commuting among the least pleasant parts of their day, and they predict they will adjust to it more than they do. But I distrust your tidy sum too. Whatever you are thinking about right now, raise or traffic, looms larger than it will on a random Tuesday.",
+        "author": "Daniel Kahneman",
+        "book": "Thinking, Fast and Slow",
+        "pd": false,
+        "basis": "Basis: Daniel Kahneman, Thinking, Fast and Slow"
+      },
+      {
+        "speaker": "The Bet Placer",
+        "text": "You are both delivering a verdict before checking the facts. Is it five days on site? Is it a train where you can read, or a motorway? Can the employer flex? Decisions under missing information improve when you buy cheap information first. Drive the route at rush hour before anyone prices anything.",
+        "author": "Annie Duke",
+        "book": "Thinking in Bets",
+        "pd": false,
+        "basis": "Basis: Annie Duke, Thinking in Bets"
+      },
+      {
+        "speaker": "The Life-Cost Accountant",
+        "text": "Fair, a test drive beats guessing. But one week does not show what a year feels like, and the cost compounds. Here is a sharper test, and I would go further than Thoreau on this: divide the after-tax raise by the roughly seven hundred commute hours. That is your hourly wage for sitting in transit. Would you accept it?",
+        "author": "Henry David Thoreau",
+        "book": "Walden",
+        "pd": true,
+        "basis": "Basis: Henry David Thoreau, Walden"
+      },
+      {
+        "speaker": "The Experience Auditor",
+        "text": "Good number, but it hides an asymmetry. Extra money tends to stop feeling like extra fairly quickly, while a daily grind keeps registering. Now a reading, offered as a possibility only: you said worth it, not good for me. Maybe the 25 percent is doing a second job, as proof that someone values you, and that is steering more than the hours.",
+        "author": "Daniel Kahneman",
+        "book": "Thinking, Fast and Slow",
+        "pd": false,
+        "basis": "Basis: Daniel Kahneman, Thinking, Fast and Slow"
+      },
+      {
+        "speaker": "The Bet Placer",
+        "text": "A rival reading fits the same words. Maybe the pull is fear: that turning this down means staying stuck, and that a door like this may not reopen. That is a worry about regret, not about money. The answers matter. If it is proof of worth, look elsewhere for it. If it is escape, the route out may be worth a price.",
+        "author": "Annie Duke",
+        "book": "Thinking in Bets",
+        "pd": false,
+        "basis": "Basis: Annie Duke, Thinking in Bets"
+      },
+      {
+        "speaker": "The Life-Cost Accountant",
+        "text": "Then both readings weaken the case for paying full price. If the offer is proof of worth, you already own the proof; you got the offer. Nobody needs to spend seven hundred hours a year to keep a compliment. If it is escape, I concede a bounded stretch might be defensible. Bounded is the key word.",
+        "author": "Henry David Thoreau",
+        "book": "Walden",
+        "pd": true,
+        "basis": "Basis: Henry David Thoreau, Walden"
+      },
+      {
+        "speaker": "The Experience Auditor",
+        "text": "Bounded is where I push back on Duke. People rarely hold to the temporary. Kids settle into schools, a lease gets signed, sunk costs grow, and a one-year plan becomes five. Reversibility is flattering in advance. I also concede the commute itself might change: a seat on a train and two remote days would be a different offer.",
+        "author": "Daniel Kahneman",
+        "book": "Thinking, Fast and Slow",
+        "pd": false,
+        "basis": "Basis: Daniel Kahneman, Thinking, Fast and Slow"
+      },
+      {
+        "speaker": "The Bet Placer",
+        "text": "Granted, exits are harder than they look in the planning stage, so make the exit real now. Ask for remote days or a higher figure. Then set a review date and a rule in advance: if after six months the dread is still there, you leave. Deciding the rule while calm protects you from your future self rationalizing.",
+        "author": "Annie Duke",
+        "book": "Thinking in Bets",
+        "pd": false,
+        "basis": "Basis: Annie Duke, Thinking in Bets"
+      },
+      {
+        "speaker": "The Life-Cost Accountant",
+        "text": "I accept that, with a condition: the rule must be honest about hours, not only mood. I still think part of this cost is knowable today without a trial, and Duke thinks it must be lived. That disagreement stays. But we agree the first move is to shrink the commute or its days before accepting.",
+        "author": "Henry David Thoreau",
+        "book": "Walden",
+        "pd": true,
+        "basis": "Basis: Henry David Thoreau, Walden"
+      },
+      {
+        "speaker": "The Experience Auditor",
+        "text": "One more split remains, and it is the important one: whether the raise is buying you something you want, or relief from something you fear. We cannot tell from outside. Whichever it is, the answer changes what this job is worth, and only you can recognize which reading, if either, sounds like you.",
+        "author": "Daniel Kahneman",
+        "book": "Thinking, Fast and Slow",
+        "pd": false,
+        "basis": "Basis: Daniel Kahneman, Thinking, Fast and Slow"
+      }
+    ],
+    "clearer": "Main insight: the offer is really two trades, money for hours and money for something else, such as feeling valued or escaping a stuck position. The debate separated them. Still disputed: whether the commute cost can be judged in advance or only by living it, and how reversible the move really is. A possible self-reflection: what would the 25 percent need to be buying for the hours to feel fair? These are readings for you to test, not conclusions about you. This conversation was fictional, and no source was checked.",
+    "dependsOn": "If the commute is mostly a seat on a train, or on-site days can be cut by negotiation → the offer becomes more reasonable, because the hours cost much less than the six weeks a year of the worst case.\nIf the after-tax raise divided by yearly commute hours is a rate you would not accept for other time → declining or renegotiating becomes more reasonable, because the exchange is poor.\nIf the draw is mainly proof of being valued → the offer has already served that purpose, and a counteroffer or other routes may serve it more cheaply.\nIf the draw is mainly escape from a stuck job → a bounded trial with a firm review date becomes more reasonable.\nUnknown: how the route feels. Learn it by riding or driving it at rush hour, and by asking about remote days before deciding."
+  },
+  "validity": {
+    "ok": true,
+    "problems": []
+  },
+  "metrics": {
+    "turns": 11,
+    "words": 624,
+    "meanWordsPerTurn": 56.73,
+    "shortTurns": 0,
+    "longTurns": 0,
+    "hedges": 11,
+    "hedgeDensity": 1.76,
+    "bannedCertainty": 2,
+    "templatedOpeners": 0,
+    "slotMarkers": 0,
+    "questionsToUser": 2,
+    "theUser": 0,
+    "pdFalseQuoteTurns": 0,
+    "fabricatedBasisTurns": 0,
+    "distinctSpeakers": 3,
+    "distinctBooks": 3
+  },
+  "unusable": false,
+  "latencyMs": null,
+  "tokens": null,
+  "raw": "{\"situation\": \"You have an offer paying 25 percent more, with a 90 minute commute each way, and you are asking how to weigh money against time. What is reported is just those two facts. Unknown and decisive: how many days are on site, how the commute would feel (train or car), what the raise is worth after tax, and what the raise means to you beyond income.\", \"minds\": [{\"title\": \"The Life-Cost Accountant\", \"concern\": \"Every gain has a price in hours of life, so count the hours honestly.\", \"author\": \"Henry David Thoreau\", \"book\": \"Walden\", \"year\": 1854}, {\"title\": \"The Experience Auditor\", \"concern\": \"How days actually feel often differs from what we expect or remember, so judge by lived experience.\", \"author\": \"Daniel Kahneman\", \"book\": \"Thinking, Fast and Slow\", \"year\": 2011}, {\"title\": \"The Bet Placer\", \"concern\": \"Choose under uncertainty by learning cheaply, keeping exits open, and committing to rules before emotions arrive.\", \"author\": \"Annie Duke\", \"book\": \"Thinking in Bets\", \"year\": 2018}], \"debate\": [{\"speaker\": \"The Life-Cost Accountant\", \"text\": \"Start with the arithmetic nobody does. Three hours a day is fifteen a week, roughly six weeks of waking life every year, if it is five days on site. Thoreau priced everything as \\\"the amount of what I will call life\\\" exchanged for it. The raise is the sticker. The commute is the bill.\", \"author\": \"Henry David Thoreau\", \"book\": \"Walden\", \"pd\": true, \"basis\": \"Basis: Henry David Thoreau, Walden\"}, {\"speaker\": \"The Experience Auditor\", \"text\": \"Hours are not all equal, though. People rate commuting among the least pleasant parts of their day, and they predict they will adjust to it more than they do. But I distrust your tidy sum too. Whatever you are thinking about right now, raise or traffic, looms larger than it will on a random Tuesday.\", \"author\": \"Daniel Kahneman\", \"book\": \"Thinking, Fast and Slow\", \"pd\": false, \"basis\": \"Basis: Daniel Kahneman, Thinking, Fast and Slow\"}, {\"speaker\": \"The Bet Placer\", \"text\": \"You are both delivering a verdict before checking the facts. Is it five days on site? Is it a train where you can read, or a motorway? Can the employer flex? Decisions under missing information improve when you buy cheap information first. Drive the route at rush hour before anyone prices anything.\", \"author\": \"Annie Duke\", \"book\": \"Thinking in Bets\", \"pd\": false, \"basis\": \"Basis: Annie Duke, Thinking in Bets\"}, {\"speaker\": \"The Life-Cost Accountant\", \"text\": \"Fair, a test drive beats guessing. But one week does not show what a year feels like, and the cost compounds. Here is a sharper test, and I would go further than Thoreau on this: divide the after-tax raise by the roughly seven hundred commute hours. That is your hourly wage for sitting in transit. Would you accept it?\", \"author\": \"Henry David Thoreau\", \"book\": \"Walden\", \"pd\": true, \"basis\": \"Basis: Henry David Thoreau, Walden\"}, {\"speaker\": \"The Experience Auditor\", \"text\": \"Good number, but it hides an asymmetry. Extra money tends to stop feeling like extra fairly quickly, while a daily grind keeps registering. Now a reading, offered as a possibility only: you said worth it, not good for me. Maybe the 25 percent is doing a second job, as proof that someone values you, and that is steering more than the hours.\", \"author\": \"Daniel Kahneman\", \"book\": \"Thinking, Fast and Slow\", \"pd\": false, \"basis\": \"Basis: Daniel Kahneman, Thinking, Fast and Slow\"}, {\"speaker\": \"The Bet Placer\", \"text\": \"A rival reading fits the same words. Maybe the pull is fear: that turning this down means staying stuck, and that a door like this may not reopen. That is a worry about regret, not about money. The answers matter. If it is proof of worth, look elsewhere for it. If it is escape, the route out may be worth a price.\", \"author\": \"Annie Duke\", \"book\": \"Thinking in Bets\", \"pd\": false, \"basis\": \"Basis: Annie Duke, Thinking in Bets\"}, {\"speaker\": \"The Life-Cost Accountant\", \"text\": \"Then both readings weaken the case for paying full price. If the offer is proof of worth, you already own the proof; you got the offer. Nobody needs to spend seven hundred hours a year to keep a compliment. If it is escape, I concede a bounded stretch might be defensible. Bounded is the key word.\", \"author\": \"Henry David Thoreau\", \"book\": \"Walden\", \"pd\": true, \"basis\": \"Basis: Henry David Thoreau, Walden\"}, {\"speaker\": \"The Experience Auditor\", \"text\": \"Bounded is where I push back on Duke. People rarely hold to the temporary. Kids settle into schools, a lease gets signed, sunk costs grow, and a one-year plan becomes five. Reversibility is flattering in advance. I also concede the commute itself might change: a seat on a train and two remote days would be a different offer.\", \"author\": \"Daniel Kahneman\", \"book\": \"Thinking, Fast and Slow\", \"pd\": false, \"basis\": \"Basis: Daniel Kahneman, Thinking, Fast and Slow\"}, {\"speaker\": \"The Bet Placer\", \"text\": \"Granted, exits are harder than they look in the planning stage, so make the exit real now. Ask for remote days or a higher figure. Then set a review date and a rule in advance: if after six months the dread is still there, you leave. Deciding the rule while calm protects you from your future self rationalizing.\", \"author\": \"Annie Duke\", \"book\": \"Thinking in Bets\", \"pd\": false, \"basis\": \"Basis: Annie Duke, Thinking in Bets\"}, {\"speaker\": \"The Life-Cost Accountant\", \"text\": \"I accept that, with a condition: the rule must be honest about hours, not only mood. I still think part of this cost is knowable today without a trial, and Duke thinks it must be lived. That disagreement stays. But we agree the first move is to shrink the commute or its days before accepting.\", \"author\": \"Henry David Thoreau\", \"book\": \"Walden\", \"pd\": true, \"basis\": \"Basis: Henry David Thoreau, Walden\"}, {\"speaker\": \"The Experience Auditor\", \"text\": \"One more split remains, and it is the important one: whether the raise is buying you something you want, or relief from something you fear. We cannot tell from outside. Whichever it is, the answer changes what this job is worth, and only you can recognize which reading, if either, sounds like you.\", \"author\": \"Daniel Kahneman\", \"book\": \"Thinking, Fast and Slow\", \"pd\": false, \"basis\": \"Basis: Daniel Kahneman, Thinking, Fast and Slow\"}], \"clearer\": \"Main insight: the offer is really two trades, money for hours and money for something else, such as feeling valued or escaping a stuck position. The debate separated them. Still disputed: whether the commute cost can be judged in advance or only by living it, and how reversible the move really is. A possible self-reflection: what would the 25 percent need to be buying for the hours to feel fair? These are readings for you to test, not conclusions about you. This conversation was fictional, and no source was checked.\", \"dependsOn\": \"If the commute is mostly a seat on a train, or on-site days can be cut by negotiation → the offer becomes more reasonable, because the hours cost much less than the six weeks a year of the worst case.\\nIf the after-tax raise divided by yearly commute hours is a rate you would not accept for other time → declining or renegotiating becomes more reasonable, because the exchange is poor.\\nIf the draw is mainly proof of being valued → the offer has already served that purpose, and a counteroffer or other routes may serve it more cheaply.\\nIf the draw is mainly escape from a stuck job → a bounded trial with a firm review date becomes more reasonable.\\nUnknown: how the route feels. Learn it by riding or driving it at rush hour, and by asking about remote days before deciding.\"}",
+  "transcriptHash": "e945a91982cd25980e59d9726e1e4fa40f2c17e50292e4b694efdde2ab136d09",
+  "savedAt": "2026-10-16T01:37:44.457Z"
+}
