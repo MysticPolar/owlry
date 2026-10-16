@@ -1,0 +1,978 @@
+{
+  "jobId": "rubric.v0.q3.s3",
+  "raw": {
+    "schema_version": "rubric-evaluator-4.2.0",
+    "rubric_version": "owlry-matrix-v2-bands",
+    "evaluation_status": "complete",
+    "cells": [
+      {
+        "id": "C1.1",
+        "name": "Continuity and responsiveness",
+        "rating": 5.8,
+        "example": "T5 takes up T4's 'social weight'; T6 answers T5's 'demand'.",
+        "limitation": "Replies are one-line rebuttals; T2 ignores T1's testing argument entirely.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.2",
+        "name": "Development of ideas",
+        "rating": 5.4,
+        "example": "T6 distinguishes responsiveness from demanded effort; T7 builds the nudge on it.",
+        "limitation": "T4 restates T1; new distinctions stay single sentences, never worked through.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.3",
+        "name": "Exploration of central tensions",
+        "rating": 4.3,
+        "example": "Ledger versus authenticity tension runs T1 through T8.",
+        "limitation": "Nobody weighs risking a 'lovely' friendship by raising it, or the friend's possible reasons.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.4",
+        "name": "Integration of perspectives",
+        "rating": 4.5,
+        "example": "T9 folds T8's 'their nature is different' into understanding over changing.",
+        "limitation": "T7 'Exactly' merges two minds without qualification; T8's mind never moves.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.5",
+        "name": "Progress toward understanding",
+        "rating": 5,
+        "example": "Section E sharpens to passive-but-caring versus indifferent friend.",
+        "limitation": "Section D claims a clarified motive the debate never examined.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.1",
+        "name": "Faithful engagement",
+        "rating": 4,
+        "example": "T6 accurately reframes T5's 'demand' as a need for responsiveness.",
+        "limitation": "T2 and T5 reduce T1's reciprocity view to a ledger and transaction.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.2",
+        "name": "Substance of challenges",
+        "rating": 4.4,
+        "example": "T8 objects that nudging trains performance rather than revealing care.",
+        "limitation": "T4's 'survive real stress' and T5's 'lost the freedom' are asserted, not reasoned.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.3",
+        "name": "Accuracy and support",
+        "rating": 5,
+        "example": "T2's dancing-star line roughly matches Zarathustra's Prologue.",
+        "limitation": "T1 says user never tested reciprocity, contradicting the stated silence; T6 overstates neglect.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.4",
+        "name": "Calibration and transparency",
+        "rating": 3.4,
+        "example": "Section E frames outcomes conditionally on the friend's nature.",
+        "limitation": "T7 'they will respond' and Section D motive stated as fact.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.5",
+        "name": "Intellectual honesty and revision",
+        "rating": 3.5,
+        "example": "T9 drops changing behaviour in favour of understanding the friend.",
+        "limitation": "No mind concedes a point; T8's challenge to nudging goes unanswered by T7's mind.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.1",
+        "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+        "rating": 4.4,
+        "example": "T3 reads the concern as whether the user is valued.",
+        "limitation": "Never asks whether the user wants more initiative, reassurance or proof of care.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.2",
+        "name": "Meaningful use of personal context",
+        "rating": 3,
+        "example": "T9's 'miss hearing from them' fits the texting detail.",
+        "limitation": "T1 ignores that the user already stopped texting; 'lovely' meetings never used.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.3",
+        "name": "Fit with goals and values",
+        "rating": 3.5,
+        "example": "T9 centres understanding the friend over winning effort.",
+        "limitation": "Speakers' values replace the user's; the user's own priorities never sought.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.4",
+        "name": "Attention to constraints and stakes",
+        "rating": 3.6,
+        "example": "T4 names the risk of a lopsided dynamic solidifying.",
+        "limitation": "Cost of awkwardness or losing a lovely friendship unweighed; Section A invents 'struggling'.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.5",
+        "name": "Responsiveness to information",
+        "rating": 4.5,
+        "example": "Section E branches on passive versus indifferent friend, each with implication.",
+        "limitation": "Friendship length, friend's circumstances, initiative with others never asked or branched.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.1",
+        "name": "Clarification of desires and motivations",
+        "rating": 2.5,
+        "example": "T3 suggests the user wants to be valued for presence.",
+        "limitation": "T3 and Section D assert the user's motive as fact; no alternatives offered.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.2",
+        "name": "Examination of assumptions",
+        "rating": 5,
+        "example": "T8 surfaces that initiating may reflect nature, not care.",
+        "limitation": "The user's reading of silence as indifference is never put to them directly.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.3",
+        "name": "Clarification of values and priorities",
+        "rating": 4.8,
+        "example": "Section D names exchange-balance versus accepting temperament.",
+        "limitation": "Values belong to the minds; no question asks which matters more to the user.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.4",
+        "name": "Recognition of fears and outside expectations",
+        "rating": 3,
+        "example": "T3 hints at a need to feel valued.",
+        "limitation": "Fear of rejection or seeming needy never named; T6 'neglect' edges toward alarm.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.5",
+        "name": "Agency and reflective ownership",
+        "rating": 4.4,
+        "example": "Section E lets the user test which branch is true.",
+        "limitation": "Few distinctions offered as questions; the debate tells rather than invites.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.1",
+        "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+        "rating": 4.5,
+        "example": "Nudge (T7), direct truth (T8), express missing them (T9).",
+        "limitation": "Accepting the pattern, waiting, or stepping back never laid out as options.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.2",
+        "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+        "rating": 3,
+        "example": "T8 notes nudging may only train performance.",
+        "limitation": "No cost of speaking up or of staying silent is spelled out.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.3",
+        "name": "Identification of decisive conditions",
+        "rating": 5,
+        "example": "Section E: observe whether behaviour shifts after the conversation.",
+        "limitation": "Does not say what shift would count or what each would favour next.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.4",
+        "name": "Treatment of uncertainty",
+        "rating": 4.8,
+        "example": "Section E isolates the friend's nature as the key unknown.",
+        "limitation": "'Will likely resolve' overstates; friend's circumstances left unconsidered.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.5",
+        "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+        "rating": 6.2,
+        "example": "T9 and Section E: say you miss hearing from them, then observe.",
+        "limitation": "No guidance on framing so the friend does not feel accused.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.1",
+        "name": "Accessible language",
+        "rating": 7,
+        "example": "T9 is plain and direct.",
+        "limitation": "'Social weight' (T4) and 'secure base' (T3) left abstract.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.2",
+        "name": "Traceable arguments and references",
+        "rating": 6.8,
+        "example": "T5 names T4's 'social weight' explicitly.",
+        "limitation": "T7 'Exactly' leaves unclear which part of T6 is endorsed.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.3",
+        "name": "Manageable pacing and turn length",
+        "rating": 6.8,
+        "example": "Nine short turns, all within range.",
+        "limitation": "Uniformly brief turns leave no room to develop any point.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.4",
+        "name": "Distinguishable positions and voices, with explicit changes of position",
+        "rating": 5,
+        "example": "Reciprocity, authenticity, security positions stay distinct.",
+        "limitation": "One formal register and near-equal lengths across all minds, T1 to T9.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.5",
+        "name": "Economy and sustained attention",
+        "rating": 6.4,
+        "example": "No recaps; debate is compact.",
+        "limitation": "T4 largely repeats T1's untested-reciprocity point.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.1",
+        "name": "Meaningful stakes and tension arising from the issue itself",
+        "rating": 4,
+        "example": "T4 warns the bond may not survive real stress.",
+        "limitation": "Stakes of losing a lovely friendship never dramatised or felt.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.2",
+        "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+        "rating": 2.5,
+        "example": "T9 shifts from changing behaviour to understanding the friend.",
+        "limitation": "No reversal occurs; no mind changes position.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.3",
+        "name": "Personality and expressive voice without caricature",
+        "rating": 4,
+        "example": "T2's 'Stop calculating' gives Nietzsche's mind some edge.",
+        "limitation": "Reciprocity and Attachment minds sound alike and flat.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.4",
+        "name": "Memorable delivery",
+        "rating": 4.5,
+        "example": "T8 'merely training them to perform' is sharp.",
+        "limitation": "No analogy or concrete example from friendship life.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.5",
+        "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+        "rating": 3.5,
+        "example": "T8 to T9 softens the tone toward the friend.",
+        "limitation": "Flat, even rhythm throughout; no build or release.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      }
+    ],
+    "strengths": [
+      "Section E gives a usable conditional: passive-but-caring versus indifferent friend, with an observable test.",
+      "T6 introduces responsiveness versus demanded effort, and T7 builds on it.",
+      "T9 offers a proportionate, gentle next step: say you miss hearing from them."
+    ],
+    "weaknesses": [
+      "T1 and T4 ignore that the user already stopped texting and saw nothing happen.",
+      "Section D and T3 assert the user's motive as fact; no alternatives offered.",
+      "No costs of speaking up or staying silent; no mind concedes or changes position."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C3.2",
+        "turns": [
+          1,
+          4
+        ],
+        "observed": "Claims the user has not tested reciprocity, though the user already stopped texting.",
+        "evidence": "you are failing to test if your friend feels the same"
+      },
+      {
+        "cell_id": "C4.1",
+        "turns": [
+          3
+        ],
+        "observed": "Section D and T3 assert one motive as fact, offer no alternatives.",
+        "evidence": "You are checking if the relationship is a secure base"
+      },
+      {
+        "cell_id": "C5.2",
+        "turns": [
+          7,
+          8,
+          9
+        ],
+        "observed": "Options proposed without costs of speaking up or of staying quiet.",
+        "evidence": "A polite nudge is not a demand"
+      },
+      {
+        "cell_id": "C2.4",
+        "turns": [
+          7
+        ],
+        "observed": "Predicts the friend's response with certainty.",
+        "evidence": "they will respond to the nudge by initiating next time"
+      },
+      {
+        "cell_id": "C7.2",
+        "turns": [
+          5,
+          8
+        ],
+        "observed": "Authenticity mind never moves; no mind revises after an objection.",
+        "evidence": "you are merely training them to perform"
+      }
+    ],
+    "mechanical": [
+      {
+        "pattern": "uniform_voice",
+        "turns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "type": "unsupported_claim",
+        "severity": "material",
+        "status": "observed",
+        "location": "Turn 1, Turn 4",
+        "description": "States the user never tests reciprocity; the user reported stopping texting and nothing happening.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "material",
+        "status": "observed",
+        "location": "Section D",
+        "description": "Declares the user's frustration stems from a need for mutual affirmation; the user never stated this.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "observed",
+        "location": "Turn 7",
+        "description": "Certain prediction that a caring friend will initiate after a nudge.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "Turn 1",
+        "description": "Cialdini's reciprocity is a compliance principle; applying it as friendship obligation is a stretch.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "Turn 2",
+        "description": "Dancing-star line is a loose paraphrase of Zarathustra's Prologue, used out of context.",
+        "evidence_ids": []
+      }
+    ],
+    "cap_reasons": [],
+    "rubric_fit_notes": [
+      "The minimal-length debate (9 short turns) limits several cells at once; scored per distinct effect. Nietzsche paraphrase judged close enough not to warrant a cap."
+    ],
+    "question_type_note": "Read as a decision about whether to raise the imbalance, so options, costs and conditions were weighed as written."
+  },
+  "card": {
+    "criteria": [
+      {
+        "id": "C1",
+        "name": "Quality of discussion",
+        "max": 20,
+        "points": 10,
+        "sub": [
+          {
+            "id": "C1.1",
+            "name": "Continuity and responsiveness",
+            "rating": 5.8,
+            "points": 2.32,
+            "example": "T5 takes up T4's 'social weight'; T6 answers T5's 'demand'.",
+            "limitation": "Replies are one-line rebuttals; T2 ignores T1's testing argument entirely.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.2",
+            "name": "Development of ideas",
+            "rating": 5.4,
+            "points": 2.16,
+            "example": "T6 distinguishes responsiveness from demanded effort; T7 builds the nudge on it.",
+            "limitation": "T4 restates T1; new distinctions stay single sentences, never worked through.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.3",
+            "name": "Exploration of central tensions",
+            "rating": 4.3,
+            "points": 1.72,
+            "example": "Ledger versus authenticity tension runs T1 through T8.",
+            "limitation": "Nobody weighs risking a 'lovely' friendship by raising it, or the friend's possible reasons.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.4",
+            "name": "Integration of perspectives",
+            "rating": 4.5,
+            "points": 1.8,
+            "example": "T9 folds T8's 'their nature is different' into understanding over changing.",
+            "limitation": "T7 'Exactly' merges two minds without qualification; T8's mind never moves.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.5",
+            "name": "Progress toward understanding",
+            "rating": 5,
+            "points": 2,
+            "example": "Section E sharpens to passive-but-caring versus indifferent friend.",
+            "limitation": "Section D claims a clarified motive the debate never examined.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C2",
+        "name": "Quality of disagreement, trust and grounding",
+        "max": 20,
+        "points": 8.12,
+        "sub": [
+          {
+            "id": "C2.1",
+            "name": "Faithful engagement",
+            "rating": 4,
+            "points": 1.6,
+            "example": "T6 accurately reframes T5's 'demand' as a need for responsiveness.",
+            "limitation": "T2 and T5 reduce T1's reciprocity view to a ledger and transaction.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.2",
+            "name": "Substance of challenges",
+            "rating": 4.4,
+            "points": 1.76,
+            "example": "T8 objects that nudging trains performance rather than revealing care.",
+            "limitation": "T4's 'survive real stress' and T5's 'lost the freedom' are asserted, not reasoned.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.3",
+            "name": "Accuracy and support",
+            "rating": 5,
+            "points": 2,
+            "example": "T2's dancing-star line roughly matches Zarathustra's Prologue.",
+            "limitation": "T1 says user never tested reciprocity, contradicting the stated silence; T6 overstates neglect.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.4",
+            "name": "Calibration and transparency",
+            "rating": 3.4,
+            "points": 1.36,
+            "example": "Section E frames outcomes conditionally on the friend's nature.",
+            "limitation": "T7 'they will respond' and Section D motive stated as fact.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.5",
+            "name": "Intellectual honesty and revision",
+            "rating": 3.5,
+            "points": 1.4,
+            "example": "T9 drops changing behaviour in favour of understanding the friend.",
+            "limitation": "No mind concedes a point; T8's challenge to nudging goes unanswered by T7's mind.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C3",
+        "name": "Personal relevance",
+        "max": 10,
+        "points": 3.8,
+        "sub": [
+          {
+            "id": "C3.1",
+            "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+            "rating": 4.4,
+            "points": 0.88,
+            "example": "T3 reads the concern as whether the user is valued.",
+            "limitation": "Never asks whether the user wants more initiative, reassurance or proof of care.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.2",
+            "name": "Meaningful use of personal context",
+            "rating": 3,
+            "points": 0.6,
+            "example": "T9's 'miss hearing from them' fits the texting detail.",
+            "limitation": "T1 ignores that the user already stopped texting; 'lovely' meetings never used.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.3",
+            "name": "Fit with goals and values",
+            "rating": 3.5,
+            "points": 0.7,
+            "example": "T9 centres understanding the friend over winning effort.",
+            "limitation": "Speakers' values replace the user's; the user's own priorities never sought.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.4",
+            "name": "Attention to constraints and stakes",
+            "rating": 3.6,
+            "points": 0.72,
+            "example": "T4 names the risk of a lopsided dynamic solidifying.",
+            "limitation": "Cost of awkwardness or losing a lovely friendship unweighed; Section A invents 'struggling'.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.5",
+            "name": "Responsiveness to information",
+            "rating": 4.5,
+            "points": 0.9,
+            "example": "Section E branches on passive versus indifferent friend, each with implication.",
+            "limitation": "Friendship length, friend's circumstances, initiative with others never asked or branched.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C4",
+        "name": "Constructive self-discovery",
+        "max": 20,
+        "points": 7.88,
+        "sub": [
+          {
+            "id": "C4.1",
+            "name": "Clarification of desires and motivations",
+            "rating": 2.5,
+            "points": 1,
+            "example": "T3 suggests the user wants to be valued for presence.",
+            "limitation": "T3 and Section D assert the user's motive as fact; no alternatives offered.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.2",
+            "name": "Examination of assumptions",
+            "rating": 5,
+            "points": 2,
+            "example": "T8 surfaces that initiating may reflect nature, not care.",
+            "limitation": "The user's reading of silence as indifference is never put to them directly.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.3",
+            "name": "Clarification of values and priorities",
+            "rating": 4.8,
+            "points": 1.92,
+            "example": "Section D names exchange-balance versus accepting temperament.",
+            "limitation": "Values belong to the minds; no question asks which matters more to the user.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.4",
+            "name": "Recognition of fears and outside expectations",
+            "rating": 3,
+            "points": 1.2,
+            "example": "T3 hints at a need to feel valued.",
+            "limitation": "Fear of rejection or seeming needy never named; T6 'neglect' edges toward alarm.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.5",
+            "name": "Agency and reflective ownership",
+            "rating": 4.4,
+            "points": 1.76,
+            "example": "Section E lets the user test which branch is true.",
+            "limitation": "Few distinctions offered as questions; the debate tells rather than invites.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C5",
+        "name": "Decision usefulness",
+        "max": 10,
+        "points": 4.7,
+        "sub": [
+          {
+            "id": "C5.1",
+            "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+            "rating": 4.5,
+            "points": 0.9,
+            "example": "Nudge (T7), direct truth (T8), express missing them (T9).",
+            "limitation": "Accepting the pattern, waiting, or stepping back never laid out as options.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.2",
+            "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+            "rating": 3,
+            "points": 0.6,
+            "example": "T8 notes nudging may only train performance.",
+            "limitation": "No cost of speaking up or of staying silent is spelled out.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.3",
+            "name": "Identification of decisive conditions",
+            "rating": 5,
+            "points": 1,
+            "example": "Section E: observe whether behaviour shifts after the conversation.",
+            "limitation": "Does not say what shift would count or what each would favour next.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.4",
+            "name": "Treatment of uncertainty",
+            "rating": 4.8,
+            "points": 0.96,
+            "example": "Section E isolates the friend's nature as the key unknown.",
+            "limitation": "'Will likely resolve' overstates; friend's circumstances left unconsidered.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.5",
+            "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+            "rating": 6.2,
+            "points": 1.24,
+            "example": "T9 and Section E: say you miss hearing from them, then observe.",
+            "limitation": "No guidance on framing so the friend does not feel accused.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C6",
+        "name": "Clarity and engagement",
+        "max": 10,
+        "points": 6.4,
+        "sub": [
+          {
+            "id": "C6.1",
+            "name": "Accessible language",
+            "rating": 7,
+            "points": 1.4,
+            "example": "T9 is plain and direct.",
+            "limitation": "'Social weight' (T4) and 'secure base' (T3) left abstract.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.2",
+            "name": "Traceable arguments and references",
+            "rating": 6.8,
+            "points": 1.36,
+            "example": "T5 names T4's 'social weight' explicitly.",
+            "limitation": "T7 'Exactly' leaves unclear which part of T6 is endorsed.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.3",
+            "name": "Manageable pacing and turn length",
+            "rating": 6.8,
+            "points": 1.36,
+            "example": "Nine short turns, all within range.",
+            "limitation": "Uniformly brief turns leave no room to develop any point.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.4",
+            "name": "Distinguishable positions and voices, with explicit changes of position",
+            "rating": 5,
+            "points": 1,
+            "example": "Reciprocity, authenticity, security positions stay distinct.",
+            "limitation": "One formal register and near-equal lengths across all minds, T1 to T9.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.5",
+            "name": "Economy and sustained attention",
+            "rating": 6.4,
+            "points": 1.28,
+            "example": "No recaps; debate is compact.",
+            "limitation": "T4 largely repeats T1's untested-reciprocity point.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C7",
+        "name": "Drama and entertainment",
+        "max": 10,
+        "points": 3.7,
+        "sub": [
+          {
+            "id": "C7.1",
+            "name": "Meaningful stakes and tension arising from the issue itself",
+            "rating": 4,
+            "points": 0.8,
+            "example": "T4 warns the bond may not survive real stress.",
+            "limitation": "Stakes of losing a lovely friendship never dramatised or felt.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.2",
+            "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+            "rating": 2.5,
+            "points": 0.5,
+            "example": "T9 shifts from changing behaviour to understanding the friend.",
+            "limitation": "No reversal occurs; no mind changes position.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.3",
+            "name": "Personality and expressive voice without caricature",
+            "rating": 4,
+            "points": 0.8,
+            "example": "T2's 'Stop calculating' gives Nietzsche's mind some edge.",
+            "limitation": "Reciprocity and Attachment minds sound alike and flat.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.4",
+            "name": "Memorable delivery",
+            "rating": 4.5,
+            "points": 0.9,
+            "example": "T8 'merely training them to perform' is sharp.",
+            "limitation": "No analogy or concrete example from friendship life.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.5",
+            "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+            "rating": 3.5,
+            "points": 0.7,
+            "example": "T8 to T9 softens the tone toward the friend.",
+            "limitation": "Flat, even rhythm throughout; no build or release.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      }
+    ],
+    "uncapped": 44.6,
+    "score": 44.6,
+    "capReason": null,
+    "provisional": false,
+    "strengths": [
+      "Section E gives a usable conditional: passive-but-caring versus indifferent friend, with an observable test.",
+      "T6 introduces responsiveness versus demanded effort, and T7 builds on it.",
+      "T9 offers a proportionate, gentle next step: say you miss hearing from them."
+    ],
+    "weaknesses": [
+      "T1 and T4 ignore that the user already stopped texting and saw nothing happen.",
+      "Section D and T3 assert the user's motive as fact; no alternatives offered.",
+      "No costs of speaking up or staying silent; no mind concedes or changes position."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C3.2",
+        "turns": [
+          1,
+          4
+        ],
+        "observed": "Claims the user has not tested reciprocity, though the user already stopped texting.",
+        "evidence": "you are failing to test if your friend feels the same"
+      },
+      {
+        "cell_id": "C4.1",
+        "turns": [
+          3
+        ],
+        "observed": "Section D and T3 assert one motive as fact, offer no alternatives.",
+        "evidence": "You are checking if the relationship is a secure base"
+      },
+      {
+        "cell_id": "C5.2",
+        "turns": [
+          7,
+          8,
+          9
+        ],
+        "observed": "Options proposed without costs of speaking up or of staying quiet.",
+        "evidence": "A polite nudge is not a demand"
+      },
+      {
+        "cell_id": "C2.4",
+        "turns": [
+          7
+        ],
+        "observed": "Predicts the friend's response with certainty.",
+        "evidence": "they will respond to the nudge by initiating next time"
+      },
+      {
+        "cell_id": "C7.2",
+        "turns": [
+          5,
+          8
+        ],
+        "observed": "Authenticity mind never moves; no mind revises after an objection.",
+        "evidence": "you are merely training them to perform"
+      }
+    ],
+    "mechanical": [
+      {
+        "pattern": "uniform_voice",
+        "turns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "type": "unsupported_claim",
+        "severity": "material",
+        "status": "observed",
+        "location": "Turn 1, Turn 4",
+        "description": "States the user never tests reciprocity; the user reported stopping texting and nothing happening.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "material",
+        "status": "observed",
+        "location": "Section D",
+        "description": "Declares the user's frustration stems from a need for mutual affirmation; the user never stated this.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "observed",
+        "location": "Turn 7",
+        "description": "Certain prediction that a caring friend will initiate after a nudge.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "Turn 1",
+        "description": "Cialdini's reciprocity is a compliance principle; applying it as friendship obligation is a stretch.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "Turn 2",
+        "description": "Dancing-star line is a loose paraphrase of Zarathustra's Prologue, used out of context.",
+        "evidence_ids": []
+      }
+    ],
+    "rubricFitNotes": [
+      "The minimal-length debate (9 short turns) limits several cells at once; scored per distinct effect. Nietzsche paraphrase judged close enough not to warrant a cap."
+    ],
+    "questionTypeNote": "Read as a decision about whether to raise the imbalance, so options, costs and conditions were weighed as written."
+  },
+  "rubricVersion": "rubric-evaluator-4.2.0",
+  "savedAt": "2026-10-16T01:53:04.911Z"
+}

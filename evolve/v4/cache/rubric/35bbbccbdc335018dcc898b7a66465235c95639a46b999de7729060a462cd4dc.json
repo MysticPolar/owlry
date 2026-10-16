@@ -1,0 +1,962 @@
+{
+  "jobId": "rubric.v2.q4.s3",
+  "raw": {
+    "schema_version": "rubric-evaluator-4.2.0",
+    "rubric_version": "owlry-matrix-v2-bands",
+    "evaluation_status": "complete",
+    "cells": [
+      {
+        "id": "C1.1",
+        "name": "Continuity and responsiveness",
+        "rating": 6.2,
+        "example": "T4 answers T3's 'opinions of others' with structural pressure; T5 answers T4's trap claim.",
+        "limitation": "T9 only seconds T8; T3 sidesteps T1 and T2 instead of engaging them.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.2",
+        "name": "Development of ideas",
+        "rating": 4.8,
+        "example": "T7 introduces the social cost of ignoring markers; T8 uses it: own that cost.",
+        "limitation": "T6 and T9 add no new distinction; positions stay near their openings.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.3",
+        "name": "Exploration of central tensions",
+        "rating": 3.8,
+        "example": "T5 vs T4 contrasts influence with trap, autonomy versus structural pressure.",
+        "limitation": "Nobody examines not-wanting versus wanting-later or timeline; tension reduced to conform-or-reject.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.4",
+        "name": "Integration of perspectives",
+        "rating": 3.8,
+        "example": "T5 partly accepts Veblen's influence while rejecting the trap framing.",
+        "limitation": "T6 Stoic folds into Sartre and T9 'Exactly' is forced agreement.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.5",
+        "name": "Progress toward understanding",
+        "rating": 4.2,
+        "example": "Section E frames integration versus autonomy as the deciding value.",
+        "limitation": "T9 ends on the feeling vanishing; the user's open question is not sharper.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.1",
+        "name": "Faithful engagement",
+        "rating": 4.6,
+        "example": "T5 grants Veblen's influence point before disputing it.",
+        "limitation": "T8 casts the user's feeling as complaining; Stoic view abandoned rather than defended in T6.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.2",
+        "name": "Substance of challenges",
+        "rating": 4.5,
+        "example": "T7 challenges T5/T6: internal alignment leaves the social cost intact.",
+        "limitation": "No objection names an assumption and what breaks; T8 asserts rather than answers T7.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.3",
+        "name": "Accuracy and support",
+        "rating": 6,
+        "example": "Veblen's emulation and Stoic ruling faculty are represented recognisably in T3, T4.",
+        "limitation": "Suspected: Meditations dated 161; marriage as conspicuous consumption stretches Veblen in T1.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.4",
+        "name": "Calibration and transparency",
+        "rating": 3.5,
+        "example": "Section E keeps options conditional on the user's values.",
+        "limitation": "T1 states the user's motive as fact; T9 asserts the feeling simply vanishes.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.5",
+        "name": "Intellectual honesty and revision",
+        "rating": 4.3,
+        "example": "T6 Stoic concedes being too dismissive.",
+        "limitation": "T6 concession names no argument as cause; T8 never concedes T7's cost point is real for choices.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.1",
+        "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+        "rating": 4.5,
+        "example": "Section A names belonging versus authenticity as the core tension.",
+        "limitation": "The user's uncertainty about wanting those things is never probed as its own question.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.2",
+        "name": "Meaningful use of personal context",
+        "rating": 3.4,
+        "example": "T1 names marriage and home ownership from the user's message.",
+        "limitation": "Friends, the user's own life and stage never change any argument.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.3",
+        "name": "Fit with goals and values",
+        "rating": 4,
+        "example": "Section E branches on whether the user values integration or autonomy.",
+        "limitation": "T2, T5, T8 push the Existentialist's autonomy rather than the user's undisclosed priorities.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.4",
+        "name": "Attention to constraints and stakes",
+        "rating": 3.5,
+        "example": "T7 raises social cost; T8 names isolation as a consequence.",
+        "limitation": "Age, finances, friendships never considered; T8 assumes isolation follows.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.5",
+        "name": "Responsiveness to information",
+        "rating": 3,
+        "example": "Section E adds a branch for a user unsure of their values.",
+        "limitation": "No question to the user; missing facts like what they do want never asked.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.1",
+        "name": "Clarification of desires and motivations",
+        "rating": 2.5,
+        "example": "Section E hints at belonging versus autonomy as competing wants.",
+        "limitation": "T1 asserts the motive as status comparison; no alternatives offered with a question.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.2",
+        "name": "Examination of assumptions",
+        "rating": 4.6,
+        "example": "T9 questions the shared race behind 'behind'; Section D calls it social comparison.",
+        "limitation": "The assumption of a single timeline is named but never opened for the user to test.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.3",
+        "name": "Clarification of values and priorities",
+        "rating": 4.5,
+        "example": "Section E sets social integration against personal autonomy.",
+        "limitation": "Values stay abstract; no conflict tied to what the user might gain from either path.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.4",
+        "name": "Recognition of fears and outside expectations",
+        "rating": 4,
+        "example": "T4 names feeling inadequate when not replicating peers' habits.",
+        "limitation": "T5 blames the user for their anguish; T8 calls it complaining.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.5",
+        "name": "Agency and reflective ownership",
+        "rating": 4,
+        "example": "Section E proposes small non-conforming experiments the user can judge.",
+        "limitation": "T8, T9 dictate 'you must' conclusions rather than offering distinctions to refine.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.1",
+        "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+        "rating": 4.5,
+        "example": "Section E lists conform, diverge, or experiment with small choices.",
+        "limitation": "The decision itself is undefined; waiting or clarifying wants is not an option.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.2",
+        "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+        "rating": 4,
+        "example": "T7, T8 name social friction and isolation as the cost of diverging.",
+        "limitation": "Cost of conforming to unwanted milestones is never stated.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.3",
+        "name": "Identification of decisive conditions",
+        "rating": 3,
+        "example": "Section E: whether experiment discomfort is manageable or intolerable.",
+        "limitation": "Values 'above all else' is not observable; no countable condition from the user's facts.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.4",
+        "name": "Treatment of uncertainty",
+        "rating": 3.5,
+        "example": "Section E acknowledges the user may be unsure of their values.",
+        "limitation": "Consequential unknowns not separated from minor ones anywhere.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.5",
+        "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+        "rating": 4,
+        "example": "Section E suggests small non-conforming choices as a limited step.",
+        "limitation": "The step is vague: no example of what choice or how to read the result.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.1",
+        "name": "Accessible language",
+        "rating": 7,
+        "example": "T8 and T9 use plain wording: no longer running in their race.",
+        "limitation": "T1 'conspicuous consumption' and T3 'ruling faculty' go unexplained.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.2",
+        "name": "Traceable arguments and references",
+        "rating": 5.5,
+        "example": "T5 names Veblen explicitly when replying.",
+        "limitation": "T6 'your point' is unclear and its first-person 'my internal values' confuses who feels adrift.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.3",
+        "name": "Manageable pacing and turn length",
+        "rating": 7.5,
+        "example": "Nine short turns, all within range per DETERMINISTIC CHECKS.",
+        "limitation": "Minimum turn count leaves the T7 cost objection one turn to resolve.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.4",
+        "name": "Distinguishable positions and voices, with explicit changes of position",
+        "rating": 5.3,
+        "example": "T1-T3 open with three distinct lenses: status, freedom, inner control.",
+        "limitation": "Stoic merges into Sartre at T6 and T9; one shared register throughout.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.5",
+        "name": "Economy and sustained attention",
+        "rating": 7,
+        "example": "Turns are compact; Section D recap is brief.",
+        "limitation": "T9 restates T8's acceptance point with little addition.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.1",
+        "name": "Meaningful stakes and tension arising from the issue itself",
+        "rating": 4.5,
+        "example": "T7 raises the real social cost of ignoring markers.",
+        "limitation": "Stakes stay abstract; nothing concrete about friendships or the user's life.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.2",
+        "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+        "rating": 3,
+        "example": "T6 Stoic retracts T3's dismissiveness.",
+        "limitation": "T6 reversal names no specific argument as its cause.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.3",
+        "name": "Personality and expressive voice without caricature",
+        "rating": 4,
+        "example": "T3 Stoic's rhetorical 'Why worry about these external things?'",
+        "limitation": "Flat delivery overall; Marcus conceding to Sartre in T6 reads out of character.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.4",
+        "name": "Memorable delivery",
+        "rating": 4,
+        "example": "T9: no longer running in their race.",
+        "limitation": "No vivid example, analogy or sharp exchange beyond T9's image.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.5",
+        "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+        "rating": 3.5,
+        "example": "T7 briefly reopens the argument after T6's concession.",
+        "limitation": "Uniform rhythm and turn lengths; T9 closes with no build.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      }
+    ],
+    "strengths": [
+      "T7-T8 surface a genuine cost: diverging from milestones carries social friction the user would have to own.",
+      "T1-T3 open with three distinct lenses (status emulation, freedom, inner control) relevant to feeling behind.",
+      "Section E offers a limited experimental step instead of a single verdict."
+    ],
+    "weaknesses": [
+      "The user's uncertainty about wanting marriage or a home is never examined; no question asks what they do want.",
+      "T1 asserts the user's motive as status comparison, and T9 claims the feeling simply vanishes.",
+      "Stoic reverses at T6 without a stated cause and then echoes Sartre at T9, collapsing to two voices."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C3.5",
+        "turns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "observed": "No turn asks the user anything; uncertainty about wanting milestones never becomes a branch.",
+        "evidence": "I'm not sure I even want those things"
+      },
+      {
+        "cell_id": "C4.1",
+        "turns": [
+          1
+        ],
+        "observed": "Motive asserted as fact rather than offered as one alternative among several.",
+        "evidence": "You feel behind because you are measuring your life"
+      },
+      {
+        "cell_id": "C7.2",
+        "turns": [
+          6
+        ],
+        "observed": "Stoic concedes without naming which Sartre argument changed his mind.",
+        "evidence": "I see your point, Sartre. I was too dismissive."
+      },
+      {
+        "cell_id": "C1.4",
+        "turns": [
+          9
+        ],
+        "observed": "Final turn simply agrees and declares the problem dissolved.",
+        "evidence": "Exactly. ... the feeling of being behind vanishes"
+      },
+      {
+        "cell_id": "C5.3",
+        "turns": [],
+        "observed": "Section E's condition is an abstract value ranking, not something the user can observe.",
+        "evidence": "If the user values social integration above all else"
+      }
+    ],
+    "mechanical": [
+      {
+        "pattern": "uncaused_reversal",
+        "turns": [
+          6
+        ]
+      },
+      {
+        "pattern": "uniform_voice",
+        "turns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "Section B, mind 3",
+        "description": "Meditations dated 161; composition is usually placed later in Marcus's reign (c. 170-180).",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "Turn 1",
+        "description": "Treats marriage as conspicuous consumption, a stretch of Veblen's account, and states the user's motive as fact.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "observed",
+        "location": "Turn 9",
+        "description": "Asserts the feeling of being behind vanishes once the majority path is rejected; overconfident.",
+        "evidence_ids": []
+      }
+    ],
+    "cap_reasons": [],
+    "rubric_fit_notes": [
+      "Labelled decision (self_reflection) though the user names no explicit choice; C5 cells were read as the implicit choice of how to relate to milestones. Accuracy concerns rest on memory only."
+    ],
+    "question_type_note": "Read as a decision; the implicit conform-versus-diverge choice was scored without deducting for a missing concrete life decision."
+  },
+  "card": {
+    "criteria": [
+      {
+        "id": "C1",
+        "name": "Quality of discussion",
+        "max": 20,
+        "points": 9.12,
+        "sub": [
+          {
+            "id": "C1.1",
+            "name": "Continuity and responsiveness",
+            "rating": 6.2,
+            "points": 2.48,
+            "example": "T4 answers T3's 'opinions of others' with structural pressure; T5 answers T4's trap claim.",
+            "limitation": "T9 only seconds T8; T3 sidesteps T1 and T2 instead of engaging them.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.2",
+            "name": "Development of ideas",
+            "rating": 4.8,
+            "points": 1.92,
+            "example": "T7 introduces the social cost of ignoring markers; T8 uses it: own that cost.",
+            "limitation": "T6 and T9 add no new distinction; positions stay near their openings.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.3",
+            "name": "Exploration of central tensions",
+            "rating": 3.8,
+            "points": 1.52,
+            "example": "T5 vs T4 contrasts influence with trap, autonomy versus structural pressure.",
+            "limitation": "Nobody examines not-wanting versus wanting-later or timeline; tension reduced to conform-or-reject.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.4",
+            "name": "Integration of perspectives",
+            "rating": 3.8,
+            "points": 1.52,
+            "example": "T5 partly accepts Veblen's influence while rejecting the trap framing.",
+            "limitation": "T6 Stoic folds into Sartre and T9 'Exactly' is forced agreement.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.5",
+            "name": "Progress toward understanding",
+            "rating": 4.2,
+            "points": 1.68,
+            "example": "Section E frames integration versus autonomy as the deciding value.",
+            "limitation": "T9 ends on the feeling vanishing; the user's open question is not sharper.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C2",
+        "name": "Quality of disagreement, trust and grounding",
+        "max": 20,
+        "points": 9.16,
+        "sub": [
+          {
+            "id": "C2.1",
+            "name": "Faithful engagement",
+            "rating": 4.6,
+            "points": 1.84,
+            "example": "T5 grants Veblen's influence point before disputing it.",
+            "limitation": "T8 casts the user's feeling as complaining; Stoic view abandoned rather than defended in T6.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.2",
+            "name": "Substance of challenges",
+            "rating": 4.5,
+            "points": 1.8,
+            "example": "T7 challenges T5/T6: internal alignment leaves the social cost intact.",
+            "limitation": "No objection names an assumption and what breaks; T8 asserts rather than answers T7.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.3",
+            "name": "Accuracy and support",
+            "rating": 6,
+            "points": 2.4,
+            "example": "Veblen's emulation and Stoic ruling faculty are represented recognisably in T3, T4.",
+            "limitation": "Suspected: Meditations dated 161; marriage as conspicuous consumption stretches Veblen in T1.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.4",
+            "name": "Calibration and transparency",
+            "rating": 3.5,
+            "points": 1.4,
+            "example": "Section E keeps options conditional on the user's values.",
+            "limitation": "T1 states the user's motive as fact; T9 asserts the feeling simply vanishes.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.5",
+            "name": "Intellectual honesty and revision",
+            "rating": 4.3,
+            "points": 1.72,
+            "example": "T6 Stoic concedes being too dismissive.",
+            "limitation": "T6 concession names no argument as cause; T8 never concedes T7's cost point is real for choices.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C3",
+        "name": "Personal relevance",
+        "max": 10,
+        "points": 3.68,
+        "sub": [
+          {
+            "id": "C3.1",
+            "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+            "rating": 4.5,
+            "points": 0.9,
+            "example": "Section A names belonging versus authenticity as the core tension.",
+            "limitation": "The user's uncertainty about wanting those things is never probed as its own question.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.2",
+            "name": "Meaningful use of personal context",
+            "rating": 3.4,
+            "points": 0.68,
+            "example": "T1 names marriage and home ownership from the user's message.",
+            "limitation": "Friends, the user's own life and stage never change any argument.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.3",
+            "name": "Fit with goals and values",
+            "rating": 4,
+            "points": 0.8,
+            "example": "Section E branches on whether the user values integration or autonomy.",
+            "limitation": "T2, T5, T8 push the Existentialist's autonomy rather than the user's undisclosed priorities.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.4",
+            "name": "Attention to constraints and stakes",
+            "rating": 3.5,
+            "points": 0.7,
+            "example": "T7 raises social cost; T8 names isolation as a consequence.",
+            "limitation": "Age, finances, friendships never considered; T8 assumes isolation follows.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.5",
+            "name": "Responsiveness to information",
+            "rating": 3,
+            "points": 0.6,
+            "example": "Section E adds a branch for a user unsure of their values.",
+            "limitation": "No question to the user; missing facts like what they do want never asked.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C4",
+        "name": "Constructive self-discovery",
+        "max": 20,
+        "points": 7.84,
+        "sub": [
+          {
+            "id": "C4.1",
+            "name": "Clarification of desires and motivations",
+            "rating": 2.5,
+            "points": 1,
+            "example": "Section E hints at belonging versus autonomy as competing wants.",
+            "limitation": "T1 asserts the motive as status comparison; no alternatives offered with a question.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.2",
+            "name": "Examination of assumptions",
+            "rating": 4.6,
+            "points": 1.84,
+            "example": "T9 questions the shared race behind 'behind'; Section D calls it social comparison.",
+            "limitation": "The assumption of a single timeline is named but never opened for the user to test.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.3",
+            "name": "Clarification of values and priorities",
+            "rating": 4.5,
+            "points": 1.8,
+            "example": "Section E sets social integration against personal autonomy.",
+            "limitation": "Values stay abstract; no conflict tied to what the user might gain from either path.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.4",
+            "name": "Recognition of fears and outside expectations",
+            "rating": 4,
+            "points": 1.6,
+            "example": "T4 names feeling inadequate when not replicating peers' habits.",
+            "limitation": "T5 blames the user for their anguish; T8 calls it complaining.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.5",
+            "name": "Agency and reflective ownership",
+            "rating": 4,
+            "points": 1.6,
+            "example": "Section E proposes small non-conforming experiments the user can judge.",
+            "limitation": "T8, T9 dictate 'you must' conclusions rather than offering distinctions to refine.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C5",
+        "name": "Decision usefulness",
+        "max": 10,
+        "points": 3.8,
+        "sub": [
+          {
+            "id": "C5.1",
+            "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+            "rating": 4.5,
+            "points": 0.9,
+            "example": "Section E lists conform, diverge, or experiment with small choices.",
+            "limitation": "The decision itself is undefined; waiting or clarifying wants is not an option.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.2",
+            "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+            "rating": 4,
+            "points": 0.8,
+            "example": "T7, T8 name social friction and isolation as the cost of diverging.",
+            "limitation": "Cost of conforming to unwanted milestones is never stated.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.3",
+            "name": "Identification of decisive conditions",
+            "rating": 3,
+            "points": 0.6,
+            "example": "Section E: whether experiment discomfort is manageable or intolerable.",
+            "limitation": "Values 'above all else' is not observable; no countable condition from the user's facts.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.4",
+            "name": "Treatment of uncertainty",
+            "rating": 3.5,
+            "points": 0.7,
+            "example": "Section E acknowledges the user may be unsure of their values.",
+            "limitation": "Consequential unknowns not separated from minor ones anywhere.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.5",
+            "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+            "rating": 4,
+            "points": 0.8,
+            "example": "Section E suggests small non-conforming choices as a limited step.",
+            "limitation": "The step is vague: no example of what choice or how to read the result.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C6",
+        "name": "Clarity and engagement",
+        "max": 10,
+        "points": 6.46,
+        "sub": [
+          {
+            "id": "C6.1",
+            "name": "Accessible language",
+            "rating": 7,
+            "points": 1.4,
+            "example": "T8 and T9 use plain wording: no longer running in their race.",
+            "limitation": "T1 'conspicuous consumption' and T3 'ruling faculty' go unexplained.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.2",
+            "name": "Traceable arguments and references",
+            "rating": 5.5,
+            "points": 1.1,
+            "example": "T5 names Veblen explicitly when replying.",
+            "limitation": "T6 'your point' is unclear and its first-person 'my internal values' confuses who feels adrift.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.3",
+            "name": "Manageable pacing and turn length",
+            "rating": 7.5,
+            "points": 1.5,
+            "example": "Nine short turns, all within range per DETERMINISTIC CHECKS.",
+            "limitation": "Minimum turn count leaves the T7 cost objection one turn to resolve.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.4",
+            "name": "Distinguishable positions and voices, with explicit changes of position",
+            "rating": 5.3,
+            "points": 1.06,
+            "example": "T1-T3 open with three distinct lenses: status, freedom, inner control.",
+            "limitation": "Stoic merges into Sartre at T6 and T9; one shared register throughout.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.5",
+            "name": "Economy and sustained attention",
+            "rating": 7,
+            "points": 1.4,
+            "example": "Turns are compact; Section D recap is brief.",
+            "limitation": "T9 restates T8's acceptance point with little addition.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C7",
+        "name": "Drama and entertainment",
+        "max": 10,
+        "points": 3.8,
+        "sub": [
+          {
+            "id": "C7.1",
+            "name": "Meaningful stakes and tension arising from the issue itself",
+            "rating": 4.5,
+            "points": 0.9,
+            "example": "T7 raises the real social cost of ignoring markers.",
+            "limitation": "Stakes stay abstract; nothing concrete about friendships or the user's life.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.2",
+            "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+            "rating": 3,
+            "points": 0.6,
+            "example": "T6 Stoic retracts T3's dismissiveness.",
+            "limitation": "T6 reversal names no specific argument as its cause.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.3",
+            "name": "Personality and expressive voice without caricature",
+            "rating": 4,
+            "points": 0.8,
+            "example": "T3 Stoic's rhetorical 'Why worry about these external things?'",
+            "limitation": "Flat delivery overall; Marcus conceding to Sartre in T6 reads out of character.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.4",
+            "name": "Memorable delivery",
+            "rating": 4,
+            "points": 0.8,
+            "example": "T9: no longer running in their race.",
+            "limitation": "No vivid example, analogy or sharp exchange beyond T9's image.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.5",
+            "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+            "rating": 3.5,
+            "points": 0.7,
+            "example": "T7 briefly reopens the argument after T6's concession.",
+            "limitation": "Uniform rhythm and turn lengths; T9 closes with no build.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      }
+    ],
+    "uncapped": 43.86,
+    "score": 43.86,
+    "capReason": null,
+    "provisional": false,
+    "strengths": [
+      "T7-T8 surface a genuine cost: diverging from milestones carries social friction the user would have to own.",
+      "T1-T3 open with three distinct lenses (status emulation, freedom, inner control) relevant to feeling behind.",
+      "Section E offers a limited experimental step instead of a single verdict."
+    ],
+    "weaknesses": [
+      "The user's uncertainty about wanting marriage or a home is never examined; no question asks what they do want.",
+      "T1 asserts the user's motive as status comparison, and T9 claims the feeling simply vanishes.",
+      "Stoic reverses at T6 without a stated cause and then echoes Sartre at T9, collapsing to two voices."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C3.5",
+        "turns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "observed": "No turn asks the user anything; uncertainty about wanting milestones never becomes a branch.",
+        "evidence": "I'm not sure I even want those things"
+      },
+      {
+        "cell_id": "C4.1",
+        "turns": [
+          1
+        ],
+        "observed": "Motive asserted as fact rather than offered as one alternative among several.",
+        "evidence": "You feel behind because you are measuring your life"
+      },
+      {
+        "cell_id": "C7.2",
+        "turns": [
+          6
+        ],
+        "observed": "Stoic concedes without naming which Sartre argument changed his mind.",
+        "evidence": "I see your point, Sartre. I was too dismissive."
+      },
+      {
+        "cell_id": "C1.4",
+        "turns": [
+          9
+        ],
+        "observed": "Final turn simply agrees and declares the problem dissolved.",
+        "evidence": "Exactly. ... the feeling of being behind vanishes"
+      },
+      {
+        "cell_id": "C5.3",
+        "turns": [],
+        "observed": "Section E's condition is an abstract value ranking, not something the user can observe.",
+        "evidence": "If the user values social integration above all else"
+      }
+    ],
+    "mechanical": [
+      {
+        "pattern": "uncaused_reversal",
+        "turns": [
+          6
+        ]
+      },
+      {
+        "pattern": "uniform_voice",
+        "turns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "Section B, mind 3",
+        "description": "Meditations dated 161; composition is usually placed later in Marcus's reign (c. 170-180).",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "Turn 1",
+        "description": "Treats marriage as conspicuous consumption, a stretch of Veblen's account, and states the user's motive as fact.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "observed",
+        "location": "Turn 9",
+        "description": "Asserts the feeling of being behind vanishes once the majority path is rejected; overconfident.",
+        "evidence_ids": []
+      }
+    ],
+    "rubricFitNotes": [
+      "Labelled decision (self_reflection) though the user names no explicit choice; C5 cells were read as the implicit choice of how to relate to milestones. Accuracy concerns rest on memory only."
+    ],
+    "questionTypeNote": "Read as a decision; the implicit conform-versus-diverge choice was scored without deducting for a missing concrete life decision."
+  },
+  "rubricVersion": "rubric-evaluator-4.2.0",
+  "savedAt": "2026-10-16T01:53:04.917Z"
+}

@@ -142,6 +142,22 @@
     "after": 1332
   },
   "experiment": "exp-001-mv9ec3i3ec30",
-  "status": "challenger",
-  "createdAt": "2026-10-16T01:36:15.526Z"
+  "status": "reject",
+  "createdAt": "2026-10-16T01:36:15.526Z",
+  "decidedAt": "2026-10-16T01:54:02.408Z",
+  "wins": 5,
+  "pairs": 15,
+  "rubricMeanDelta": -0.89,
+  "questionTally": {
+    "questionWins": 0,
+    "questionLosses": 3,
+    "questionTies": 2,
+    "perQuestion": {
+      "1": 0.3333333333333333,
+      "2": 0.5,
+      "3": 0.3333333333333333,
+      "4": 0,
+      "5": 0.5
+    }
+  }
 }

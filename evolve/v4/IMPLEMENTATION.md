@@ -125,6 +125,27 @@ Found on this run and fixed:
 
 Calls for this run: 30 Sonnet workers (10 baseline, 10 control, 10 retest), 20 Gemini (10 control, 10 retest), 81 Opus (50 evaluations, 31 blind judges including one respawn). Both retests stayed within the 25 extra calls per lineage that were approved.
 
+## Iteration 1: first optimizer proposals, 2026-10-15
+
+One optimizer (Fable) iteration per lineage, approved by the person. Both proposals were rejected; the champions stay (Sonnet v1, Gemini v0). Per-question detail: `deno run -A evolve/v4/tools/decisions_summary.ts`.
+
+| | Sonnet: v3 vs v1 | Gemini: v2 vs v0 |
+|---|---|---|
+| decision | REJECT at stage 1 | RETEST then REJECT |
+| blind pairs won by the challenger | 3 of 10 | 5 of 15 |
+| rubric mean, challenger vs champion | 81.75 vs 79.88 (+1.88) | 42.82 vs 43.71 (−0.89) |
+| rubric by category | up in Health, Wealth, Love, Purpose; Wonder −1.98 | Wealth and Wonder up; Health, Love, Purpose down |
+| challenger form failures | 1 quoted pd=false turn (within the limit of 1) | none |
+
+Sonnet's v3 repeats the pattern of round 12 and the control: higher on the rubric, lower on blind preference. It won no Health, Wealth or Wonder pair. Gemini's v2 lost on both measures, so the retest settled it.
+
+Found on this run:
+- Both optimizers listed five or more `targets`; the schema allows four, and the brief did not say so. Each was respawned once and passed. The brief now says "at most four cell ids" (`roles/optimizer.md`).
+- One Gemini judge omitted `advantage` in all three comparisons; it was respawned once and passed.
+- The person approved one iteration per lineage, so Sonnet's iteration-2 optimizer job, printed by the shared `next`, was not spawned. Every later ingest ran with `--no-miss` and later `next` calls with `--lineage gemini`, so that job was never counted as a miss. Both lineages now wait in OPTIMIZING with an unspawned optimizer job.
+
+Calls: 4 Fable (2 proposals, 2 respawns), 10 Sonnet workers, 20 Gemini (10 challenger, 10 retest), 56 Opus (30 evaluations, 26 blind judges including one respawn).
+
 ## Tests
 
 ```bash

@@ -1,0 +1,980 @@
+{
+  "jobId": "rubric.v0.q2.s3",
+  "raw": {
+    "schema_version": "rubric-evaluator-4.2.0",
+    "rubric_version": "owlry-matrix-v2-bands",
+    "evaluation_status": "complete",
+    "cells": [
+      {
+        "id": "C1.1",
+        "name": "Continuity and responsiveness",
+        "rating": 5,
+        "example": "T4 answers T3's externals point; T7 answers T5; T8 answers T7's reading-time mitigation.",
+        "limitation": "Stoic turns T6 and T9 answer no prior turn; rigid rotation reads as parallel monologues.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.2",
+        "name": "Development of ideas",
+        "rating": 4,
+        "example": "T8 adds traffic variance as a new cost beyond the opening positions.",
+        "limitation": "T8's variance distinction is never used by a later turn; T6 restates T3.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.3",
+        "name": "Exploration of central tensions",
+        "rating": 4.5,
+        "example": "Money versus time and adaptation (T2, T5, T7) are examined.",
+        "limitation": "Nobody raises current commute length, remote days, career growth or commute mode.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.4",
+        "name": "Integration of perspectives",
+        "rating": 3,
+        "example": "T4 reframes the Stoic externals claim as affecting internal state.",
+        "limitation": "No view is reshaped by another; T9 splits the difference into two value paths.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C1.5",
+        "name": "Progress toward understanding",
+        "rating": 4,
+        "example": "Section E sharpens toward financial stress and an effective hourly rate.",
+        "limitation": "T9 ends where T3 began; section D's outsourcing dispute never appeared in the debate.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.1",
+        "name": "Faithful engagement",
+        "rating": 5,
+        "example": "T7 states the strongest utilitarian case: commute time usable for reading or rest.",
+        "limitation": "T5 dismisses T4's debt-and-family case as a common trap without engaging it.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.2",
+        "name": "Substance of challenges",
+        "rating": 5,
+        "example": "T7 tests T5's assumption that the commute is pure suffering.",
+        "limitation": "T5 never answers T4's debt relief point; no objection names what breaks if false.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.3",
+        "name": "Accuracy and support",
+        "rating": 5.5,
+        "example": "T1 faithfully renders Bentham's opening on pain and pleasure.",
+        "limitation": "T5 states non-adaptation as certainty; T8 invents highway traffic; T6 line sounds Senecan (suspected).",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.4",
+        "name": "Calibration and transparency",
+        "rating": 3.5,
+        "example": "T7 frames mitigation conditionally: if the commute allows reading.",
+        "limitation": "T2 asserts the user suffers a focusing illusion; T5 says your brain will not adapt.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C2.5",
+        "name": "Intellectual honesty and revision",
+        "rating": 2.5,
+        "example": "T8 partly accepts T7's productivity premise before countering.",
+        "limitation": "No mind concedes or revises anything across nine turns.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.1",
+        "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+        "rating": 6,
+        "example": "Section A frames raise against daily three-hour drain as the core tension.",
+        "limitation": "User asked how to decide; no turn asks what is pulling them toward the offer.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.2",
+        "name": "Meaningful use of personal context",
+        "rating": 4,
+        "example": "T1 names three hours in transit from the stated 90 minutes each way.",
+        "limitation": "The 25 percent and 90 minutes are never computed against each other in any turn.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.3",
+        "name": "Fit with goals and values",
+        "rating": 4,
+        "example": "T9 offers resources versus time as the user's own choice.",
+        "limitation": "User's priorities never asked; Stoic T6 imposes its own valuation of time.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.4",
+        "name": "Attention to constraints and stakes",
+        "rating": 3.5,
+        "example": "T4 conditions on debt or a family as stakes that change the calculation.",
+        "limitation": "T8 invents highway driving; T8 assumes current life is stable and predictable.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C3.5",
+        "name": "Responsiveness to information",
+        "rating": 3,
+        "example": "Section E branches on financial stress versus a stable situation.",
+        "limitation": "Commute mode, current commute, remote options never asked or branched.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.1",
+        "name": "Clarification of desires and motivations",
+        "rating": 3,
+        "example": "T3 asks whether the work itself aligns with the user's character.",
+        "limitation": "T2 declares a focusing illusion as fact; no alternative motives offered.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.2",
+        "name": "Examination of assumptions",
+        "rating": 5,
+        "example": "T7 surfaces the assumption that commuting time is pure suffering.",
+        "limitation": "The take-or-stay binary and the money-happiness link go unexamined as assumptions.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.3",
+        "name": "Clarification of values and priorities",
+        "rating": 5.5,
+        "example": "T9 contrasts expanding resources with the integrity of one's own time.",
+        "limitation": "The conflict is named, not worked through; no weighting question for the user.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.4",
+        "name": "Recognition of fears and outside expectations",
+        "rating": 3,
+        "example": "T4 names the pain of debt and providing for a family.",
+        "limitation": "Fear, obligation and social pressure around a raise are otherwise absent.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C4.5",
+        "name": "Agency and reflective ownership",
+        "rating": 5,
+        "example": "T9: the decision is yours, not the salary's.",
+        "limitation": "Offered distinctions are binary verdict paths, little the user can refine.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.1",
+        "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+        "rating": 3.5,
+        "example": "T9 defines take the path versus stay where you are.",
+        "limitation": "Negotiating remote days, relocating, a trial period or waiting never appear.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.2",
+        "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+        "rating": 5,
+        "example": "T8 names variance cost; T4 names financial security benefit.",
+        "limitation": "Staying is treated as costless; no turn names what the current job costs.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.3",
+        "name": "Identification of decisive conditions",
+        "rating": 4.5,
+        "example": "Section E: financial stress favours the raise; stable life favours staying.",
+        "limitation": "Significant stress has no observable threshold; hourly rate given no comparison point.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.4",
+        "name": "Treatment of uncertainty",
+        "rating": 4,
+        "example": "T8 treats traffic unpredictability as a source of variance.",
+        "limitation": "Consequential unknowns like commute mode and current commute not separated from minor ones.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C5.5",
+        "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+        "rating": 5,
+        "example": "Section E: calculate effective hourly wage after three daily commute hours.",
+        "limitation": "One calculation only; no limited step such as asking about hybrid days.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.1",
+        "name": "Accessible language",
+        "rating": 7.5,
+        "example": "T6: trade three hours of your life every day for paper currency.",
+        "limitation": "T5 negative stimulus and T8 cognitive load lean on jargon.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.2",
+        "name": "Traceable arguments and references",
+        "rating": 6,
+        "example": "T4 Externalities matter clearly picks up T3's externals claim.",
+        "limitation": "T5 That is a common trap is ambiguous; section D cites unraised outsourcing.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.3",
+        "name": "Manageable pacing and turn length",
+        "rating": 7,
+        "example": "Nine turns, all within word range per deterministic checks.",
+        "limitation": "Near-identical turn lengths T1 to T9 make the rhythm monotonous.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.4",
+        "name": "Distinguishable positions and voices, with explicit changes of position",
+        "rating": 5.5,
+        "example": "Three lenses distinct in content: calculation, bias, inner integrity.",
+        "limitation": "Uniform lecturing register across all minds; no explicit position change.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C6.5",
+        "name": "Economy and sustained attention",
+        "rating": 6.5,
+        "example": "Most turns add one point without recapping the previous speaker.",
+        "limitation": "T6 restates T3's selling-your-life point with little new.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.1",
+        "name": "Meaningful stakes and tension arising from the issue itself",
+        "rating": 5.5,
+        "example": "T3: merely selling your life for a higher price.",
+        "limitation": "Stakes stay abstract; no concrete day, person or cost made vivid.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.2",
+        "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+        "rating": 1.5,
+        "example": "T7 briefly turns the commute from pain into reading time.",
+        "limitation": "No mind reverses or shifts across nine turns.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.3",
+        "name": "Personality and expressive voice without caricature",
+        "rating": 5,
+        "example": "T1 Bentham's two sovereign masters gives the Utilitarian a recognisable voice.",
+        "limitation": "Behavioral Economist and Stoic speak in the same flat admonishing register.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.4",
+        "name": "Memorable delivery",
+        "rating": 6,
+        "example": "T3 selling your life for a higher price is a sharp line.",
+        "limitation": "Few analogies or examples; T8 highway image is generic.",
+        "limitation_severity": "minor",
+        "excellent_anchor_met": false
+      },
+      {
+        "id": "C7.5",
+        "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+        "rating": 3.5,
+        "example": "T1 opens with a question the debate sets out to answer.",
+        "limitation": "Constant even intensity; predictable rotation; T9 resolves into a neutral split.",
+        "limitation_severity": "material",
+        "excellent_anchor_met": false
+      }
+    ],
+    "strengths": [
+      "Section E offers a concrete, user-runnable step: effective hourly wage after commute time.",
+      "T7 and T8 form a genuine exchange testing whether commute time is pure loss.",
+      "Three lenses (Utilitarian, Behavioral Economist, Stoic) are distinct in content from T1 to T3."
+    ],
+    "weaknesses": [
+      "No mind concedes, revises or reverses across nine turns; T5 ignores T4's debt case.",
+      "Key facts (commute mode, current commute, remote options) never asked; T8 invents highway traffic.",
+      "Options stay take-or-stay; negotiation, hybrid work or a trial never appear (T9, section E)."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C2.5",
+        "turns": [
+          5,
+          8,
+          9
+        ],
+        "observed": "No mind concedes anything; T5 waves off T4's debt case unanswered.",
+        "evidence": "That is a common trap."
+      },
+      {
+        "cell_id": "C3.5",
+        "turns": [
+          7,
+          8
+        ],
+        "observed": "Commute mode left unasked; T8 assumes driving, contradicting T7's reading scenario.",
+        "evidence": "your happiness depends on the highway conditions"
+      },
+      {
+        "cell_id": "C5.1",
+        "turns": [
+          9
+        ],
+        "observed": "Only take or stay defined; no negotiation, hybrid or limited trial option.",
+        "evidence": "take the path. If you value the integrity"
+      },
+      {
+        "cell_id": "C2.4",
+        "turns": [
+          2,
+          5
+        ],
+        "observed": "User's bias and future non-adaptation stated as fact, not hypothesis.",
+        "evidence": "You are suffering from a focusing illusion."
+      },
+      {
+        "cell_id": "C7.2",
+        "turns": [
+          1,
+          9
+        ],
+        "observed": "Positions at T9 match openings; nothing changes any mind.",
+        "evidence": "Ultimately, the choice depends on where you place your value."
+      }
+    ],
+    "mechanical": [
+      {
+        "pattern": "uniform_voice",
+        "turns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "type": "unsupported_claim",
+        "severity": "material",
+        "status": "observed",
+        "location": "T2",
+        "description": "Asserts the user is suffering a focusing illusion with no evidence from the user's message.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "T5",
+        "description": "Commuting non-adaptation finding (associated with Stutzer and Frey) stated as certainty and attached to Kahneman's book.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "observed",
+        "location": "T8",
+        "description": "Assumes the commute is by car on a highway and that current life is stable; user said neither.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "T6",
+        "description": "Time is the only thing we truly possess sounds closer to Seneca's letters than Meditations.",
+        "evidence_ids": []
+      },
+      {
+        "type": "format",
+        "severity": "minor",
+        "status": "observed",
+        "location": "Section D",
+        "description": "Names outsourcing household labor as the remaining dispute, though no turn raised it.",
+        "evidence_ids": []
+      }
+    ],
+    "cap_reasons": [],
+    "rubric_fit_notes": [
+      "User supplied only two facts, so personal-relevance cells depend heavily on whether the debate asked for more; it largely did not. Suspected attribution issues rest on memory only."
+    ],
+    "question_type_note": "Decision question, so every cell was read as written, with options and decisive conditions weighed for a take-or-decline choice."
+  },
+  "card": {
+    "criteria": [
+      {
+        "id": "C1",
+        "name": "Quality of discussion",
+        "max": 20,
+        "points": 8.2,
+        "sub": [
+          {
+            "id": "C1.1",
+            "name": "Continuity and responsiveness",
+            "rating": 5,
+            "points": 2,
+            "example": "T4 answers T3's externals point; T7 answers T5; T8 answers T7's reading-time mitigation.",
+            "limitation": "Stoic turns T6 and T9 answer no prior turn; rigid rotation reads as parallel monologues.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.2",
+            "name": "Development of ideas",
+            "rating": 4,
+            "points": 1.6,
+            "example": "T8 adds traffic variance as a new cost beyond the opening positions.",
+            "limitation": "T8's variance distinction is never used by a later turn; T6 restates T3.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.3",
+            "name": "Exploration of central tensions",
+            "rating": 4.5,
+            "points": 1.8,
+            "example": "Money versus time and adaptation (T2, T5, T7) are examined.",
+            "limitation": "Nobody raises current commute length, remote days, career growth or commute mode.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.4",
+            "name": "Integration of perspectives",
+            "rating": 3,
+            "points": 1.2,
+            "example": "T4 reframes the Stoic externals claim as affecting internal state.",
+            "limitation": "No view is reshaped by another; T9 splits the difference into two value paths.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C1.5",
+            "name": "Progress toward understanding",
+            "rating": 4,
+            "points": 1.6,
+            "example": "Section E sharpens toward financial stress and an effective hourly rate.",
+            "limitation": "T9 ends where T3 began; section D's outsourcing dispute never appeared in the debate.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C2",
+        "name": "Quality of disagreement, trust and grounding",
+        "max": 20,
+        "points": 8.6,
+        "sub": [
+          {
+            "id": "C2.1",
+            "name": "Faithful engagement",
+            "rating": 5,
+            "points": 2,
+            "example": "T7 states the strongest utilitarian case: commute time usable for reading or rest.",
+            "limitation": "T5 dismisses T4's debt-and-family case as a common trap without engaging it.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.2",
+            "name": "Substance of challenges",
+            "rating": 5,
+            "points": 2,
+            "example": "T7 tests T5's assumption that the commute is pure suffering.",
+            "limitation": "T5 never answers T4's debt relief point; no objection names what breaks if false.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.3",
+            "name": "Accuracy and support",
+            "rating": 5.5,
+            "points": 2.2,
+            "example": "T1 faithfully renders Bentham's opening on pain and pleasure.",
+            "limitation": "T5 states non-adaptation as certainty; T8 invents highway traffic; T6 line sounds Senecan (suspected).",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.4",
+            "name": "Calibration and transparency",
+            "rating": 3.5,
+            "points": 1.4,
+            "example": "T7 frames mitigation conditionally: if the commute allows reading.",
+            "limitation": "T2 asserts the user suffers a focusing illusion; T5 says your brain will not adapt.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C2.5",
+            "name": "Intellectual honesty and revision",
+            "rating": 2.5,
+            "points": 1,
+            "example": "T8 partly accepts T7's productivity premise before countering.",
+            "limitation": "No mind concedes or revises anything across nine turns.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C3",
+        "name": "Personal relevance",
+        "max": 10,
+        "points": 4.1,
+        "sub": [
+          {
+            "id": "C3.1",
+            "name": "Identification of the actual concern, including ambiguity about what the user is really asking",
+            "rating": 6,
+            "points": 1.2,
+            "example": "Section A frames raise against daily three-hour drain as the core tension.",
+            "limitation": "User asked how to decide; no turn asks what is pulling them toward the offer.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.2",
+            "name": "Meaningful use of personal context",
+            "rating": 4,
+            "points": 0.8,
+            "example": "T1 names three hours in transit from the stated 90 minutes each way.",
+            "limitation": "The 25 percent and 90 minutes are never computed against each other in any turn.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.3",
+            "name": "Fit with goals and values",
+            "rating": 4,
+            "points": 0.8,
+            "example": "T9 offers resources versus time as the user's own choice.",
+            "limitation": "User's priorities never asked; Stoic T6 imposes its own valuation of time.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.4",
+            "name": "Attention to constraints and stakes",
+            "rating": 3.5,
+            "points": 0.7,
+            "example": "T4 conditions on debt or a family as stakes that change the calculation.",
+            "limitation": "T8 invents highway driving; T8 assumes current life is stable and predictable.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C3.5",
+            "name": "Responsiveness to information",
+            "rating": 3,
+            "points": 0.6,
+            "example": "Section E branches on financial stress versus a stable situation.",
+            "limitation": "Commute mode, current commute, remote options never asked or branched.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C4",
+        "name": "Constructive self-discovery",
+        "max": 20,
+        "points": 8.6,
+        "sub": [
+          {
+            "id": "C4.1",
+            "name": "Clarification of desires and motivations",
+            "rating": 3,
+            "points": 1.2,
+            "example": "T3 asks whether the work itself aligns with the user's character.",
+            "limitation": "T2 declares a focusing illusion as fact; no alternative motives offered.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.2",
+            "name": "Examination of assumptions",
+            "rating": 5,
+            "points": 2,
+            "example": "T7 surfaces the assumption that commuting time is pure suffering.",
+            "limitation": "The take-or-stay binary and the money-happiness link go unexamined as assumptions.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.3",
+            "name": "Clarification of values and priorities",
+            "rating": 5.5,
+            "points": 2.2,
+            "example": "T9 contrasts expanding resources with the integrity of one's own time.",
+            "limitation": "The conflict is named, not worked through; no weighting question for the user.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.4",
+            "name": "Recognition of fears and outside expectations",
+            "rating": 3,
+            "points": 1.2,
+            "example": "T4 names the pain of debt and providing for a family.",
+            "limitation": "Fear, obligation and social pressure around a raise are otherwise absent.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C4.5",
+            "name": "Agency and reflective ownership",
+            "rating": 5,
+            "points": 2,
+            "example": "T9: the decision is yours, not the salary's.",
+            "limitation": "Offered distinctions are binary verdict paths, little the user can refine.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C5",
+        "name": "Decision usefulness",
+        "max": 10,
+        "points": 4.4,
+        "sub": [
+          {
+            "id": "C5.1",
+            "name": "Definition of the decision and options, including waiting, learning more, or a limited step",
+            "rating": 3.5,
+            "points": 0.7,
+            "example": "T9 defines take the path versus stay where you are.",
+            "limitation": "Negotiating remote days, relocating, a trial period or waiting never appear.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.2",
+            "name": "Explanation of tradeoffs in terms that matter to the user; no option treated as costless",
+            "rating": 5,
+            "points": 1,
+            "example": "T8 names variance cost; T4 names financial security benefit.",
+            "limitation": "Staying is treated as costless; no turn names what the current job costs.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.3",
+            "name": "Identification of decisive conditions",
+            "rating": 4.5,
+            "points": 0.9,
+            "example": "Section E: financial stress favours the raise; stable life favours staying.",
+            "limitation": "Significant stress has no observable threshold; hourly rate given no comparison point.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.4",
+            "name": "Treatment of uncertainty",
+            "rating": 4,
+            "points": 0.8,
+            "example": "T8 treats traffic unpredictability as a source of variance.",
+            "limitation": "Consequential unknowns like commute mode and current commute not separated from minor ones.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C5.5",
+            "name": "Proportionate next steps that follow from the analysis and fit the constraints",
+            "rating": 5,
+            "points": 1,
+            "example": "Section E: calculate effective hourly wage after three daily commute hours.",
+            "limitation": "One calculation only; no limited step such as asking about hybrid days.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C6",
+        "name": "Clarity and engagement",
+        "max": 10,
+        "points": 6.5,
+        "sub": [
+          {
+            "id": "C6.1",
+            "name": "Accessible language",
+            "rating": 7.5,
+            "points": 1.5,
+            "example": "T6: trade three hours of your life every day for paper currency.",
+            "limitation": "T5 negative stimulus and T8 cognitive load lean on jargon.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.2",
+            "name": "Traceable arguments and references",
+            "rating": 6,
+            "points": 1.2,
+            "example": "T4 Externalities matter clearly picks up T3's externals claim.",
+            "limitation": "T5 That is a common trap is ambiguous; section D cites unraised outsourcing.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.3",
+            "name": "Manageable pacing and turn length",
+            "rating": 7,
+            "points": 1.4,
+            "example": "Nine turns, all within word range per deterministic checks.",
+            "limitation": "Near-identical turn lengths T1 to T9 make the rhythm monotonous.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.4",
+            "name": "Distinguishable positions and voices, with explicit changes of position",
+            "rating": 5.5,
+            "points": 1.1,
+            "example": "Three lenses distinct in content: calculation, bias, inner integrity.",
+            "limitation": "Uniform lecturing register across all minds; no explicit position change.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C6.5",
+            "name": "Economy and sustained attention",
+            "rating": 6.5,
+            "points": 1.3,
+            "example": "Most turns add one point without recapping the previous speaker.",
+            "limitation": "T6 restates T3's selling-your-life point with little new.",
+            "severity": "minor",
+            "anchorMet": false
+          }
+        ]
+      },
+      {
+        "id": "C7",
+        "name": "Drama and entertainment",
+        "max": 10,
+        "points": 4.3,
+        "sub": [
+          {
+            "id": "C7.1",
+            "name": "Meaningful stakes and tension arising from the issue itself",
+            "rating": 5.5,
+            "points": 1.1,
+            "example": "T3: merely selling your life for a higher price.",
+            "limitation": "Stakes stay abstract; no concrete day, person or cost made vivid.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.2",
+            "name": "Surprise and reversals that stay plausible. ★ A reversal the text traces to an earlier turn's argument, naming what changed the speaker's mind. A change of position with no stated cause is a template, not a reversal",
+            "rating": 1.5,
+            "points": 0.3,
+            "example": "T7 briefly turns the commute from pain into reading time.",
+            "limitation": "No mind reverses or shifts across nine turns.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.3",
+            "name": "Personality and expressive voice without caricature",
+            "rating": 5,
+            "points": 1,
+            "example": "T1 Bentham's two sovereign masters gives the Utilitarian a recognisable voice.",
+            "limitation": "Behavioral Economist and Stoic speak in the same flat admonishing register.",
+            "severity": "material",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.4",
+            "name": "Memorable delivery",
+            "rating": 6,
+            "points": 1.2,
+            "example": "T3 selling your life for a higher price is a sharp line.",
+            "limitation": "Few analogies or examples; T8 highway image is generic.",
+            "severity": "minor",
+            "anchorMet": false
+          },
+          {
+            "id": "C7.5",
+            "name": "Anticipation and emotional movement, with varied rhythm rather than constant intensity",
+            "rating": 3.5,
+            "points": 0.7,
+            "example": "T1 opens with a question the debate sets out to answer.",
+            "limitation": "Constant even intensity; predictable rotation; T9 resolves into a neutral split.",
+            "severity": "material",
+            "anchorMet": false
+          }
+        ]
+      }
+    ],
+    "uncapped": 44.7,
+    "score": 44.7,
+    "capReason": null,
+    "provisional": false,
+    "strengths": [
+      "Section E offers a concrete, user-runnable step: effective hourly wage after commute time.",
+      "T7 and T8 form a genuine exchange testing whether commute time is pure loss.",
+      "Three lenses (Utilitarian, Behavioral Economist, Stoic) are distinct in content from T1 to T3."
+    ],
+    "weaknesses": [
+      "No mind concedes, revises or reverses across nine turns; T5 ignores T4's debt case.",
+      "Key facts (commute mode, current commute, remote options) never asked; T8 invents highway traffic.",
+      "Options stay take-or-stay; negotiation, hybrid work or a trial never appear (T9, section E)."
+    ],
+    "symptoms": [
+      {
+        "cell_id": "C2.5",
+        "turns": [
+          5,
+          8,
+          9
+        ],
+        "observed": "No mind concedes anything; T5 waves off T4's debt case unanswered.",
+        "evidence": "That is a common trap."
+      },
+      {
+        "cell_id": "C3.5",
+        "turns": [
+          7,
+          8
+        ],
+        "observed": "Commute mode left unasked; T8 assumes driving, contradicting T7's reading scenario.",
+        "evidence": "your happiness depends on the highway conditions"
+      },
+      {
+        "cell_id": "C5.1",
+        "turns": [
+          9
+        ],
+        "observed": "Only take or stay defined; no negotiation, hybrid or limited trial option.",
+        "evidence": "take the path. If you value the integrity"
+      },
+      {
+        "cell_id": "C2.4",
+        "turns": [
+          2,
+          5
+        ],
+        "observed": "User's bias and future non-adaptation stated as fact, not hypothesis.",
+        "evidence": "You are suffering from a focusing illusion."
+      },
+      {
+        "cell_id": "C7.2",
+        "turns": [
+          1,
+          9
+        ],
+        "observed": "Positions at T9 match openings; nothing changes any mind.",
+        "evidence": "Ultimately, the choice depends on where you place your value."
+      }
+    ],
+    "mechanical": [
+      {
+        "pattern": "uniform_voice",
+        "turns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "type": "unsupported_claim",
+        "severity": "material",
+        "status": "observed",
+        "location": "T2",
+        "description": "Asserts the user is suffering a focusing illusion with no evidence from the user's message.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "T5",
+        "description": "Commuting non-adaptation finding (associated with Stutzer and Frey) stated as certainty and attached to Kahneman's book.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unsupported_claim",
+        "severity": "minor",
+        "status": "observed",
+        "location": "T8",
+        "description": "Assumes the commute is by car on a highway and that current life is stable; user said neither.",
+        "evidence_ids": []
+      },
+      {
+        "type": "unverified_grounding",
+        "severity": "minor",
+        "status": "suspected",
+        "location": "T6",
+        "description": "Time is the only thing we truly possess sounds closer to Seneca's letters than Meditations.",
+        "evidence_ids": []
+      },
+      {
+        "type": "format",
+        "severity": "minor",
+        "status": "observed",
+        "location": "Section D",
+        "description": "Names outsourcing household labor as the remaining dispute, though no turn raised it.",
+        "evidence_ids": []
+      }
+    ],
+    "rubricFitNotes": [
+      "User supplied only two facts, so personal-relevance cells depend heavily on whether the debate asked for more; it largely did not. Suspected attribution issues rest on memory only."
+    ],
+    "questionTypeNote": "Decision question, so every cell was read as written, with options and decisive conditions weighed for a take-or-decline choice."
+  },
+  "rubricVersion": "rubric-evaluator-4.2.0",
+  "savedAt": "2026-10-16T01:53:04.910Z"
+}

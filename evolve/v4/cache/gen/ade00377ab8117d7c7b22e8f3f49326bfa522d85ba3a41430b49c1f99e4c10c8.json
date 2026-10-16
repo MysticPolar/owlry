@@ -1,0 +1,151 @@
+{
+  "jobId": "gen.v0.q4.s3",
+  "lineage": "gemini",
+  "version": "v0",
+  "q": 4,
+  "s": 3,
+  "model": "gemini-3.1-flash-lite",
+  "settings": {
+    "temperature": 0.5,
+    "thinkingLevel": "MEDIUM",
+    "maxOutputTokens": 16384
+  },
+  "debate": {
+    "situation": "The user is experiencing a sense of inadequacy because their life trajectory differs from the traditional milestones of marriage and homeownership adopted by their peers. The central tension is between the pressure to conform for social validation and the uncertainty regarding whether these goals are personally meaningful or merely inherited expectations.",
+    "minds": [
+      {
+        "title": "The Existentialist",
+        "concern": "Authenticity and the burden of choice",
+        "author": "Jean-Paul Sartre",
+        "book": "Existentialism is a Humanism",
+        "year": 1946
+      },
+      {
+        "title": "The Social Critic",
+        "concern": "Social position and cultural expectations",
+        "author": "Pierre Bourdieu",
+        "book": "Distinction",
+        "year": 1979
+      },
+      {
+        "title": "The Stoic",
+        "concern": "Internal locus of control",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "year": 161
+      }
+    ],
+    "debate": [
+      {
+        "speaker": "The Existentialist",
+        "text": "You are suffering from bad faith. You are treating these milestones as if they were objective facts of life, rather than choices you are free to define for yourself.",
+        "author": "Jean-Paul Sartre",
+        "book": "Existentialism is a Humanism",
+        "pd": false,
+        "basis": "Basis: Jean-Paul Sartre, Existentialism is a Humanism"
+      },
+      {
+        "speaker": "The Social Critic",
+        "text": "That is too simple. These milestones are not just individual choices; they are markers of social position that define your value within a competitive field.",
+        "author": "Pierre Bourdieu",
+        "book": "Distinction",
+        "pd": false,
+        "basis": "Basis: Pierre Bourdieu, Distinction"
+      },
+      {
+        "speaker": "The Stoic",
+        "text": "Why do you let the opinions of others dictate your peace? The best revenge is to be unlike him who performed the injury.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "Basis: Marcus Aurelius, Meditations"
+      },
+      {
+        "speaker": "The Existentialist",
+        "text": "The Stoic ignores that we are defined by our actions in the world. If you refuse to participate, you are still making a choice that defines your existence.",
+        "author": "Jean-Paul Sartre",
+        "book": "Existentialism is a Humanism",
+        "pd": false,
+        "basis": "Basis: Jean-Paul Sartre, Existentialism is a Humanism"
+      },
+      {
+        "speaker": "The Social Critic",
+        "text": "Exactly. Your refusal to participate is still a position within the social order, one that might carry its own costs or distinct forms of cultural capital.",
+        "author": "Pierre Bourdieu",
+        "book": "Distinction",
+        "pd": false,
+        "basis": "Basis: Pierre Bourdieu, Distinction"
+      },
+      {
+        "speaker": "The Stoic",
+        "text": "The cost is only real if you value the approval of the crowd. If you focus on your own character, the houses and marriages of others become indifferent.",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "Basis: Marcus Aurelius, Meditations"
+      },
+      {
+        "speaker": "The Existentialist",
+        "text": "But you cannot just ignore the world. You are thrown into a situation, and you must choose how to project yourself into the future.",
+        "author": "Jean-Paul Sartre",
+        "book": "Existentialism is a Humanism",
+        "pd": false,
+        "basis": "Basis: Jean-Paul Sartre, Existentialism is a Humanism"
+      },
+      {
+        "speaker": "The Social Critic",
+        "text": "And that projection is always mediated by the expectations of your peers. You feel behind because you are measuring yourself against a standard you did not set.",
+        "author": "Pierre Bourdieu",
+        "book": "Distinction",
+        "pd": false,
+        "basis": "Basis: Pierre Bourdieu, Distinction"
+      },
+      {
+        "speaker": "The Stoic",
+        "text": "Then stop measuring. If you do not value the prize, why lament that you are not winning the race?",
+        "author": "Marcus Aurelius",
+        "book": "Meditations",
+        "pd": true,
+        "basis": "Basis: Marcus Aurelius, Meditations"
+      },
+      {
+        "speaker": "The Existentialist",
+        "text": "You must decide if your hesitation is fear of the commitment or a genuine desire for a different life. That is your burden of freedom.",
+        "author": "Jean-Paul Sartre",
+        "book": "Existentialism is a Humanism",
+        "pd": false,
+        "basis": "Basis: Jean-Paul Sartre, Existentialism is a Humanism"
+      }
+    ],
+    "clearer": "It became clearer that the feeling of being behind is a conflict between conforming to external social markers and the existential task of defining one's own values. The dispute remains whether one can truly detach from social pressures or if those pressures are inescapable features of human life.",
+    "dependsOn": "If the user values social belonging above all else, conforming to these milestones might reduce anxiety by providing a clear map for integration. If the user values individual authenticity, focusing on identifying personal interests outside these milestones is better, even if it feels isolating. If the user is unsure of their values, experimenting with small, low-stakes deviations can help determine if the discomfort is a fear of missing out or a genuine lack of interest."
+  },
+  "validity": {
+    "ok": true,
+    "problems": []
+  },
+  "metrics": {
+    "turns": 10,
+    "words": 254,
+    "meanWordsPerTurn": 25.4,
+    "shortTurns": 3,
+    "longTurns": 0,
+    "hedges": 7,
+    "hedgeDensity": 2.76,
+    "bannedCertainty": 3,
+    "templatedOpeners": 0,
+    "slotMarkers": 0,
+    "questionsToUser": 2,
+    "theUser": 0,
+    "pdFalseQuoteTurns": 0,
+    "fabricatedBasisTurns": 0,
+    "distinctSpeakers": 3,
+    "distinctBooks": 3
+  },
+  "unusable": false,
+  "latencyMs": 8690,
+  "tokens": null,
+  "raw": "{\n  \"output\": {\n    \"situation\": \"The user is experiencing a sense of inadequacy because their life trajectory differs from the traditional milestones of marriage and homeownership adopted by their peers. The central tension is between the pressure to conform for social validation and the uncertainty regarding whether these goals are personally meaningful or merely inherited expectations.\",\n    \"minds\": [\n      {\n        \"title\": \"The Existentialist\",\n        \"concern\": \"Authenticity and the burden of choice\",\n        \"author\": \"Jean-Paul Sartre\",\n        \"book\": \"Existentialism is a Humanism\",\n        \"year\": 1946\n      },\n      {\n        \"title\": \"The Social Critic\",\n        \"concern\": \"Social position and cultural expectations\",\n        \"author\": \"Pierre Bourdieu\",\n        \"book\": \"Distinction\",\n        \"year\": 1979\n      },\n      {\n        \"title\": \"The Stoic\",\n        \"concern\": \"Internal locus of control\",\n        \"author\": \"Marcus Aurelius\",\n        \"book\": \"Meditations\",\n        \"year\": 161\n      }\n    ],\n    \"debate\": [\n      {\n        \"speaker\": \"The Existentialist\",\n        \"text\": \"You are suffering from bad faith. You are treating these milestones as if they were objective facts of life, rather than choices you are free to define for yourself.\",\n        \"author\": \"Jean-Paul Sartre\",\n        \"book\": \"Existentialism is a Humanism\",\n        \"pd\": false,\n        \"basis\": \"Basis: Jean-Paul Sartre, Existentialism is a Humanism\"\n      },\n      {\n        \"speaker\": \"The Social Critic\",\n        \"text\": \"That is too simple. These milestones are not just individual choices; they are markers of social position that define your value within a competitive field.\",\n        \"author\": \"Pierre Bourdieu\",\n        \"book\": \"Distinction\",\n        \"pd\": false,\n        \"basis\": \"Basis: Pierre Bourdieu, Distinction\"\n      },\n      {\n        \"speaker\": \"The Stoic\",\n        \"text\": \"Why do you let the opinions of others dictate your peace? The best revenge is to be unlike him who performed the injury.\",\n        \"author\": \"Marcus Aurelius\",\n        \"book\": \"Meditations\",\n        \"pd\": true,\n        \"basis\": \"Basis: Marcus Aurelius, Meditations\"\n      },\n      {\n        \"speaker\": \"The Existentialist\",\n        \"text\": \"The Stoic ignores that we are defined by our actions in the world. If you refuse to participate, you are still making a choice that defines your existence.\",\n        \"author\": \"Jean-Paul Sartre\",\n        \"book\": \"Existentialism is a Humanism\",\n        \"pd\": false,\n        \"basis\": \"Basis: Jean-Paul Sartre, Existentialism is a Humanism\"\n      },\n      {\n        \"speaker\": \"The Social Critic\",\n        \"text\": \"Exactly. Your refusal to participate is still a position within the social order, one that might carry its own costs or distinct forms of cultural capital.\",\n        \"author\": \"Pierre Bourdieu\",\n        \"book\": \"Distinction\",\n        \"pd\": false,\n        \"basis\": \"Basis: Pierre Bourdieu, Distinction\"\n      },\n      {\n        \"speaker\": \"The Stoic\",\n        \"text\": \"The cost is only real if you value the approval of the crowd. If you focus on your own character, the houses and marriages of others become indifferent.\",\n        \"author\": \"Marcus Aurelius\",\n        \"book\": \"Meditations\",\n        \"pd\": true,\n        \"basis\": \"Basis: Marcus Aurelius, Meditations\"\n      },\n      {\n        \"speaker\": \"The Existentialist\",\n        \"text\": \"But you cannot just ignore the world. You are thrown into a situation, and you must choose how to project yourself into the future.\",\n        \"author\": \"Jean-Paul Sartre\",\n        \"book\": \"Existentialism is a Humanism\",\n        \"pd\": false,\n        \"basis\": \"Basis: Jean-Paul Sartre, Existentialism is a Humanism\"\n      },\n      {\n        \"speaker\": \"The Social Critic\",\n        \"text\": \"And that projection is always mediated by the expectations of your peers. You feel behind because you are measuring yourself against a standard you did not set.\",\n        \"author\": \"Pierre Bourdieu\",\n        \"book\": \"Distinction\",\n        \"pd\": false,\n        \"basis\": \"Basis: Pierre Bourdieu, Distinction\"\n      },\n      {\n        \"speaker\": \"The Stoic\",\n        \"text\": \"Then stop measuring. If you do not value the prize, why lament that you are not winning the race?\",\n        \"author\": \"Marcus Aurelius\",\n        \"book\": \"Meditations\",\n        \"pd\": true,\n        \"basis\": \"Basis: Marcus Aurelius, Meditations\"\n      },\n      {\n        \"speaker\": \"The Existentialist\",\n        \"text\": \"You must decide if your hesitation is fear of the commitment or a genuine desire for a different life. That is your burden of freedom.\",\n        \"author\": \"Jean-Paul Sartre\",\n        \"book\": \"Existentialism is a Humanism\",\n        \"pd\": false,\n        \"basis\": \"Basis: Jean-Paul Sartre, Existentialism is a Humanism\"\n      }\n    ],\n    \"clearer\": \"It became clearer that the feeling of being behind is a conflict between conforming to external social markers and the existential task of defining one's own values. The dispute remains whether one can truly detach from social pressures or if those pressures are inescapable features of human life.\",\n    \"dependsOn\": \"If the user values social belonging above all else, conforming to these milestones might reduce anxiety by providing a clear map for integration. If the user values individual authenticity, focusing on identifying personal interests outside these milestones is better, even if it feels isolating. If the user is unsure of their values, experimenting with small, low-stakes deviations can help determine if the discomfort is a fear of missing out or a genuine lack of interest.\"\n  },\n  \"latencyMs\": 8690,\n  \"tokens\": null\n}",
+  "transcriptHash": "7169f29bab1e6c8ed9a749dde7e791b09c4856d50a966a248fb0dbff0e994087",
+  "savedAt": "2026-10-16T01:50:28.106Z"
+}
